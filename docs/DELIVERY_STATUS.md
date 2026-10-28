@@ -20,6 +20,7 @@
 - `results/frozen_fullplan_v3/验收总览.html`：逐项结果、失败和证据入口。
 - `results/frozen_fullplan_v3/browser_demos_v3/index.html`：8 段浏览器可播放演示。
 - `results/frozen_fullplan_v3/full_plan_report_v3.md`：完整研究报告，配有 `.sources.json` 来源清单。
+- `results/frozen_fullplan_v3/研究结果报告_v3_最终交付.docx`：最终 Word 报告，PDF 位于 `report_document_v3_final_delivery/研究结果报告_v3_最终交付.pdf`。
 - `results/frozen_fullplan_v3/metric_supplement.{json,md,csv}`：逐飞行和分组指标。
 - `results/frozen_fullplan_v3/full_plan_figures/`：6 组 PNG/PDF/SVG 图表及 CSV。
 
