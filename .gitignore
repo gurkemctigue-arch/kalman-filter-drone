@@ -1,0 +1,26 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+node_modules/
+dist/
+build/
+coverage.xml
+.coverage
+ros2_ws/build/
+ros2_ws/install/
+ros2_ws/log/
+*.bag
+*.db3
+results/
+
+# Downloaded detector weights are large binary artifacts; obtain them separately.
+models/*.pt
+ros2_ws/src/**/models/*.pt
+
+# Locally built ROS wheel artifacts.
+**/dist_stage1/
+
+# Microsoft Office temporary lock files.
+~$*

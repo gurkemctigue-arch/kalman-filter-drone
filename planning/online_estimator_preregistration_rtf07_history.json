@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "status": "PREREGISTERED_BEFORE_ONLINE_BASELINE_RUNS",
+  "resource_configuration": {
+    "frozen_after_engineering_probes_before_100_flight_matrix": true,
+    "real_time_factor": 0.7,
+    "simulation_time_safety_thresholds_s": {"accepted_measurement_max_age": 0.75, "incoming_observation_max_age": 0.60},
+    "person": {"weights": "models/yolo11n.pt", "inference_image_size": 320, "inference_threads": 2},
+    "car": {"weights": "models/yolo11s.pt", "inference_image_size": 640, "inference_threads": 4},
+    "claim_boundary": "Deliberately slower-than-wall-time simulation at requested RTF 0.7 to preserve sensor/computation freshness with rendering on this CPU. Actual wall latency and achieved RTF remain recorded. Passing sim-time safety is NOT evidence of wall-time real-time capability or real-aircraft timing. Identical resources within each class across all four estimators; no relaxed safety thresholds. Earlier failed resource probes remain separately retained."
+  },
+  "scope": "Intervene on the actual estimator output used by the PX4 follow controller. A shared unchanged adaptive-KF safety/association observer determines gating and tracking identity for all four output methods.",
+  "primary_matrix": {
+    "prefix": "stage1_online_estimators_v1",
+    "classes": ["person", "car"],
+    "control_modes": ["velocity"],
+    "estimator_methods": ["raw", "ema", "fixed_kf", "adaptive_kf"],
+    "seeds": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+    "condition": "clean",
+    "motion_profile_kind": "standard",
+    "expected_trials": 80,
+    "command": "python3 scripts/run_stage1_repetitions.py --prefix stage1_online_estimators_v1 --modes velocity --estimators raw ema fixed_kf adaptive_kf --condition clean --stop-after 4",
+    "report": "results/stage1_online_estimators_v1_repetition_report.json"
+  },
+  "position_compatibility_matrix": {
+    "prefix": "stage1_position_repetitions_v1",
+    "classes": ["person", "car"],
+    "control_modes": ["position"],
+    "estimator_methods": ["adaptive_kf"],
+    "seeds": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+    "condition": "clean",
+    "motion_profile_kind": "standard",
+    "expected_trials": 20,
+    "command": "python3 scripts/run_stage1_repetitions.py --prefix stage1_position_repetitions_v1 --modes position --estimators adaptive_kf --condition clean --stop-after 4",
+    "report": "results/stage1_position_repetitions_v1_repetition_report.json",
+    "claim_boundary": "Repeated engineering compatibility for adaptive-KF position control; not a four-method position-control comparison."
+  },
+  "motion_extension": {
+    "classes": ["person", "car"],
+    "control_modes": ["velocity", "position"],
+    "estimator_methods": ["adaptive_kf"],
+    "motion_profile_kind": "speed_changes",
+    "expected_trials": 4,
+    "role": "Engineering acceleration/deceleration coverage; actual source recordings also support the 10-seed paired offline perturbation study. Four probes are not ten independent repeats of this new trajectory."
+  },
+  "pairing": "The same seed controls target nominal speed and fault RNG in each method. Each method is a fresh isolated real flight. All other sensing, selection, common adaptive gate, safety ages, controller gains, takeoff and follow distances remain fixed per class.",
+  "shared_gate": "Original adaptive ConstantVelocityKalman3D with unchanged Q/R-quality formula/threshold. The common gate determines measurement acceptance and association. Raw/EMA/fixed output estimates cannot change gate/selector state. Accepted fixed output updates skip a redundant private gate only after the common gate has accepted. This isolates the output-estimation intervention while preserving safety.",
+  "methods": {
+    "raw": "Last accepted 3D position, zero-order hold between acquisitions; velocity is the finite difference of consecutive accepted raw positions using actual acquisition dt and is held for controller feedforward. Output covariance is a declared heuristic, not a KF posterior.",
+    "ema": "alpha=0.35 on accepted 3D positions, zero-order position hold between acquisitions; finite-difference velocity of consecutive EMA positions using actual source dt; same held feedforward convention and heuristic covariance.",
+    "fixed_kf": "Six-state CV Kalman output, identical Q and base measurement-noise std, fixed R, shared upstream adaptive safety gate.",
+    "adaptive_kf": "Original production six-state CV Kalman output and unchanged adaptive quality-dependent R. Default strategy remains this exact original implementation."
+  },
+  "freshness": "Accepted measurement age >0.75 s loses the selected task and hovers; incoming observation age >0.60 s is rejected. No method can extend thresholds, automatically reselect, or use Gazebo GT at runtime.",
+  "primary_outcomes": ["strict schema-3 flight acceptance/failure rate", "whole-interval Gazebo-model-origin horizontal follow-error RMSE", "whole-interval height error RMSE", "observed speed/command jitter", "independently aligned online state calibrated-anchor error with held-out alignment checks"],
+  "online_accuracy_frame_contract": "Schema 2: fixed identity world-from-map rotation from source-declared Gazebo ENU -> PX4 NED -> adapter ROS ENU, verified world ENU/zero heading; only initial 5 s UAV translation/origin calibration, then held-out ego checks. No target or holdout rotation fit. Estimated heading bias remains a physical ego attitude error, not a fitted position-axis rotation. Original schema-1 attitude-derived alignment report is preserved and separately shown as sensitivity. Raw PX4 odometry reset_counter/timeline retained. Source evidence PX4 d6f12ad1c4f70ad3230afd7d86e971421e02fef4 GZBridge.cpp:545,713-742; EKF2.cpp:1687-1688; local adapter_node.py:148-154.",
+  "statistics": "Group by class/method. Trials and seeds, not frames, are statistical units. Report all failures/incomplete starts; Wilson 95% failure-rate interval; means and sample standard deviations; adaptive-minus-baseline paired bootstrap 95% intervals for paired measurable outcomes. Missing failures stay visible and are not imputed as zero; report excluded pairs and coverage. Paired error conditional on common successful/measurable pairs is separately labelled and cannot replace the failure-rate comparison.",
+  "failure_retention": "Never overwrite failed trials, shorten bags to hide later loss, retune a controller per baseline after seeing its results, or rerun the same seed under the same name until it succeeds. Fixes require a new matrix prefix and all prior evidence remains."
+}

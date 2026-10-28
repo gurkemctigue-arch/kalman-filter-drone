@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<sdf version="1.9">
+  <model name="x500_stage1">
+    <!-- Inherit the actual PX4 vehicle, including motors/IMU/GPS/barometer.
+         The native x500_depth OakD RGB and depth have different intrinsics;
+         use one rgbd_camera projection for aligned depth instead. -->
+    <include merge="true"><uri>model://x500</uri></include>
+    <link name="tracking_camera_mount">
+      <pose relative_to="base_link">0.13233 0 0.26078 0 0.35 0</pose>
+      <inertial><mass>0.061</mass><inertia><ixx>0.00004608</ixx><iyy>0.00000554</iyy><izz>0.00004365</izz></inertia></inertial>
+      <visual name="camera_body"><geometry><box><size>0.025 0.09 0.03</size></box></geometry><material><ambient>0.04 0.04 0.04 1</ambient><diffuse>0.08 0.08 0.08 1</diffuse></material></visual>
+      <sensor name="tracking_rgbd" type="rgbd_camera">
+        <always_on>true</always_on><visualize>false</visualize><update_rate>10</update_rate>
+        <topic>/camera/rgbd</topic>
+        <camera>
+          <horizontal_fov>1.204</horizontal_fov>
+          <image><width>640</width><height>480</height><format>R8G8B8</format></image>
+          <clip><near>0.10</near><far>50.0</far></clip>
+          <depth_camera><output>depths</output><clip><near>0.10</near><far>50.0</far></clip></depth_camera>
+          <!-- This is an optical frame. Its fixed FLU->optical rotation is
+               broadcast by flight_tf, separate from the mount pitch above. -->
+          <optical_frame_id>camera_link</optical_frame_id>
+        </camera>
+      </sensor>
+    </link>
+    <joint name="tracking_camera_fixed" type="fixed"><parent>base_link</parent><child>tracking_camera_mount</child></joint>
+    <!-- Offline evaluation only. Runtime TF comes exclusively from PX4
+         VehicleOdometry; tracking nodes must never subscribe to this. -->
+    <plugin filename="gz-sim-pose-publisher-system" name="gz::sim::systems::PosePublisher">
+      <publish_model_pose>true</publish_model_pose><publish_link_pose>false</publish_link_pose><publish_sensor_pose>false</publish_sensor_pose><publish_nested_model_pose>false</publish_nested_model_pose>
+      <use_pose_vector_msg>true</use_pose_vector_msg><update_frequency>30</update_frequency><topic>/ground_truth/vehicle_poses</topic>
+    </plugin>
+  </model>
+</sdf>

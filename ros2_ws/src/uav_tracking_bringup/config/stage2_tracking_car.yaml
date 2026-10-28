@@ -1,0 +1,88 @@
+# Stage two: explicit image-box selection; all candidates are tracked.
+# Car condition for the same stage-one world and RGB-D bridge.
+# COCO's YOLO car class is class_id 2. Gazebo depth is float metres.
+uav_tracking_detection:
+  ros__parameters:
+    use_sim_time: true
+    class_name: car
+    class_id: 2
+    confidence_threshold: 0.45
+    # Same pretrained YOLO11 family; 11s improves car recall at rear/turn views.
+    model_path: models/yolo11s.pt
+    depth_scale: 1.0
+    min_depth_m: 0.2
+    max_depth_m: 50.0
+    min_depth_valid_ratio: 0.35
+    image_topic: /camera/color/image_raw
+    depth_topic: /camera/aligned_depth_to_color/image_raw
+    camera_info_topic: /camera/color/camera_info
+    observation_topic: /tracking/observations
+    depth_max_age_s: 0.20
+    # Keep the camera at 640x480; resize only network inference to bound CPU latency.
+    inference_image_size: 480
+    max_inference_rate_hz: 5.0
+    inference_device: cpu
+    inference_threads: 2
+
+uav_tracking_state_estimator:
+  ros__parameters:
+    use_sim_time: true
+    target_mode: locked_target
+    association_mode: hybrid_3d
+    association_iou_threshold: 0.01
+    association_max_distance_m: 1.5
+    reject_ambiguous_associations: true
+    tracks_topic: /tracking/tracks
+    target_class: car
+    observation_topic: /tracking/observations
+    selection_topic: /tracking/selection
+    state_topic: /tracking/state
+    state_frame: map
+    process_noise_accel_mps2: 1.0
+    measurement_noise_position_m: [0.05, 0.05, 0.10]
+    mahalanobis_gate: 9.21
+    default_dt: 0.0333333333
+    max_coast_frames: 8
+    max_lost_frames: 30
+    max_prediction_duration_s: 0.75
+    track_retention_duration_s: 3.0
+    max_observation_age_s: 0.60
+
+uav_tracking_controller:
+  ros__parameters:
+    use_sim_time: true
+    state_topic: /tracking/state
+    command_topic: /tracking/command
+    status_topic: /tracking/status
+    control_rate_hz: 20.0
+    command_mode: velocity
+    slew_position: true
+    max_position_lead_m: [1.0, 1.0, 0.5]
+    desired_distance_m: 9.0
+    desired_height_m: 2.0
+    desired_offset_m: [0.0, 0.0, 0.0]
+    position_gain: [0.60, 0.60, 0.50]
+    integral_gain: [0.02, 0.02, 0.02]
+    # Limit body pitch during acquisition of small, distant image targets.
+    max_acceleration_mps2: [0.7, 0.7, 0.5]
+    deadzone_m: 0.0
+    max_velocity_mps: [2.0, 2.0, 1.0]
+    integral_limit: 1.0
+    prediction_timeout_s: 0.75
+    vehicle_timeout_s: 0.50
+    failsafe_mode: hold
+
+uav_tracking_px4_adapter:
+  ros__parameters:
+    use_sim_time: true
+    command_topic: /tracking/command
+    trajectory_setpoint_topic: /fmu/in/trajectory_setpoint
+    offboard_control_mode_topic: /fmu/in/offboard_control_mode
+    vehicle_odometry_topic: /fmu/out/vehicle_odometry
+    vehicle_odom_topic: /vehicle/odometry
+    vehicle_status_topic: /fmu/out/vehicle_status_v1
+    vehicle_command_ack_topic: /fmu/out/vehicle_command_ack
+    require_vehicle_status: false
+    vehicle_status_timeout_s: 1.0
+    publish_rate_hz: 20.0
+    command_timeout_s: 0.50

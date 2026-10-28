@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+  <asset><unit name="meter" meter="1"/><up_axis>Z_UP</up_axis></asset>
+  <library_geometries>
+    <geometry id="carMesh" name="carMesh">
+      <mesh>
+        <source id="carPositions"><float_array id="carPositionsArray" count="24">-0.9 -0.45 0 0.9 -0.45 0 0.9 0.45 0 -0.9 0.45 0 -0.9 -0.45 0.65 0.9 -0.45 0.65 0.9 0.45 0.65 -0.9 0.45 0.65</float_array><technique_common><accessor source="#carPositionsArray" count="8" stride="3"><param name="X" type="float"/><param name="Y" type="float"/><param name="Z" type="float"/></accessor></technique_common></source>
+        <vertices id="carVertices"><input semantic="POSITION" source="#carPositions"/></vertices>
+        <triangles count="12"><input semantic="VERTEX" source="#carVertices" offset="0"/><p>0 1 2 0 2 3 4 6 5 4 7 6 0 4 5 0 5 1 1 5 6 1 6 2 2 6 7 2 7 3 3 7 4 3 4 0</p></triangles>
+      </mesh>
+    </geometry>
+  </library_geometries>
+  <library_visual_scenes><visual_scene id="Scene"><node id="Car"><instance_geometry url="#carMesh"/></node></visual_scene></library_visual_scenes>
+  <scene><instance_visual_scene url="#Scene"/></scene>
+</COLLADA>

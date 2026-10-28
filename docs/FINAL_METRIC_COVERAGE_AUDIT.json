@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "scope": "Static source audit for the frozen v2 report pipeline; this file is not an experiment result and contains no fabricated values. The final supplement command requires plan.json and matches its 166 trial names and plan SHA to summary.json.",
+  "main_cohort": "166 real flight slots; offline JSON is joined only after flight completion.",
+  "engineering_cohort": "16 independent one-flight engineering slots; never merged into the 166 denominator.",
+  "metrics": [
+    {
+      "planned": ["Precision", "Recall", "mAP"],
+      "source": "results/detection_research/detection_report.json -> recordings[].reviewed_metrics",
+      "report": "scripts/build_full_plan_report.py historical static 132-label section",
+      "coverage": "historical_reviewed_static_subset_only",
+      "limit": "Not a formal 166-flight overall detector metric; no occluded/multi-target/general-world claim."
+    },
+    {
+      "planned": ["FPS", "latency"],
+      "source": "offline_evaluation.json or flight_evaluation.json -> detector.processed_fps_in_sim_time, detector.inference_wall_s, detector.acquisition_to_completed_sim_latency_s",
+      "report": "scripts/build_metric_supplement.py",
+      "coverage": "stage1/stage3_when_report_exists",
+      "limit": "Simulation-clock processed FPS and pure inference wall time are distinct; stage2 safety JSON does not currently save these fields."
+    },
+    {
+      "planned": ["3D position RMSE", "3D position 95th percentile", "velocity RMSE", "velocity 95th percentile"],
+      "source": "online_state_accuracy_v2.json -> online_state_accuracy.metrics.state_stamp_* and receipt_clock_*",
+      "report": "scripts/build_metric_supplement.py",
+      "coverage": "per_flight_after_online_offline_evaluation",
+      "limit": "Frozen visible-surface anchor with ego-only map alignment; not independently calibrated model-center accuracy."
+    },
+    {
+      "planned": ["short-occlusion prediction error"],
+      "source": "online_state_accuracy_v2.frames.jsonl intersected with follow_dynamics.windows short request/response window",
+      "report": "scripts/build_metric_supplement.py --include-state-frames",
+      "coverage": "conditional_PREDICTED_state_subset",
+      "limit": "TargetState header simulation time and shutter request/response window are not a rendered visibility label; missing reference remains missing."
+    },
+    {
+      "planned": ["follow distance/height RMSE", "overshoot", "settling time", "control jitter"],
+      "source": "follow_dynamics.json whole_interval/windows and online_state_accuracy_v2.json control_jitter",
+      "report": "scripts/build_full_plan_report.py plus scripts/build_metric_supplement.py",
+      "coverage": "per_flight_and_grouped_statistics",
+      "limit": "Settling is conditional on observed final in-band suffix; right-censored and missing windows are not zero. Moving-target transient is not a stationary step response."
+    },
+    {
+      "planned": ["ID Switch", "IDF1", "HOTA", "target retention"],
+      "source": "physical_identity.json -> tasks[].amodal_simulation_mot, tasks[].unoccluded_geometry_mot, selected_physical_identity_all, conservative_selected_identity",
+      "report": "scripts/build_full_plan_report.py plus scripts/build_metric_supplement.py",
+      "coverage": "stage2 crossing physical identity only",
+      "limit": "Task means are summarized by flight; UNKNOWN/NOT_OBSERVED remain in opportunity denominators. Stage3 formal 40 flights are single-target active/midpoint pairs, not multi-target ReID repeats."
+    },
+    {
+      "planned": ["reacquisition rate", "reacquisition time"],
+      "source": "follow_dynamics.json explicit_selection windows",
+      "report": "scripts/build_metric_supplement.py",
+      "coverage": "explicit_new_task_confirmation_only",
+      "limit": "This confirms a newly requested UUID after explicit selection; complete appearance-based ReID after leaving view is out of scope and has no valid metric."
+    }
+  ],
+  "known_gaps": [
+    "The 16 engineering flight runner records schema-3 safety evaluation but does not automatically create online_state_accuracy_v2.json or follow_dynamics.json; run_full_plan_supplement.py can add those reports later from existing bags without overwriting evidence.",
+    "The existing static detector review uses historical eligible rendered frames and cannot be relabeled as the formal 166-flight detector accuracy.",
+    "No metric in this audit is a real-aircraft or wall-clock real-time claim."
+  ]
+}

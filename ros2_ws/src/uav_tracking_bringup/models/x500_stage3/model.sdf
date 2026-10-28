@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<sdf version="1.9">
+  <model name="x500_stage3">
+    <include merge="true"><uri>model://x500</uri></include>
+    <!-- All axes intersect at the stage-one calibrated camera origin. The
+         kinematic chain is Rz(yaw) Ry(0.35+pitch_delta) Rx(roll). -->
+    <link name="tracking_gimbal_yaw_link">
+      <pose relative_to="base_link">0.13233 0 0.26078 0 0 0</pose>
+      <inertial><mass>0.01</mass><inertia><ixx>0.000005</ixx><iyy>0.000005</iyy><izz>0.000005</izz></inertia></inertial>
+      <visual name="yaw_ring"><geometry><cylinder><radius>0.025</radius><length>0.01</length></cylinder></geometry><material><ambient>0.2 0.2 0.2 1</ambient><diffuse>0.2 0.2 0.2 1</diffuse></material></visual>
+    </link>
+    <joint name="tracking_gimbal_yaw" type="revolute">
+      <parent>base_link</parent><child>tracking_gimbal_yaw_link</child>
+      <axis><xyz>0 0 1</xyz><limit><lower>-1.2</lower><upper>1.2</upper><effort>0.05</effort><velocity>1.0</velocity></limit><dynamics><damping>0.0001</damping></dynamics></axis>
+    </joint>
+    <link name="tracking_gimbal_pitch_link">
+      <pose relative_to="tracking_gimbal_yaw_link">0 0 0 0 0.35 0</pose>
+      <inertial><mass>0.01</mass><inertia><ixx>0.000005</ixx><iyy>0.000005</iyy><izz>0.000005</izz></inertia></inertial>
+    </link>
+    <joint name="tracking_gimbal_pitch" type="revolute">
+      <parent>tracking_gimbal_yaw_link</parent><child>tracking_gimbal_pitch_link</child>
+      <axis><xyz>0 1 0</xyz><limit><lower>-1.4</lower><upper>0.9</upper><effort>0.05</effort><velocity>0.8</velocity></limit><dynamics><damping>0.0001</damping></dynamics></axis>
+    </joint>
+    <link name="tracking_camera_mount">
+      <pose relative_to="tracking_gimbal_pitch_link">0 0 0 0 0 0</pose>
+      <inertial><mass>0.061</mass><inertia><ixx>0.00004608</ixx><iyy>0.00000554</iyy><izz>0.00004365</izz></inertia></inertial>
+      <visual name="camera_body"><geometry><box><size>0.025 0.09 0.03</size></box></geometry><material><ambient>0.04 0.04 0.04 1</ambient><diffuse>0.08 0.08 0.08 1</diffuse></material></visual>
+      <sensor name="tracking_rgbd" type="rgbd_camera">
+        <always_on>true</always_on><visualize>false</visualize><update_rate>10</update_rate>
+        <topic>/camera/rgbd</topic>
+        <camera>
+          <horizontal_fov>1.204</horizontal_fov>
+          <image><width>640</width><height>480</height><format>R8G8B8</format></image>
+          <clip><near>0.10</near><far>50.0</far></clip>
+          <depth_camera><output>depths</output><clip><near>0.10</near><far>50.0</far></clip></depth_camera>
+          <optical_frame_id>camera_link</optical_frame_id>
+        </camera>
+      </sensor>
+    </link>
+    <joint name="tracking_gimbal_roll" type="revolute">
+      <parent>tracking_gimbal_pitch_link</parent><child>tracking_camera_mount</child>
+      <axis><xyz>1 0 0</xyz><limit><lower>-0.7</lower><upper>0.7</upper><effort>0.05</effort><velocity>1.0</velocity></limit><dynamics><damping>0.0001</damping></dynamics></axis>
+    </joint>
+    <!-- Force PID operates the physical joints. Do not enable the
+         use_velocity_commands ABS mode or set JointPositionReset. -->
+    <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
+      <joint_name>tracking_gimbal_yaw</joint_name><topic>/gimbal/yaw/cmd_pos</topic><initial_position>0</initial_position>
+      <p_gain>0.12</p_gain><i_gain>0</i_gain><d_gain>0.004</d_gain><cmd_min>-0.05</cmd_min><cmd_max>0.05</cmd_max>
+    </plugin>
+    <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
+      <joint_name>tracking_gimbal_pitch</joint_name><topic>/gimbal/pitch/cmd_pos</topic><initial_position>0</initial_position>
+      <p_gain>0.04</p_gain><i_gain>0</i_gain><d_gain>0.0012</d_gain><cmd_min>-0.05</cmd_min><cmd_max>0.05</cmd_max>
+    </plugin>
+    <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
+      <joint_name>tracking_gimbal_roll</joint_name><topic>/gimbal/roll/cmd_pos</topic><initial_position>0</initial_position>
+      <p_gain>0.12</p_gain><i_gain>0</i_gain><d_gain>0.004</d_gain><cmd_min>-0.05</cmd_min><cmd_max>0.05</cmd_max>
+    </plugin>
+    <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher">
+      <joint_name>tracking_gimbal_yaw</joint_name><joint_name>tracking_gimbal_pitch</joint_name><joint_name>tracking_gimbal_roll</joint_name>
+      <topic>/gimbal/joint_states</topic><update_rate>50</update_rate>
+    </plugin>
+    <!-- Only the offline evaluator may read these actual rendered poses. -->
+    <plugin filename="gz-sim-pose-publisher-system" name="gz::sim::systems::PosePublisher">
+      <publish_model_pose>true</publish_model_pose><publish_link_pose>true</publish_link_pose><publish_sensor_pose>false</publish_sensor_pose><publish_nested_model_pose>false</publish_nested_model_pose>
+      <use_pose_vector_msg>true</use_pose_vector_msg><update_frequency>30</update_frequency><topic>/ground_truth/vehicle_poses</topic>
+    </plugin>
+  </model>
+</sdf>

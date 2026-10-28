@@ -1,0 +1,19 @@
+# Health and lifecycle state for logging and safety supervision.
+std_msgs/Header header
+uint8 LIFECYCLE_IDLE=0
+uint8 LIFECYCLE_ACQUIRE=1
+uint8 LIFECYCLE_FOLLOW=2
+uint8 LIFECYCLE_PREDICT=3
+uint8 LIFECYCLE_HOVER=4
+uint8 LIFECYCLE_SEARCH=5
+uint8 LIFECYCLE_FAILSAFE=6
+uint8 lifecycle
+uint64 track_id
+bool target_visible
+bool prediction_active
+float32 time_since_measurement_s
+float32 distance_error_m
+float32 height_error_m
+float32 image_center_error_px
+uint32 dropped_measurements
+string reason
