@@ -207,6 +207,39 @@ class FullPlanReportTests(unittest.TestCase):
             self.assertTrue(provenance["execution_ledger_complete"])
             self.assertTrue(provenance["supplement_ledger"]["complete"])
 
+    def test_source_binding_is_bidirectional_and_still_requires_exact_sha(self):
+        windows = {"path": r"D:\project\results\manifest.json", "exists": True, "bytes": 128, "sha256": "a" * 64}
+        linux = {**windows, "path": "/mnt/d/project/results/manifest.json"}
+        for source, record in ((windows, linux), (linux, windows)):
+            with self.subTest(source=source["path"]):
+                self.assertTrue(reporter.source_matches(source, record))
+                self.assertFalse(reporter.source_matches({**source, "sha256": "b" * 64}, record))
+                self.assertFalse(reporter.source_matches({**source, "bytes": 129}, record))
+                self.assertFalse(reporter.source_matches({**source, "path": "/other/summary.json"}, record))
+
+    def test_duplicate_source_binding_rejected_even_with_cross_system_path_alias(self):
+        for family in ("supplement", "metric"):
+            for first_path in ("local", "linux_alias"):
+                with self.subTest(family=family, first_path=first_path), self.fixture() as temporary:
+                    root = Path(temporary)
+                    source, inputs = completed_inputs(root)
+                    path = inputs["supplement_manifest_path" if family == "supplement" else "metric_supplement_path"]
+                    data = json.loads(path.read_text(encoding="utf-8"))
+                    bindings = data["plan"]["sources"] if family == "supplement" else data["sources"]
+                    duplicate = dict(bindings[0])
+                    duplicate["path"] = "/mnt/d/project/results/" + Path(duplicate["path"]).name
+                    if first_path == "linux_alias":
+                        bindings[0] = dict(duplicate)
+                    bindings.append(duplicate)
+                    if family == "supplement":
+                        data["plan_sha256"] = reporter.digest(data["plan"])
+                    write(path, data)
+                    _, provenance = reporter.build_report(source, root / "report.md", **inputs)
+                    validation = provenance["supplement_ledger" if family == "supplement" else "metric_supplement"]
+                    self.assertFalse(provenance["execution_ledger_complete"])
+                    self.assertFalse(validation["complete"])
+                    self.assertTrue(any("重复" in problem for problem in validation["problems"]))
+
     def test_offline_task_names_and_engineering_canonical_digest_are_required(self):
         for fault in ("offline_name", "engineering_digest"):
             with self.subTest(fault=fault), self.fixture() as temporary:

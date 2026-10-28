@@ -9,7 +9,7 @@ const path = require("node:path");
 const crypto = require("node:crypto");
 const {
   AlignmentType, BorderStyle, Document, ExternalHyperlink, Footer, Header,
-  HeadingLevel, ImageRun, LevelFormat, PageNumber, PageOrientation, Paragraph,
+  HeadingLevel, ImageRun, LevelFormat, LineRuleType, PageNumber, PageOrientation, Paragraph,
   Packer, SectionType, ShadingType, Table, TableCell, TableLayoutType, TableRow,
   TextRun, VerticalAlign, WidthType,
 } = require("docx");
@@ -196,7 +196,9 @@ function makeFigure(filename, caption, mode, context) {
   const scale = Math.min(maxWidth / geometry.width, maxHeight / geometry.height, 1);
   context.images.push({ path: filename, bytes: data.length, sha256: sha(data), ...geometry });
   return [
-    new Paragraph({ alignment: AlignmentType.CENTER, children: [new ImageRun({
+    new Paragraph({ alignment: AlignmentType.CENTER, keepNext: true,
+      spacing: { before: 0, after: 120, line: 240, lineRule: LineRuleType.AT_LEAST },
+      children: [new ImageRun({
       type: geometry.type, data,
       transformation: { width: Math.round(geometry.width * scale), height: Math.round(geometry.height * scale) },
       altText: { title: caption, description: path.basename(filename), name: path.basename(filename) },

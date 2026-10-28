@@ -1,6 +1,8 @@
 # 正式研究结束后的两次独立退出清理验证
 
-本文准备独立的退出清理验证，尚未执行这些真实飞行。正在进行的 v3 正式研究继续使用其冻结源码；本项必须等 166 次主飞行、166 项主离线分析、16 次扩展飞行及其 16 项补充分析全部结束后，独占执行。失败、中断和证据不完整均保留，不把“终态”解释成“通过”。这两次清理验证不计入原有研究分母。
+2026-10-28 已完成两次独立真实退出验证，均 PASS。新 cleanup 冻结根四个 ROS 包构建、导入隔离和 604 项 Linux 测试全部通过；stage1 的 8 个、stage3_multi 的 9 个 ROS 节点均在停止标记后干净退出，无观测到的进程或会话残留，正式研究小台账 SHA 前后一致。主 v3 源码和结果未改，这两次验证不计入原 166+16 研究分母。
+
+原始报告分别位于本地 `results/frozen_fullplan_cleanup_v3/cleanup_v3_stage1_person_seed00_cleanup_audit/cleanup_report.json` 和 `results/frozen_fullplan_cleanup_v3/cleanup_v3_stage3_multi_person_seed00_cleanup_audit/cleanup_report.json`，事件记录、日志、配置与 bag 同目录归档。下文保留执行协议；已有名称不得再次执行或覆盖。每种图只验证了一次退出，不代表所有运行时序均已覆盖。
 
 主版运行器仅向 ROS launch 主进程发初始 SIGINT，并使用 `stdin=DEVNULL` 保证 launch 非交互转发。是否真正解决退出问题，须由下述两个图的实际逐节点证据验证，不能仅凭代码、单元测试或外层退出码判断。历史问题和信号路由依据见 [退出清理审计](POST_FREEZE_SHUTDOWN_REVISION.md)。
 
@@ -49,7 +51,7 @@ bash /root/uav_tracking_project/scripts/freeze_full_plan_workspace.sh \
 
 ## 就绪检查与两条执行命令
 
-以下仅为待执行命令。进入新根后先检查账本；通过后逐条运行两次真实 probe，等待第一次结束并完成清理再开始第二次：
+以下为本次使用的命令记录。已有根和试验名称不得复用；新验证须使用新根和前缀。两条 probe 依次执行，第一次完整退出后才开始第二次：
 
 ```bash
 cd /root/uav_tracking_fullplan_cleanup_v3

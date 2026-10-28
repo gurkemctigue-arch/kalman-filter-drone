@@ -297,7 +297,7 @@ bash "$tracking_frozen/scripts/run_research_session.sh" \
 
 ### 7.1 最终 Markdown 转 Word，再渲染 PDF 检查
 
-已按本机 [docx skill](C:/Users/李东易/.codex/skills/docx/SKILL.md) 准备 `scripts/render_research_docx.cjs`。该脚本只负责排版，要求最终 MD 与同名 `.sources.json` 的 SHA 一致、`completion_contract_version=2`、`execution_ledger_complete=true`，并明确通过补充 16 项和指标补表完成校验。它再次读取五份当前台账与指标补表，共六份小 JSON，核对保存的大小/SHA；来源有变化时拒绝生成 Word。来源使用相对 MD 的路径，允许保持目录结构后从 Linux 转到 Windows；不能把未更新的旧完成标记当作最终凭据。它不因 FAIL 自动删除数据，也不把终态称作全部通过。输出为新的 DOCX 和同名 `.render.json`，拒绝覆盖原件。
+已按本机安装的 docx skill（`<DOCX_SKILL_ROOT>/SKILL.md`）准备 `scripts/render_research_docx.cjs`。该脚本只负责排版，要求最终 MD 与同名 `.sources.json` 的 SHA 一致、`completion_contract_version=2`、`execution_ledger_complete=true`，并明确通过补充 16 项和指标补表完成校验。它再次读取五份当前台账与指标补表，共六份小 JSON，核对保存的大小/SHA；来源有变化时拒绝生成 Word。来源使用相对 MD 的路径，允许保持目录结构后从 Linux 转到 Windows；不能把未更新的旧完成标记当作最终凭据。它不因 FAIL 自动删除数据，也不把终态称作全部通过。输出为新的 DOCX 和同名 `.render.json`，拒绝覆盖原件。
 
 Word 来源门已实际执行并通过 14 项检查，未打包真正的最终 DOCX。全部实验与后处理结束后，在 Windows 主项目根确认当时的语法和依赖；若源码没有变化，无需重复已经通过的门检查：
 
@@ -323,10 +323,10 @@ node scripts/render_research_docx.cjs `
 
 宽表使用 A4 横向分节，其余正文为 A4 纵向；Markdown 相对证据链接会按 DOCX 位置转换，图和源文档 SHA 写入 `.render.json`。现有计划书 DOCX/PDF不作修改。不能仅因脚本退出成功就判定版面通过。
 
-回到 WSL shell，调用同一 skill 的 OOXML 检查和 LibreOffice helper。新建 PDF/页面目录前确认它不存在；失败工件保留，修订后使用新名称：
+回到 WSL shell，调用同一 skill 的 OOXML 检查和 LibreOffice helper。先把 `<DOCX_SKILL_ROOT>` 替换为 WSL 可访问的 skill 实际目录。新建 PDF/页面目录前确认它不存在；失败工件保留，修订后使用新名称：
 
 ```bash
-tracking_docx_skill='/mnt/c/Users/李东易/.codex/skills/docx'
+tracking_docx_skill='<DOCX_SKILL_ROOT>'
 test ! -e "$tracking_results/report_document_v3" || exit 2
 mkdir -p "$tracking_results/report_document_v3/pages"
 

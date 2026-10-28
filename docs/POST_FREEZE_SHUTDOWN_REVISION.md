@@ -1,5 +1,7 @@
 # 研究冻结之后的主版退出清理修订
 
+2026-10-28 最终更新：主研究及扩展补充结束后，已在全新 cleanup 冻结根完成 stage1（8 节点）和 stage3_multi（9 节点）两次真实清理验证，均 PASS。无观测到的进程残留，正式 v3 小台账 SHA 未变。证据路径与验证范围见 [cleanup 协议](CLEANUP_ENGINEERING_PROBES.md)。以下保留问题发现与修订时的历史记录，其中“等待验证”描述不代表当前状态。
+
 `fullplan_v1` 已冻结并开始正式研究。主源码随后发现并修复的退出清理问题，不能回填成该冻结研究已经验证的行为，也不能覆盖原录制或原日志。
 
 首轮 `fullplan_v1_online_estimators_person_velocity_adaptive_kf_seed00` 的严格工程评价为 PASS，但停止录制时，`ros.log` 记录 controller 和 state_estimator 在 SIGINT 已关闭默认 ROS context 后，再次无条件调用 `rclpy.shutdown()`，抛出 `rcl_shutdown already called`，节点退出码为 1。外层 launch/运行器的退出码不能替代各节点退出记录。该异常发生在试验停止清理阶段；原工程评价及异常日志均按原样保留，不能把日志异常写成无异常退出。

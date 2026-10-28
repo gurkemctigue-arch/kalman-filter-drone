@@ -2,19 +2,19 @@
 
 本页是工程与研究交付状态快照。`fullplan_v3` 的 166 个主飞行槽均已终态：107 PASS、58 FAIL、1 INTERRUPTED；主离线台账也覆盖 166 个槽，其中 160 RECORDED、4 INCOMPLETE_EVIDENCE、2 NOT_APPLICABLE_NO_SELECTED_TASK。另列 16 项工程扩展为 2 PASS、14 FAIL（其中两项明确为基础设施停止），补充后处理为 15 RECORDED、1 INCOMPLETE_EVIDENCE。失败、未知和不适用项均保留，不能把这些计数当作算法成功率。结果工件不随公开源码提交；本页在本地归档存在时可与 `results/frozen_fullplan_v3/` 中的清单、图表、验收页和报告互相核对。
 
-阶段一的四次 `stage1_final_v2` 工程 PASS 仍然有效，但它们属于历史修订版和四个条件的单次闭环演示；当前冻结 v3 使用不同源码修订并完成 100 次重复试验。v3 的 34 个阶段一 FAIL 中，现有分型为 33 次可评分行为失败和 1 次录制/评价基础设施失败；正式离线统计与失败诊断仍需完成。执行槽位终态、单次演示通过和系统可靠性结论是三个不同层次，必须分别报告。
+阶段一的四次 `stage1_final_v2` 工程 PASS 仍然有效，但它们属于历史修订版和四个条件的单次闭环演示；冻结 v3 使用不同源码修订并完成 100 次重复试验。v3 的 34 个阶段一 FAIL 中，现有分型为 33 次可评分行为失败和 1 次录制/评价基础设施失败；正式离线台账、统计补表及全主研究失败分类已完成。执行槽位终态、单次演示通过和系统可靠性结论必须分别报告。
 
 汽车所选目标几何歧义 v5 已严格 PASS；汽车多目标主动云台联合 v2 的短遮挡 FAIL 保留，修正计时后的联合 v3 已取得指定目标安全 18 项与所选目标云台协同 13 项 PASS，但身份仍有未知样本，距离和高度稳定时间均右删失。正式 `fullplan_v1` 首 8 次原评价为 7 PASS、1 FAIL；v1/v2 旧计划及原始报告保留，旧录制不计入 v3 分母。不能把已有单次工程通过改称正式重复研究全部完成。
 
 历史工程录制和 v3 冻结研究均位于本地 `results/` 归档；下文未带 v3 前缀的工程目录均相对历史 results 根，正式 v3 目录相对冻结 results 根。`results/验收总览.html` 是需重新生成的静态入口，不能假设打开旧页面会自动刷新研究进度。公开克隆的归档边界见 [结果工件说明](RESULTS_ARTIFACTS.md)。
 
-| 阶段 | 已实现并有实际记录的内容 | 仍未完成的验证 |
+| 阶段 | 已实现并有实际记录的内容 | 最终研究状态与局限 |
 | --- | --- | --- |
 | 一：单目标状态估计与闭环 | RGB-D/YOLO、三维估计、PX4 跟随、行人/汽车、velocity/position、短长遮挡与重选；四份历史 v2 工程录制严格通过 | v3 阶段一的 100 个槽均已终态；所有在线和离线指标、失败分类与负结果已进入本地研究归档，不能把 107/166 主研究结果解释成单阶段成功率 |
 | 二：多同类中的指定个体 | 三目标首框选择、全轨迹遥测、禁止自行换人、短遮挡/长失联、两类 crossing；两类唯一实例多候选安全及所选目标歧义悬停均已有工程记录 | v3 阶段二槽位已终态；指定个体的身份未知帧、失败和无选择任务按完整分母保留，不能宣称未知帧已自动 ReID |
 | 三：三轴云台协同 | 三轴物理关节、编码器反馈动态 TF、视线控制、画面水平与机体缓慢回正；active/midpoint 接口和多目标联合记录均已保留 | v3 阶段三槽位已终态；联合实验中的短遮挡、身份未知以及距离/高度右删失仍按报告原值保留，主动云台不替代目标身份评价 |
 
-三个阶段都有可运行代码和真实 SITL 记录，但当前不能声明“整个计划已完成”。
+三个阶段均已实现，预定主研究和独立扩展的执行与后处理均已结束。主研究并非全部工程验收通过；失败与性能局限仍是最终结果的一部分。独立退出清理验证也已完成，最终交付入口见 [交付状态](DELIVERY_STATUS.md)。
 
 ## 阶段一证据及研究范围
 
@@ -76,21 +76,21 @@
 
 | 预定范围 | 次数 | 当前状态 |
 | --- | ---: | --- |
-| 两类 × 四估计方法 × 10 seeds，velocity | 80 | 已终态：51 PASS、29 FAIL；正式离线统计待完成 |
+| 两类 × 四估计方法 × 10 seeds，velocity | 80 | 已终态：51 PASS、29 FAIL；离线台账与统计已归档 |
 | 两类 × adaptive KF × 10 seeds，position | 20 | 已终态：15 PASS、5 FAIL；含 seed08 评价基础设施异常 |
-| 两类 crossing × 10 seeds | 20 | 首个行人 seed000 PASS；其余由外部守卫逐槽续跑 |
-| 两类 parallel / ambiguity / auto_unique 工程安全 | 6 | 尚未开始；已有探针单列，不抵扣 |
-| 两类 × active / midpoint × 10 seeds | 40 | 尚未开始 |
+| 两类 crossing × 10 seeds | 20 | 已终态：14 PASS、6 FAIL |
+| 两类 parallel / ambiguity / auto_unique 工程安全 | 6 | 已终态：5 PASS、1 FAIL；已有探针仍单列 |
+| 两类 × active / midpoint × 10 seeds | 40 | 已终态：22 PASS、17 FAIL、1 INTERRUPTED |
 | 主矩阵合计 | 166 | 已终态：107 PASS、58 FAIL、1 INTERRUPTED；完整执行、离线、指标和失败分类见本地冻结归档 |
 
 本次冻结研究使用本地 `results/frozen_fullplan_v3/` 归档，统一前缀为 `fullplan_v3`。其主计划 `results/frozen_fullplan_v3/full_plan_research_v3/plan.json` 的 canonical SHA256 为 `58f509351f6f2efba6da33ea394feff0e81f10b5fde03ba2866de2ab5232af28`；它绑定正式资源、配置和源码。恢复必须保持 `--output results/full_plan_research_v3` 的原相对写法。实时状态由原飞行子清单读取，正式离线评价不能用旧录制的重放结果抵扣。
 
 `fullplan_v3_position_compatibility_car_position_adaptive_kf_seed08` 保留原 FAIL，评价器曾报 SQLite error 11、未形成可评分评价 JSON。[独立 bag 审计](V3_BAG_INFRASTRUCTURE_AUDIT.md)确认 zstd 帧未正常结束；独立解码得到完整 SQLite，ROS 原生路径则少输出末尾 128 KiB 并重现原错误。这是已确认的评价基础设施/证据问题，压缩为何未正常结束仍未确定，不能称为原始 SQLite 内容损坏或算法跟踪误差。34 个 FAIL 必须保留，其他失败也不能据此一概归为同一原因。
 
-另外 [扩展工程协议](EXTENDED_ENGINEERING_PROTOCOL.md) 登记 16 项运动、距离及故障条件工程覆盖，目前同样尚未正式执行。它们与主矩阵独立记账，每个条件仅一次工程飞行，不能并入主矩阵冒充十次配对重复；当前工作总清单为 166 + 16 项，既有探针不抵扣任何正式槽位。
+另外 [扩展工程协议](EXTENDED_ENGINEERING_PROTOCOL.md) 登记的 16 项运动、距离及故障条件已全部终态，为 2 PASS、14 FAIL；其中两次基础设施停止单独说明。它们与主矩阵独立记账，每个条件仅一次工程飞行，不能并入主矩阵冒充十次配对重复；既有探针不抵扣正式槽位。
 
 正式矩阵在首条正式试验前统一修订为请求 RTF=0.5，行人 320/2 threads、汽车 640/4 threads；观测 0.60 s 和状态预测 0.75 s 安全年龄不变。早期 RTF=0.7 探针及其失败保留并分组，不能与新资源正式重复混算。实际工程环境是 WSL2 Ubuntu 24.04.1、ROS 2 Jazzy、Gazebo Harmonic、PX4 v1.17.0，具体消息版本及提交由 [版本锁定](VERSION_LOCK.md)与环境清单固定；不能宣称已经验证原计划 Ubuntu 22.04/Humble 组合。
 
 总入口和冻结操作见 [正式研究运行说明](FULL_PLAN_RESEARCH_RUNBOOK.md)。已登记 RUNNING 中断槽位恢复为 INTERRUPTED，不自动重飞；冻结计划、子矩阵和离线 manifest 绑定计划及源码哈希。全部运行收齐、全部离线槽位尝试过与全部安全验收 PASS 是三个不同结论。失败保留为研究结果，不能改名重试直到成功后只保留成功值。
 
-检测器重复 SIGINT 打断 native worker join 的处理已有修订及早期工程记录；完整 launch 的退出可靠性仍有独立未结项。主版运行器的单路 SIGINT/非交互 stdin 修改没有回填正式冻结根，最终须在 166 飞行、166 主离线、16 扩展及 16 补充后处理全部终态后，于新冻结根运行 stage1 与 stage3_multi 两个独占 cleanup 探针，逐节点验证真实干净退出。参见 [后冻结退出审计](POST_FREEZE_SHUTDOWN_REVISION.md)和 [cleanup 验证协议](CLEANUP_ENGINEERING_PROBES.md)；退出码或飞行 PASS 本身不能替代这项证明。
+主版运行器的单路 SIGINT/非交互 stdin 修改没有回填正式冻结根。主研究及补充全部结束后，已在独立 cleanup 冻结根完成 stage1 与 stage3_multi 两次真实退出验证：分别覆盖 8 和 9 个 ROS 节点，均为 PASS，无观测到的进程残留，正式台账 SHA 未变。具体范围和原始工件位置见 [cleanup 验证协议](CLEANUP_ENGINEERING_PROBES.md)；本项不重评跟踪性能，也不进入原 166+16 分母。

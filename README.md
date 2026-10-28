@@ -71,9 +71,11 @@ it does not claim that a public clone contains private bags or reports.
 
 The frozen Linux validation used Ubuntu 24.04.1, ROS 2 Jazzy, Gazebo Harmonic
 and PX4 v1.17.0. The original Ubuntu 22.04/Humble combination remains a
-portability target rather than a verified environment. Final cleanup probes for
-stage-one and multi-target stage-three shutdown are tracked separately from the
-research results.
+portability target rather than a verified environment. Two independent shutdown
+probes passed in a new cleanup checkout: all 8 stage-one and 9 multi-target
+stage-three ROS nodes exited cleanly, with no observed residual processes and
+no changes to the formal research ledgers. See the [delivery status](docs/DELIVERY_STATUS.md)
+for the final counts and artifact locations.
 
 One historical car/position flight (seed08) failed evaluation with SQLite
 error 11. An [independent audit](docs/V3_BAG_INFRASTRUCTURE_AUDIT.md) found an

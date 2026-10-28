@@ -1,5 +1,11 @@
 # 166 次主研究矩阵运行说明
 
+2026-10-28 交付更新：正式 `v3` 主研究 166/166 槽已终态，原始台账为 107 PASS、58 FAIL、1 INTERRUPTED；主离线、独立工程扩展 16 项及补充后处理 16 项也均已终态。最终报告、图表、演示及独立退出清理验证已归档，详见 [三阶段交付状态](DELIVERY_STATUS.md)。完成执行与通过性能验收分别报告，所有失败和证据不完整均保留。
+
+## 历史运行协议与检查点
+
+以下保留研究进行期间的命令、来源摘要和进度检查点，文中的“当前”“剩余”“尚未完成”等描述均以该历史检查点为准；不得据此重试已终态的槽位。
+
 当前正式研究为 `v3`：冻结 Linux 环境 [531 项测试通过](../results/frozen_fullplan_v3/freeze_validation/unittest.log)，[四个 ROS 包构建通过](../results/frozen_fullplan_v3/freeze_validation/colcon_build.log)，[导入路径隔离核验通过](../results/frozen_fullplan_v3/freeze_validation/import_isolation.json)。[主计划](../results/frozen_fullplan_v3/full_plan_research_v3/plan.json) 共 166 个槽。2026-10-27 首个外部守卫槽（阶段二行人 crossing seed000）PASS 后，已终态 101 槽（67 PASS、34 FAIL），65 槽 PENDING，原 100 个阶段一终态不变；剩余 65 槽已开始守卫续跑。主离线队列及独立 16 项扩展尚未完成。这是检查点，实时状态以原飞行子清单、`offline_manifest.json` 及 [summary.json](../results/frozen_fullplan_v3/full_plan_research_v3/summary.json) 为准。主版 Windows 后续完整验证为 563 通过、5 个平台跳过，与冻结 Linux 的 531 项分别记账。
 
 旧 `v1` 的 8 次正式尝试按原评价仍为 7 PASS、1 FAIL，原录制和报告全部保留，不并入新 166 次分母。评价修订 3 已用原汽车 raw bag 独立核对为 PASS，并另存报告及 SHA 审计；原始 FAIL 和修订 2 的独立 FAIL 均不覆盖。时间契约及保留规则见 [评价修订 3](EVALUATION_REVISION_3.md)。

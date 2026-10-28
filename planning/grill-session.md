@@ -20,7 +20,7 @@
 
 ### Existing artifacts/docs
 
-- 原始计划书：`D:\xwechat_files\wxid_mx0xupuidzc822_a087\msg\file\2026-10\毕设计划书(1).docx`
+- 原始计划书：`毕设计划书(1).docx`（本机个人文件路径未纳入公开文档）。
 - 已读取 `word/document.xml`，正文 21 个主要段落，未发现修订或批注。
 - 已审查视觉、控制和研究设计风险；原文为实现提纲，不是完整研究计划。
 

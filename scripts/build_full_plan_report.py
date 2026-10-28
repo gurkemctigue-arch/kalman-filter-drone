@@ -12,7 +12,7 @@ import hashlib
 import json
 import math
 import os
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 import re
 from urllib.parse import quote
 
@@ -134,8 +134,9 @@ def source_matches(source, record):
             return True
     except (OSError, TypeError, ValueError):
         pass
-    source_name = Path(source.get("path", "")).name
-    record_name = Path(record.get("path", "")).name
+    # PureWindowsPath recognizes both separators even when this runs on Linux.
+    source_name = PureWindowsPath(source.get("path", "")).name
+    record_name = PureWindowsPath(record.get("path", "")).name
     return bool(source_name and source_name == record_name)
 
 
@@ -224,11 +225,12 @@ def validate_supplement_ledger(summary, plan, offline, engineering, supplement, 
                     problems.append("补充输入 SHA/大小绑定不匹配或重复：" + str(source.get("path", "")))
                 matched.add(role)
                 continue
-            candidates = [role for role, record in expected.items()
-                          if role not in matched and source_matches(source, record)]
+            candidates = [role for role, record in expected.items() if source_matches(source, record)]
             if not candidates:
                 continue
             role = candidates[0]
+            if role in matched:
+                problems.append("补充输入 SHA/大小绑定不匹配或重复：" + str(source.get("path", "")))
             if len(candidates) > 1:
                 problems.append("补充输入 SHA/大小绑定存在歧义：" + str(source.get("path", "")))
             matched.add(role)
@@ -304,11 +306,12 @@ def validate_metric_supplement(metric, summary, plan, engineering, source_record
                     problems.append("指标补充输入 SHA/大小绑定不匹配或重复：" + str(source.get("path", "")))
                 matched.add(role)
                 continue
-            candidates = [role for role, record in current.items()
-                          if role not in matched and source_matches(source, record)]
+            candidates = [role for role, record in current.items() if source_matches(source, record)]
             if not candidates:
                 continue
             role = candidates[0]
+            if role in matched:
+                problems.append("指标补充输入 SHA/大小绑定不匹配或重复：" + str(source.get("path", "")))
             if len(candidates) > 1:
                 problems.append("指标补充输入 SHA/大小绑定存在歧义：" + str(source.get("path", "")))
             matched.add(role)
@@ -720,6 +723,7 @@ def build_report(summary_path, output_path, *, engineering_manifest=None, engine
     if not videos:
         lines += ["未显式提供演示视频；报告不把不存在的视频当作已交付。", ""]
     lines += ["\n".join("- " + link for link in links) if links else "暂无显式补充链接。", "",
+              "视频与补充证据只作为验收入口。独立 cleanup 工程探针用于检查新版进程退出与资源清理，不并入冻结主研究 166 槽或独立扩展 16 槽的分母，也不替换原有失败记录。", "",
               "## 复现与来源", "",
               "复现须使用原冻结 Linux 根目录、准确 prefix 和与已保存计划一致的 output 原始文本，并经 run_research_session.sh 将临时文件放在研究结果盘；已有计划使用 --resume，失败名字不重飞。具体命令与就绪前提见补充证据中的本轮交付运行说明，不使用省略 prefix/output 的默认版本命令。发现基础设施故障后先诊断并核对逐槽 guard，不能因台账尚有 PENDING 就直接继续。改变冻结代码或协议须使用新根/前缀。", "",
               "本报告输入 JSON 的 SHA-256：", "",
