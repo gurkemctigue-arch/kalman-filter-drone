@@ -192,6 +192,21 @@ class FullPlanReportTests(unittest.TestCase):
                 self.assertFalse(provenance["execution_ledger_complete"])
                 self.assertIn("补充输入 SHA/大小绑定不匹配", text)
 
+    def test_supplement_source_sha_binding_allows_linux_windows_path_aliases(self):
+        """A WSL-produced ledger can be checked from the Windows worktree."""
+        with self.fixture() as temporary:
+            root = Path(temporary)
+            source, inputs = completed_inputs(root)
+            path = inputs["supplement_manifest_path"]
+            data = json.loads(path.read_text(encoding="utf-8"))
+            for item in data["plan"]["sources"]:
+                item["path"] = "/mnt/d/project/results/" + Path(item["path"]).name
+            data["plan_sha256"] = reporter.digest(data["plan"])
+            write(path, data)
+            _, provenance = reporter.build_report(source, root / "report.md", **inputs)
+            self.assertTrue(provenance["execution_ledger_complete"])
+            self.assertTrue(provenance["supplement_ledger"]["complete"])
+
     def test_offline_task_names_and_engineering_canonical_digest_are_required(self):
         for fault in ("offline_name", "engineering_digest"):
             with self.subTest(fault=fault), self.fixture() as temporary:

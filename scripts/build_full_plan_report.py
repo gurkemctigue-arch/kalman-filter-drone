@@ -116,6 +116,29 @@ def digest(value):
     return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()).hexdigest()
 
 
+def source_matches(source, record):
+    """Match a frozen source by path when possible, or by byte identity across OSes.
+
+    Supplementary manifests are produced inside the frozen Linux checkout while the
+    final report may be built from the Windows worktree.  The same file therefore
+    legitimately has paths such as ``/mnt/d/...`` and ``D:\\...``.  SHA-256 plus
+    byte count is the authoritative identity in that case; the basename keeps a
+    same-content file from being silently assigned to a different ledger role.
+    """
+    if source.get("exists") is not True or record.get("exists") is not True:
+        return False
+    if source.get("bytes") != record.get("bytes") or source.get("sha256") != record.get("sha256"):
+        return False
+    try:
+        if Path(source.get("path", "")).resolve() == Path(record.get("path", "")).resolve():
+            return True
+    except (OSError, TypeError, ValueError):
+        pass
+    source_name = Path(source.get("path", "")).name
+    record_name = Path(record.get("path", "")).name
+    return bool(source_name and source_name == record_name)
+
+
 def validate_supplement_ledger(summary, plan, offline, engineering, supplement, source_records):
     """Check the small saved ledgers; never run an evaluator or inspect a bag."""
     result = {"complete": False, "terminal_slots": 0, "status_counts": {}, "problems": []}
@@ -185,18 +208,30 @@ def validate_supplement_ledger(summary, plan, offline, engineering, supplement, 
                            or (task.get("status") == "RECORDED" and task.get("returncode") != 0) for task in tasks)):
                 problems.append("已记录补充槽缺少两项有效后处理任务：" + str(slot.get("trial", {}).get("name")))
         # Supplement freezes exact input bytes, not only the canonical plan IDs.
-        expected = {Path(record["path"]).resolve(): record for role, record in source_records.items()
+        expected = {role: record for role, record in source_records.items()
                     if role != "supplement_manifest" and record.get("exists") is True}
         matched = set()
         for source in supplement_plan.get("sources", []):
-            path = Path(source.get("path", "")).resolve()
-            if path not in expected:
-                continue  # Evaluators, wrappers and anchor are outside this ledger check.
-            record = expected[path]
-            if (path in matched or source.get("exists") is not True
-                    or source.get("bytes") != record.get("bytes") or source.get("sha256") != record.get("sha256")):
-                problems.append("补充输入 SHA/大小绑定不匹配或重复：" + str(path))
-            matched.add(path)
+            # Evaluators, wrappers and the anchor are outside this four-ledger check.
+            try:
+                direct = [role for role, record in expected.items()
+                          if Path(source.get("path", "")).resolve() == Path(record.get("path", "")).resolve()]
+            except (OSError, TypeError, ValueError):
+                direct = []
+            if direct:
+                role = direct[0]
+                if role in matched or not source_matches(source, expected[role]):
+                    problems.append("补充输入 SHA/大小绑定不匹配或重复：" + str(source.get("path", "")))
+                matched.add(role)
+                continue
+            candidates = [role for role, record in expected.items()
+                          if role not in matched and source_matches(source, record)]
+            if not candidates:
+                continue
+            role = candidates[0]
+            if len(candidates) > 1:
+                problems.append("补充输入 SHA/大小绑定存在歧义：" + str(source.get("path", "")))
+            matched.add(role)
         if len(expected) != 4 or matched != set(expected):
             problems.append("补充清单缺少当前 summary、plan、offline、工程 manifest 的准确来源 SHA")
     except (AttributeError, KeyError, TypeError, ValueError) as error:
@@ -255,17 +290,28 @@ def validate_metric_supplement(metric, summary, plan, engineering, source_record
         if listed != 182:
             problems.append("指标分组未覆盖准确 182 个真实飞行单位")
         required_roles = ("main_summary", "main_plan", "engineering_manifest")
-        current = {Path(source_records[role]["path"]).resolve(): source_records[role] for role in required_roles}
+        current = {role: source_records[role] for role in required_roles}
         matched = set()
         for source in metric.get("sources", []):
-            path = Path(source.get("path", "")).resolve()
-            if path not in current:
+            try:
+                direct = [role for role, record in current.items()
+                          if Path(source.get("path", "")).resolve() == Path(record.get("path", "")).resolve()]
+            except (OSError, TypeError, ValueError):
+                direct = []
+            if direct:
+                role = direct[0]
+                if role in matched or not source_matches(source, current[role]):
+                    problems.append("指标补充输入 SHA/大小绑定不匹配或重复：" + str(source.get("path", "")))
+                matched.add(role)
                 continue
-            record = current[path]
-            if (path in matched or source.get("exists") is not True or source.get("bytes") != record.get("bytes")
-                    or source.get("sha256") != record.get("sha256")):
-                problems.append("指标补充输入 SHA/大小绑定不匹配或重复：" + str(path))
-            matched.add(path)
+            candidates = [role for role, record in current.items()
+                          if role not in matched and source_matches(source, record)]
+            if not candidates:
+                continue
+            role = candidates[0]
+            if len(candidates) > 1:
+                problems.append("指标补充输入 SHA/大小绑定存在歧义：" + str(source.get("path", "")))
+            matched.add(role)
         if len(current) != 3 or matched != set(current):
             problems.append("指标补充缺少当前 summary、plan、工程 manifest 的准确来源 SHA")
         result.update(main_flights=metric.get("main_listed_flights"), engineering_flights=metric.get("engineering_listed_flights"),

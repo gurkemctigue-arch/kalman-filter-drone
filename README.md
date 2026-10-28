@@ -1,6 +1,6 @@
 # RGB-D UAV target tracking and following
 
-中文验收入口：[结果工件说明](docs/RESULTS_ARTIFACTS.md) · [查看与复核方法](docs/验收使用指南.md) · [三阶段实际状态](docs/THREE_STAGE_STATUS.md) · [最终计划书](docs/最终版毕业设计计划书_三阶段修订版.docx)。结果页面和报告属于本地归档工件，保留历史失败、身份未知、缺失及未执行项；工程通过与正式重复研究完成分别判断。
+中文验收入口：[结果工件说明](docs/RESULTS_ARTIFACTS.md) · [查看与复核方法](docs/验收使用指南.md) · [三阶段实际状态](docs/THREE_STAGE_STATUS.md) · [最终计划书](docs/最终版毕业设计计划书_最终版.docx)。结果页面和报告属于本地归档工件，保留历史失败、身份未知、缺失及未执行项；工程通过与正式重复研究完成分别判断。
 
 This repository implements a simulation-first RGB-D UAV target following system with YOLO11, 3-D Kalman filtering and PX4 Offboard control. Estimation and control remain independent from ROS 2, PX4 and Gazebo so the same core can be tested, replayed and connected to a future vehicle adapter.
 
@@ -53,38 +53,27 @@ commands, supervised takeoff, target motion and rendered occlusions. The
 results, failed trials and remaining limits; synthetic and controlled smoke
 tests are separate evidence.
 
-The historical `stage1_final_v2` engineering record passed all four person/car
-velocity/position demonstrations, including sustained tracking after explicit
-reselection. Its aggregate report is an optional local artifact at
-`results/stage1_final_v2_report.json`; it is not shipped in a public clone.
-This is a scoped result for that source revision and four conditions, not a
-current v3 reliability claim. In the frozen v3 study, all 100 stage-one
-repeated trials are terminal: 66 PASS and 34 FAIL. Existing failure typing
-identifies 33 scoreable behavioral failures and one recording/evaluation
-infrastructure failure; formal offline aggregation and diagnosis remain in
-progress. The final Linux build completed for all four ROS packages and the
-then-current 133 verification tests passed. The current v3 frozen Linux
-workspace passed all 531 tests, built all four ROS packages and verified that
-its imports use that frozen root. These checks do not replace the repeated
+The historical `stage1_final_v2` engineering record passed four scoped
+person/car velocity/position demonstrations. The frozen v3 research archive
+now records all 166 main flight slots: 107 PASS, 58 FAIL and 1 INTERRUPTED.
+The separate 16-flight engineering extension records 2 PASS and 14 FAIL; two
+of those stops are explicitly classified as infrastructure failures. The
+post-flight supplement has 15 recorded slots and one incomplete-evidence slot.
+These counts preserve negative results and are not an algorithm success rate.
+
+The main offline ledger covers all 166 slots (160 recorded, 4 incomplete
+evidence and 2 not applicable because no selected task existed). The local
+archive also contains the metric supplement, figures, acceptance dashboard,
+browser demos and the final report. Those large result artifacts are ignored by
+Git and are described in [the results artifact note](docs/RESULTS_ARTIFACTS.md).
+The published repository contains the source, tests and reproducible commands;
+it does not claim that a public clone contains private bags or reports.
+
+The frozen Linux validation used Ubuntu 24.04.1, ROS 2 Jazzy, Gazebo Harmonic
+and PX4 v1.17.0. The original Ubuntu 22.04/Humble combination remains a
+portability target rather than a verified environment. Final cleanup probes for
+stage-one and multi-target stage-three shutdown are tracked separately from the
 research results.
-The original eight v1 formal flights remain archived (7 original PASS, 1
-original FAIL); the revised v3 study uses a separate 166-flight matrix without
-adopting those recordings. The current v3 summary covers 166 main slots, of
-which 127 are recorded or attempted; status counts are 85 PASS, 42 FAIL and
-39 PENDING. Its stage-two 26 slots
-are terminal at 19 PASS and 7 FAIL; stage-three has one FAIL and 39 PENDING.
-The main offline queue and the separate 16 engineering flights remain
-outstanding.
-The current Windows suite also passed 563 tests with 5 platform skips; this
-main-copy check is separate from the 531-test frozen Linux validation.
-Current progress comes from the locally archived
-`results/frozen_fullplan_v3/full_plan_research_v3/plan.json` and its linked
-manifests when that archive is available. Continue the original frozen runner one
-slot at a time through the
-[external guard](docs/GUARDED_FULLPLAN_V3_CONTINUATION.md), using the original
-relative output text `results/full_plan_research_v3`. See the
-[research runbook](docs/FULL_PLAN_RESEARCH_RUNBOOK.md) and
-[delivery sequence](docs/FULLPLAN_V3_DELIVERY_COMMANDS.md) for the remaining work.
 
 One historical car/position flight (seed08) failed evaluation with SQLite
 error 11. An [independent audit](docs/V3_BAG_INFRASTRUCTURE_AUDIT.md) found an
