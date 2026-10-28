@@ -1,6 +1,6 @@
 # RGB-D UAV target tracking and following
 
-中文验收入口：[验收总览](results/验收总览.html) · [查看与复核方法](docs/验收使用指南.md) · [三阶段实际状态](docs/THREE_STAGE_STATUS.md) · [最终计划书](docs/最终版毕业设计计划书_三阶段修订版.docx)。页面和报告保留历史失败、身份未知、缺失及未执行项；工程通过与正式重复研究完成分别判断。
+中文验收入口：[结果工件说明](docs/RESULTS_ARTIFACTS.md) · [查看与复核方法](docs/验收使用指南.md) · [三阶段实际状态](docs/THREE_STAGE_STATUS.md) · [最终计划书](docs/最终版毕业设计计划书_三阶段修订版.docx)。结果页面和报告属于本地归档工件，保留历史失败、身份未知、缺失及未执行项；工程通过与正式重复研究完成分别判断。
 
 This repository implements a simulation-first RGB-D UAV target following system with YOLO11, 3-D Kalman filtering and PX4 Offboard control. Estimation and control remain independent from ROS 2, PX4 and Gazebo so the same core can be tested, replayed and connected to a future vehicle adapter.
 
@@ -28,8 +28,10 @@ environment described in `docs/ROS2_SIMULATION.md`.
 
 The experiment command uses one deterministic noisy observation sequence per
 seed for raw measurements, EMA, fixed-noise KF, and adaptive-noise KF, then
-writes JSON records under `results/`. These are estimator baselines; they do
-not replace the later rosbag/PX4 closed-loop trials.
+writes JSON records under the local, ignored `results/` directory. These are
+estimator baselines; they do not replace the later rosbag/PX4 closed-loop
+trials. See [the results artifact note](docs/RESULTS_ARTIFACTS.md) for the
+public-clone boundary and the optional dashboard.
 
 ## PX4 / Gazebo flight
 
@@ -53,7 +55,8 @@ tests are separate evidence.
 
 The historical `stage1_final_v2` engineering record passed all four person/car
 velocity/position demonstrations, including sustained tracking after explicit
-reselection. See the [historical aggregate report](results/stage1_final_v2_report.json).
+reselection. Its aggregate report is an optional local artifact at
+`results/stage1_final_v2_report.json`; it is not shipped in a public clone.
 This is a scoped result for that source revision and four conditions, not a
 current v3 reliability claim. In the frozen v3 study, all 100 stage-one
 repeated trials are terminal: 66 PASS and 34 FAIL. Existing failure typing
@@ -74,9 +77,10 @@ The main offline queue and the separate 16 engineering flights remain
 outstanding.
 The current Windows suite also passed 563 tests with 5 platform skips; this
 main-copy check is separate from the 531-test frozen Linux validation.
-Current progress comes from
+Current progress comes from the locally archived
 `results/frozen_fullplan_v3/full_plan_research_v3/plan.json` and its linked
-manifests. Continue the original frozen runner one slot at a time through the
+manifests when that archive is available. Continue the original frozen runner one
+slot at a time through the
 [external guard](docs/GUARDED_FULLPLAN_V3_CONTINUATION.md), using the original
 relative output text `results/full_plan_research_v3`. See the
 [research runbook](docs/FULL_PLAN_RESEARCH_RUNBOOK.md) and

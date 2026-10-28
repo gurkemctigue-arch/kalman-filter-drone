@@ -1,6 +1,6 @@
 # 本地可视化验收入口
 
-在项目目录执行 `python scripts/build_acceptance_dashboard.py`，生成 `results/验收总览.html`。浏览器直接打开该文件即可，不需要运行 ROS、服务器或网络服务。
+在项目目录执行 `python scripts/build_acceptance_dashboard.py`，从已有本地归档生成 `results/验收总览.html`。`results/` 按 `.gitignore` 排除，不随公开源码提交；浏览器直接打开生成的文件即可，不需要运行 ROS、服务器或网络服务。公开克隆的结果工件边界见 [结果工件说明](RESULTS_ARTIFACTS.md)。
 
 生成器只读已有结果，不运行测试、Gazebo、PX4 或新评价。它自动发现 `stage1_` / `stage2_` / `stage3_` 录制目录，也读取 `run_config.stage` 识别 `stage23_engineering_...` 等统一矩阵前缀；保留失败、无结果及缺少视频/bag/版本记录的试验。页面将单次工程证据、独立物理身份和研究矩阵分别列出，不能把单元测试或一份 PASS 报告计为整阶段完成。
 

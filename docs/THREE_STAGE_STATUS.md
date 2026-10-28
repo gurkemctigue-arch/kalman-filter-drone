@@ -1,12 +1,12 @@
 # 三阶段实现与实际验收状态
 
-本页是工程与研究进度快照：三个阶段均已有真实视觉 SITL 工程记录，正式研究尚未完成。当前冻结汇总（2026-10-27T11:37:22Z）显示 `fullplan_v3` 的 166 个主槽为 85 PASS、42 FAIL、39 PENDING，已记录或尝试 127 个；其中阶段一 100/100 已终态，为 66 PASS、34 FAIL，不能据此宣称重复可靠性全部通过；阶段二 26/26 已终态，为 19 PASS、7 FAIL；阶段三仍有 1 FAIL、39 PENDING。主离线队列及另列 16 项扩展工程未完成。后续状态以 [v3 主计划](../results/frozen_fullplan_v3/full_plan_research_v3/plan.json)、原始子矩阵清单、`offline_manifest.json` 和汇总为准，本页检查点不代替动态清单。续跑由 [外部逐槽守卫](GUARDED_FULLPLAN_V3_CONTINUATION.md) 调用原冻结入口，不能改写原终态或重飞失败名字。
+本页是工程与研究进度快照：三个阶段均已有真实视觉 SITL 工程记录，正式研究尚未完成。当前冻结汇总（2026-10-27T11:37:22Z）显示 `fullplan_v3` 的 166 个主槽为 85 PASS、42 FAIL、39 PENDING，已记录或尝试 127 个；其中阶段一 100/100 已终态，为 66 PASS、34 FAIL，不能据此宣称重复可靠性全部通过；阶段二 26/26 已终态，为 19 PASS、7 FAIL；阶段三仍有 1 FAIL、39 PENDING。主离线队列及另列 16 项扩展工程未完成。后续状态以本地研究归档中的 `results/frozen_fullplan_v3/full_plan_research_v3/plan.json`、原始子矩阵清单、`offline_manifest.json` 和汇总为准；这些结果工件不随公开源码提交，缺少归档时本页只提供状态快照。本页检查点不代替动态清单。续跑由 [外部逐槽守卫](GUARDED_FULLPLAN_V3_CONTINUATION.md) 调用原冻结入口，不能改写原终态或重飞失败名字。
 
 阶段一的四次 `stage1_final_v2` 工程 PASS 仍然有效，但它们属于历史修订版和四个条件的单次闭环演示；当前冻结 v3 使用不同源码修订并完成 100 次重复试验。v3 的 34 个阶段一 FAIL 中，现有分型为 33 次可评分行为失败和 1 次录制/评价基础设施失败；正式离线统计与失败诊断仍需完成。执行槽位终态、单次演示通过和系统可靠性结论是三个不同层次，必须分别报告。
 
 汽车所选目标几何歧义 v5 已严格 PASS；汽车多目标主动云台联合 v2 的短遮挡 FAIL 保留，修正计时后的联合 v3 已取得指定目标安全 18 项与所选目标云台协同 13 项 PASS，但身份仍有未知样本，距离和高度稳定时间均右删失。正式 `fullplan_v1` 首 8 次原评价为 7 PASS、1 FAIL；v1/v2 旧计划及原始报告保留，旧录制不计入 v3 分母。不能把已有单次工程通过改称正式重复研究全部完成。
 
-历史工程录制位于 `/root/uav_tracking_project/results/`，对应 Windows 主副本 `results/`；当前 v3 冻结根为 `/root/uav_tracking_fullplan_v3`，其 `results` 指向 D 盘 `results/frozen_fullplan_v3/`。下文未带 v3 前缀的工程目录均相对历史 results 根；正式 v3 目录相对冻结 results 根。`results/验收总览.html` 为需重新生成的静态入口，不能假设打开旧页面会自动刷新研究进度。
+历史工程录制和 v3 冻结研究均位于本地 `results/` 归档；下文未带 v3 前缀的工程目录均相对历史 results 根，正式 v3 目录相对冻结 results 根。`results/验收总览.html` 是需重新生成的静态入口，不能假设打开旧页面会自动刷新研究进度。公开克隆的归档边界见 [结果工件说明](RESULTS_ARTIFACTS.md)。
 
 | 阶段 | 已实现并有实际记录的内容 | 仍未完成的验证 |
 | --- | --- | --- |
@@ -70,7 +70,7 @@
 
 联合 v3 初始任务和重新选择任务的距离、高度稳定时间全部右删失，观察窗口内没有取得所要求的持续稳定证据；显式重选确认用时 0.08 仿真秒。安全及云台协同通过不能改写这些负结果，也不能将重选确认时间当成距离或高度稳定时间。
 
-评价修订 3 当时的 Windows 完整测试共 492 项：487 项通过、5 项跳过；v2 冻结 Linux 副本的 492 项全部通过。当前 v3 冻结 Linux 副本另有 [531 项测试通过](../results/frozen_fullplan_v3/freeze_validation/unittest.log)、[四个 ROS 软件包构建](../results/frozen_fullplan_v3/freeze_validation/colcon_build.log)及[导入隔离](../results/frozen_fullplan_v3/freeze_validation/import_isolation.json)证据；这些均不替代真实飞行与重复统计。实际 bag 核对揭示的合法混合时刻回退已补回归：预测消息与图像测量可有不同时间语义，真正的接收时钟回退仍失败；记录序列窗口内的 LOST、歧义和错误 UUID 仍完整保留。原汽车 raw 真实 bag 的 `evaluation_revision=3` 重评 PASS 已独立保存，原 v1 判定及修订 2 的 FAIL 报告全部保留，不能覆盖或混写成新的飞行尝试。
+评价修订 3 当时的 Windows 完整测试共 492 项：487 项通过、5 项跳过；v2 冻结 Linux 副本的 492 项全部通过。当前 v3 冻结 Linux 副本另有 531 项测试、四个 ROS 软件包构建及导入隔离证据，原始日志位于本地归档的 `results/frozen_fullplan_v3/freeze_validation/`；这些均不替代真实飞行与重复统计。实际 bag 核对揭示的合法混合时刻回退已补回归：预测消息与图像测量可有不同时间语义，真正的接收时钟回退仍失败；记录序列窗口内的 LOST、歧义和错误 UUID 仍完整保留。原汽车 raw 真实 bag 的 `evaluation_revision=3` 重评 PASS 已独立保存，原 v1 判定及修订 2 的 FAIL 报告全部保留，不能覆盖或混写成新的飞行尝试。
 
 ## 正式主研究 166 次与另列 16 项扩展工程
 
@@ -83,7 +83,7 @@
 | 两类 × active / midpoint × 10 seeds | 40 | 尚未开始 |
 | 主矩阵合计 | 166 | 当前冻结汇总：85 PASS、42 FAIL、39 PENDING；已记录或尝试 127 次，剩余槽仍需续跑 |
 
-本次冻结根为 `/root/uav_tracking_fullplan_v3`，输出映射到 Windows 的 `results/frozen_fullplan_v3/`，统一前缀为 `fullplan_v3`。[冻结主计划](../results/frozen_fullplan_v3/full_plan_research_v3/plan.json) 的 canonical SHA256 为 `58f509351f6f2efba6da33ea394feff0e81f10b5fde03ba2866de2ab5232af28`；它绑定正式资源、配置和源码。恢复必须保持 `--output results/full_plan_research_v3` 的原相对写法。实时状态由原飞行子清单读取，正式离线评价不能用旧录制的重放结果抵扣。
+本次冻结研究使用本地 `results/frozen_fullplan_v3/` 归档，统一前缀为 `fullplan_v3`。其主计划 `results/frozen_fullplan_v3/full_plan_research_v3/plan.json` 的 canonical SHA256 为 `58f509351f6f2efba6da33ea394feff0e81f10b5fde03ba2866de2ab5232af28`；它绑定正式资源、配置和源码。恢复必须保持 `--output results/full_plan_research_v3` 的原相对写法。实时状态由原飞行子清单读取，正式离线评价不能用旧录制的重放结果抵扣。
 
 `fullplan_v3_position_compatibility_car_position_adaptive_kf_seed08` 保留原 FAIL，评价器曾报 SQLite error 11、未形成可评分评价 JSON。[独立 bag 审计](V3_BAG_INFRASTRUCTURE_AUDIT.md)确认 zstd 帧未正常结束；独立解码得到完整 SQLite，ROS 原生路径则少输出末尾 128 KiB 并重现原错误。这是已确认的评价基础设施/证据问题，压缩为何未正常结束仍未确定，不能称为原始 SQLite 内容损坏或算法跟踪误差。34 个 FAIL 必须保留，其他失败也不能据此一概归为同一原因。
 

@@ -8,25 +8,25 @@ ROS 2、Gazebo、PX4 SITL 和 uXRCE-DDS 已在 WSL2 中安装并集成；实际�
 
 上表记录的是历史 `stage1_final_v2` 修订版的四次工程演示，不等同于当前冻结 `fullplan_v3` 的重复可靠性结论。v3 阶段一已经完成 100/100 次终态试验，其中 66 次 PASS、34 次 FAIL；现有分型显示 33 次为可评分的行为失败，另 1 次为已确认的录制/评价基础设施失败。正式离线统计和失败诊断仍需完成。两套记录的源码修订不同，四次历史 PASS 因而只能证明对应修订和四个条件下的闭环演示，不应外推为当前 v3 的 100% 可靠性。
 
-最终 `stage1_final_v2` 四条件在同一最终运行实现下依次完成真实视觉飞行，四份 schema 3 离线评价及[四条件工程汇总](../results/stage1_final_v2_report.json)均为 `PASS`。每次历史试验的全部必要检查通过，包含短遮挡同身份恢复、长丢失制动悬停、显式新 UUID 重选、重选后持续跟随、完整试验尾部覆盖及 PX4 设定值互斥。这一结论限定在该历史修订和四个条件；当前 v3 的重复试验仍保留失败结果并继续完成研究记录。
+最终 `stage1_final_v2` 四条件在同一最终运行实现下依次完成真实视觉飞行，四份 schema 3 离线评价及本地归档中的 `results/stage1_final_v2_report.json` 均为 `PASS`。每次历史试验的全部必要检查通过，包含短遮挡同身份恢复、长丢失制动悬停、显式新 UUID 重选、重选后持续跟随、完整试验尾部覆盖及 PX4 设定值互斥。这一结论限定在该历史修订和四个条件；当前 v3 的重复试验仍保留失败结果并继续完成研究记录。结果归档按 `.gitignore` 排除，公开克隆的可用性边界见 [结果工件说明](RESULTS_ARTIFACTS.md)。
 
 | 目标及控制模式 | 最终离线报告 | 结果 | 飞行器水平位置跨度 / m | 推理墙钟耗时中位数 / s | 重选后状态 / 控制证据跨度 / s |
 | --- | --- | --- | --- | --- | --- |
-| person / velocity | [person_velocity](../results/stage1_final_v2_person_velocity/offline_evaluation.json) | PASS | 20.0845 | 0.02538 | 11.560 / 11.500 |
-| car / velocity | [car_velocity](../results/stage1_final_v2_car_velocity/offline_evaluation.json) | PASS | 20.1391 | 0.12946 | 11.980 / 11.952 |
-| person / position | [person_position](../results/stage1_final_v2_person_position/offline_evaluation.json) | PASS | 19.4446 | 0.02891 | 11.980 / 11.948 |
-| car / position | [car_position](../results/stage1_final_v2_car_position/offline_evaluation.json) | PASS | 19.2389 | 0.13154 | 11.240 / 11.200 |
+| person / velocity | `results/stage1_final_v2_person_velocity/offline_evaluation.json` | PASS | 20.0845 | 0.02538 | 11.560 / 11.500 |
+| car / velocity | `results/stage1_final_v2_car_velocity/offline_evaluation.json` | PASS | 20.1391 | 0.12946 | 11.980 / 11.952 |
+| person / position | `results/stage1_final_v2_person_position/offline_evaluation.json` | PASS | 19.4446 | 0.02891 | 11.980 / 11.948 |
+| car / position | `results/stage1_final_v2_car_position/offline_evaluation.json` | PASS | 19.2389 | 0.13154 | 11.240 / 11.200 |
 
 水平位置跨度是 `sqrt((max(x)-min(x))² + (max(y)-min(y))²)`，表示飞行器在记录期间占据的位置范围，不等于净位移、目标位移或累计飞行路径长度。推理耗时仅指完成一次模型推理的墙钟时间，不等于端到端延迟或实际运行 FPS。重选后的两种证据跨度均超过 5 s，且一直检查到实际记录尾部；四次均未出现后续无效状态、UUID 变化或超出宽限的非跟随控制。
 
-每次试验的 `run_config.json` 记录类别、模式和遮挡参数；配置、源码哈希、bag 和视频已通过汇总器的存在性检查。下列链接对应归档到项目 `results/` 的原始产物；WSL 原始路径为 `/root/uav_tracking_project/results/`。
+每次试验的 `run_config.json` 记录类别、模式和遮挡参数；配置、源码哈希、bag 和视频已通过汇总器的存在性检查。下表路径均相对于项目根的本地 `results/` 归档；这些大文件不随公开源码提交。
 
 | 试验 | 运行配置 / 源码哈希 | rosbag 元数据 / 机载视频 |
 | --- | --- | --- |
-| person / velocity | [配置](../results/stage1_final_v2_person_velocity/run_config.json) / [哈希](../results/stage1_final_v2_person_velocity/configuration/source_sha256.json) | [bag](../results/stage1_final_v2_person_velocity/rosbag/metadata.yaml) / [视频](../results/stage1_final_v2_person_velocity/onboard.mp4) |
-| car / velocity | [配置](../results/stage1_final_v2_car_velocity/run_config.json) / [哈希](../results/stage1_final_v2_car_velocity/configuration/source_sha256.json) | [bag](../results/stage1_final_v2_car_velocity/rosbag/metadata.yaml) / [视频](../results/stage1_final_v2_car_velocity/onboard.mp4) |
-| person / position | [配置](../results/stage1_final_v2_person_position/run_config.json) / [哈希](../results/stage1_final_v2_person_position/configuration/source_sha256.json) | [bag](../results/stage1_final_v2_person_position/rosbag/metadata.yaml) / [视频](../results/stage1_final_v2_person_position/onboard.mp4) |
-| car / position | [配置](../results/stage1_final_v2_car_position/run_config.json) / [哈希](../results/stage1_final_v2_car_position/configuration/source_sha256.json) | [bag](../results/stage1_final_v2_car_position/rosbag/metadata.yaml) / [视频](../results/stage1_final_v2_car_position/onboard.mp4) |
+| person / velocity | `results/stage1_final_v2_person_velocity/run_config.json` / `configuration/source_sha256.json` | `rosbag/metadata.yaml` / `onboard.mp4` |
+| car / velocity | `results/stage1_final_v2_car_velocity/run_config.json` / `configuration/source_sha256.json` | `rosbag/metadata.yaml` / `onboard.mp4` |
+| person / position | `results/stage1_final_v2_person_position/run_config.json` / `configuration/source_sha256.json` | `rosbag/metadata.yaml` / `onboard.mp4` |
+| car / position | `results/stage1_final_v2_car_position/run_config.json` / `configuration/source_sha256.json` | `rosbag/metadata.yaml` / `onboard.mp4` |
 
 此前 v1 汽车位置模式曾在新 UUID 确认后仅跟随约 1.05 s，随后再次 LOST/HOLD。该行为被新增的持续重选门槛否决，不能以旧 schema 2 的 PASS 作为最终验收依据。最终结论使用修复后的 v2 全新四条件记录；历史失败和旧报告应与重评记录一起保留，不能改写成成功试验。
 
@@ -42,15 +42,15 @@ PX4 提交为 `d6f12ad1c4f70ad3230afd7d86e971421e02fef4`，`px4_msgs` 提交为 
 
 | 内容 | 证据 | 能支持的结论 |
 | --- | --- | --- |
-| Linux 最终构建 | [colcon 原始日志](../results/stage1_final_validation/colcon_build.log) | 四个 ROS 2 软件包全部构建通过 |
-| 便携核心、目标管理、坐标转换、时间新鲜度、安全状态机与验收规则 | [完整验证日志](../results/stage1_final_validation/verification.log)，`scripts/verify_stage1.sh` | 最终全套 133/133 测试及 compileall 通过 |
+| Linux 最终构建 | `results/stage1_final_validation/colcon_build.log` | 四个 ROS 2 软件包全部构建通过 |
+| 便携核心、目标管理、坐标转换、时间新鲜度、安全状态机与验收规则 | `results/stage1_final_validation/verification.log`，`scripts/verify_stage1.sh` | 最终全套 133/133 测试及 compileall 通过 |
 | 严格离线评价器回归 | `tests/test_flight_evaluation.py` | 当前专门回归 28/28 通过；不能代替实际飞行 |
 | 设定值、遮挡响应和最终汇总回归 | `tests/test_acceptance_setpoints.py` | 当前专门回归 14/14 通过 |
-| 行人受控 ROS 闭环 | [person smoke](../results/stage1_smoke_person_final.json) | `passed: true`，验证受控观测链路 |
-| 汽车受控 ROS 闭环 | [car smoke](../results/stage1_smoke_car_final.json) | `passed: true`，验证受控观测链路 |
-| PX4 SITL / DDS / 适配器基础链路 | [PX4 smoke](../results/stage1_px4_person_smoke.json) 及日志 | 历史 transport 验证通过 |
-| 自定义消息 rosbag | [smoke bag 元数据](../results/stage1_person_smoke_bag_merged/metadata.yaml) | 录制和类型识别基础证据 |
-| 真正机载 RGB-D + YOLO + PX4 最终飞行 | [v2 四条件汇总](../results/stage1_final_v2_report.json) 与上表各次原始产物 | schema 3 及全部工程门槛 4/4 通过 |
+| 行人受控 ROS 闭环 | `results/stage1_smoke_person_final.json` | `passed: true`，验证受控观测链路 |
+| 汽车受控 ROS 闭环 | `results/stage1_smoke_car_final.json` | `passed: true`，验证受控观测链路 |
+| PX4 SITL / DDS / 适配器基础链路 | `results/stage1_px4_person_smoke.json` 及日志 | 历史 transport 验证通过 |
+| 自定义消息 rosbag | `results/stage1_person_smoke_bag_merged/metadata.yaml` | 录制和类型识别基础证据 |
+| 真正机载 RGB-D + YOLO + PX4 最终飞行 | `results/stage1_final_v2_report.json` 与上表各次原始产物 | schema 3 及全部工程门槛 4/4 通过 |
 
 最终测试计数为 133，包含上述 28 项评价器和 14 项汇总专项测试，不再与旧版 37 或 117 项记录混用。四条件飞行在这次最终构建与检查之后执行。
 
@@ -66,7 +66,7 @@ PX4 提交为 `d6f12ad1c4f70ad3230afd7d86e971421e02fef4`，`px4_msgs` 提交为 
 - 从新 UUID 的 MEASURED 确认开始，必须有至少 5 s 持续状态和 FOLLOW/PREDICT 控制证据，并一直检查到试验结束。之后任何 LOST、歧义、UUID 变化或超出 0.10 s 过渡宽限的非跟随控制都失败；状态/控制记录间隔不得超过 0.5 s，试验尾部 0.5 s 内必须仍有新鲜同 UUID 状态和跟随控制。`post_reselection_tracking` 保留全部明细，不能用“只恢复了一瞬间”通过验收。
 - 每个遮挡关闭和打开请求都有唯一 `request_id`、匹配动作/请求时间及成功服务响应；关闭成功响应发生在打开请求之前。使用评价报告 `schema_version >= 3`，旧版缺少持续重选检查或关联请求的服务结果不满足此证据。
 - 最终报告必须覆盖完整 bag 的记录尾部，`interval.covers_recorded_trial_end` 为真；提前截到后续失败之前的时间片只用于诊断。
-- 保留 bag、机载视频、运行与参数配置、源码和模型哈希、监控日志、离线结果及失败原因；归档时保留 WSL 原始记录及 Windows 项目 `results/` 副本的对应关系。
+- 保留 bag、机载视频、运行与参数配置、源码和模型哈希、监控日志、离线结果及失败原因；归档时保留运行环境中的原始记录与项目 `results/` 副本的对应关系。
 
 遮挡默认短请求为 0.2 s，长请求为 3.0 s，固定预测上限仍为 0.75 s。实际有效深度测量间隔还受采样、推理、传输和调度影响；0.2 s 不是通过保证。历史 0.4 s 请求曾产生约 0.8 s 有效深度间隔，触发 LOST 是正确保护，其短遮挡恢复测试应保留为失败。请求时间与服务响应只能佐证实体设置执行，不能声称它们精确等于渲染图像中的物理遮挡时长。报告应保留实际请求区间、关联响应、有效深度间隔及状态转换时间。
 
@@ -78,8 +78,8 @@ v2 的 person / velocity 实际短请求区间因调度为 0.300 s，其余三�
 
 ```bash
 source /opt/ros/jazzy/setup.bash
-source /root/px4_msgs_ws/install/setup.bash
-cd /root/uav_tracking_project/ros2_ws
+source /path/to/px4_msgs_ws/install/setup.bash
+cd ros2_ws
 colcon build --merge-install --symlink-install
 source install/setup.bash
 ```
