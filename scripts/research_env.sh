@@ -7,8 +7,7 @@ if [ -n "${STAGE1_PROJECT_ROOT:-}" ] && \
   echo "STAGE1_PROJECT_ROOT conflicts with this script's project root: $research_root" >&2
   exit 2
 fi
-source /opt/ros/jazzy/setup.bash
-source /root/px4_msgs_ws/install/setup.bash
+source "$research_root/scripts/source_ros_environment.sh"
 source "$research_root/ros2_ws/install/setup.bash"
 export PYTHONPATH="$research_root:$research_root/scripts:${PYTHONPATH:-}"
-exec python3 "$@"
+exec "${STAGE1_PYTHON_EXECUTABLE:-/usr/bin/python3}" "$@"

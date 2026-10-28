@@ -38,7 +38,8 @@ except ImportError:  # pragma: no cover - exercised only without ROS 2.
     Node = object  # type: ignore[misc,assignment]
     get_package_share_directory = None  # type: ignore[assignment]
 
-from uav_tracking.core import CameraIntrinsics, depth_roi_stats, pinhole_backproject
+from uav_tracking.core import CameraIntrinsics, bbox_iou, depth_roi_stats, pinhole_backproject
+from uav_tracking.core.navigation import sample_depth_points
 from uav_tracking_nodes.inference_worker import NonQueuingWorker
 
 
@@ -52,6 +53,10 @@ class InferenceSnapshot:
     parameters: dict[str, Any]
     clock_epoch: int
     submitted_ros_ns: int
+    rgb_received_ros_ns: int | None = None
+    depth_received_ros_ns: int | None = None
+    submitted_wall_s: float | None = None
+    previous_acquisition_s: float | None = None
 
 
 @contextmanager
@@ -112,12 +117,16 @@ class DetectorNode(Node):
         self.declare_parameter("diagnostics_topic", "/tracking/detection_diagnostics")
         self.declare_parameter("activation_phase_topic", "")
         self.declare_parameter("image_reliability", "best_effort")
+        self.declare_parameter("navigation_enabled", False)
+        self._navigation_enabled = bool(self.get_parameter("navigation_enabled").value)
 
         self._bridge = CvBridge()
         self._input_lock = Lock()
         self._stopping = False
         self._depth_messages: deque = deque(maxlen=15)
         self._rgb_message: Any = None
+        self._rgb_received_ros_ns: int | None = None
+        self._depth_received_ros_ns: dict[int, int] = {}
         self._intrinsics: CameraIntrinsics | None = None
         self._camera_size: tuple[int, int] | None = None
         self._model: Any = None
@@ -228,6 +237,10 @@ class DetectorNode(Node):
     def _on_depth(self, message: Image) -> None:
         with self._input_lock:
             self._depth_messages.append(message)
+            received = getattr(self, "_depth_received_ros_ns", {})
+            received[self._stamp_nanoseconds(message.header.stamp)] = int(self.get_clock().now().nanoseconds)
+            retained = {self._stamp_nanoseconds(item.header.stamp) for item in self._depth_messages}
+            self._depth_received_ros_ns = {key: value for key, value in received.items() if key in retained}
 
     @staticmethod
     def _stamp_seconds(stamp: Any) -> float:
@@ -246,7 +259,9 @@ class DetectorNode(Node):
             self._last_submit_ros_ns = None
             self._last_inference_stamp = None
             self._rgb_message = None
+            self._rgb_received_ros_ns = None
             self._depth_messages.clear()
+            self._depth_received_ros_ns = {}
             if self._tracking_active:
                 self._activation_stamp_s = now_ns * 1e-9
         self._last_clock_ros_ns = now_ns
@@ -265,6 +280,7 @@ class DetectorNode(Node):
         # is slower than the camera. Infer on a snapshot, never a FIFO backlog.
         with self._input_lock:
             self._rgb_message = message
+            self._rgb_received_ros_ns = int(self.get_clock().now().nanoseconds)
 
     def _process_latest(self) -> None:
         # This timer only snapshots/submits work. Inference must not occupy
@@ -301,6 +317,11 @@ class DetectorNode(Node):
             sync_error = abs(stamp_seconds - self._stamp_seconds(depth_message.header.stamp))
             if sync_error > float(self.get_parameter("depth_max_age_s").value):
                 return
+            # Ground geometry is transformed using this RGB acquisition TF.
+            # It must therefore use exactly the aligned depth acquisition,
+            # including while the camera gimbal is moving.
+            if getattr(self, "_navigation_enabled", False) and sync_error > 1e-6:
+                return
             parameters = {name: self.get_parameter(name).value for name in (
                 "inference_image_size", "inference_device", "class_id", "class_name", "confidence_threshold",
                 "depth_scale", "min_depth_m", "max_depth_m", "min_depth_valid_ratio",
@@ -308,6 +329,9 @@ class DetectorNode(Node):
             snapshot = InferenceSnapshot(
                 message, depth_message, intrinsics, camera_size, sync_error, parameters,
                 self._clock_epoch, now_ns,
+                getattr(self, "_rgb_received_ros_ns", None),
+                getattr(self, "_depth_received_ros_ns", {}).get(self._stamp_nanoseconds(depth_message.header.stamp)),
+                time.perf_counter(), self._last_inference_stamp,
             )
             if self._worker.submit(snapshot):
                 self._last_inference_stamp = stamp_seconds
@@ -321,7 +345,8 @@ class DetectorNode(Node):
         with self._input_lock:
             if getattr(self, "_stopping", False):
                 return
-            if not self._snapshot_current_locked(snapshot, self._clock_now_locked()):
+            worker_started_ros_ns = self._clock_now_locked()
+            if not self._snapshot_current_locked(snapshot, worker_started_ros_ns):
                 return
         message, depth_message = snapshot.rgb, snapshot.depth
         stamp_seconds = self._stamp_seconds(message.header.stamp)
@@ -344,13 +369,22 @@ class DetectorNode(Node):
             if not self._snapshot_current_locked(snapshot, self._clock_now_locked()):
                 return
             tracking_active, activation_stamp_s = self._tracking_active, self._activation_stamp_s
-        detections, observations = [], []
+        # Other classes can occlude this target or contaminate ground samples.
+        # Keep their image boxes without creating tracking candidates for them.
+        visible_boxes = []
         for candidate_id, box in enumerate(result.boxes):
             score = float(box.conf[0])
             detected_class = int(box.cls[0])
-            if score < threshold or detected_class != class_id:
+            if score < threshold:
                 continue
-            x1, y1, x2, y2 = (float(value) for value in box.xyxy[0].tolist())
+            bounds = tuple(float(value) for value in box.xyxy[0].tolist())
+            if len(bounds) != 4 or not all(math.isfinite(value) for value in bounds) or bounds[2] <= bounds[0] or bounds[3] <= bounds[1]:
+                continue
+            visible_boxes.append((candidate_id, score, detected_class, bounds))
+        detections, observations = [], []
+        for candidate_id, score, detected_class, (x1, y1, x2, y2) in visible_boxes:
+            if detected_class != class_id:
+                continue
             stats = depth_roi_stats(
                 depth,
                 (x1, y1, x2, y2),
@@ -385,6 +419,24 @@ class DetectorNode(Node):
                 observation.position_camera_m.x = float(point[0])
                 observation.position_camera_m.y = float(point[1])
                 observation.position_camera_m.z = float(point[2])
+            if getattr(self, "_navigation_enabled", False):
+                overlap = any(other_id != candidate_id and bbox_iou((x1, y1, x2, y2), other_box) > 0
+                              for other_id, _, _, other_box in visible_boxes)
+                observation.navigation_bbox_complete = bool(
+                    x1 > 2 and y1 > 2 and x2 < message.width - 2 and y2 < message.height - 2 and not overlap)
+                # A partial long side can resemble a complete end face.
+                # Known overlap cannot be repaired by removing its pixels or
+                # choosing the nearer depth cluster of an unknown individual.
+                points = sample_depth_points(
+                    depth, snapshot.intrinsics, (x1, y1, x2, y2), stride=2,
+                    depth_scale=float(parameters["depth_scale"]), max_points=500,
+                    min_depth_m=float(parameters["min_depth_m"]), max_depth_m=float(parameters["max_depth_m"]),
+                ) if observation.navigation_bbox_complete else np.empty((0, 3))
+                observation.navigation_points_camera_m = points.reshape(-1).astype(float).tolist()
+                ray = pinhole_backproject(((x1 + x2) / 2, y2), 1.0, snapshot.intrinsics)
+                observation.navigation_bottom_ray_camera.x = float(ray[0])
+                observation.navigation_bottom_ray_camera.y = float(ray[1])
+                observation.navigation_bottom_ray_camera.z = float(ray[2])
             observations.append(observation)
             detections.append({
                 "confidence": score,
@@ -392,7 +444,15 @@ class DetectorNode(Node):
                 "depth_valid": bool(observation.depth_valid),
                 "depth_m": float(observation.depth_m),
                 "depth_valid_ratio": float(stats.valid_fraction),
+                "navigation_bbox_complete": bool(getattr(observation, "navigation_bbox_complete", False)),
             })
+        ground_points = np.empty((0, 3))
+        if getattr(self, "_navigation_enabled", False):
+            ground_points = sample_depth_points(
+                depth, snapshot.intrinsics, exclude_bboxes=[item[3] for item in visible_boxes],
+                stride=8, depth_scale=float(parameters["depth_scale"]), max_points=1200,
+                min_depth_m=float(parameters["min_depth_m"]), max_depth_m=float(parameters["max_depth_m"]),
+            )
         with self._input_lock:
             if getattr(self, "_stopping", False):
                 return
@@ -409,6 +469,8 @@ class DetectorNode(Node):
                     frame = TargetObservationArray()
                     frame.header = message.header
                     frame.observations = observations
+                    if getattr(self, "_navigation_enabled", False):
+                        frame.navigation_ground_points_camera_m = ground_points.reshape(-1).astype(float).tolist()
                     frame_publisher.publish(frame)
                 for observation in observations:
                     self._publisher.publish(observation)
@@ -416,6 +478,14 @@ class DetectorNode(Node):
             diagnostics.data = json.dumps({
                 "stamp_s": stamp_seconds,
                 "completed_s": now_ns * 1e-9,
+                "rgb_received_s": None if snapshot.rgb_received_ros_ns is None else snapshot.rgb_received_ros_ns * 1e-9,
+                "depth_stamp_s": self._stamp_seconds(depth_message.header.stamp),
+                "depth_received_s": None if snapshot.depth_received_ros_ns is None else snapshot.depth_received_ros_ns * 1e-9,
+                "submitted_s": snapshot.submitted_ros_ns * 1e-9,
+                "worker_started_s": worker_started_ros_ns * 1e-9,
+                "worker_wait_wall_s": None if snapshot.submitted_wall_s is None else started - snapshot.submitted_wall_s,
+                "input_age_at_submit_s": snapshot.submitted_ros_ns * 1e-9 - stamp_seconds,
+                "acquisition_gap_s": None if snapshot.previous_acquisition_s is None else stamp_seconds - snapshot.previous_acquisition_s,
                 "inference_wall_s": time.perf_counter() - started,
                 "rgb_depth_sync_error_s": snapshot.sync_error_s,
                 "class_name": class_name,
@@ -423,6 +493,8 @@ class DetectorNode(Node):
                 "inference_backend": type(self._model).__name__,
                 "inference_threads": getattr(self, "_effective_inference_threads", None),
                 "image_size": [int(message.width), int(message.height)],
+                "navigation_enabled": bool(getattr(self, "_navigation_enabled", False)),
+                "navigation_ground_sample_count": len(ground_points),
                 "detections": detections,
             })
             self._diagnostics_pub.publish(diagnostics)

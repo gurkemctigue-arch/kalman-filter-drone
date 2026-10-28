@@ -18,11 +18,12 @@ try:
     import rclpy
     from rclpy.executors import ExternalShutdownException
     from nav_msgs.msg import Odometry
-    from px4_msgs.msg import OffboardControlMode, VehicleCommand, VehicleStatus
+    from px4_msgs.msg import EstimatorStatusFlags, OffboardControlMode, VehicleCommand, VehicleLocalPosition, VehicleStatus
     from rclpy.node import Node
     from rclpy.qos import qos_profile_sensor_data
     from std_msgs.msg import String
     from uav_tracking_interfaces.msg import TrackingCommand
+    from uav_tracking_px4_adapter.startup_readiness import readiness_issues
 except ImportError:  # Pure helpers remain testable without ROS.
     rclpy = None
     Node = object  # type: ignore[assignment,misc]
@@ -72,6 +73,11 @@ class FlightSupervisor(Node):
             "vehicle_command_topic": "/fmu/in/vehicle_command",
             "phase_topic": "/tracking/flight_phase",
             "takeoff_height_m": 3.0,
+            "takeoff_mode": "offboard_velocity",
+            "local_position_topic": "/fmu/out/vehicle_local_position_v1",
+            "estimator_flags_topic": "/fmu/out/estimator_status_flags",
+            "native_settle_s": 1.0,
+            "native_settle_speed_mps": 0.20,
             "takeoff_yaw_rad": 0.0,
             "takeoff_horizontal_limit_mps": 0.8,
             "takeoff_vertical_limit_mps": 0.7,
@@ -92,6 +98,10 @@ class FlightSupervisor(Node):
         for name, value in defaults.items():
             self.declare_parameter(name, value)
         self._auto_start = bool(self.get_parameter("auto_start").value)
+        startup_mode = self._p("takeoff_mode")
+        if startup_mode not in ("offboard_velocity", "px4_native"):
+            raise ValueError("unsupported takeoff_mode")
+        self._native_takeoff = startup_mode == "px4_native"
         requested_rtf = self._number("requested_simulation_real_time_factor")
         status_timeout = self._number("status_timeout_s")
         if not (math.isfinite(requested_rtf) and 0 < requested_rtf <= 1
@@ -119,6 +129,8 @@ class FlightSupervisor(Node):
         self._last_request = 0.0
         self._attempts = 0
         self._ever_armed = False
+        self._native_local = self._estimator_flags = None
+        self._native_settle_started_s: float | None = None
         self._yaw = float(self.get_parameter("takeoff_yaw_rad").value)
         self._flight_pub = self.create_publisher(TrackingCommand, self._p("flight_command_topic"), 20)
         self._vehicle_command_pub = self.create_publisher(VehicleCommand, self._p("vehicle_command_topic"), 10)
@@ -127,6 +139,11 @@ class FlightSupervisor(Node):
         self.create_subscription(VehicleStatus, self._p("vehicle_status_topic"), self._on_status, qos_profile_sensor_data)
         self.create_subscription(OffboardControlMode, self._p("heartbeat_topic"), self._on_heartbeat, qos_profile_sensor_data)
         self.create_subscription(TrackingCommand, self._p("command_topic"), self._on_command, 20)
+        if self._native_takeoff:
+            self.create_subscription(VehicleLocalPosition, self._p("local_position_topic"), self._on_native_local,
+                                     qos_profile_sensor_data)
+            self.create_subscription(EstimatorStatusFlags, self._p("estimator_flags_topic"), self._on_estimator_flags,
+                                     qos_profile_sensor_data)
         self.create_timer(1.0 / float(self.get_parameter("publish_rate_hz").value), self._tick)
         self.get_logger().info(f"Flight supervisor: {self._phase}; auto_start={self._auto_start}")
         self.get_logger().info(
@@ -155,6 +172,17 @@ class FlightSupervisor(Node):
 
     def _on_command(self, message: Any) -> None:
         self._controller_command, self._command_received = message, time.monotonic()
+
+    def _on_native_local(self, message: Any) -> None:
+        self._native_local = message
+
+    def _on_estimator_flags(self, message: Any) -> None:
+        self._estimator_flags = message
+
+    def _native_readiness_issues(self, *, inflight: bool = False) -> list[str]:
+        return readiness_issues(self._native_local, self._estimator_flags,
+                                self.get_clock().now().nanoseconds * 1e-9,
+                                require_inflight_alignment=inflight)
 
     def _on_heartbeat(self, _message: Any) -> None:
         now = time.monotonic()
@@ -253,6 +281,10 @@ class FlightSupervisor(Node):
         request.timestamp = self.get_clock().now().nanoseconds // 1000
         request.command = command_id
         request.param1, request.param2 = float(param1), float(param2)
+        if command_id == getattr(VehicleCommand, "VEHICLE_CMD_NAV_TAKEOFF", 22):
+            # Normal PX4 Navigator chooses current onboard latitude/longitude
+            # and current AMSL + MIS_TAKEOFF_ALT. Zero is a real coordinate.
+            request.param4 = request.param5 = request.param6 = request.param7 = math.nan
         request.target_system = request.source_system = 1
         request.target_component = request.source_component = 1
         request.from_external = True
@@ -286,17 +318,79 @@ class FlightSupervisor(Node):
                     self._abort("auto_start requires an initially disarmed SITL vehicle", now)
                 elif self._heartbeat_started and now - self._heartbeat_received < 0.4:
                     if now - self._heartbeat_started >= self._number("heartbeat_prestream_s"):
+                        startup_issues = self._native_readiness_issues() if getattr(self, "_native_takeoff", False) else []
+                        if startup_issues:
+                            self._reason = "waiting for native EKF readiness: " + ", ".join(startup_issues)
+                            self._flight_pub.publish(outgoing)
+                            state = String()
+                            state.data = f"{self._phase}: {self._reason}"
+                            self._phase_pub.publish(state)
+                            return
                         x, y, z = self._position()
                         self._goal = (x, y, z + self._number("takeoff_height_m"))
                         self._request_started = now
-                        self._change_phase("REQUEST_OFFBOARD", "heartbeat prestream complete")
+                        self._change_phase("REQUEST_NATIVE_TAKEOFF" if getattr(self, "_native_takeoff", False)
+                                           else "REQUEST_OFFBOARD", "heartbeat prestream complete")
+        elif self._phase == "REQUEST_NATIVE_TAKEOFF":
+            if not fresh or self._status.failsafe:
+                self._abort("native activation guard: " + ", ".join(self._state_guard_issues(now, False)), now)
+            elif (self._status.arming_state == VehicleStatus.ARMING_STATE_ARMED
+                  and self._status.nav_state == VehicleStatus.NAVIGATION_STATE_AUTO_TAKEOFF):
+                self._ever_armed = True
+                self._takeoff_started = now
+                self._change_phase("NATIVE_TAKEOFF", "PX4 owns takeoff and initial in-flight magnetic alignment")
+            elif now - self._last_request >= self._number("command_retry_s"):
+                if self._attempts >= int(self.get_parameter("max_command_attempts").value):
+                    self._abort("native takeoff activation attempts exhausted", now)
+                elif not bool(self._status.pre_flight_checks_pass):
+                    self._abort("PX4 preflight checks stopped passing", now)
+                elif not self._native_readiness_issues():
+                    if self._status.nav_state != VehicleStatus.NAVIGATION_STATE_AUTO_TAKEOFF:
+                        self._request(VehicleCommand.VEHICLE_CMD_NAV_TAKEOFF, 0.0)
+                    else:
+                        self._request(VehicleCommand.VEHICLE_CMD_COMPONENT_ARM_DISARM, 1.0)
+                    self._attempts += 1
+                    self._last_request = now
+        elif self._phase == "NATIVE_TAKEOFF":
+            # No Offboard motion is requested here. PX4's native takeoff task
+            # handles its documented initial yaw reset above 1.5 m itself.
+            if not fresh or self._status.failsafe or self._status.arming_state != VehicleStatus.ARMING_STATE_ARMED:
+                self._abort("native takeoff state guard: " + ", ".join(self._state_guard_issues(now, False)), now)
+            elif self._status.nav_state not in (VehicleStatus.NAVIGATION_STATE_AUTO_TAKEOFF,
+                                                 VehicleStatus.NAVIGATION_STATE_AUTO_LOITER):
+                self._abort("native takeoff exited its expected PX4 modes", now)
+            else:
+                position = self._position()
+                error = math.sqrt(sum((a - b) ** 2 for a, b in zip(position, self._goal)))
+                velocity = self._odom.twist.twist.linear
+                speed = math.sqrt(sum(float(value) ** 2 for value in (velocity.x, velocity.y, velocity.z)))
+                ready = (self._status.nav_state == VehicleStatus.NAVIGATION_STATE_AUTO_LOITER
+                         and not self._native_readiness_issues(inflight=True)
+                         and error <= self._number("takeoff_position_tolerance_m")
+                         and math.isfinite(speed) and speed <= self._number("native_settle_speed_mps"))
+                now_s = self.get_clock().now().nanoseconds * 1e-9
+                if ready:
+                    if self._native_settle_started_s is None:
+                        self._native_settle_started_s = now_s
+                    elif now_s - self._native_settle_started_s >= self._number("native_settle_s"):
+                        self._attempts = 0
+                        self._request_started = now
+                        self._controller_command, self._command_received = None, 0.0
+                        self._change_phase("REQUEST_OFFBOARD", "native takeoff settled with final EKF yaw alignment")
+                else:
+                    self._native_settle_started_s = None
+                if now - self._takeoff_started > self._number("takeoff_timeout_s"):
+                    self._abort("native takeoff/alignment timeout", now)
         elif self._phase == "REQUEST_OFFBOARD":
             if not fresh or self._status.failsafe:
                 self._abort("activation guard: " + ", ".join(self._state_guard_issues(now, False)), now)
+            elif getattr(self, "_native_takeoff", False) and self._native_readiness_issues(inflight=True):
+                self._abort("native final alignment/readiness lost during Offboard handoff", now)
             elif self._armed_offboard():
                 self._ever_armed = True
                 self._takeoff_started = now
-                self._change_phase("TAKEOFF", "armed OFFBOARD confirmed by VehicleStatus")
+                self._change_phase("HOLD" if getattr(self, "_native_takeoff", False) else "TAKEOFF",
+                                   "armed OFFBOARD confirmed by VehicleStatus")
             elif now - self._last_request >= self._number("command_retry_s"):
                 if self._attempts >= int(self.get_parameter("max_command_attempts").value):
                     self._abort("activation attempts exhausted; inspect VehicleCommandAck", now)

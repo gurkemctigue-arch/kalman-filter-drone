@@ -10,8 +10,7 @@ stage1_project="${STAGE1_PROJECT_ROOT:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}"
 stage1_px4="${STAGE1_PX4_ROOT:-/root/PX4-Autopilot}"
 # source scripts need unset-variable tolerance on both ROS Humble and Jazzy.
 set +u
-source /opt/ros/jazzy/setup.bash
-source /root/px4_msgs_ws/install/setup.bash
+source "$stage1_project/scripts/source_ros_environment.sh"
 source "$stage1_project/ros2_ws/install/setup.bash"
 set -u
 stage1_share="$(ros2 pkg prefix uav_tracking_bringup)/share/uav_tracking_bringup"
@@ -52,8 +51,35 @@ case "$stage1_component" in
     # No RC/GCS is part of this simulation. These normal PX4 parameters make
     # that explicit; estimator, arming and Offboard checks remain active.
     export PX4_PARAM_COM_RC_IN_MODE=4 PX4_PARAM_NAV_DLL_ACT=0
-    cd "$stage1_px4/build/px4_sitl_default/rootfs"
-    exec "$stage1_px4/build/px4_sitl_default/bin/px4" -d -s "$stage1_project/scripts/px4_stage1_startup.sh"
+    # rcS imports PX4_PARAM_* before it starts the XRCE client. Keep the
+    # simulation clock contract explicit on every run, even when a prior
+    # trial persisted the other value. This is never a real-vehicle setting.
+    case "${STAGE1_PX4_TIME_MODE:-receipt}" in
+      source_sim) export PX4_PARAM_UXRCE_DDS_SYNCT=0 ;;
+      receipt) export PX4_PARAM_UXRCE_DDS_SYNCT=1 ;;
+      *) echo "STAGE1_PX4_TIME_MODE must be receipt or source_sim" >&2; exit 2 ;;
+    esac
+    if [ "${STAGE1_PX4_MAG_CONTRACT:-}" = "gazebo_enu_flu_to_frd_v1" ]; then
+      export PX4_PARAM_SENS_EN_MAGSIM=0
+    fi
+    if [ "${STAGE1_TAKEOFF_MODE:-offboard_velocity}" = "px4_native" ]; then
+      # Normal native Takeoff uses current onboard AMSL + this height when
+      # param7 is NaN, then stays in AUTO_LOITER instead of entering a mission.
+      export PX4_PARAM_MIS_TAKEOFF_ALT="${STAGE1_TAKEOFF_HEIGHT_M:-3.0}"
+      export PX4_PARAM_COM_TAKEOFF_ACT=0
+      # The startup readiness topics are estimator instance zero. Use the
+      # normal single-EKF selection explicitly rather than assuming that a
+      # multi-EKF primary is always instance zero.
+      export PX4_PARAM_SENS_IMU_MODE=1
+    fi
+    # An isolated compile has not necessarily run PX4's default launcher yet.
+    # Explicitly provide its built startup data and working directory so PX4
+    # creates rootfs/etc itself. A bare -s disables upstream default discovery
+    # and otherwise works only if an earlier run happened to create that link.
+    exec "$stage1_px4/build/px4_sitl_default/bin/px4" \
+      "$stage1_px4/build/px4_sitl_default/etc" \
+      -w "$stage1_px4/build/px4_sitl_default/rootfs" \
+      -d -s "$stage1_project/scripts/px4_stage1_startup.sh"
     ;;
   agent)
     exec MicroXRCEAgent udp4 -p 8888

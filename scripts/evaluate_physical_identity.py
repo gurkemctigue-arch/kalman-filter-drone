@@ -9,7 +9,9 @@ from __future__ import annotations
 import argparse
 from bisect import bisect_left
 from collections import Counter,defaultdict
+import hashlib
 import json
+import math
 from pathlib import Path
 import sys
 import time
@@ -21,6 +23,16 @@ from extract_research_recording import model_camera_mount,pose_dict
 from uav_tracking.research_labels import target_mesh_points,interpolate_pose,project_mesh,quaternion_matrix
 from uav_tracking.research_metrics import identity_metrics,iou_matrix
 from uav_tracking.stage2_identity import physical_identity_match,selected_identity_summary
+
+
+def evaluation_source_provenance():
+    script=Path(__file__).resolve()
+    dependencies=[script.parent/name for name in ("evaluate_stage1_flight.py","extract_research_recording.py")]
+    dependencies += [ROOT/"uav_tracking"/name for name in
+                     ("research_labels.py","research_metrics.py","stage2_identity.py")]
+    return {"script":str(script),"script_sha256":hashlib.sha256(script.read_bytes()).hexdigest(),
+            "dependencies":{str(path):hashlib.sha256(path.read_bytes()).hexdigest() for path in dependencies},
+            "scope":"Offline evaluator and direct local helper source; independent of the recorded flight freeze"}
 
 
 def bracketed_local_pose(rows,timestamp,max_gap_s=.10):
@@ -159,6 +171,106 @@ def selected_summary(rows):
             "interpretation":"NO_OBSERVED_WRONG_MATCH does not certify unknown/occluded intervals. Multiple plausible GT actors are UNKNOWN, not arbitrarily assigned by nearest position, highest IoU, or stable task UUID."}
 
 
+def task_time_identity(selected_rows, requests, confirmations, clock_times, gt_at, *, shutters=None, lifecycle=None):
+    """Audit fixed 10 Hz cells across REQUEST -> the complete recorded /clock.
+
+    No diagnostic/snapshot is needed to create a task or an opportunity. A cell
+    with missing or uncertain evidence is unknown. Evidence is never carried
+    into another cell, and any independently known wrong match wins over other
+    observations in its cell so resampling cannot hide a brief wrong actor.
+    """
+    period=.1;shutters=shutters or [];lifecycle=lifecycle or []
+    result={"schema_version":1,"coverage_basis":"fixed_10hz_request_to_recorded_clock_end",
+            "sample_period_s":period,"interval":{"start_s":None,"end_s":None},
+            "scheduled_samples":0,"correct":0,"wrong":0,"unknown":0,
+            "known_coverage":None,"retention_lower_bound":None,"agreement_on_known_samples":None,
+            "requested_task_count":len(requests),"unconfirmed_requested_tasks":[],"tasks":{},
+            "unknown_reason_counts":{},"timeline":[],"evaluation_status":"INCOMPLETE_EVIDENCE",
+            "semantics":"Fixed 0.1 s cells anchored at the first explicit REQUEST, ending at the last recorded /clock (final partial cell retained). Each cell belongs to the task active at its start; all REQUESTs are registered even without a snapshot or CONFIRMED event. Before confirmation, after CLEAR/RESET, at a task boundary, or without fresh independent identity evidence the cell is UNKNOWN. No cross-cell interpolation/forward fill. Any known wrong match in the cell takes precedence; otherwise all identity evidence must be known and correct for CORRECT. This measures conservative recorded evidence coverage, not continuous physical identity certainty. Legacy diagnostic-frame metrics remain separate."}
+    def finite(value):return type(value) in (int,float) and math.isfinite(value)
+    if not requests:
+        result["reason"]="no_explicit_selection_request";return result
+    if any(not finite(r.get("time_s")) or not isinstance(r.get("target_uuid"),str)
+           or not r["target_uuid"] for r in requests):
+        result["reason"]="invalid_selection_request_time_or_uuid";return result
+    ordered=sorted(requests,key=lambda r:r["time_s"])
+    if not clock_times or any(not finite(t) for t in clock_times):
+        result["reason"]="missing_or_invalid_full_recorded_clock";return result
+    if any(current<previous-1e-9 for previous,current in zip(clock_times,clock_times[1:])):
+        result["reason"]="recorded_clock_epoch_reset";return result
+    start=float(ordered[0]["time_s"]);end=float(clock_times[-1])
+    result["interval"]={"start_s":start,"end_s":end}
+    result["recorded_clock"]={"start_s":float(clock_times[0]),"end_s":end,"messages":len(clock_times)}
+    if end<=start:
+        result["reason"]="no_recorded_clock_duration_after_request";return result
+    duplicated={uuid for uuid,count in Counter(r["target_uuid"] for r in ordered).items() if count>1}
+    for request in ordered:
+        uuid=request["target_uuid"];image_time=request.get("image_stamp_s")
+        valid_source=bool(finite(image_time) and -.05<=request["time_s"]-image_time<=.60)
+        truth=gt_at(float(image_time)) if valid_source else {"gt":[],"truth_complete":False}
+        occluded=any(w["start_s"]-1<=image_time<=(w["end_s"] or float("inf"))+1 for w in shutters) if valid_source else None
+        matching=physical_identity_match(request.get("bbox"),truth.get("gt",[]),
+            class_name=request.get("class_name",""),fresh=valid_source,
+            externally_occluded=occluded if truth.get("truth_complete",False) else None)
+        if not truth.get("truth_complete",False):matching["reason"]="missing_or_incomplete_request_source_truth"
+        confirmed=[float(c["time_s"]) for c in confirmations if c.get("target_uuid")==uuid
+                   and finite(c.get("time_s")) and request["time_s"]<=c["time_s"]<=end]
+        confirmation=min(confirmed) if confirmed else None
+        expected=matching["physical_id"] if uuid not in duplicated else None
+        result["tasks"][uuid]={"request_time_s":float(request["time_s"]),
+            "source_image_s":image_time,"confirmation_time_s":confirmation,"confirmed":confirmation is not None,
+            "expected_physical_id":expected,"initial_mapping_known":expected is not None,
+            "initial_geometric_match":matching,"duplicate_request_uuid":uuid in duplicated,
+            "scheduled_samples":0,"correct":0,"wrong":0,"unknown":0}
+        if confirmation is None:result["unconfirmed_requested_tasks"].append(uuid)
+    total=max(1,int(math.ceil((end-start)/period-1e-9)))
+    by_cell=defaultdict(list)
+    for row in selected_rows:
+        timestamp=row.get("time_s")
+        if finite(timestamp) and start<=timestamp<end:
+            index=int(math.floor((timestamp-start)/period+1e-9))
+            if 0<=index<total:by_cell[index].append(row)
+    changes=sorted([{"time_s":r["time_s"],"action":"REQUEST","target_uuid":r["target_uuid"]} for r in ordered]+
+                   [{"time_s":e["time_s"],"action":e["action"]} for e in lifecycle
+                    if finite(e.get("time_s")) and e.get("action") in ("CLEAR","RESET")],key=lambda e:e["time_s"])
+    active=None;active_uuid=None;change_index=0;reasons=Counter()
+    for index in range(total):
+        left=start+index*period;right=min(end,start+(index+1)*period)
+        while change_index<len(changes) and changes[change_index]["time_s"]<=left+1e-9:
+            event=changes[change_index];active=event["action"]
+            if active=="REQUEST":active_uuid=event["target_uuid"]
+            change_index+=1
+        task=result["tasks"][active_uuid]
+        rows=[r for r in by_cell[index] if r.get("target_uuid")==active_uuid]
+        known=[str(r["match"]["physical_id"]) for r in rows
+               if r.get("match",{}).get("status")=="known" and r["match"].get("physical_id") is not None]
+        boundary=change_index<len(changes) and changes[change_index]["time_s"]<right-1e-9
+        expected=task["expected_physical_id"]
+        if left<float(clock_times[0])-1e-9:outcome,reason="unknown","before_first_recorded_clock"
+        elif active!="REQUEST":outcome,reason="unknown","task_cleared_or_reset"
+        elif task["confirmation_time_s"] is None or task["confirmation_time_s"]>left+1e-9:
+            outcome,reason="unknown","request_not_yet_confirmed"
+        elif expected is None:outcome,reason="unknown","unknown_request_physical_identity"
+        elif any(physical!=str(expected) for physical in known):outcome,reason="wrong","observed_wrong_physical_actor"
+        elif boundary:outcome,reason="unknown","task_boundary_within_time_cell"
+        elif not rows:outcome,reason="unknown","no_identity_evidence_in_time_cell"
+        elif len(known)!=len(rows):outcome,reason="unknown","unknown_identity_evidence_in_time_cell"
+        else:outcome,reason="correct","all_observed_identity_evidence_correct"
+        result[outcome]+=1;task[outcome]+=1;task["scheduled_samples"]+=1
+        if outcome=="unknown":reasons[reason]+=1
+        result["timeline"].append({"time_s":left,"end_s":right,"target_uuid":active_uuid,
+            "outcome":outcome,"reason":reason,"identity_evidence_frames":len(rows)})
+    for task in result["tasks"].values():
+        n=task["scheduled_samples"]
+        task["known_coverage"]=(task["correct"]+task["wrong"])/n if n else None
+        task["retention_lower_bound"]=task["correct"]/n if n else None
+    known=result["correct"]+result["wrong"]
+    result.update(scheduled_samples=total,known_coverage=known/total,
+        retention_lower_bound=result["correct"]/total,agreement_on_known_samples=result["correct"]/known if known else None,
+        unknown_reason_counts=dict(reasons),evaluation_status="RECORDED_WITH_EXPLICIT_UNKNOWN_INTERVALS")
+    return result
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument("trial",type=Path)
@@ -176,9 +288,10 @@ def main():
     import rosbag2_py
     from rclpy.serialization import deserialize_message
     from rosidl_runtime_py.utilities import get_message
-    topics=["/tracking/tracks","/tracking/detection_diagnostics","/tracking/selection",
+    topics=["/clock","/tracking/tracks","/tracking/detection_diagnostics","/tracking/selection",
             "/ground_truth/poses","/ground_truth/vehicle_poses","/camera/color/camera_info","/tf"]
     trajectories=defaultdict(list);diagnostics=[];snapshots=[];selections=[];camera=None;counts=defaultdict(int)
+    clock_times=[];selection_lifecycle=[]
     local_camera_tf=[];physical_links=defaultdict(list);invalid_link_parents=Counter()
     with open_bag_reader(args.trial/"rosbag",rosbag2_py) as (reader,metadata):
         types={t.name:t.type for t in reader.get_all_topics_and_types()}
@@ -187,7 +300,8 @@ def main():
         last_print=time.monotonic()
         while reader.has_next():
             topic,data,_ns=reader.read_next();msg=deserialize_message(data,classes[topic]);counts[topic]+=1
-            if topic.startswith("/ground_truth/"):
+            if topic=="/clock":clock_times.append(stamp_s(msg.clock))
+            elif topic.startswith("/ground_truth/"):
                 for transform in msg.transforms:
                     trajectories[transform.child_frame_id.strip("/")].append(pose_dict(transform))
                     child=transform.child_frame_id.replace("::","/").strip("/").rsplit("/",1)[-1]
@@ -205,6 +319,9 @@ def main():
                 selections.append({"time_s":stamp_s(msg.header.stamp),"target_uuid":msg.target_uuid,
                                    "bbox":[msg.center_u_px-msg.width_px/2,msg.center_v_px-msg.height_px/2,
                                            msg.center_u_px+msg.width_px/2,msg.center_v_px+msg.height_px/2]})
+            elif topic=="/tracking/selection" and msg.action in (1,2):
+                selection_lifecycle.append({"time_s":stamp_s(msg.header.stamp),
+                                            "action":"CLEAR" if msg.action==1 else "RESET"})
             elif topic=="/camera/color/camera_info":
                 camera={"width":msg.width,"height":msg.height,"intrinsics":[msg.k[0],msg.k[4],msg.k[2],msg.k[5]]}
             if time.monotonic()-last_print>15:
@@ -261,6 +378,10 @@ def main():
         return {"gt":gt,"all_fully_in_frame":complete,"truth_complete":truth_complete,"overlap":bool(np.any(overlaps>.01)),
                 "reason":"static_mesh_projection_amodal","camera_geometry":camera_geometry}
     frames,tasks,selected,missing=build_identity_frames(diagnostics,snapshots,gt_at,selections=selections,shutters=shutters)
+    confirmations=[event for event in telemetry if event.get("kind") in
+                   ("initial_selection_confirmed","explicit_reselection_confirmed")]
+    task_time_audit=task_time_identity(selected,selections,confirmations,clock_times,gt_at,
+                                      shutters=shutters,lifecycle=selection_lifecycle)
     visible=[frame for frame in frames if frame["visible_geometry_eligible"]]
     # Standard association metrics must be evaluated within explicit tasks;
     # a legitimate reselect is never counted as an identity switch across tasks.
@@ -278,6 +399,7 @@ def main():
                             "selected_physical_identity_unoccluded":selected_summary([r for r in task_rows if r["visible_geometry_eligible"]]),
                             "conservative_selected_identity":selected_identity_summary(task_rows)}
     result={"schema_version":1,"evaluation_status":"RECORDED_WITH_EXPLICIT_UNKNOWN_INTERVALS","source_trial":str(args.trial.resolve()),"target_class":args.target_class,
+            "evaluation_source":evaluation_source_provenance(),
             "inputs":{"counts":dict(counts),"storage":metadata,"command":[sys.executable,*sys.argv]},
             "camera":camera,"mount":mount,"mesh":mesh,"opportunities":len(frames),
             "camera_geometry_status_counts":dict(Counter((frame.get("camera_geometry") or {}).get("status","FIXED_MOUNT") for frame in frames)),
@@ -285,6 +407,7 @@ def main():
             "tasks":task_results,"selected_physical_identity_all":selected_summary(selected),
             "selected_physical_identity_unoccluded":selected_summary([r for r in selected if r["visible_geometry_eligible"]]),
             "conservative_selected_identity":selected_identity_summary(selected),
+            "conservative_task_time_identity":task_time_audit,
             "selected_identity_timeline":selected,
             "label_protocol":"Exact-source-time independent static render mesh projection, Gazebo actor and camera GT. Physical-gimbal recordings use bracketed independent actual camera-link/vehicle GT cross-checked against bracketed local feedback TF, never a static mount or latest/command pose. Missing dynamic geometry remains unknown and in selected-task denominators; frames without complete independent GT are unscorable in MOT rather than invented empty-GT false positives. Full/amodal metrics are explicitly diagnostic. The unoccluded geometry subset requires all three targets fully in frame, no pair of GT boxes with IoU>.01, and outside +/-1s shutter guards. Independent visual review remains necessary to publish as visible detection labels.",
             "freshness_protocol":"Only non-projected track snapshots with matched=true count as detected tracks. Empty diagnostic frames remain in denominator; stale stored boxes cannot become true positives.",
@@ -311,6 +434,7 @@ if __name__=="__main__":
             output.parent.mkdir(parents=True,exist_ok=True)
             output.write_text(json.dumps({"schema_version":1,"evaluation_status":"INCOMPLETE_EVIDENCE",
                 "reason":str(error),"command":[sys.executable,*sys.argv],
+                "evaluation_source":evaluation_source_provenance(),
                 "selected_physical_identity_all":None,
                 "interpretation":"No physical identity conclusion is possible; failed trial retained, not scored as correct or as zero error."},indent=2)+"\n")
         print(f"INCOMPLETE_EVIDENCE: {error}",flush=True)

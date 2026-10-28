@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from copy import deepcopy
 from dataclasses import dataclass
 from math import isfinite
 from typing import Any, Mapping, Optional, Sequence
@@ -103,6 +104,45 @@ class ConstantVelocityKalman3D:
         self.last_mahalanobis_distance: Optional[float] = None
         self.last_measurement_covariance = np.diag(self.measurement_noise_std**2)
         self.last_update_accepted = False
+        self._last_update_diagnostics: dict[str, Any] = {}
+
+    @property
+    def last_update_diagnostics(self) -> dict[str, Any]:
+        """Detached, JSON-ready evidence of the last measurement attempt.
+
+        Prediction/projection does not rewrite this acquisition-time record.
+        ``prior`` is the state after propagation to the measurement stamp;
+        the post record equals that prior when the innovation gate rejects.
+        """
+        return deepcopy(self._last_update_diagnostics)
+
+    def _record_update(self, measurement: np.ndarray, *, accepted: bool, reason: str,
+                       prior_state: Optional[np.ndarray] = None,
+                       prior_covariance: Optional[np.ndarray] = None,
+                       innovation: Optional[np.ndarray] = None,
+                       innovation_covariance: Optional[np.ndarray] = None,
+                       measurement_covariance: Optional[np.ndarray] = None,
+                       mahalanobis_squared: Optional[float] = None,
+                       gate_threshold: Optional[float] = None) -> None:
+        def values(array: Optional[np.ndarray]) -> Any:
+            return None if array is None else array.tolist()
+        self._last_update_diagnostics = {
+            "schema_version": 1,
+            "raw_measurement_m": measurement.tolist(),
+            "measurement_timestamp_s": self.timestamp,
+            "prior_state": values(prior_state),
+            "prior_covariance": values(prior_covariance),
+            "innovation_m": values(innovation),
+            "innovation_covariance": values(innovation_covariance),
+            "measurement_covariance": values(measurement_covariance),
+            "mahalanobis_squared": mahalanobis_squared,
+            "gate_threshold": self.gate_threshold if gate_threshold is None else gate_threshold,
+            "gate_applied": reason != "INITIALIZED",
+            "accepted": accepted,
+            "reason": reason,
+            "posterior_state": self.state.tolist(),
+            "posterior_covariance": self.covariance.tolist(),
+        }
 
     @property
     def position(self) -> np.ndarray:
@@ -147,6 +187,7 @@ class ConstantVelocityKalman3D:
         self.initialized = False
         self.last_mahalanobis_distance = None
         self.last_update_accepted = False
+        self._last_update_diagnostics = {}
 
     def initialize(
         self,
@@ -187,6 +228,7 @@ class ConstantVelocityKalman3D:
             raise ValueError("timestamp must be finite")
         self.initialized = True
         self.last_update_accepted = True
+        self._record_update(pos, accepted=True, reason="INITIALIZED")
         return self.estimate
 
     def _transition(self, dt: float) -> np.ndarray:
@@ -353,11 +395,19 @@ class ConstantVelocityKalman3D:
 
         z = _vector3(measurement, "measurement")
         if not self.initialized:
-            self.initialize(z, timestamp=timestamp)
-            self.last_measurement_covariance = self.measurement_covariance(
+            initial_measurement_covariance = self.measurement_covariance(
                 quality=quality, depth_stats=depth_stats, confidence=confidence, covariance=measurement_covariance
             )
+            # An existing 2-D-only track may receive its first 3-D sample
+            # here. Honor an explicit physical R in its initial position P;
+            # keep the established default P when no R was supplied.
+            self.initialize(z, timestamp=timestamp,
+                            covariance=initial_measurement_covariance if measurement_covariance is not None else None)
+            self.last_measurement_covariance = initial_measurement_covariance
             self.last_mahalanobis_distance = 0.0
+            self._record_update(z, accepted=True, reason="INITIALIZED",
+                                measurement_covariance=self.last_measurement_covariance,
+                                mahalanobis_squared=0.0)
             return True
         if timestamp is not None:
             timestamp = float(timestamp)
@@ -367,6 +417,8 @@ class ConstantVelocityKalman3D:
         covariance = self.measurement_covariance(
             quality=quality, depth_stats=depth_stats, confidence=confidence, covariance=measurement_covariance
         )
+        prior_state = self.state.copy()
+        prior_covariance = self.covariance.copy()
         innovation = z - self.state[:3]
         innovation_covariance = self.covariance[:3, :3] + covariance
         try:
@@ -381,6 +433,11 @@ class ConstantVelocityKalman3D:
             raise ValueError("gate_threshold must be positive and finite")
         if distance > threshold:
             self.last_update_accepted = False
+            self._record_update(z, accepted=False, reason="MAHALANOBIS_GATE",
+                                prior_state=prior_state, prior_covariance=prior_covariance,
+                                innovation=innovation, innovation_covariance=innovation_covariance,
+                                measurement_covariance=covariance, mahalanobis_squared=distance,
+                                gate_threshold=threshold)
             return False
         gain = self.covariance[:, :3] @ np.linalg.pinv(innovation_covariance)
         self.state = self.state + gain @ innovation
@@ -394,6 +451,11 @@ class ConstantVelocityKalman3D:
         )
         self.covariance = (self.covariance + self.covariance.T) / 2.0
         self.last_update_accepted = True
+        self._record_update(z, accepted=True, reason="ACCEPTED",
+                            prior_state=prior_state, prior_covariance=prior_covariance,
+                            innovation=innovation, innovation_covariance=innovation_covariance,
+                            measurement_covariance=covariance, mahalanobis_squared=distance,
+                            gate_threshold=threshold)
         return True
 
     def update_from_depth(

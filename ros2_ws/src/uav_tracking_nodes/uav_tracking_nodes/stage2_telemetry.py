@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from copy import deepcopy
 from typing import Any
 
 
@@ -17,6 +18,7 @@ def track_snapshot(result: Any, *, target_uuid: str | None, acquisition_s: float
     selected_id = result.target.track_id if result.target is not None else None
     for track in result.tracks:
         detection = track.last_detection
+        measurement_diagnostics = getattr(track, "last_measurement_diagnostics", {})
         tracks.append({
             "track_id": track.track_id,
             "class_name": str(track.class_id),
@@ -33,6 +35,11 @@ def track_snapshot(result: Any, *, target_uuid: str | None, acquisition_s: float
             "selected": track.track_id == selected_id,
             "ambiguous": track.track_id in result.ambiguous_track_ids,
             "rejected_measurements": track.rejected_measurements,
+            "measurement_diagnostics": deepcopy(measurement_diagnostics),
+            "measurement_diagnostics_current_frame": bool(
+                not projected and measurement_diagnostics
+                and measurement_diagnostics.get("measurement_timestamp_s") == acquisition_s
+            ),
         })
     return {
         "schema_version": 1, "acquisition_s": float(acquisition_s),

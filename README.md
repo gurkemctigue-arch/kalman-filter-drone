@@ -1,5 +1,7 @@
 # RGB-D UAV target tracking and following
 
+**当前分支是 v4 开发检查点，尚未完成修复后的正式验收。** `nav04`、`nav05` 的失败记录保留；新原生起飞分支仍待实际 SITL 验证，Humble 验证和正式 120 槽尚未完成。请先查看 [v4 当前状态](docs/V4_WORK_STATUS.md) 和 [验收合同](docs/V4_ACCEPTANCE_CONTRACT.md)。下文 v3 报告与结果计数属于历史冻结版本。
+
 中文验收入口：[结果工件说明](docs/RESULTS_ARTIFACTS.md) · [查看与复核方法](docs/验收使用指南.md) · [三阶段实际状态](docs/THREE_STAGE_STATUS.md) · [最终计划书](docs/最终版毕业设计计划书_最终版.docx)。结果页面和报告属于本地归档工件，保留历史失败、身份未知、缺失及未执行项；工程通过与正式重复研究完成分别判断。
 
 This repository implements a simulation-first RGB-D UAV target following system with YOLO11, 3-D Kalman filtering and PX4 Offboard control. Estimation and control remain independent from ROS 2, PX4 and Gazebo so the same core can be tested, replayed and connected to a future vehicle adapter.

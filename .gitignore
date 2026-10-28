@@ -2,6 +2,7 @@ __pycache__/
 *.py[cod]
 *.egg-info/
 .pytest_cache/
+.test_temp/
 .venv/
 node_modules/
 dist/
@@ -14,6 +15,10 @@ ros2_ws/log/
 *.bag
 *.db3
 results/
+
+# Per-machine verified PX4 ELF/source manifest; regenerate after local build.
+# Formal source_hashes still inventories this file from the local filesystem.
+config/px4_magnetic_runtime.json
 
 # Downloaded detector weights are large binary artifacts; obtain them separately.
 models/*.pt

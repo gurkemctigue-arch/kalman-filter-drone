@@ -63,12 +63,22 @@ class OutputStrategyEstimator3D:
         drift=np.square(self._gate.process_acceleration_std*age*age/2)
         return np.diag(np.r_[self._position_variance+drift,self._velocity_variance+np.square(self._gate.process_acceleration_std*age)])
 
-    def initialize(self,position,*,velocity=None,timestamp=None,covariance=None):
+    def initialize(self,position,*,velocity=None,timestamp=None,covariance=None,additional_measurement_covariance=None):
         self._gate.initialize(position,velocity=velocity,timestamp=timestamp,covariance=covariance)
-        if self._fixed:self._fixed.initialize(position,velocity=velocity,timestamp=timestamp,covariance=covariance)
+        if self._fixed:
+            fixed_covariance = covariance
+            if additional_measurement_covariance is not None:
+                fixed_covariance = self._fixed.measurement_covariance() + np.asarray(additional_measurement_covariance, dtype=float)
+            self._fixed.initialize(position,velocity=velocity,timestamp=timestamp,covariance=fixed_covariance)
         self._position=np.asarray(position,dtype=float).copy()
         self._velocity=np.zeros(3) if velocity is None else np.asarray(velocity,dtype=float).copy()
         self._output_stamp=timestamp
+        if covariance is not None:
+            # Explicit physical measurement uncertainty must also reach the
+            # raw/EMA output, not only its shadow acceptance filter. Preserve
+            # legacy initialization when no covariance was supplied.
+            self._position_variance=np.diag(self._gate.covariance[:3,:3]).copy()
+            self._velocity_variance=np.diag(self._gate.covariance[3:,3:]).copy()
         return self.estimate
 
     def reset(self):
@@ -93,10 +103,14 @@ class OutputStrategyEstimator3D:
     def measurement_covariance(self,**kwargs):return self._gate.measurement_covariance(**kwargs)
     def mahalanobis_distance(self,measurement,**kwargs):return self._gate.mahalanobis_distance(measurement,**kwargs)
 
-    def update(self,measurement,timestamp=None,**kwargs):
+    def update(self,measurement,timestamp=None,additional_measurement_covariance=None,**kwargs):
         if not self.initialized:
             accepted=self._gate.update(measurement,timestamp=timestamp,**kwargs)
-            if self._fixed:self._fixed.initialize(measurement,timestamp=timestamp)
+            if self._fixed:
+                fixed_covariance = None
+                if additional_measurement_covariance is not None:
+                    fixed_covariance = self._fixed.measurement_covariance() + np.asarray(additional_measurement_covariance, dtype=float)
+                self._fixed.initialize(measurement,timestamp=timestamp,covariance=fixed_covariance)
             self._position=np.asarray(measurement,dtype=float).copy();self._velocity=np.zeros(3)
             self._output_stamp=self.timestamp
             self._position_variance=np.diag(self._gate.last_measurement_covariance).copy()
@@ -108,6 +122,13 @@ class OutputStrategyEstimator3D:
         if not accepted:return False
         if self._fixed:
             output_kwargs={k:v for k,v in kwargs.items() if k!="gate_threshold"}
+            if additional_measurement_covariance is not None:
+                # The common acceptance gate uses adaptive image/depth R.
+                # Fixed-KF output keeps its fixed sensor R, adding the SAME
+                # measured vehicle-pose uncertainty without inheriting the
+                # adaptive gate's confidence/depth scaling.
+                output_kwargs["measurement_covariance"] = (
+                    self._fixed.measurement_covariance() + np.asarray(additional_measurement_covariance, dtype=float))
             # A second method-specific gate would break the paired protocol.
             # This update is reachable only after the unchanged common gate.
             self._fixed.update(measurement,timestamp=timestamp,gate_threshold=1e300,**output_kwargs)

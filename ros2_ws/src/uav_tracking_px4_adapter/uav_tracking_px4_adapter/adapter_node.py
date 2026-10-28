@@ -9,15 +9,20 @@ with an actionable message instead of silently publishing a wrong frame.
 
 from __future__ import annotations
 
+import json
 import math
 from typing import Any
 
 import numpy as np
 
+from .source_clock import OdometrySourceClock
+from .frame_guard import VehicleFrameGuard
+
 try:
     import rclpy
     from rclpy.executors import ExternalShutdownException
     from nav_msgs.msg import Odometry
+    from std_msgs.msg import String
     from rclpy.node import Node
     from rclpy.qos import qos_profile_sensor_data
     from uav_tracking_interfaces.msg import TrackingCommand
@@ -163,6 +168,30 @@ def px4_odometry_to_enu(message: Any) -> tuple[list[float], list[float], tuple[f
     return position, velocity, quaternion
 
 
+def px4_pose_covariance_to_enu(message: Any) -> np.ndarray | None:
+    """REP-147 position NED and body-FRD attitude variances -> world ENU.
+
+    PX4 declares orientation_variance in the body frame (rotation vector),
+    while the ROS pose covariance uses fixed world rotation axes. Unknown
+    variances remain unknown; they must never silently become zero noise.
+    Cross covariances are unavailable in VehicleOdometry and assumed zero.
+    """
+    position = np.asarray(getattr(message, "position_variance", []), dtype=float)
+    attitude = np.asarray(getattr(message, "orientation_variance", []), dtype=float)
+    if (position.shape != (3,) or attitude.shape != (3,)
+            or not np.isfinite(position).all() or not np.isfinite(attitude).all()
+            or np.any(position < 0) or np.any(attitude < 0)):
+        return None
+    ned_to_enu = np.array([[0., 1., 0.], [1., 0., 0.], [0., 0., -1.]])
+    frd_to_flu = np.diag([1., -1., -1.])
+    world_from_body = ned_to_enu @ _quaternion_wxyz_to_matrix(message.q) @ frd_to_flu
+    result = np.zeros((6, 6))
+    result[:3, :3] = ned_to_enu @ np.diag(position) @ ned_to_enu.T
+    body_covariance = frd_to_flu @ np.diag(attitude) @ frd_to_flu.T
+    result[3:, 3:] = world_from_body @ body_covariance @ world_from_body.T
+    return result
+
+
 class Px4AdapterNode(Node):
     def __init__(self) -> None:
         super().__init__("uav_tracking_px4_adapter")
@@ -173,6 +202,19 @@ class Px4AdapterNode(Node):
         self.declare_parameter("trajectory_setpoint_topic", "/fmu/in/trajectory_setpoint")
         self.declare_parameter("vehicle_odometry_topic", "/fmu/out/vehicle_odometry")
         self.declare_parameter("vehicle_odom_topic", "/vehicle/odometry")
+        self.declare_parameter("odometry_timestamp_mode", "receipt")
+        self.declare_parameter("odometry_source_max_age_s", .50)
+        self.declare_parameter("odometry_source_max_future_s", .05)
+        self.declare_parameter("odometry_timing_topic", "/vehicle/odometry_timing")
+        self._odometry_clock = OdometrySourceClock(
+            str(self.get_parameter("odometry_timestamp_mode").value),
+            use_sim_time=bool(self.get_parameter("use_sim_time").value),
+            max_age_s=float(self.get_parameter("odometry_source_max_age_s").value),
+            max_future_s=float(self.get_parameter("odometry_source_max_future_s").value),
+        )
+        self._frame_guard = VehicleFrameGuard()
+        if self._odometry_clock.mode == "receipt":
+            self.get_logger().warning("Legacy odometry receipt stamping enabled; source acquisition time is not preserved")
         # PX4 v1.17 / px4_msgs publishes VehicleStatus as ``vehicle_status_v1``.
         # Keep this as a parameter so older PX4 branches can override it.
         self.declare_parameter("vehicle_status_topic", "/fmu/out/vehicle_status_v1")
@@ -195,6 +237,9 @@ class Px4AdapterNode(Node):
         )
         self._vehicle_odom_pub = self.create_publisher(
             Odometry, str(self.get_parameter("vehicle_odom_topic").value), 20
+        )
+        self._odometry_timing_pub = self.create_publisher(
+            String, str(self.get_parameter("odometry_timing_topic").value), 20
         )
         self.create_subscription(TrackingCommand, str(self.get_parameter("command_topic").value), self._on_command, 20)
         self.create_subscription(
@@ -226,6 +271,30 @@ class Px4AdapterNode(Node):
         self._last_command = message
 
     def _on_vehicle_odometry(self, message: Any) -> None:
+        now = self.get_clock().now()
+        clock = getattr(self, "_odometry_clock", None)
+        resolved = None
+        if clock is not None:
+            resolved = clock.resolve(getattr(message, "timestamp_sample", None),
+                                     getattr(message, "timestamp", None), now.nanoseconds)
+            evidence = resolved.diagnostics(clock.mode)
+            evidence["source_time_valid"] = resolved.accepted
+            guard = getattr(self, "_frame_guard", None)
+            if guard is not None:
+                evidence.update(reset_counter=int(getattr(message, "reset_counter", -1)), frame_locked=guard.locked)
+                if resolved.accepted:
+                    frame_valid, frame_reason = guard.observe(getattr(message, "reset_counter", None))
+                    evidence.update(vehicle_frame_valid=frame_valid, vehicle_frame_reason=frame_reason)
+                    if not frame_valid:
+                        evidence.update(accepted=False, reason=frame_reason, odometry_header_s=None)
+            diagnostic = String()
+            diagnostic.data = json.dumps(evidence, allow_nan=False)
+            self._odometry_timing_pub.publish(diagnostic)
+            if not evidence["accepted"]:
+                self.get_logger().warning(
+                    f"PX4 odometry source/frame rejected: {evidence['reason']}", throttle_duration_sec=2.0
+                )
+                return
         try:
             position, velocity, quaternion = px4_odometry_to_enu(message)
         except (TypeError, ValueError) as exc:
@@ -234,14 +303,21 @@ class Px4AdapterNode(Node):
             )
             return
         odometry = Odometry()
-        # PX4 timestamps are in the flight controller's boot-time domain, so
-        # use the ROS clock for the transport age used by the controller.
-        odometry.header.stamp = self.get_clock().now().to_msg()
+        # The client may map PX4 source time into Agent system time. Only an
+        # explicit, validated clock contract allows a source header; receipt
+        # time remains separately observable in /vehicle/odometry_timing.
+        stamp = now.to_msg()
+        if resolved is not None:
+            stamp.sec, stamp.nanosec = divmod(resolved.header_ns, 1_000_000_000)
+        odometry.header.stamp = stamp
         odometry.header.frame_id = "map"
         odometry.child_frame_id = "base_link"
         odometry.pose.pose.position.x, odometry.pose.pose.position.y, odometry.pose.pose.position.z = position
         odometry.pose.pose.orientation.x, odometry.pose.pose.orientation.y = quaternion[:2]
         odometry.pose.pose.orientation.z, odometry.pose.pose.orientation.w = quaternion[2:]
+        covariance = px4_pose_covariance_to_enu(message)
+        odometry.pose.covariance = (covariance.reshape(-1).tolist() if covariance is not None
+                                    else np.diag([float("nan")] * 6).reshape(-1).tolist())
         odometry.twist.twist.linear.x, odometry.twist.twist.linear.y, odometry.twist.twist.linear.z = velocity
         self._vehicle_odom_pub.publish(odometry)
 
@@ -316,7 +392,20 @@ class Px4AdapterNode(Node):
                     )
                 )
             self._last_ready_state = vehicle_ready
-        motion_allowed = command_fresh and command.valid and vehicle_ready
+        guard = getattr(self, "_frame_guard", None)
+        clock = getattr(self, "_odometry_clock", None)
+        # Stop in the adapter's next control tick; waiting for old odometry
+        # to expire could forward commands in a newly reset PX4 world frame.
+        contract_allows_motion = not (
+            bool(getattr(guard, "latched", False)) or bool(getattr(clock, "latched", False))
+        )
+        motion_allowed = command_fresh and command.valid and vehicle_ready and contract_allows_motion
+        if (motion_allowed and guard is not None
+                and command.mode in (TrackingCommand.MODE_POSITION, TrackingCommand.MODE_VELOCITY)):
+            # The supervisor also streams valid zero velocity while disarmed
+            # in WAITING. Only a command that passes the actual vehicle gate
+            # may lock the local frame against later estimator resets.
+            guard.lock()
         position_mode = motion_allowed and command.mode == TrackingCommand.MODE_POSITION
         heartbeat = OffboardControlMode()
         heartbeat.timestamp = now

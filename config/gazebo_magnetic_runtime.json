@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "status": "AUDITED_INSTALLED_PACKAGES",
+  "environment_id": "ubuntu24_jazzy_gazebo_harmonic_20261029",
+  "environment": {
+    "os_id": "ubuntu",
+    "os_version": "24.04",
+    "ros_distro": "jazzy"
+  },
+  "source_registration": {
+    "gazebo_sim_version": "8.15.0",
+    "gazebo_sim_commit": "446a44335a45b704b4d36dabcc5508ee34eeb3d8",
+    "gazebo_sim_source_sha256": "4c2eab47814932a4df6b6255f46e379b1aa0feb41b248fd0ee13213d56a3016d",
+    "gazebo_sensors_version": "8.2.2",
+    "gazebo_sensors_commit": "9348f9fe8a11b9d50381819f51e17e136aedab8a",
+    "gazebo_sensors_source_sha256": "c66d3dbf29d6d158eb010b22a44e8e06fb93c518ca00129bfb8ac3685be49592"
+  },
+  "libraries": {
+    "gazebo_sim": {
+      "path": "/opt/ros/jazzy/opt/gz_sim_vendor/lib/gz-sim-8/plugins/libgz-sim8-magnetometer-system.so.8.15.0",
+      "sha256": "4e6e32b71016f5d35c25140e3b4b3c60230990f16bcd8a673a25558c767e2137",
+      "package": "ros-jazzy-gz-sim-vendor",
+      "package_version": "0.0.13-1noble.20260905.073557",
+      "package_file_md5_matches": true
+    },
+    "gazebo_sensors": {
+      "path": "/opt/ros/jazzy/opt/gz_sensors_vendor/lib/libgz-sensors8-magnetometer.so.8.2.2",
+      "sha256": "df01f2d40b77d4d9e892e77062c6d5b62137d00061bee73ac976e77e34f915f1",
+      "package": "ros-jazzy-gz-sensors-vendor",
+      "package_version": "0.0.6-1noble.20260905.071631",
+      "package_file_md5_matches": true
+    }
+  },
+  "package_repository_provenance": {
+    "repository": "http://packages.ros.org/ros2/ubuntu noble/main amd64",
+    "authentication": "gpgv verified /var/lib/apt/lists/packages.ros.org_ros2_ubuntu_dists_noble_InRelease with /usr/share/keyrings/ros-archive-keyring.gpg; RSA signing key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654",
+    "evidence": "Read-only audit in WSL Ubuntu on 2026-10-29: apt-cache policy matches installed ros-jazzy-gz-sim-vendor and ros-jazzy-gz-sensors-vendor; both installed ELF SHA-256 and dpkg package-file md5sums matched. gpgv exit 0 Good signature from Open Robotics <info@osrfoundation.org>; InRelease SHA-256 db99881d367f1fd10ab83f1bd2e1faeac4acf8fdbccbcf4fad01f1b008af0776."
+  },
+  "source_review": {
+    "gazebo_sensors_humble_variant": "The official gz-sensors8_8.3.0 release resolves to 6d74c1fe96d7277c7dec96a54bbc79d5c752e63c; downloading src/MagnetometerSensor.cc by this full commit reproduced SHA-256 c66d3dbf29d6d158eb010b22a44e8e06fb93c518ca00129bfb8ac3685be49592, equal to the audited 8.2.2 file. A matching file hash does not authorize unlisted commits."
+  }
+}

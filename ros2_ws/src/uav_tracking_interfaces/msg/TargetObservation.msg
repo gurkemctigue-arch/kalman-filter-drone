@@ -20,3 +20,11 @@ float32 depth_min_m
 float32 depth_max_m
 geometry_msgs/Point position_camera_m
 string camera_frame
+
+# Optional same-acquisition RGB-D support for an independent ground reference.
+# Flat xyz camera-optical coordinates; never simulator labels or model points.
+float32[] navigation_points_camera_m
+geometry_msgs/Vector3 navigation_bottom_ray_camera
+# Inside image bounds and no overlap with another confident detection (any class).
+# False forbids footprint geometry; surface identity tracking remains separate.
+bool navigation_bbox_complete

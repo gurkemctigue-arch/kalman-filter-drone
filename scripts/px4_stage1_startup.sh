@@ -7,3 +7,12 @@
 . etc/init.d-posix/rcS
 param set NAV_DLL_ACT 0
 param set COM_RC_IN_MODE 4
+# Evidence of the value used when rcS launched the client. The environment
+# override is applied before rcS; changing it here would be too late.
+param show UXRCE_DDS_SYNCT
+param show SENS_EN_MAGSIM
+if [ "${STAGE1_TAKEOFF_MODE:-offboard_velocity}" = "px4_native" ]; then
+    param show MIS_TAKEOFF_ALT
+    param show COM_TAKEOFF_ACT
+    param show SENS_IMU_MODE
+fi

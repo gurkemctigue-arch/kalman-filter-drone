@@ -22,6 +22,16 @@ def snapshot(t,box):
             "tracks":[{"track_id":1,"bbox_xyxy":box,"class_name":"person","confidence":.9,"matched":True}]}
 
 
+def requested(t=1.,uuid="task",bbox=None):
+    return {"target_uuid":uuid,"time_s":t,"image_stamp_s":t,
+            "bbox":bbox or [0,0,10,10],"class_name":"person"}
+
+
+def identity_row(t,physical="A",uuid="task"):
+    return {"time_s":t,"target_uuid":uuid,"expected_physical_id":"A",
+            "match":{"status":"known" if physical else "unknown","physical_id":physical}}
+
+
 class PhysicalIdentityEvaluatorTests(unittest.TestCase):
     def test_dynamic_camera_uses_source_time_physics_and_no_double_body_offset(self):
         def rows(position,yaw):
@@ -76,6 +86,93 @@ class PhysicalIdentityEvaluatorTests(unittest.TestCase):
             selections=[{"target_uuid":"task","time_s":1.1,"bbox":[0,0,10,10],"class_name":"person"}])
         self.assertIsNone(tasks["task"]["physical_id"])
         self.assertEqual(rows[0]["status"],"UNKNOWN_TASK_INITIAL_ID")
+
+
+class FixedTaskTimeIdentityTests(unittest.TestCase):
+    def truth(self,_timestamp):
+        return {"gt":[object_("A",0,10),object_("B",20,30)],"truth_complete":True}
+
+    def audit(self,rows,requests=None,confirmations=None,clocks=None,**kwargs):
+        return evaluation.task_time_identity(rows,[requested()] if requests is None else requests,
+            [{"target_uuid":"task","time_s":1.}] if confirmations is None else confirmations,
+            [0.,2.] if clocks is None else clocks,self.truth,**kwargs)
+
+    def test_stopped_diagnostic_stream_leaves_entire_clock_tail_unknown(self):
+        rows=[identity_row(1.01)]
+        self.assertEqual(evaluation.selected_identity_summary(rows)["known_coverage"],1.)
+        audit=self.audit(rows)
+        self.assertEqual(audit["interval"],{"start_s":1.,"end_s":2.})
+        self.assertEqual((audit["scheduled_samples"],audit["correct"],audit["unknown"]),(10,1,9))
+        self.assertAlmostEqual(audit["known_coverage"],.1)
+        self.assertEqual(audit["timeline"][-1]["outcome"],"unknown")
+
+    def test_never_confirmed_request_exists_without_any_snapshot(self):
+        audit=self.audit([],confirmations=[])
+        self.assertEqual(audit["requested_task_count"],1)
+        self.assertTrue(audit["tasks"]["task"]["initial_mapping_known"])
+        self.assertEqual(audit["tasks"]["task"]["expected_physical_id"],"A")
+        self.assertFalse(audit["tasks"]["task"]["confirmed"])
+        self.assertEqual(audit["unconfirmed_requested_tasks"],["task"])
+        self.assertEqual((audit["correct"],audit["wrong"],audit["unknown"]),(0,0,10))
+        self.assertEqual(audit["known_coverage"],0.)
+
+    def test_pending_confirmation_and_mixed_unknown_evidence_cannot_be_correct(self):
+        rows=[identity_row(1.01),identity_row(1.11),identity_row(1.12,None),identity_row(1.21)]
+        audit=self.audit(rows,confirmations=[{"target_uuid":"task","time_s":1.05}])
+        self.assertEqual([row["outcome"] for row in audit["timeline"][:3]],["unknown","unknown","correct"])
+        self.assertEqual(audit["unknown_reason_counts"]["request_not_yet_confirmed"],1)
+
+    def test_brief_wrong_actor_is_not_hidden_by_other_frames_in_same_cell(self):
+        rows=[identity_row(1.01,"B"),identity_row(1.02),identity_row(1.03,None)]
+        # The new audit independently establishes A from REQUEST, even if an
+        # old caller incorrectly labelled B as the expected actor.
+        rows[0]["expected_physical_id"]="B"
+        audit=self.audit(rows)
+        self.assertEqual(audit["timeline"][0]["outcome"],"wrong")
+        self.assertEqual((audit["wrong"],audit["correct"],audit["unknown"]),(1,0,9))
+
+    def test_reselection_registers_new_request_and_independent_expected_actor(self):
+        requests=[requested(),requested(1.5,"task2",[20,0,30,10])]
+        confirms=[{"target_uuid":"task","time_s":1.},{"target_uuid":"task2","time_s":1.6}]
+        audit=self.audit([identity_row(1.01),identity_row(1.61,"B","task2")],requests,confirms)
+        self.assertEqual(audit["requested_task_count"],2)
+        self.assertEqual(audit["tasks"]["task2"]["expected_physical_id"],"B")
+        self.assertEqual(audit["tasks"]["task"]["scheduled_samples"],5)
+        self.assertEqual(audit["tasks"]["task2"]["scheduled_samples"],5)
+        self.assertEqual((audit["correct"],audit["wrong"],audit["unknown"]),(2,0,8))
+        audit=self.audit([identity_row(1.01)],requests,confirms[:1])
+        self.assertEqual(audit["unconfirmed_requested_tasks"],["task2"])
+        self.assertEqual(audit["tasks"]["task2"]["unknown"],5)
+
+    def test_partial_final_cell_is_counted_and_end_is_excluded(self):
+        audit=self.audit([identity_row(1.01),identity_row(1.21),identity_row(1.25,"B")],clocks=[0.,1.25])
+        self.assertEqual((audit["scheduled_samples"],audit["correct"],audit["wrong"],audit["unknown"]),(3,2,0,1))
+        self.assertEqual(audit["timeline"][-1]["end_s"],1.25)
+        self.assertEqual(self.audit([],clocks=[0.,1.3])["scheduled_samples"],3)
+
+    def test_clear_and_mid_cell_task_boundary_do_not_inherit_correct_identity(self):
+        for action in ("CLEAR","RESET"):
+            audit=self.audit([identity_row(1.51)],lifecycle=[{"time_s":1.5,"action":action}])
+            self.assertEqual(audit["unknown_reason_counts"]["task_cleared_or_reset"],5)
+        requests=[requested(),requested(1.55,"task2",[20,0,30,10])]
+        audit=self.audit([identity_row(1.51)],requests,
+            [{"target_uuid":"task","time_s":1.},{"target_uuid":"task2","time_s":1.55}])
+        self.assertEqual(audit["timeline"][5]["reason"],"task_boundary_within_time_cell")
+
+    def test_unknown_initial_mapping_stays_unknown_despite_fresh_correct_boxes(self):
+        request=requested();request.pop("image_stamp_s")
+        audit=self.audit([identity_row(1.01)],requests=[request])
+        self.assertEqual(audit["correct"],0)
+        self.assertEqual(audit["unknown"],10)
+        self.assertFalse(audit["tasks"]["task"]["initial_mapping_known"])
+
+    def test_missing_clock_and_epoch_reset_are_incomplete_without_fake_zero_error(self):
+        for clocks in ([],[0.,2.,1.5],[0.,1.]):
+            audit=self.audit([identity_row(1.01)],clocks=clocks)
+            self.assertEqual(audit["evaluation_status"],"INCOMPLETE_EVIDENCE")
+            self.assertIsNone(audit["known_coverage"])
+            self.assertIsNone(audit["retention_lower_bound"])
+            self.assertEqual(audit["scheduled_samples"],0)
 
 
 if __name__=="__main__":unittest.main()

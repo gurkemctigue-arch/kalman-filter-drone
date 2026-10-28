@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
+from copy import deepcopy
 from dataclasses import dataclass, replace
 from math import hypot, isfinite
-from typing import Any, Hashable, Iterable, List, Optional, Sequence, Tuple
+from typing import Any, Hashable, Iterable, List, Mapping, Optional, Sequence, Tuple
 from uuid import uuid4
 
 import numpy as np
@@ -279,15 +280,61 @@ class TargetManager:
         # consider it immediately.
         track._matched_this_frame = True
         if detection.position_3d is not None:
-            track._filter.initialize(detection.position_3d, timestamp=track_timestamp)
+            kwargs = {}
+            if detection.metadata.get("additional_measurement_covariance") is not None:
+                kwargs["covariance"] = self._measurement_covariance(track._filter, detection)
+                if hasattr(track._filter, "_gate"):
+                    kwargs["additional_measurement_covariance"] = detection.metadata["additional_measurement_covariance"]
+            track._filter.initialize(detection.position_3d, timestamp=track_timestamp, **kwargs)
             track.last_measurement_timestamp = track_timestamp
             self._copy_filter_to_track(track)
+        self._record_measurement_attempt(track, detection, track_timestamp)
         self._tracks[track.track_id] = track
         return track
+
+    def _record_measurement_attempt(self, track: Track, detection: Detection,
+                                    timestamp: float) -> None:
+        # Raw/EMA/fixed output strategies share this exact acceptance filter.
+        # Inspecting it for logging must never predict, update or reset it.
+        gate = getattr(track._filter, "_gate", track._filter)
+        diagnostics = gate.last_update_diagnostics if detection.position_3d is not None else {
+            "schema_version": 1, "raw_measurement_m": None,
+            "measurement_timestamp_s": timestamp,
+            "prior_state": None, "prior_covariance": None,
+            "innovation_m": None, "innovation_covariance": None,
+            "measurement_covariance": None, "mahalanobis_squared": None,
+            "gate_threshold": self.gate_threshold, "gate_applied": False, "accepted": False,
+            "reason": "NO_WORLD_MEASUREMENT", "posterior_state": None,
+            "posterior_covariance": None,
+        }
+        diagnostics.update(
+            filter_role="acceptance_filter", estimator_method=self.estimator_method or "adaptive_kf",
+            attempted_bbox_xyxy=list(detection.bbox), attempted_confidence=detection.confidence,
+            attempted_depth_valid_fraction=detection.depth_valid_fraction,
+            attempted_depth_std_m=(detection.depth_stats.get("std", detection.depth_stats.get("depth_std"))
+                                   if isinstance(detection.depth_stats, Mapping)
+                                   else getattr(detection.depth_stats, "std", None)),
+            attempted_candidate_id=detection.metadata.get("candidate_id"),
+            additional_pose_covariance=detection.metadata.get("additional_measurement_covariance"),
+        )
+        track.last_measurement_diagnostics = deepcopy(diagnostics)
 
     @staticmethod
     def _position_of_detection(detection: Detection) -> Optional[np.ndarray]:
         return None if detection.position_3d is None else np.asarray(detection.position_3d, dtype=float)
+
+    @staticmethod
+    def _measurement_covariance(filter_: Any, detection: Detection) -> np.ndarray:
+        covariance = filter_.measurement_covariance(depth_stats=detection.depth_stats, confidence=detection.confidence)
+        additional = detection.metadata.get("additional_measurement_covariance")
+        if additional is not None:
+            additional = np.asarray(additional, dtype=float)
+            if (additional.shape != (3, 3) or not np.isfinite(additional).all()
+                    or not np.allclose(additional, additional.T, atol=1e-10)
+                    or np.linalg.eigvalsh(additional).min() < -1e-10):
+                raise ValueError("additional_measurement_covariance must be finite symmetric PSD 3x3")
+            covariance = covariance + additional
+        return covariance
 
     def _copy_filter_to_track(self, track: Track) -> None:
         if track._filter is None or not track._filter.initialized:
@@ -355,9 +402,7 @@ class TargetManager:
                 # depth jumps. Use the same quality-dependent R as KF fusion.
                 if distance > self.association_max_distance:
                     return None
-                covariance = track._filter.measurement_covariance(
-                    depth_stats=detection.depth_stats, confidence=detection.confidence,
-                )
+                covariance = self._measurement_covariance(track._filter, detection)
                 mahalanobis = track._filter.mahalanobis_distance(
                     detection_position, measurement_covariance=covariance,
                 )
@@ -534,12 +579,19 @@ class TargetManager:
         if track._filter is None:
             track._filter = self._new_filter()
         if detection.position_3d is not None:
+            covariance_kwargs = {}
+            if detection.metadata.get("additional_measurement_covariance") is not None:
+                covariance_kwargs["measurement_covariance"] = self._measurement_covariance(track._filter, detection)
+                if hasattr(track._filter, "_gate"):
+                    covariance_kwargs["additional_measurement_covariance"] = detection.metadata["additional_measurement_covariance"]
             accepted = track._filter.update(
                 detection.position_3d,
                 timestamp=track_timestamp,
                 depth_stats=detection.depth_stats,
                 confidence=detection.confidence,
+                **covariance_kwargs,
             )
+            self._record_measurement_attempt(track, detection, track_timestamp)
             if accepted:
                 track.last_measurement_timestamp = track_timestamp
                 self._copy_filter_to_track(track)
@@ -552,6 +604,8 @@ class TargetManager:
         elif track._filter.initialized:
             track._filter.predict(timestamp=track_timestamp)
             self._copy_filter_to_track(track)
+        if detection.position_3d is None:
+            self._record_measurement_attempt(track, detection, track_timestamp)
         # Commit the image/detector fields only after the optional 3-D gate has
         # accepted the measurement.  This prevents one bad depth sample from
         # dragging the association box away from a valid track.
@@ -664,7 +718,8 @@ class TargetManager:
         snapshots: dict[int, Track] = {}
         for track in self._tracks.values():
             self._expire_by_time(track, timestamp)
-            snapshot = replace(track, _filter=None, _matched_this_frame=False)
+            snapshot = replace(track, _filter=None, _matched_this_frame=False,
+                               last_measurement_diagnostics=deepcopy(track.last_measurement_diagnostics))
             if track._filter is not None and track._filter.initialized:
                 estimate = track._filter.project(timestamp)
                 snapshot.position_3d = tuple(float(value) for value in estimate.position)

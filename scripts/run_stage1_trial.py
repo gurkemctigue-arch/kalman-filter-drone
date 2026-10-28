@@ -82,13 +82,30 @@ def main() -> None:
     parser.add_argument("--estimator-method", choices=["raw", "ema", "fixed_kf", "adaptive_kf"], default="adaptive_kf")
     parser.add_argument("--desired-distance-m", type=float, default=None)
     parser.add_argument("--takeoff-height-m", type=float, default=3.0)
+    parser.add_argument("--takeoff-mode", choices=["offboard_velocity", "px4_native"], default="offboard_velocity",
+                        help="Opt-in native PX4 takeoff completes in-flight EKF alignment before Offboard handoff")
     parser.add_argument("--no-follow-duration-s", type=float, default=None)
     parser.add_argument("--model-path", default=None)
     parser.add_argument("--inference-threads", type=int, default=None)
     parser.add_argument("--inference-image-size", type=int, default=None)
+    parser.add_argument("--max-inference-rate-hz", type=float, default=None,
+                        help="Acquisition submission rate cap; does not change any freshness/safety threshold")
+    parser.add_argument("--monitor-tick-s", type=float, default=0.10,
+                        help="Shutter scheduler resolution; acknowledgement-based minimum dwell is unchanged")
+    parser.add_argument("--control-reference", choices=["visible_surface", "ground_footprint"], default="visible_surface")
+    parser.add_argument("--magnetic-environment", choices=["archived_source", "coherent_wmm", "gazebo_enu"], default="archived_source")
+    parser.add_argument("--magnetic-runtime-manifest", default=None,
+                        help="Verified separate PX4 ELF/source manifest required for the opt-in Gazebo ENU magnetic contract")
+    parser.add_argument("--magnetic-library-registration", default=None,
+                        help="Pre-audited per-environment Gazebo ELF registration; gazebo_enu defaults to config/gazebo_magnetic_runtime.json (Jazzy)")
+    parser.add_argument("--propagate-vehicle-uncertainty", action="store_true")
+    parser.add_argument("--px4-time-mode", choices=["receipt", "source_sim"], default="receipt",
+                        help="source_sim disables XRCE wall-time mapping before client startup and validates PX4 source time against /clock")
     parser.add_argument("--real-time-factor", type=float, default=1.0)
     parser.add_argument("--motion-profile-kind", choices=["standard", "speed_changes"], default="standard")
     args = parser.parse_args()
+    if not math.isfinite(args.monitor_tick_s) or not .01 <= args.monitor_tick_s <= .10:
+        parser.error("monitor tick must be finite and in [0.01,0.10] seconds")
     if args.multi_target and args.stage != 3:
         parser.error("--multi-target is only used for stage-three joint trials; stage two is already multi-target")
     if not 0 < args.short_occlusion_s < 0.75:
@@ -109,18 +126,45 @@ def main() -> None:
         parser.error("desired distance must be in [2,20] m")
     if not 2 <= args.takeoff_height_m <= 6:
         parser.error("takeoff height must be in [2,6] m")
+    if args.takeoff_mode == "px4_native" and args.px4_time_mode != "source_sim":
+        parser.error("px4_native startup requires the explicit source_sim timestamp contract")
     if not 0 < args.real_time_factor <= 1:
         parser.error("simulation real-time factor must be in (0,1]")
     args.supervisor_status_timeout_wall_s = simulation_status_watchdog_s(args.real_time_factor)
+    if args.control_reference == "ground_footprint":
+        # Declared vehicle geometry for independent offline scoring only.
+        # Runtime tracking/control never consumes Gazebo truth.
+        args.vehicle_control_point_offset_flu_m = [0.0, 0.0, 0.24]
     root = Path(__file__).resolve().parents[1]
+    magnetic_runtime = None
+    if args.magnetic_environment == "gazebo_enu":
+        if not args.magnetic_runtime_manifest:
+            parser.error("gazebo_enu requires --magnetic-runtime-manifest for a separately built compatible PX4")
+        from prepare_px4_magnetic_compatibility import validate_runtime_manifest
+        magnetic_runtime = validate_runtime_manifest(Path(args.magnetic_runtime_manifest))
+        from capture_gazebo_magnetic_libraries import load_registration
+        args.magnetic_library_registration = str(Path(args.magnetic_library_registration or
+            root / "config/gazebo_magnetic_runtime.json").resolve())
+        load_registration(Path(args.magnetic_library_registration))
+        configured_px4 = os.environ.get("STAGE1_PX4_ROOT")
+        if configured_px4 and Path(configured_px4).resolve() != Path(magnetic_runtime["source_root"]).resolve():
+            parser.error("STAGE1_PX4_ROOT conflicts with the verified magnetic runtime")
+    elif args.magnetic_runtime_manifest or args.magnetic_library_registration:
+        parser.error("magnetic runtime manifests and library registrations are only used with gazebo_enu")
     output = root / "results" / args.name
     output.mkdir(parents=True, exist_ok=False)
     env = dict(os.environ, STAGE1_AUTO_START="true", STAGE1_PROJECT_ROOT=str(root),
                STAGE1_COMMAND_MODE=args.command_mode,
                STAGE_SIM_SEED=str(args.gazebo_seed),
                STAGE1_RENDER_BACKEND=args.render_backend,
-               GZ_PARTITION="stage1_flight", GZ_IP="127.0.0.1", ROS_DOMAIN_ID="0",
+               STAGE1_PX4_TIME_MODE=args.px4_time_mode,
+               STAGE1_TAKEOFF_MODE=args.takeoff_mode,
+               GZ_PARTITION=os.environ.get("GZ_PARTITION", "stage1_flight"), GZ_IP="127.0.0.1",
+               ROS_DOMAIN_ID=os.environ.get("ROS_DOMAIN_ID", "0"),
                PYTHONUNBUFFERED="1", OMP_NUM_THREADS="2", LP_NUM_THREADS="4", STAGE_START_PAUSED="1")
+    if magnetic_runtime is not None:
+        env["STAGE1_PX4_ROOT"] = magnetic_runtime["source_root"]
+        env["STAGE1_PX4_MAG_CONTRACT"] = magnetic_runtime["contract"]
     world = f"stage{args.stage}_flight"
     env.update(STAGE_WORLD=world, STAGE_LAUNCH=f"stage{args.stage}_flight.launch.py",
                STAGE_SPEED_MPS=str(args.speed_mps), STAGE_GIMBAL_MODE=args.gimbal_mode,
@@ -131,12 +175,22 @@ def main() -> None:
     (output / "run_config.json").write_text(json.dumps(vars(args), indent=2), encoding="utf-8")
     snapshot = output / "configuration"
     snapshot.mkdir()
+    if magnetic_runtime is not None:
+        shutil.copy2(args.magnetic_runtime_manifest, snapshot / "px4_magnetic_runtime.json")
+        shutil.copy2(args.magnetic_library_registration,
+                     snapshot / "gazebo_magnetic_runtime_registration.json")
     px4_root=Path(env.get("STAGE1_PX4_ROOT","/root/PX4-Autopilot"))
     parameter_evidence={"before":snapshot_px4_parameters(px4_root,snapshot,"before"),
                         "startup_wrapper":"scripts/px4_stage1_startup.sh",
-                        "explicit_environment_overrides":{"COM_RC_IN_MODE":4,"NAV_DLL_ACT":0},
+                        "explicit_environment_overrides":{"COM_RC_IN_MODE":4,"NAV_DLL_ACT":0,
+                            "UXRCE_DDS_SYNCT":0 if args.px4_time_mode == "source_sim" else 1},
                         "policy":"Archive only; no reset/import/overwrite of rootfs parameters"}
     parameter_manifest=snapshot/"px4_parameters.json"
+    if magnetic_runtime is not None:
+        parameter_evidence["explicit_environment_overrides"]["SENS_EN_MAGSIM"] = 0
+    if args.takeoff_mode == "px4_native":
+        parameter_evidence["explicit_environment_overrides"].update(
+            MIS_TAKEOFF_ALT=args.takeoff_height_m, COM_TAKEOFF_ACT=0, SENS_IMU_MODE=1)
     parameter_manifest.write_text(json.dumps(parameter_evidence,indent=2),encoding="utf-8")
     bringup = root / "ros2_ws" / "src" / "uav_tracking_bringup"
     config_path = bringup / "config" / f"stage{args.stage}_tracking_{args.target_class}.yaml"
@@ -167,9 +221,28 @@ def main() -> None:
         identity_config_path = apply_multi_target_identity(parameters, bringup, args.target_class)
         shutil.copy2(identity_config_path, snapshot / identity_config_path.name)
     runtime_world = snapshot / "runtime_world.sdf"
-    world_tree = ET.parse(world_source)
+    if args.magnetic_environment == "coherent_wmm":
+        from configure_sim_magnetic_field import configure_world
+        lookup = snapshot / "px4_wmm_reference.json"
+        shutil.copy2(root / "config/px4_wmm_reference.json", lookup)
+        configure_world(world_source, runtime_world, snapshot / "magnetic_environment.json", lookup_json=lookup)
+    elif args.magnetic_environment == "gazebo_enu":
+        from configure_gazebo_magnetic_contract import configure_world
+        lookup = snapshot / "gazebo_magnetic_reference.json"
+        shutil.copy2(root / "config/gazebo_magnetic_reference.json", lookup)
+        load_registration(snapshot / "gazebo_magnetic_runtime_registration.json", lookup)
+        configure_world(world_source, runtime_world, snapshot / "magnetic_environment.json",
+                        runtime_manifest=snapshot / "px4_magnetic_runtime.json", lookup_json=lookup)
+    world_tree = ET.parse(runtime_world if runtime_world.exists() else world_source)
     world_tree.find("world/physics/real_time_factor").text = str(args.real_time_factor)
     world_tree.write(runtime_world, encoding="utf-8", xml_declaration=True)
+    if args.magnetic_environment in {"coherent_wmm", "gazebo_enu"}:
+        magnetic_evidence_path = snapshot / "magnetic_environment.json"
+        magnetic_evidence = json.loads(magnetic_evidence_path.read_text(encoding="utf-8"))
+        magnetic_evidence["configured_world_sha256_before_runtime_overrides"] = magnetic_evidence["runtime_world_sha256"]
+        magnetic_evidence["runtime_world_sha256"] = hashlib.sha256(runtime_world.read_bytes()).hexdigest()
+        magnetic_evidence["runtime_real_time_factor"] = args.real_time_factor
+        magnetic_evidence_path.write_text(json.dumps(magnetic_evidence, indent=2), encoding="utf-8")
     env["STAGE_WORLD_FILE"] = str(runtime_world)
     if args.model_path:
         parameters["uav_tracking_detection"]["ros__parameters"]["model_path"] = args.model_path
@@ -181,7 +254,47 @@ def main() -> None:
         if args.inference_image_size < 128 or args.inference_image_size % 32:
             parser.error("inference size must be a multiple of 32 and at least 128")
         parameters["uav_tracking_detection"]["ros__parameters"]["inference_image_size"] = args.inference_image_size
+    if args.max_inference_rate_hz is not None:
+        if not math.isfinite(args.max_inference_rate_hz) or args.max_inference_rate_hz <= 0:
+            parser.error("max inference rate must be finite and positive")
+        parameters["uav_tracking_detection"]["ros__parameters"]["max_inference_rate_hz"] = args.max_inference_rate_hz
+    if args.control_reference == "ground_footprint":
+        parameters["uav_tracking_detection"]["ros__parameters"]["navigation_enabled"] = True
+        # The new geometry contract requires one aligned acquisition. Waiting
+        # for matching depth is preferable to moving a prior frame's cloud
+        # with the current gimbal TF. Camera frames are generated at 10 Hz.
+        parameters["uav_tracking_detection"]["ros__parameters"]["depth_max_age_s"] = .02
+        estimator = parameters["uav_tracking_state_estimator"]["ros__parameters"]
+        estimator["navigation_enabled"] = True
+        estimator["navigation_dimensions_m"] = [4.5, 1.8, 1.5] if args.target_class == "car" else [.5, .5, 1.7]
+        estimator["navigation_dimension_std_m"] = [.45, .18, .15] if args.target_class == "car" else [.1, .1, .2]
+        parameters["uav_tracking_controller"]["ros__parameters"]["state_topic"] = "/tracking/navigation_state"
     parameters["uav_tracking_state_estimator"]["ros__parameters"]["estimator_method"] = args.estimator_method
+    parameters["uav_tracking_state_estimator"]["ros__parameters"]["propagate_vehicle_uncertainty"] = args.propagate_vehicle_uncertainty
+    parameters["uav_tracking_px4_adapter"]["ros__parameters"]["odometry_timestamp_mode"] = args.px4_time_mode
+    parameters["uav_tracking_px4_adapter"]["ros__parameters"]["odometry_source_max_age_s"] = .50
+    parameters["uav_tracking_px4_adapter"]["ros__parameters"]["odometry_source_max_future_s"] = .05
+    parameters["uav_tracking_px4_adapter"]["ros__parameters"]["odometry_timing_topic"] = "/vehicle/odometry_timing"
+    # Record the launch overrides too, so the saved parameter contract is
+    # sufficient for an independent evaluator without consulting current code.
+    parameters["uav_tracking_px4_adapter"]["ros__parameters"].update(
+        use_sim_time=True, command_topic="/tracking/flight_command", require_vehicle_status=True,
+        vehicle_status_topic="/fmu/out/vehicle_status_v1")
+    parameters["uav_tracking_controller"]["ros__parameters"]["command_mode"] = args.command_mode
+    parameters["uav_tracking_detection"]["ros__parameters"].update(
+        activation_phase_topic="/tracking/flight_phase", image_reliability="reliable")
+    parameters["uav_tracking_flight_supervisor"]["ros__parameters"].update(
+        auto_start=True, simulation_only=True, takeoff_height_m=args.takeoff_height_m,
+        takeoff_mode=args.takeoff_mode, use_sim_time=True)
+    if args.takeoff_mode == "px4_native":
+        parameters["uav_tracking_flight_supervisor"]["ros__parameters"].update(
+            native_settle_s=1.0, native_settle_speed_mps=.20,
+            takeoff_position_tolerance_m=.18,
+            local_position_topic="/fmu/out/vehicle_local_position_v1",
+            estimator_flags_topic="/fmu/out/estimator_status_flags")
+    if args.stage == 3:
+        parameters["uav_tracking_controller"]["ros__parameters"]["enable_gimbal_yaw_reference"] = True
+        parameters.setdefault("uav_tracking_gimbal", {}).setdefault("ros__parameters", {})["gimbal_mode"] = args.gimbal_mode
     if args.desired_distance_m is not None:
         parameters["uav_tracking_controller"]["ros__parameters"]["desired_distance_m"] = args.desired_distance_m
     if args.target_mode:
@@ -259,21 +372,36 @@ def main() -> None:
             time.sleep(1)
         if not ready:
             raise RuntimeError("Gazebo world service did not become available")
+        if magnetic_runtime is not None:
+            from capture_gazebo_magnetic_libraries import capture_ready
+            try:
+                libraries = capture_ready(processes["gazebo"].pid,
+                    registration_json=snapshot / "gazebo_magnetic_runtime_registration.json",
+                    lookup_json=snapshot / "gazebo_magnetic_reference.json")
+                (snapshot / "gazebo_loaded_magnetic_libraries.json").write_text(
+                    json.dumps(libraries, indent=2), encoding="utf-8")
+            except (OSError, ValueError) as error:
+                (snapshot / "gazebo_loaded_magnetic_libraries_error.json").write_text(
+                    json.dumps({"verified": False, "error": str(error)}), encoding="utf-8")
+                raise RuntimeError("Gazebo magnetic library provenance failed before PX4 startup") from error
         start("px4", ["bash", str(runner), "px4", args.target_class])
         time.sleep(3)
         if not args.no_bag:
             topics = ["/clock", "/camera/color/image_raw", "/camera/aligned_depth_to_color/image_raw", "/camera/color/camera_info",
                       "/tracking/observations", "/tracking/observation_frames", "/tracking/state", "/tracking/status", "/tracking/command", "/tracking/flight_command",
-                      "/tracking/flight_phase", "/tracking/detection_diagnostics", "/tracking/selection", "/vehicle/odometry", "/tf", "/tf_static",
+                      "/tracking/flight_phase", "/tracking/detection_diagnostics", "/tracking/selection", "/vehicle/odometry", "/vehicle/odometry_timing", "/tf", "/tf_static",
                       "/fmu/out/vehicle_odometry", "/fmu/out/vehicle_status_v1", "/fmu/out/vehicle_command_ack",
+                      "/fmu/out/vehicle_local_position_v1", "/fmu/out/estimator_status_flags",
                       "/fmu/in/vehicle_command", "/fmu/in/trajectory_setpoint", "/fmu/in/offboard_control_mode",
                       "/ground_truth/poses", "/ground_truth/vehicle_poses"]
             topics.extend(["/tracking/tracks", "/gimbal/joint_states", "/gimbal/diagnostics", "/gimbal/body_yaw_reference",
                            "/gimbal/yaw/cmd_pos", "/gimbal/pitch/cmd_pos", "/gimbal/roll/cmd_pos", "/scenario/stage2_profile",
                            "/research/camera/color/image_raw", "/research/camera/aligned_depth_to_color/image_raw"])
+            topics.extend(["/tracking/navigation_state", "/tracking/navigation_diagnostics"])
             start("bag", ["ros2", "bag", "record", "--storage", "sqlite3", "--compression-mode", "file", "--compression-format", "zstd", "-o", str(output / "rosbag"), *topics])
         monitor_cmd = [sys.executable, str(root / "scripts" / "stage1_flight_monitor.py"), "--output", str(output), "--target-class", args.target_class,
                        "--duration", str(args.duration), "--wall-timeout", str(args.wall_timeout), "--world", world,
+                       "--monitor-tick-s", str(args.monitor_tick_s),
                        "--initial-select", args.initial_select, "--initial-min-candidates", str(args.initial_min_candidates)]
         if args.occlusions:
             monitor_cmd.append("--occlusions")
@@ -342,6 +470,18 @@ def main() -> None:
         (output / "process_exit_codes.json").write_text(json.dumps({name: p.poll() for name, p in processes.items()}, indent=2), encoding="utf-8")
         parameter_evidence["after"]=snapshot_px4_parameters(px4_root,snapshot,"after")
         parameter_manifest.write_text(json.dumps(parameter_evidence,indent=2),encoding="utf-8")
+        if magnetic_runtime is not None:
+            from prepare_px4_magnetic_compatibility import verify_runtime, assert_runtime_unchanged
+            try:
+                verified = verify_runtime(px4_root, output / "px4.log")
+                assert_runtime_unchanged(magnetic_runtime, verified)
+                (snapshot / "px4_magnetic_runtime_actual.json").write_text(
+                    json.dumps(verified, indent=2), encoding="utf-8")
+            except (OSError, ValueError, subprocess.CalledProcessError) as error:
+                (snapshot / "px4_magnetic_runtime_verification_error.json").write_text(
+                    json.dumps({"verified": False, "error": str(error)}), encoding="utf-8")
+                if processes.get("monitor") is not None and processes["monitor"].poll() == 0:
+                    raise RuntimeError("Flight ended without verified magnetic PX4 startup provenance") from error
 
 
 if __name__ == "__main__":

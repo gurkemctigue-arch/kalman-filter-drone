@@ -186,6 +186,8 @@ class FlightMonitor(Node):
         self.create_subscription(Odometry, "/vehicle/odometry", self.on_odom, 10)
         self.create_subscription(TargetObservation, "/tracking/observations", self.on_observation, 20)
         self.create_subscription(TargetState, "/tracking/state", self.on_state, 20)
+        self.create_subscription(TargetState, "/tracking/navigation_state", self.on_navigation_state, 20)
+        self.create_subscription(String, "/tracking/navigation_diagnostics", self.on_navigation_diagnostics, 20)
         self.create_subscription(TrackingStatus, "/tracking/status", self.on_status, 20)
         self.create_subscription(TrackingCommand, "/tracking/command", self.on_command, 20)
         self.create_subscription(String, "/tracking/detection_diagnostics", self.on_diagnostics, 20)
@@ -196,10 +198,25 @@ class FlightMonitor(Node):
         self.create_subscription(TrajectorySetpoint, "/fmu/in/trajectory_setpoint", self.on_setpoint, 20)
         self.create_subscription(Image, "/camera/color/image_raw", self.on_image,
                                  QoSProfile(depth=1, reliability=ReliabilityPolicy.RELIABLE))
-        self.create_timer(0.10, self.tick)
+        self.create_timer(float(getattr(args, "monitor_tick_s", .10)), self.tick)
 
     def now_s(self) -> float:
         return self.get_clock().now().nanoseconds * 1e-9
+
+    def on_navigation_state(self, msg) -> None:
+        self.event("navigation_state", stamp_s=float(msg.header.stamp.sec) + float(msg.header.stamp.nanosec) * 1e-9,
+                   state=int(msg.state), track_id=int(msg.track_id), target_uuid=msg.target_uuid,
+                   prediction_age_s=float(msg.prediction_age_s),
+                   position_m=[msg.position_m.x, msg.position_m.y, msg.position_m.z],
+                   velocity_mps=[msg.velocity_mps.x, msg.velocity_mps.y, msg.velocity_mps.z])
+
+    def on_navigation_diagnostics(self, msg) -> None:
+        try:
+            payload = json.loads(msg.data)
+        except (TypeError, ValueError):
+            self.event("invalid_navigation_diagnostics")
+            return
+        self.event("navigation_diagnostics", **payload)
 
     def event(self, kind: str, **data) -> None:
         self.log.write(json.dumps({"time_s": self.now_s(), "kind": kind, **data}, allow_nan=False) + "\n")
@@ -649,10 +666,13 @@ def main() -> int:
                         help="Explicit simulation-time endpoint for tests that must remain in HOVER")
     parser.add_argument("--occlusions", action="store_true")
     parser.add_argument("--short-occlusion-s", type=float, default=0.2)
+    parser.add_argument("--monitor-tick-s", type=float, default=.10)
     parser.add_argument("--reselect-after-loss", action="store_true")
     parser.add_argument("--initial-select", choices=["none", "leftmost", "middle", "rightmost"], default="none")
     parser.add_argument("--initial-min-candidates", type=int, default=2)
     args = parser.parse_args()
+    if not math.isfinite(args.monitor_tick_s) or not .01 <= args.monitor_tick_s <= .10:
+        parser.error("monitor tick must be finite and in [0.01,0.10] seconds")
     rclpy.init()
     node = FlightMonitor(args)
     interrupted = False

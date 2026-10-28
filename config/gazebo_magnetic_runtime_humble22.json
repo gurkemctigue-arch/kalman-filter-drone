@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "status": "AUDITED_INSTALLED_PACKAGES",
+  "environment_id": "UAVHumble22_ubuntu22_humble_osrf_harmonic",
+  "audited_at_utc": "2026-10-28T21:04:39.033092+00:00",
+  "environment": {
+    "os_id": "ubuntu",
+    "os_version": "22.04",
+    "ros_distro": "humble"
+  },
+  "source_registration": {
+    "gazebo_sim_version": "8.15.0",
+    "gazebo_sim_commit": "446a44335a45b704b4d36dabcc5508ee34eeb3d8",
+    "gazebo_sim_source_sha256": "4c2eab47814932a4df6b6255f46e379b1aa0feb41b248fd0ee13213d56a3016d",
+    "gazebo_sensors_version": "8.3.0",
+    "gazebo_sensors_commit": "6d74c1fe96d7277c7dec96a54bbc79d5c752e63c",
+    "gazebo_sensors_source_sha256": "c66d3dbf29d6d158eb010b22a44e8e06fb93c518ca00129bfb8ac3685be49592"
+  },
+  "libraries": {
+    "gazebo_sim": {
+      "path": "/usr/lib/x86_64-linux-gnu/gz-sim-8/plugins/libgz-sim8-magnetometer-system.so.8.15.0",
+      "sha256": "2503f8e1a13e04716085d9ece73d838b4a5c439b9f73322b945d536f61c9dcce",
+      "package": "libgz-sim8-plugins:amd64",
+      "package_version": "8.15.0-1~jammy",
+      "package_file_md5_matches": true,
+      "package_file_md5": "7fd87ae02180f2b7fffd2b82b662feea"
+    },
+    "gazebo_sensors": {
+      "path": "/usr/lib/x86_64-linux-gnu/libgz-sensors8-magnetometer.so.8.3.0",
+      "sha256": "c1607e783ba02c2c6888ced461242bac47624a07d55843a80e3b679d5431ef39",
+      "package": "libgz-sensors8-magnetometer:amd64",
+      "package_version": "8.3.0-1~jammy",
+      "package_file_md5_matches": true,
+      "package_file_md5": "eed5c9fa19e979b3304a23f26b9f79d5"
+    }
+  },
+  "package_repository_provenance": {
+    "repository": "https://packages.osrfoundation.org/gazebo/ubuntu-stable jammy/main amd64",
+    "authentication": "Official signed APT installation; OSRF InRelease independently verified with gpgv; installed ELF bytes match package md5sums. Source-tag review is separate from installed-binary provenance.",
+    "signing_key_fingerprint": "D2486D2DD83DB69272AFE98867170598AF249743",
+    "evidence": "Read-only package/ELF audit: D:/WSL/UAVHumble22-validation/logs/magnetic_packages_audit.json and prepared_environment.json. gpgv verified the installed OSRF Jammy InRelease with /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg; InRelease SHA-256 23a674e28411949a0eae66eeee4ddac28d49accb36f1cd3115669ff5aea2048a. Exact paths are retained in evidence_files.",
+    "evidence_files": {
+      "prepared_environment": "D:/WSL/UAVHumble22-validation/logs/prepared_environment.json",
+      "package_file_audit": "D:/WSL/UAVHumble22-validation/logs/magnetic_packages_audit.json",
+      "inrelease_path": "/var/lib/apt/lists/packages.osrfoundation.org_gazebo_ubuntu-stable_dists_jammy_InRelease",
+      "inrelease_sha256": "23a674e28411949a0eae66eeee4ddac28d49accb36f1cd3115669ff5aea2048a",
+      "keyring": "/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg"
+    }
+  },
+  "source_review_evidence": {
+    "gazebo_sensors_release": "https://github.com/gazebosim/gz-sensors/releases/tag/gz-sensors8_8.3.0",
+    "gazebo_sensors_source": "https://raw.githubusercontent.com/gazebosim/gz-sensors/6d74c1fe96d7277c7dec96a54bbc79d5c752e63c/src/MagnetometerSensor.cc",
+    "review": "The complete 8.3.0 MagnetometerSensor.cc file has the same SHA256 as the reviewed 8.2.2 file. Its world-field inverse rotation and published field-vector convention are unchanged."
+  },
+  "claim_limit": "This registers the installed Jammy libraries and reviewed upstream source. It does not assert a reproducible binary build, a running Gazebo/PX4 instance, or successful flight."
+}

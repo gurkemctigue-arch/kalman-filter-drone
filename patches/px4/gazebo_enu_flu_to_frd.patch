@@ -1,0 +1,31 @@
+--- a/src/modules/simulation/gz_bridge/GZBridge.cpp
++++ b/src/modules/simulation/gz_bridge/GZBridge.cpp
+@@ -89,6 +89,8 @@
+ 		return PX4_ERROR;
+ 	}
+ 
++	PX4_INFO("magnetic frame contract: gazebo_enu_flu_to_frd_v1");
++
+ 	// OPTIONAL:
+ 	if (_sim_gz_en_gps.get()) {
+ 		if (!subscribeNavsat(false)) {
+@@ -396,12 +398,13 @@
+ 	report.device_id = id.devid;
+ 	report.temperature = this->_temperature;
+ 
+-	// FIMEX: once we're on jetty or later
+-	// The magnetometer plugin publishes in units of gauss and in a weird left handed coordinate system
+-	// https://github.com/gazebosim/gz-sim/pull/2460
+-	report.x = -msg.field_tesla().y();
+-	report.y = -msg.field_tesla().x();
+-	report.z = msg.field_tesla().z();
++	// Compatibility contract gazebo_enu_flu_to_frd_v1: the world plugin must
++	// use_earth_frame_ned=false and use_units_gauss=true. gz-sensors reports
++	// the magnetic vector in this aligned sensor/body FLU frame. Convert to
++	// PX4 body FRD; this is a proper rotation for arbitrary vehicle attitude.
++	report.x = msg.field_tesla().x();
++	report.y = -msg.field_tesla().y();
++	report.z = -msg.field_tesla().z();
+ 
+ 	_sensor_mag_pub.publish(report);
+ }

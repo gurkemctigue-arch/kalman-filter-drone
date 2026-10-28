@@ -96,6 +96,7 @@ def healthy_trial(root, trial, *, sitl=0, verdict="FAIL", monitor_reason="wall_t
 
 class GuardedFullPlanTests(unittest.TestCase):
     def fixture(self, root):
+        root = root.resolve()
         root.mkdir(exist_ok=True)
         write(root / "planning/online_estimator_preregistration.json", {"fixture": True})
         source = root / "scripts/frozen.py"

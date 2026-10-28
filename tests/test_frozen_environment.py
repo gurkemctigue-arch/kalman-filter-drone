@@ -87,7 +87,8 @@ class OfflineEnvironmentShellTests(unittest.TestCase):
                 "'sourced':os.environ.get('SOURCED_PATHS')}))\n")
             python.chmod(0o755)
             environment = dict(os.environ, PATH=str(binary) + os.pathsep + os.environ["PATH"],
-                               PYTHONPATH="/old/editable/project")
+                               PYTHONPATH="/old/editable/project",
+                               STAGE1_PYTHON_EXECUTABLE=str(python))
             environment.pop("STAGE1_PROJECT_ROOT", None)
             if override is not None:
                 environment["STAGE1_PROJECT_ROOT"] = str(root) if override == "same" else "/old/project"

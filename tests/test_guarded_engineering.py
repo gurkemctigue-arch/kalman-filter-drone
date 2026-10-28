@@ -23,6 +23,9 @@ def write(path, value):
 
 
 def fixture(root):
+    # Windows TEMP may use an 8.3 spelling. Frozen roots use canonical paths,
+    # so fixtures must use the same contract as read_plan().
+    root = root.resolve()
     write(root / "planning/online_estimator_preregistration.json", {"fixture": True})
     source = root / "scripts/frozen.py"
     source.parent.mkdir()

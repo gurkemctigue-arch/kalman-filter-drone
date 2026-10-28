@@ -35,6 +35,6 @@ def generate_launch_description():
         Node(package="uav_tracking_nodes", executable="detector", name="uav_tracking_detection", parameters=[params, sim_time, {"activation_phase_topic": "/tracking/flight_phase", "image_reliability": "reliable"}], output="screen"),
         Node(package="uav_tracking_nodes", executable="state_estimator", name="uav_tracking_state_estimator", parameters=[params, sim_time], output="screen"),
         Node(package="uav_tracking_nodes", executable="controller", name="uav_tracking_controller", parameters=[params, sim_time, {"command_mode": LaunchConfiguration("command_mode"), "enable_gimbal_yaw_reference": True}], output="screen"),
-        Node(package="uav_tracking_bringup", executable="gimbal_adapter", name="uav_tracking_gimbal", parameters=[sim_time, {"gimbal_mode": LaunchConfiguration("gimbal_mode")}], output="screen"),
+        Node(package="uav_tracking_bringup", executable="gimbal_adapter", name="uav_tracking_gimbal", parameters=[params, sim_time, {"gimbal_mode": LaunchConfiguration("gimbal_mode")}], output="screen"),
         Node(package="uav_tracking_px4_adapter", executable="flight_supervisor", name="uav_tracking_flight_supervisor", parameters=[params, sim_time, {"auto_start": ParameterValue(LaunchConfiguration("auto_start"), value_type=bool), "simulation_only": True, "takeoff_height_m": ParameterValue(LaunchConfiguration("takeoff_height_m"), value_type=float)}], output="screen"),
     ])

@@ -2,8 +2,7 @@
 # Component checks supplement recorded flights; they do not certify flight by themselves.
 set -eo pipefail
 stage1_project="${STAGE1_PROJECT_ROOT:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)}"
-source /opt/ros/jazzy/setup.bash
-source /root/px4_msgs_ws/install/setup.bash
+source "$stage1_project/scripts/source_ros_environment.sh"
 source "$stage1_project/ros2_ws/install/setup.bash"
 export PYTHONPATH="$stage1_project:${PYTHONPATH:-}"
 cd "$stage1_project"

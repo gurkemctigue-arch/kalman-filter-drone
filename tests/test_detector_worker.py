@@ -242,6 +242,45 @@ class DetectorSchedulingTests(unittest.TestCase):
         node._publisher = NS(publish=observations.append)
         return diagnostics, observations
 
+    def test_native_takeoff_does_not_create_a_visual_task_before_hold(self):
+        node, _ = self.make_node()
+        node._tracking_active, node._activation_stamp_s = False, None
+        for phase in ("WAITING", "REQUEST_NATIVE_TAKEOFF", "NATIVE_TAKEOFF", "REQUEST_OFFBOARD"):
+            node._on_phase(NS(data=phase + ": startup"))
+            self.assertFalse(node._tracking_active)
+            self.assertIsNone(node._activation_stamp_s)
+        self.set_time(node, 30.)
+        node._on_phase(NS(data="HOLD: final alignment complete"))
+        self.assertTrue(node._tracking_active)
+        self.assertAlmostEqual(node._activation_stamp_s, 30.)
+
+    def test_inference_started_before_handoff_cannot_commit_an_earlier_image(self):
+        node, warnings = self.make_node()
+        node._tracking_active, node._activation_stamp_s = False, None
+        self.set_time(node, 30.)
+
+        def predict(*args, **kwargs):
+            node._on_phase(NS(data="HOLD: native takeoff complete"))
+            return [NS(boxes=[])]
+
+        diagnostics, observations = self.configure_fake_inference(node, predict)
+        frames = []
+        node._frame_publisher = NS(publish=frames.append)
+        with patch.object(detector, "String", lambda: NS(data=""), create=True), \
+                patch.object(detector, "TargetObservationArray", NS, create=True):
+            node._on_rgb(image(29.9)); node._on_depth(image(29.9)); node._process_latest()
+            self.assertTrue(node._worker.wait_idle(1))
+            self.assertEqual(frames, [], "pre-handoff acquisition cannot seed the new task")
+            self.set_time(node, 30.2)
+            node._on_rgb(image(30.2)); node._on_depth(image(30.2)); node._process_latest()
+            self.assertTrue(node._worker.wait_idle(1))
+        self.assertEqual(warnings, [])
+        self.assertEqual(len(diagnostics), 2)
+        self.assertEqual(len(frames), 1)
+        self.assertEqual(frames[0].header.stamp.sec, 30)
+        self.assertEqual(frames[0].header.stamp.nanosec, 200_000_000)
+        self.assertEqual(observations, [])
+
     def test_busy_timer_skips_work_and_after_completion_selects_latest_frame(self):
         entered, release = Event(), Event()
         selected = []
@@ -305,6 +344,40 @@ class DetectorSchedulingTests(unittest.TestCase):
                 self.assertEqual(len(frames[0].observations), count)
                 self.assertEqual(frames[0].observations, observations)
                 self.assertEqual(len(diagnostics[0]["detections"]), count)
+
+    def test_known_occluders_cannot_supply_selected_footprint_and_all_classes_leave_ground(self):
+        for other_class, overlapping in ((0, True), (2, True), (2, False)):
+            with self.subTest(other_class=other_class, overlapping=overlapping):
+                node, warnings = self.make_node()
+                node._navigation_enabled = True
+                node._camera_size = (100, 100)
+                node._intrinsics = CameraIntrinsics(100., 100., 50., 50.)
+                other_box = [50., 30., 70., 70.] if overlapping else [70., 30., 90., 70.]
+                boxes = [NS(conf=[.9], cls=[0], xyxy=[np.array([20., 20., 60., 80.])]),
+                         NS(conf=[.9], cls=[other_class], xyxy=[np.array(other_box)])]
+                _, observations = self.configure_fake_inference(node, lambda *_args, **kw: [NS(boxes=boxes)])
+                node._bridge = NS(imgmsg_to_cv2=lambda msg, desired_encoding:
+                    np.zeros((100, 100, 3), dtype=np.uint8) if desired_encoding == "bgr8"
+                    else np.full((100, 100), 5., dtype=np.float32))
+                frames = []
+                node._frame_publisher = NS(publish=frames.append)
+                factory = lambda: NS(position_camera_m=NS(), navigation_bottom_ray_camera=NS())
+                with patch.object(detector, "String", lambda: NS(data=""), create=True), \
+                        patch.object(detector, "TargetObservation", factory, create=True), \
+                        patch.object(detector, "TargetObservationArray", NS, create=True):
+                    rgb, depth = image(1), image(1)
+                    rgb.width = rgb.height = depth.width = depth.height = 100
+                    node._on_rgb(rgb); node._on_depth(depth); node._process_latest()
+                    self.assertTrue(node._worker.wait_idle(1))
+                self.assertEqual(warnings, [])
+                selected = observations[0]
+                self.assertTrue(selected.depth_valid, "surface identity observation is still published")
+                self.assertEqual(selected.navigation_bbox_complete, not overlapping)
+                self.assertEqual(bool(selected.navigation_points_camera_m), not overlapping)
+                points = np.array(frames[0].navigation_ground_points_camera_m).reshape(-1, 3)
+                u, v = 100*points[:, 0]/points[:, 2]+50, 100*points[:, 1]/points[:, 2]+50
+                x1, y1, x2, y2 = other_box
+                self.assertFalse(np.any((u >= x1) & (u <= x2) & (v >= y1) & (v <= y2)))
                 self.assertTrue(all(item.header == frames[0].header for item in observations))
 
     def test_slow_inference_is_resubmitted_on_next_poll_without_period_quantization(self):
@@ -374,6 +447,44 @@ class DetectorSchedulingTests(unittest.TestCase):
         self.assertTrue(node._worker.wait_idle(1))
         self.assertEqual(len(submitted), 1)
         self.assertEqual(submitted[0].depth.header.stamp, image(1).header.stamp)
+        self.assertEqual(warnings, [])
+
+    def test_ten_hz_cap_preserves_sensor_cadence_and_records_arrival_age(self):
+        snapshots = []
+        node, warnings = self.make_node(snapshots.append)
+        node._inference_period_ns = 100_000_000
+        for acquisition in (10.0, 10.1, 10.2, 10.3):
+            self.set_time(node, acquisition + 0.02)
+            node._on_rgb(image(acquisition))
+            self.set_time(node, acquisition + 0.04)
+            node._on_depth(image(acquisition))
+            self.set_time(node, acquisition + 0.06)
+            node._process_latest()
+            self.assertTrue(node._worker.wait_idle(1))
+        self.assertEqual(len(snapshots), 4)
+        for index, snapshot in enumerate(snapshots):
+            acquisition = 10.0 + index * 0.1
+            self.assertEqual(snapshot.rgb_received_ros_ns, round((acquisition + .02) * 1e9))
+            self.assertEqual(snapshot.depth_received_ros_ns, round((acquisition + .04) * 1e9))
+            self.assertEqual(snapshot.submitted_ros_ns, round((acquisition + .06) * 1e9))
+            if index:
+                self.assertAlmostEqual(snapshot.previous_acquisition_s, acquisition - .1)
+        self.assertEqual(warnings, [])
+
+    def test_navigation_waits_for_same_acquisition_depth_even_inside_legacy_age_limit(self):
+        submitted = []
+        node, warnings = self.make_node(submitted.append)
+        node._navigation_enabled = True
+        self.set_time(node, 10.2)
+        node._on_rgb(image(10.1))
+        node._on_depth(image(10.09))
+        node._process_latest()
+        self.assertEqual(submitted, [])
+        node._on_depth(image(10.1))
+        node._process_latest()
+        self.assertTrue(node._worker.wait_idle(1))
+        self.assertEqual(len(submitted), 1)
+        self.assertEqual(submitted[0].sync_error_s, 0.)
         self.assertEqual(warnings, [])
 
     def test_clock_rollback_discards_old_epoch_and_allows_fresh_submission(self):

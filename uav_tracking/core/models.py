@@ -252,6 +252,9 @@ class Track:
     # box can refresh association while depth is invalid, so it must not reset
     # prediction age used by the controller.
     last_measurement_timestamp: Optional[float] = None
+    # Detached evidence of the last attempted 3-D fusion, including rejected
+    # candidates. It never replaces last_detection or refreshes measurement age.
+    last_measurement_diagnostics: dict[str, Any] = field(default_factory=dict)
     # The filter and frame-local flag are intentionally internal implementation
     # details, but keeping them on the model makes snapshots cheap and clear.
     _filter: Any = field(default=None, repr=False, compare=False)

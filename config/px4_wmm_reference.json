@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "model": "PX4 firmware WMM-2020 table, source epoch 2024.41257",
+  "latitude_deg": 47.397971,
+  "longitude_deg": 8.546164,
+  "declination_deg": 3.40576529503,
+  "inclination_deg": 63.1574668884,
+  "strength_tesla": 4.82388168166e-05,
+  "magnetic_field_enu_tesla": [
+    1.2939848695289199e-06,
+    2.1743286628130446e-05,
+    -4.304112611944401e-05
+  ],
+  "px4_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+  "table_sha256": "3e985cba6a1fd9b246d628bf1d24b843b306a5a6d60ec69900188ec535a3b8cb",
+  "lookup_cpp_sha256": "d8014b57ada04212633b83c4ed42d9649bca7eedbf78aa7238a655145c9fe292",
+  "lookup_source": "src/lib/world_magnetic_model/geo_mag_declination.cpp",
+  "table_source": "src/lib/world_magnetic_model/geo_magnetic_tables.hpp",
+  "source_url": "https://github.com/PX4/PX4-Autopilot/tree/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/lib/world_magnetic_model",
+  "evaluation": "Official pinned C++ lookup compiled unchanged; isolated math::constrain scalar helper only. Float32 firmware inputs and bilinear tables; no trajectory, ego error or target truth.",
+  "scope": "Simulation physical environment declaration matching firmware WMM; never a hardware estimator override."
+}
