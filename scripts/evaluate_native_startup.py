@@ -64,6 +64,27 @@ def shown_parameters(text):
     return result
 
 
+def phase_source_time(message):
+    """Only an explicit source suffix is evidence; never infer from receipt."""
+    text=getattr(message,"data",None)
+    if not isinstance(text,str) or text.count("source_sim_s=")!=1:return None
+    match=re.search(r"; source_sim_s=([-+0-9.eE]+)\s*$",text)
+    if match is None:return None
+    try:value=float(match.group(1))
+    except ValueError:return None
+    return value if math.isfinite(value) and value>0 else None
+
+
+def phase_number(message, name):
+    text=getattr(message,"data","")
+    if not isinstance(text,str) or text.count(name+"=")!=1:return None
+    match=re.search(r"(?:^|; )"+re.escape(name)+r"=([-+0-9.eE]+)(?:;|$)",text)
+    if match is None:return None
+    try:value=float(match.group(1))
+    except ValueError:return None
+    return value if math.isfinite(value) else None
+
+
 def recorded_configuration(trial):
     trial = Path(trial)
     paths = {"run_config":trial / "run_config.json", "runtime_parameters":trial / "configuration/runtime_parameters.yaml",
@@ -80,6 +101,8 @@ def recorded_configuration(trial):
             "takeoff_height_m":supervisor.get("takeoff_height_m"),
             "position_tolerance_m":supervisor.get("takeoff_position_tolerance_m"),
             "settle_speed_mps":supervisor.get("native_settle_speed_mps"), "settle_s":supervisor.get("native_settle_s"),
+            "native_takeoff_timeout_sim_s":supervisor.get("native_takeoff_timeout_sim_s"),
+            "native_wall_timeout_s":supervisor.get("native_wall_timeout_s"),
             "local_position_topic":supervisor.get("local_position_topic"),
             "estimator_flags_topic":supervisor.get("estimator_flags_topic"),
             "declared_px4_parameters":declared,
@@ -153,7 +176,8 @@ def evaluate(records, config):
         if key not in config or config[key] is None:issue("configuration_registered","missing_configuration:"+key,absent=True)
         elif type(config[key]) is not type(expected) or config[key] != expected:
             issue("configuration_registered","conflicting_configuration:"+key)
-    numeric = {"takeoff_height_m":3., "position_tolerance_m":.18,"settle_speed_mps":.20,"settle_s":1.}
+    numeric = {"takeoff_height_m":3., "position_tolerance_m":.18,"settle_speed_mps":.20,"settle_s":1.,
+               "native_takeoff_timeout_sim_s":40.,"native_wall_timeout_s":180.}
     for key,expected in numeric.items():
         value = finite(config.get(key))
         if value is None:issue("configuration_registered","missing_configuration:"+key,absent=True)
@@ -188,6 +212,27 @@ def evaluate(records, config):
         elif not streams[topic]:issue("full_recording_coverage","missing_stream:"+topic,absent=True)
 
     def delivered(row):return float(row.received_sim_s)
+    phase_times={}
+    previous_phase_source=None
+    previous_phase_wall=None
+    for row in streams[PHASE]:
+        source=phase_source_time(row.message)
+        phase_times[row.record_sequence]=source
+        if source is None:
+            issue("full_recording_coverage","phase_source_time_missing_or_invalid",absent=True)
+        else:
+            age=delivered(row)-source
+            if not -.05-EPS<=age<=.50+EPS:
+                issue("full_recording_coverage","phase_source_time_stale_or_future")
+            if previous_phase_source is not None and source<previous_phase_source-EPS:
+                issue("full_recording_coverage","phase_source_time_regressed")
+            previous_phase_source=source
+        wall=phase_number(row.message,"phase_wall_monotonic_s")
+        if wall is None or wall<=0:issue("full_recording_coverage","phase_wall_time_missing_or_invalid",absent=True)
+        else:
+            if previous_phase_wall is not None and wall<previous_phase_wall-EPS:
+                issue("full_recording_coverage","phase_monotonic_wall_time_regressed")
+            previous_phase_wall=wall
     def latest(topic,timestamp,sequence=None):
         available=[r for r in streams[topic] if delivered(r)<=timestamp+EPS
                    and (sequence is None or r.record_sequence<sequence)]
@@ -249,6 +294,50 @@ def evaluate(records, config):
     for row in streams[PHASE]:
         if phase(row)=="ABORTED":issue("full_recording_coverage","recorded_abort_including_tail")
         if phase(row)=="TAKEOFF":issue("px4_mode_sequence","legacy_offboard_takeoff_phase_in_native_trial")
+    native_phases=[r for r in streams[PHASE] if phase(r)=="NATIVE_TAKEOFF"]
+    if not native_phases:issue("px4_mode_sequence","missing_native_takeoff_phase",absent=True)
+    else:
+        first_native=native_phases[0]
+        source_origin=phase_number(first_native.message,"native_started_source_s")
+        wall_origin=phase_number(first_native.message,"native_started_wall_s")
+        origin_valid=all(value is not None and value>0 for value in (source_origin,wall_origin))
+        if not origin_valid:issue("full_recording_coverage","native_budget_origins_missing_or_invalid",absent=True)
+        frozen_elapsed=None
+        for row in streams[PHASE]:
+            if row.record_sequence<first_native.record_sequence:continue
+            source=phase_times[row.record_sequence];wall=phase_number(row.message,"phase_wall_monotonic_s")
+            origin_s=phase_number(row.message,"native_started_source_s");origin_w=phase_number(row.message,"native_started_wall_s")
+            elapsed_s=phase_number(row.message,"native_elapsed_source_s");elapsed_w=phase_number(row.message,"native_elapsed_wall_s")
+            if any(value is None for value in (origin_s,origin_w,elapsed_s,elapsed_w)):
+                issue("full_recording_coverage","native_dual_budget_evidence_missing",absent=True);continue
+            if not origin_valid:continue
+            if abs(origin_s-source_origin)>EPS or abs(origin_w-wall_origin)>EPS:
+                issue("full_recording_coverage","native_budget_origin_changed")
+            if elapsed_s<0 or elapsed_w<0:issue("full_recording_coverage","native_elapsed_negative")
+            if source is not None and origin_s+elapsed_s>source+EPS:
+                issue("full_recording_coverage","native_reported_source_elapsed_after_phase")
+            if wall is not None and origin_w+elapsed_w>wall+EPS:
+                issue("full_recording_coverage","native_reported_wall_elapsed_after_phase")
+            if phase(row)=="NATIVE_TAKEOFF":
+                if source is not None and abs(source-origin_s-elapsed_s)>EPS:
+                    issue("full_recording_coverage","native_active_source_elapsed_inconsistent")
+                if wall is not None and abs(wall-origin_w-elapsed_w)>EPS:
+                    issue("full_recording_coverage","native_active_wall_elapsed_inconsistent")
+            elif phase(row) in ("REQUEST_OFFBOARD","HOLD","FOLLOW","ABORTED"):
+                if frozen_elapsed is None:frozen_elapsed=(elapsed_s,elapsed_w)
+                elif abs(frozen_elapsed[0]-elapsed_s)>EPS or abs(frozen_elapsed[1]-elapsed_w)>EPS:
+                    issue("full_recording_coverage","completed_native_budget_elapsed_changed")
+            if phase(row)=="REQUEST_OFFBOARD":
+                source_limit=finite(config.get("native_takeoff_timeout_sim_s"));wall_limit=finite(config.get("native_wall_timeout_s"))
+                if source_limit is not None and elapsed_s>source_limit+EPS:
+                    issue("handoff_readiness_and_settle","native_handoff_exceeded_source_budget")
+                if wall_limit is not None and elapsed_w>wall_limit+EPS:
+                    issue("handoff_readiness_and_settle","native_handoff_exceeded_wall_budget")
+        details["native_dual_budget"]={"source_origin_s":source_origin,"monotonic_wall_origin_s":wall_origin,
+            "source_limit_s":config.get("native_takeoff_timeout_sim_s"),"wall_limit_s":config.get("native_wall_timeout_s"),
+            "completed_elapsed_source_s":frozen_elapsed[0] if frozen_elapsed else None,
+            "completed_elapsed_wall_s":frozen_elapsed[1] if frozen_elapsed else None,
+            "method":"Explicit independent source and monotonic wall origins/elapsed values, never a fitted real-time factor. Steady-clock watchdog implementation is not inferred solely from a successful recording."}
     if takeoffs and clocks:
         start,end=delivered(takeoffs[0]),clocks[-1]
         details["interval"]={"start_s":start,"end_s":end,"basis":"first recorded native takeoff command through full recorded clock end"}
@@ -289,20 +378,24 @@ def evaluate(records, config):
             details["ground_readiness"]={"time_s":now,"failures":bad,"missing_evidence":missing}
     goal=None
     if request_native:
-        anchor=latest(ODOMETRY,delivered(request_native[0]),request_native[0].record_sequence)
+        native_source=phase_times[request_native[0].record_sequence]
+        anchor=latest(ODOMETRY,native_source,request_native[0].record_sequence) if native_source is not None else None
         if anchor is None:issue("handoff_readiness_and_settle","missing_ground_odometry_anchor",absent=True)
         else:
             try:
                 x,y,z=vector(anchor.message.pose.pose.position)
                 if not all(math.isfinite(v) for v in (x,y,z)):raise ValueError("nonfinite")
+                if not -.05-EPS<=native_source-stamp_s(anchor.message.header.stamp)<=.50+EPS:
+                    issue("handoff_readiness_and_settle","ground_odometry_anchor_stale_or_future")
                 height=finite(config.get("takeoff_height_m"))
                 if height is not None:
                     goal=(y,x,-(z+height))
                     details["ground_anchor"]={"received_sim_s":delivered(anchor),"position_enu_m":[x,y,z],"goal_ned_m":list(goal),
                         "method":"Latest recorded causal adapted odometry before REQUEST_NATIVE_TAKEOFF; ENU->NED axis mapping, no GT or fitted offset"}
             except (AttributeError,ValueError,TypeError):issue("handoff_readiness_and_settle","invalid_ground_odometry_anchor",absent=True)
-    if request_offboard and goal is not None and all(finite(config.get(key)) is not None for key in numeric):
-        handoff=request_offboard[0];finish=delivered(handoff);begin=finish-float(config["settle_s"])
+    if (request_offboard and phase_times[request_offboard[0].record_sequence] is not None and goal is not None
+            and all(finite(config.get(key)) is not None for key in numeric)):
+        handoff=request_offboard[0];finish=phase_times[handoff.record_sequence];begin=finish-float(config["settle_s"])
         points=[begin+i*.05 for i in range(int(round(float(config["settle_s"])/.05))+1)]
         def check_handoff(now,sequence=None):
             local=latest(LOCAL,now,sequence);flags=latest(FLAGS,now,sequence);status=latest(STATUS,now,sequence);odom=latest(ODOMETRY,now,sequence)
@@ -335,7 +428,7 @@ def evaluate(records, config):
                 except (AttributeError,ValueError,TypeError):missing.append("handoff:invalid_adapted_odometry")
             return {"time_s":now,"position_error_m":error,"speed_mps":speed,"failures":bad,"missing_evidence":missing,"ready":not bad and not missing}
         for point in points:
-            frame=check_handoff(point,handoff.record_sequence if abs(point-finish)<EPS else None);frames.append(frame)
+            frame=check_handoff(point,handoff.record_sequence);frames.append(frame)
             for reason in frame["failures"]:issue("handoff_readiness_and_settle",reason)
             for reason in frame["missing_evidence"]:issue("handoff_readiness_and_settle",reason,absent=True)
         for event in offboard_commands:
@@ -363,6 +456,8 @@ def evaluate(records, config):
             issue("visual_task_after_handoff","valid_visual_command_before_native_handoff")
     details["events"]={"first_nav_takeoff_s":delivered(takeoffs[0]) if takeoffs else None,
         "first_arm_s":delivered(arms[0]) if arms else None,"request_offboard_s":delivered(request_offboard[0]) if request_offboard else None,
+        "request_native_source_s":phase_times[request_native[0].record_sequence] if request_native else None,
+        "request_offboard_source_s":phase_times[request_offboard[0].record_sequence] if request_offboard else None,
         "first_offboard_command_s":delivered(offboard_commands[0]) if offboard_commands else None,
         "first_hold_s":delivered(holds[0]) if holds else None,
         "armed_modes":{name:delivered(row) if row else None for name,row in modes.items()}}

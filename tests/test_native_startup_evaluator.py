@@ -25,6 +25,7 @@ def config():
     return {"takeoff_mode":"px4_native","px4_time_mode":"source_sim","supervisor_takeoff_mode":"px4_native",
         "adapter_time_mode":"source_sim","use_sim_time":True,"simulation_only":True,
         "takeoff_height_m":3.,"position_tolerance_m":.18,"settle_speed_mps":.20,"settle_s":1.,
+        "native_takeoff_timeout_sim_s":40.,"native_wall_timeout_s":180.,
         "local_position_topic":evaluation.LOCAL,"estimator_flags_topic":evaluation.FLAGS,
         "declared_px4_parameters":dict(evaluation.PARAMETERS),
         "observed_px4_parameters":{k:[v] for k,v in evaluation.PARAMETERS.items()}}
@@ -37,7 +38,13 @@ def fixture():
         fields=dict(command=command,timestamp=round(t*1e6),param1=0.,param2=0.,param4=math.nan,
                     param5=math.nan,param6=math.nan,param7=math.nan);fields.update(kw)
         add(evaluation.COMMAND,t,NS(**fields))
-    def phase(t,name):add(evaluation.PHASE,t,NS(data=name+": fixture"))
+    def phase(t,name):
+        fields=f"phase_wall_monotonic_s={100.+(t-1.)*2:.9f}; "
+        if t>=1.6:
+            elapsed=min(t,4.5)-1.6
+            fields+=(f"native_started_source_s=1.600000000; native_started_wall_s=101.200000000; "
+                     f"native_elapsed_source_s={elapsed:.9f}; native_elapsed_wall_s={elapsed*2:.9f}; ")
+        add(evaluation.PHASE,t,NS(data=name+f": fixture; {fields}source_sim_s={t:.9f}"))
     # Every record has the latest /clock as its source-domain delivery time.
     for i in range(81):
         t=round(1.+i*.05,8)
@@ -174,6 +181,55 @@ class NativeStartupEvaluatorTests(unittest.TestCase):
         result=self.evaluate([r for r in fixture() if r.topic!=evaluation.FLAGS])
         self.assertEqual(result["evaluation_status"],"INCOMPLETE_EVIDENCE")
         self.assertIsNone(result["checks"]["full_recording_coverage"])
+
+    def test_native_phase_requires_explicit_fresh_monotonic_source_suffix(self):
+        rows=fixture()
+        for row in rows:
+            if row.topic==evaluation.PHASE:row.message.data=row.message.data.split(";",1)[0]
+        result=self.evaluate(rows)
+        self.assertEqual(result["evaluation_status"],"INCOMPLETE_EVIDENCE")
+        self.assertIn("phase_source_time_missing_or_invalid",result["incomplete_evidence"])
+        for source in (1.,4.060000001):
+            rows=fixture();row=next(r for r in rows if r.topic==evaluation.PHASE and r.time_s==4.)
+            row.message.data=f"NATIVE_TAKEOFF: fixture; source_sim_s={source:.9f}"
+            self.assertIn("phase_source_time_stale_or_future",self.evaluate(rows)["failures"])
+        rows=fixture();row=next(r for r in rows if r.topic==evaluation.PHASE and r.time_s==4.)
+        row.message.data="NATIVE_TAKEOFF: fixture; source_sim_s=3.900000000"
+        self.assertIn("phase_source_time_regressed",self.evaluate(rows)["failures"])
+
+    def test_dual_budget_parameters_and_wall_evidence_are_not_inferred(self):
+        settings=config();settings.pop("native_wall_timeout_s")
+        self.assertEqual(self.evaluate(settings=settings)["evaluation_status"],"INCOMPLETE_EVIDENCE")
+        rows=fixture()
+        for row in rows:
+            if row.topic==evaluation.PHASE:
+                import re
+                row.message.data=re.sub(r"phase_wall_monotonic_s=[^;]+; ","",row.message.data)
+        result=self.evaluate(rows)
+        self.assertIn("phase_wall_time_missing_or_invalid",result["incomplete_evidence"])
+        self.assertFalse(result["native_startup_pass"])
+
+    def test_budget_origins_cannot_restart_and_handoff_cannot_exceed_either_budget(self):
+        rows=fixture();row=next(r for r in rows if r.topic==evaluation.PHASE and r.time_s==4.)
+        row.message.data=row.message.data.replace("native_started_source_s=1.600000000","native_started_source_s=2.000000000")
+        self.assertIn("native_budget_origin_changed",self.evaluate(rows)["failures"])
+        for name,value,reason in (("native_elapsed_source_s","41.000000000","native_handoff_exceeded_source_budget"),
+                                  ("native_elapsed_wall_s","181.000000000","native_handoff_exceeded_wall_budget")):
+            rows=fixture()
+            for row in rows:
+                if row.topic==evaluation.PHASE and row.time_s>=4.5:
+                    import re
+                    row.message.data=re.sub(name+r"=[^;]+",name+"="+value,row.message.data)
+            self.assertIn(reason,self.evaluate(rows)["failures"])
+
+    def test_completed_elapsed_values_remain_frozen_after_handoff(self):
+        result=self.evaluate()
+        budget=result["details"]["native_dual_budget"]
+        self.assertAlmostEqual(budget["completed_elapsed_source_s"],2.9)
+        self.assertAlmostEqual(budget["completed_elapsed_wall_s"],5.8)
+        rows=fixture();row=next(r for r in rows if r.topic==evaluation.PHASE and r.time_s==4.9)
+        row.message.data=row.message.data.replace("native_elapsed_wall_s=5.800000000","native_elapsed_wall_s=6.000000000")
+        self.assertIn("completed_native_budget_elapsed_changed",self.evaluate(rows)["failures"])
 
     def test_param_show_parser_ignores_set_transition_and_accepts_real_format(self):
         text="\x1b[0m x + MIS_TAKEOFF_ALT [19,38] : 3.0000\n  + COM_TAKEOFF_ACT [21,40] : 0\n  + SENS_IMU_MODE [3,4] : 1\n  + UXRCE_DDS_SYNCT [8,9] : 0\n* SENS_IMU_MODE: curr: 0 -> new: 1\n"

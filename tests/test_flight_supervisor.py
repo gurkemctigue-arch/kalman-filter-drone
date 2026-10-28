@@ -3,12 +3,14 @@
 import importlib.util
 import math
 from pathlib import Path
+import sys
 from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
 
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "ros2_ws/src/uav_tracking_px4_adapter"))
 
 
 def load_module(name, relative_path):
@@ -69,10 +71,36 @@ class FlightHandoffTests(unittest.TestCase):
         node._flight_pub = SimpleNamespace(publish=lambda msg: setattr(node, "last_output", msg))
         node._phase_pub = SimpleNamespace(publish=lambda msg: None)
         params = {"odometry_timeout_s": 0.5, "status_timeout_s": 1.0, "command_timeout_s": 0.5}
+        node._test_params = params
         node.get_parameter = lambda name: SimpleNamespace(value=params[name])
         node.get_logger = lambda: SimpleNamespace(info=lambda message: None)
         node.get_clock = lambda: SimpleNamespace(now=lambda: SimpleNamespace(nanoseconds=42_000_000_000, to_msg=lambda: SimpleNamespace(sec=42, nanosec=0)))
         return node
+
+    def source_supervisor(self, source_s=42.0, phase="FOLLOW"):
+        node = self.supervisor(phase)
+        node._test_params.update(status_timeout_s=10.)
+        node._status_timestamp_mode = "source_sim"
+        node._status_clock = flight.OdometrySourceClock("source_sim", use_sim_time=True,
+                                                     max_age_s=1., max_future_s=.05)
+        node._status_last_ros_ns = None
+        node._status_ros_regressed = False
+        node._status_last_rejection = "none"
+        node._test_source_s = source_s
+        node._controller_command.header.stamp = SimpleNamespace(
+            sec=int(source_s), nanosec=round((source_s-int(source_s))*1e9))
+        node.get_clock = lambda: SimpleNamespace(now=lambda: SimpleNamespace(
+            nanoseconds=round(node._test_source_s * 1e9),
+            to_msg=lambda: SimpleNamespace(sec=int(node._test_source_s), nanosec=0)))
+        node._status = None
+        return node
+
+    def receive_source_status(self, node, timestamp_us, wall_s=100.):
+        message = SimpleNamespace(timestamp=timestamp_us, arming_state=2, nav_state=14,
+                                  failsafe=False, pre_flight_checks_pass=True)
+        with patch.object(flight.time, "monotonic", return_value=wall_s):
+            node._on_status(message)
+        return message
 
     def tick(self, node):
         with patch.object(flight, "TrackingCommand", FakeCommand, create=True), patch.object(flight, "VehicleStatus", SimpleNamespace(ARMING_STATE_ARMED=2, NAVIGATION_STATE_OFFBOARD=14), create=True), patch.object(flight, "String", lambda: SimpleNamespace(data=""), create=True), patch.object(flight.time, "monotonic", return_value=100.1):
@@ -145,6 +173,89 @@ class FlightHandoffTests(unittest.TestCase):
         self.tick(node)
         self.assertEqual(node._phase, "ABORTED")
         self.assertIn("status_limit_s=1.000", node._reason)
+
+    def test_source_status_half_second_old_survives_actual_two_second_wall_case(self):
+        # Humble04 person aborted at source 5.652, status stamp 5.152,
+        # receipt-wall age 2.010. Requested RTF does not define actual RTF.
+        node = self.source_supervisor(5.652)
+        self.receive_source_status(node, 5_152_000, wall_s=98.09)
+        self.tick(node)
+        self.assertEqual(node._phase, "FOLLOW")
+        self.assertAlmostEqual(node.last_output.linear_mps.x, .6)
+        self.assertAlmostEqual(100.1-node._status_received, 2.010)
+        self.assertIn("status_age_source_s=0.500", node._state_snapshot(100.1))
+
+    def test_source_status_expires_after_original_one_source_second(self):
+        node = self.source_supervisor(42.)
+        self.receive_source_status(node, 41_000_000)
+        self.tick(node)
+        self.assertEqual(node._phase, "FOLLOW", "exact source age 1.0 remains permitted")
+        node._test_source_s = 42.000001
+        self.tick(node)
+        self.assertEqual(node._phase, "ABORTED")
+        self.assertIn("status_source_stale", node._reason)
+        self.assertIn("status_source_limit_s=1.000", node._reason)
+        self.assertFalse(node.last_output.valid)
+
+    def test_stale_future_invalid_and_duplicate_status_do_not_refresh_receipt(self):
+        for source_s, stamp, reason in ((43.1, 42_000_000, "stale_or_wrong_domain_source_timestamp"),
+                                        (42., 42_050_001, "future_or_wrong_domain_source_timestamp"),
+                                        (42., None, "invalid_source_timestamp"),
+                                        (42., 0, "invalid_source_timestamp"),
+                                        (42., True, "invalid_source_timestamp"),
+                                        (42., 41_500_000, "duplicate_source_sample")):
+            with self.subTest(stamp=stamp):
+                node = self.source_supervisor()
+                accepted = self.receive_source_status(node, 41_500_000)
+                node._test_source_s = source_s
+                self.receive_source_status(node, stamp, wall_s=100.09)
+                self.assertIs(node._status, accepted)
+                self.assertEqual(node._status_received, 100.)
+                self.assertEqual(node._status_last_rejection, reason)
+
+    def test_source_status_regression_latches_and_cannot_refresh_or_recover(self):
+        node = self.source_supervisor()
+        accepted = self.receive_source_status(node, 41_500_000)
+        self.receive_source_status(node, 41_400_000, wall_s=100.04)
+        self.receive_source_status(node, 42_000_000, wall_s=100.05)
+        self.assertIs(node._status, accepted)
+        self.assertEqual(node._status_received, 100.)
+        self.tick(node)
+        self.assertEqual(node._phase, "ABORTED")
+        self.assertIn("status_source_clock_regression_restart_required", node._reason)
+
+    def test_ros_time_regression_is_latched_on_tick_without_new_status(self):
+        node = self.source_supervisor()
+        self.receive_source_status(node, 41_500_000)
+        node._test_source_s = 41.9
+        self.tick(node)
+        self.assertEqual(node._phase, "ABORTED")
+        self.assertIn("status_source_clock_regression_restart_required", node._reason)
+        node._test_source_s = 42.1
+        self.receive_source_status(node, 42_000_000, wall_s=100.09)
+        self.assertEqual(node._status_received, 100.)
+
+    def test_source_fresh_status_still_has_separate_ten_second_wall_liveness_limit(self):
+        node = self.source_supervisor()
+        self.receive_source_status(node, 41_500_000, wall_s=90.1)
+        self.assertTrue(node._fresh_state(100.1), "exact 10 wall seconds remain permitted")
+        self.receive_source_status(node, 41_500_000, wall_s=100.09)
+        node._status_received = 90.099999
+        self.tick(node)
+        self.assertEqual(node._phase, "ABORTED")
+        self.assertIn("status_receipt_wall_stale", node._reason)
+        self.assertNotIn("status_source_stale", node._reason)
+        self.assertIn("status_limit_s=10.000", node._reason)
+
+    def test_source_future_tolerance_boundary_and_zero_clock(self):
+        node = self.source_supervisor()
+        message = self.receive_source_status(node, 42_050_000)
+        self.assertIs(node._status, message)
+        self.assertTrue(node._fresh_state(100.1))
+        node = self.source_supervisor(0.)
+        self.receive_source_status(node, 1)
+        self.assertIsNone(node._status)
+        self.assertEqual(node._status_last_rejection, "ros_clock_not_started")
 
 
 if __name__ == "__main__":

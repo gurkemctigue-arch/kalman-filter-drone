@@ -2,19 +2,28 @@
 
 更新：2026-10-29。**v4 仍在开发验证，整个项目尚未完成本轮修复后的正式验收。** 已发布的 v3 交付包含失败和证据边界；其“最终报告”文件名不代表 v4 已通过。
 
-本次 GitHub 更新是**开发检查点**。`nav04` 因新 PX4 rootfs 的启动路径问题终止，`nav05` 在约 13.944 s、1.57 m 时出现 PX4 起飞阶段磁航向对准 reset；保护逻辑随后停止继续任务。两次失败及原有证据完整保留，没有用后续代码覆盖失败记录。新 `px4_native` 原生起飞分支先交由 PX4 起飞、完成航向对准与悬停资格检查，再切换 Offboard；**该分支尚未完成真实 SITL 飞行验证，单元测试不能替代飞行证据**。
+GitHub `6cba405` 是**开发检查点**。`nav04` 因新 PX4 rootfs 的启动路径问题终止，`nav05` 在约 13.944 s、1.57 m 时出现 PX4 起飞阶段磁航向对准 reset；保护逻辑随后停止继续任务。两次失败及原有证据完整保留，没有用后续代码覆盖失败记录。新 `px4_native` 原生起飞分支先交由 PX4 起飞、完成航向对准与悬停资格检查，再切换 Offboard。Humble03 汽车开发探针已实际进入 FOLLOW 并结束运行，但压缩录包未通过原生读取，**尚不能据此通过独立完整验收**。
+
+随后 Humble04 的新汽车原始录包通过了完整性、源时钟与原生起飞独立检查，导航有效覆盖100%，尾10秒实际距离/高度RMSE约0.01892/0.00447m。它仍是无遮挡开发探针，末端GT缺一个bracket，Gazebo关闭退出-11，不能替代完整正式关口。Humble04 行人在原生起飞时因 `status_age_wall=2.010 > 2.000 s` 中止；此时源状态龄仅0.500s，odom龄0.014s，独立source_clock仍PASS。主树已修正 `source_sim` 状态计时合同并保留独立墙钟停流界，新版本尚待完整飞行验证，失败原件与判定不改写。
+
+该汽车原始bag已完成真实schema2导出：最新另名 `export03` 保留 **204个测量、1220个输出**，在线导航float64数值复现与全部1220对独立native-state主题核对均PASS。独立gate接纳原导出，拒绝测量位置、协方差、任务身份或真值被替换的JSON；旧导出仍保留。它验证开发录制的导出和复现证据链，**不是正式四法比较，也不把原飞行终态改成PASS**。
+
+Humble06四包、导入隔离及969项Linux测试通过。其行人20 s无遮挡飞行完成原生起飞与FOLLOW，实际CPU `llvmpipe` 渲染、录包及全部进程正常退出；导航/真值203/203，实际距离/高度RMSE约0.31775/0.25737 m，尾段均稳定。但启动时8条原始里程计缺少adapter诊断，source-clock仍为INCOMPLETE，不能报工程PASS。后续07、08在解除暂停前分别暴露Humble executor/context及Subscription API兼容问题；失败原件保留，汽车未跑。新09正收敛为Humble公开API，先验证真实最小pub/sub/service，再执行隔离构建、测试和两类新探针。WSL D3D12关闭故障已定位，06证明CPU方案可完成一次真实飞行，后续仍须逐槽验收。
 
 ## 当前进展
 
 | 内容 | 已有工作 | 尚需完成 |
 | --- | --- | --- |
 | 导航参考 | 独立 RGB-D 地面参考；汽车端面/侧面/双面唯一几何解；独立滤波和物理距离/高度评价；回归测试通过 | 新几何版本实际闭环、遮挡和多目标交叉验证 |
-| 时间与不确定性 | 同采集 RGB-D/TF、PX4 协方差、源时钟与 reset 保护；`nav05` 实际录制并独立审计 raw PX4 1496 条，`clock_domain_valid=true`、receipt 最大约 8 ms | 原生起飞新流程重新录制，取得完整时钟及空间连续性验收；`nav05` 整体仍因启动 reset 失败 |
-| 磁传感器接口 | 钉住 ENU/gauss 与 FLU→FRD 合同；Jazzy 环境实际 PX4 ELF 构建、启动 marker 与两项真实加载磁场库均已核验 | Humble 独立 ELF/加载库核验、原生流程动态 ego 评价和闭环探针；不能预设其消除全部航向误差 |
-| 环境迁移 | Ubuntu 22.04/Humble 独立环境；Agent、patched PX4 和 ros_gz 已独立编译通过；系统 ABI 与独立小世界 RGB-D/时钟/服务桥接通过；保留已有 Jazzy 环境 | 同步最终原生启动源码后构建工程，完成本环境 SITL 与完整闭环验收 |
-| 原生起飞 | 启动参数、原生起飞/Offboard 时序、独立就绪条件和源码冻结；独立离线审计接口 | 新分支实际 SITL、启动参数/命令/模式时序与最终交接的独立录包评价 |
+| 时间与不确定性 | 同采集 RGB-D/TF、PX4 协方差、源时钟与 reset 保护；源状态龄及独立墙钟停流界已进入06真实飞行，启动诊断之后配对完整 | 09公开API启动门及全任务源时钟验收；06启动8条缺证仍保留为INCOMPLETE |
+| 磁传感器接口 | 钉住 ENU/gauss 与 FLU→FRD 合同；Jazzy 与 Humble 独立 PX4 ELF 构建、manifest、Humble 专用动态库登记完成；Humble03 实际启动 | 原生流程完整动态 ego 评价和独立闭环验收；不能预设其消除全部航向误差 |
+| 环境迁移 | Ubuntu 22.04/Humble独立环境、Agent、patched PX4、ros_gz、ABI/RGB-D桥接；06四包/隔离/969测试及行人实际飞行通过相应检查；08四包/隔离/979测试通过 | 新09公开API版本的完整构建、测试及两类SITL；单测通过不等于启动门已通过 |
+| 原生起飞 | Humble04汽车实际完成native起飞与FOLLOW，独立native_startup PASS；主树增加40 s源时间与独立180 s steady-clock预算及双时钟审计 | 新预算/状态合同真实录制、两类与最终交接的完整独立评价 |
+| 录包完整性 | 新录制采用ext4 SQLite正常关闭、条数核验、标准zstd完整帧、SHA字节往返和Humble原生reader全量读回；Humble04汽车41174条原始消息及行人中止包均通过完整性检查 | 后续每槽继续执行完整性门；Humble03原缺尾失败不改判 |
+| 渲染与关闭 | 同PID映射定位WSL D3D12 TLS故障；llvmpipe真实RGB-D关闭smoke与06行人飞行/全子进程退出均通过；实际swrast/LLVM映射、环境及ELF核验 | 新冻结两类、遮挡、多目标和云台的处理性能与退出检查 |
 | 指定个体证据 | 从首次 REQUEST 到完整 `/clock` 末尾的固定 10 Hz 身份覆盖；未确认与静默尾段保留为未知 | 最终版本多目标录包的独立物理身份审计与完整任务覆盖门检查 |
 | 正式工程重复 | 运行器、不可覆盖槽位账本、完整分母与评价接线 | 开发关口通过、性能门预登记、冻结源码/环境后执行 120 槽 |
+| 四估计器比较 | surface链已有confidence/depth质量自适应；v4导航另用几何与位姿R。Humble04汽车export03真实导出204测量/1220输出，online/native复现与完整payload证据gate通过 | 同测量导航四法的开发集定标、前瞻冻结及20条正式录制配对统计；不能把geometry自适应等同surface质量模型，不能声称四法闭环因果改进 |
 
 已有开发探针证明了部分时序改进，也暴露了导航丢失和转弯限制。失败录制和尾段仍保留；单元测试、构建成功、进程正常退出和少量探针都不能代替完整工程通过。
 
@@ -26,6 +35,8 @@
 4. 正式 v4 为两类别 × 六组 × 十个留出种子 **1000–1009 = 120 槽**，每槽只尝试一次；失败和基础设施中止继续计入分母。开发探针禁止消费这些正式种子。
 
 v4 使用相同留出种子在类别/组之间比较。原 v3 的四基线研究使用 0–9，属于另一份冻结研究；不能把 v4 表述为与 v3 配对重跑或四基线复现。
+
+这120槽固定为clean/standard，两类分别固定5 m/9 m距离；standard含启动加速、直线与缓转，但不等于独立加减速工况。噪声、空洞、掉帧、延迟、额外距离和 `speed_changes` 不在本矩阵中，已另建[160槽独立扩展草案](../planning/reliability-v4-extension-preregistration.json)，仍须开发关口、前瞻登记/冻结和实际执行。逐项缺口见[原计划剩余交付清单](../planning/reliability-v4-remaining-deliverables.md)，新版[结果汇总入口](V4_RESULT_SUMMARY.md)只读计划/槽小工件，尚无真实正式统计。
 
 ## 环境与 GitHub 边界
 
@@ -45,5 +56,6 @@ Gazebo 动态库也按环境独立登记：Jazzy 使用 `config/gazebo_magnetic_
 - [源时钟独立评价](V4_PX4_SOURCE_CLOCK_EVALUATION.md)、[磁坐标合同](V4_MAGNETIC_FRAME_CONTRACT.md)
 - [原生起飞合同](V4_NATIVE_STARTUP_CONTRACT.md)、[完整任务身份时间审计](V4_TASK_TIME_IDENTITY_AUDIT.md)、[验收与开发关口合同](V4_ACCEPTANCE_CONTRACT.md)
 - [Humble 隔离验证进度](HUMBLE_ISOLATED_VALIDATION.md)
+- [真实开发录包导出记录](../results/development_offline_v4_humble04_car_seed00_export03/execution_status.json)、[Gazebo关闭诊断](GAZEBO_WSL_SHUTDOWN_DIAGNOSIS.md)
 
 新一轮视频、图表、Word/PDF 与统一验收页应在实际探针和正式验证之后更新，报告成功、失败及缺失证据的完整分母。

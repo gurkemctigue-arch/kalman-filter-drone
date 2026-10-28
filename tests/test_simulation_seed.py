@@ -10,7 +10,7 @@ import sys
 import tempfile
 from types import SimpleNamespace
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -47,9 +47,14 @@ class SeedRunnerTests(unittest.TestCase):
                 def __init__(self,command,**kwargs):
                     self.name=Path(kwargs["stdout"].name).stem
                     self.pid=731
-                    self.returncode=0 if self.name=="monitor" else None
+                    self.returncode=None
+                    self.monitor_polls=0
                     environments[self.name]=dict(kwargs["env"])
-                def poll(self):return self.returncode
+                def poll(self):
+                    if self.name=="monitor":
+                        self.monitor_polls+=1
+                        if self.monitor_polls>1:self.returncode=0
+                    return self.returncode
                 def send_signal(self,signum):pass
                 def wait(self,**kwargs):
                     if self.name=="px4":persisted.write_bytes(b"after normal firmware save")
@@ -61,19 +66,35 @@ class SeedRunnerTests(unittest.TestCase):
                     output="/clock\n/camera/color/image_raw\n/camera/aligned_depth_to_color/image_raw\n"
                 else:output="data: true\n"
                 return SimpleNamespace(returncode=0,stdout=output)
+            # This seed/argv fixture launches no process. The production
+            # capture must remain strict; fake PID731 has no /proc mapping.
+            rendering_capture = SimpleNamespace(capture_ready=Mock(return_value={
+                "status":"PASS", "expected_driver":"auto", "owned_pid":731,
+                "evidence_scope":"ORCHESTRATION_FIXTURE_ONLY_NO_PROCESS_LAUNCHED"}))
+            graph_wait = SimpleNamespace(wait_ready=Mock(return_value={
+                "status":"PASS", "evidence_scope":"ORCHESTRATION_FIXTURE_ONLY_NO_ROS_GRAPH"}))
             with patch.object(runner,"__file__",str(root/"scripts/run_stage1_trial.py")), \
                     patch("sys.argv",["trial","--name","seed_trial","--seed",str(registered),"--no-bag",
                                       "--model-path","models/yolo11n.pt"]), \
                     patch.object(runner.subprocess,"Popen",Process),patch.object(runner.subprocess,"run",probe), \
                     patch.object(runner.time,"sleep"),patch.object(runner.os,"killpg",create=True), \
+                    patch.dict(sys.modules,{"capture_gazebo_rendering":rendering_capture,
+                                            "wait_stage1_graph":graph_wait}), \
                     patch.dict(os.environ,{"STAGE1_PX4_ROOT":str(px4)}):
                 runner.main()
+            rendering_capture.capture_ready.assert_called_once_with(731,"auto")
+            graph_wait.wait_ready.assert_called_once()
+            self.assertEqual(graph_wait.wait_ready.call_args.args,
+                             (root.resolve()/"results/seed_trial/graph_startup_readiness.json",))
+            self.assertFalse(graph_wait.wait_ready.call_args.kwargs["require_recorder"])
             config=json.loads((root/"results/seed_trial/run_config.json").read_text())
             self.assertEqual(config["seed"],registered)
             self.assertEqual(config["gazebo_seed"],actual)
             self.assertEqual(config["gazebo_seed_mapping"],"registered_seed_plus_one_zero_is_ignored_by_gazebo_cli")
             self.assertEqual(environments["gazebo"]["STAGE_SIM_SEED"],str(actual))
             snapshot=root/"results/seed_trial/configuration"
+            rendering=json.loads((snapshot/"gazebo_rendering_libraries.json").read_text())
+            self.assertEqual(rendering["evidence_scope"],"ORCHESTRATION_FIXTURE_ONLY_NO_PROCESS_LAUNCHED")
             manifest=json.loads((snapshot/"px4_parameters.json").read_text())
             for phase,data in (("before",b"before flight persisted parameters"),("after",b"after normal firmware save")):
                 self.assertEqual((snapshot/manifest[phase]["artifact"]).read_bytes(),data)

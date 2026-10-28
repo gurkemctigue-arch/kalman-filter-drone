@@ -1,5 +1,7 @@
 # 阶段一验收记录
 
+本页保留 final_v2/v3 的历史验收；v4 修复后的当前验收尚未完成。独立 Ubuntu 22.04/Humble 构建与部分开发探针已有实测，见 [v4 状态](V4_WORK_STATUS.md) 和 [Humble 记录](HUMBLE_ISOLATED_VALIDATION.md)，不改写本页历史试验的环境或判定。
+
 阶段一目标是完成唯一实例模式下的行人、汽车 RGB-D 视觉跟随：检测、深度反投影、带时间戳的 TF、三维卡尔曼滤波、PX4 Offboard 闭环、短时遮挡预测，以及长时丢失后的悬停和显式重新选框。第一阶段固定云台中位。
 
 ## 总体状态：历史 final_v2 四条件工程验收 4/4 通过；v3 主研究已完成台账收集
@@ -40,7 +42,7 @@ ROS 2、Gazebo、PX4 SITL 和 uXRCE-DDS 已在 WSL2 中安装并集成；实际�
 
 实际版本和依赖证据见 [VERSION_LOCK.md](VERSION_LOCK.md)。当前环境是 Ubuntu 24.04.1 WSL2、ROS 2 Jazzy、Gazebo Harmonic 8.15.0、PX4 v1.17.0、同版本 `px4_msgs` 和 Micro XRCE-DDS Agent v2.4.3。
 
-PX4 提交为 `d6f12ad1c4f70ad3230afd7d86e971421e02fef4`，`px4_msgs` 提交为 `86d8239e962f6939e05c3737784f60c02fa884db`。原计划中的 Ubuntu 22.04 / ROS 2 Humble 尚未单独复现，不能把 Jazzy 结果写成 Humble 验证。
+PX4 提交为 `d6f12ad1c4f70ad3230afd7d86e971421e02fef4`，`px4_msgs` 提交为 `86d8239e962f6939e05c3737784f60c02fa884db`。本页历史记录来自 Jazzy，不能将其写成独立 Ubuntu 22.04 / ROS 2 Humble 验证；后者的新增开发证据单独记录。
 
 当前行人参数使用 `models/yolo11n.pt`，汽车参数使用 `models/yolo11s.pt`，均使用 CPU 推理。可选 OpenVINO 实验保留在隔离环境中；本验收不据此声称已经替换主运行后端。每次试验必须保留实际参数、模型和源码哈希、启动参数及环境清单，最终以该次试验的归档为准。
 

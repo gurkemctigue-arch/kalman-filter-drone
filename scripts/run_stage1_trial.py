@@ -18,18 +18,33 @@ import xml.etree.ElementTree as ET
 
 import yaml
 
+from uav_tracking.recording_archive import create_recording_spool, finalize_recording
+
 
 def simulation_status_watchdog_s(requested_real_time_factor: float) -> float:
-    """Preserve a 1 s PX4-time budget for its 2 Hz status in slowed SITL.
-
-    Commander publishes every 500 ms of simulated time, not 5 Hz merely
-    because the DDS topic has a 5 Hz rate limit. The supervisor's independent
-    liveness guard uses monotonic wall time. This explicit runner setting
-    leaves the portable node's real-vehicle default of 1 wall second intact.
-    """
+    """Legacy receipt-mode wall budget; never infer source age from this RTF."""
     if not math.isfinite(requested_real_time_factor) or not 0 < requested_real_time_factor <= 1:
         raise ValueError("requested simulation real-time factor must be in (0,1]")
     return 1.0 / requested_real_time_factor
+
+
+def supervisor_status_timing(px4_time_mode: str, requested_real_time_factor: float) -> dict:
+    """Separate the original 1 s source gate from wall-time stream liveness.
+
+    Requested RTF is a simulator setting, not a measured clock conversion.
+    In source_sim the ROS-time control tick checks both source freshness and
+    a distinct 10 s wall limit. It is not an independent steady-clock timer.
+    """
+    legacy_wall = simulation_status_watchdog_s(requested_real_time_factor)
+    if px4_time_mode not in {"receipt", "source_sim"}:
+        raise ValueError("unsupported PX4 timestamp mode")
+    return {
+        "status_timestamp_mode": "source_sim" if px4_time_mode == "source_sim" else "receipt_wall",
+        "status_source_max_age_s": 1.0,
+        "status_source_max_future_s": .05,
+        "status_timeout_s": 10.0 if px4_time_mode == "source_sim" else legacy_wall,
+        "requested_simulation_real_time_factor": requested_real_time_factor,
+    }
 
 
 def apply_multi_target_identity(parameters: dict, bringup: Path, target_class: str) -> Path:
@@ -87,6 +102,8 @@ def main() -> None:
     parser.add_argument("--no-follow-duration-s", type=float, default=None)
     parser.add_argument("--model-path", default=None)
     parser.add_argument("--inference-threads", type=int, default=None)
+    parser.add_argument("--gazebo-render-driver", choices=["auto", "llvmpipe"], default="auto",
+                        help="Explicit Gazebo-only renderer; llvmpipe avoids the WSL D3D12 shutdown TLS fault")
     parser.add_argument("--inference-image-size", type=int, default=None)
     parser.add_argument("--max-inference-rate-hz", type=float, default=None,
                         help="Acquisition submission rate cap; does not change any freshness/safety threshold")
@@ -104,6 +121,8 @@ def main() -> None:
     parser.add_argument("--real-time-factor", type=float, default=1.0)
     parser.add_argument("--motion-profile-kind", choices=["standard", "speed_changes"], default="standard")
     args = parser.parse_args()
+    if args.gazebo_render_driver == "llvmpipe" and args.render_backend != "egl":
+        parser.error("--gazebo-render-driver llvmpipe requires --render-backend egl")
     if not math.isfinite(args.monitor_tick_s) or not .01 <= args.monitor_tick_s <= .10:
         parser.error("monitor tick must be finite and in [0.01,0.10] seconds")
     if args.multi_target and args.stage != 3:
@@ -130,7 +149,11 @@ def main() -> None:
         parser.error("px4_native startup requires the explicit source_sim timestamp contract")
     if not 0 < args.real_time_factor <= 1:
         parser.error("simulation real-time factor must be in (0,1]")
-    args.supervisor_status_timeout_wall_s = simulation_status_watchdog_s(args.real_time_factor)
+    status_timing = supervisor_status_timing(args.px4_time_mode, args.real_time_factor)
+    args.supervisor_status_timestamp_mode = status_timing["status_timestamp_mode"]
+    args.supervisor_status_source_max_age_s = status_timing["status_source_max_age_s"]
+    args.supervisor_status_source_max_future_s = status_timing["status_source_max_future_s"]
+    args.supervisor_status_timeout_wall_s = status_timing["status_timeout_s"]
     if args.control_reference == "ground_footprint":
         # Declared vehicle geometry for independent offline scoring only.
         # Runtime tracking/control never consumes Gazebo truth.
@@ -157,6 +180,7 @@ def main() -> None:
                STAGE1_COMMAND_MODE=args.command_mode,
                STAGE_SIM_SEED=str(args.gazebo_seed),
                STAGE1_RENDER_BACKEND=args.render_backend,
+               STAGE1_GAZEBO_RENDER_DRIVER=args.gazebo_render_driver,
                STAGE1_PX4_TIME_MODE=args.px4_time_mode,
                STAGE1_TAKEOFF_MODE=args.takeoff_mode,
                GZ_PARTITION=os.environ.get("GZ_PARTITION", "stage1_flight"), GZ_IP="127.0.0.1",
@@ -211,8 +235,7 @@ def main() -> None:
     # Only the simulation supervisor consumes these overrides. Do not change
     # odometry, command, or target measurement/prediction safety thresholds.
     parameters.setdefault("uav_tracking_flight_supervisor", {}).setdefault("ros__parameters", {}).update(
-        status_timeout_s=args.supervisor_status_timeout_wall_s,
-        requested_simulation_real_time_factor=args.real_time_factor,
+        **status_timing,
     )
     if args.multi_target:
         # Carry stage-two identity safety into the physical-gimbal graph.
@@ -288,6 +311,7 @@ def main() -> None:
         takeoff_mode=args.takeoff_mode, use_sim_time=True)
     if args.takeoff_mode == "px4_native":
         parameters["uav_tracking_flight_supervisor"]["ros__parameters"].update(
+            native_takeoff_timeout_sim_s=40.0, native_wall_timeout_s=180.0,
             native_settle_s=1.0, native_settle_speed_mps=.20,
             takeoff_position_tolerance_m=.18,
             local_position_topic="/fmu/out/vehicle_local_position_v1",
@@ -326,6 +350,7 @@ def main() -> None:
     runner = root / "scripts" / "run_stage1_flight.sh"
     processes = {}
     logs = []
+    recording_spool = None
 
     def start(name, command):
         log = (output / f"{name}.log").open("w", encoding="utf-8")
@@ -387,6 +412,16 @@ def main() -> None:
         start("px4", ["bash", str(runner), "px4", args.target_class])
         time.sleep(3)
         if not args.no_bag:
+            recording_spool = create_recording_spool(output)
+            (snapshot / "recording_policy.json").write_text(json.dumps({
+                "schema_version": 1, "policy": "ext4_sqlite_close_standard_zstd_verified_native_read",
+                "recorder_storage": "sqlite3", "recorder_compression": "none",
+                "spool": str(recording_spool), "published_bag": str(output / "rosbag"),
+                "checks": ["recorder_exit_zero", "sqlite_integrity", "metadata_topic_counts",
+                           "standard_zstd_complete_frame", "exact_byte_roundtrip", "native_reader_full_count",
+                           "published_copy_sha256"],
+                "failure_policy": "Retain owned spool, report failure, and never publish an unchecked rosbag"
+            }, indent=2), encoding="utf-8")
             topics = ["/clock", "/camera/color/image_raw", "/camera/aligned_depth_to_color/image_raw", "/camera/color/camera_info",
                       "/tracking/observations", "/tracking/observation_frames", "/tracking/state", "/tracking/status", "/tracking/command", "/tracking/flight_command",
                       "/tracking/flight_phase", "/tracking/detection_diagnostics", "/tracking/selection", "/vehicle/odometry", "/vehicle/odometry_timing", "/tf", "/tf_static",
@@ -398,7 +433,8 @@ def main() -> None:
                            "/gimbal/yaw/cmd_pos", "/gimbal/pitch/cmd_pos", "/gimbal/roll/cmd_pos", "/scenario/stage2_profile",
                            "/research/camera/color/image_raw", "/research/camera/aligned_depth_to_color/image_raw"])
             topics.extend(["/tracking/navigation_state", "/tracking/navigation_diagnostics"])
-            start("bag", ["ros2", "bag", "record", "--storage", "sqlite3", "--compression-mode", "file", "--compression-format", "zstd", "-o", str(output / "rosbag"), *topics])
+            start("bag", ["ros2", "bag", "record", "--storage", "sqlite3",
+                          "-o", str(recording_spool / "rosbag"), *topics])
         monitor_cmd = [sys.executable, str(root / "scripts" / "stage1_flight_monitor.py"), "--output", str(output), "--target-class", args.target_class,
                        "--duration", str(args.duration), "--wall-timeout", str(args.wall_timeout), "--world", world,
                        "--monitor-tick-s", str(args.monitor_tick_s),
@@ -419,30 +455,33 @@ def main() -> None:
                 fault_command.extend(["-p", f"{key}:={value}"])
             start("sensor_faults", fault_command)
         start("ros", ["bash", str(runner), "ros", args.target_class])
-        # Build the camera bridge before starting sensor publication. This
-        # reduces transport discovery/startup overlap; any crash remains a
-        # failed trial, never an automatic hidden retry.
-        bridge_ready = False
-        startup_log = []
-        for _ in range(15):
+        # Topic names alone do not prove that the adapter or recorder has
+        # matched DDS endpoints. Keep physics paused until the actual graph,
+        # recorder subscriptions and a callback on the adapter are all ready.
+        def check_startup_processes():
+            for name in ["gazebo", "agent", "px4", "ros", "monitor"] + ([] if args.no_bag else ["bag"]):
+                if processes[name].poll() is not None:
+                    raise RuntimeError(f"{name} exited during paused startup; see its log")
             if "process has died" in (output / "ros.log").read_text(errors="replace"):
                 raise RuntimeError("ROS component failed during startup; see ros.log")
-            probe = subprocess.run(["ros2", "topic", "list", "--no-daemon", "--spin-time", "0.5"],
-                                   env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=10)
-            startup_log.append(probe.stdout)
-            if {"/clock", "/camera/color/image_raw", "/camera/aligned_depth_to_color/image_raw"}.issubset(probe.stdout.splitlines()):
-                bridge_ready = True
-                break
-            time.sleep(0.5)
-        (output / "bridge_startup.log").write_text("\n".join(startup_log), encoding="utf-8")
-        if not bridge_ready:
-            raise RuntimeError("Camera bridge did not advertise all sensor topics while paused")
+        from wait_stage1_graph import wait_ready as wait_ready_graph
+        wait_ready_graph(output / "graph_startup_readiness.json", require_recorder=not args.no_bag,
+                         check_alive=check_startup_processes)
+        check_startup_processes()
         resumed = subprocess.run(["gz", "service", "-s", f"/world/{world}/control", "--reqtype", "gz.msgs.WorldControl",
                                   "--reptype", "gz.msgs.Boolean", "--timeout", "5000", "--req", "pause: false"],
                                  env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=10)
         (output / "unpause.log").write_text(resumed.stdout, encoding="utf-8")
         if resumed.returncode != 0 or "true" not in resumed.stdout:
             raise RuntimeError("Gazebo did not acknowledge unpause")
+        # Service advertisement while paused does not prove that rendering
+        # initialized. Capture actual mapped ELFs only after unpause.
+        from capture_gazebo_rendering import capture_ready as capture_ready_rendering
+        rendering = capture_ready_rendering(processes["gazebo"].pid, args.gazebo_render_driver)
+        (snapshot / "gazebo_rendering_libraries.json").write_text(
+            json.dumps(rendering, indent=2), encoding="utf-8")
+        if rendering["status"] != "PASS":
+            raise RuntimeError("Actual Gazebo rendering contract failed; see gazebo_rendering_libraries.json")
         deadline = time.monotonic() + args.wall_timeout + 15
         while monitor.poll() is None:
             for name in ["gazebo", "agent", "px4", "ros"]:
@@ -457,12 +496,9 @@ def main() -> None:
         if monitor.returncode != 0:
             raise RuntimeError(f"Flight monitor failed with exit code {monitor.returncode}; see monitor.log")
     finally:
-        # rosbag2 must flush the raw image/depth cache and finish file-mode
-        # zstd compression before metadata.yaml is written. 45 s was too
-        # short for the car/position recordings: the process was killed after
-        # a successful flight, leaving a valid-looking db3 without a complete
-        # bag. This is a recording-finalization bound only; it does not alter
-        # the flight, estimator, controller, or safety thresholds.
+        # Close the uncompressed ext4 recording before any archive operation.
+        # Standard zstd and native-reader verification happen after all flight
+        # processes stop; recorder exit zero alone is not recording acceptance.
         for name in ["monitor", "bag", "ros", "sensor_faults", "px4", "gazebo", "agent"]:
             stop(name, timeout=180 if name == "bag" else 8)
         for log in logs:
@@ -482,6 +518,18 @@ def main() -> None:
                     json.dumps({"verified": False, "error": str(error)}), encoding="utf-8")
                 if processes.get("monitor") is not None and processes["monitor"].poll() == 0:
                     raise RuntimeError("Flight ended without verified magnetic PX4 startup provenance") from error
+        if recording_spool is not None:
+            try:
+                archive = finalize_recording(recording_spool, output / "rosbag",
+                    processes["bag"].poll() if "bag" in processes else None)
+            except Exception as error:
+                (output / "bag_integrity.json").write_text(json.dumps({
+                    "schema_version": 1, "status": "FAIL", "source_spool": str(recording_spool),
+                    "spool_retained": True, "error": f"{type(error).__name__}: {error}",
+                    "policy": "ext4_sqlite_close_standard_zstd_verified_native_read"
+                }, indent=2), encoding="utf-8")
+                raise RuntimeError("Recording finalization failed; original ext4 spool retained") from error
+            (output / "bag_integrity.json").write_text(json.dumps(archive, indent=2), encoding="utf-8")
 
 
 if __name__ == "__main__":

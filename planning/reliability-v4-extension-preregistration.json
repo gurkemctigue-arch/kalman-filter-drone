@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "status": "DRAFT_NOT_FROZEN_NOT_EXECUTED",
+  "study_kind": "POST_REPAIR_PAIRED_CONDITION_EXTENSIONS",
+  "classes": ["person", "car"],
+  "conditions": ["depth_noise", "depth_holes", "dropout", "latency", "combined", "speed_changes_velocity", "speed_changes_position", "far_distance"],
+  "seeds": [1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009],
+  "formal_trial_count": 160,
+  "duration_s": 45.0,
+  "far_distance_m_by_class": {"person": 7.0, "car": 12.0},
+  "reference_groups": {
+    "depth_noise": "stage1_velocity",
+    "depth_holes": "stage1_velocity",
+    "dropout": "stage1_velocity",
+    "latency": "stage1_velocity",
+    "combined": "stage1_velocity",
+    "speed_changes_velocity": "stage1_velocity",
+    "speed_changes_position": "stage1_position",
+    "far_distance": "stage1_velocity"
+  },
+  "sampling_policy": "A separate 160-slot final-Humble matrix, not part of the unchanged 120-slot core denominator. Each condition has both classes and ten seeds. Freeze this complete protocol before the first core or extension held-out flight; reference_group plus class/seed prospectively names the paired clean core slot. Never select, replace or retry a slot after viewing outcomes.",
+  "flight_policy": "Use the same frozen flight sources, models, runtime, CPU renderer, PX4 source clock, native takeoff, safety gates, duration, controller and explicit shutter/reselection policy as the final core plan. Sensor fault parameters and motion profiles come from the hashed run_stage1_trial implementation. Only the named condition, speed_changes profile, position-mode reference, or declared far distance changes.",
+  "development_readiness": "PENDING_FINAL_SOURCE_EXTENSION_DEVELOPMENT_PROBES",
+  "registration_utc": null,
+  "first_core_flight_must_follow_registration": true,
+  "failure_policy": "Each formal slot once. Keep FAIL, INTERRUPTED, missing evidence and all denominators. Infrastructure stops require a separate diagnosis before remaining pending slots, not a retry.",
+  "analysis_policy": "Compare each extension to its named same-class/same-seed clean reference using per-trial paired differences, disclose finite-pair n out of ten, all failures and missing evidence. Do not pool historical Jazzy extension outcomes into this Humble study. The far-distance comparison changes the physical setpoint intentionally and does not claim identical camera views.",
+  "results": null
+}

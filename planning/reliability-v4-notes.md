@@ -72,3 +72,25 @@
 - 主工作区加入显式 `--takeoff-mode px4_native`（默认 legacy 保留）：NAV_TAKEOFF 的 param4..7 明确 NaN，PX4 以机载当前位置和 AMSL+MIS_TAKEOFF_ALT 原生起飞，完成后 AUTO_LOITER；最终对准和高度/速度稳定后再接管 Offboard。原 frame_guard 不修改，接管后的 reset 仍锁定 hold/restart。
 - 新模式 pre-rcS 显式记录 `MIS_TAKEOFF_ALT=3.0`、`COM_TAKEOFF_ACT=0`、`SENS_IMU_MODE=1`，消除任务结束动作和多 EKF 实例假设。VLP 源时效0.50秒，1Hz flags 用独立1.50秒辅助状态门；原里程计0.50、目标0.60/0.75门不变。HOLD/FOLLOW 之前检测器的既有 activation epoch 阻止起飞图像进入关联/KF；handoff 清理 supervisor 缓存。
 - native/legacy/readiness/detector 39 项专项通过；新模式真实飞行尚未运行。Humble Agent 独立构建成功，已将唯一重负载窗口交给其 patched PX4 编译，root 不同时启动仿真或录包分析。
+
+## Humble03 原生起飞、录制边界与下一冻结
+
+- Ubuntu22/Humble/Harmonic 隔离环境完成 Agent、PX4、ros_gz 与四包构建，消息/ament 导入均在独立冻结内；`humble03` 的 861 项 Linux 测试通过。Humble 原生 PX4 ELF SHA256 为 `6cf784c1cb4de2945b4291aa9391a2301c78315a1462ef3f51f541e119fd7ce7`，使用专用动态库登记，不能以 Jazzy 登记替代。
+- `/root/uav_tracking_fullplan_v4_humble03` 汽车种子0的20秒 FOLLOW 探针实际完成 NAV_TAKEOFF、空中磁对准、AUTO_LOITER→Offboard→FOLLOW，monitor返回0。其原生起飞约花39墙钟秒、约12.4源秒，暴露原40墙钟秒流程预算可能误截正常仿真。
+- 下一版在主工作区改为40源秒流程预算和独立180墙钟秒上限，独立 STEADY_TIME timer 在 `/clock` 暂停时仍检查墙钟。每条 phase 保留 source 时间后缀及新增双起点/elapsed，独立评价核对；不放宽odom/target时效、frame reset或接管稳定门。native专项52项通过，runner专项44项通过；尚未在新冻结飞行。
+- Humble03 原压缩 bag 的原生读回失败：原生解压少128KiB；独立流式解压得到838205440字节SQLite，integrity/quick_check均ok、40852条与metadata一致，但压缩frame未完整终结。原件SHA和失败记录保留，诊断派生副本仅用于定位，原试验不能因其SQLite可恢复而改判正式PASS。正在将录制与压缩分开，并增加关闭/完整性/原生读回门。
+- 新导航诊断 schema2 分别记录几何R、精确样本传播的位姿R及实际合成R，记录来源pose6×6/源时刻/杆臂、采集TF、质量字段、测量处理与输出发布时间及初始化速度。36项导航/不确定性专项通过；诊断不改变线上KF算法，不宣称已额外实现质量缩放。
+- 发现现有 `estimator_method` 只切表面轨迹输出，未切独立导航KF。为避免错误宣称，新增同一最终录制的离线四法比较草案；20条正式stage1_velocity含失败全部保留，GT仅评分。纯复放、导出与在线等价审计及开发定标仍待完成，120工程槽仍未冻结执行。
+
+## Humble04 原生录制修复与状态计时发现
+
+- `uav_tracking.recording_archive` 将录制改在唯一拥有的ext4 spool中使用原生sqlite3无压缩。关闭后SQLite页/metadata/topic条数核验，再由标准zstd CLI产生完整frame，执行独立流式SHA往返与Humble SequentialCompressionReader全量读取/解压SHA；校验后原样发布到结果盘，失败保留spool。真实Humble03诊断副本838205440字节/40852条的完整归档实验通过，未改旧槽判定。
+- `/root/uav_tracking_fullplan_v4_humble04` 的4包、导入隔离与901项Linux测试通过。新car20秒槽41174条消息的原始bag_integrity、source_clock、native_startup均PASS。导航覆盖100%、GT202/203=99.51%；KF位置RMSE0.09645m/速度0.07453m/s；base_link距离/高度RMSE0.62951/0.26644m，尾10秒0.01892/0.00447m。仍缺最后GT bracket导致严格稳定时间右删失，且无遮挡surface评价不完整，不能将这几项PASS拼成正式工程PASS。
+- 同冻结person20秒探针未进入FOLLOW：source5.652s、native elapsed0.600sim/2.520wall时，status receipt wall age2.010s超过2.000s而ABORT；status源戳5.152s、源龄仅0.500s，odom接收龄0.014s，failsafeFalse/preflightTrue。录制完整性和source_clock PASS，native FAIL，失败原件保留。正在将source_sim supervisor状态时效与原source1.0s/future0.05s合同对齐，并独立保留wall停流上限；不改odom/目标/重置保护门，不自动重跑同槽。
+- Gazebo两槽均在关闭后退出-11；kernel定位Ruby gz CLI在libgcc展开栈时SIGSEGV，正在只读匹配core取栈，不把运行成功解释为清理正常。ROS launch父退出0也不能掩盖子节点关闭时RuntimeError。
+- 新独立导航在线数值复现helper和同测量四法纯core已通过专项，独立bag导出仍在集成。共享reader新增可选保留Clock，导航新评价显式启用，避免其它话题停流后遗漏clock-only静默尾段；历史默认读取行为保留。尚未消费任何正式种子。
+- 新source_sim supervisor将VehicleStatus源龄明确保持1.0s、未来界0.05s，并独立使用10s有效接收墙钟停流界；旧receipt_wall默认仍为1s。复用源时钟验证拒绝非法/过旧/未来/重复，源戳或ROS clock回退锁止至节点重启，拒绝不刷新已接受状态。状态墙钟界只在ROS-time控制tick检查，不宣称暂停clock时有独立10s steady watchdog；原生180s独立steady总预算另行保留。新run_config/runtime YAML和正式runner逐项绑定，主协议明确Humble22登记；新源合同/原生/runner/离线审计/时钟专项105项通过，尚未新冻结或实际飞行。
+- 四法replay的导出/运行脚本及replay_comparison、replay_export、navigation_reproduction明确作为纯离线来源单独绑定，完整source manifest仍包含它们；只改离线工具不要求重飞。recording_archive和core/kalman仍属飞行关键来源。fixture helper仅为ORCHESTRATION_FIXTURE_ONLY，不是实际运行证明。
+- 新离线工具在04 car有效原始bag上完成204测量/1220输出的真实数值复现PASS（1016次缓存重复不重更新），独立native核对首次为证据不完整：144个协方差及20个年龄差异均恰对应TargetState.msg的float32 wire量化，JSON诊断为float64。首次导出及164差异保留在`results/development_offline_v4_humble04_car_seed00_export01`，不扩大整体数值门限，另按字段声明精确cast再核对。新preserve_clock导航评价保留10574个Clock，区间18.0–38.2及203分母、202真值、原KF/物理指标均未改变，严格末端稳定性仍右删失；独立导出不替代闭环工程验收。
+- v4后续协议明确`gazebo_render_driver=llvmpipe`，trial_spec/CLI/run_config逐项绑定，auto保留历史语义。正式runner独立核验`configuration/gazebo_rendering_libraries.json`：三条CPU环境值、原始/proc映射的inode/device与每个记录ELF身份一致、SHA结构、实际swrast与LLVM库、没有WSL D3D12驱动及捕获状态PASS；缺失或冲突为基础设施失败。渲染变更仅面向新槽，旧auto退出-11和失败证据不覆盖，不混为同一性能条件。
+- 精确wire核验修复后，另名`results/development_offline_v4_humble04_car_seed00_export02`真实重导exit0、整体PASS：204测量/1220输出，独立online float64数值复现及全部1220对native-state均PASS。只对消息声明为float32的协方差与预测年龄执行显式cast后精确比较，量化后1ULP差仍拒绝；Point/Vector3和online float64门保持原样。源码/消息导入隔离及NavEstimator、KF、models、uncertainty、TargetState.msg对04的哈希等价已保存。旧export01缺证原件保留；此开发clean槽不代替正式配对重复、失败/遮挡任务或工程验收。renderer协议/runner最终47项专项通过，等待全源合并后05隔离构建与全套。

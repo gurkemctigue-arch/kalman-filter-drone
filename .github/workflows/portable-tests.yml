@@ -1,0 +1,39 @@
+name: Portable Python tests
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  portable:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.12"]
+    env:
+      MPLBACKEND: Agg
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: pyproject.toml
+      - name: Install archive and Python test dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends zstd
+          python -m pip install --upgrade pip
+          python -m pip install -e '.[test]'
+      - name: Run portable fixtures, including standard zstd round trips
+        run: python -B -m unittest discover -s tests -v
+      - name: Check replay command entry points without opening recordings
+        run: |
+          python scripts/run_estimator_replay_v4.py plan
+          python scripts/export_estimator_replay_v4.py --help

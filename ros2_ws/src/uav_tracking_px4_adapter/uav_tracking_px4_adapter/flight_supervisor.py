@@ -14,11 +14,15 @@ import math
 import time
 from typing import Any
 
+from uav_tracking_px4_adapter.source_clock import OdometrySourceClock
+from uav_tracking_px4_adapter.shutdown_guard import is_known_shutdown_subscription_error
+
 try:
     import rclpy
     from rclpy.executors import ExternalShutdownException
     from nav_msgs.msg import Odometry
     from px4_msgs.msg import EstimatorStatusFlags, OffboardControlMode, VehicleCommand, VehicleLocalPosition, VehicleStatus
+    from rclpy.clock import Clock, ClockType
     from rclpy.node import Node
     from rclpy.qos import qos_profile_sensor_data
     from std_msgs.msg import String
@@ -78,6 +82,8 @@ class FlightSupervisor(Node):
             "estimator_flags_topic": "/fmu/out/estimator_status_flags",
             "native_settle_s": 1.0,
             "native_settle_speed_mps": 0.20,
+            "native_takeoff_timeout_sim_s": 40.0,
+            "native_wall_timeout_s": 180.0,
             "takeoff_yaw_rad": 0.0,
             "takeoff_horizontal_limit_mps": 0.8,
             "takeoff_vertical_limit_mps": 0.7,
@@ -90,6 +96,9 @@ class FlightSupervisor(Node):
             "command_timeout_s": 0.5,
             "odometry_timeout_s": 0.5,
             "status_timeout_s": 1.0,
+            "status_timestamp_mode": "receipt_wall",
+            "status_source_max_age_s": 1.0,
+            "status_source_max_future_s": 0.05,
             "requested_simulation_real_time_factor": 1.0,
             "command_retry_s": 1.0,
             "max_command_attempts": 15,
@@ -102,11 +111,26 @@ class FlightSupervisor(Node):
         if startup_mode not in ("offboard_velocity", "px4_native"):
             raise ValueError("unsupported takeoff_mode")
         self._native_takeoff = startup_mode == "px4_native"
+        for budget in ("native_takeoff_timeout_sim_s", "native_wall_timeout_s"):
+            if not math.isfinite(self._number(budget)) or self._number(budget) <= 0:
+                raise ValueError("native startup budgets must be positive finite durations")
         requested_rtf = self._number("requested_simulation_real_time_factor")
         status_timeout = self._number("status_timeout_s")
         if not (math.isfinite(requested_rtf) and 0 < requested_rtf <= 1
                 and math.isfinite(status_timeout) and status_timeout > 0):
             raise ValueError("status wall watchdog and requested simulation RTF must be valid")
+        self._status_timestamp_mode = self._p("status_timestamp_mode")
+        if self._status_timestamp_mode not in ("receipt_wall", "source_sim"):
+            raise ValueError("unsupported status_timestamp_mode")
+        self._status_clock = OdometrySourceClock(
+            "source_sim" if self._status_timestamp_mode == "source_sim" else "receipt",
+            use_sim_time=bool(self.get_parameter("use_sim_time").value),
+            max_age_s=self._number("status_source_max_age_s"),
+            max_future_s=self._number("status_source_max_future_s"),
+        )
+        self._status_last_ros_ns: int | None = None
+        self._status_ros_regressed = False
+        self._status_last_rejection = "none"
         if requested_rtf != 1.0 and not (
             bool(self.get_parameter("simulation_only").value)
             and bool(self.get_parameter("use_sim_time").value)
@@ -131,6 +155,9 @@ class FlightSupervisor(Node):
         self._ever_armed = False
         self._native_local = self._estimator_flags = None
         self._native_settle_started_s: float | None = None
+        self._native_started_source_s = self._native_started_wall_s = None
+        self._native_finished_source_s = self._native_finished_wall_s = None
+        self._native_last_source_s = None
         self._yaw = float(self.get_parameter("takeoff_yaw_rad").value)
         self._flight_pub = self.create_publisher(TrackingCommand, self._p("flight_command_topic"), 20)
         self._vehicle_command_pub = self.create_publisher(VehicleCommand, self._p("vehicle_command_topic"), 10)
@@ -145,10 +172,19 @@ class FlightSupervisor(Node):
             self.create_subscription(EstimatorStatusFlags, self._p("estimator_flags_topic"), self._on_estimator_flags,
                                      qos_profile_sensor_data)
         self.create_timer(1.0 / float(self.get_parameter("publish_rate_hz").value), self._tick)
+        if self._native_takeoff:
+            # A ROS-time timer stops when /clock pauses. This independent
+            # steady timer must still enforce the native wall-time ceiling.
+            self._native_watchdog_clock = Clock(clock_type=ClockType.STEADY_TIME)
+            self._native_watchdog_timer = self.create_timer(.10, self._native_wall_watchdog,
+                                                           clock=self._native_watchdog_clock)
         self.get_logger().info(f"Flight supervisor: {self._phase}; auto_start={self._auto_start}")
         self.get_logger().info(
-            f"PX4 status watchdog: requested_simulation_rtf={requested_rtf:.3f}, "
-            f"status_timeout_wall_s={status_timeout:.3f}; PX4 Commander nominal source period=0.500 sim s"
+            f"PX4 status timing: mode={self._status_timestamp_mode}, "
+            f"requested_simulation_rtf={requested_rtf:.3f}, status_timeout_wall_s={status_timeout:.3f}, "
+            f"source_max_age_s={self._status_clock.max_age_ns / 1e9:.3f}, "
+            f"source_max_future_s={self._status_clock.max_future_ns / 1e9:.3f}; "
+            "status wall liveness is checked by ROS-time control ticks"
         )
 
     def _p(self, name: str) -> str:
@@ -168,7 +204,46 @@ class FlightSupervisor(Node):
         self._odom, self._odom_received = message, time.monotonic()
 
     def _on_status(self, message: Any) -> None:
+        if getattr(self, "_status_timestamp_mode", "receipt_wall") == "source_sim":
+            now_ns = self._status_ros_now_ns()
+            stamp = getattr(message, "timestamp", None)
+            result = self._status_clock.resolve(stamp, stamp, now_ns)
+            if self._status_ros_regressed or not result.accepted:
+                self._status_last_rejection = (
+                    "ros_clock_regression_restart_required" if self._status_ros_regressed else result.reason
+                )
+                return
+            self._status_last_rejection = "none"
         self._status, self._status_received = message, time.monotonic()
+
+    def _status_ros_now_ns(self) -> int:
+        """Observe ROS time on callbacks and ticks; a regression requires restart."""
+        now_ns = self.get_clock().now().nanoseconds
+        previous = self._status_last_ros_ns
+        if previous is not None and now_ns < previous:
+            self._status_ros_regressed = True
+        self._status_last_ros_ns = now_ns
+        return now_ns
+
+    def _status_timing_issues(self, now: float) -> list[str]:
+        if getattr(self, "_status_timestamp_mode", "receipt_wall") == "receipt_wall":
+            return ["status_stale"] if now - self._status_received > self._number("status_timeout_s") else []
+        now_ns = self._status_ros_now_ns()
+        issues = []
+        if self._status_ros_regressed or self._status_clock.latched:
+            issues.append("status_source_clock_regression_restart_required")
+        stamp_ns = OdometrySourceClock._source_ns(getattr(self._status, "timestamp", None))
+        if now_ns <= 0 or stamp_ns is None:
+            issues.append("status_source_timestamp_invalid")
+        else:
+            age_ns = now_ns - stamp_ns
+            if age_ns > self._status_clock.max_age_ns:
+                issues.append("status_source_stale")
+            if age_ns < -self._status_clock.max_future_ns:
+                issues.append("status_source_future")
+        if now - self._status_received > self._number("status_timeout_s"):
+            issues.append("status_receipt_wall_stale")
+        return issues
 
     def _on_command(self, message: Any) -> None:
         self._controller_command, self._command_received = message, time.monotonic()
@@ -183,6 +258,53 @@ class FlightSupervisor(Node):
         return readiness_issues(self._native_local, self._estimator_flags,
                                 self.get_clock().now().nanoseconds * 1e-9,
                                 require_inflight_alignment=inflight)
+
+    def _native_budget_failure(self, source_s: float, wall_s: float, *, check_source: bool = True) -> str | None:
+        source_start = self._native_started_source_s
+        wall_start = self._native_started_wall_s
+        if source_start is None or wall_start is None:
+            return "native_startup_budget_origin_missing"
+        if check_source:
+            if not math.isfinite(source_s) or source_s <= 0:
+                return "native_source_clock_invalid"
+            previous = self._native_last_source_s
+            if source_s < source_start or previous is not None and source_s < previous:
+                return "native_source_clock_regressed"
+            self._native_last_source_s = source_s
+            if source_s-source_start > self._number("native_takeoff_timeout_sim_s"):
+                return "native_source_budget_exhausted"
+        if wall_s-wall_start > self._number("native_wall_timeout_s"):
+            return "native_wall_budget_exhausted"
+        return None
+
+    def _publish_phase(self, *, wall_s: float | None = None) -> None:
+        source_s = self.get_clock().now().nanoseconds * 1e-9
+        wall_s = time.monotonic() if wall_s is None else wall_s
+        evidence = f"phase_wall_monotonic_s={wall_s:.9f}; "
+        if getattr(self, "_native_takeoff", False) and self._native_started_source_s is not None:
+            end_source = self._native_finished_source_s if self._native_finished_source_s is not None else source_s
+            end_wall = self._native_finished_wall_s if self._native_finished_wall_s is not None else wall_s
+            evidence += (f"native_started_source_s={self._native_started_source_s:.9f}; "
+                         f"native_started_wall_s={self._native_started_wall_s:.9f}; "
+                         f"native_elapsed_source_s={end_source-self._native_started_source_s:.9f}; "
+                         f"native_elapsed_wall_s={end_wall-self._native_started_wall_s:.9f}; ")
+        state = String()
+        state.data = f"{self._phase}: {self._reason}; {evidence}source_sim_s={source_s:.9f}"
+        self._phase_pub.publish(state)
+
+    def _native_wall_watchdog(self) -> None:
+        if not self._native_takeoff or self._phase != "NATIVE_TAKEOFF":
+            return
+        now = time.monotonic()
+        source_s = self.get_clock().now().nanoseconds * 1e-9
+        reason = self._native_budget_failure(source_s, now, check_source=False)
+        if reason is not None:
+            self._native_finished_source_s, self._native_finished_wall_s = source_s, now
+            self._abort(reason, now)
+            outgoing = self._velocity_command()
+            outgoing.valid = False
+            self._flight_pub.publish(outgoing)
+            self._publish_phase(wall_s=now)
 
     def _on_heartbeat(self, _message: Any) -> None:
         now = time.monotonic()
@@ -200,7 +322,7 @@ class FlightSupervisor(Node):
             self._odom is not None
             and self._status is not None
             and now - self._odom_received <= self._number("odometry_timeout_s")
-            and now - self._status_received <= self._number("status_timeout_s")
+            and not self._status_timing_issues(now)
         )
 
     def _armed_offboard(self) -> bool:
@@ -222,8 +344,7 @@ class FlightSupervisor(Node):
         if self._status is None:
             issues.append("status_missing")
         else:
-            if now - self._status_received > self._number("status_timeout_s"):
-                issues.append("status_stale")
+            issues.extend(self._status_timing_issues(now))
             if self._status.failsafe:
                 issues.append("failsafe")
             if require_armed_offboard:
@@ -242,6 +363,17 @@ class FlightSupervisor(Node):
             if odom_stamp is not None else "missing"
         )
         status = self._status
+        source_timing = ""
+        mode = getattr(self, "_status_timestamp_mode", "receipt_wall")
+        if mode == "source_sim":
+            stamp_ns = OdometrySourceClock._source_ns(getattr(status, "timestamp", None))
+            age = (self.get_clock().now().nanoseconds - stamp_ns) / 1e9 if stamp_ns is not None else math.nan
+            source_timing = (
+                f"status_age_source_s={age:.3f}, "
+                f"status_source_limit_s={self._status_clock.max_age_ns / 1e9:.3f}, "
+                f"status_source_future_limit_s={self._status_clock.max_future_ns / 1e9:.3f}, "
+                f"status_last_rejection={self._status_last_rejection}, "
+            )
         return (
             f"wall_monotonic_s={now:.6f}, ros_now_ns={self.get_clock().now().nanoseconds}, "
             f"odom_age_wall_s={now - self._odom_received:.3f}, "
@@ -249,6 +381,7 @@ class FlightSupervisor(Node):
             f"odom_received_monotonic_s={self._odom_received:.6f}, odom_stamp_ns={odom_stamp_ns}, "
             f"status_age_wall_s={now - self._status_received:.3f}, "
             f"status_limit_s={self._number('status_timeout_s'):.3f}, "
+            f"status_timestamp_mode={mode}, {source_timing}"
             f"status_received_monotonic_s={self._status_received:.6f}, "
             f"status_px4_stamp_us={getattr(status, 'timestamp', 'missing')}, "
             f"arming_state={getattr(status, 'arming_state', 'missing')}, "
@@ -260,6 +393,10 @@ class FlightSupervisor(Node):
     def _abort(self, reason: str, now: float) -> None:
         # Kept in the phase message and normal transition log, so the source
         # of a latched abort remains inspectable after the state recovers.
+        if (getattr(self, "_native_takeoff", False) and self._phase == "NATIVE_TAKEOFF"
+                and self._native_finished_source_s is None):
+            self._native_finished_source_s = self.get_clock().now().nanoseconds * 1e-9
+            self._native_finished_wall_s = now
         self._change_phase("ABORTED", f"{reason}; {self._state_snapshot(now)}")
 
     def _position(self) -> tuple[float, float, float]:
@@ -322,9 +459,7 @@ class FlightSupervisor(Node):
                         if startup_issues:
                             self._reason = "waiting for native EKF readiness: " + ", ".join(startup_issues)
                             self._flight_pub.publish(outgoing)
-                            state = String()
-                            state.data = f"{self._phase}: {self._reason}"
-                            self._phase_pub.publish(state)
+                            self._publish_phase(wall_s=now)
                             return
                         x, y, z = self._position()
                         self._goal = (x, y, z + self._number("takeoff_height_m"))
@@ -338,6 +473,9 @@ class FlightSupervisor(Node):
                   and self._status.nav_state == VehicleStatus.NAVIGATION_STATE_AUTO_TAKEOFF):
                 self._ever_armed = True
                 self._takeoff_started = now
+                self._native_started_source_s = self.get_clock().now().nanoseconds * 1e-9
+                self._native_started_wall_s = now
+                self._native_last_source_s = self._native_started_source_s
                 self._change_phase("NATIVE_TAKEOFF", "PX4 owns takeoff and initial in-flight magnetic alignment")
             elif now - self._last_request >= self._number("command_retry_s"):
                 if self._attempts >= int(self.get_parameter("max_command_attempts").value):
@@ -359,6 +497,11 @@ class FlightSupervisor(Node):
             elif self._status.nav_state not in (VehicleStatus.NAVIGATION_STATE_AUTO_TAKEOFF,
                                                  VehicleStatus.NAVIGATION_STATE_AUTO_LOITER):
                 self._abort("native takeoff exited its expected PX4 modes", now)
+            elif (native_budget_failure := self._native_budget_failure(
+                    self.get_clock().now().nanoseconds * 1e-9, now)) is not None:
+                self._native_finished_source_s = self.get_clock().now().nanoseconds * 1e-9
+                self._native_finished_wall_s = now
+                self._abort(native_budget_failure, now)
             else:
                 position = self._position()
                 error = math.sqrt(sum((a - b) ** 2 for a, b in zip(position, self._goal)))
@@ -376,11 +519,10 @@ class FlightSupervisor(Node):
                         self._attempts = 0
                         self._request_started = now
                         self._controller_command, self._command_received = None, 0.0
+                        self._native_finished_source_s, self._native_finished_wall_s = now_s, now
                         self._change_phase("REQUEST_OFFBOARD", "native takeoff settled with final EKF yaw alignment")
                 else:
                     self._native_settle_started_s = None
-                if now - self._takeoff_started > self._number("takeoff_timeout_s"):
-                    self._abort("native takeoff/alignment timeout", now)
         elif self._phase == "REQUEST_OFFBOARD":
             if not fresh or self._status.failsafe:
                 self._abort("activation guard: " + ", ".join(self._state_guard_issues(now, False)), now)
@@ -435,9 +577,7 @@ class FlightSupervisor(Node):
             outgoing = self._velocity_command()
             outgoing.valid = False
         self._flight_pub.publish(outgoing)
-        state = String()
-        state.data = f"{self._phase}: {self._reason}"
-        self._phase_pub.publish(state)
+        self._publish_phase(wall_s=now)
 
 
 def main(args: list[str] | None = None) -> None:
@@ -450,6 +590,17 @@ def main(args: list[str] | None = None) -> None:
         rclpy.spin(node)
     except (KeyboardInterrupt, ExternalShutdownException):
         pass
+    except RuntimeError as error:
+        context_ok = None
+        try:
+            if node is not None:
+                context_ok = node.context.ok()
+        except (AttributeError, RuntimeError):
+            # Unknown context state cannot turn a runtime fault into shutdown.
+            pass
+        if not is_known_shutdown_subscription_error(error, context_ok=context_ok):
+            raise
+        print("Flight supervisor: closed-context subscription take race during shutdown", flush=True)
     finally:
         try:
             if node is not None:

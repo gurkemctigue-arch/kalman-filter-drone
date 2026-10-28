@@ -28,6 +28,7 @@ RECORDING_ERROR = re.compile(
     r"|(?:zstd|zstandard|decompress(?:ion)?).*(?:error|failed|corrupt)|failed to decompress", re.IGNORECASE)
 EVALUATOR_EXCEPTION = re.compile(r"Traceback \(most recent call last\):|Fatal Python error:|terminate called after throwing")
 EVALUATOR_CRASH = re.compile(r"Segmentation fault|Bus error|Aborted \(core dumped\)|core dumped", re.IGNORECASE)
+ROS_CHILD_EXIT = re.compile(r"\bprocess has died\b.*?\bexit code\s+(-?\d+)\b")
 
 
 def _finite(value: Any) -> float | None:
@@ -106,6 +107,32 @@ def classify_infrastructure_failure(trial_dir: Path, *, evaluator_attempts: list
         if type(code) is int and code in CRASH_CODES:
             reason("CORE_PROCESS_CRASH", f"Core process {process} recorded crash exit code {code}",
                    f"process_exit_codes.json:{process}")
+
+    # ros2 launch can exit zero while one of its children raises on shutdown.
+    # Keep the child's explicit failure even when the parent looked healthy.
+    ros_log = directory / "ros.log"
+    evidence["ros_child_exit_audit"] = {"log_exists":ros_log.is_file(), "unexpected_exits":[]}
+    if ros_log.is_file():
+        try:
+            size = ros_log.stat().st_size
+            with ros_log.open("rb") as handle:
+                if size <= LOG_SAMPLE_BYTES:
+                    raw = handle.read(LOG_SAMPLE_BYTES)
+                else:
+                    head = handle.read(LOG_SAMPLE_BYTES // 4)
+                    handle.seek(-3 * LOG_SAMPLE_BYTES // 4, 2)
+                    raw = head + b"\n[bounded log sample gap]\n" + handle.read(3 * LOG_SAMPLE_BYTES // 4)
+            audit = evidence["ros_child_exit_audit"]
+            audit.update(log_bytes=size, sampled_bytes=len(raw), sample_sha256=hashlib.sha256(raw).hexdigest())
+            for line in raw.decode("utf-8-sig", errors="replace").splitlines():
+                match = ROS_CHILD_EXIT.search(line)
+                if match is not None and int(match[1]) not in {0, -2, -15, 130, 143}:
+                    if len(audit["unexpected_exits"]) < 20:
+                        audit["unexpected_exits"].append({"exit_code":int(match[1]), "text":line[:1000]})
+            if audit["unexpected_exits"]:
+                reason("ROS_CHILD_PROCESS_FAILURE", "ROS launch reports an unexpected child exit; parent exit zero does not prove clean shutdown", "ros.log")
+        except OSError as error:
+            evidence["parse_errors"].append({"source":"ros.log", "error":str(error)})
 
     telemetry_path = directory / "telemetry.jsonl"
     evidence["files"]["telemetry.jsonl"] = {"exists": telemetry_path.is_file()}

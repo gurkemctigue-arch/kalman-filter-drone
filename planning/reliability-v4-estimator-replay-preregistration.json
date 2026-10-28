@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "status": "DRAFT_NOT_FROZEN_NOT_EXECUTED",
+  "study_kind": "CONDITIONAL_SAME_MEASUREMENT_STATE_ESTIMATOR_COMPARISON",
+  "implements_replay": true,
+  "implementation_status": {
+    "pure_array_core_and_cli": "IMPLEMENTED_WITH_PURE_FIXTURE_TESTS",
+    "recording_to_array_export": "IMPLEMENTED_AND_ONE_DEVELOPMENT_RECORDING_VALIDATED",
+    "frozen_online_navigation_equivalence": "IMPLEMENTED_AND_ONE_DEVELOPMENT_RECORDING_VALIDATED",
+    "separate_native_state_topic_audit": "IMPLEMENTED_WITH_SOURCE_DELIVERY_AGE_AND_PAYLOAD_FIXTURES",
+    "registered_parameters": "PENDING_DEVELOPMENT_CALIBRATION",
+    "formal_replay": "NOT_EXECUTED",
+    "end_to_end_pipeline_complete": false,
+    "completion_boundary": "One Humble04 car development recording passed export02 with 1220 output cycles and 204 measurements, separately from pure fixture tests. The comparison CLI opens and verifies actual audit sidecars, exact cycle coverage, original timing/wire contracts and registered/current helper/message source hashes before emitting a structured receipt to the pure core. Missing evidence remains COMPUTED_PENDING; verified and numerical pair denominators are separate. No actual comparison parameters are registered and no held-out formal result is claimed."
+  },
+  "scope": "Prospective offline comparison of four state estimators conditional on the same final-v4 recorded navigation measurements, timing, task identities and vehicle trajectory. This is separate from the unchanged 120-slot engineering protocol and is not a four-controller closed-loop causal experiment.",
+  "historical_boundary": "Frozen v3 trials remain a separate historical four-baseline study. No v3 measurement, outcome, fitted offset, calibration or seed is pooled into this final-v4 paired analysis.",
+  "freeze_requirements": {
+    "must_freeze_before_first_selected_formal_flight": true,
+    "final_engineering_plan_path": null,
+    "final_engineering_plan_file_sha256": null,
+    "final_engineering_plan_digest": null,
+    "flight_source_hashes": null,
+    "model_hashes": null,
+    "runtime_and_magnetic_bindings": null,
+    "offline_replay_source_hashes": null,
+    "evaluation_source_hashes": null,
+    "registered_estimator_parameters": null,
+    "development_calibration_evidence": null,
+    "note": "All null bindings and calibration choices must be resolved prospectively. Existing runtime defaults are not silently treated as preregistered comparison settings. This draft is not permission to execute the replay or consume held-out seeds."
+  },
+  "sampling": {
+    "classes": ["person", "car"],
+    "group": "stage1_velocity",
+    "seeds": [1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009],
+    "scheduled_recordings": 20,
+    "scheduled_recordings_per_class": 10,
+    "methods_per_recording": 4,
+    "scheduled_method_recording_cells": 80,
+    "slot_ids": [
+      "person_stage1_velocity_seed1000", "person_stage1_velocity_seed1001",
+      "person_stage1_velocity_seed1002", "person_stage1_velocity_seed1003",
+      "person_stage1_velocity_seed1004", "person_stage1_velocity_seed1005",
+      "person_stage1_velocity_seed1006", "person_stage1_velocity_seed1007",
+      "person_stage1_velocity_seed1008", "person_stage1_velocity_seed1009",
+      "car_stage1_velocity_seed1000", "car_stage1_velocity_seed1001",
+      "car_stage1_velocity_seed1002", "car_stage1_velocity_seed1003",
+      "car_stage1_velocity_seed1004", "car_stage1_velocity_seed1005",
+      "car_stage1_velocity_seed1006", "car_stage1_velocity_seed1007",
+      "car_stage1_velocity_seed1008", "car_stage1_velocity_seed1009"
+    ],
+    "selection_policy": "Use every named slot in the one final frozen engineering plan, including FAIL, INTERRUPTED, infrastructure stops and incomplete recordings. Do not select by success, metric value, bag availability or subsequent repair. No replacement run or new seed fills a missing slot.",
+    "conditions": "Exactly the frozen stage1_velocity clean/standard-motion protocol, including its prescribed short/long occlusions and reselection. Twenty recordings do not establish ten independent repetitions of additional noise, delay, distance or motion conditions absent from this matrix.",
+    "additional_flights_authorized_by_this_draft": 0
+  },
+  "methods": {
+    "raw": {
+      "position": "Current common accepted navigation position measurement; zero-order hold between accepted samples.",
+      "velocity": "Causal finite difference of consecutive accepted measurements within the same task and allowed age; initial velocity is common, not obtained from future measurements or truth."
+    },
+    "ema": {
+      "position": "Causal exponential moving average of the same accepted navigation positions; zero-order hold between updates.",
+      "alpha": null,
+      "velocity": "Causal finite difference of consecutive EMA outputs using their true acquisition interval, with the same task/gap restrictions as raw."
+    },
+    "fixed_kf": {
+      "state": ["x", "y", "z", "vx", "vy", "vz"],
+      "motion_model": "Constant velocity with acquisition-time updates and the preregistered common process model.",
+      "measurement_covariance": "R_fixed(t) = R0_sensor[class] + R_pose(t)",
+      "meaning": "Sensor/navigation-reference noise is fixed; the identical measured vehicle-pose contribution remains time-varying in both KFs."
+    },
+    "geometry_adaptive_kf": {
+      "state": ["x", "y", "z", "vx", "vy", "vz"],
+      "motion_model": "Identical to fixed_kf.",
+      "measurement_covariance": "R_adaptive(t) = R_geometry(t) + R_pose(t)",
+      "meaning": "Adapts navigation-reference covariance using recorded geometry uncertainty. This is not automatically the original confidence/depth-quality scaling hypothesis."
+    }
+  },
+  "calibration": {
+    "status": "UNREGISTERED_PENDING_DEVELOPMENT_CALIBRATION",
+    "held_out_formal_data_for_parameter_selection_forbidden": true,
+    "R0_sensor_world_m2_by_class": {"person": null, "car": null},
+    "Q_model_and_parameters": null,
+    "P0_matrix_and_initial_velocity_policy": null,
+    "ema_alpha": null,
+    "common_gate_R_and_initialization_policy": null,
+    "common_support_truth_coverage_requirement": null,
+    "uncertainty_model": "Both KFs share the same separately recorded R_pose(t). Matrices must be finite, symmetric and positive semidefinite with declared units and frame. Do not subtract an undocumented pose estimate from combined R, double-count pose uncertainty or fit R using formal target truth.",
+    "original_quality_scaling_extension": {
+      "status": "NOT_IN_PRIMARY_FOUR_METHOD_COMPARISON",
+      "formula_if_separately_registered": "R_quality(t) = s(confidence, depth_valid_ratio, depth_std_m) * R_geometry(t) + R_pose(t)",
+      "scale_function_and_limits": null,
+      "note": "Requires a separately frozen quality law and accurate method naming. Explicit measurement covariance currently bypasses the KF confidence/depth scaling; a label change does not implement this extension."
+    }
+  },
+  "common_replay_contract": {
+    "input": "Deduplicated pre-fusion raw navigation positions/covariances and complete observation-frame events, including invalid, empty, rejected and silent intervals; original RGB-D/TF/vehicle streams are retained for independent reconstruction.",
+    "detection_and_identity": "Freeze the recorded common detection/association/selection sequence. All four methods receive the same task/track resets and independently valid reference candidates. Do not use target truth or method-specific nearest-target recovery.",
+    "acceptance_gate": "One prospectively registered causal common gate determines the identical accepted sample sequence; report every rejection and missing opportunity. It may not use future samples, target truth or results from the four methods. This comparison is conditional on that gate and does not test method-specific outlier rejection or association.",
+    "initialization": "Common causal task start and initial position/velocity policy; the two KFs share the preregistered P0 and Q. No future-window or GT initial velocity.",
+    "timing": "Reproduce source, publication and availability order. A measurement cannot influence an output before its recorded availability. No ideal extrapolation to remove recorded transport age. Distinguish output-source evaluation from delivery/current-time evaluation.",
+    "output_grid": "Fixed 10 Hz from later of FOLLOW and independently frozen ego-only alignment interval end through full recorded clock end; task changes, long loss, hover and stream-silence tails remain in denominators.",
+    "original_limits_s": {"target_observation_age": 0.6, "prediction_age": 0.75, "vehicle_odometry_age": 0.5, "vehicle_future_tolerance": 0.05},
+    "mahalanobis_gate_squared": 9.21,
+    "gap_policy": "No velocity finite difference across task changes, invalid time order or gaps exceeding the original 0.75 s prediction horizon. Raw/EMA hold does not prolong valid state life. All methods obey identical expiry/reselection rules.",
+    "online_reproduction_check": "Before comparisons, reproduce the frozen online navigation KF from the same inputs, including initialization, gate result, acquisition posterior, projected outputs and validity. Tolerances and audit schema must be frozen from development fixtures before formal replay.",
+    "truth_boundary": "Truth is read only by offline evaluation. Map-to-truth axes follow declared ENU; translation uses the same independently frozen vehicle-only alignment for all methods, never a target fit or per-method correction."
+  },
+  "required_recorded_fields": {
+    "event_and_identity": ["acquisition_id", "acquisition_source_s", "output_source_s", "callback_receipt_s", "recorder_delivery_s", "record_sequence", "empty_observation_frames", "target_uuid", "track_id", "candidate_id", "class_name", "bbox", "selection_and_reset_events"],
+    "measurement_and_quality": ["raw_navigation_position_world_m", "reference_valid", "reference_reason", "reference_kind", "fusion_accepted", "fusion_reason", "confidence", "depth_valid_ratio", "depth_std_m", "geometry_support_and_residual_diagnostics"],
+    "covariance": ["R_geometry_world_m2_3x3", "R_pose_world_m2_3x3", "R_total_world_m2_3x3", "chosen_pose_source_stamp_s", "chosen_pose_position_world_m", "chosen_pose_covariance_6x6", "pose_propagation_jacobian_or_reconstructible_lever", "quality_scale_if_used"],
+    "reconstruction": ["same_acquisition_rgb_depth_camera_info", "source_time_camera_tf", "gimbal_feedback_if_dynamic", "declared_geometry_dimensions_and_uncertainties", "full_clock", "raw_and_adapted_vehicle_state"],
+    "provenance": ["frozen_flight_and_evaluation_hashes", "model_weight_hashes", "runtime_parameters", "source_clock_report", "native_startup_report", "recorded_world_and_frame_declarations", "immutable_slot_and_artifact_hashes"],
+    "current_gap": "Development schema2 diagnostics split geometry/pose/total R and retain selected-pose, camera-transform, initial-velocity and timing evidence. Humble04 car development export02 passed real export, online reproduction and 1220 separately recorded native states after exact float32 covariance/age serialization was audited against TargetState.msg; export01 remains unchanged. The comparison CLI requires actual source-bound audit files for every formal recording and checks declared ENU, vehicle-only fixed 5s alignment and 0.05s derivative provenance. Missing quality remains explicit. Calibration, prospective hashes, formal registration and the complete selected matrix remain pending."
+  },
+  "endpoints": {
+    "primary": "Per-trial 3-D position RMSE on a common independently truth-supported fixed output grid.",
+    "secondary": ["3-D velocity RMSE", "95th percentile position error", "short-occlusion prediction position error", "valid_state_coverage", "position_truth_coverage", "velocity_truth_coverage", "measurement_acceptance_and_rejection_counts"],
+    "velocity_semantics": "State velocity metrics use the same preregistered truth-velocity estimator at the same grid times for all methods. Raw-navigation secant diagnostics compare same-interval secants and remain separate from instantaneous/current state velocity RMSE.",
+    "missing_evidence": "Unavailable values remain null with explicit reasons. No zeros, GT filling, cross-task interpolation or complete-case-only success claim. Report common-support error summaries alongside method-specific coverage and the complete scheduled 10-trial denominator for each class.",
+    "engineering_outcomes": "Original engineering/flight outcomes remain unchanged; an offline replay result does not turn a failed flight into PASS."
+  },
+  "statistics": {
+    "unit": "One scheduled trial/recording, paired by class and seed across four methods; frames and repeated bootstrap draws are not independent trials.",
+    "report_by_class": true,
+    "planned_n_per_class": 10,
+    "primary_contrast": "geometry_adaptive_kf minus fixed_kf per-trial position RMSE; negative favors geometry_adaptive_kf.",
+    "secondary_contrasts": ["geometry_adaptive_kf minus raw", "geometry_adaptive_kf minus ema"],
+    "effect_summary": "Mean of per-trial paired differences; also show every trial value, median differences and full missingness/failure counts. Do not pool frames across unequal trial lengths.",
+    "confidence_interval": {"method": "Paired percentile bootstrap over trial/seed indices separately within each class, retaining the four-method block when resampling.", "confidence_level": 0.95, "resamples": 10000, "rng_seed": 20261029},
+    "incomplete_pairs": "Use paired finite outcomes only for the explicitly conditional numeric CI, disclose actual paired n and all excluded slot IDs/reasons alongside the scheduled denominator of 10. Do not describe such a CI as unconditional performance or success probability. If no pairs or zero-variance/otherwise non-informative resamples occur, report the limitation rather than fabricate precision.",
+    "confirmatory_complete_matrix_claim": "Requires all ten planned pairs per class plus the prospectively frozen common-support evidence requirement. If that fails, retain descriptive incomplete-matrix results and do not relabel them as a completed ten-repeat comparison.",
+    "p_values": "Not required for this draft; no post-hoc significance shopping. Any hypothesis-test family or multiplicity procedure must be separately fixed before formal outcomes.",
+    "small_sample_limit": "Ten trials per class give limited interval precision and do not establish generalization beyond the registered scene and recording policy."
+  },
+  "closed_loop_boundary": {
+    "conditional_recording_policy": "Recorded views, ego motion, detection opportunities and occlusions were generated under the one final-v4 controller/navigation policy. Offline alternative estimates cannot change that realized trajectory.",
+    "claims_not_supported": ["Four-method closed-loop following improvement", "Four-method flight safety or success-rate superiority", "Counterfactual camera views under alternative controllers", "All original noise/delay/distance conditions absent from the selected recordings"],
+    "possible_separate_experiment": "A causal closed-loop estimator comparison would require 2 classes x 10 matched seeds x 4 genuinely connected navigation methods = 80 flights. At most 20 identical final-version stage1_velocity flights could be reused, yielding 60 additional flights, only if the navigation output method is actually selected and all protocol/seed/source/controller bindings match. The current surface estimator_method flag does not select the separate navigation KF. This draft authorizes none of those extra flights."
+  },
+  "results": null
+}

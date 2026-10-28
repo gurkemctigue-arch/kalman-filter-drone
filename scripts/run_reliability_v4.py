@@ -33,6 +33,9 @@ GROUPS = ("stage1_velocity", "stage1_position", "stage2_crossing", "stage3_midpo
           "stage3_active", "stage3_multi_active")
 TERMINAL = {"PASS", "FAIL", "INCOMPLETE_EVIDENCE", "EVALUATION_PENDING", "INFRASTRUCTURE_ERROR", "INTERRUPTED"}
 PROTOCOL_PATH = "planning/reliability-v4-preregistration.json"
+EXTENSION_PROTOCOL_PATH = "planning/reliability-v4-extension-preregistration.json"
+EXTENSION_CONDITIONS = ("depth_noise", "depth_holes", "dropout", "latency", "combined",
+                        "speed_changes_velocity", "speed_changes_position", "far_distance")
 MAGNETIC_RUNTIME_PATH = "config/px4_magnetic_runtime.json"
 MAGNETIC_CONTRACT = "gazebo_enu_flu_to_frd_v1"
 SOURCE_CLOCK_HELPERS = ("scripts/evaluate_stage1_flight.py", *(
@@ -44,11 +47,18 @@ HASH_SUFFIXES = {".py", ".sh", ".yaml", ".yml", ".sdf", ".msg", ".xml", ".config
 PROBE_CHECKS = ("source_clock_independently_passed", "native_startup_independently_passed", "magnetic_runtime_and_loaded_libraries_verified",
                 "base_link_navigation_performance_passed", "full_task_physical_identity_passed",
                 "gimbal_feedback_passed", "original_safety_gates_preserved")
+EXTENSION_PROBE_CHECKS = ("source_clock_independently_passed", "native_startup_independently_passed",
+                        "magnetic_runtime_and_loaded_libraries_verified", "complete_recording_and_independent_evaluations",
+                        "both_classes_and_all_eight_conditions_evaluable", "original_safety_gates_preserved")
 NATIVE_STARTUP_CHECKS = ("configuration_registered", "startup_parameter_values", "native_takeoff_command",
                        "command_sequence", "px4_mode_sequence", "pre_offboard_ground_readiness",
                        "handoff_readiness_and_settle", "visual_task_after_handoff", "full_recording_coverage")
 OFFLINE_HELPERS = {"scripts/extract_research_recording.py", "uav_tracking/research_dynamics.py",
-                   "uav_tracking/research_labels.py", "uav_tracking/research_metrics.py", "uav_tracking/stage2_identity.py"}
+                   "uav_tracking/research_labels.py", "uav_tracking/research_metrics.py", "uav_tracking/stage2_identity.py",
+                   "scripts/export_estimator_replay_v4.py", "scripts/run_estimator_replay_v4.py",
+                   "uav_tracking/replay_comparison.py", "uav_tracking/replay_export.py",
+                   "uav_tracking/navigation_reproduction.py"}
+OFFLINE_HELPERS.add("scripts/summarize_reliability_v4.py")
 REPORT_PROVENANCE_HELPERS = {
     "navigation":("scripts/evaluate_stage1_flight.py", "scripts/evaluate_online_state_accuracy.py",
                   "scripts/extract_research_recording.py", "uav_tracking/research_dynamics.py", "uav_tracking/research_labels.py"),
@@ -115,6 +125,18 @@ def utc_now():
     return datetime.now(timezone.utc).isoformat()
 
 
+def utc_timestamp(value):
+    if not isinstance(value, str):
+        raise ValueError("An explicit timezone-aware UTC registration/flight timestamp is required")
+    try:
+        stamp = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError as error:
+        raise ValueError("Invalid UTC registration/flight timestamp") from error
+    if stamp.tzinfo is None or stamp.utcoffset().total_seconds() != 0:
+        raise ValueError("Registration/flight timestamps must explicitly use UTC")
+    return stamp
+
+
 def sha(path):
     digest = hashlib.sha256()
     with Path(path).open("rb") as handle:
@@ -163,10 +185,14 @@ def validate_protocol(protocol):
     exact = {"classes": list(CLASSES), "groups": list(GROUPS), "seeds": list(FORMAL_SEEDS),
              "formal_trial_count": 120, "duration_s": 45., "short_occlusion_s": .2,
              "long_occlusion_s": 3., "real_time_factor": .5, "max_inference_rate_hz": 10.,
+             "gazebo_render_driver":"llvmpipe",
              "monitor_tick_s": .02, "control_reference": "ground_footprint", "desired_height_m": 2.,
              "magnetic_environment": "gazebo_enu", "magnetic_runtime_manifest": MAGNETIC_RUNTIME_PATH,
              "propagate_vehicle_uncertainty": True,
              "px4_time_mode": "source_sim",
+             "supervisor_status_timing": {"status_timestamp_mode":"source_sim", "status_source_max_age_s":1.,
+                 "status_source_max_future_s":.05, "status_timeout_wall_s":10.,
+                 "wall_check_clock":"ROS-time control tick; no independent status steady timer"},
              "takeoff_mode": "px4_native",
              "takeoff_height_m": 3., "estimator_method": "adaptive_kf", "condition": "clean",
              "motion_profile_kind": "standard", "occlusions": True, "explicit_reselection": True,
@@ -204,6 +230,7 @@ def trial_spec(root, protocol, prefix, cls, group, seed, wall_timeout):
             "initial_select": "middle" if multi else "none", "initial_min_candidates": 3 if multi else 2,
             "command_mode": "position" if group == "stage1_position" else "velocity",
             "takeoff_mode": "px4_native",
+            "gazebo_render_driver": protocol["gazebo_render_driver"],
             "gimbal_mode": "active" if group in {"stage3_active", "stage3_multi_active"} else "midpoint",
             "scenario_kind": "crossing" if multi else "parallel", "duration_s": 45.,
             "speed_mps": random.Random(seed).uniform(.45, .55), "wall_timeout_s": wall_timeout,
@@ -219,6 +246,7 @@ def trial_spec(root, protocol, prefix, cls, group, seed, wall_timeout):
         "--model-path", root / setting["model"], "--inference-image-size", setting["inference_image_size"],
         "--inference-threads", setting["inference_threads"], "--desired-distance-m", setting["desired_distance_m"],
         "--takeoff-height-m", "3.0", "--takeoff-mode", "px4_native", "--wall-timeout", wall_timeout, "--render-backend", "egl",
+        "--gazebo-render-driver", spec["gazebo_render_driver"],
         "--magnetic-environment", "gazebo_enu", "--magnetic-runtime-manifest", root / MAGNETIC_RUNTIME_PATH,
         "--magnetic-library-registration", root / protocol["magnetic_library_registration"],
         "--propagate-vehicle-uncertainty",
@@ -259,6 +287,117 @@ def trial_spec(root, protocol, prefix, cls, group, seed, wall_timeout):
     add("navigation", "evaluate_navigation_reference.py", nav_args, "navigation_reference_evaluation.json",
         ["physical_identity"] if multi else [])
     spec["evaluations"] = evaluations
+    return spec
+
+
+def validate_extension_protocol(extension, protocol, *, formal=False):
+    """The original engineering matrix stays separate from these 160 slots."""
+    expected = {"schema_version": 1, "study_kind": "POST_REPAIR_PAIRED_CONDITION_EXTENSIONS",
+                "classes": list(CLASSES), "conditions": list(EXTENSION_CONDITIONS),
+                "seeds": list(FORMAL_SEEDS), "formal_trial_count": 160,
+                "duration_s": 45., "far_distance_m_by_class": {"person": 7., "car": 12.},
+                "reference_groups": {condition: ("stage1_position" if condition == "speed_changes_position"
+                                                else "stage1_velocity") for condition in EXTENSION_CONDITIONS}}
+    for key, value in expected.items():
+        if extension.get(key) != value:
+            raise ValueError("v4 condition-extension protocol differs at " + key)
+    if extension["seeds"] != protocol["seeds"]:
+        raise ValueError("Condition extensions require the same prospectively paired core seeds")
+    if formal and extension.get("status") != "REGISTERED":
+        raise ValueError("Condition extensions must be REGISTERED before any extension formal flight")
+    if formal:
+        if utc_timestamp(extension.get("registration_utc")) > utc_timestamp(utc_now()):
+            raise ValueError("Condition-extension registration cannot be in the future")
+        if extension.get("first_core_flight_must_follow_registration") is not True:
+            raise ValueError("Condition extensions must be prospectively frozen before core held-out flights")
+        if not isinstance(extension.get("development_readiness"), dict):
+            raise ValueError("Condition extensions need actual final-source development readiness evidence")
+
+
+def extension_design(extension):
+    return {key:value for key,value in extension.items()
+            if key not in {"status", "registration_utc", "development_readiness", "results"}}
+
+
+def validate_extension_registration(plan):
+    binding = plan.get("extension_protocol_binding", {})
+    root = Path(plan["frozen_root"])
+    if (binding.get("path") != str(root / EXTENSION_PROTOCOL_PATH)
+            or re.fullmatch(r"[0-9a-f]{64}", binding.get("sha256", "")) is None):
+        raise ValueError("Registered condition-extension protocol binding is missing")
+    extension = binding.get("protocol", {})
+    validate_extension_protocol(extension, plan["protocol"], formal=True)
+    if utc_timestamp(extension["registration_utc"]) > utc_timestamp(plan["created_utc"]):
+        raise ValueError("Condition-extension registration must precede the frozen formal core plan")
+    validate_probe_gate(plan, extensions=True)
+
+
+def validate_extension_reference(plan):
+    """Pair to an actual immutable core plan; a matching bare slot ID is insufficient."""
+    binding = plan.get("core_reference_binding", {})
+    path = Path(binding.get("path", ""))
+    if not path.is_file() or binding.get("sha256") != sha(path):
+        raise ValueError("Formal condition extensions require an unchanged actual core reference plan")
+    core = load(path)
+    if core.get("mode") != "FORMAL" or core.get("plan_sha256") != binding.get("plan_sha256"):
+        raise ValueError("Condition-extension reference must be the bound immutable FORMAL core plan")
+    validate_plan(core, path)
+    if (core["protocol"] != plan["protocol"] or core["protocol_sha256"] != plan["protocol_sha256"]
+            or flight_source_hashes(core["source_hashes"]) != flight_source_hashes(plan["source_hashes"])
+            or core["model_hashes"] != plan["model_hashes"]
+            or core["magnetic_runtime_binding"] != plan["magnetic_runtime_binding"]
+            or core["magnetic_library_binding"] != plan["magnetic_library_binding"]
+            or core.get("extension_protocol_binding") != plan.get("extension_protocol_binding")):
+        raise ValueError("Condition-extension reference source/model/runtime/protocol/registration differs")
+    expected_ids = sorted({trial["comparison_reference_id"] for trial in plan["trials"]})
+    core_by_id = {trial["id"]:trial for trial in core["trials"]}
+    if binding.get("reference_ids") != expected_ids or set(expected_ids) - set(core_by_id):
+        raise ValueError("Condition-extension paired reference slots are missing or changed")
+    registered = utc_timestamp(plan["extension_protocol_binding"]["protocol"]["registration_utc"])
+    if registered > utc_timestamp(core["created_utc"]):
+        raise ValueError("Condition-extension registration happened after the core freeze")
+    for row in read_slots(core).values():
+        started = row.get("started_utc", row.get("started", {}).get("started_utc"))
+        if row["status"] != "PENDING" and (started is None or registered >= utc_timestamp(started)):
+            raise ValueError("Condition-extension registration must precede every actual core held-out flight")
+
+
+def extension_trial_spec(root, protocol, extension, prefix, cls, condition, seed, wall_timeout):
+    if condition not in EXTENSION_CONDITIONS:
+        raise ValueError("Unknown condition extension")
+    group = extension["reference_groups"][condition]
+    spec = trial_spec(root, protocol, prefix, cls, group, seed, wall_timeout)
+    original_name = spec["name"]
+    identifier = f"{cls}_extension_{condition}_seed{seed:03d}"
+    name = f"{prefix}_{identifier}"
+
+    def renamed(value):
+        if isinstance(value, str):
+            return value.replace(original_name, name)
+        if isinstance(value, list):
+            return [renamed(item) for item in value]
+        if isinstance(value, dict):
+            return {key: renamed(item) for key, item in value.items()}
+        return value
+
+    spec = renamed(spec)
+    spec.update(id=identifier, name=name, extension_condition=condition,
+                comparison_reference_id=f"{cls}_{group}_seed{seed:03d}",
+                condition=condition if condition in EXTENSION_CONDITIONS[:5] else "clean",
+                motion_profile_kind="speed_changes" if condition.startswith("speed_changes_") else "standard")
+    if condition == "far_distance":
+        spec["desired_distance_m"] = extension["far_distance_m_by_class"][cls]
+
+    def option(command, flag, value):
+        command[command.index(flag) + 1] = str(value)
+
+    for flag, value in (("--condition", spec["condition"]),
+                        ("--motion-profile-kind", spec["motion_profile_kind"]),
+                        ("--desired-distance-m", spec["desired_distance_m"])):
+        option(spec["flight_command"], flag, value)
+    for evaluation in spec["evaluations"]:
+        if "--desired-distance-m" in evaluation["command"]:
+            option(evaluation["command"], "--desired-distance-m", spec["desired_distance_m"])
     return spec
 
 
@@ -337,6 +476,12 @@ def make_plan(root, output, prefix, *, formal=False, seeds=None, groups=None, cl
         raise ValueError("wall_timeout must be positive and finite")
     protocol = load(root / PROTOCOL_PATH)
     validate_protocol(protocol)
+    extension_binding = None
+    if formal and (root / EXTENSION_PROTOCOL_PATH).is_file():
+        extension = load(root / EXTENSION_PROTOCOL_PATH)
+        validate_extension_protocol(extension, protocol, formal=True)
+        extension_binding = {"path":str(root / EXTENSION_PROTOCOL_PATH),
+                             "sha256":sha(root / EXTENSION_PROTOCOL_PATH), "protocol":extension}
     seeds = (list(protocol["seeds"]) if formal else [0]) if seeds is None else list(seeds)
     groups = list(GROUPS) if groups is None else list(groups)
     classes = list(CLASSES) if classes is None else list(classes)
@@ -370,6 +515,7 @@ def make_plan(root, output, prefix, *, formal=False, seeds=None, groups=None, cl
                      "scripts/evaluate_stage1_flight.py", "uav_tracking/research_failures.py",
                      "scripts/configure_gazebo_magnetic_contract.py", "scripts/prepare_px4_magnetic_compatibility.py",
                      "scripts/capture_gazebo_magnetic_libraries.py",
+                     "scripts/capture_gazebo_rendering.py",
                      "scripts/px4_stage1_startup.sh", "scripts/run_stage1_flight.sh",
                      "scripts/evaluate_native_startup.py",
                      "ros2_ws/src/uav_tracking_px4_adapter/uav_tracking_px4_adapter/flight_supervisor.py",
@@ -402,8 +548,51 @@ def make_plan(root, output, prefix, *, formal=False, seeds=None, groups=None, cl
             "magnetic_library_binding": magnetic_libraries,
             "trial_timeout_s": wall_timeout + 360., "evaluation_timeout_s": 1800., "trials": trials}
     if formal:
+        if extension_binding is not None:
+            plan["extension_protocol_binding"] = extension_binding
+            validate_extension_registration(plan)
         validate_probe_gate(plan)
     plan["plan_sha256"] = digest(plan, ("plan_sha256",))
+    return plan
+
+
+def make_extension_plan(root, output, prefix, *, formal=False, seeds=None, conditions=None,
+                        classes=None, wall_timeout=300., probe_gate=None, reference_plan=None):
+    root = Path(root).resolve(strict=True)
+    extension = load(root / EXTENSION_PROTOCOL_PATH)
+    protocol = load(root / PROTOCOL_PATH)
+    validate_extension_protocol(extension, protocol, formal=formal)
+    if formal and reference_plan is None:
+        raise ValueError("Formal condition extensions require --reference-plan for the actual frozen core")
+    conditions = list(EXTENSION_CONDITIONS) if conditions is None else list(conditions)
+    if not conditions or len(conditions) != len(set(conditions)) or set(conditions) - set(EXTENSION_CONDITIONS):
+        raise ValueError("Unknown, empty or duplicate condition-extension selection")
+    if formal and conditions != list(EXTENSION_CONDITIONS):
+        raise ValueError("Formal extensions require the complete prospectively registered eight-condition matrix")
+    # Reuse the original source/runtime/development-gate checks. The temporary
+    # core specification is never persisted or executed as extension evidence.
+    plan = make_plan(root, output, prefix, formal=formal, seeds=seeds, classes=classes,
+                     groups=None if formal else ["stage1_velocity", "stage1_position"],
+                     wall_timeout=wall_timeout, probe_gate=probe_gate)
+    plan.update(mode="EXTENSION_FORMAL" if formal else "EXTENSION_PROBE",
+                selected_groups=["stage1_velocity", "stage1_position"],
+                selected_extension_conditions=conditions,
+                extension_protocol_binding={"path": str(root / EXTENSION_PROTOCOL_PATH),
+                    "sha256": sha(root / EXTENSION_PROTOCOL_PATH), "protocol": extension})
+    plan["trials"] = [extension_trial_spec(root, protocol, extension, prefix, cls, condition, seed, wall_timeout)
+                      for cls in plan["selected_classes"] for condition in conditions for seed in plan["selected_seeds"]]
+    if formal and len(plan["trials"]) != 160:
+        raise ValueError("Formal condition-extension denominator must be exactly 160")
+    if any(Path(trial["directory"]).exists() for trial in plan["trials"]):
+        raise ValueError("Condition-extension artifacts already exist; old results cannot be reused")
+    if formal:
+        reference_path = Path(reference_plan).resolve(strict=True)
+        reference = load(reference_path)
+        plan["core_reference_binding"] = {"path":str(reference_path), "sha256":sha(reference_path),
+            "plan_sha256":reference.get("plan_sha256"),
+            "reference_ids":sorted({trial["comparison_reference_id"] for trial in plan["trials"]})}
+    plan["plan_sha256"] = digest(plan, ("plan_sha256",))
+    validate_plan(plan)
     return plan
 
 
@@ -430,9 +619,29 @@ def validate_plan(plan, path=None):
     names = [trial["name"] for trial in plan["trials"]]
     if not names or len(names) != len(set(names)):
         raise ValueError("Duplicate or empty trial set")
-    expected = [trial_spec(root, plan["protocol"], plan["prefix"], cls, group, seed,
-                          plan["trials"][0]["wall_timeout_s"])
-                for cls in plan["selected_classes"] for group in plan["selected_groups"] for seed in plan["selected_seeds"]]
+    mode = plan.get("mode")
+    if mode not in {"FORMAL", "PROBE", "EXTENSION_FORMAL", "EXTENSION_PROBE"}:
+        raise ValueError("Unknown v4 plan mode")
+    extension_mode = mode.startswith("EXTENSION_")
+    if extension_mode:
+        extension_binding = plan.get("extension_protocol_binding", {})
+        extension = extension_binding.get("protocol", {})
+        validate_extension_protocol(extension, plan["protocol"], formal=mode == "EXTENSION_FORMAL")
+        if (extension_binding.get("path") != str(root / EXTENSION_PROTOCOL_PATH)
+                or not re.fullmatch(r"[0-9a-f]{64}", extension_binding.get("sha256", ""))
+                or plan["selected_groups"] != ["stage1_velocity", "stage1_position"]):
+            raise ValueError("Condition-extension source/reference binding is invalid")
+        conditions = plan.get("selected_extension_conditions")
+        if (not isinstance(conditions, list) or not conditions or len(set(conditions)) != len(conditions)
+                or set(conditions) - set(EXTENSION_CONDITIONS)):
+            raise ValueError("Invalid condition-extension matrix")
+        expected = [extension_trial_spec(root, plan["protocol"], extension, plan["prefix"], cls, condition, seed,
+                                        plan["trials"][0]["wall_timeout_s"])
+                    for cls in plan["selected_classes"] for condition in conditions for seed in plan["selected_seeds"]]
+    else:
+        expected = [trial_spec(root, plan["protocol"], plan["prefix"], cls, group, seed,
+                              plan["trials"][0]["wall_timeout_s"])
+                    for cls in plan["selected_classes"] for group in plan["selected_groups"] for seed in plan["selected_seeds"]]
     # Availability is frozen evidence. Never recompute it from a later tree.
     for original, regenerated in zip(plan["trials"], expected):
         for previous, current in zip(original["evaluations"], regenerated["evaluations"]):
@@ -443,10 +652,18 @@ def validate_plan(plan, path=None):
             or plan["selected_groups"] != list(GROUPS) or plan["selected_seeds"] != plan["protocol"]["seeds"]
             or not plan.get("development_probe_gate")):
         raise ValueError("Formal plan denominator or development gate is invalid")
-    if plan["mode"] == "FORMAL":
+    if mode == "EXTENSION_FORMAL" and (len(names) != 160 or plan["selected_classes"] != list(CLASSES)
+            or plan["selected_extension_conditions"] != list(EXTENSION_CONDITIONS)
+            or plan["selected_seeds"] != plan["protocol"]["seeds"] or not plan.get("development_probe_gate")):
+        raise ValueError("Formal condition-extension denominator or development gate is invalid")
+    if mode in {"FORMAL", "EXTENSION_FORMAL"}:
         validate_navigation_gates(plan["protocol"].get("navigation_acceptance"))
         validate_probe_gate(plan)
-    if plan["mode"] == "PROBE" and set(plan["selected_seeds"]) & set(plan["protocol"]["seeds"]):
+        if (root / EXTENSION_PROTOCOL_PATH).is_file() or plan.get("extension_protocol_binding") is not None:
+            validate_extension_registration(plan)
+        if mode == "EXTENSION_FORMAL":
+            validate_extension_reference(plan)
+    if mode in {"PROBE", "EXTENSION_PROBE"} and set(plan["selected_seeds"]) & set(plan["protocol"]["seeds"]):
         raise ValueError("Held-out formal seeds cannot be consumed by a development probe")
 
 
@@ -457,6 +674,12 @@ def verify_sources(plan):
         raise ValueError("Frozen source/model/configuration changed; keep this plan and create a new revision")
     if str((root / "results").resolve()) != plan["results_root"]:
         raise ValueError("Frozen results storage binding changed")
+    if plan.get("extension_protocol_binding") is not None:
+        binding = plan["extension_protocol_binding"]
+        if sha(root / EXTENSION_PROTOCOL_PATH) != binding["sha256"] or load(root / EXTENSION_PROTOCOL_PATH) != binding["protocol"]:
+            raise ValueError("Frozen condition-extension protocol changed")
+    if plan.get("mode") == "EXTENSION_FORMAL":
+        validate_extension_reference(plan)
     current = verify_external_runtime(root, root / MAGNETIC_RUNTIME_PATH)
     if current != plan["magnetic_runtime_binding"]["manifest"]:
         raise ValueError("Isolated PX4 runtime changed after plan freeze")
@@ -571,15 +794,19 @@ def runtime_configuration(plan, trial):
         config = load(directory / "run_config.json")
         expected = {key: trial[key] for key in ("name", "target_class", "stage", "seed", "speed_mps", "command_mode", "takeoff_mode",
             "gimbal_mode", "target_mode", "association_mode", "initial_select", "initial_min_candidates", "scenario_kind",
-            "multi_target", "inference_image_size", "inference_threads", "desired_distance_m")}
+            "multi_target", "inference_image_size", "inference_threads", "desired_distance_m", "gazebo_render_driver")}
         expected.update(duration=45., control_reference="ground_footprint", real_time_factor=.5,
-            max_inference_rate_hz=10., monitor_tick_s=.02, condition="clean", estimator_method="adaptive_kf",
+            max_inference_rate_hz=10., monitor_tick_s=.02, condition=trial.get("condition", "clean"), estimator_method="adaptive_kf",
             occlusions=True, reselect_after_loss=True, short_occlusion_s=.2,
             magnetic_environment="gazebo_enu", magnetic_runtime_manifest=str(Path(plan["frozen_root"]) / MAGNETIC_RUNTIME_PATH),
             magnetic_library_registration=str(Path(plan["frozen_root"]) / plan["protocol"]["magnetic_library_registration"]),
             px4_time_mode="source_sim", propagate_vehicle_uncertainty=True,
+            supervisor_status_timestamp_mode="source_sim", supervisor_status_source_max_age_s=1.,
+            supervisor_status_source_max_future_s=.05, supervisor_status_timeout_wall_s=10.,
             model_path=str(Path(plan["frozen_root"]) / trial["model"]),
             vehicle_control_point_offset_flu_m=[0., 0., .24])
+        if "motion_profile_kind" in trial:
+            expected["motion_profile_kind"] = trial["motion_profile_kind"]
         errors.extend("run_config:" + key for key, value in expected.items() if config.get(key) != value)
         path = directory / "configuration/runtime_parameters.yaml"
         try:
@@ -604,17 +831,82 @@ def runtime_configuration(plan, trial):
                 "vehicle_odometry_topic": "/fmu/out/vehicle_odometry", "vehicle_odom_topic": "/vehicle/odometry",
                 "odometry_timing_topic": "/vehicle/odometry_timing"},
             "uav_tracking_flight_supervisor": {"takeoff_mode":"px4_native", "takeoff_height_m":3.,
+                                               "native_takeoff_timeout_sim_s":40., "native_wall_timeout_s":180.,
+                                               "status_timestamp_mode":"source_sim", "status_source_max_age_s":1.,
+                                               "status_source_max_future_s":.05, "status_timeout_s":10.,
+                                               "requested_simulation_real_time_factor":.5,
                                                "auto_start":True, "simulation_only":True},
         }
         for node, values in expected_parameters.items():
             actual = parameters.get(node, {}).get("ros__parameters", {})
             errors.extend(f"runtime_parameters:{node}:{key}" for key, value in values.items() if actual.get(key) != value)
+        rendering = gazebo_rendering_evidence(directory, trial["gazebo_render_driver"])
+        errors.extend(rendering["errors"])
         magnetic = magnetic_environment_evidence(plan, trial)
         errors.extend(magnetic["errors"])
         return {"errors": errors, "arguments": expected, "magnetic_environment": magnetic,
+                "gazebo_rendering": rendering,
                 "run_config_sha256": sha(directory / "run_config.json"), "runtime_parameters_sha256": sha(path)}
     except (OSError, ValueError, KeyError, TypeError, ImportError) as error:
         return {"errors": [*errors, f"runtime_configuration_unreadable:{type(error).__name__}:{error}"]}
+
+
+def gazebo_rendering_evidence(directory, expected_driver):
+    """Audit archived owned-process renderer evidence independently of capture."""
+    path = Path(directory)/"configuration/gazebo_rendering_libraries.json"
+    errors = []
+    try:
+        report = load(path)
+        if (report.get("schema_version") != 1 or report.get("status") != "PASS"
+                or report.get("expected_driver") != expected_driver or report.get("contract_issues") != []
+                or type(report.get("owned_pid")) is not int or report["owned_pid"] <= 0
+                or type(report.get("attempts")) is not int or report["attempts"] <= 0):
+            errors.append("gazebo_rendering:missing_or_conflicting_process_contract")
+        environment = report.get("actual_process_environment", {})
+        libraries, mappings = report.get("actual_libraries"), report.get("actual_mappings")
+        if (not isinstance(libraries, dict) or not libraries or not isinstance(mappings, list) or not mappings
+                or any(not isinstance(item, str) for item in mappings)):
+            errors.append("gazebo_rendering:missing_actual_mapped_libraries")
+            libraries, mappings = {}, []
+        mapped_files = {}
+        for line in mappings:
+            try:
+                fields = line.split(maxsplit=5)
+                if len(fields) != 6 or not fields[5].startswith("/"):
+                    raise ValueError("not an absolute file mapping")
+                device = fields[3].split(":")
+                if len(device) != 2:raise ValueError("invalid mapped device")
+                identity = (int(fields[4]), int(device[0], 16), int(device[1], 16))
+                mapped_files.setdefault(fields[5], set()).add(identity)
+            except (ValueError, TypeError):
+                errors.append("gazebo_rendering:invalid_raw_process_mapping")
+        for library, evidence in libraries.items():
+            if (not isinstance(library, str) or not library.startswith("/") or library not in mapped_files
+                    or not isinstance(evidence, dict)
+                    or not isinstance(evidence.get("sha256"), str)
+                    or re.fullmatch(r"[0-9a-f]{64}", evidence["sha256"]) is None
+                    or any(type(evidence.get(key)) is not int or evidence[key] < 0
+                           for key in ("inode", "device_major", "device_minor"))):
+                errors.append("gazebo_rendering:unbound_actual_library")
+            elif mapped_files[library] != {(evidence["inode"], evidence["device_major"], evidence["device_minor"])}:
+                errors.append("gazebo_rendering:mapped_library_identity_disagrees")
+        if expected_driver == "llvmpipe":
+            expected_environment = {"LIBGL_ALWAYS_SOFTWARE":"1", "MESA_LOADER_DRIVER_OVERRIDE":"swrast",
+                                    "GALLIUM_DRIVER":"llvmpipe"}
+            if (not isinstance(environment, dict)
+                    or any(environment.get(key) != value for key, value in expected_environment.items())):
+                errors.append("gazebo_rendering:llvmpipe_environment_not_actual")
+            names = [item.rsplit("/", 1)[-1].lower() for item in libraries]
+            if "swrast_dri.so" not in names or not any(name.startswith("libllvm") for name in names):
+                errors.append("gazebo_rendering:llvmpipe_libraries_missing")
+            if any("libd3d12" in item.rsplit("/", 1)[-1].lower() or "/usr/lib/wsl/drivers/" in item
+                   for item in set(mapped_files) | set(libraries)):
+                errors.append("gazebo_rendering:unexpected_d3d12_library")
+        elif expected_driver != "auto":
+            errors.append("gazebo_rendering:unsupported_expected_driver")
+        return {"errors":errors, "report_path":str(path), "report_sha256":sha(path), "evidence":report}
+    except (OSError, ValueError, KeyError, TypeError) as error:
+        return {"errors":[f"gazebo_rendering:unreadable:{type(error).__name__}:{error}"]}
 
 
 def magnetic_environment_evidence(plan, trial):
@@ -1060,23 +1352,89 @@ def artifact_hashes(directory):
             if path.is_file() and path.suffix in {".json", ".jsonl", ".yaml", ".yml", ".sdf", ".log", ".bson"}}
 
 
-def validate_probe_gate(plan):
-    """Recheck all 12 development cells; a named boolean alone is no evidence.
+def extension_algorithm_failures(plan, trial, flight, entries):
+    """Keep known stress-condition failures, while requiring evaluable safety evidence."""
+    if flight.get("error") or flight.get("returncode") != 0:
+        raise ValueError("Extension probe flight invocation or infrastructure did not complete")
+    if set(entry.get("kind") for entry in entries) != required_evaluators(trial) or len(entries) != len(required_evaluators(trial)):
+        raise ValueError("Extension probe is missing independent evaluations")
+    checked = {}
+    for entry in entries:
+        spec = next(item for item in trial["evaluations"] if item["kind"] == entry["kind"])
+        if entry.get("report_sha256") != sha(spec["report"]):
+            raise ValueError("Extension probe evaluator report changed")
+        current = read_evaluation(spec, entry["execution"], plan)
+        if current["result"] != entry["result"] or current["result"] in {"INVALID", "INCOMPLETE_EVIDENCE", "EVALUATION_PENDING", "MISSING"}:
+            raise ValueError("Extension probe evaluator is incomplete or contradicts its saved entry")
+        checked[entry["kind"]] = load(spec["report"])
+    if any(checked[kind]["evaluation_status"] != "PASS" for kind in ("source_clock", "native_startup")):
+        raise ValueError("Extension probe source clock/frame continuity and native startup must independently PASS")
+    surface = checked["surface_flight"]
+    acceptance = surface.get("acceptance", {})
+    if (acceptance.get("missing_topics") != [] or type(acceptance.get("input_read_error_count")) is not int
+            or acceptance["input_read_error_count"] != 0 or acceptance.get("clock_timebase_available") is not True
+            or acceptance.get("short_occlusion_recorded") is not True or acceptance.get("long_occlusion_recorded") is not True
+            or acceptance.get("failed_events_retained") is not True
+            or surface.get("flight_evidence", {}).get("armed_seen") is not True
+            or surface.get("flight_evidence", {}).get("offboard_seen") is not True
+            or type(surface.get("detector", {}).get("invalid_diagnostic_messages")) is not int
+            or surface["detector"]["invalid_diagnostic_messages"] != 0):
+        raise ValueError("Extension probe requires complete recorded surface/clock/diagnostic evidence")
+    occlusions = surface.get("occlusions")
+    if not isinstance(occlusions, list) or {row.get("kind") for row in occlusions} != {"short", "long"}:
+        raise ValueError("Extension probe needs both recorded short and long occlusions")
+    failures = []
+    for row in occlusions:
+        checks = row.get("checks", {})
+        complete = ("recorded_close_event", "shutter_close_service_succeeded", "shutter_open_service_succeeded",
+                    "shutter_close_ack_before_open_request")
+        safe = ("lost_observed_for_long_occlusion", "hover_observed_for_long_occlusion", "sustained_low_speed_after_hover",
+                "no_automatic_recovery_after_long_loss", "no_tracking_control_before_reselection_after_long_loss")
+        if any(checks.get(key) is not True for key in (*complete, *(safe if row["kind"] == "long" else ()))):
+            raise ValueError("Extension probe original shutter/loss/hover/reselection safety did not PASS")
+        if type(checks.get("detector_interruption_observed")) is not bool or type(checks.get("prediction_observed")) is not bool:
+            raise ValueError("Extension probe lacks recorded detector/state evidence during shutter")
+        algorithm = ("detector_interruption_observed", "prediction_observed",
+                     *( ("sustained_tracking_after_reselection",) if row["kind"] == "long" else
+                        ("no_loss_during_short_occlusion", "identity_preserved_on_observed_recovery")))
+        for key in algorithm:
+            value = checks.get(key)
+            if value is not None and type(value) is not bool:
+                raise ValueError("Extension algorithm outcome must retain boolean/null evidence")
+            if value is not True:failures.append(f"surface:{row['kind']}:{key}={'UNOBSERVED' if value is None else 'FAIL'}")
+    nav_result, _ = navigation_verdict(checked["navigation"], plan["protocol"]["navigation_acceptance"])
+    if nav_result not in {"PASS", "FAIL"}:
+        raise ValueError("Extension probe physical navigation report is not independently evaluable")
+    if nav_result == "FAIL":failures.append("navigation:REGISTERED_PERFORMANCE_GATES_FAILED")
+    if acceptance.get("result") == "FAIL" and not any(item.startswith("surface:") for item in failures):
+        raise ValueError("Extension surface FAIL has no disclosed allowed algorithm boundary")
+    if acceptance.get("result") == "PASS" and any(item.startswith("surface:") for item in failures):
+        raise ValueError("Extension surface PASS contradicts recorded algorithm failures")
+    return sorted(failures)
+
+
+def validate_probe_gate(plan, *, extensions=False):
+    """Recheck 12 core or 16 extension development cells against actual files.
 
     References preserve the original immutable trial and record. Only the
     four provenance-bearing offline evaluators may receive a separately named
     override; their actual source/helper hashes must match this new evaluation
     revision. No bags are opened and no earlier record is rewritten here.
+    Extensions retain disclosed algorithm failures under stress, while source
+    clocks, startup, recording and original loss/hover safety must pass.
     """
-    binding = plan.get("development_probe_gate", {})
+    binding = (plan.get("extension_protocol_binding", {}).get("protocol", {}).get("development_readiness", {})
+               if extensions else plan.get("development_probe_gate", {}))
     path = Path(binding.get("path", ""))
     if not path.is_file() or binding.get("sha256") != sha(path) or binding.get("evidence") != load(path):
         raise ValueError("Development probe gate artifact is missing or changed")
     gate = binding["evidence"]
     checks = gate.get("checks")
+    required_checks = EXTENSION_PROBE_CHECKS if extensions else PROBE_CHECKS
+    readiness_flag = "ready_for_formal_condition_extensions" if extensions else "ready_for_formal_reliability_v4"
     if (gate.get("schema_version") != 2 or gate.get("result") != "PASS"
-            or gate.get("ready_for_formal_reliability_v4") is not True
-            or not isinstance(checks, dict) or set(checks) != set(PROBE_CHECKS)
+            or gate.get(readiness_flag) is not True
+            or not isinstance(checks, dict) or set(checks) != set(required_checks)
             or any(value is not True for value in checks.values())):
         raise ValueError("Development probe gate needs every required named check")
     expected_binding = {
@@ -1092,7 +1450,7 @@ def validate_probe_gate(plan):
     slots = gate.get("probe_slots")
     if not isinstance(slots, list) or not slots:
         raise ValueError("Development probe gate requires immutable probe slot evidence")
-    cache, seen, cells = {}, set(), set()
+    cache, seen, cells, known_failures = {}, set(), set(), []
     for item in slots:
         if not isinstance(item, dict):
             raise ValueError("Invalid development probe slot reference")
@@ -1102,9 +1460,11 @@ def validate_probe_gate(plan):
             raise ValueError("Development probe plan file binding differs")
         if source_key not in cache:
             previous = load(source)
-            if previous.get("mode") != "PROBE":
+            if previous.get("mode") != ("EXTENSION_PROBE" if extensions else "PROBE"):
                 raise ValueError("Only development PROBE trials can satisfy the development gate")
             validate_plan(previous, source)
+            if extensions and extension_design(previous["extension_protocol_binding"]["protocol"]) != extension_design(plan["extension_protocol_binding"]["protocol"]):
+                raise ValueError("Extension development condition design differs from final registration")
             if (flight_source_hashes(previous["source_hashes"]) != expected_binding["flight_source_hashes"]
                     or previous["model_hashes"] != plan["model_hashes"]
                     or previous["magnetic_runtime_binding"]["manifest_sha256"] != expected_binding["magnetic_runtime_manifest_sha256"]
@@ -1126,6 +1486,8 @@ def validate_probe_gate(plan):
             raise ValueError("Development probe needs an independently completed immutable terminal record")
         if runtime_configuration(previous, original)["errors"]:
             raise ValueError("Development probe actual source-clock/safety/magnetic runtime configuration differs")
+        if extensions and utc_timestamp(record.get("finished_utc")) >= utc_timestamp(plan["extension_protocol_binding"]["protocol"]["registration_utc"]):
+            raise ValueError("Extension development evidence must finish before prospective registration")
         evaluation_plan = deepcopy(previous)
         evaluation_plan["source_hashes"] = plan["source_hashes"]
         evaluation_plan["protocol"]["navigation_acceptance"] = plan["protocol"]["navigation_acceptance"]
@@ -1164,12 +1526,20 @@ def validate_probe_gate(plan):
         if set(entry.get("kind") for entry in overrides) - required_evaluators(trial):
             raise ValueError("Unexpected development probe evaluator override")
         flight = next((entry for entry in record.get("commands", []) if entry.get("kind") == "flight"), {})
-        verdict, evidence = engineering_verdict(evaluation_plan, trial, flight, entries)
-        if verdict != "PASS":
-            raise ValueError("Development probe independent acceptance did not PASS: " + slot_id + " " + str(evidence))
-        cells.add((trial["target_class"], trial["group"]))
-    if cells != {(cls, group) for cls in CLASSES for group in GROUPS}:
-        raise ValueError("Development probe gate must cover the complete 2-class x 6-group matrix")
+        if extensions:
+            failures = extension_algorithm_failures(evaluation_plan, trial, flight, entries)
+            if failures:known_failures.append({"plan_path":str(source),"slot_id":slot_id,"failures":failures})
+            cells.add((trial["target_class"], trial["extension_condition"]))
+        else:
+            verdict, evidence = engineering_verdict(evaluation_plan, trial, flight, entries)
+            if verdict != "PASS":
+                raise ValueError("Development probe independent acceptance did not PASS: " + slot_id + " " + str(evidence))
+            cells.add((trial["target_class"], trial["group"]))
+    expected_cells = {(cls, cell) for cls in CLASSES for cell in (EXTENSION_CONDITIONS if extensions else GROUPS)}
+    if cells != expected_cells:
+        raise ValueError("Development probe gate must cover the complete " + ("2-class x 8-condition matrix" if extensions else "2-class x 6-group matrix"))
+    if extensions and gate.get("known_algorithm_failures") != known_failures:
+        raise ValueError("Extension development known algorithm failures must be retained exactly, without selecting successful conditions")
 
 
 def record_path(plan, trial, suffix="json"):
@@ -1221,7 +1591,9 @@ def status(plan):
             "all_engineering_pass": bool(rows) and counts["PASS"] == len(rows),
             "exit_code_semantics": "Run exit zero means no orchestration/infrastructure stop; inspect all_engineering_pass and every terminal result separately.",
             "pending_ids": [key for key, row in rows.items() if row["status"] == "PENDING"],
-            "scope": "New post-repair engineering slots; navigation/base_link evidence and unknown identity are retained. This is not a new v3 four-estimator comparison."}
+            "scope": ("Independent 160-slot post-repair condition extensions; paired reference IDs are core-plan slots, not additional core successes."
+                      if plan["mode"].startswith("EXTENSION_") else
+                      "New post-repair engineering slots; navigation/base_link evidence and unknown identity are retained. This is not a new v3 four-estimator comparison.")}
 
 
 def run_plan(plan, *, max_new_trials=0, command_runner=execute_command, process_probe=simulation_processes,
@@ -1342,6 +1714,9 @@ def main(argv=None):
     create.add_argument("--classes", choices=CLASSES, nargs="+")
     create.add_argument("--wall-timeout", type=float, default=300.)
     create.add_argument("--probe-gate", type=Path)
+    create.add_argument("--extensions", action="store_true", help="Separate eight-condition matrix; does not change the 120 core slots")
+    create.add_argument("--conditions", choices=EXTENSION_CONDITIONS, nargs="+")
+    create.add_argument("--reference-plan", type=Path, help="Actual immutable core FORMAL plan for extension paired references")
     run = subparsers.add_parser("run")
     run.add_argument("--plan", type=Path, required=True)
     run.add_argument("--max-new-trials", type=int, default=0)
@@ -1350,8 +1725,19 @@ def main(argv=None):
     show.add_argument("--plan", type=Path, required=True)
     args = parser.parse_args(argv)
     if args.action == "plan":
-        plan = make_plan(args.frozen_root, args.output, args.prefix, formal=args.formal, seeds=args.seeds,
-                         groups=args.groups, classes=args.classes, wall_timeout=args.wall_timeout, probe_gate=args.probe_gate)
+        if args.extensions:
+            if args.groups is not None:
+                parser.error("Extension reference groups come from the fixed extension protocol")
+            plan = make_extension_plan(args.frozen_root, args.output, args.prefix, formal=args.formal, seeds=args.seeds,
+                    conditions=args.conditions, classes=args.classes, wall_timeout=args.wall_timeout, probe_gate=args.probe_gate,
+                    reference_plan=args.reference_plan)
+        else:
+            if args.reference_plan is not None:
+                parser.error("--reference-plan requires --extensions")
+            if args.conditions is not None:
+                parser.error("--conditions requires --extensions")
+            plan = make_plan(args.frozen_root, args.output, args.prefix, formal=args.formal, seeds=args.seeds,
+                             groups=args.groups, classes=args.classes, wall_timeout=args.wall_timeout, probe_gate=args.probe_gate)
         persist_plan(plan)
         result = {"plan": str(Path(plan["output"]) / "plan.json"), **status(plan)}
     else:

@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from contextlib import redirect_stdout
+import io
 import json
 import math
 from pathlib import Path
@@ -9,6 +11,7 @@ import sys
 import tempfile
 from types import SimpleNamespace as NS
 import unittest
+from unittest.mock import patch
 
 import numpy as np
 import yaml
@@ -85,6 +88,37 @@ def transform_diagnostics(records, function):
 
 
 class NavigationEvaluationTests(unittest.TestCase):
+    def test_clock_only_tail_extends_denominators_without_inventing_state_or_truth(self):
+        records, config, _ = fixture()
+        baseline = evaluation.evaluate(records,config)
+        records.append(Record("/clock",15.,NS(clock=stamp(15.)),15.))
+        result = evaluation.evaluate(records,config)
+        self.assertEqual(baseline["interval"]["end_s"],12.)
+        self.assertEqual(result["interval"]["end_s"],15.)
+        self.assertEqual(result["whole_interval"]["scheduled_samples"],91)
+        self.assertEqual(result["kf_navigation"]["counts"]["scheduled_samples"],91)
+        self.assertEqual(result["whole_interval"]["matched_truth_samples"],61)
+        self.assertEqual(result["kf_navigation"]["counts"]["valid_navigation_samples"],62)
+        self.assertEqual(result["kf_navigation"]["counts"]["missing_navigation_stream"],29)
+        self.assertGreater(result["whole_interval"]["inactive_control_samples"],20)
+        self.assertIsNone(result["frames"][-1]["base_link_distance_error_m"])
+        self.assertFalse(result["frames"][-1]["navigation_valid"])
+        self.assertTrue(result["whole_interval"]["transients"]["base_link"]["distance"]["settling_right_censored"])
+        self.assertLess(result["kf_navigation"]["valid_state_coverage"],baseline["kf_navigation"]["valid_state_coverage"])
+
+    def test_cli_explicitly_requests_clock_records_and_restores_topic_filter(self):
+        records, config, _ = fixture()
+        previous = evaluation.bag_tools.TOPICS
+        with tempfile.TemporaryDirectory() as temporary, \
+                patch.object(evaluation,"recorded_configuration",return_value=config), \
+                patch.object(evaluation.bag_tools,"read_rosbag",return_value=(records,{"fixture":True})) as reader, \
+                patch.object(evaluation,"read_monitor_events",return_value=([],{})), \
+                redirect_stdout(io.StringIO()):
+            root=Path(temporary)
+            self.assertEqual(evaluation.main([str(root),"--target-class","car","--output",str(root/"report.json")]),0)
+            self.assertIs(reader.call_args.kwargs["preserve_clock"],True)
+        self.assertEqual(evaluation.bag_tools.TOPICS,previous)
+
     def test_ground_center_and_control_point_are_independent_of_surface_reference(self):
         records, config, _ = fixture()
         result = evaluation.evaluate(records, config)

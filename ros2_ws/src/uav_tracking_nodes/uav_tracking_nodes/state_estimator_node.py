@@ -165,12 +165,28 @@ class StateEstimatorNode(Node):
                                    np.asarray(message.pose.covariance, dtype=float).reshape(6, 6)))
 
     def _point_pose_covariance(self, point_world: Any, timestamp: float) -> np.ndarray:
+        covariance, _ = self._point_pose_uncertainty(point_world, timestamp)
+        return covariance
+
+    def _point_pose_uncertainty(self, point_world: Any, timestamp: float) -> tuple[np.ndarray, dict[str, Any]]:
+        """Return the pose term with the exact sample used to propagate it.
+
+        This is diagnostic provenance, independent of simulator truth. Keep
+        the original nearest-sample and 50 ms synchronization contract.
+        """
         if not self._pose_samples:
             raise ValueError("vehicle_pose_uncertainty_unavailable")
         sample = min(self._pose_samples, key=lambda value: abs(value[0] - timestamp))
         if abs(sample[0] - timestamp) > .05:
             raise ValueError("vehicle_pose_uncertainty_not_synchronized")
-        return pose_point_covariance(point_world, sample[1], sample[2])
+        covariance = pose_point_covariance(point_world, sample[1], sample[2])
+        return covariance, {
+            "pose_uncertainty_source": "measured_vehicle_odometry",
+            "chosen_pose_source_s": float(sample[0]),
+            "chosen_pose_position_world_m": np.asarray(sample[1]).tolist(),
+            "chosen_pose_covariance_world_6x6": np.asarray(sample[2]).tolist(),
+            "pose_lever_world_m": (np.asarray(point_world) - sample[1]).tolist(),
+        }
 
     def _on_observation(self, message: TargetObservation) -> None:
         key = self._stamp_key(message.header.stamp)
@@ -367,13 +383,33 @@ class StateEstimatorNode(Node):
         uuid = str(self._manager.target_uuid or "")
         track_id = int(target.track_id) if target is not None else 0
         reference = NavigationEstimate(reason="no_accepted_selected_measurement")
-        details: dict[str, Any] = {"acquisition_s": timestamp, "target_uuid": uuid, "track_id": track_id}
+        details: dict[str, Any] = {"diagnostic_schema_version": 2, "acquisition_s": timestamp,
+                                   "target_uuid": uuid, "track_id": track_id}
         if (target is not None and target._matched_this_frame and target.last_detection is not None
                 and target.last_measurement_timestamp == timestamp
                 and result.status not in {TargetStatus.LOST, TargetStatus.AMBIGUOUS}):
             candidate_id = target.last_detection.metadata.get("candidate_id")
             observation = next((item for item in observations if int(item.candidate_id) == candidate_id), None)
             if observation is not None:
+                details.update(
+                    candidate_id=int(observation.candidate_id),
+                    class_name=str(getattr(observation, "class_name", "")),
+                )
+                missing_quality, invalid_quality = [], []
+                for name in ("confidence", "depth_valid_ratio", "depth_std_m"):
+                    value = getattr(observation, name, None)
+                    if value is None:
+                        missing_quality.append(name)
+                    else:
+                        try:
+                            value = float(value)
+                            if not np.isfinite(value) or value < 0 or name != "depth_std_m" and value > 1:
+                                raise ValueError("invalid quality diagnostic")
+                        except (TypeError, ValueError, OverflowError):
+                            invalid_quality.append(name)
+                            value = None
+                    details[name] = value
+                details.update(missing_quality_fields=missing_quality, invalid_quality_fields=invalid_quality)
                 key = (self._stamp_key(source.header.stamp), observation.camera_frame or observation.header.frame_id)
                 ground = np.asarray(getattr(source, "navigation_ground_points_camera_m", []), dtype=float)
                 points = np.asarray(getattr(observation, "navigation_points_camera_m", []), dtype=float)
@@ -388,6 +424,8 @@ class StateEstimatorNode(Node):
                     reference = NavigationEstimate(reason="insufficient_same_stamp_depth_support")
                 else:
                     rotation, camera = matrix[:3, :3], matrix[:3, 3]
+                    details.update(camera_frame=str(key[1]), camera_transform_source_s=timestamp,
+                                   camera_to_world_matrix=matrix.tolist())
                     ground_world = ground.reshape(-1, 3) @ rotation.T + camera
                     object_world = points.reshape(-1, 3) @ rotation.T + camera
                     plane = fit_ground_plane(ground_world)
@@ -413,12 +451,23 @@ class StateEstimatorNode(Node):
                                 pose_std = float(self.get_parameter("navigation_pose_std_m").value)
                                 if not np.isfinite(pose_std) or pose_std < 0:
                                     raise ValueError("navigation_pose_std_m must be finite and nonnegative")
+                                if getattr(self, "_propagate_vehicle_uncertainty", False):
+                                    pose_covariance, pose_details = self._point_pose_uncertainty(
+                                        reference.position_world_m, timestamp)
+                                else:
+                                    pose_covariance = np.eye(3) * pose_std**2
+                                    pose_details = {"pose_uncertainty_source": "declared_isotropic_position_std",
+                                                    "declared_pose_std_m": pose_std}
+                                total_covariance = reference.covariance + pose_covariance
+                                details.update(pose_details,
+                                    reference_covariance_geometry=reference.covariance.tolist(),
+                                    reference_covariance_pose=pose_covariance.tolist(),
+                                    reference_covariance_total=total_covariance.tolist(),
+                                    covariance_frame=str(self.get_parameter("state_frame").value),
+                                    covariance_units="m^2", quality_scale_applied=False)
                                 reference = NavigationEstimate(
                                     position_world_m=reference.position_world_m,
-                                    covariance=reference.covariance + (
-                                        self._point_pose_covariance(reference.position_world_m, timestamp)
-                                        if getattr(self, "_propagate_vehicle_uncertainty", False)
-                                        else np.eye(3) * pose_std**2),
+                                    covariance=total_covariance,
                                     valid=True, reason=reference.reason, reference_kind=reference.reference_kind,
                                     support_count=reference.support_count, heading_source=reference.heading_source,
                                     diagnostics=reference.diagnostics,
@@ -437,12 +486,16 @@ class StateEstimatorNode(Node):
             # Malformed optional geometry must stop following, not terminate
             # the RGB-D identity estimator or Offboard heartbeat chain.
             reference = NavigationEstimate(reason="invalid_navigation_geometry:" + str(error))
-            details = {"acquisition_s": timestamp, "target_uuid": uuid, "track_id": track_id}
+            details = {"diagnostic_schema_version": 2, "acquisition_s": timestamp,
+                       "target_uuid": uuid, "track_id": track_id}
+        initial_velocity = target.velocity_3d if target is not None else None
         update = self._navigation_estimator.update(
             reference, timestamp=timestamp, target_uuid=uuid, track_id=track_id,
-            initial_velocity=target.velocity_3d if target is not None else None,
+            initial_velocity=initial_velocity,
         )
         details.update(reference_valid=reference.valid, reference_reason=reference.reason,
+                       measurement_processing_s=self.get_clock().now().nanoseconds * 1e-9,
+                       initial_velocity_world_mps=None if initial_velocity is None else list(initial_velocity),
                        reference_kind=reference.reference_kind, support_count=reference.support_count,
                        heading_source=reference.heading_source,
                        raw_position_world_m=None if reference.position_world_m is None else reference.position_world_m.tolist(),
@@ -560,6 +613,16 @@ class StateEstimatorNode(Node):
         diagnostics = String()
         diagnostics.data = json.dumps(dict(
             self._navigation_last_diagnostics, output_s=output_s, valid=snapshot.valid,
+            output_publication_s=self.get_clock().now().nanoseconds * 1e-9,
+            output_surface_status=result.status.value,
+            output_target_uuid=str(surface.target_uuid), output_track_id=int(surface.track_id),
+            output_measurement_source_s=snapshot.measured_timestamp_s,
+            output_state=int(message.state),
+            output_position_world_m=([message.position_m.x, message.position_m.y, message.position_m.z]
+                                     if snapshot.valid else None),
+            output_velocity_world_mps=([message.velocity_mps.x, message.velocity_mps.y, message.velocity_mps.z]
+                                      if snapshot.valid else None),
+            output_covariance_world_6x6=(np.asarray(snapshot.covariance).tolist() if snapshot.valid else None),
             state_reason=snapshot.reason,
             measurement_age_s=(float(snapshot.measurement_age_s)
                                if snapshot.measurement_age_s is not None and np.isfinite(snapshot.measurement_age_s) else None),

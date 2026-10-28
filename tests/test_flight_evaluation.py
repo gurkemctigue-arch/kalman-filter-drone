@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import importlib.util
 import base64
+from contextlib import nullcontext
 import json
 import math
 from pathlib import Path
@@ -148,8 +149,45 @@ class FlightEvaluationTests(unittest.TestCase):
         self.assertEqual(untimed["record_timestamp_ns"], 100)
         self.assertEqual(base64.b64decode(untimed["serialized_cdr_base64"]), b"phase0")
         self.assertEqual(metadata["clock_samples_read"], 1)
+        self.assertFalse(metadata["clock_records_preserved"])
         self.assertEqual(sum(metadata["read_errors"].values()), 1)
         self.assertTrue(all("KeyError" in error for error in metadata["read_errors"]))
+
+    def test_clock_record_preservation_is_opt_in_and_keeps_tail_and_original_order(self):
+        serialized = [("/clock",b"clock0",0),("/tracking/flight_phase",b"phase",1),("/clock",b"clock_tail",2)]
+        messages = {b"clock0":NS(clock=stamp(6.)),b"phase":NS(data="FOLLOW: fixture"),b"clock_tail":NS(clock=stamp(15.))}
+
+        class Reader:
+            def __init__(self):self.index=0
+            def get_all_topics_and_types(self):return [NS(name=t,type="fixture") for t in ("/clock","/tracking/flight_phase")]
+            def set_filter(self,_filter):pass
+            def has_next(self):return self.index<len(serialized)
+            def read_next(self):
+                row=serialized[self.index];self.index+=1;return row
+
+        api=NS(StorageFilter=lambda **fields:None)
+        decode=lambda blob,_type:messages[blob]
+        old,old_meta=evaluation._deserialize_bag(Reader(),api,decode,lambda name:name)
+        kept,kept_meta=evaluation._deserialize_bag(Reader(),api,decode,lambda name:name,preserve_clock=True)
+        self.assertEqual([row.topic for row in old],["/tracking/flight_phase"])
+        self.assertEqual(max(row.time_s for row in old),6.)
+        self.assertEqual([row.record_sequence for row in kept],[0,1,2])
+        self.assertEqual([row.topic for row in kept],["/clock","/tracking/flight_phase","/clock"])
+        self.assertEqual(kept[-1].time_s,15.)
+        self.assertEqual(kept[-1].received_sim_s,15.)
+        self.assertEqual(old_meta["clock_samples_read"],kept_meta["clock_samples_read"])
+        self.assertFalse(old_meta["clock_records_preserved"])
+        self.assertTrue(kept_meta["clock_records_preserved"])
+
+    def test_public_reader_forwards_clock_option_without_changing_default(self):
+        modules={"rosbag2_py":NS(),"rclpy.serialization":NS(deserialize_message=lambda *_args:None),
+                 "rosidl_runtime_py.utilities":NS(get_message=lambda name:name)}
+        with patch.dict(sys.modules,modules), patch.object(evaluation,"open_bag_reader",side_effect=lambda *_args:nullcontext((None,{}))), \
+                patch.object(evaluation,"_deserialize_bag",return_value=([],{})) as deserialize:
+            evaluation.read_rosbag(Path("fixture_no_bag_read"))
+            self.assertIs(deserialize.call_args.kwargs["preserve_clock"],False)
+            evaluation.read_rosbag(Path("fixture_no_bag_read"),preserve_clock=True)
+            self.assertIs(deserialize.call_args.kwargs["preserve_clock"],True)
 
     def test_absent_clock_prevents_pass_even_when_other_evidence_would_pass(self):
         rows = [state(1), state(4), status(1), odometry(1), diagnostic(1),

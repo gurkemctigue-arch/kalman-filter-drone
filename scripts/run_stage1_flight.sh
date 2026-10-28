@@ -24,6 +24,20 @@ export GZ_SIM_SYSTEM_PLUGIN_PATH="$stage1_px4/build/px4_sitl_default/src/modules
 
 case "$stage1_component" in
   gazebo)
+    # This applies only to Gazebo, after the ROS underlays were sourced.
+    # 'auto' preserves historical driver selection. CPU selection is explicit
+    # because WSL's automatic EGL path can load D3D12 and crash during TLS exit.
+    case "${STAGE1_GAZEBO_RENDER_DRIVER:-auto}" in
+      auto) ;;
+      llvmpipe)
+        if [ "${STAGE1_RENDER_BACKEND:-egl}" != "egl" ]; then
+          echo "llvmpipe requires the egl backend" >&2
+          exit 2
+        fi
+        export LIBGL_ALWAYS_SOFTWARE=1 MESA_LOADER_DRIVER_OVERRIDE=swrast GALLIUM_DRIVER=llvmpipe
+        ;;
+      *) echo "STAGE1_GAZEBO_RENDER_DRIVER must be auto or llvmpipe" >&2; exit 2 ;;
+    esac
     # Gazebo 8.15 treats 0 as unspecified and does not seed its RNG.
     # The runner maps its zero-based registered seed to seed+1 explicitly.
     stage1_sim_seed="${STAGE_SIM_SEED:-1}"

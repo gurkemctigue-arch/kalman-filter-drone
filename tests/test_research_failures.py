@@ -43,6 +43,28 @@ def codes(report):
 
 
 class ResearchFailureTests(unittest.TestCase):
+    def test_parent_launch_zero_does_not_hide_failing_child_at_shutdown(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            healthy(root)
+            (root / "ros.log").write_text(
+                "[ERROR] [flight_supervisor-5]: process has died [pid 123, exit code 1, cmd 'flight_supervisor'].\n",
+                encoding="utf-8")
+            result = classify_infrastructure_failure(root)
+            self.assertTrue(result["stop"])
+            self.assertIn("ROS_CHILD_PROCESS_FAILURE", codes(result))
+            self.assertEqual(result["evidence"]["process_exit_codes"]["ros"], 0)
+
+    def test_expected_child_sigint_or_sigterm_is_not_a_hidden_crash(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            healthy(root)
+            (root / "ros.log").write_text(
+                "[ERROR] [node-1]: process has died [pid 123, exit code -2, cmd 'node'].\n"
+                "[ERROR] [node-2]: process has died [pid 124, exit code -15, cmd 'node'].\n",
+                encoding="utf-8")
+            self.assertFalse(classify_infrastructure_failure(root)["stop"])
+
     def test_healthy_recording_and_normal_shutdown_do_not_stop_or_read_database(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

@@ -1,6 +1,6 @@
 # Ubuntu 22.04 / ROS 2 Humble 独立验证
 
-截至2026-10-29，Canonical官方Jammy WSL镜像已下载并完成官方SHA256比对；`UAVHumble22`已实际导入至`D:\WSL\UAVHumble22`，读取确认为Ubuntu22.04.5、Python3.10.12。Humble/Harmonic的签名APT包、rosdep缓存和独立Python依赖已安装，pip check已通过；官方ros_gz源码已克隆，PX4/px4_msgs/Agent源码已按commit从干净缓存转入。ros_gz的interfaces/sim/bridge三包、px4_msgs、Agent（含独立FastDDS）及本环境独立的patched PX4已实际编译通过。系统ABI与独立小世界RGB-D/时钟/服务桥接已通过。最终工程尚需同步原生起飞启动协议修复后，在独立冻结目录构建。**尚未启动这套环境的PX4飞行，也未完成完整闭环验收**。既有Ubuntu24.04/Jazzy试验仍属于既有环境，不能用来代替本验证；本轮导入与构建均等待了当前仿真释放资源。
+截至2026-10-29，Canonical官方Jammy WSL镜像已下载并完成官方SHA256比对；`UAVHumble22`已实际导入至`D:\WSL\UAVHumble22`，读取确认为Ubuntu22.04.5、Python3.10.12。Humble/Harmonic的签名APT包、rosdep缓存和独立Python依赖已安装，pip check已通过；官方ros_gz源码已克隆，PX4/px4_msgs/Agent源码已按commit从干净缓存转入。ros_gz的interfaces/sim/bridge三包、px4_msgs、Agent（含独立FastDDS）及本环境独立的patched PX4已实际编译通过。系统ABI与独立小世界RGB-D/时钟/服务桥接已通过。最新已运行冻结`/root/uav_tracking_fullplan_v4_humble04`的4个ROS包、模块导入隔离和901项Linux测试通过；汽车完成原生起飞与20秒FOLLOW且原始录包通过，行人在原生起飞阶段因状态接收墙钟超时中止。**完整两类别闭环、遮挡/云台/多目标开发矩阵、退出清理及正式重复仍未全部验收**。既有Ubuntu24.04/Jazzy试验仍属于既有环境，不能用来代替本验证；本轮导入与构建均等待了当前仿真释放资源。
 
 ## 隔离布局与准备证据
 
@@ -114,6 +114,10 @@ PX4初次构建遇到上游`PX4-OpticalFlow`的GitHub下载TLS/timeout，所有�
 
 不启动传感器/仿真的系统ABI检查已通过，证据`logs/system_abi_verification.json`：venv NumPy1.26.4/OpenCV4.11.0与Humble cv_bridge完成RGB uint8、深度float32的精确图像往返；rclpy、px4_msgs和ros_gz_interfaces均从本环境导入；bridge与Agent的ldd无缺库及Jazzy路径，pip check通过。Agent ELF SHA256为`fc5afa7524e499cb82ccdbec69bda56f116d20b3ddecea404745340f7357959c`。这只覆盖系统消息/图像转换/链接边界，工程detector入口、真实渲染及DDS通信仍需最终冻结后验证。
 
+最终工程的冻结目录为`/root/uav_tracking_fullplan_v4_humble03`，结果独立存储于工程D盘的`results/frozen_fullplan_v4_humble03`。其`freeze_validation/`保留4包colcon、模块/ament路径隔离、源文件SHA及861项Linux测试通过日志。`humble_environment_isolation.json`进一步实测选中该冻结目录后`STAGE1_PROJECT_ROOT`一致，core/nodes/interfaces与detector模块均来自冻结树，detector首行使用venv解释器，torch2.5.1+cpu/Ultralytics8.4.188可真实导入，RGB往返和pip check通过；Humble磁库登记与本环境PX4 ELF manifest验证成功。该冻结树不再改写。
+
+此前`humble01`保留860项通过但默认Jazzy协议的准备记录，未用于正式Humble试验；`humble02`保留协议切到Humble后63个测试fixture错误。原因是runner测试固定写入Jazzy合成环境，却继承了Humble注册路径，生产门禁正确拒绝。主树测试现显式参数化合成环境与路径，并覆盖源workspace协议为Humble时两种fixture的完整plan/run；Windows44项专项通过后才建立humble03，未放宽生产门禁、未覆盖旧失败结果。
+
 colcon统一通过`/root/uav_humble22/venv/bin/python /usr/bin/colcon`执行，并显式传入CMake的Python路径。system-site-packages中的colcon包可被pip判为已满足，不保证自动生成venv/bin/colcon入口；显式调用避免此歧义。verify还要求安装后的`uav_tracking_nodes/detector`首行使用同一venv解释器，并记录实际torch模块路径，避免构建通过而运行节点看不到YOLO依赖。
 
 ## 分层验收与剩余入口
@@ -122,11 +126,11 @@ colcon统一通过`/root/uav_humble22/venv/bin/python /usr/bin/colcon`执行，�
 | --- | --- | --- |
 | 0 镜像 | 官方URL、大小、SHA及核验记录 | 已完成，GPG签名未验证 |
 | 1 系统/包 | os-release、Python3.10、签名APT、完整包版本 | 已完成；pip check通过 |
-| 2 构建 | ros_gz/px4_msgs/工程colcon、Agent和PX4构建日志 | ros_gz三包、px4_msgs、Agent及patched PX4已通过；工程待同步最终启动修复后构建 |
-| 3 算法/ABI | 完整核心测试、消息导入、pip check、cv_bridge往返、bridge ldd无缺库/跨ROS | 系统消息/服务导入、pip check、RGB及depth往返、bridge/Agent ldd已通过；最终工程测试/入口待执行 |
+| 2 构建 | ros_gz/px4_msgs/工程colcon、Agent和PX4构建日志 | ros_gz三包、px4_msgs、Agent、patched PX4及humble04工程4包已通过 |
+| 3 算法/ABI | 完整核心测试、消息导入、pip check、cv_bridge往返、bridge ldd无缺库/跨ROS | 系统ABI及humble04真实导入/venv detector/901项Linux测试均通过 |
 | 4 桥接 | 时钟、同步RGB/Depth/CameraInfo、真实有效深度、SetEntityPose成功 | 已实际通过独立小世界；完整跟随世界尚待闭环 |
-| 5 PX4链路 | 本环境SITL与XRCE、VehicleOdometry/VehicleStatus、Offboard状态和时间戳 | 待执行 |
-| 6 闭环 | 行人/汽车实际跟随、短遮挡同身份恢复、长丢失悬停/显式重选的rosbag与离线评价 | 待执行 |
+| 5 PX4链路 | 本环境SITL与XRCE、VehicleOdometry/VehicleStatus、Offboard状态和时间戳 | 汽车clean20秒source/native审计通过；行人原生阶段墙钟状态门中止，退出清理仍未通过 |
+| 6 闭环 | 行人/汽车实际跟随、短遮挡同身份恢复、长丢失悬停/显式重选的rosbag与离线评价 | 汽车clean20秒FOLLOW及有效原始bag已完成；行人、遮挡/多目标/云台与完整工程门待验 |
 
 Gate4使用[独立小场景桥接检查](../scripts/verify_humble22_bridge.sh)：
 
@@ -143,5 +147,23 @@ bash /root/uav_humble22/project/scripts/verify_humble22_bridge.sh
 `capture_environment.py`可记录完整APT/Python清单和指定依赖仓库；其中专门的`installed_ros_gz_packages`筛选目前仍偏向Jazzy，验收时要同时保存完整`packages.tsv`，不能把该筛选列表当作Humble全部包。跨ROS的MCAP也需要使用本环境重新生成/读取消息验证，不能直接复用Jazzy生成的Python消息模块。
 
 全部gate通过后才能将Ubuntu22.04/Humble边界标为完成；多seed论文比较仍须注明每条记录所属环境，不把两套环境的失败与成功混成一组。当前已准备脚本通过PowerShell执行Prepare、Bash语法检查及差异空白检查，后续安装/构建脚本仍需在实际新环境执行，遇到依赖或API问题时保留失败日志继续修正。
+
+## Humble首次飞行的录包问题与归档修复
+
+humble03汽车开发探针实际完成原生起飞及约20秒FOLLOW，monitor退出0，但原FILE-zstd录包不能作为已验收证据。Humble原生压缩reader解压后SQLite报malformed；独立libzstd流式解压诊断发现压缩frame缺正常结束，原生reader恰少输出尾部128 KiB。独立解压得到838,205,440字节，SQLite integrity/quick_check均ok、40,852消息与原metadata完全相同；这仍不改变原trial的`INCOMPLETE_EVIDENCE`状态。D盘约180 GiB可用、ext4空间充足，不能把此问题归因为磁盘满。
+
+四项冻结评价另在明确`DIAGNOSTIC_ONLY`的独立解压副本运行：source-clock和native-startup检查通过；导航有效状态覆盖100%，GT覆盖201/202，KF位置RMSE约0.113m，真实base_link距离/高度RMSE约0.627m/0.267m；尾10秒约0.0314m/0.00883m。最后采样点缺GT bracket，因此严格final-settled仍右删失；未做遮挡的surface评价也保持不完整。上述只诊断闭环，不能替代原录包有效性或正式多seed验收。原件、失败日志及诊断来源均保留于独立验证日志目录。
+
+后续runner采用`uav_tracking/recording_archive.py`的固定策略：ext4唯一spool无压缩SQLite录制，进程关闭后先逐页integrity_check并核对metadata/各topic消息数；再用标准`zstd -T1 -3 --check`完成frame，执行`zstd -t`、精确解压字节SHA、Humble原生SequentialCompressionReader全量读取/计数及原生解压SHA核对。全部通过才复制压缩文件及metadata到原results槽的`rosbag`，验证发布副本SHA，再删除已核对的本槽spool。任一步失败保留spool和FAIL记录并让trial失败；不再使用Humble recorder FILE compressor。
+
+标准CLI v1.4.8已从新发行版APT安装，setup明确列入`zstd`依赖。用上述诊断raw副本实测新路径成功：40,852条/30topic由Humble原生reader全部读出，raw字节SHA一致，整个归档约5.97秒；结果保留`diagnostic_only=true`，不回写原trial。8项归档专项及shutdown/seed/monitor相关检查通过，下一独立humble04冻结后仍须重新跑真实录制验证。
+
+修复后新的`/root/uav_tracking_fullplan_v4_humble04`及独立`results/frozen_fullplan_v4_humble04`已冻结：4包colcon、真实module/ament导入隔离、901项Linux测试全部通过（约19.74秒）。该冻结包含新的录制归档路径、原生起飞等待预算、KF观测噪声诊断和当时稳定的离线replay实现；Humble PX4 manifest与专用磁库登记明确绑定。humble03失败压缩原件和诊断结果保持原状态。
+
+该冻结新汽车clean20秒槽的原始录包41,174条消息，`bag_integrity`、`px4_source_clock`和`native_startup`均PASS。导航有效状态覆盖100%、GT覆盖202/203；KF位置/速度RMSE约0.09645m/0.07453m/s，实际base_link距离/高度RMSE约0.62951m/0.26644m，尾10秒约0.01892m/0.00447m。末点缺GT bracket，严格final-settled仍右删失；探针未做遮挡，surface-flight仍为证据不完整。Gazebo清理退出-11保持记录，不能把monitor0等同于全部工程门通过。
+
+同冻结行人探针未进入FOLLOW：ROS源时刻5.652s，最近VehicleStatus源戳5.152s，状态源龄0.500s；旧按设定RTF折算的2.000s接收墙钟门在实际墙钟龄2.010s处触发ABORT。odom接收龄0.014s、failsafe=false、preflight=true，检测器尚未激活。原始录包完整性与source-clock仍PASS，native-startup为FAIL、导航/surface证据不完整，全部失败原件保留。后续版本将source_sim状态源龄明确保持1.0s/未来0.05s，另设10s接收墙钟停流界；不改odom、目标或reset保护，也不回写该失败槽。下一行人开发探针对齐主协议n320/2线程/5m，汽车仍s640/4线程/9m。
+
+主树新离线导出器已在同一04汽车原始bag、04 Humble消息安装环境中实测：204个测量、1220个输出的真实NavEstimator float64数值复现PASS。首次native-state核对因协方差/预测年龄的float32 wire与JSON float64直接比较而出现164项差异，该`export01`原件保留；按TargetState.msg声明精确转换后另名`export02`真实重导exit0，全部1220对独立状态主题核对PASS，量化后不再另加容差。`results/development_offline_v4_humble04_car_seed00_export02`记录主树offline代码、04消息来源与五项在线/消息源码哈希等价。这只完成开发录制的导出/数值/状态主题证据链，不改变原04进程退出或闭环验收状态。新preserve_clock导航评价另存export01父目录，10574条Clock保留，原203分母和202真值及物理/KF指标未改变。
 
 官方来源：[Humble Ubuntu安装](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debs.html)、[Harmonic Ubuntu安装](https://gazebosim.org/docs/harmonic/install_ubuntu/)、[ROS/Gazebo组合](https://gazebosim.org/docs/harmonic/ros_installation/)、[PX4 v1.17源码](https://github.com/PX4/PX4-Autopilot/tree/v1.17.0)、[px4_msgs release/1.17](https://github.com/PX4/px4_msgs/tree/release/1.17)。

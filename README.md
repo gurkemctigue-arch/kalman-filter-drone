@@ -1,10 +1,14 @@
 # RGB-D UAV target tracking and following
 
-**当前分支是 v4 开发检查点，尚未完成修复后的正式验收。** `nav04`、`nav05` 的失败记录保留；新原生起飞分支仍待实际 SITL 验证，Humble 验证和正式 120 槽尚未完成。请先查看 [v4 当前状态](docs/V4_WORK_STATUS.md) 和 [验收合同](docs/V4_ACCEPTANCE_CONTRACT.md)。下文 v3 报告与结果计数属于历史冻结版本。
+**当前分支是 v4 开发检查点，尚未完成修复后的正式验收。** `nav04`、`nav05` 的失败记录保留；Ubuntu 22.04/Humble 已完成隔离构建、RGB-D 桥接和部分原生起飞开发探针，完整两类别、遮挡、多目标、云台与正式 120 槽验收仍未完成。请先查看 [v4 当前状态](docs/V4_WORK_STATUS.md)、[Humble 实测记录](docs/HUMBLE_ISOLATED_VALIDATION.md) 和 [验收合同](docs/V4_ACCEPTANCE_CONTRACT.md)。下文 v3 报告与结果计数属于历史冻结版本。
+
+核心 120 槽只覆盖登记的类别与六组工程条件；原计划全部距离、噪声、延迟等工况还需独立扩展，当前均未完成正式运行。范围和剩余工作见 [执行计划](planning/reliability-v4-remaining-execution.md)。
 
 中文验收入口：[结果工件说明](docs/RESULTS_ARTIFACTS.md) · [查看与复核方法](docs/验收使用指南.md) · [三阶段实际状态](docs/THREE_STAGE_STATUS.md) · [最终计划书](docs/最终版毕业设计计划书_最终版.docx)。结果页面和报告属于本地归档工件，保留历史失败、身份未知、缺失及未执行项；工程通过与正式重复研究完成分别判断。
 
 This repository implements a simulation-first RGB-D UAV target following system with YOLO11, 3-D Kalman filtering and PX4 Offboard control. Estimation and control remain independent from ROS 2, PX4 and Gazebo so the same core can be tested, replayed and connected to a future vehicle adapter.
+
+WSL EGL shutdown failures and the explicit Gazebo-only CPU rendering option are documented in the [shutdown diagnosis](docs/GAZEBO_WSL_SHUTDOWN_DIAGNOSIS.md). Historical `auto` driver selection is preserved; new Humble validation selects `--gazebo-render-driver llvmpipe` and checks the actual rendering libraries.
 
 The supported target classes are `person` and `car`. The target manager exposes two modes:
 
@@ -23,10 +27,18 @@ python -m uav_tracking.simulation --mode auto_unique --target-class person --ste
 python scripts/run_synthetic_experiments.py --target-class both --seeds 10
 ```
 
-The first command installs the portable package and NumPy. The unittest
+The first command installs the portable package and its test dependencies. The unittest
 command is sufficient for a minimal environment; pytest is only a convenience
 runner. ROS 2 execution is separate and should be performed in the WSL/Ubuntu
 environment described in `docs/ROS2_SIMULATION.md`.
+
+The portable GitHub Actions workflow runs these fixtures on Ubuntu 22.04 with
+Python 3.10 and 3.12, including standard `zstd` archive checks. It does not
+install ROS, start Gazebo/PX4, or certify a completed flight experiment. The
+[v4 estimator comparison design](docs/V4_ESTIMATOR_COMPARISON_DESIGN.md)
+documents the array replay, recording exporter and online numerical audit.
+One car development recording passed export and numerical reproduction;
+prospective calibration and the complete formal comparison remain pending.
 
 The experiment command uses one deterministic noisy observation sequence per
 seed for raw measurements, EMA, fixed-noise KF, and adaptive-noise KF, then
@@ -37,8 +49,11 @@ public-clone boundary and the optional dashboard.
 
 ## PX4 / Gazebo flight
 
-The tested WSL baseline is Ubuntu 24.04.1, ROS 2 Jazzy, Gazebo Harmonic and PX4
-v1.17.0. Build and source the workspace as described in the
+The current validation target is Ubuntu 22.04, ROS 2 Humble, Gazebo Harmonic
+and PX4 v1.17.0. Isolated builds, bridges and partial development probes have
+run; complete v4 flight acceptance remains pending. The earlier Ubuntu 24.04.1 /
+ROS 2 Jazzy experiments belong to the historical v3 archive below.
+Build and source the workspace as described in the
 [simulation guide](docs/ROS2_SIMULATION.md) and
 [version lock](docs/VERSION_LOCK.md), then run from the Linux project root:
 
@@ -54,6 +69,11 @@ commands, supervised takeoff, target motion and rendered occlusions. The
 [acceptance record](docs/STAGE1_ACCEPTANCE.md) contains the current per-class
 results, failed trials and remaining limits; synthetic and controlled smoke
 tests are separate evidence.
+
+The independent [v4 condition extensions](docs/V4_CONDITION_EXTENSIONS.md)
+retain 160 slots in addition to the 120 core slots. Formal scheduling requires
+prospective registration, actual development evidence and a bound clean core
+reference plan. Both formal matrices are currently unexecuted.
 
 The historical `stage1_final_v2` engineering record passed four scoped
 person/car velocity/position demonstrations. The frozen v3 research archive
@@ -71,9 +91,10 @@ Git and are described in [the results artifact note](docs/RESULTS_ARTIFACTS.md).
 The published repository contains the source, tests and reproducible commands;
 it does not claim that a public clone contains private bags or reports.
 
-The frozen Linux validation used Ubuntu 24.04.1, ROS 2 Jazzy, Gazebo Harmonic
-and PX4 v1.17.0. The original Ubuntu 22.04/Humble combination remains a
-portability target rather than a verified environment. Two independent shutdown
+The historical v3 Linux validation used Ubuntu 24.04.1, ROS 2 Jazzy, Gazebo Harmonic
+and PX4 v1.17.0. Independent v4 Ubuntu 22.04/Humble builds, bridge checks and
+partial flight probes are recorded in the [Humble validation log](docs/HUMBLE_ISOLATED_VALIDATION.md);
+they do not yet establish complete v4 acceptance. Two historical independent shutdown
 probes passed in a new cleanup checkout: all 8 stage-one and 9 multi-target
 stage-three ROS nodes exited cleanly, with no observed residual processes and
 no changes to the formal research ledgers. See the [delivery status](docs/DELIVERY_STATUS.md)

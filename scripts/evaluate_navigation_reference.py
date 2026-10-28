@@ -211,6 +211,10 @@ def evaluate(records, config, *, physical=None, events=None):
     for record in records:
         message = record.message
         operational = _operational(record)
+        if record.topic == "/clock":
+            # Clock is retained for the whole-record end below. It is not
+            # a vehicle/target sample and cannot fill any silent state stream.
+            continue
         if record.topic.startswith("/ground_truth/"):
             for transform in message.transforms:
                 trajectories[transform.child_frame_id.strip("/")].append(pose_dict(transform))
@@ -534,7 +538,7 @@ def main(argv=None):
     previous_topics = bag_tools.TOPICS
     try:
         bag_tools.TOPICS = tuple(dict.fromkeys(previous_topics + (STATE_TOPIC, DIAGNOSTIC_TOPIC)))
-        records, metadata = bag_tools.read_rosbag(args.trial / "rosbag")
+        records, metadata = bag_tools.read_rosbag(args.trial / "rosbag", preserve_clock=True)
     finally:
         bag_tools.TOPICS = previous_topics
     events, _ = read_monitor_events(args.trial / "telemetry.jsonl", args.trial / "summary.json")

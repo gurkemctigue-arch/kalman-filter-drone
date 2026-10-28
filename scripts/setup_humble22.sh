@@ -88,7 +88,7 @@ case "$humble22_phase" in
     apt-get update
     apt-get install -y --no-install-recommends \
       ca-certificates curl gnupg lsb-release locales git build-essential cmake ninja-build \
-      pkg-config rsync unzip zip ripgrep python3-dev python3-pip python3-venv \
+      pkg-config rsync unzip zip zstd ripgrep python3-dev python3-pip python3-venv \
       python3-numpy python3-opencv python3-matplotlib python3-scipy python3-yaml python3-cairo \
       python3-jinja2 python3-empy python3-packaging python3-serial python3-toml \
       protobuf-compiler libeigen3-dev libasio-dev libtinyxml2-dev libxml2-utils \

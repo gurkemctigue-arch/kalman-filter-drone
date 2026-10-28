@@ -23,6 +23,7 @@ try:
     from rclpy.executors import ExternalShutdownException
     from nav_msgs.msg import Odometry
     from std_msgs.msg import String
+    from std_srvs.srv import Trigger
     from rclpy.node import Node
     from rclpy.qos import qos_profile_sensor_data
     from uav_tracking_interfaces.msg import TrackingCommand
@@ -242,7 +243,7 @@ class Px4AdapterNode(Node):
             String, str(self.get_parameter("odometry_timing_topic").value), 20
         )
         self.create_subscription(TrackingCommand, str(self.get_parameter("command_topic").value), self._on_command, 20)
-        self.create_subscription(
+        self._raw_odometry_sub = self.create_subscription(
             VehicleOdometry,
             str(self.get_parameter("vehicle_odometry_topic").value),
             self._on_vehicle_odometry,
@@ -266,6 +267,29 @@ class Px4AdapterNode(Node):
                 qos_profile_sensor_data,
             )
         self.create_timer(1.0 / float(self.get_parameter("publish_rate_hz").value), self._publish)
+        # A wall-time service callback can prove the real adapter is spinning
+        # while /clock is paused, before any source odometry is published.
+        self._startup_service = self.create_service(
+            Trigger, "~/startup_readiness", self._on_startup_readiness)
+
+    def _on_startup_readiness(self, _request, response):
+        evidence = {
+            "schema_version": 1, "node": self.get_fully_qualified_name(),
+            "raw_topic": self._raw_odometry_sub.topic_name,
+            "odom_topic": self._vehicle_odom_pub.topic_name,
+            "timing_topic": self._odometry_timing_pub.topic_name,
+            # Humble exposes publisher matching on Publisher, but exposes
+            # only node graph discovery on the raw subscription side. Name
+            # this distinction explicitly; external GID/QoS checks and the
+            # full-recording source audit remain separate requirements.
+            "raw_discovered_publishers": self.count_publishers(self._raw_odometry_sub.topic_name),
+            "raw_count_scope": "NODE_GRAPH_DISCOVERY_NOT_RMW_MATCH",
+            "odom_matched_subscriptions": self._vehicle_odom_pub.get_subscription_count(),
+            "timing_matched_subscriptions": self._odometry_timing_pub.get_subscription_count(),
+        }
+        response.success = True
+        response.message = json.dumps(evidence)
+        return response
 
     def _on_command(self, message: TrackingCommand) -> None:
         self._last_command = message

@@ -170,12 +170,15 @@ def open_bag_reader(path: Path, rosbag2_py: Any):
             temporary.cleanup()
 
 
-def read_rosbag(path: Path) -> tuple[list[Record], dict[str, Any]]:
+def read_rosbag(path: Path, *, preserve_clock: bool = False) -> tuple[list[Record], dict[str, Any]]:
     """Deserialize selected topics, mapping unheadered messages with /clock.
 
     Recorder timestamps may use wall time, so they are never blindly mixed
     with sensor simulation timestamps. A prior /clock sample supplies receive
     simulation time. Diagnostics carry their own completed_s timestamp.
+    preserve_clock=True also returns Clock records so independent evaluations
+    retain silence through the full recorded clock tail. False preserves the
+    established historical evaluator input/interval behavior.
     """
     try:
         import rosbag2_py
@@ -185,11 +188,13 @@ def read_rosbag(path: Path) -> tuple[list[Record], dict[str, Any]]:
         raise RuntimeError("Source ROS, px4_msgs and the project install before reading a bag") from exc
 
     with open_bag_reader(path, rosbag2_py) as (reader, storage_metadata):
-        records, read_metadata = _deserialize_bag(reader, rosbag2_py, deserialize_message, get_message)
+        records, read_metadata = _deserialize_bag(reader, rosbag2_py, deserialize_message, get_message,
+                                                preserve_clock=preserve_clock)
     return records, {"bag": str(path.resolve()), **storage_metadata, **read_metadata}
 
 
-def _deserialize_bag(reader: Any, rosbag2_py: Any, deserialize_message: Any, get_message: Any):
+def _deserialize_bag(reader: Any, rosbag2_py: Any, deserialize_message: Any, get_message: Any,
+                     *, preserve_clock: bool = False):
     types = {topic.name: topic.type for topic in reader.get_all_topics_and_types()}
     reader.set_filter(rosbag2_py.StorageFilter(topics=[topic for topic in TOPICS if topic in types]))
     classes, unavailable, errors = {}, {}, Counter()
@@ -217,6 +222,10 @@ def _deserialize_bag(reader: Any, rosbag2_py: Any, deserialize_message: Any, get
             if topic == "/clock":
                 clock = stamp_s(message.clock)
                 clock_samples_read += 1
+                if preserve_clock:
+                    if finite(clock) is None:
+                        raise ValueError("nonfinite recorded clock timestamp")
+                    records.append(Record(topic, clock, message, clock, record_sequence))
                 continue
             if topic == "/tracking/detection_diagnostics":
                 payload = json.loads(message.data)
@@ -253,6 +262,7 @@ def _deserialize_bag(reader: Any, rosbag2_py: Any, deserialize_message: Any, get
         "unavailable_types": unavailable, "read_errors": dict(errors), "time_sources": dict(time_sources),
         "clock_recorded": "/clock" in types,
         "clock_samples_read": clock_samples_read,
+        "clock_records_preserved": preserve_clock,
         "startup_unclocked_messages": dict(startup_unclocked),
         "startup_unclocked_records": startup_unclocked_records,
         "startup_unclocked_note": "Successfully decoded messages before the first recorded /clock remain here with original recorder timestamps and exact CDR bytes; no simulation timestamp is assigned and they are excluded from timed metrics",

@@ -65,8 +65,17 @@ def provenance(root, kind, script):
             "dependencies":{str(root/helper):v4.sha(root/helper) for helper in v4.REPORT_PROVENANCE_HELPERS[kind]}}
 
 
-def fixture(root, *, navigation=True, gates=False):
+def fixture(root, *, navigation=True, gates=False, ros_distro="jazzy"):
     protocol = v4.load(ROOT / v4.PROTOCOL_PATH)
+    # Test repositories have an explicit synthetic environment independent of
+    # the production protocol selected by the workspace running this suite.
+    # In particular a Humble freeze must not make this Jazzy fixture claim to
+    # be an audited Humble registration merely by changing its file name.
+    if ros_distro not in {"jazzy", "humble"}:
+        raise ValueError("Unknown synthetic ROS environment")
+    protocol["magnetic_library_registration"] = ("config/gazebo_magnetic_runtime_humble22.json"
+                                                if ros_distro == "humble"
+                                                else "config/gazebo_magnetic_runtime.json")
     if gates:
         protocol["navigation_acceptance"] = registered_gates()
     write(root / v4.PROTOCOL_PATH, protocol)
@@ -74,7 +83,7 @@ def fixture(root, *, navigation=True, gates=False):
                  "evaluate_stage1_flight.py", "evaluate_stage2_flight.py", "evaluate_stage3_gimbal.py", "evaluate_physical_identity.py",
                  "configure_gazebo_magnetic_contract.py", "prepare_px4_magnetic_compatibility.py", "evaluate_px4_source_clock.py",
                  "capture_gazebo_magnetic_libraries.py", "evaluate_online_state_accuracy.py", "extract_research_recording.py",
-                 "px4_stage1_startup.sh", "run_stage1_flight.sh", "evaluate_native_startup.py"):
+                 "px4_stage1_startup.sh", "run_stage1_flight.sh", "evaluate_native_startup.py", "capture_gazebo_rendering.py"):
         path = root / "scripts" / name
         path.parent.mkdir(exist_ok=True)
         path.write_text("# frozen fixture, never executed\n", encoding="utf-8")
@@ -84,8 +93,9 @@ def fixture(root, *, navigation=True, gates=False):
     path.parent.mkdir()
     path.write_text("# classifier injected by fixture\n", encoding="utf-8")
     for relative in v4.OFFLINE_HELPERS:
-        if relative.startswith("uav_tracking/"):
-            (root/relative).write_text("# offline evaluator helper fixture, never executed\n", encoding="utf-8")
+        path = root/relative
+        if not path.exists():
+            path.write_text("# ORCHESTRATION_FIXTURE_ONLY: offline helper, never executed\n", encoding="utf-8")
     (root / "models").mkdir()
     (root / "models/yolo11n.pt").write_bytes(b"person-model-fixture")
     (root / "models/yolo11s.pt").write_bytes(b"car-model-fixture")
@@ -94,7 +104,8 @@ def fixture(root, *, navigation=True, gates=False):
     (root / "config/gazebo_magnetic_reference.json").write_bytes((ROOT / "config/gazebo_magnetic_reference.json").read_bytes())
     lookup = v4.load(root/"config/gazebo_magnetic_reference.json")
     write(root/protocol["magnetic_library_registration"], {"schema_version":1, "status":"AUDITED_INSTALLED_PACKAGES",
-        "environment_id":"fixture_jazzy_not_real_flight", "environment":{"os_id":"ubuntu", "os_version":"24.04", "ros_distro":"jazzy"},
+        "environment_id":f"fixture_{ros_distro}_not_real_flight",
+        "environment":{"os_id":"ubuntu", "os_version":"22.04" if ros_distro == "humble" else "24.04", "ros_distro":ros_distro},
         "source_registration":{key:lookup[key] for key in ("gazebo_sim_version", "gazebo_sim_commit", "gazebo_sim_source_sha256",
             "gazebo_sensors_version", "gazebo_sensors_commit", "gazebo_sensors_source_sha256")},
         "libraries":{kind:{"path":f"/fixture/{kind}.so", "sha256":str(i)*64, "package":"fixture-package-not-installed",
@@ -178,6 +189,7 @@ class FakeCommands:
             config = {key: option(key) for key in ["name", "command_mode", "gimbal_mode", "target_mode", "association_mode",
                 "initial_select", "scenario_kind", "control_reference", "condition", "estimator_method", "model_path", "magnetic_environment",
                 "magnetic_runtime_manifest", "magnetic_library_registration", "px4_time_mode", "takeoff_mode"]}
+            config["gazebo_render_driver"] = option("gazebo_render_driver")
             config.update(target_class=option("class"))
             for key in ["stage", "seed", "initial_min_candidates", "inference_image_size", "inference_threads"]:
                 config[key] = int(option(key))
@@ -185,6 +197,8 @@ class FakeCommands:
                 config[key] = float(option(key))
             config.update(multi_target="--multi-target" in command, occlusions=True, reselect_after_loss=True,
                           propagate_vehicle_uncertainty="--propagate-vehicle-uncertainty" in command,
+                          supervisor_status_timestamp_mode="source_sim", supervisor_status_source_max_age_s=1.,
+                          supervisor_status_source_max_future_s=.05, supervisor_status_timeout_wall_s=10.,
                           vehicle_control_point_offset_flu_m=[0., 0., .24])
             write(directory / "run_config.json", config)
             parameters = {
@@ -201,9 +215,25 @@ class FakeCommands:
                     "vehicle_odometry_topic":"/fmu/out/vehicle_odometry", "vehicle_odom_topic":"/vehicle/odometry",
                     "odometry_timing_topic":"/vehicle/odometry_timing"},
                 "uav_tracking_flight_supervisor":{"takeoff_mode":"px4_native","takeoff_height_m":3.,
+                    "native_takeoff_timeout_sim_s":40., "native_wall_timeout_s":180.,
+                    "status_timestamp_mode":"source_sim", "status_source_max_age_s":1.,
+                    "status_source_max_future_s":.05, "status_timeout_s":10.,
+                    "requested_simulation_real_time_factor":.5,
                     "auto_start":True,"simulation_only":True},
             }
             write(directory / "configuration/runtime_parameters.yaml", {key: {"ros__parameters": value} for key, value in parameters.items()})
+            renderer_libraries = {"/usr/lib/x86_64-linux-gnu/dri/swrast_dri.so":{
+                "sha256":"1"*64, "inode":123, "device_major":8, "device_minor":1},
+                "/usr/lib/x86_64-linux-gnu/libLLVM-15.so.1":{
+                "sha256":"2"*64, "inode":124, "device_major":8, "device_minor":1}}
+            write(directory/"configuration/gazebo_rendering_libraries.json", {
+                "schema_version":1, "status":"PASS", "owned_pid":8123,
+                "expected_driver":config["gazebo_render_driver"], "actual_process_environment":{
+                    "LIBGL_ALWAYS_SOFTWARE":"1", "MESA_LOADER_DRIVER_OVERRIDE":"swrast", "GALLIUM_DRIVER":"llvmpipe"},
+                "actual_mappings":[f"7f001000-7f002000 r--p 00000000 08:01 {evidence['inode']} {library}"
+                                   for library, evidence in renderer_libraries.items()],
+                "actual_libraries":renderer_libraries,
+                "contract_issues":[], "attempts":1, "evidence_scope":"ORCHESTRATION_FIXTURE_ONLY"})
             world_name = ("stage3_multi_" if config["multi_target"] else f"stage{config['stage']}_flight_") + config["target_class"] + ".sdf"
             source_world = root / "ros2_ws/src/uav_tracking_bringup/worlds" / world_name
             world_tree = ET.parse(source_world)
@@ -327,6 +357,60 @@ def fixture_probe_gate(root):
 
 
 class ReliabilityV4Tests(unittest.TestCase):
+    def test_actual_renderer_archive_is_required_and_driver_environment_is_bound(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); fixture(root, gates=True); frozen = plan(root, seeds=[0])
+            trial = frozen["trials"][0]
+            FakeCommands()(trial["flight_command"], root/"fixture_log.txt", root, 1.)
+            directory = Path(trial["directory"])
+            path = directory/"configuration/gazebo_rendering_libraries.json"
+            original = v4.load(path)
+            self.assertFalse(v4.gazebo_rendering_evidence(directory, "llvmpipe")["errors"])
+            for defect in ("status", "driver", "env", "llvm", "d3d12", "hash", "mapping", "inode", "mapsyntax"):
+                with self.subTest(defect=defect):
+                    report = deepcopy(original)
+                    if defect == "status":report["status"] = "FAIL"
+                    elif defect == "driver":report["expected_driver"] = "auto"
+                    elif defect == "env":report["actual_process_environment"]["GALLIUM_DRIVER"] = "d3d12"
+                    elif defect == "llvm":report["actual_libraries"].pop("/usr/lib/x86_64-linux-gnu/libLLVM-15.so.1")
+                    elif defect == "d3d12":report["actual_mappings"].append(
+                        "7f001000-7f002000 r--p 00000000 00:00 234 /usr/lib/wsl/drivers/nv-fake/libd3d12core.so")
+                    elif defect == "hash":next(iter(report["actual_libraries"].values()))["sha256"] = "unbound"
+                    elif defect == "inode":next(iter(report["actual_libraries"].values()))["inode"] = 999
+                    elif defect == "mapsyntax":report["actual_mappings"] = ["not a proc maps line"]
+                    else:report["actual_mappings"] = []
+                    write(path, report)
+                    self.assertTrue(v4.gazebo_rendering_evidence(directory, "llvmpipe")["errors"])
+                    self.assertTrue(any(error.startswith("gazebo_rendering:")
+                                        for error in v4.runtime_configuration(frozen, trial)["errors"]))
+            path.unlink()
+            self.assertTrue(v4.gazebo_rendering_evidence(directory, "llvmpipe")["errors"])
+
+    def test_new_renderer_protocol_is_explicit_and_rejects_legacy_auto(self):
+        original = v4.load(ROOT/v4.PROTOCOL_PATH)
+        self.assertEqual(original["gazebo_render_driver"], "llvmpipe")
+        for driver in (None, "auto", "d3d12"):
+            with self.subTest(driver=driver):
+                protocol = deepcopy(original)
+                if driver is None:protocol.pop("gazebo_render_driver")
+                else:protocol["gazebo_render_driver"] = driver
+                with self.assertRaisesRegex(ValueError, "gazebo_render_driver"):
+                    v4.validate_protocol(protocol)
+
+    def test_replay_tools_bind_full_manifest_but_do_not_force_flight_source_changes(self):
+        offline = {"scripts/export_estimator_replay_v4.py", "scripts/run_estimator_replay_v4.py",
+                   "uav_tracking/replay_comparison.py", "uav_tracking/replay_export.py",
+                   "uav_tracking/navigation_reproduction.py"}
+        online = {"uav_tracking/recording_archive.py", "uav_tracking/core/kalman.py"}
+        hashes = {relative:v4.sha(ROOT/relative) for relative in offline | online}
+        self.assertEqual(set(v4.offline_source_hashes(hashes)), offline)
+        self.assertEqual(set(v4.flight_source_hashes(hashes)), online)
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); fixture(root)
+            frozen = plan(root, seeds=[0])
+            self.assertTrue(offline <= set(frozen["source_hashes"]))
+            self.assertTrue(offline.isdisjoint(v4.flight_source_hashes(frozen["source_hashes"])))
+
     def test_formal_requires_registered_numeric_gates_and_real_named_probe_evidence(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp); fixture(root)
@@ -416,6 +500,8 @@ class ReliabilityV4Tests(unittest.TestCase):
                         self.assertEqual(Path(command[command.index("--magnetic-runtime-manifest") + 1]).resolve(), (root/v4.MAGNETIC_RUNTIME_PATH).resolve())
                         self.assertEqual(command[command.index("--px4-time-mode") + 1], "source_sim")
                         self.assertEqual(command[command.index("--takeoff-mode") + 1], "px4_native")
+                        self.assertEqual(command[command.index("--gazebo-render-driver") + 1], "llvmpipe")
+                        self.assertEqual(trial["gazebo_render_driver"], "llvmpipe")
                         self.assertEqual(Path(command[command.index("--magnetic-library-registration") + 1]).resolve(),
                                          (root/actual["protocol"]["magnetic_library_registration"]).resolve())
                         self.assertIn("--reselect-after-loss", command)
@@ -613,7 +699,9 @@ class ReliabilityV4Tests(unittest.TestCase):
         self.assertEqual(v4.physical_identity_verdict(report, registered_gates())[0], "PASS")
 
     def test_native_takeoff_runtime_and_startup_sources_are_required(self):
-        for defect in ("supervisor_mode", "takeoff_height", "takeoff_action", "recorded_mode", "multiple_ekf_instances"):
+        for defect in ("supervisor_mode", "takeoff_height", "takeoff_action", "recorded_mode", "multiple_ekf_instances",
+                       "status_mode", "status_source_age", "status_future", "status_wall", "recorded_status_mode",
+                       "recorded_gazebo_driver"):
             with self.subTest(defect=defect), tempfile.TemporaryDirectory() as tmp:
                 root = Path(tmp); fixture(root, gates=True); frozen = plan(root, seeds=[0]); fake = FakeCommands()
 
@@ -624,6 +712,19 @@ class ReliabilityV4Tests(unittest.TestCase):
                     if defect == "supervisor_mode":
                         path = directory/"configuration/runtime_parameters.yaml"; report = v4.load(path)
                         report["uav_tracking_flight_supervisor"]["ros__parameters"]["takeoff_mode"] = "offboard_velocity"
+                    elif defect in {"status_mode", "status_source_age", "status_future", "status_wall"}:
+                        path = directory/"configuration/runtime_parameters.yaml"; report = v4.load(path)
+                        key, value = {"status_mode":("status_timestamp_mode", "receipt_wall"),
+                                      "status_source_age":("status_source_max_age_s", 2.),
+                                      "status_future":("status_source_max_future_s", .5),
+                                      "status_wall":("status_timeout_s", 20.)}[defect]
+                        report["uav_tracking_flight_supervisor"]["ros__parameters"][key] = value
+                    elif defect == "recorded_status_mode":
+                        path = directory/"run_config.json"; report = v4.load(path)
+                        report["supervisor_status_timestamp_mode"] = "receipt_wall"
+                    elif defect == "recorded_gazebo_driver":
+                        path = directory/"run_config.json"; report = v4.load(path)
+                        report["gazebo_render_driver"] = "auto"
                     elif defect == "recorded_mode":
                         path = directory/"run_config.json"; report = v4.load(path); report["takeoff_mode"] = "offboard_velocity"
                     else:
@@ -915,7 +1016,7 @@ class ReliabilityV4Tests(unittest.TestCase):
 
     def test_humble_uses_its_own_explicit_frozen_registration(self):
         with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp); fixture(root, gates=True)
+            root = Path(tmp); fixture(root, gates=True, ros_distro="humble")
             protocol = v4.load(root/v4.PROTOCOL_PATH)
             registration = v4.load(root/protocol["magnetic_library_registration"])
             protocol["magnetic_library_registration"] = "config/gazebo_magnetic_runtime_humble22.json"
@@ -929,6 +1030,25 @@ class ReliabilityV4Tests(unittest.TestCase):
             frozen = plan(root, seeds=[0])
             self.assertEqual(frozen["magnetic_library_binding"]["registration"]["environment"]["ros_distro"], "humble")
             self.assertEqual(run(frozen)["status_counts"], {"PASS":1})
+
+    def test_fixture_environment_is_explicit_even_when_workspace_protocol_is_humble(self):
+        source_protocol = v4.load(ROOT/v4.PROTOCOL_PATH)
+        source_protocol["magnetic_library_registration"] = "config/gazebo_magnetic_runtime_humble22.json"
+        original_load = v4.load
+        def load_with_humble_workspace(path):
+            if Path(path) == ROOT/v4.PROTOCOL_PATH:
+                return deepcopy(source_protocol)
+            return original_load(path)
+        for ros, version in (("jazzy", "24.04"), ("humble", "22.04")):
+            with self.subTest(ros_distro=ros), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                with patch.object(v4, "load", side_effect=load_with_humble_workspace):
+                    protocol = fixture(root, gates=True, ros_distro=ros)
+                registration = v4.load(root/protocol["magnetic_library_registration"])
+                self.assertEqual(registration["environment"],
+                                 {"os_id":"ubuntu", "os_version":version, "ros_distro":ros})
+                frozen = plan(root, seeds=[0])
+                self.assertEqual(run(frozen)["status_counts"], {"PASS":1})
 
     def test_library_registration_cannot_mislabel_the_ros_environment(self):
         with tempfile.TemporaryDirectory() as tmp:

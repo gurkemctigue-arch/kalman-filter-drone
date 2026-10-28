@@ -61,9 +61,17 @@ R_pose = J_pose C_pose_world J_poseᵀ
 
 ## 时间合同仍然有限
 
-当前 adapter 的里程计 header 仍为 ROS 接收时的 `now()`，尚未改成经验证的源采样时间。当前协方差缓存与 TF 使用相同的 ROS header 时间域，在图像采集时刻附近选取不超过 0.05 秒的位姿样本。这个邻近窗口不是对源时间正确性的证明，也不等于插值得到了同一物理采样时刻的协方差。
+历史 `receipt_sim` 模式使用 ROS 接收时的 `now()`。新 v4 探针显式选择 `source_sim`，在 PX4 启动 XRCE client 前关闭时间同步，再经源时钟检查使用 `timestamp_sample`；两种模式不能混称。协方差缓存与 TF 使用保存的里程计 header 时间域，在图像采集时刻附近选取不超过 0.05 秒的位姿样本。这个邻近窗口本身不证明源时间正确，也不等于插值得到了同一物理采样时刻的协方差。每次录制仍须通过独立源时钟评价。
 
 nav01 的原始证据显示，默认 XRCE 同步会把 PX4 时间转换为 Agent 系统墙钟，并在慢速仿真中产生偏移跳变；直接把 `timestamp_sample` 写入使用 `/clock` 的 ROS header 会混用时间域。因此源时间修复需要独立的仿真/实机同步合同、重启与跳变检查，不能与协方差传播混为一项收益。详见 `V4_EGO_ATTITUDE_DIAGNOSIS.md`。
+
+## 导航测量诊断与复算
+
+新源码的 `/tracking/navigation_diagnostics` 使用 `diagnostic_schema_version=2`。每次可用参考测量分别保存 `reference_covariance_geometry`、`reference_covariance_pose`、`reference_covariance_total`，均为记录世界坐标中的 3×3 平方米矩阵。总矩阵与实际送入导航 KF 的 `reference_covariance` 一致，不从合成矩阵反推或猜测位姿项。
+
+开启实际位姿传播时，还保存真正选中的 `chosen_pose_source_s`、`chosen_pose_position_world_m`、`chosen_pose_covariance_world_6x6` 和 `pose_lever_world_m`，可独立重算 `J C Jᵀ`。关闭时明确记录 `declared_isotropic_position_std` 与给定标准差，不虚构机载位姿样本。相机变换矩阵及采集时间、候选框编号、类别、置信度、深度有效率和离散度同时保留。导航 KF 当前直接使用几何与位姿合成 R，`quality_scale_applied=false`；记录质量字段不代表额外实现了置信度缩放。
+
+`measurement_processing_s` 是测量处理结束附近的 ROS 源时间，不是图像采集或 rosbag 交付时间。每次真实导航发布另存 `output_s`、`output_publication_s`、表面身份状态、输出有效性及状态向量。投影发布会重复携带最近测量诊断，离线导出必须按采集时间与任务/轨迹去重，并保留录制顺序和接收时钟，不能把重复诊断当作新增测量或假设消息瞬时交付。初始化使用的实际因果速度也另行记录，以便复现原 KF。旧录制缺少这些字段时保持证据缺失，不用新源码补造旧证据。
 
 ## 统计与建模边界
 
