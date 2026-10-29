@@ -68,6 +68,196 @@ def snapshot_px4_parameters(px4_root: Path, destination: Path, phase: str) -> di
     return metadata
 
 
+ROS_GZ_CONFIG = "config/ros_gz_runtime_humble22.json"
+ROS_GZ_PATCH = "patches/ros_gz_bridge_ownership_shutdown_A01.patch"
+
+
+def prepare_ros_gz_runtime(root, requested=None, *, backend=None):
+    """Opt in explicitly or by final-root config, before starting any process."""
+    from uav_tracking.ros_gz_runtime import verify_registration
+    root = Path(root).resolve()
+    path = Path(requested) if requested else root / ROS_GZ_CONFIG
+    if not requested and not path.exists():
+        return None
+    path = path if path.is_absolute() else root / path
+    if path.stat().st_size > 8 * 1024 * 1024:
+        raise ValueError("ros_gz registration exceeded size bound")
+    raw = path.read_bytes()
+    registration = json.loads(raw.decode("utf-8-sig"))
+    if not isinstance(registration, dict):
+        raise ValueError("ros_gz registration must be an object")
+    patch = root / ROS_GZ_PATCH if registration.get("patch") is not None else None
+    if patch is not None and not patch.is_file():
+        raise ValueError("Registered ros_gz patch must have its same-byte final-root copy")
+    report = verify_registration(registration, patch_path=patch, backend=backend)
+    return {"path": path.resolve(), "raw": raw, "registration": registration, "patch": patch,
+            "sha256": hashlib.sha256(raw).hexdigest(), "preflight": report}
+
+
+def snapshot_ros_gz_runtime(context, destination):
+    destination = Path(destination)
+    (destination / "ros_gz_runtime_registration.json").write_bytes(context["raw"])
+    report = {**context["preflight"], "registration_file_sha256": context["sha256"],
+              "configured_registration_path": str(context["path"])}
+    (destination / "ros_gz_runtime_preflight.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
+
+
+def _ros_gz_children(pid, backend, thread_budget):
+    tasks = [path for path in (backend.proc_root / str(pid) / "task").iterdir() if path.name.isdigit()]
+    if len(tasks) > thread_budget:
+        raise RuntimeError("Owned bridge discovery exceeded its thread bound")
+    children = set()
+    for task in tasks:
+        try:
+            fields = backend.proc_text(pid, "task/" + task.name + "/children").split()
+        except FileNotFoundError:  # A thread can end after task enumeration.
+            continue
+        if any(not field.isdigit() or int(field) <= 0 for field in fields):
+            raise RuntimeError("Malformed owned process children record")
+        children.update(map(int, fields))
+    return sorted(children), len(tasks)
+
+
+def find_owned_parameter_bridge(leader_pid, *, expected_leader=None, backend=None,
+                              process_limit=64, thread_limit=512):
+    """Follow only kernel child lists, with creation/parent identities checked."""
+    from uav_tracking.ros_gz_runtime import RuntimeBackend, parse_process_stat
+    backend = backend or RuntimeBackend()
+    leader = parse_process_stat(backend.proc_text(leader_pid, "stat"), leader_pid)
+    if expected_leader is not None and leader != expected_leader:
+        raise RuntimeError("Owned ROS launch creation identity changed")
+    queue, seen, candidates, threads = [(leader_pid, None, [])], set(), [], 0
+    while queue:
+        pid, parent, chain = queue.pop(0)
+        if pid in seen:
+            continue
+        seen.add(pid)
+        if len(seen) > process_limit:
+            raise RuntimeError("Owned bridge discovery exceeded its process bound")
+        try:
+            identity = parse_process_stat(backend.proc_text(pid, "stat"), pid)
+            if parent is not None and identity["parent_pid"] != parent:
+                raise RuntimeError("Owned process parent identity changed during discovery")
+            executable = backend.exe_path(pid)
+            children, count = _ros_gz_children(pid, backend, thread_limit - threads)
+        except FileNotFoundError:
+            continue
+        threads += count
+        chain = [*chain, identity]
+        if Path(executable.removesuffix(" (deleted)")).name == "parameter_bridge":
+            candidates.append({"leader": leader, "process": identity, "ancestor_chain": chain})
+        queue.extend((child, pid, chain) for child in children)
+    if parse_process_stat(backend.proc_text(leader_pid, "stat"), leader_pid) != leader:
+        raise RuntimeError("Owned ROS launch identity changed during discovery")
+    if len(candidates) > 1:
+        raise RuntimeError("Owned ROS launch contains multiple parameter_bridge processes")
+    return candidates[0] if candidates else None
+
+
+def pending_ros_gz_mappings(context, owned, *, backend):
+    """Cheap init readiness only; full ELF hashes/identities are checked once later."""
+    from uav_tracking.ros_gz_runtime import parse_maps, parse_process_stat
+    pid = owned["process"]["pid"]
+    if parse_process_stat(backend.proc_text(pid, "stat"), pid) != owned["process"]:
+        raise RuntimeError("Owned bridge creation identity changed while waiting for mappings")
+    executable = backend.exe_path(pid)
+    if executable.endswith(" (deleted)"):
+        raise RuntimeError("Owned bridge executable is deleted during startup")
+    registration = context["registration"]
+    if str(Path(executable).resolve(strict=True)) != registration["executable"]["real_path"]:
+        raise RuntimeError("Owned bridge executable differs from registered overlay during startup")
+    expected = {row["real_path"] for row in [registration["executable"],
+        *registration["dependencies"], *registration.get("plugins", [])]}
+    aliases = {row["path"] for row in [registration["executable"],
+        *registration["dependencies"], *registration.get("plugins", [])]} | expected
+    observed = set()
+    for mapping in parse_maps(backend.proc_text(pid, "maps")):
+        path = mapping["path"][:-10] if mapping["deleted"] else mapping["path"]
+        name = Path(path).name
+        ros_gz = name == "parameter_bridge" or name.startswith("libros_gz_")
+        if mapping["deleted"] and (ros_gz or path in aliases):
+            raise RuntimeError("Registered or ros_gz ELF is deleted during startup")
+        try:
+            canonical = str(backend.namespace_file(pid, path).resolve(strict=True))
+        except OSError:
+            if ros_gz or path in aliases:
+                raise RuntimeError("Registered or ros_gz startup mapping is unreadable: " + path)
+            continue
+        if ros_gz and canonical not in expected:
+            raise RuntimeError("Unregistered/old ros_gz ELF mapped during startup: " + path)
+        if canonical in expected:
+            if mapping["deleted"]:
+                raise RuntimeError("Registered ELF is deleted during startup")
+            observed.add(canonical)
+    if (parse_process_stat(backend.proc_text(pid, "stat"), pid) != owned["process"]
+            or backend.exe_path(pid) != executable):
+        raise RuntimeError("Owned bridge identity changed during startup mapping observation")
+    return sorted(expected - observed)
+
+
+def capture_owned_ros_gz_runtime(context, destination, leader_pid, *, check_alive=lambda: None,
+                                 timeout_s=5., backend=None):
+    """Wait only for an owned bridge to appear, while physics is still paused."""
+    from uav_tracking.ros_gz_runtime import RuntimeBackend, parse_process_stat, verify_live_process
+    backend = backend or RuntimeBackend()
+    if not math.isfinite(timeout_s) or timeout_s <= 0:
+        raise ValueError("Owned bridge startup wait must be positive and finite")
+    deadline = time.monotonic() + timeout_s
+    leader = {"pid": leader_pid}
+    discovered, missing = None, []
+    try:
+        leader = parse_process_stat(backend.proc_text(leader_pid, "stat"), leader_pid)
+        while True:
+            check_alive()
+            owned = find_owned_parameter_bridge(leader_pid, expected_leader=leader, backend=backend)
+            if discovered is not None and owned != discovered:
+                raise RuntimeError("Owned bridge identity/ownership changed during startup wait")
+            if owned is not None:
+                discovered = owned
+                missing = pending_ros_gz_mappings(context, owned, backend=backend)
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                detail = ": " + ", ".join(missing) if missing else ""
+                raise RuntimeError("Owned parameter_bridge or its registered mappings were not ready within bounded startup wait" + detail)
+            if owned is not None and not missing:
+                report = verify_live_process(context["registration"], owned["process"]["pid"],
+                    expected_start_ticks=owned["process"]["start_ticks"], patch_path=context["patch"], backend=backend)
+                after = find_owned_parameter_bridge(leader_pid, expected_leader=leader, backend=backend)
+                if after != owned or report["process"] != owned["process"]:
+                    raise RuntimeError("Bridge ownership/creation identity changed during verification")
+                report.update(owned_launch=owned, registration_file_sha256=context["sha256"])
+                (Path(destination) / "ros_gz_runtime_actual.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
+                return report
+            time.sleep(min(.05, remaining))
+    except (OSError, ValueError, RuntimeError) as error:
+        (Path(destination) / "ros_gz_runtime_actual_error.json").write_text(
+            json.dumps({"status": "FAIL", "error": str(error), "leader": leader,
+                        "registration_file_sha256": context["sha256"]}, indent=2), encoding="utf-8")
+        raise RuntimeError("Owned ros_gz runtime could not be verified before unpause") from error
+
+
+def verify_ros_gz_runtime_after(context, destination, *, ros_exit_code, ros_log, backend=None):
+    """Return cleanup error for the caller to raise after recording finalization."""
+    from uav_tracking.ros_gz_runtime import verify_registration
+    try:
+        if hashlib.sha256(context["path"].read_bytes()).hexdigest() != context["sha256"]:
+            raise ValueError("ros_gz registration file changed during trial")
+        report = verify_registration(context["registration"], patch_path=context["patch"], backend=backend)
+        if ros_exit_code != 0 or "process has died" in ros_log:
+            raise RuntimeError("ROS launch/child shutdown failed; original exit/log evidence is retained")
+        report.update(registration_file_sha256=context["sha256"], ros_exit_code=ros_exit_code)
+        (Path(destination) / "ros_gz_runtime_after.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
+        return None
+    except (OSError, ValueError, RuntimeError) as error:
+        try:
+            (Path(destination) / "ros_gz_runtime_after_error.json").write_text(
+                json.dumps({"status": "FAIL", "error": str(error), "ros_exit_code": ros_exit_code,
+                            "registration_file_sha256": context["sha256"]}, indent=2), encoding="utf-8")
+        except OSError as publication_error:
+            return RuntimeError(str(error) + "; could not archive verification error: " + str(publication_error))
+        return error
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--class", dest="target_class", choices=["person", "car"], default="person")
@@ -115,6 +305,8 @@ def main() -> None:
                         help="Verified separate PX4 ELF/source manifest required for the opt-in Gazebo ENU magnetic contract")
     parser.add_argument("--magnetic-library-registration", default=None,
                         help="Pre-audited per-environment Gazebo ELF registration; gazebo_enu defaults to config/gazebo_magnetic_runtime.json (Jazzy)")
+    parser.add_argument("--ros-gz-runtime-registration", default=None,
+                        help="Optional reviewed ros_gz registration; defaults to final-root config when present")
     parser.add_argument("--propagate-vehicle-uncertainty", action="store_true")
     parser.add_argument("--px4-time-mode", choices=["receipt", "source_sim"], default="receipt",
                         help="source_sim disables XRCE wall-time mapping before client startup and validates PX4 source time against /clock")
@@ -174,6 +366,9 @@ def main() -> None:
             parser.error("STAGE1_PX4_ROOT conflicts with the verified magnetic runtime")
     elif args.magnetic_runtime_manifest or args.magnetic_library_registration:
         parser.error("magnetic runtime manifests and library registrations are only used with gazebo_enu")
+    ros_gz_runtime = prepare_ros_gz_runtime(root, args.ros_gz_runtime_registration)
+    if ros_gz_runtime is not None:
+        args.ros_gz_runtime_registration = str(ros_gz_runtime["path"])
     output = root / "results" / args.name
     output.mkdir(parents=True, exist_ok=False)
     env = dict(os.environ, STAGE1_AUTO_START="true", STAGE1_PROJECT_ROOT=str(root),
@@ -199,6 +394,8 @@ def main() -> None:
     (output / "run_config.json").write_text(json.dumps(vars(args), indent=2), encoding="utf-8")
     snapshot = output / "configuration"
     snapshot.mkdir()
+    if ros_gz_runtime is not None:
+        snapshot_ros_gz_runtime(ros_gz_runtime, snapshot)
     if magnetic_runtime is not None:
         shutil.copy2(args.magnetic_runtime_manifest, snapshot / "px4_magnetic_runtime.json")
         shutil.copy2(args.magnetic_library_registration,
@@ -466,6 +663,9 @@ def main() -> None:
                     raise RuntimeError(f"{name} exited during paused startup; see its log")
             if "process has died" in (output / "ros.log").read_text(errors="replace"):
                 raise RuntimeError("ROS component failed during startup; see ros.log")
+        if ros_gz_runtime is not None:
+            capture_owned_ros_gz_runtime(ros_gz_runtime, snapshot, processes["ros"].pid,
+                                        check_alive=check_startup_processes)
         from wait_stage1_graph import wait_ready as wait_ready_graph
         wait_ready_graph(output / "graph_startup_readiness.json", require_recorder=not args.no_bag,
                          check_alive=check_startup_processes)
@@ -501,6 +701,7 @@ def main() -> None:
     finally:
         active_error = sys.exc_info()[1]
         closure_error = None
+        ros_gz_error = None
         if recording_spool is not None and simulation_resumed:
             def check_recording_processes():
                 for name in ["gazebo", "agent", "px4", "ros", "bag"]:
@@ -529,6 +730,12 @@ def main() -> None:
         for log in logs:
             log.close()
         (output / "process_exit_codes.json").write_text(json.dumps({name: p.poll() for name, p in processes.items()}, indent=2), encoding="utf-8")
+        if ros_gz_runtime is not None and "ros" in processes:
+            try:
+                ros_gz_error = verify_ros_gz_runtime_after(ros_gz_runtime, snapshot,
+                    ros_exit_code=processes["ros"].poll(), ros_log=(output / "ros.log").read_text(errors="replace"))
+            except (OSError, ValueError, RuntimeError) as error:
+                ros_gz_error = error  # Recording finalization still runs.
         parameter_evidence["after"]=snapshot_px4_parameters(px4_root,snapshot,"after")
         parameter_manifest.write_text(json.dumps(parameter_evidence,indent=2),encoding="utf-8")
         if magnetic_runtime is not None:
@@ -557,6 +764,8 @@ def main() -> None:
             (output / "bag_integrity.json").write_text(json.dumps(archive, indent=2), encoding="utf-8")
         if closure_error is not None and active_error is None:
             raise RuntimeError("Recording closed without proved source-stream drain; see recording_closure.json") from closure_error
+        if ros_gz_error is not None and active_error is None:
+            raise RuntimeError("Trial ended without verified ros_gz runtime/shutdown provenance") from ros_gz_error
 
 
 if __name__ == "__main__":

@@ -10,6 +10,7 @@ if [[ -n "${ROS_DISTRO:-}" && "$ROS_DISTRO" != humble ]]; then
 fi
 humble22_prefix=/root/uav_humble22
 humble22_project="${HUMBLE22_PROJECT_ROOT:-$humble22_prefix/project}"
+humble22_ros_gz_ws="${HUMBLE22_ROS_GZ_WS:-$humble22_prefix/ros_gz_ws}"
 if [[ "$humble22_project" != "$humble22_prefix/project" && ! "$humble22_project" =~ ^/root/uav_tracking_fullplan_[a-zA-Z0-9_]+$ ]]; then
   echo 'HUMBLE22_PROJECT_ROOT must identify the prepared project or an independent frozen study.' >&2
   return 2 2>/dev/null || exit 2
@@ -22,14 +23,14 @@ case $- in *u*) humble22_restore_nounset=true;; esac
 set +u
 source /opt/ros/humble/setup.bash
 source "$humble22_prefix/venv/bin/activate"
-source "$humble22_prefix/ros_gz_ws/install/setup.bash"
+source "$humble22_ros_gz_ws/install/setup.bash"
 source "$humble22_prefix/px4_msgs_ws/install/setup.bash"
 source "$humble22_project/ros2_ws/install/setup.bash"
 export STAGE1_ROS_DISTRO=humble
 export STAGE1_PROJECT_ROOT="$humble22_project"
 export STAGE1_PX4_ROOT="${HUMBLE22_PX4_ROOT:-$humble22_prefix/PX4-Autopilot}"
 export STAGE1_PX4_MSGS_WS="$humble22_prefix/px4_msgs_ws"
-export STAGE1_ROS_GZ_WS="$humble22_prefix/ros_gz_ws"
+export STAGE1_ROS_GZ_WS="$humble22_ros_gz_ws"
 export STAGE1_PYTHON_EXECUTABLE="$humble22_prefix/venv/bin/python"
 export PYTHONPATH="$humble22_project:${PYTHONPATH:-}"
 export ROS_DOMAIN_ID=73

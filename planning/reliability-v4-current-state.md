@@ -1,5 +1,15 @@
 # 当前工作交接（持续开发，非验收报告）
 
+执行快照（2026-10-29T20:58:19.001348+00:00；非实时状态）：已完成独立 A01 桥生命周期修复与三次有效活跃探针，确认引用环解除、真实析构及 owned 进程正常退出；尚未证明原 SIGSEGV 的唯一根因。新桥来源登记已绑定 73 个实际 ELF 映射，飞行 runner 的启动前、暂停时 live 和退出后核验已通过专项测试，真实完整飞行尚待验证。冻结前无损压缩比较已完成，保留原 -3 策略。Humble24 正准备最终来源审查、独立冻结/构建、两类 clean20 和新核心12格；此快照尚未开始这些运行。旧 Humble23 仍为 3 PASS、1 INFRASTRUCTURE_ERROR、8 PENDING，正式仍 0/280，旧失败和数据不改写。
+
+后续顺序：新同源 clean20 → 核心12 → 四项歧义安全与16扩展 → 两条指定速度录包定标及完整28格容量 → 最终协议登记/准入 → 正式280及统计交付。新版完整飞行尚未验证，因此不能宣布可靠性问题已经全部解决。下方正文为历史快照。
+
+历史执行快照（2026-10-29 20:15:48 UTC / 北京时间 2026-10-30 04:15:48；本段不是实时状态）：Humble23 的 75 s 核心开发批次已于 20:13:33 UTC 因第 4 槽基础设施故障停止，原 12 格分母为 3 PASS、1 INFRASTRUCTURE_ERROR、8 PENDING。通过的是行人 stage1_velocity、stage1_position、stage2_crossing；第 4 槽 person_stage3_midpoint_seed004 的 flight_exit_code=0，录包 closure 与 bag_integrity 均为 PASS，但 ROS–Gazebo parameter_bridge 子节点在收尾时以 -11（SIGSEGV）退出。原 ROS launch 父进程为 0，不能抵消子节点崩溃；原基础设施失败与未执行槽完整保留，不重试原槽、不改写为 PASS。
+
+该批 driver 返回 2，独立 observer 正常以 0 退出、未被强停，冻结源前后 SHA 一致；原终态记录 residual_processes=[]。下一步转入 ROS–Gazebo C++ bridge 收尾崩溃的独立诊断。两类全新 clean20 尚未执行，相关入口准备已暂停；独立压缩诊断仍为 PREPARED，其要求 core12 完整正常收尾的门当前不满足，不能执行。四项歧义安全与 16 格扩展尚未开始；正式协议仍 DRAFT_NOT_FROZEN_NOT_EXECUTED，正式 0/280。五项数值门 REGISTERED 和既有四包构建/1335 项检查（1333 通过、2 skip）记录不代替运行验收。证据为 results/frozen_fullplan_v4_humble23/reliability_v4_humble23_probe_seed004_matrix/serial_driver/execution_terminal.json、该矩阵的四份原终态，以及第 4 槽的 closure、bag_integrity 和 ROS 子进程审计。
+
+以下为较早快照与记录，原文保留；其中“运行中/首槽已启动”等文字只对应原记录时点，不代表本快照之后的实时状态。
+
 历史执行快照（2026-10-29 19:55:39 UTC / 北京时间 2026-10-30 03:55:39；本段不是实时状态）：Humble23 已按核心与扩展统一 75 s FOLLOW 冻结。四个 ROS 软件包真实构建通过；Linux 全套 1335 项检查中 1333 项通过、2 项按原条件跳过，冻结源前后 SHA 不变，运行验收尚未得出结论。五项导航数值门已 REGISTERED（距离 RMSE ≤1.0 m、高度 RMSE ≤0.40 m、有效导航覆盖 ≥0.80、真值覆盖 ≥0.99、指定个体物理身份覆盖 ≥0.80），同时保留末尾 3 s 稳定要求与原安全门；身份覆盖门仅适用于 stage2_crossing 和 stage3_multi_active。数值登记不等于正式协议封存：整体状态仍为 DRAFT_NOT_FROZEN_NOT_EXECUTED，正式仍为 0/280。
 
 该快照时，seed004 的 12 格核心开发批次由唯一串行 driver 与 Windows progress observer 执行，已记录首槽 person_stage1_velocity_seed004 的 START_SLOT；未记录任何槽的完成结论。12 核心及 16 扩展的完整 75 s readiness、四项歧义安全实测、四法定标、正式前容量准入、正式 120+160 次与统计交付仍须依真实结果推进，不以开始运行代替通过。证据：results/frozen_fullplan_v4_humble23/freeze_validation/build_validation_summary.json 及 reliability_v4_humble23_probe_seed004_matrix 下的 plan.json、serial_driver/events.jsonl 和 slots 小标记。

@@ -1,0 +1,66 @@
+--- a/ros_gz_bridge/src/factory.hpp
++++ b/ros_gz_bridge/src/factory.hpp
+@@ -112,11 +112,16 @@
+ 
+     auto ros_type = ros_type_name_;
+     auto gz_type = gz_type_name_;
++    rclcpp::Node::WeakPtr weak_ros_node = ros_node;
+     std::function<void(std::shared_ptr<const ROS_T>, const rclcpp::MessageInfo &)> fn =
+-      [self_pub_gids, gz_pub, ros_type, gz_type, ros_node](
++      [self_pub_gids, gz_pub, ros_type, gz_type, weak_ros_node](
+       std::shared_ptr<const ROS_T> ros_msg,
+       const rclcpp::MessageInfo & msg_info) mutable
+       {
++        auto ros_node = weak_ros_node.lock();
++        if (!ros_node) {
++          return;
++        }
+         // Skip messages published by this bridge node to prevent loops.
+         const auto & sender_gid = msg_info.get_rmw_message_info().publisher_gid;
+         for (const auto & gid : *self_pub_gids) {
+--- a/ros_gz_bridge/include/ros_gz_bridge/ros_gz_bridge.hpp
++++ b/ros_gz_bridge/include/ros_gz_bridge/ros_gz_bridge.hpp
+@@ -56,6 +56,9 @@
+   /// \param[in] options options control creation of the ROS 2 node
+   explicit RosGzBridge(const rclcpp::NodeOptions & options = rclcpp::NodeOptions());
+ 
++  /// \brief Stop owned callbacks and transports before node teardown.
++  ~RosGzBridge() override;
++
+   /// \brief Add a new ROS-IGN bridge to the node
+   /// \param[in] config Parameters to control creation of a new bridge
+   void add_bridge(const BridgeConfig & config);
+--- a/ros_gz_bridge/src/ros_gz_bridge.cpp
++++ b/ros_gz_bridge/src/ros_gz_bridge.cpp
+@@ -41,6 +41,17 @@
+   heartbeat_timer_ = this->create_wall_timer(
+     std::chrono::milliseconds(heartbeat),
+     std::bind(&RosGzBridge::spin, this));
++}
++
++RosGzBridge::~RosGzBridge()
++{
++  if (heartbeat_timer_) {
++    heartbeat_timer_->cancel();
++    heartbeat_timer_.reset();
++  }
++  services_.clear();
++  handles_.clear();
++  gz_node_.reset();
+ }
+ 
+ void RosGzBridge::spin()
+--- a/ros_gz_bridge/src/bridge_handle_gz_to_ros.cpp
++++ b/ros_gz_bridge/src/bridge_handle_gz_to_ros.cpp
+@@ -34,7 +34,10 @@
+     gz_to_ros_parameters_.override_frame_id);
+ }
+ 
+-BridgeHandleGzToRos::~BridgeHandleGzToRos() = default;
++BridgeHandleGzToRos::~BridgeHandleGzToRos()
++{
++  this->StopSubscriber();
++}
+ 
+ size_t BridgeHandleGzToRos::NumSubscriptions() const
+ {
