@@ -3,8 +3,10 @@ from __future__ import annotations
 import importlib.util
 from pathlib import Path
 import sys
+import tempfile
 import unittest
 import numpy as np
+from tests.test_stage2_identity import front_evidence, front_objects
 from uav_tracking.control.gimbal_geometry import camera_optical_quaternion
 
 scripts=Path(__file__).resolve().parents[1]/"scripts"
@@ -33,6 +35,60 @@ def identity_row(t,physical="A",uuid="task"):
 
 
 class PhysicalIdentityEvaluatorTests(unittest.TestCase):
+    def test_front_certificate_reaches_request_current_frame_and_fixed_time_audit(self):
+        evidence=front_evidence()
+        truth={"gt":front_objects(),"all_fully_in_frame":True,"overlap":True,"truth_complete":True,
+               "front_visibility_evidence":evidence}
+        frames,tasks,rows,_=evaluation.build_identity_frames([{"stamp_s":1.01}],
+            [snapshot(1.01,[0,0,10,10])],lambda _t:truth,selections=[requested()])
+        self.assertEqual(tasks["task"]["physical_id"],"A")
+        self.assertEqual(rows[0]["status"],"CORRECT")
+        self.assertEqual(rows[0]["match"]["foreground_visibility_certificate"]["status"],"CERTIFIED")
+        # Selected foreground visibility is not an all-actors-visible MOT frame.
+        self.assertFalse(frames[0]["visible_geometry_eligible"])
+        self.assertEqual(len(frames[0]["gt"]),3)
+        audit=evaluation.task_time_identity(rows,[requested()],[{"target_uuid":"task","time_s":1.}],
+            [0.,1.2],lambda _t:truth)
+        self.assertEqual((audit["scheduled_samples"],audit["correct"],audit["unknown"]),(2,1,1))
+        self.assertEqual(audit["tasks"]["task"]["expected_physical_id"],"A")
+        self.assertEqual(audit["timeline"][0]["foreground_visibility_certificates"][0]["certificate"]["status"],"CERTIFIED")
+        self.assertEqual(audit["timeline"][1]["foreground_visibility_certificates"],[])
+
+    def test_projection_none_or_nonexact_source_does_not_create_front_proof(self):
+        audit={"supported":True,"closed_scene_occluders_complete":True}
+        for gt,exact in ((front_objects()[:2],True),(front_objects(),False)):
+            evidence=evaluation.front_projection_evidence("person",["A","B","C"],gt,1.,
+                camera_complete=True,source_exact=exact,asset_audit=audit)
+            truth={"gt":gt,"all_fully_in_frame":False,"overlap":True,"truth_complete":True,
+                   "front_visibility_evidence":evidence}
+            _,tasks,rows,_=evaluation.build_identity_frames([{"stamp_s":1.01}],
+                [snapshot(1.01,[0,0,10,10])],lambda _t:truth,selections=[requested()])
+            self.assertIsNone(tasks["task"]["physical_id"])
+            self.assertEqual(rows[0]["status"],"UNKNOWN_TASK_INITIAL_ID")
+
+    def test_exact_source_pose_refuses_interpolation_conflicts_and_nonfinite_data(self):
+        def row(t=1.,position=None):
+            return {"time_s":t,"position_m":[0,0,0] if position is None else position,"quaternion_xyzw":[0,0,0,1]}
+        self.assertIsNotNone(evaluation.exact_source_pose([row()],1.))
+        self.assertIsNotNone(evaluation.exact_source_pose([row(),row()],1.))
+        self.assertIsNone(evaluation.exact_source_pose([row(.99),row(1.01)],1.))
+        self.assertIsNone(evaluation.exact_source_pose([row(),row(position=[.01,0,0])],1.))
+        self.assertIsNone(evaluation.exact_source_pose([row(position=[float("nan"),0,0])],1.))
+
+    def test_front_time_audit_requires_vehicle_all_actors_and_physical_camera_links(self):
+        row={"time_s":1.,"position_m":[0,0,0],"quaternion_xyzw":[0,0,0,1]}
+        targets={name:[row] for name in ("A","B","C")}
+        links={name:[row] for name in ("base_link","tracking_camera_mount")}
+        complete=evaluation.projection_exact_time_audit(1.,[row],targets,physical_links=links)
+        self.assertTrue(complete["complete"])
+        self.assertEqual(set(complete["exact_source_samples_s"]),{"vehicle","A","B","C","base_link","tracking_camera_mount"})
+        for vehicle,actors,physical in (([],targets,links),([row],dict(targets,C=[]),links),
+                                       ([row],targets,dict(links,base_link=[])),
+                                       ([row],targets,dict(links,tracking_camera_mount=[]))):
+            audit=evaluation.projection_exact_time_audit(1.,vehicle,actors,physical_links=physical)
+            self.assertFalse(audit["complete"])
+            self.assertEqual(len(audit["missing_or_invalid_exact_entities"]),1)
+
     def test_dynamic_camera_uses_source_time_physics_and_no_double_body_offset(self):
         def rows(position,yaw):
             return [{"time_s":time,"position_m":position,"quaternion_xyzw":[0,0,np.sin(yaw/2),np.cos(yaw/2)]} for time in (1.,1.04)]
@@ -173,6 +229,90 @@ class FixedTaskTimeIdentityTests(unittest.TestCase):
             self.assertIsNone(audit["known_coverage"])
             self.assertIsNone(audit["retention_lower_bound"])
             self.assertEqual(audit["scheduled_samples"],0)
+
+
+class StaticProjectionAssetTests(unittest.TestCase):
+    def fixture(self,root):
+        models=root/"ros2_ws/src/uav_tracking_bringup/models"
+        model=models/"target_person/model.sdf";model.parent.mkdir(parents=True)
+        mesh=models/"fixture/mesh.obj";mesh.parent.mkdir();mesh.write_text("v 0 0 0\nv 0 1 0\nv 0 0 1\n")
+        body='<link name="link"><visual name="body"><geometry><mesh><uri>model://fixture/mesh.obj</uri></mesh></geometry></visual></link>'
+        model.write_text('<sdf><model name="target_person">'+body+'</model></sdf>')
+        trial=root/"trial";world=trial/"configuration/runtime_world.sdf";world.parent.mkdir(parents=True)
+        scene=('<light name="sun" type="directional"/>'
+               '<include><uri>model://x500_stage1</uri><name>stage1_uav</name><pose>0 0 .25 0 0 0</pose></include>'
+               '<model name="ground"><static>true</static><link name="link"><visual name="ground">'
+               '<geometry><plane><normal>0 0 1</normal></plane></geometry></visual></link></model>'
+               '<model name="vision_shutter"><static>true</static><pose>0 0 -50 0 0 0</pose><link name="link">'
+               '<visual name="shutter"><geometry><box><size>.05 3 3</size></box></geometry></visual></link></model>')
+        scene+=''.join(f'<model name="stage2_person_{i}">'+body+'</model>' for i in range(3))
+        world.write_text('<sdf><world name="fixture">'+scene+'</world></sdf>')
+        return trial,model,world,mesh
+
+    def test_complete_declared_rigid_scene_has_audited_sources(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp);trial,_,_,_=self.fixture(root)
+            audit=evaluation.static_projection_asset_audit(root,trial,"person")
+            self.assertTrue(audit["supported"],audit)
+            self.assertTrue(audit["closed_scene_occluders_complete"])
+            self.assertEqual(len(audit["source_sha256"]),3)
+
+    def test_nonzero_link_unknown_relative_frame_or_scene_occluder_refuses_extra_proof(self):
+        changes=(('link name="link">','link name="link"><pose>0 0 .2 0 0 0</pose>'),
+                 ('link name="link">','link name="link"><pose relative_to="other">0 0 0 0 0 0</pose>'))
+        for before,after in changes:
+            with tempfile.TemporaryDirectory() as temp:
+                root=Path(temp);trial,model,_,_=self.fixture(root)
+                model.write_text(model.read_text().replace(before,after))
+                self.assertFalse(evaluation.static_projection_asset_audit(root,trial,"person")["supported"])
+        for extra in ('<model name="unexpected_wall"/>','<actor name="animated_person"/>'):
+            with tempfile.TemporaryDirectory() as temp:
+                root=Path(temp);trial,_,world,_=self.fixture(root)
+                world.write_text(world.read_text().replace('</world>',extra+'</world>'))
+                self.assertFalse(evaluation.static_projection_asset_audit(root,trial,"person")["supported"])
+
+    def test_actor_visual_mismatch_and_animated_mesh_refuse_extra_proof(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp);trial,model,world,mesh=self.fixture(root)
+            world.write_text(world.read_text().replace('model://fixture/mesh.obj','model://other/mesh.obj',1))
+            self.assertFalse(evaluation.static_projection_asset_audit(root,trial,"person")["supported"])
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp);trial,model,world,mesh=self.fixture(root)
+            dae=mesh.with_suffix('.dae');dae.write_text('<COLLADA><library_animations/></COLLADA>')
+            for path in (model,world):path.write_text(path.read_text().replace('mesh.obj','mesh.dae'))
+            self.assertEqual(evaluation.static_projection_asset_audit(root,trial,"person")["reason"],"animated_or_shader_deformed_mesh")
+
+    def test_nested_undeclared_occluders_refuse_closed_scene_certificate(self):
+        wall=('<model name="nested_wall"><link name="wall"><visual name="wall">'
+              '<geometry><box><size>30 30 30</size></box></geometry></visual></link></model>')
+        structures=(wall,'<include><uri>model://unregistered_wall</uri></include>',
+                    '<actor name="nested_animated_person"/>')
+        for parent in ("stage2_person_0","ground","vision_shutter"):
+            for extra in structures:
+                with self.subTest(parent=parent,extra=extra),tempfile.TemporaryDirectory() as temp:
+                    root=Path(temp);trial,_,world,_=self.fixture(root)
+                    source=world.read_text();start=f'<model name="{parent}">'
+                    world.write_text(source.replace(start,start+extra,1))
+                    audit=evaluation.static_projection_asset_audit(root,trial,"person")
+                    self.assertFalse(audit["supported"],audit)
+                    self.assertFalse(audit["closed_scene_occluders_complete"],audit)
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp);trial,model,_,_=self.fixture(root)
+            model.write_text(model.read_text().replace('</model>',wall+'</model>',1))
+            self.assertFalse(evaluation.static_projection_asset_audit(root,trial,"person")["supported"])
+
+    def test_ground_light_sensor_host_and_shutter_are_explicitly_limited(self):
+        changes=(("<normal>0 0 1</normal>","<normal>0 1 0</normal>","unsupported_ground_occluder"),
+                 ('type="directional"','type="point"',"unsupported_scene_lighting"),
+                 ('model://x500_stage1','model://unregistered_drone',"unsupported_sensor_host_scene"),
+                 ('<size>.05 3 3</size>','<size>.05 5 5</size>',"unsupported_external_shutter_geometry"))
+        for old,new,reason in changes:
+            with tempfile.TemporaryDirectory() as temp:
+                root=Path(temp);trial,_,world,_=self.fixture(root)
+                world.write_text(world.read_text().replace(old,new))
+                audit=evaluation.static_projection_asset_audit(root,trial,"person")
+                self.assertFalse(audit["supported"])
+                self.assertEqual(audit["reason"],reason)
 
 
 if __name__=="__main__":unittest.main()

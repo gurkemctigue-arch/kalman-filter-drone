@@ -90,12 +90,105 @@ class ReliabilitySummaryTests(unittest.TestCase):
 
     def test_metric_sample_counts_do_not_substitute_trials_for_error_samples(self):
         reports = {"navigation": {"control_jitter": {"velocity_command_delta_over_dt_mps2": {"rmse": .2, "count": 45}},
+                                   "position_control_jitter": {"position_setpoint_delta_over_dt_mps": {"rmse": .3, "count": 12},
+                                       "position_setpoint_second_difference_mps2": {"rmse": .4, "count": 10}},
                                    "kf_navigation": {"metrics": {"kf_position_error_m": {"rmse": None, "count": 0}}}}}
         counts = summarizer.metric_sample_counts(reports)
         self.assertEqual(counts["velocity_command_jitter_rms_mps2"], 45)
         self.assertEqual(counts["kf_position_rmse_m"], 0)
+        self.assertEqual(counts["position_command_rate_rms_mps"], 12)
+        self.assertEqual(counts["position_command_second_difference_rms_mps2"], 10)
+        metrics, _ = summarizer.extract_metrics(reports)
+        self.assertEqual(metrics["position_command_rate_rms_mps"], .3)
+        self.assertEqual(metrics["position_command_second_difference_rms_mps2"], .4)
         self.assertIsNone(counts["navigation_valid_coverage"])
         self.assertIsNone(counts["image_to_first_command_sim_mean_s"])
+
+    def test_operational_short_recovery_keeps_known_denominator_and_unobserved_distinct(self):
+        windows = [{"kind": "short", "recovery_after_open_s": latency,
+                    "checks": {"identity_preserved_on_observed_recovery": identity}}
+                   for latency, identity in ((0., True), (.4, True), (.3, False), (.2, None),
+                                             (None, None), (None, True), (None, True))]
+        windows.append({"kind": "long", "recovery_after_open_s": 99.,
+                        "checks": {"identity_preserved_on_observed_recovery": True}})
+        metrics, evidence = summarizer.recovery_evidence({"surface_flight": {"occlusions": windows}})
+        short = evidence["short_requested_shutter"]
+        self.assertEqual(short["requested_windows"], 7)
+        self.assertEqual(short["observed_recovery_windows"], 4)
+        self.assertEqual(short["same_track_task_recovery_windows"], 2)
+        self.assertEqual(short["changed_track_or_task_recovery_windows"], 1)
+        self.assertEqual(short["known_identity_on_observed_recovery_windows"], 3)
+        self.assertEqual(short["unknown_identity_on_observed_recovery_windows"], 1)
+        self.assertEqual(short["unobserved_or_untimed_recovery_windows"], 3)
+        self.assertEqual(short["identity_flag_without_valid_timing_windows"], 2)
+        self.assertAlmostEqual(metrics["short_post_open_measured_recovery_observed_fraction"], 4 / 7)
+        self.assertAlmostEqual(metrics["short_same_track_task_observed_recovery_fraction"], 2 / 7)
+        self.assertAlmostEqual(metrics["short_same_track_task_recovery_fraction_given_known_recovery"], 2 / 3)
+        self.assertAlmostEqual(metrics["short_same_track_task_recovery_mean_s"], .2)
+        self.assertAlmostEqual(metrics["short_same_track_task_recovery_p95_s"], .38)
+        self.assertIn("not independent physical identity", short["definition"])
+        self.assertEqual(short["windows"][-1]["status"], "UNOBSERVED_OR_UNTIMED_NOT_FAILURE")
+        counts = summarizer.metric_sample_counts({"surface_flight": {"occlusions": windows}})
+        self.assertEqual(counts["short_same_track_task_recovery_mean_s"], 2)
+        self.assertIsNone(counts["short_same_track_task_observed_recovery_fraction"])
+
+    def test_signed_follow_error_uses_absolute_p95_and_original_sample_count(self):
+        reports = {"navigation": {"whole_interval": {"metrics": {
+            "base_link_distance_error_m": {"p95": -.1, "p95_absolute": 1.7, "count": 21},
+            "base_link_height_error_m": {"p95": -.2, "p95_absolute": 2.3, "count": 19}}}}}
+        metrics, _ = summarizer.extract_metrics(reports)
+        self.assertEqual(metrics["base_link_distance_p95_m"], 1.7)
+        self.assertEqual(metrics["base_link_height_p95_m"], 2.3)
+        counts = summarizer.metric_sample_counts(reports)
+        self.assertEqual(counts["base_link_distance_p95_m"], 21)
+        self.assertEqual(counts["base_link_height_p95_m"], 19)
+        del reports["navigation"]["whole_interval"]["metrics"]["base_link_distance_error_m"]["p95_absolute"]
+        self.assertIsNone(summarizer.extract_metrics(reports)[0]["base_link_distance_p95_m"])
+
+    def test_explicit_selection_confirmation_keeps_censoring_and_invalid_windows(self):
+        windows = [{"kind": "explicit_selection", "start_s": 1., "end_s": 2.,
+                    "first_measured_confirmation_after_request_s": latency, "confirmation_censored": flag}
+                   for latency, flag in ((0., False), (None, True), (.2, None), (.2, True), (1.5, False))]
+        metrics, evidence = summarizer.recovery_evidence({"navigation": {"windows": windows}})
+        selections = evidence["explicit_selection"]
+        self.assertEqual(selections["requested_windows"], 5)
+        self.assertEqual(selections["observed_confirmation_windows"], 1)
+        self.assertEqual(selections["confirmation_right_censored_windows"], 1)
+        self.assertEqual(selections["missing_or_inconsistent_windows"], 3)
+        self.assertEqual(selections["classified_confirmation_windows"], 2)
+        self.assertEqual(metrics["explicit_selection_observed_confirmation_fraction"], .5)
+        self.assertEqual(metrics["explicit_selection_observed_confirmation_mean_s"], 0.)
+        self.assertEqual(selections["windows"][1]["status"], "RIGHT_CENSORED_NOT_FAILURE")
+        self.assertIn("initial selection and reselection", selections["definition"])
+        counts = summarizer.metric_sample_counts({"navigation": {"windows": windows}})
+        self.assertEqual(counts["explicit_selection_observed_confirmation_mean_s"], 1)
+
+    def test_missing_empty_and_unobserved_recovery_never_imply_zero_time_or_failure(self):
+        missing_metrics, missing = summarizer.recovery_evidence({})
+        self.assertTrue(all(value is None for value in missing_metrics.values()))
+        self.assertIsNone(missing["short_requested_shutter"]["requested_windows"])
+        empty_metrics, empty = summarizer.recovery_evidence({"surface_flight": {"occlusions": []}, "navigation": {"windows": []}})
+        self.assertTrue(all(value is None for value in empty_metrics.values()))
+        self.assertEqual(empty["short_requested_shutter"]["requested_windows"], 0)
+        metrics, evidence = summarizer.recovery_evidence({"surface_flight": {"occlusions": [{"kind": "short"}]},
+            "navigation": {"windows": [{"kind": "explicit_selection", "start_s": 1., "end_s": 2.,
+                "first_measured_confirmation_after_request_s": None, "confirmation_censored": True}]}})
+        self.assertIsNone(metrics["short_same_track_task_recovery_fraction_given_known_recovery"])
+        self.assertIsNone(metrics["short_same_track_task_observed_recovery_fraction"])
+        self.assertIsNone(metrics["short_post_open_measured_recovery_observed_fraction"])
+        self.assertIsNone(metrics["short_same_track_task_recovery_mean_s"])
+        self.assertEqual(metrics["explicit_selection_observed_confirmation_fraction"], 0.)
+        self.assertIsNone(metrics["explicit_selection_observed_confirmation_mean_s"])
+        grouped = summarizer.grouped_recovery_evidence([{"recovery_evidence": value} for value in (missing, empty, evidence)])
+        self.assertEqual(grouped["short_requested_shutter"]["requested_windows"], 1)
+        self.assertEqual(grouped["short_requested_shutter"]["source_status_counts"],
+            {"MISSING_OR_MALFORMED_SOURCE": 1, "NO_APPLICABLE_WINDOWS": 1, "AVAILABLE": 1})
+        self.assertIsNone(summarizer.grouped_recovery_evidence([{"recovery_evidence": missing}])["explicit_selection"]["requested_windows"])
+        for invalid in (-1., True, float("nan")):
+            invalid_metrics, invalid_evidence = summarizer.recovery_evidence({"surface_flight": {"occlusions": [
+                {"kind": "short", "recovery_after_open_s": invalid}]}})
+            self.assertIsNone(invalid_metrics["short_post_open_measured_recovery_observed_fraction"])
+            self.assertEqual(invalid_evidence["short_requested_shutter"]["missing_or_invalid_timing_windows"], 1)
 
     def test_native_navigation_detector_and_censoring_use_new_schema(self):
         core = self.core(seeds=[4])

@@ -59,6 +59,7 @@ OFFLINE_HELPERS = {"scripts/extract_research_recording.py", "uav_tracking/resear
                    "uav_tracking/replay_comparison.py", "uav_tracking/replay_export.py",
                    "uav_tracking/navigation_reproduction.py"}
 OFFLINE_HELPERS.add("scripts/summarize_reliability_v4.py")
+OFFLINE_HELPERS.add("uav_tracking/research_failures.py")
 OFFLINE_HELPERS.update({"scripts/build_reliability_v4_figures.py", "scripts/build_reliability_v4_report.py",
                         "scripts/calibrate_estimator_replay_v4.py", "scripts/build_reliability_v4_probe_gate.py",
                         "scripts/prepare_document_node24.py"})

@@ -88,6 +88,25 @@ def transform_diagnostics(records, function):
 
 
 class NavigationEvaluationTests(unittest.TestCase):
+    def test_position_command_second_difference_and_mode_gaps(self):
+        commands = [{"time_s": t, "valid": True, "mode": mode, "position_m": [x, 0., 0.]}
+                    for t, x, mode in ((1., 0., 2), (1.1, .01, 2), (1.2, .04, 2), (1.3, 100., 0),
+                                       (1.4, .16, 2), (2., 100., 2))]
+        value = evaluation.position_setpoint_variation(commands)
+        self.assertAlmostEqual(value["position_setpoint_second_difference_mps2"]["rmse"], 2.)
+        self.assertEqual(value["position_setpoint_second_difference_mps2"]["count"], 1)
+        self.assertEqual(value["position_setpoint_delta_over_dt_mps"]["count"], 2)
+
+    def test_position_control_metrics_are_populated_from_actual_position_messages(self):
+        records, config, _ = fixture()
+        for timestamp, position in ((6.1, 0.), (6.2, .01), (6.3, .04)):
+            command = NS(header=header(timestamp), valid=True, mode=2, position_m=xyz([position, 0., 0.]),
+                         linear_mps=xyz([0., 0., 0.]), yaw_rate_radps=0.)
+            records.append(Record("/tracking/command", timestamp, command, timestamp))
+        result = evaluation.evaluate(records, config)
+        self.assertAlmostEqual(result["position_control_jitter"]["position_setpoint_second_difference_mps2"]["rmse"], 2.)
+        self.assertEqual(result["control_jitter"]["valid_velocity_commands"], 0)
+
     def test_command_jitter_and_end_to_end_navigation_latency_use_recorded_streams(self):
         records, config, _ = fixture()
         for timestamp, speed in ((6.1, 0.), (6.2, .2), (6.3, .4)):

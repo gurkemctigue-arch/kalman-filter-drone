@@ -34,10 +34,19 @@ TERMINAL = snapshot.v4.TERMINAL
 SUMMARY_METRICS = {
     "base_link_distance_rmse_m": "物理距离RMSE / m",
     "base_link_height_rmse_m": "物理高度RMSE / m",
+    "base_link_distance_p95_m": "物理距离95%绝对误差分位数 / m",
+    "base_link_height_p95_m": "物理高度95%绝对误差分位数 / m",
+    "base_link_distance_overshoot_m": "物理距离反向超调 / m",
+    "base_link_height_overshoot_m": "物理高度反向超调 / m",
+    "base_link_distance_settling_s": "已观测物理距离稳定时间 / s",
+    "base_link_height_settling_s": "已观测物理高度稳定时间 / s",
     "kf_position_rmse_m": "导航位置RMSE / m",
     "kf_velocity_rmse_mps": "导航速度RMSE / m/s",
     "kf_position_p95_m": "导航位置误差p95 / m",
+    "kf_velocity_p95_mps": "导航速度误差p95 / m/s",
     "velocity_command_jitter_rms_mps2": "速度命令变化率RMS / m/s²",
+    "position_command_rate_rms_mps": "位置设定值变化率RMS / m/s",
+    "position_command_second_difference_rms_mps2": "位置设定值二阶差分RMS / m/s²",
     "yaw_command_jitter_rms_radps2": "偏航速度命令变化率RMS / rad/s²",
     "image_center_rmse_px": "检测画面中心RMSE / px",
     "image_center_normalized_rmse": "检测画面中心归一化RMSE",
@@ -46,6 +55,14 @@ SUMMARY_METRICS = {
     "image_to_first_command_sim_p95_s": "图像至首条跟踪命令p95 / 仿真s",
     "short_requested_shutter_prediction_position_rmse_m": "短遮挡请求窗预测位置RMSE / m",
     "short_requested_shutter_valid_prediction_coverage": "短遮挡请求窗有效预测覆盖",
+    "short_post_open_measured_recovery_observed_fraction": "短请求窗测量恢复观察比例",
+    "short_same_track_task_observed_recovery_fraction": "短请求窗同track与UUID操作层恢复观察下界",
+    "short_same_track_task_recovery_fraction_given_known_recovery": "已恢复且检查已知条件下同track与UUID比例",
+    "short_same_track_task_recovery_mean_s": "同track与UUID已观测操作层恢复均时 / s",
+    "short_same_track_task_recovery_p95_s": "同track与UUID已观测操作层恢复p95 / s",
+    "explicit_selection_observed_confirmation_fraction": "显式选框截至窗口末已观察确认比例",
+    "explicit_selection_observed_confirmation_mean_s": "显式选框已确认时间均值 / s",
+    "explicit_selection_observed_confirmation_p95_s": "显式选框已确认时间p95 / s",
     "navigation_valid_coverage": "导航有效覆盖",
     "physical_follow_truth_coverage": "独立物理真值覆盖",
     "detector_processed_sim_fps": "检测处理帧率 / 仿真FPS",
@@ -54,6 +71,8 @@ SUMMARY_METRICS = {
     "gimbal_true_horizon_rmse_rad": "真实地平线RMSE / rad",
     "physical_task_time_known_coverage": "完整任务身份已知覆盖",
     "physical_task_time_retention_lower_bound": "完整任务身份保持下界",
+    "physical_task_time_wrong_samples": "完整任务独立物理身份错误样本数",
+    "physical_task_time_unknown_samples": "完整任务独立物理身份unknown样本数",
     "task_mean_unoccluded_geometry_mot_hota": "无遮挡几何子集HOTA",
     "task_mean_unoccluded_geometry_mot_idf1": "无遮挡几何子集IDF1",
 }
@@ -441,6 +460,8 @@ def report_blocks(summary, replay, outcomes, *, final=False, detection=None):
         rows = []
         for group in summary["groups"]:
             kind = snapshot.METRICS.get(metric, ("physical_identity" if metric.startswith("task_mean_") else "navigation", ""))[0]
+            if metric in snapshot.RECOVERY_METRICS and metric.startswith("short_"):
+                kind = "surface_flight"
             applicable = group.get("evaluator_status_counts", {}).get(kind, {})
             if applicable == {"NOT_APPLICABLE": group["planned_slots"]}:
                 continue
@@ -451,7 +472,33 @@ def report_blocks(summary, replay, outcomes, *, final=False, detection=None):
                          f"{value['n']}/{value['n_slots']}", value["mean"], value["sample_sd"], value["median"]])
         blocks.append(table(["队列", "类别/组/工况", "有效/计划", "均值", "样本SD", "中位数"], rows) if rows else
                       paragraph("此输入没有适用组；不作为缺失或零误差。"))
-    blocks += [heading("稳定时间与删失"), table(["队列/类别/组/工况", "方向", "状态及槽数"],
+    blocks += [heading("操作层恢复、显式选框与分母"), paragraph(
+        "同track_id与target_uuid恢复只表示操作层连续，不能称独立物理身份重捕获或ReID；独立物理身份保持下界、错误与unknown另列。短请求窗测量恢复观察比例以全部已记录短窗为分母；同track与UUID观察下界也以全部短窗为分母。条件恢复比例仅用已观察恢复且身份检查为布尔值的窗口。未观察、时间缺失或身份未知均单列，不能当作已完整观察的失败。surface原报告没有完整恢复观察期限与连续覆盖证明，不能由空恢复时间推断失败。"),
+        paragraph("以下为窗口池化原始计数；上面的均值/SD按整次飞行计算，不是池化窗口率。source缺失保留缺失，实际保存空窗口列表才计0窗。显式选框包含初始选择和重新选择；已观察确认比例分母为已确认加原报告显式右删失，缺失/不一致单列。右删失不是失败，已确认时间仅条件于实际确认，不能称长丢失自动重捕获时间。"),
+        table(["队列/类别/组/工况", "短窗", "测量恢复", "同track/UUID", "已变更", "身份未知", "未观察/无时间", "检查已知分母"],
+            [["/".join(str(group[key]) for key in ("cohort", "target_class", "group", "condition")),
+              *[group["recovery_evidence"]["short_requested_shutter"][name] for name in (
+                  "requested_windows", "observed_recovery_windows", "same_track_task_recovery_windows",
+                  "changed_track_or_task_recovery_windows", "unknown_identity_on_observed_recovery_windows",
+                  "unobserved_or_untimed_recovery_windows", "known_identity_on_observed_recovery_windows")]]
+             for group in summary["groups"]]),
+        table(["队列/类别/组/工况", "显式选框窗", "已确认", "右删失", "缺失/不一致", "已知分母"],
+            [["/".join(str(group[key]) for key in ("cohort", "target_class", "group", "condition")),
+              *[group["recovery_evidence"]["explicit_selection"][name] for name in (
+                  "requested_windows", "observed_confirmation_windows", "confirmation_right_censored_windows",
+                  "missing_or_inconsistent_windows", "classified_confirmation_windows")]]
+             for group in summary["groups"]]),
+        table(["队列/类别/组/工况", "短窗时间字段缺失/非法", "无有效恢复时间却有身份标志"],
+            [["/".join(str(group[key]) for key in ("cohort", "target_class", "group", "condition")),
+              group["recovery_evidence"]["short_requested_shutter"]["missing_or_invalid_timing_windows"],
+              group["recovery_evidence"]["short_requested_shutter"]["identity_flag_without_valid_timing_windows"]]
+             for group in summary["groups"]]),
+        table(["队列/类别/组/工况", "窗口类型", "来源状态及飞行数"],
+            [["/".join(str(group[key]) for key in ("cohort", "target_class", "group", "condition")), kind,
+              "; ".join(f"{state}: {count}" for state, count in sorted(value["source_status_counts"].items()))]
+             for group in summary["groups"] for kind, value in group["recovery_evidence"].items()]),
+        paragraph("位置设定值变化率和二阶差分只取间隔不超过0.2 s且连续valid mode=2的命令；含有意跟随与重新选框瞬态。它们不是机体实测速度/加速度，也不是纯噪声。速度与位置控制命令分别统计。"),
+        heading("稳定时间与删失"), table(["队列/类别/组/工况", "方向", "状态及槽数"],
         [["/".join(str(group[key]) for key in ("cohort", "target_class", "group", "condition")), dimension,
           "; ".join(f"{state}: {count}" for state, count in sorted(group["settling"][dimension].items()))]
          for group in summary["groups"] for dimension in ("distance", "height")]),

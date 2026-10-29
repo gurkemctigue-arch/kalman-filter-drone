@@ -38,6 +38,12 @@ COLORS = {"PASS":"#007a5e", "FAIL":"#c43835", "INTERRUPTED":"#765aab", "INFRASTR
 METRIC_FAMILIES = {
     "navigation_errors": [("base_link_distance_rmse_m","Distance RMSE (m)"),("base_link_height_rmse_m","Height RMSE (m)"),
                           ("kf_position_rmse_m","Online KF position RMSE (m)"),("kf_velocity_rmse_mps","Online KF velocity RMSE (m/s)")],
+    "navigation_p95": [("base_link_distance_p95_m","Distance absolute-error 95th percentile (m)"),
+                       ("base_link_height_p95_m","Height absolute-error 95th percentile (m)"),
+                       ("kf_position_p95_m","Online KF position-error norm 95th percentile (m)"),
+                       ("kf_velocity_p95_mps","Online KF velocity-error norm 95th percentile (m/s)")],
+    "overshoot": [("base_link_distance_overshoot_m","Distance opposite-side overshoot (m)"),
+                  ("base_link_height_overshoot_m","Height opposite-side overshoot (m)")],
     "coverage": [("navigation_valid_coverage","Valid navigation / scheduled samples"),("physical_follow_truth_coverage","Physical truth / scheduled samples"),
                  ("navigation_position_truth_coverage","Position truth coverage"),("navigation_velocity_truth_coverage","Velocity truth coverage")],
     "settling_observed": [("base_link_distance_settling_s","Observed distance settling (s)"),("base_link_height_settling_s","Observed height settling (s)")],
@@ -57,12 +63,60 @@ METRIC_FAMILIES = {
                     ("image_to_first_command_sim_p95_s","Image-to-first-command p95 (simulation s)")],
     "control_jitter": [("velocity_command_jitter_rms_mps2","Velocity-command derivative RMS (m/s^2)"),
                        ("yaw_command_jitter_rms_radps2","Yaw-command derivative RMS (rad/s^2)")],
+    "position_command_variation": [("position_command_rate_rms_mps","Position-command first-difference RMS (m/s)"),
+                                   ("position_command_second_difference_rms_mps2","Position-command second-difference RMS (m/s^2)")],
     "image_center": [("image_center_rmse_px","Observed image-center RMSE (px)"),
                      ("image_center_normalized_rmse","Observed image-center RMSE (normalized)"),
                      ("image_center_observed_coverage","Image-center observed coverage")],
     "shutter_prediction": [("short_requested_shutter_prediction_position_rmse_m","Prediction position RMSE in short requested-shutter windows (m)"),
                            ("short_requested_shutter_valid_prediction_coverage","Valid prediction / requested-window samples")],
+    "operational_recovery_fractions": [
+        ("short_post_open_measured_recovery_observed_fraction","Observed measured recovery / all short requested windows"),
+        ("short_same_track_task_observed_recovery_fraction","Same track + task recovery / all short windows (lower bound)"),
+        ("short_same_track_task_recovery_fraction_given_known_recovery","Same track + task / observed recoveries with known identity check")],
+    "operational_recovery_time": [("short_same_track_task_recovery_mean_s","Observed same-track/task recovery mean (simulation s)"),
+                                  ("short_same_track_task_recovery_p95_s","Observed same-track/task recovery 95th percentile (simulation s)")],
+    "explicit_selection_confirmation": [
+        ("explicit_selection_observed_confirmation_fraction","Observed confirmation / confirmed + explicitly right-censored selections"),
+        ("explicit_selection_observed_confirmation_mean_s","Observed explicit-selection confirmation mean (simulation s)"),
+        ("explicit_selection_observed_confirmation_p95_s","Observed explicit-selection confirmation 95th percentile (simulation s)")],
 }
+FAMILY_NOTES = {
+    "navigation_p95":"Distance/height use the absolute-error percentile; KF errors are vector norms. Percentiles are per trial, not pooled frame quantiles.",
+    "overshoot":"Moving-task opposite-side error relative to the first scheduled reference sample; this is not percentage step-response overshoot.",
+    "control_jitter":"Adjacent valid velocity-mode command differences include intentional following/reselection transients; these are not measured vehicle accelerations or isolated noise.",
+    "position_command_variation":"Valid position-mode command differences include intentional following/reselection transients. Units describe setpoint changes, not measured vehicle motion or isolated noise.",
+    "shutter_prediction":"Windows follow shutter requests; they do not independently establish pixel-level occlusion.",
+    "operational_recovery_fractions":"Operational track_id + target_uuid continuity only, not independent physical identity or ReID. All-window observed fractions are descriptive lower bounds; the known-identity fraction has a different conditional denominator. Untimed/unobserved windows are not classified as failures.",
+    "operational_recovery_time":"Timing conditions on observed same-track/task recovery windows; missing or unobserved recovery is not zero and is not a fully observed failure. This does not establish physical reacquisition or ReID.",
+    "explicit_selection_confirmation":"Includes initial selection and reselection. The fraction excludes missing/inconsistent windows and retains explicit right censoring; censoring is not failure. Timing conditions on observed confirmations, not long-loss physical reacquisition or ReID.",
+}
+RECOVERY_COUNTS = {
+    "short_requested_shutter": ("requested_windows","observed_recovery_windows","same_track_task_recovery_windows",
+        "changed_track_or_task_recovery_windows","unknown_identity_on_observed_recovery_windows",
+        "unobserved_or_untimed_recovery_windows","identity_flag_without_valid_timing_windows","known_identity_on_observed_recovery_windows",
+        "missing_or_invalid_timing_windows"),
+    "explicit_selection": ("requested_windows","observed_confirmation_windows","confirmation_right_censored_windows",
+        "missing_or_inconsistent_windows","classified_confirmation_windows"),
+}
+RECOVERY_OUTCOMES = {
+    "short_requested_shutter": ("same_track_task_recovery_windows","changed_track_or_task_recovery_windows",
+        "unknown_identity_on_observed_recovery_windows","unobserved_or_untimed_recovery_windows"),
+    "explicit_selection": ("observed_confirmation_windows","confirmation_right_censored_windows","missing_or_inconsistent_windows"),
+}
+RECOVERY_RATE_COUNTS = {
+    "short_post_open_measured_recovery_observed_fraction": ("short_requested_shutter","observed_recovery_windows","requested_windows"),
+    "short_same_track_task_observed_recovery_fraction": ("short_requested_shutter","same_track_task_recovery_windows","requested_windows"),
+    "short_same_track_task_recovery_fraction_given_known_recovery": ("short_requested_shutter","same_track_task_recovery_windows","known_identity_on_observed_recovery_windows"),
+    "explicit_selection_observed_confirmation_fraction": ("explicit_selection","observed_confirmation_windows","classified_confirmation_windows"),
+}
+RECOVERY_TIME_COUNTS = {**{name:("short_requested_shutter","same_track_task_recovery_windows") for name,_ in METRIC_FAMILIES["operational_recovery_time"]},
+    **{name:("explicit_selection","observed_confirmation_windows") for name,_ in METRIC_FAMILIES["explicit_selection_confirmation"] if name.endswith("_s")}}
+RECOVERY_SOURCE_STATUSES = ("AVAILABLE","NO_APPLICABLE_WINDOWS","MISSING_OR_MALFORMED_SOURCE","NOT_IN_INPUT_SUMMARY")
+COLORS.update({"AVAILABLE":"#267d68","NO_APPLICABLE_WINDOWS":"#d3dee5","MISSING_OR_MALFORMED_SOURCE":"#a5aeb6","NOT_IN_INPUT_SUMMARY":"#d6c2ab",
+    "same_track_task_recovery_windows":"#267d68","changed_track_or_task_recovery_windows":"#bf6549",
+    "unknown_identity_on_observed_recovery_windows":"#b99341","unobserved_or_untimed_recovery_windows":"#8e9ba6",
+    "observed_confirmation_windows":"#267d68","confirmation_right_censored_windows":"#b99341","missing_or_inconsistent_windows":"#8e9ba6"})
 SOURCE_FILES = ("scripts/build_reliability_v4_figures.py", "scripts/summarize_reliability_v4.py",
                 "scripts/run_reliability_v4.py", "scripts/run_estimator_replay_v4.py", "uav_tracking/replay_comparison.py")
 
@@ -105,6 +159,52 @@ def comparison_label(category,name):
     return category+" / "+names.get(name,name)
 
 
+def validate_recovery(row):
+    evidence = row.get("recovery_evidence",{})
+    require(isinstance(evidence,dict),"Operational recovery evidence must be a mapping")
+    for kind,names in RECOVERY_COUNTS.items():
+        entry = evidence.get(kind)
+        if entry is None:
+            relevant = [name for name,data in {**RECOVERY_RATE_COUNTS,**RECOVERY_TIME_COUNTS}.items() if data[0] == kind]
+            require(all(row["metrics"].get(name) is None for name in relevant),"Recovery metric lacks its separate window evidence")
+            continue
+        require(isinstance(entry,dict) and entry.get("source_status") in RECOVERY_SOURCE_STATUSES[:-1],"Unknown recovery source status")
+        windows = entry.get("windows")
+        require(isinstance(windows,list) and all(isinstance(window,dict) for window in windows),"Missing recovery window rows")
+        if entry["source_status"] == "MISSING_OR_MALFORMED_SOURCE":
+            require(all(entry.get(name) is None for name in names) and not windows,"Missing recovery evidence cannot supply zero window counts")
+        else:
+            for name in names:count(entry.get(name))
+            total = entry["requested_windows"]
+            require(len(windows) == total,"Recovery window rows differ from requested denominator")
+            require((entry["source_status"] == "NO_APPLICABLE_WINDOWS") == (total == 0),"Empty recovery window status differs")
+            require(sum(entry[name] for name in RECOVERY_OUTCOMES[kind]) == total,"Recovery outcome counts do not partition all requested windows")
+            if kind == "short_requested_shutter":
+                require(entry["observed_recovery_windows"] == total-entry["unobserved_or_untimed_recovery_windows"]
+                        and entry["known_identity_on_observed_recovery_windows"] == entry["same_track_task_recovery_windows"]+entry["changed_track_or_task_recovery_windows"]
+                        and entry["identity_flag_without_valid_timing_windows"] <= entry["unobserved_or_untimed_recovery_windows"]
+                        and entry["missing_or_invalid_timing_windows"] <= entry["unobserved_or_untimed_recovery_windows"],
+                        "Short recovery observed/known denominators differ")
+            else:
+                require(entry["classified_confirmation_windows"] == entry["observed_confirmation_windows"]+entry["confirmation_right_censored_windows"],
+                        "Explicit selection confirmation denominator differs")
+        for metric,(source,numerator,denominator) in RECOVERY_RATE_COUNTS.items():
+            if source != kind or metric not in row["metrics"]:continue
+            n,d = entry.get(numerator),entry.get(denominator)
+            if kind == "short_requested_shutter" and denominator == "requested_windows" and entry.get("missing_or_invalid_timing_windows"):
+                d = None
+            expected = n/d if n is not None and d else None
+            value = row["metrics"][metric]
+            require(value is None if expected is None else finite(value) and math.isclose(value,expected,rel_tol=1e-9,abs_tol=1e-9),
+                    "Operational recovery fraction differs from its window denominator")
+        for metric,(source,name) in RECOVERY_TIME_COUNTS.items():
+            if source != kind or metric not in row["metrics"]:continue
+            value,n = row["metrics"][metric],entry.get(name)
+            require(value is None if not n else finite(value) and value >= 0,"Conditional recovery time needs observed successful windows; censored/missing time is not zero")
+            if metric in row.get("metric_sample_counts",{}):
+                require(row["metric_sample_counts"][metric] == n,"Recovery timing sample count must count observed windows, not trials")
+
+
 def validate_summary(report):
     require(type(report.get("schema_version")) is int and report["schema_version"] == 1,"Unsupported engineering summary schema")
     cohorts, rows = report.get("cohorts"), report.get("trials")
@@ -127,13 +227,14 @@ def validate_summary(report):
         require(isinstance(row.get("metrics"),dict) and isinstance(row.get("settling"),dict),"Missing metrics/censoring")
         for metric,value in row["metrics"].items():
             require(isinstance(metric,str) and (value is None or finite(value) and value >= 0),"Invalid/negative trial metric")
-            if value is not None and ("coverage" in metric or metric.endswith(("_idf1","_hota","retention_lower_bound"))):
+            if value is not None and ("coverage" in metric or "_fraction" in metric or metric.endswith(("_idf1","_hota","retention_lower_bound"))):
                 require(value <= 1.,"Coverage/identity proportion exceeds one")
         sample_counts = row.get("metric_sample_counts",{})
         require(isinstance(sample_counts,dict),"Metric error-sample counts must be a separate mapping")
         for metric,value in sample_counts.items():
             require(metric in row["metrics"],"Error-sample count is assigned to an unknown metric")
             if value is not None:count(value)
+        validate_recovery(row)
         for dimension in ("distance","height"):
             state = row["settling"].get(dimension)
             require(state in SETTLING,"Missing explicit settling censoring state")
@@ -255,12 +356,44 @@ def scope(report, fixture_only=False):
 
 
 def metric_rows(trials,metrics):
-    return [{"cohort":row["cohort"],"slot_id":row["slot_id"],"target_class":row["target_class"],"group":row["group"],
-             "condition":row["condition"],"seed":row["seed"],"status":row["status"],"label":label(row),"metric":metric,
-             "value":row["metrics"].get(metric),"source_error_samples":row.get("metric_sample_counts",{}).get(metric),
-             "sample_count_basis":"source summary metric_sample_counts; empty means unavailable",
-             "distance_settling":row["settling"]["distance"],"height_settling":row["settling"]["height"]}
-            for row in trials for metric in metrics]
+    result = []
+    for row in trials:
+        for metric in metrics:
+            samples = row.get("metric_sample_counts",{}).get(metric)
+            item = {"cohort":row["cohort"],"slot_id":row["slot_id"],"target_class":row["target_class"],"group":row["group"],
+                    "condition":row["condition"],"seed":row["seed"],"status":row["status"],"label":label(row),"metric":metric,
+                    "value":row["metrics"].get(metric),"source_error_samples":samples,"source_window_samples":None,
+                    "sample_count_basis":"source summary metric_sample_counts; empty means unavailable",
+                    "operational_fraction_numerator":None,"operational_fraction_denominator":None,"operational_evidence_status":None,
+                    "distance_settling":row["settling"]["distance"],"height_settling":row["settling"]["height"]}
+            if metric in RECOVERY_TIME_COUNTS:
+                kind,_ = RECOVERY_TIME_COUNTS[metric]
+                item.update(source_error_samples=None,source_window_samples=samples,
+                    sample_count_basis="observed successful operational windows, not independent trials or physical ReID",
+                    operational_evidence_status=row.get("recovery_evidence",{}).get(kind,{}).get("source_status","NOT_IN_INPUT_SUMMARY"))
+            elif metric in RECOVERY_RATE_COUNTS:
+                kind,numerator,denominator = RECOVERY_RATE_COUNTS[metric]
+                entry = row.get("recovery_evidence",{}).get(kind,{})
+                item.update(source_error_samples=None,sample_count_basis="explicit window numerator/denominator; not trial n",
+                    operational_fraction_numerator=entry.get(numerator),operational_fraction_denominator=entry.get(denominator),
+                    operational_evidence_status=entry.get("source_status","NOT_IN_INPUT_SUMMARY"))
+                if kind == "short_requested_shutter":item["missing_or_invalid_timing_windows"] = entry.get("missing_or_invalid_timing_windows")
+            result.append(item)
+    return result
+
+
+def recovery_rows(trials):
+    evidence,windows = [],[]
+    for row in trials:
+        base = {key:row[key] for key in ("cohort","slot_id","target_class","group","condition","seed","status")}
+        for kind,names in RECOVERY_COUNTS.items():
+            entry = row.get("recovery_evidence",{}).get(kind,{})
+            evidence.append({**base,"kind":kind,"source_status":entry.get("source_status","NOT_IN_INPUT_SUMMARY"),
+                "definition":entry.get("definition"),**{name:entry.get(name) for name in names}})
+            windows.extend({**base,"kind":kind,"window_index":index,"window_status":window.get("status"),
+                            **{key:value for key,value in window.items() if key != "status"}}
+                           for index,window in enumerate(entry.get("windows",[])))
+    return evidence,windows
 
 
 def make_specs(report, *, replay=None, fixture_only=False):
@@ -285,6 +418,37 @@ def make_specs(report, *, replay=None, fixture_only=False):
         censoring = [{"label":name+" / "+dimension,"category":state,"count":sum(row["settling"][dimension] == state for row in rows),
                       "planned_trials":len(rows)} for name,rows in sorted(groups.items()) for dimension in ("distance","height") for state in SETTLING]
         add(cohort+"_settling_censoring","counts",cohort+": settling and right censoring",censoring,categories=list(SETTLING))
+        source_counts = []
+        for kind,outcomes in RECOVERY_OUTCOMES.items():
+            counts = []
+            for name,rows in sorted(groups.items()):
+                entries = [row.get("recovery_evidence",{}).get(kind,{}) for row in rows]
+                statuses = Counter(entry.get("source_status","NOT_IN_INPUT_SUMMARY") for entry in entries)
+                source_counts.extend({"label":name+" / "+kind,"category":state,"count":statuses[state],"planned_trials":len(rows)}
+                                     for state in RECOVERY_SOURCE_STATUSES)
+                known = [entry for entry in entries if entry.get("source_status") in {"AVAILABLE","NO_APPLICABLE_WINDOWS"}]
+                requested = sum(entry["requested_windows"] for entry in known)
+                if not requested:continue
+                counts.extend({"label":name,"category":category,"count":sum(entry[category] for entry in known),
+                    "planned_trials":len(rows),"trials_with_recorded_source":len(known),"trials_with_missing_source":len(rows)-len(known),
+                    "requested_windows":requested,
+                    "missing_or_invalid_timing_windows":sum(entry.get("missing_or_invalid_timing_windows",0) for entry in known) if kind == "short_requested_shutter" else None}
+                    for category in outcomes)
+            identifier = cohort+"_"+kind+"_outcomes"
+            if counts:
+                add(identifier,"counts",cohort+": "+kind.replace("_"," ")+" window outcomes",counts,categories=list(outcomes),
+                    count_label="Recorded requested windows (pooled within group; not independent trials)",legend_columns=2,
+                    category_labels={"same_track_task_recovery_windows":"Observed same track + task","changed_track_or_task_recovery_windows":"Observed changed track/task",
+                        "unknown_identity_on_observed_recovery_windows":"Observed, identity check unknown","unobserved_or_untimed_recovery_windows":"Unobserved / untimed (not failure)",
+                        "observed_confirmation_windows":"Observed confirmation","confirmation_right_censored_windows":"Right-censored (not failure)",
+                        "missing_or_inconsistent_windows":"Missing / inconsistent"},
+                    caption="Recorded window counts pool only available sources; missing-source trials are shown separately. Unknown, missing, unobserved and right-censored outcomes are retained and are not failures. Short-window invalid/missing timing is a separately retained CSV subset. Same track/task and explicit confirmation do not establish physical reacquisition or ReID.")
+            else:pending.append({"figure_id":identifier,"reason":"NO_RECORDED_APPLICABLE_REQUEST_WINDOWS"})
+        add(cohort+"_recovery_source_status","counts",cohort+": operational recovery source availability",source_counts,
+            categories=list(RECOVERY_SOURCE_STATUSES),legend_columns=2,
+            category_labels={"AVAILABLE":"Recorded applicable windows","NO_APPLICABLE_WINDOWS":"Recorded, no applicable windows",
+                "MISSING_OR_MALFORMED_SOURCE":"Missing / malformed source","NOT_IN_INPUT_SUMMARY":"Evidence absent from summary"},
+            caption="All planned trials appear separately for each operational event family. Missing source is not zero windows or observed failure; each bar counts trials, not pooled windows.")
         for family,definitions in METRIC_FAMILIES.items():
             selected = trials
             if family.startswith("identity") or family == "gimbal":
@@ -297,12 +461,10 @@ def make_specs(report, *, replay=None, fixture_only=False):
                 continue
             add(identifier,"metrics",cohort+": "+family.replace("_"," "),rows,
                 metrics=available_panels(identifier,definitions,rows,"value"))
-            if family == "shutter_prediction":
-                specs[-1]["caption"] += " Windows follow shutter requests; they do not independently establish pixel-level occlusion."
+            if family in FAMILY_NOTES:specs[-1]["caption"] += " "+FAMILY_NOTES[family]
     for cohort in report["cohorts"]:
         selected = [comparison for comparison in report["paired_comparisons"] if comparison["comparison"].startswith("extension_") == (cohort == "extension")]
-        for family in ("navigation_errors","coverage","gimbal","identity","identity_counts","performance","settling_observed","control_jitter","image_center","shutter_prediction"):
-            definitions = METRIC_FAMILIES[family]
+        for family,definitions in METRIC_FAMILIES.items():
             estimates,raw = [],[]
             for comparison in selected:
                 for metric,_ in definitions:
@@ -321,7 +483,7 @@ def make_specs(report, *, replay=None, fixture_only=False):
                 pending.append({"figure_id":identifier,"reason":"NO_FINITE_PAIRED_SOURCE_METRIC"});continue
             add(identifier,"paired",cohort+": left-minus-right paired "+family.replace("_"," "),estimates,
                 metrics=available_panels(identifier,definitions,estimates,"mean"),raw_rows=raw,
-                caption="Paired trial/seed differences; all finite pairs and both-original-PASS subset shown separately. n/10 is the formal design, actual supplied-plan pair count is separate. Conditional CI is copied from the source summary; missing/degenerate CI stays absent.")
+                caption="Paired trial/seed differences; all finite pairs and both-original-PASS subset shown separately. n/10 is the formal design, actual supplied-plan pair count is separate. Conditional CI is copied from the source summary; missing/degenerate CI stays absent. "+FAMILY_NOTES.get(family,""))
     if replay is not None:
         replay_summary,reports = replay
         rows = []
@@ -378,12 +540,12 @@ def render(spec, output):
             axis = axes[0,0];left = [0]*len(labels)
             for category in spec["categories"]:
                 values = [sum(row["count"] for row in spec["rows"] if row["label"] == name and row["category"] == category) for name in labels]
-                bars = axis.barh(range(len(labels)),values,left=left,label=category,color=COLORS[category],edgecolor="white",linewidth=.35)
+                bars = axis.barh(range(len(labels)),values,left=left,label=spec.get("category_labels",{}).get(category,category),color=COLORS[category],edgecolor="white",linewidth=.35)
                 for bar,value,offset in zip(bars,values,left):
                     if value:axis.text(offset+value/2,bar.get_y()+bar.get_height()/2,str(value),ha="center",va="center",fontsize=7,
-                                       color="white" if category in {"PASS","FAIL","INTERRUPTED","RUNNING"} else "#172938")
+                                       color="white" if category in {"PASS","FAIL","INTERRUPTED","RUNNING","AVAILABLE","same_track_task_recovery_windows","observed_confirmation_windows"} else "#172938")
                 left = [a+b for a,b in zip(left,values)]
-            axis.set_yticks(range(len(labels)),labels);axis.invert_yaxis();axis.set_xlabel("All planned trials (count)")
+            axis.set_yticks(range(len(labels)),labels);axis.invert_yaxis();axis.set_xlabel(spec.get("count_label","All planned trials (count)"))
             legend_handles = axis.get_legend_handles_labels()[0]
         else:
             for axis,(metric,title) in zip(axes.flat,metrics):
@@ -410,19 +572,27 @@ def render(spec, output):
                                 axis.plot([row["ci_low"],row["ci_high"]],[y,y],color=color,linewidth=1.4)
                             axis.scatter(row["mean"],y,color=color,s=22,marker="o" if row["subset"] != "both_pass_pairs" else "s")
                         ticks.append(name+"\n"+" | ".join(notes));axis.axvline(0,color="#74828c",linewidth=.6)
-                axis.set_yticks(range(len(current_labels)),ticks,fontsize=7);axis.invert_yaxis();axis.set_xlabel(title)
+                axis.set_yticks(range(len(current_labels)),ticks,fontsize=7)
+                # Preserve half a row around endpoint markers, including the
+                # deterministic trial jitter and paired-subset offsets.
+                axis.set_ylim(len(current_labels)-.5,-.5)
+                axis.set_xlabel(title)
                 axis.set_title(title)
             for axis in list(axes.flat)[panels:]:axis.set_visible(False)
             if spec["kind"] == "metrics":
                 states = [state for state in STATUSES if any(row.get("status") == state for row in spec["rows"])]
                 legend_handles = [Line2D([],[],color=COLORS[state],marker="o" if state == "PASS" else "x",linestyle="",label=state) for state in states]
-        fig.suptitle(spec["title"]+"\n"+spec["scope"],fontsize=11)
+        heading=fig.suptitle(spec["title"]+"\n"+spec["scope"],fontsize=11)
+        # The explicit top rectangle already reserves title/legend space.
+        # Letting tight_layout also reserve the suptitle doubles that gap.
+        heading.set_in_layout(False)
         height = fig.get_figheight()
         if legend_handles:
             fig.legend(handles=legend_handles,loc="upper center",bbox_to_anchor=(.5,1.-.48/height),
-                       ncol=min(4,len(legend_handles)),fontsize=7,frameon=False)
-        fig.text(.01,.008,"Trial n and error-sample n are separate; missing/censored values are never zero. CSV retains raw verdicts and values.",fontsize=7)
-        fig.tight_layout(rect=(0,.20/height,1,1.-(1.02 if legend_handles else .60)/height))
+                       ncol=min(spec.get("legend_columns",4),len(legend_handles)),fontsize=7,frameon=False)
+        fig.text(.01,.008,"Trial n, error samples and event-window counts are separate; missing/censored values are never zero. CSV retains raw evidence.",fontsize=7)
+        fig.tight_layout(rect=(0,.20/height,1,1.-(.80 if legend_handles else .44)/height))
+        heading.set_in_layout(True)
         paths = []
         for extension in ("png","pdf","svg"):
             path = Path(output)/(spec["figure_id"]+"."+extension)
@@ -441,6 +611,12 @@ def build(summary_path, output, *, replay_summary_path=None, only=None, fixture_
     implementation_hashes = {name:sha(ROOT/name) for name in SOURCE_FILES}
     summary_hash = sha(summary_path)
     report = validate_summary(load(summary_path))
+    if (scope(report,fixture_only) != "FIXTURE_ONLY"
+            and any(row["metrics"].get(name) is not None for row in report["trials"]
+                    for name in ("base_link_distance_p95_m","base_link_height_p95_m"))):
+        require(report.get("implementation_sources",{}).get("scripts/summarize_reliability_v4.py")
+                == implementation_hashes["scripts/summarize_reliability_v4.py"],
+                "Absolute-error p95 figures require a summary rebuilt with the current source-bound summary implementation; older signed-p95 summaries cannot be relabeled")
     sources = [{"path":str(summary_path),"sha256":summary_hash,"source_role":"engineering_summary"}]
     replay,pending_replay = None,[]
     replay_hash = None
@@ -466,6 +642,10 @@ def build(summary_path, output, *, replay_summary_path=None, only=None, fixture_
     metrics = sorted({name for row in rows for name in row["metrics"]})
     metric_csv = output/"all_trial_metrics.csv";write_csv(metric_csv,metric_rows(rows,metrics))
     csv_artifacts.append(artifact(metric_csv,output,source_role="engineering_summary",figure_id="all_trial_metrics"))
+    recovery,windows = recovery_rows(rows)
+    for identifier,items in (("all_operational_recovery_evidence",recovery),("all_operational_recovery_windows",windows)):
+        path = output/(identifier+".csv");write_csv(path,items)
+        csv_artifacts.append(artifact(path,output,source_role="engineering_summary",figure_id=identifier))
     pair_csv = output/"all_paired_trial_differences.csv"
     write_csv(pair_csv,[{"comparison":comparison["comparison"],"target_class":comparison["target_class"],"metric":metric,**pair}
                         for comparison in report["paired_comparisons"] for metric,item in comparison["metrics"].items() for pair in item["pairs"]])

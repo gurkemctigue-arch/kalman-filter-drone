@@ -222,6 +222,30 @@ def short_shutter_prediction(samples, windows):
             "definition": "Fixed 10 Hz samples inside complete requested shutter intervals no longer than 0.75 s; only actual fresh PREDICTED navigation states contribute errors, using independently mapped truth at receipt-grid time. Request intervals alone do not prove rendered occlusion. No timer prediction outside those intervals is counted; missing states/truth retain coverage counts."}
 
 
+def position_setpoint_variation(commands):
+    """Differentiate actual position commands; never substitute vehicle GT."""
+    velocities = []
+    derivatives = []
+    for previous, current in zip(commands, commands[1:]):
+        dt = current["time_s"] - previous["time_s"]
+        if not (0 < dt <= .2 and previous["valid"] and current["valid"]
+                and previous["mode"] == current["mode"] == 2):
+            derivatives.append(None)
+            continue
+        velocity = (np.asarray(current["position_m"]) - np.asarray(previous["position_m"])) / dt
+        velocities.append(float(np.linalg.norm(velocity)))
+        derivatives.append((velocity, dt))
+    accelerations = []
+    for previous, current in zip(derivatives, derivatives[1:]):
+        if previous is not None and current is not None:
+            accelerations.append(float(np.linalg.norm(current[0] - previous[0]) / ((current[1] + previous[1]) * .5)))
+    return {"position_setpoint_delta_over_dt_mps": summary(velocities),
+            "position_setpoint_second_difference_mps2": summary(accelerations),
+            "all_commands": len(commands),
+            "valid_position_commands": sum(row["valid"] and row["mode"] == 2 for row in commands),
+            "definition": "First and second time differences of consecutive valid MODE_POSITION commands with adjacent gaps at most 0.2 s. Second differences use the interval-midpoint separation for unequal steps. Includes intended tracking/reselection transients; this is setpoint variation, not measured aircraft velocity/acceleration or isolated sensor noise. HOLD, velocity and failsafe modes break differentiation; missing commands are not interpolated."}
+
+
 def evaluate(records, config, *, physical=None, events=None):
     """Score independent ground centers; silent streams and hover tails persist.
 
@@ -272,8 +296,11 @@ def evaluate(records, config, *, physical=None, events=None):
             try:
                 command = {"time_s": stamp_s(message.header.stamp), "valid": bool(message.valid), "mode": int(message.mode),
                            "linear_mps": vector(message.linear_mps), "yaw_rate_radps": float(message.yaw_rate_radps)}
+                command["position_m"] = vector(message.position_m) if command["mode"] == 2 else None
                 if not np.isfinite([command["time_s"], *command["linear_mps"], command["yaw_rate_radps"]]).all():
                     raise ValueError("Nonfinite command")
+                if command["position_m"] is not None and not np.isfinite(command["position_m"]).all():
+                    raise ValueError("Nonfinite position command")
                 commands.append(command)
             except (AttributeError, TypeError, ValueError):
                 malformed["malformed_tracking_command"] += 1
@@ -550,6 +577,8 @@ def evaluate(records, config, *, physical=None, events=None):
                           "transients":_transients(samples, follow, end, distance)},
         "control_jitter":command_jitter(sorted((row for row in commands if follow <= row["time_s"] <= end),
                                                key=lambda row: row["time_s"])),
+        "position_control_jitter":position_setpoint_variation(sorted((row for row in commands if follow <= row["time_s"] <= end),
+                                                                    key=lambda row: row["time_s"])),
         "visual_control_metrics":visual_metrics(records, states, statuses, follow, end, multi=multi),
         "short_shutter_prediction":short_shutter_prediction(samples, shutters),
         "windows":windows, "malformed_input_counts":dict(malformed),

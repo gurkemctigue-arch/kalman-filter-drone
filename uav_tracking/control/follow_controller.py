@@ -532,15 +532,18 @@ class FollowController:
             return FollowSetpoint(mode="position", position=desired, valid=True)
 
         # Generate a moving position reference instead of jumping several
-        # metres when tracking restarts. Integrating from the vehicle on every
-        # tick would leave only a tiny dt-sized lead and prevent it catching a
-        # moving target. Integrate the previous reference, with target velocity
-        # feedforward, then bound its lead over the actual vehicle so it cannot
-        # run away while the aircraft is held back.
+        # metres when tracking restarts. Integrate the previous reference, but
+        # close the feedback loop on the actual vehicle tracking error. Using
+        # desired-previous here would only regulate the reference generator:
+        # a position-controlled vehicle then needs a permanent position error
+        # to generate the target's velocity. Actual-position feedback lets the
+        # reference build that lead without depending on an autopilot gain.
+        # Projecting the reference back to the lead bound prevents windup
+        # while the vehicle is held back; loss resets it to the current pose.
         previous = self._last_position if self._last_position is not None else vehicle.position
-        reference_error = self._apply_deadzone(desired - previous)
+        tracking_error = self._apply_deadzone(desired - vehicle.position)
         velocity = (_gain_product(self.config.feedforward_gain, target.velocity)
-                    + _gain_product(self.config.position_gain, reference_error))
+                    + _gain_product(self.config.position_gain, tracking_error))
         velocity = _as_limit(self.config.max_speed, velocity)
         velocity = self._apply_acceleration_limit(velocity, self._last_velocity, dt)
         proposed = previous + velocity * dt

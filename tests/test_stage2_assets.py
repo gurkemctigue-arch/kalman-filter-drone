@@ -49,12 +49,32 @@ class Stage2AssetsTests(unittest.TestCase):
 
     def test_crossing_paths_exchange_image_lanes_at_separate_depths(self):
         for cls, amplitude in (("person", 2.0), ("car", 4.2)):
-            poses = integrate(19.0, cls, "crossing")
+            poses = integrate(22.0, cls, "crossing")
             self.assertAlmostEqual(poses[1][0], poses[0][0], delta=0.02)
             self.assertAlmostEqual(poses[2][0], poses[0][0], delta=0.02)
             self.assertAlmostEqual(poses[1][1], 2 * amplitude, delta=0.02)
             self.assertAlmostEqual(poses[2][1], -2 * amplitude, delta=0.02)
             self.assertAlmostEqual(poses[1][2], 0.0, delta=0.01)
+
+    def test_crossing_holds_exchanged_lanes_without_periodic_return(self):
+        for cls, amplitude in (("person", 2.0), ("car", 4.2)):
+            with self.subTest(cls=cls):
+                poses = integrate(45.0, cls, "crossing")
+                self.assertAlmostEqual(poses[1][1], 2 * amplitude, delta=0.02)
+                self.assertAlmostEqual(poses[2][1], -2 * amplitude, delta=0.02)
+                for elapsed in (22.0, 30.0, 45.0):
+                    commands = stage2_motion_profile(elapsed, target_class=cls, scenario_kind="crossing")
+                    for speed, yaw_rate in commands:
+                        self.assertAlmostEqual(speed, 0.5)
+                        self.assertAlmostEqual(yaw_rate, 0.0)
+
+    def test_crossing_enters_and_leaves_turn_smoothly(self):
+        for boundary in (4.0, 22.0):
+            before = stage2_motion_profile(boundary - 1e-5, scenario_kind="crossing")
+            after = stage2_motion_profile(boundary + 1e-5, scenario_kind="crossing")
+            for first, second in zip(before, after):
+                self.assertAlmostEqual(first[0], second[0], delta=1e-5)
+                self.assertAlmostEqual(first[1], second[1], delta=1e-5)
 
     def test_ambiguity_paths_approach_then_separate_without_sideways_translation(self):
         for cls, dx, dy, duration in (("person", 3.0, 2.0, 16.0), ("car", 6.0, 4.2, 32.0)):

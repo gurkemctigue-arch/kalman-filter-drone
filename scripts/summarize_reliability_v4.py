@@ -30,8 +30,8 @@ _spec.loader.exec_module(v4)
 METRICS = {
     "base_link_distance_rmse_m": ("navigation", "whole_interval.metrics.base_link_distance_error_m.rmse"),
     "base_link_height_rmse_m": ("navigation", "whole_interval.metrics.base_link_height_error_m.rmse"),
-    "base_link_distance_p95_m": ("navigation", "whole_interval.metrics.base_link_distance_error_m.p95"),
-    "base_link_height_p95_m": ("navigation", "whole_interval.metrics.base_link_height_error_m.p95"),
+    "base_link_distance_p95_m": ("navigation", "whole_interval.metrics.base_link_distance_error_m.p95_absolute"),
+    "base_link_height_p95_m": ("navigation", "whole_interval.metrics.base_link_height_error_m.p95_absolute"),
     "kf_position_rmse_m": ("navigation", "kf_navigation.metrics.kf_position_error_m.rmse"),
     "kf_velocity_rmse_mps": ("navigation", "kf_navigation.metrics.kf_velocity_error_mps.rmse"),
     "kf_position_p95_m": ("navigation", "kf_navigation.metrics.kf_position_error_m.p95"),
@@ -40,6 +40,8 @@ METRICS = {
     "navigation_position_truth_coverage": ("navigation", "kf_navigation.position_truth_coverage"),
     "navigation_velocity_truth_coverage": ("navigation", "kf_navigation.velocity_truth_coverage"),
     "velocity_command_jitter_rms_mps2": ("navigation", "control_jitter.velocity_command_delta_over_dt_mps2.rmse"),
+    "position_command_rate_rms_mps": ("navigation", "position_control_jitter.position_setpoint_delta_over_dt_mps.rmse"),
+    "position_command_second_difference_rms_mps2": ("navigation", "position_control_jitter.position_setpoint_second_difference_mps2.rmse"),
     "yaw_command_jitter_rms_radps2": ("navigation", "control_jitter.yaw_rate_delta_over_dt_radps2.rmse"),
     "image_center_rmse_px": ("navigation", "visual_control_metrics.detected_center_error_px.rmse"),
     "image_center_normalized_rmse": ("navigation", "visual_control_metrics.detected_center_normalized_error.rmse"),
@@ -69,6 +71,26 @@ for _dimension in ("distance", "height"):
 EXTRA_METRICS = [f"base_link_{dimension}_settling_s" for dimension in ("distance", "height")]
 EXTRA_METRICS += [f"task_mean_{subset}_{metric}" for subset in ("amodal_simulation_mot", "unoccluded_geometry_mot")
                   for metric in ("hota", "idf1", "id_switches")]
+RECOVERY_METRICS = (
+    "short_post_open_measured_recovery_observed_fraction",
+    "short_same_track_task_observed_recovery_fraction",
+    "short_same_track_task_recovery_fraction_given_known_recovery",
+    "short_same_track_task_recovery_mean_s", "short_same_track_task_recovery_p95_s",
+    "explicit_selection_observed_confirmation_fraction",
+    "explicit_selection_observed_confirmation_mean_s", "explicit_selection_observed_confirmation_p95_s",
+)
+EXTRA_METRICS += list(RECOVERY_METRICS)
+SHORT_RECOVERY_COUNTS = (
+    "requested_windows", "observed_recovery_windows", "same_track_task_recovery_windows",
+    "changed_track_or_task_recovery_windows", "unknown_identity_on_observed_recovery_windows",
+    "unobserved_or_untimed_recovery_windows", "identity_flag_without_valid_timing_windows",
+    "known_identity_on_observed_recovery_windows", "missing_or_invalid_timing_windows",
+)
+SELECTION_COUNTS = (
+    "requested_windows", "observed_confirmation_windows", "confirmation_right_censored_windows",
+    "missing_or_inconsistent_windows", "classified_confirmation_windows",
+)
+RECOVERY_COUNTS = {"short_requested_shutter": SHORT_RECOVERY_COUNTS, "explicit_selection": SELECTION_COUNTS}
 METRIC_NAMES = list(METRICS) + EXTRA_METRICS + ["physical_follow_truth_coverage"]
 PAIRED_METRICS = [name for name in METRIC_NAMES if not name.endswith("_samples")]
 STATUS_CATEGORY = {"INFRASTRUCTURE_ERROR": "INFRA", "INCOMPLETE_EVIDENCE": "INCOMPLETE"}
@@ -113,6 +135,124 @@ def settling(report, dimension):
     return None, "INCONSISTENT"
 
 
+def recovery_evidence(reports):
+    """Source-reported operational events, never independent physical ReID.
+
+    An absent recovery time does not establish a fully observed failure. The
+    surface report has no complete post-open observation-horizon field; retain
+    unobserved/untimed events separately. Navigation explicitly marks selection
+    confirmation censoring, which is retained rather than called failure.
+    """
+    metrics = dict.fromkeys(RECOVERY_METRICS)
+    evidence = {}
+    definitions = {
+        "short_requested_shutter": (
+            "Requested shutter windows; recovery uses the original post-open measured-state clocks. "
+            "Same track_id AND target_uuid is operational continuity, not independent physical identity or ReID. "
+            "Observed fractions use all recorded short windows and are descriptive lower bounds, not failure rates; "
+            "the conditional fraction uses only observed recoveries with known identity checks. "
+            "Missing/invalid recovery timing fields suppress the all-window fractions rather than becoming zero. "
+            "Untimed/unobserved windows are not failures; full nonrecovery observation is not established by this source."),
+        "explicit_selection": (
+            "Explicit selection includes initial selection and reselection, which are not distinguished here. "
+            "Observed confirmation fraction uses confirmed plus explicitly right-censored windows; "
+            "missing/inconsistent windows remain outside that known denominator. Censoring is not failure. "
+            "Confirmation of a requested task UUID is not long-loss physical reacquisition or automatic ReID."),
+    }
+    for kind, report_kind, field in (("short_requested_shutter", "surface_flight", "occlusions"),
+                                     ("explicit_selection", "navigation", "windows")):
+        raw = at(reports.get(report_kind), field)
+        available = isinstance(raw, list) and all(isinstance(window, dict) for window in raw)
+        evidence[kind] = {"source_status": "AVAILABLE" if available else "MISSING_OR_MALFORMED_SOURCE",
+                          "definition": definitions[kind], "windows": [],
+                          **dict.fromkeys(RECOVERY_COUNTS[kind], 0 if available else None)}
+        if not available:
+            continue
+        windows = [window for window in raw if window.get("kind") == ("short" if kind == "short_requested_shutter" else kind)]
+        counts = evidence[kind]
+        counts["requested_windows"] = len(windows)
+        if not windows:
+            counts["source_status"] = "NO_APPLICABLE_WINDOWS"
+        latencies = []
+        for window in windows:
+            if kind == "short_requested_shutter":
+                latency = window.get("recovery_after_open_s")
+                reported_timing = ("recovery_after_open_s" in window and
+                                   (latency is None or finite(latency) and latency >= 0))
+                counts["missing_or_invalid_timing_windows"] += not reported_timing
+                latency = float(latency) if finite(latency) and latency >= 0 else None
+                identity = at(window, "checks.identity_preserved_on_observed_recovery")
+                identity = identity if type(identity) is bool else None
+                if latency is None:
+                    counts["unobserved_or_untimed_recovery_windows"] += 1
+                    counts["identity_flag_without_valid_timing_windows"] += identity is not None
+                    status = "UNOBSERVED_OR_UNTIMED_NOT_FAILURE"
+                else:
+                    counts["observed_recovery_windows"] += 1
+                    if identity is None:
+                        counts["unknown_identity_on_observed_recovery_windows"] += 1
+                        status = "OBSERVED_RECOVERY_UNKNOWN_OPERATIONAL_IDENTITY"
+                    else:
+                        counts["known_identity_on_observed_recovery_windows"] += 1
+                        if identity:
+                            counts["same_track_task_recovery_windows"] += 1
+                            latencies.append(latency)
+                            status = "OBSERVED_SAME_TRACK_AND_TASK"
+                        else:
+                            counts["changed_track_or_task_recovery_windows"] += 1
+                            status = "OBSERVED_CHANGED_TRACK_OR_TASK"
+                counts["windows"].append({"start_s": numeric(window, "start_s"), "end_s": numeric(window, "end_s"),
+                    "status": status, "recovery_after_open_s": latency,
+                    "same_track_and_task": identity})
+            else:
+                latency = window.get("first_measured_confirmation_after_request_s")
+                censored = window.get("confirmation_censored")
+                start, end = numeric(window, "start_s"), numeric(window, "end_s")
+                valid_interval = start is not None and end is not None and 0 <= start < end
+                if (censored is False and finite(latency) and latency >= 0 and valid_interval
+                        and latency <= end - start + 1e-9):
+                    counts["observed_confirmation_windows"] += 1
+                    latencies.append(float(latency))
+                    status = "OBSERVED_CONFIRMATION"
+                elif censored is True and latency is None and valid_interval:
+                    counts["confirmation_right_censored_windows"] += 1
+                    status = "RIGHT_CENSORED_NOT_FAILURE"
+                else:
+                    counts["missing_or_inconsistent_windows"] += 1
+                    status = "MISSING_OR_INCONSISTENT"
+                counts["windows"].append({"start_s": start, "end_s": end, "status": status,
+                    "first_measured_confirmation_after_request_s": float(latency) if finite(latency) and latency >= 0 else None,
+                    "confirmation_censored": censored if type(censored) is bool else None})
+        if kind == "short_requested_shutter":
+            total = counts["requested_windows"]
+            known = counts["known_identity_on_observed_recovery_windows"]
+            same = counts["same_track_task_recovery_windows"]
+            usable_denominator = total if not counts["missing_or_invalid_timing_windows"] else None
+            metrics["short_post_open_measured_recovery_observed_fraction"] = counts["observed_recovery_windows"] / usable_denominator if usable_denominator else None
+            metrics["short_same_track_task_observed_recovery_fraction"] = same / usable_denominator if usable_denominator else None
+            metrics["short_same_track_task_recovery_fraction_given_known_recovery"] = same / known if known else None
+            prefix = "short_same_track_task_recovery"
+        else:
+            known = counts["observed_confirmation_windows"] + counts["confirmation_right_censored_windows"]
+            counts["classified_confirmation_windows"] = known
+            metrics["explicit_selection_observed_confirmation_fraction"] = counts["observed_confirmation_windows"] / known if known else None
+            prefix = "explicit_selection_observed_confirmation"
+        metrics[prefix + "_mean_s"] = statistics.mean(latencies) if latencies else None
+        metrics[prefix + "_p95_s"] = float(np.percentile(latencies, 95)) if latencies else None
+    return metrics, evidence
+
+
+def grouped_recovery_evidence(rows):
+    result = {}
+    for kind, names in RECOVERY_COUNTS.items():
+        entries = [row["recovery_evidence"][kind] for row in rows]
+        result[kind] = {"source_status_counts": dict(Counter(entry["source_status"] for entry in entries)),
+                        "definition": entries[0]["definition"],
+                        **{name: sum(entry[name] for entry in entries if entry[name] is not None)
+                           if any(entry[name] is not None for entry in entries) else None for name in names}}
+    return result
+
+
 def extract_metrics(reports):
     metrics = {name: numeric(reports.get(kind), path) for name, (kind, path) in METRICS.items()}
     for name, value in metrics.items():
@@ -144,6 +284,7 @@ def extract_metrics(reports):
                 if value is not None and value >= 0 and (metric == "id_switches" or value <= 1):
                     values.append(value)
             metrics[f"task_mean_{subset}_{metric}"] = statistics.mean(values) if values else None
+    metrics.update(recovery_evidence(reports)[0])
     return metrics, censoring
 
 
@@ -156,10 +297,15 @@ def metric_sample_counts(reports):
     result = {name: None for name in METRIC_NAMES}
     for name, (kind, path) in METRICS.items():
         parent, statistic = path.rsplit(".", 1)
-        if statistic in {"rmse", "mean", "p95", "median"}:
+        if statistic in {"rmse", "mean", "p95", "p95_absolute", "median"}:
             value = at(reports.get(kind), parent + ".count")
             if type(value) is int and value >= 0:
                 result[name] = value
+    _, recovery = recovery_evidence(reports)
+    for prefix, kind, count in (("short_same_track_task_recovery", "short_requested_shutter", "same_track_task_recovery_windows"),
+                                ("explicit_selection_observed_confirmation", "explicit_selection", "observed_confirmation_windows")):
+        for statistic in ("mean_s", "p95_s"):
+            result[prefix + "_" + statistic] = recovery[kind][count]
     return result
 
 
@@ -245,6 +391,7 @@ def read_cohort(path, cohort):
             "engineering_result": record.get("engineering_result"),
             "infrastructure_stop": record.get("infrastructure_stop"), "flight_exit_code": record.get("flight_exit_code"),
             "evaluation_status": evaluation_status, "metrics": metrics, "settling": censoring,
+            "recovery_evidence": recovery_evidence(reports)[1],
             "metric_sample_counts": metric_sample_counts(reports),
             "report_issues": issues, "sources": sources})
         rows[-1]["required_evaluator_kinds"] = [item["kind"] for item in trial["evaluations"]]
@@ -260,6 +407,7 @@ def grouped(rows):
              "planned_slots": len(items), "status_counts": dict(Counter(item["status"] for item in items)),
              "status_category_counts": dict(Counter(item["status_category"] for item in items)),
              "metrics": {name: stats(item["metrics"][name] for item in items) for name in METRIC_NAMES},
+             "recovery_evidence": grouped_recovery_evidence(items),
              "settling": {dimension: dict(Counter(item["settling"][dimension] for item in items)) for dimension in ("distance", "height")},
              "evaluator_status_counts": {kind: dict(Counter(item["evaluation_status"].get(kind, "MISSING" if kind in item["required_evaluator_kinds"] else "NOT_APPLICABLE") for item in items))
                                          for kind in ("source_clock", "native_startup", "surface_flight", "navigation", "gimbal", "physical_identity")}}
@@ -391,7 +539,7 @@ def summary(core_path, extension_path=None, *, resamples=10000, seed=20261029):
             "sources": sources,
             "implementation_sources": {"scripts/summarize_reliability_v4.py": v4.sha(Path(__file__)),
                                        "scripts/run_reliability_v4.py": v4.sha(ROOT / "scripts/run_reliability_v4.py")},
-            "claim_boundary": "Read-only snapshot of immutable slot verdicts. Terminal execution is not project acceptance or all-PASS. Missing evidence stays null; right-censored settling is not zero. Finite failed flights remain in all-finite paired results. Sim-time FPS/latency, wall inference, visible centering and physical base_link errors are distinct. HOTA/IDF1 task means are diagnostic and retain original visibility definitions; explicit reselection is not ReID. A running study is not an atomic cross-plan snapshot."}
+            "claim_boundary": "Read-only snapshot of immutable slot verdicts. Terminal execution is not project acceptance or all-PASS. Missing evidence stays null; right-censored settling is not zero. Finite failed flights remain in all-finite paired results. Sim-time FPS/latency, wall inference, visible centering and physical base_link errors are distinct. HOTA/IDF1 task means are diagnostic and retain original visibility definitions. Same track/UUID recovery is operational continuity, not independent physical ReID. Explicit selection includes initial selection and reselection; censored/unobserved outcomes are not failures. A running study is not an atomic cross-plan snapshot."}
 
 
 def write_csv(path, fieldnames, rows):
@@ -428,10 +576,11 @@ def write_report(report, output):
     metadata = ["cohort", "slot_id", "target_class", "seed", "group", "condition", "sensor_condition", "motion_profile_kind",
                 "desired_distance_m", "command_mode", "comparison_reference_id", "status", "status_category", "engineering_result",
                 "infrastructure_stop", "flight_exit_code"]
-    write_csv(output / "trials.csv", metadata + METRIC_NAMES + ["distance_settling_status", "height_settling_status", "evaluator_status", "report_issues"],
+    write_csv(output / "trials.csv", metadata + METRIC_NAMES + ["distance_settling_status", "height_settling_status", "evaluator_status", "recovery_evidence", "report_issues"],
               [{**{name: row.get(name) for name in metadata}, **row["metrics"],
                 "distance_settling_status": row["settling"]["distance"], "height_settling_status": row["settling"]["height"],
                 "evaluator_status": json.dumps(row["evaluation_status"], sort_keys=True),
+                "recovery_evidence": json.dumps(row["recovery_evidence"], sort_keys=True),
                 "report_issues": json.dumps(row["report_issues"], sort_keys=True)} for row in report["trials"]])
     write_csv(output / "group_metrics.csv", ["cohort", "target_class", "group", "condition", "metric", "n_slots", "n", "n_missing", "mean", "sample_sd", "median"],
               [{**{key: group[key] for key in ("cohort", "target_class", "group", "condition")}, "metric": metric, **value}

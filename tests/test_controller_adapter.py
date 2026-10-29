@@ -75,7 +75,7 @@ class ControllerMessageBoundaryTests(unittest.TestCase):
         def update(target, vehicle, dt):
             self.inputs.append((target, vehicle))
             return portable.update(target, vehicle, dt=dt)
-        self.node._controller = SimpleNamespace(update=update)
+        self.node._controller = SimpleNamespace(update=update, reset=portable.reset)
         for name, value in (
             ("TargetState", FakeTargetState), ("TrackingCommand", FakeCommand), ("TrackingStatus", FakeStatus),
         ):
@@ -150,6 +150,24 @@ class ControllerMessageBoundaryTests(unittest.TestCase):
         self.node._step()
         self.assertFalse(self.commands[-1].valid)
         self.assertEqual(self.statuses[-1].reason, "invalid_clock")
+
+    def test_invalid_timestamp_discards_position_reference_before_recovery(self) -> None:
+        self.node._controller = FollowController(config=FollowConfig(
+            mode="position", slew_position=True, desired_distance=5.0,
+            desired_height=2.0, max_acceleration=3.0, max_position_lead=2.0,
+            target_timeout=0.75, vehicle_timeout=0.5))
+        for _ in range(20):
+            self.node._step()
+        self.assertGreater(self.commands[-1].position_m.x, 0.1)
+        self.node._target.header.stamp = stamp(0.0)
+        self.node._step()
+        self.assertFalse(self.commands[-1].valid)
+        self.node._target.header.stamp = stamp(self.time)
+        self.node._step()
+        restarted = self.commands[-1]
+        self.assertTrue(restarted.valid)
+        self.assertEqual(restarted.mode, FakeCommand.MODE_POSITION)
+        self.assertLessEqual(abs(restarted.position_m.x), 3.0 * 0.05 ** 2 + 1e-12)
 
     def test_explicit_target_ambiguity_produces_hover_and_zero_motion(self) -> None:
         self.node._target.state = FakeTargetState.STATE_AMBIGUOUS

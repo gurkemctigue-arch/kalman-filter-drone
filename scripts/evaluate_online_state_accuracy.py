@@ -22,7 +22,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from evaluate_stage1_flight import read_rosbag, summary, vector
 import evaluate_stage1_flight as bag_tools
-from extract_research_recording import pose_dict
+from extract_research_recording import camera_model_resources, camera_model_source_hashes, pose_dict
 from uav_tracking.research_labels import interpolate_pose, quaternion_matrix, rpy_matrix
 
 
@@ -223,7 +223,9 @@ def command_jitter(commands):
 
 
 def body_frame_mount(model_path):
-    resource=str(ROOT/"ros2_ws/src/uav_tracking_bringup/models")+":/root/PX4-Autopilot/Tools/simulation/gz/models"
+    resources,selection=camera_model_resources(ROOT)
+    sources=camera_model_source_hashes(model_path,resources)
+    resource=os.pathsep.join(str(path) for path in resources)
     result=subprocess.run(["gz","sdf","-p",str(model_path)],capture_output=True,text=True,timeout=30,
                           check=True,env=dict(os.environ,GZ_SIM_RESOURCE_PATH=resource,SDF_PATH=resource))
     model=ET.fromstring(result.stdout).find("model")
@@ -241,6 +243,9 @@ def body_frame_mount(model_path):
         pp,pr=resolve(parent,seen+(name,));return pp+pr@p,pr@r
     p,r=resolve("base_link")
     return p,r,{"model":str(model_path),"expanded_sdf_sha256":hashlib.sha256(result.stdout.encode()).hexdigest(),
+                "resolved_model_sdf_sha256":sources,
+                "declared_model_resource_roots":[str(path.resolve()) for path in resources],
+                "px4_model_resource_selection":selection,
                 "body_frame":"base_link","model_to_body_position_m":p.tolist(),"model_to_body_rotation":r.tolist()}
 
 

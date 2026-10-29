@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "status": "PROSPECTIVE_DELIVERY_SELECTIONS_NOT_EXPERIMENT_RESULTS",
+  "selected_before_formal_execution": true,
+  "core_protocol": "planning/reliability-v4-preregistration.json",
+  "video_selection": {
+    "seed": 1000,
+    "classes": ["person", "car"],
+    "groups": ["stage1_velocity", "stage1_position", "stage2_crossing", "stage3_midpoint", "stage3_active", "stage3_multi_active"],
+    "scheduled_clips": 12,
+    "policy": "Use the twelve named formal core slots regardless of their outcome. Preserve full recorded source duration, short/long occlusion, hover, explicit selection and failures. Do not substitute a successful seed for an unsuccessful or unavailable clip. Missing video remains listed with its slot outcome and reason; any development illustration must be separately labelled and is not a replacement formal clip.",
+    "transcoding": "H.264 browser copies only after source hash, frame count, duration and per-frame relative timing are checked with build_browser_demos.py. Original video remains immutable."
+  },
+  "detection_review_selection": {
+    "seed": 1000,
+    "group": "stage1_velocity",
+    "classes": ["person", "car"],
+    "scheduled_recordings": 2,
+    "policy": "Use both named formal recordings regardless of engineering outcome. Preserve all sampled opportunities and explicit exclusion reasons. Review actual images against the independent geometric projection; approve only the declared fully visible in-frame subset. Never turn amodal projected boxes into unreviewed visible labels. Missing recording or insufficient review remains incomplete, without replacing the seed.",
+    "claim_boundary": "Precision/Recall/mAP describe the independently reviewed, fully visible synthetic subset only. Online FPS and simulation/wall latency use the complete flight reports and remain separate. This subset does not establish detector accuracy over all 280 flights, occlusions or real scenes."
+  },
+  "scope": "Delivery sampling decisions only. No held-out seed was run or inspected to choose these slots; this file does not register navigation gates, replay parameters or authorize a formal flight."
+}

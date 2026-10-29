@@ -11,3 +11,7 @@ Humble11 person clean20s保存了源时钟、真值尾段和闭环数据，但�
 Humble12冻结后的四包构建、实际导入与ament前缀隔离、Linux1095项测试通过（1项跳过）。真实Humble/DDS500Hz名义负载烟测22行为通过：11入口重复SIGINT/SIGTERM、10入口注入的真实callback RuntimeError仍退出1并清理、monitor正常完成。除实际sensor fault bridge外，烟测使用生产main函数与真实ROS fixture节点，因此只证明入口生命周期。记录为`results/frozen_fullplan_v4_humble12/freeze_validation/public_ros_lifecycle12_smoke03/summary.json`。smoke01脚本事件参数错误、smoke02仅观测try_shutdown而漏记detector的shutdown末步，两次原件保留于独立日志目录。
 
 随后两条全新clean20s仿真均runner0，全部自有ROS子进程正常退出，独立source/native/bag/render及基础设施检查通过。person的raw/timing/adapted为3787/3787/3787，car为3844/3844/3844。最终Clock分别38.428s与39.000s，目标及无人机GT精确同戳；物理导航完整分母分别207/207与210/210，base_link距离和高度最终稳定均有连续证据。clean未配置遮挡，因此原surface报告的INCOMPLETE保留；这两槽不代表遮挡/身份/云台验收，也不替代开发12格与正式重复。
+
+Humble13开发矩阵的`person_stage2_crossing_seed004`又保留了一个独立的真实退出错误：`Stage2Motion.stop()`向`std_msgs/String`发布器发送了`geometry_msgs/Twist`。该节点原命令列表名`_publishers`与rclpy.Node维护全部发布器的内部注册表重名，后续创建的事件发布器进入同一列表。运动tick只zip三个命令，因此运行期间未触发；收尾遍历全部发布器时才抛出TypeError。launch父进程0不能改变该槽的`INFRASTRUCTURE_ERROR`，原槽、bag及失败日志均保留。
+
+候选修复只将三个速度命令发布器独立命名为`_velocity_publishers`，运动轨迹、时间线和信号顺序均保持原行为。回归测试执行生产Stage2Motion类的构造、tick和stop，模拟rclpy混合消息发布器注册；真实Humble烟测另外直接运行实际候选节点，覆盖person/car与SIGINT/SIGTERM四种组合。四种组合均通过真实DDS收到了运动命令和String事件，信号后各三路最后命令均全零，节点退出0，无Traceback及强制终止。烟测及脚本记录于`results/freeze_validation/stage2_publisher14_smoke01/`；它不运行PX4或Gazebo，不替代完整新开发矩阵和闭环飞行验收。

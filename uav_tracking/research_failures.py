@@ -29,6 +29,90 @@ RECORDING_ERROR = re.compile(
 EVALUATOR_EXCEPTION = re.compile(r"Traceback \(most recent call last\):|Fatal Python error:|terminate called after throwing")
 EVALUATOR_CRASH = re.compile(r"Segmentation fault|Bus error|Aborted \(core dumped\)|core dumped", re.IGNORECASE)
 ROS_CHILD_EXIT = re.compile(r"\bprocess has died\b.*?\bexit code\s+(-?\d+)\b")
+COMPLETED_VERDICTS = {"PASS", "FAIL", "INCOMPLETE", "INCOMPLETE_EVIDENCE", "FAIL_OR_INCOMPLETE",
+                      "RECORDED_WITH_CENSORED_FAILURES", "RECORDED_WITH_EXPLICIT_UNKNOWN_INTERVALS"}
+NEGATIVE_VERDICTS = {"FAIL", "INCOMPLETE", "INCOMPLETE_EVIDENCE", "FAIL_OR_INCOMPLETE"}
+NAMED_EVALUATORS = {
+    "px4_source_clock_report.json": ("source_clock", "evaluate_px4_source_clock.py"),
+    "px4_source_clock_evaluation.json": ("source_clock", "evaluate_px4_source_clock.py"),
+    "native_startup_report.json": ("native_startup", "evaluate_native_startup.py"),
+    "native_startup_evaluation.json": ("native_startup", "evaluate_native_startup.py"),
+    "navigation_reference_evaluation.json": ("navigation", "evaluate_navigation_reference.py"),
+    "physical_identity.json": ("physical_identity", "evaluate_physical_identity.py"),
+}
+
+
+def completed_evaluator_verdict(path: Path, report: Any) -> str | None:
+    """Recognize saved report completion, independently of engineering PASS.
+
+    Named v4 status reports require their version, trial binding, provenance
+    shape and consistent result fields. Recorded navigation/identity reports
+    retain censored/unknown observations; their accuracy/identity gates are
+    applied by the engineering evaluator, never by this execution classifier.
+    """
+    if not isinstance(report, dict):
+        return None
+    if "evaluation_status" not in report:
+        acceptance = report.get("acceptance")
+        verdict = acceptance.get("result") if isinstance(acceptance, dict) else None
+        if verdict is None:
+            verdict = report.get("result")
+        return verdict if isinstance(verdict, str) and verdict in NEGATIVE_VERDICTS | {"PASS"} else None
+    named = NAMED_EVALUATORS.get(path.name)
+    if named is None or type(report.get("schema_version")) is not int or report["schema_version"] != 1:
+        return None
+    kind, script = named
+    provenance = report.get("evaluation_source")
+    bound = report.get("source_trial" if kind == "physical_identity" else "trial")
+    if (not isinstance(provenance, dict) or not isinstance(provenance.get("script"), str)
+            or Path(provenance["script"]).name != script
+            or not re.fullmatch(r"[a-f0-9]{64}", str(provenance.get("script_sha256", "")))
+            or not isinstance(provenance.get("dependencies"), dict)
+            or not isinstance(bound, str) or Path(bound).resolve() != path.parent.resolve()):
+        return None
+    verdict = report["evaluation_status"]
+    if not isinstance(verdict, str):
+        return None
+    if kind in {"source_clock", "native_startup"}:
+        allowed = {"PASS", "FAIL", "INCOMPLETE" if kind == "source_clock" else "INCOMPLETE_EVIDENCE"}
+        if (verdict not in allowed or report.get(kind + "_pass") is not (verdict == "PASS")
+                or not isinstance(report.get("incomplete_evidence"), dict)):
+            return None
+        failures = report.get("failures", {})
+        if not isinstance(failures, dict):
+            return None
+        if verdict == "PASS" and (failures or report["incomplete_evidence"]):
+            return None
+        if verdict == "FAIL" and not failures:
+            return None
+        if verdict in NEGATIVE_VERDICTS - {"FAIL"} and not report["incomplete_evidence"]:
+            return None
+        if kind == "source_clock" and verdict == "PASS" and (
+                report.get("clock_domain_valid") is not True
+                or report.get("vehicle_frame_continuity_valid") is not True
+                or not isinstance(report.get("counts"), dict)):
+            return None
+        if kind == "native_startup":
+            checks = report.get("checks")
+            if (not isinstance(checks, dict) or not checks
+                    or any(value is not None and type(value) is not bool for value in checks.values())
+                    or verdict == "PASS" and any(value is not True for value in checks.values())
+                    or verdict == "FAIL" and not any(value is False for value in checks.values())):
+                return None
+        return verdict
+    if verdict == "INCOMPLETE_EVIDENCE":
+        return verdict if (isinstance(report.get("reason"), str) and report["reason"]
+                           or isinstance(report.get("incomplete_reasons"), list) and report["incomplete_reasons"]) else None
+    if kind == "navigation":
+        if (verdict == "RECORDED_WITH_CENSORED_FAILURES" and report.get("incomplete_reasons") == []
+                and all(isinstance(report.get(key), dict) for key in ("interval", "whole_interval", "kf_navigation"))):
+            return verdict
+    elif kind == "physical_identity":
+        if (verdict == "RECORDED_WITH_EXPLICIT_UNKNOWN_INTERVALS"
+                and all(isinstance(report.get(key), dict) for key in
+                        ("tasks", "conservative_selected_identity", "conservative_task_time_identity"))):
+            return verdict
+    return None
 
 
 def _finite(value: Any) -> float | None:
@@ -279,22 +363,19 @@ def classify_infrastructure_failure(trial_dir: Path, *, evaluator_attempts: list
         if report_path not in reports:
             reports[report_path] = read_json(str(report_path))
         report = reports[report_path]
-        verdict = (report.get("acceptance", {}).get("result")
-                   if isinstance(report, dict) and isinstance(report.get("acceptance"), dict) else None)
-        if verdict is None and isinstance(report, dict):
-            verdict = report.get("result")
-        complete = verdict in {"PASS", "FAIL", "INCOMPLETE", "INCOMPLETE_EVIDENCE", "FAIL_OR_INCOMPLETE"}
+        verdict = completed_evaluator_verdict(report_path, report)
+        complete = verdict in COMPLETED_VERDICTS
         code = attempt.get("returncode")
         entry = {"report": str(report_path), "report_exists": report_path.is_file(),
                  "completed_report_verdict": verdict, "returncode": code, "log": str(log_path) if log_path else None,
-                 "signals": []}
+                 "signals": [], "verdict_scope": "Report completion only; recorded statuses do not assert engineering PASS"}
         execution_evidence.append(entry)
         source = str(log_path) if log_path else str(report_path)
         if not complete:
             reason("EVALUATOR_REPORT_MISSING_OR_INVALID", "An evaluator attempt has no completed parseable report", str(report_path))
         if type(code) is int and code in CRASH_CODES:
             reason("EVALUATOR_PROCESS_CRASH", f"Evaluator recorded crash exit code {code}", source)
-        elif type(code) is int and code != 0 and (not complete or verdict == "PASS"):
+        elif type(code) is int and code != 0 and not (complete and code == 2 and verdict in NEGATIVE_VERDICTS):
             reason("EVALUATOR_EXECUTION_FAILED", "Evaluator exited nonzero without a completed failure report", source)
         if attempt.get("error") and not complete:
             reason("EVALUATOR_EXECUTION_FAILED", "Evaluator invocation failed without a completed report", source)

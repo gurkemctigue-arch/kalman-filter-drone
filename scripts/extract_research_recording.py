@@ -38,10 +38,43 @@ def source_hash(path):
     return digest.hexdigest()
 
 
+def camera_model_resources(root:Path) -> tuple[list[Path],str]:
+    """Use the explicitly selected PX4 tree; never search another installation."""
+    configured=os.environ.get("STAGE1_PX4_ROOT")
+    px4=Path(configured if configured is not None else "/root/PX4-Autopilot")
+    return [root/"ros2_ws/src/uav_tracking_bringup/models",px4/"Tools/simulation/gz/models"],(
+        "STAGE1_PX4_ROOT" if configured is not None else "historical_default")
+
+
+def camera_model_source_hashes(model:Path,resources:list[Path]) -> dict[str,str]:
+    """Bind the expanded mount to each locally resolved included model SDF."""
+    sources={}
+    def visit(path):
+        path=path.resolve(strict=True)
+        if str(path) in sources:return
+        sources[str(path)]=source_hash(path)
+        for include in ET.parse(path).getroot().findall(".//include/uri"):
+            uri=(include.text or "").strip()
+            if not uri.startswith("model://"):
+                raise ValueError("Unsupported camera model include URI: "+uri)
+            relative=Path(uri[len("model://"):])
+            if relative.is_absolute() or ".." in relative.parts:
+                raise ValueError("Invalid camera model include URI: "+uri)
+            candidate=next((base/relative/"model.sdf" for base in resources
+                            if (base/relative/"model.sdf").is_file()),None)
+            if candidate is None:
+                raise ValueError("Camera model include absent from declared resources: "+uri)
+            visit(candidate)
+    visit(model)
+    return sources
+
+
 def model_camera_mount(root:Path) -> tuple[np.ndarray,np.ndarray,dict]:
     """Resolve all merged SDF frames, including inherited x500_base .24 pose."""
     model=root/"ros2_ws/src/uav_tracking_bringup/models/x500_stage1/model.sdf"
-    resource=str(root/"ros2_ws/src/uav_tracking_bringup/models")+":/root/PX4-Autopilot/Tools/simulation/gz/models"
+    resources,selection=camera_model_resources(root)
+    sources=camera_model_source_hashes(model,resources)
+    resource=os.pathsep.join(str(path) for path in resources)
     env=dict(os.environ,GZ_SIM_RESOURCE_PATH=resource,SDF_PATH=resource)
     result=subprocess.run(["gz","sdf","-p",str(model)],capture_output=True,text=True,env=env,timeout=30,check=True)
     sdf=ET.fromstring(result.stdout)
@@ -71,6 +104,9 @@ def model_camera_mount(root:Path) -> tuple[np.ndarray,np.ndarray,dict]:
     optical=quaternion_matrix([-.5,.5,-.5,.5])
     return position,rotation@optical,{"camera_model_offset_m":position.tolist(),"camera_model_rotation":(rotation@optical).tolist(),
             "expanded_sdf_sha256":hashlib.sha256(result.stdout.encode()).hexdigest(),
+            "resolved_model_sdf_sha256":sources,
+            "declared_model_resource_roots":[str(path.resolve()) for path in resources],
+            "px4_model_resource_selection":selection,
             "method":"gz sdf -p merged model/frame resolution; static model camera mount plus FLU<-optical; independent of PX4 odometry/TF position"}
 
 

@@ -15,6 +15,7 @@ import math
 from pathlib import Path
 import sys
 import time
+import xml.etree.ElementTree as ET
 import numpy as np
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
@@ -22,7 +23,165 @@ from evaluate_stage1_flight import open_bag_reader,stamp_s,read_monitor_events,s
 from extract_research_recording import model_camera_mount,pose_dict
 from uav_tracking.research_labels import target_mesh_points,interpolate_pose,project_mesh,quaternion_matrix
 from uav_tracking.research_metrics import identity_metrics,iou_matrix
-from uav_tracking.stage2_identity import physical_identity_match,selected_identity_summary
+from uav_tracking.stage2_identity import (FRONT_VISIBILITY_MARGIN_M, FRONT_VISIBILITY_RULE,
+                                        physical_identity_match,selected_identity_summary)
+
+
+def exact_source_pose(rows,timestamp):
+    """Return consistent finite source samples only; never interpolate a proof."""
+    index=bisect_left(rows,timestamp-1e-9,key=lambda row:row["time_s"])
+    poses=[]
+    while index<len(rows) and abs(rows[index]["time_s"]-timestamp)<=1e-9:
+        row=rows[index]
+        try:
+            position=np.asarray(row["position_m"],dtype=float)
+            rotation=quaternion_matrix(row["quaternion_xyzw"])
+        except (KeyError,TypeError,ValueError):return None
+        if position.shape!=(3,) or not np.isfinite(position).all():return None
+        poses.append((position,rotation));index+=1
+    if not poses:return None
+    if any(not np.allclose(position,poses[0][0],atol=1e-9,rtol=0)
+           or not np.allclose(rotation,poses[0][1],atol=1e-9,rtol=0) for position,rotation in poses[1:]):return None
+    return poses[0]
+
+
+def projection_exact_time_audit(timestamp,vehicle,targets,*,physical_links=None):
+    required={"vehicle":vehicle,**targets}
+    if physical_links is not None:
+        required.update({name:physical_links.get(name,[]) for name in ("base_link","tracking_camera_mount")})
+    samples={};missing=[]
+    for name,rows in required.items():
+        exact=exact_source_pose(rows,timestamp)
+        if exact is None:missing.append(name);samples[name]=[];continue
+        index=bisect_left(rows,timestamp-1e-9,key=lambda row:row["time_s"])
+        values=[]
+        while index<len(rows) and abs(rows[index]["time_s"]-timestamp)<=1e-9:
+            values.append(float(rows[index]["time_s"]));index+=1
+        samples[name]=values
+    return {"complete":not missing,"source_image_s":timestamp,"absolute_tolerance_s":1e-9,
+            "exact_source_samples_s":samples,"missing_or_invalid_exact_entities":missing,
+            "feedback_tf_role":"Bracketed cross-check only; never the independent physical camera projection"}
+
+
+def static_projection_asset_audit(root,trial,class_name):
+    """Restrict the new proof to this study's complete rigid visual assets.
+
+    Unsupported source geometry refuses the extra certificate, without changing
+    legacy amodal MOT labels. World actor visuals must equal the declared mesh
+    family; no unknown external rendered object may be silently omitted.
+    """
+    root,trial=Path(root),Path(trial)
+    expected=[f"stage2_{class_name}_{i}" for i in range(3)]
+    audit={"supported":False,"closed_scene_occluders_complete":False,"expected_actor_ids":expected,
+           "source_sha256":{},"reason":None,
+           "scope":"Declared rigid three-actor scene; ground/sensor-host self-visibility remains the existing scene assumption, and shutter guards remain mandatory"}
+    def bind(path):
+        audit["source_sha256"][str(path.resolve())]=hashlib.sha256(path.read_bytes()).hexdigest()
+    def numbers(text,size):
+        values=np.fromstring(text or "",sep=" ")
+        if values.shape!=(size,) or not np.isfinite(values).all():raise ValueError("invalid_visual_transform")
+        return values
+    def signature(model,template=False):
+        if (len(model.findall("link"))!=1 or model.findall("joint") or model.findall("frame")
+                or any(model.findall(".//"+tag) for tag in ("model","include","actor"))
+                or any(pose.get("relative_to") for pose in model.findall(".//pose"))):
+            raise ValueError("unsupported_rigid_model_frame_graph")
+        if template and np.any(numbers(model.findtext("pose","0 0 0 0 0 0"),6)!=0):
+            raise ValueError("nonzero_template_model_pose")
+        link=model.find("link")
+        if np.any(numbers(link.findtext("pose","0 0 0 0 0 0"),6)!=0):
+            raise ValueError("unresolved_nonzero_link_pose")
+        if any(plugin.get("filename") not in {"gz-sim-velocity-control-system","gz-sim-pose-publisher-system"}
+               for plugin in model.findall(".//plugin")):
+            raise ValueError("unsupported_actor_plugin")
+        visuals=[]
+        for visual in link.findall("visual"):
+            mesh=visual.find("geometry/mesh")
+            if (mesh is None or mesh.find("submesh") is not None or visual.find("material/script") is not None
+                    or visual.find("material/shader") is not None):raise ValueError("unsupported_visual_geometry")
+            uri=mesh.findtext("uri","")
+            if not uri.startswith("model://") or ".." in Path(uri[8:]).parts:raise ValueError("unsupported_mesh_uri")
+            scale=numbers(mesh.findtext("scale","1 1 1"),3)
+            if np.any(scale<=0):raise ValueError("invalid_mesh_scale")
+            visuals.append((uri,tuple(scale),tuple(numbers(visual.findtext("pose","0 0 0 0 0 0"),6))))
+        if not visuals:raise ValueError("missing_complete_visual_mesh")
+        return visuals
+    try:
+        model_path=root/f"ros2_ws/src/uav_tracking_bringup/models/target_{class_name}/model.sdf"
+        world_path=trial/"configuration/runtime_world.sdf"
+        bind(model_path);bind(world_path)
+        model=ET.parse(model_path).getroot().find("model")
+        declared=signature(model,template=True)
+        models_root=root/"ros2_ws/src/uav_tracking_bringup/models"
+        for uri,_,_ in declared:
+            path=models_root/uri[8:]
+            if not path.resolve().is_relative_to(models_root.resolve()):raise ValueError("mesh_outside_declared_resources")
+            bind(path)
+            if path.suffix.lower()==".dae":
+                asset=ET.parse(path).getroot()
+                forbidden={"instance_controller","library_animations","library_animation_clips","profile_GLSL","profile_CG"}
+                if any(node.tag.rsplit("}",1)[-1] in forbidden for node in asset.iter()):raise ValueError("animated_or_shader_deformed_mesh")
+            elif path.suffix.lower()==".obj":
+                for line in path.read_text(encoding="utf-8",errors="strict").splitlines():
+                    if line.startswith("mtllib "):
+                        material=path.parent/line.split(maxsplit=1)[1]
+                        if not material.resolve().is_relative_to(models_root.resolve()):raise ValueError("material_outside_declared_resources")
+                        bind(material)
+                        if any(row.lstrip().split(maxsplit=1)[0].lower() in {"disp","map_disp"}
+                               for row in material.read_text(encoding="utf-8").splitlines() if row.strip()):
+                            raise ValueError("unsupported_displacement_material")
+            else:raise ValueError("unsupported_static_mesh_format")
+        world=ET.parse(world_path).getroot().find("world")
+        if (world is None or world.findall(".//actor")
+                or len(world.findall(".//model"))!=len(world.findall("model"))
+                or len(world.findall(".//include"))!=len(world.findall("include"))):
+            raise ValueError("unsupported_rendered_scene")
+        actors={item.get("name"):item for item in world.findall("model")}
+        if set(actors)!=set(expected)|{"ground","vision_shutter"} or len(actors)!=len(world.findall("model")):
+            raise ValueError("unexpected_or_missing_rendered_scene_actor")
+        includes=world.findall("include")
+        if (len(includes)!=1 or includes[0].findtext("name")!="stage1_uav"
+                or includes[0].findtext("uri") not in {"model://x500_stage1","model://x500_stage3"}
+                or any(child.tag not in {"name","uri","pose"} for child in includes[0])
+                or not np.array_equal(numbers(includes[0].findtext("pose",""),6),[0,0,.25,0,0,0])):
+            raise ValueError("unsupported_sensor_host_scene")
+        lights=world.findall("light")
+        if len(lights)!=1 or lights[0].get("name")!="sun" or lights[0].get("type")!="directional":
+            raise ValueError("unsupported_scene_lighting")
+        for identity in expected:
+            if signature(actors[identity])!=declared:raise ValueError("rendered_actor_visual_differs_from_declared_mesh")
+        ground=actors["ground"]
+        if (ground.findtext("static")!="true" or np.any(numbers(ground.findtext("pose","0 0 0 0 0 0"),6)!=0)
+                or len(ground.findall("link"))!=1 or len(ground.findall(".//visual"))!=1
+                or any(ground.findall(".//"+tag) for tag in ("plugin","frame","joint"))
+                or any(np.any(numbers(pose.text,6)!=0) or pose.get("relative_to") for pose in ground.findall(".//pose"))
+                or any(visual.find("geometry/plane") is None
+                       or not np.array_equal(numbers(visual.findtext("geometry/plane/normal",""),3),[0,0,1])
+                       for visual in ground.findall(".//visual"))):
+            raise ValueError("unsupported_ground_occluder")
+        shutter=actors["vision_shutter"]
+        if (shutter.findtext("static")!="true" or len(shutter.findall("link"))!=1
+                or len(shutter.findall(".//visual"))!=1 or shutter.findall(".//plugin")
+                or any(shutter.findall(".//"+tag) for tag in ("frame","joint"))
+                or not np.array_equal(numbers(shutter.findtext("pose",""),6),[0,0,-50,0,0,0])
+                or not np.array_equal(numbers(shutter.findtext(".//visual/geometry/box/size",""),3),[.05,3,3])
+                or any(np.any(numbers(pose.text,6)!=0) or pose.get("relative_to")
+                       for link in shutter.findall("link") for pose in link.findall(".//pose"))):
+            raise ValueError("unsupported_external_shutter_geometry")
+        audit.update(supported=True,closed_scene_occluders_complete=True)
+    except (OSError,ValueError,TypeError,AttributeError,ET.ParseError) as error:
+        audit["reason"]=str(error)
+    return audit
+
+
+def front_projection_evidence(class_name,expected_ids,gt,timestamp,*,camera_complete,source_exact,asset_audit,source_time_audit=None):
+    return {"schema_version":1,"class_name":class_name,"source_image_s":timestamp,
+            "depth_coordinate":"camera_optical_z_m","mesh_geometry":"complete_static_render_mesh",
+            "expected_actor_ids":list(expected_ids),"independent_camera_geometry_complete":bool(camera_complete),
+            "all_expected_actors_projected":len(gt)==len(expected_ids) and {item["id"] for item in gt}==set(expected_ids),
+            "source_time_geometry_exact":bool(source_exact),"static_mesh_projection_supported":asset_audit.get("supported") is True,
+            "closed_scene_occluders_complete":asset_audit.get("closed_scene_occluders_complete") is True,
+            "static_asset_audit":asset_audit,"source_time_audit":source_time_audit}
 
 
 def evaluation_source_provenance():
@@ -53,8 +212,12 @@ def dynamic_camera_pose(timestamp,vehicle,base_links,camera_links,camera_tf):
     map->base_link TF/PX4 odometry and command angles never enter this path.
     """
     try:
-        poses=[interpolate_pose(vehicle,timestamp),bracketed_local_pose(base_links,timestamp),
-               bracketed_local_pose(camera_links,timestamp),bracketed_local_pose(camera_tf,timestamp)]
+        # When exact independent samples exist, these actual samples must
+        # drive projection; the bracketed feedback TF remains a cross-check.
+        poses=[exact_source_pose(vehicle,timestamp) or interpolate_pose(vehicle,timestamp),
+               exact_source_pose(base_links,timestamp) or bracketed_local_pose(base_links,timestamp),
+               exact_source_pose(camera_links,timestamp) or bracketed_local_pose(camera_links,timestamp),
+               bracketed_local_pose(camera_tf,timestamp)]
     except (TypeError,ValueError):return None,{"status":"UNKNOWN","reason":"invalid_dynamic_camera_geometry"}
     names=("vehicle_gt","physical_base_link_gt","physical_camera_link_gt","feedback_camera_tf")
     missing=[name for name,pose in zip(names,poses) if pose is None]
@@ -105,6 +268,7 @@ def build_identity_frames(diagnostics,track_snapshots,gt_at,*,selections=None,sh
         frame={"time_s":timestamp,"gt":gt,"pred":fresh,"visible_geometry_eligible":visible,
                "acquisition_s":timestamp,"shutter_guard":in_shutter,"truth_complete":truth_complete,"truth_reason":truth.get("reason"),"target_uuid":uuid}
         if truth.get("camera_geometry") is not None:frame["camera_geometry"]=truth["camera_geometry"]
+        if truth.get("front_visibility_evidence") is not None:frame["front_visibility_evidence"]=truth["front_visibility_evidence"]
         if uuid and uuid not in tasks:
             request=selection_by_uuid.get(uuid)
             selection_overlap=None
@@ -120,7 +284,8 @@ def build_identity_frames(diagnostics,track_snapshots,gt_at,*,selections=None,sh
             # relabel an initially wrong association as the intended actor.
             matching=physical_identity_match(request["bbox"] if request else None,source_truth.get("gt",[]),
                 class_name=request.get("class_name", "") if request else "",fresh=valid_source,
-                externally_occluded=source_occluded if source_truth.get("truth_complete",True) else None)
+                externally_occluded=source_occluded if source_truth.get("truth_complete",True) else None,
+                front_visibility_evidence=source_truth.get("front_visibility_evidence"))
             if not source_truth.get("truth_complete",True):matching["reason"]="incomplete_independent_ground_truth"
             corroborated=bool(valid_source)
             tasks[uuid]={"first_fresh_image_s":timestamp,"initial_track_id":track_id,
@@ -135,7 +300,8 @@ def build_identity_frames(diagnostics,track_snapshots,gt_at,*,selections=None,sh
                 matching={"physical_id":None,"status":"unknown","reason":"no_fresh_selected_detection"}
             else:
                 matching=physical_identity_match(selected["bbox"],gt,class_name=selected["class_name"],fresh=True,
-                                                 externally_occluded=in_shutter if truth_complete else None)
+                    externally_occluded=in_shutter if truth_complete else None,
+                    front_visibility_evidence=truth.get("front_visibility_evidence"))
                 if not truth_complete:matching["reason"]="incomplete_independent_ground_truth"
             physical=matching["physical_id"]
             if expected is None:
@@ -180,7 +346,8 @@ def task_time_identity(selected_rows, requests, confirmations, clock_times, gt_a
     observations in its cell so resampling cannot hide a brief wrong actor.
     """
     period=.1;shutters=shutters or [];lifecycle=lifecycle or []
-    result={"schema_version":1,"coverage_basis":"fixed_10hz_request_to_recorded_clock_end",
+    result={"schema_version":1,"physical_match_rule_revision":FRONT_VISIBILITY_RULE,
+            "coverage_basis":"fixed_10hz_request_to_recorded_clock_end",
             "sample_period_s":period,"interval":{"start_s":None,"end_s":None},
             "scheduled_samples":0,"correct":0,"wrong":0,"unknown":0,
             "known_coverage":None,"retention_lower_bound":None,"agreement_on_known_samples":None,
@@ -211,7 +378,8 @@ def task_time_identity(selected_rows, requests, confirmations, clock_times, gt_a
         occluded=any(w["start_s"]-1<=image_time<=(w["end_s"] or float("inf"))+1 for w in shutters) if valid_source else None
         matching=physical_identity_match(request.get("bbox"),truth.get("gt",[]),
             class_name=request.get("class_name",""),fresh=valid_source,
-            externally_occluded=occluded if truth.get("truth_complete",False) else None)
+            externally_occluded=occluded if truth.get("truth_complete",False) else None,
+            front_visibility_evidence=truth.get("front_visibility_evidence"))
         if not truth.get("truth_complete",False):matching["reason"]="missing_or_incomplete_request_source_truth"
         confirmed=[float(c["time_s"]) for c in confirmations if c.get("target_uuid")==uuid
                    and finite(c.get("time_s")) and request["time_s"]<=c["time_s"]<=end]
@@ -259,7 +427,10 @@ def task_time_identity(selected_rows, requests, confirmations, clock_times, gt_a
         result[outcome]+=1;task[outcome]+=1;task["scheduled_samples"]+=1
         if outcome=="unknown":reasons[reason]+=1
         result["timeline"].append({"time_s":left,"end_s":right,"target_uuid":active_uuid,
-            "outcome":outcome,"reason":reason,"identity_evidence_frames":len(rows)})
+            "outcome":outcome,"reason":reason,"identity_evidence_frames":len(rows),
+            "foreground_visibility_certificates":[{"source_image_s":row["time_s"],
+                "certificate":row["match"]["foreground_visibility_certificate"]} for row in rows
+                if row.get("match",{}).get("foreground_visibility_certificate") is not None]})
     for task in result["tasks"].values():
         n=task["scheduled_samples"]
         task["known_coverage"]=(task["correct"]+task["wrong"])/n if n else None
@@ -333,6 +504,7 @@ def main():
     vehicle=sorted(trajectories[key_for("stage1_uav")],key=lambda r:r["time_s"])
     targets={f"stage2_{args.target_class}_{i}":sorted(trajectories[key_for(f"stage2_{args.target_class}_{i}")],key=lambda r:r["time_s"]) for i in range(3)}
     points,mesh=target_mesh_points(ROOT/"ros2_ws/src/uav_tracking_bringup/models",args.target_class)
+    static_asset_audit=static_projection_asset_audit(ROOT,args.trial,args.target_class)
     for rows in [local_camera_tf,*physical_links.values()]:rows.sort(key=lambda row:row["time_s"])
     if dynamic:
         mount={"mode":"physical_gimbal_source_time","vehicle_model":"x500_stage3" if is_stage3 else args.vehicle_model,
@@ -352,7 +524,7 @@ def main():
         request["class_name"]=args.target_class
         request["image_stamp_s"]=matches[0]["image_stamp_s"] if len(matches)==1 else None
     def gt_at(timestamp):
-        pose=interpolate_pose(vehicle,timestamp)
+        pose=exact_source_pose(vehicle,timestamp) or interpolate_pose(vehicle,timestamp)
         if pose is None or camera is None:
             return {"gt":[],"all_fully_in_frame":False,"truth_complete":False,"reason":"missing_bracketed_camera_truth"}
         camera_geometry=None
@@ -363,8 +535,10 @@ def main():
         else:
             p,r=pose;camera_pose=(p+r@mount_p,r@mount_r)
         gt=[];complete=True;truth_complete=True
+        source_time_audit=projection_exact_time_audit(timestamp,vehicle,targets,
+            physical_links=physical_links if dynamic else None)
         for identity,trajectory in targets.items():
-            target=interpolate_pose(trajectory,timestamp)
+            target=exact_source_pose(trajectory,timestamp) or interpolate_pose(trajectory,timestamp)
             if target is None:
                 complete=False;truth_complete=False;continue
             projection=project_mesh(points,target,camera_pose,camera["intrinsics"],camera["width"],camera["height"])
@@ -375,7 +549,15 @@ def main():
                 complete=False
         overlaps=iou_matrix([g["bbox"] for g in gt],[g["bbox"] for g in gt])
         np.fill_diagonal(overlaps,0)
+        camera_complete=(all(np.isfinite(value).all() for value in camera_pose)
+                         and len(camera["intrinsics"])==4 and np.isfinite(camera["intrinsics"]).all()
+                         and camera["intrinsics"][0]>0 and camera["intrinsics"][1]>0
+                         and camera["width"]>0 and camera["height"]>0)
+        front=front_projection_evidence(args.target_class,targets,gt,timestamp,
+            camera_complete=camera_complete,source_exact=source_time_audit["complete"],asset_audit=static_asset_audit,
+            source_time_audit=source_time_audit)
         return {"gt":gt,"all_fully_in_frame":complete,"truth_complete":truth_complete,"overlap":bool(np.any(overlaps>.01)),
+                "front_visibility_evidence":front,
                 "reason":"static_mesh_projection_amodal","camera_geometry":camera_geometry}
     frames,tasks,selected,missing=build_identity_frames(diagnostics,snapshots,gt_at,selections=selections,shutters=shutters)
     confirmations=[event for event in telemetry if event.get("kind") in
@@ -398,10 +580,14 @@ def main():
                             "selected_physical_identity_all":selected_summary(task_rows),
                             "selected_physical_identity_unoccluded":selected_summary([r for r in task_rows if r["visible_geometry_eligible"]]),
                             "conservative_selected_identity":selected_identity_summary(task_rows)}
-    result={"schema_version":1,"evaluation_status":"RECORDED_WITH_EXPLICIT_UNKNOWN_INTERVALS","source_trial":str(args.trial.resolve()),"target_class":args.target_class,
+    result={"schema_version":1,"evaluation_revision":FRONT_VISIBILITY_RULE,
+            "evaluation_status":"RECORDED_WITH_EXPLICIT_UNKNOWN_INTERVALS","source_trial":str(args.trial.resolve()),"target_class":args.target_class,
             "evaluation_source":evaluation_source_provenance(),
             "inputs":{"counts":dict(counts),"storage":metadata,"command":[sys.executable,*sys.argv]},
             "camera":camera,"mount":mount,"mesh":mesh,"opportunities":len(frames),
+            "front_visibility_rule":{"revision":FRONT_VISIBILITY_RULE,"margin_m":FRONT_VISIBILITY_MARGIN_M,
+                "expected_actor_count":3,"exact_source_time_tolerance_s":1e-9,"static_asset_audit":static_asset_audit,
+                "scope":"Additional offline selected-identity evidence only; no runtime geometry/identity or MOT opportunity/subset changes"},
             "camera_geometry_status_counts":dict(Counter((frame.get("camera_geometry") or {}).get("status","FIXED_MOUNT") for frame in frames)),
             "missing_fresh_snapshot_opportunities":missing,"geometric_unoccluded_opportunities":len(visible),
             "tasks":task_results,"selected_physical_identity_all":selected_summary(selected),
@@ -411,7 +597,7 @@ def main():
             "selected_identity_timeline":selected,
             "label_protocol":"Exact-source-time independent static render mesh projection, Gazebo actor and camera GT. Physical-gimbal recordings use bracketed independent actual camera-link/vehicle GT cross-checked against bracketed local feedback TF, never a static mount or latest/command pose. Missing dynamic geometry remains unknown and in selected-task denominators; frames without complete independent GT are unscorable in MOT rather than invented empty-GT false positives. Full/amodal metrics are explicitly diagnostic. The unoccluded geometry subset requires all three targets fully in frame, no pair of GT boxes with IoU>.01, and outside +/-1s shutter guards. Independent visual review remains necessary to publish as visible detection labels.",
             "freshness_protocol":"Only non-projected track snapshots with matched=true count as detected tracks. Empty diagnostic frames remain in denominator; stale stored boxes cannot become true positives.",
-            "selected_identity_protocol":"Expected actor is established independently from the user's/test script's REQUEST box at its recorded source image_stamp_s, never from the tracker-selected box. Missing source time or uncertain request-to-GT mapping makes the task UNKNOWN. Each fresh selected track box is then independently compared against that expected actor. Physical matches require a unique full-in-frame IoU>=.5 candidate, no positive overlap with other same-class actors and no shutter guard. Ambiguous crossings are UNKNOWN. No nearest-3D shortcut, no UUID identity inference.",
+            "selected_identity_protocol":"Expected actor is established independently from the user's/test script's REQUEST box at its recorded source image_stamp_s, never from the tracker-selected box. Missing source time or uncertain request-to-GT mapping makes the task UNKNOWN. Each fresh selected track box is independently compared against that expected actor. Physical matches require a unique full-in-frame IoU>=.5 candidate and no shutter guard. Positive same-class GT-box overlap remains UNKNOWN unless all three expected rigid actor projections/depth bounds and exact-source vehicle/actor/physical-camera geometry exist and the entire chosen mesh is at least strictly 0.05 m in front of every overlapping actor in optical z. Unsupported assets, missing proof, near-plane geometry and overlapping depth intervals remain UNKNOWN. This sufficient static-scene proof is neither a nearest-depth actor choice nor runtime completeness evidence. No highest-IoU shortcut or UUID identity inference; MOT denominators/subsets are unchanged.",
             "metric_reference":"Portable HOTA/IDF1/CLEAR implementation validated against pinned official TrackEval formulas on 60 random 15-frame sequences, all 19 HOTA alpha values; see research_validation/trackeval_comparison.json"}
     if args.write_frames:result["frames"]=frames
     args.output.parent.mkdir(parents=True,exist_ok=True)

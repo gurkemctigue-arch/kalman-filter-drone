@@ -10,6 +10,7 @@ import unittest
 from unittest.mock import patch
 
 from tests import test_replay_evidence as replay_fixtures
+from tests import test_reliability_v4_summary as summary_fixtures
 
 ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location("v4_figure_fixture",ROOT/"scripts/build_reliability_v4_figures.py")
@@ -44,9 +45,10 @@ def summary(rows,*,formal=False,pairs=None):
 
 
 def paired(rows):
+    category=rows[0]["target_class"]
     by_id = {row["slot_id"]:row for row in rows};pairs = []
     for seed in (4,5):
-        left_id,right_id = f"person_stage1_position_seed{seed:03d}",f"person_stage1_velocity_seed{seed:03d}"
+        left_id,right_id = f"{category}_stage1_position_seed{seed:03d}",f"{category}_stage1_velocity_seed{seed:03d}"
         left,right = by_id[left_id],by_id[right_id]
         a,b = left["metrics"]["base_link_distance_rmse_m"],right["metrics"]["base_link_distance_rmse_m"]
         pairs.append({"seed":seed,"left_id":left_id,"right_id":right_id,"left_status":left["status"],"right_status":right["status"],
@@ -56,7 +58,7 @@ def paired(rows):
         values = [pair["difference"] for pair in pairs if pair["difference"] is not None and (subset == "all_finite_pairs" or pair["both_engineering_pass"])]
         stats[subset] = {"n_slots":2,"n":len(values),"n_missing":2-len(values),"mean":figures.statistics.mean(values) if values else None,
                          "ci95":[min(values),max(values)] if len(values)>1 else None,"ci_status":"FIXTURE_ONLY"}
-    return {"comparison":"stage1_position_minus_stage1_velocity","target_class":"person","difference_direction":"left_minus_right",
+    return {"comparison":"stage1_position_minus_stage1_velocity","target_class":category,"difference_direction":"left_minus_right",
             "planned_pairs_in_matrix":2,"formal_pairs_per_condition":10,"metrics":{"base_link_distance_rmse_m":{**stats,"pairs":pairs}}}
 
 
@@ -78,6 +80,23 @@ def replay_bundle(root):
                   evaluation_source={"configuration_sha256":replay.configuration_digest(config)},missing_or_invalid_inputs=[])
     path = root/"summary.json";write(path,result)
     return path,result
+
+
+def recovery_trial(*, invalid_timing=False):
+    row = trial(status="FAIL")
+    windows = [{"kind":"short","start_s":index,"end_s":index+.2,"recovery_after_open_s":latency,
+                "checks":{"identity_preserved_on_observed_recovery":identity}}
+               for index,(latency,identity) in enumerate(((.2,True),(.4,False),(.5,None),(None,None)))]
+    if invalid_timing:windows.append({"kind":"short","start_s":5.,"end_s":5.2})
+    reports = {"surface_flight":{"occlusions":windows},"navigation":{"windows":[
+        {"kind":"explicit_selection","start_s":0.,"end_s":1.,"first_measured_confirmation_after_request_s":.1,"confirmation_censored":False},
+        {"kind":"explicit_selection","start_s":1.,"end_s":2.,"first_measured_confirmation_after_request_s":None,"confirmation_censored":True},
+        {"kind":"explicit_selection","start_s":2.,"end_s":3.}]}}
+    metrics,row["recovery_evidence"] = summary_fixtures.summarizer.recovery_evidence(reports)
+    row["metrics"].update(metrics)
+    counts = summary_fixtures.summarizer.metric_sample_counts(reports)
+    row["metric_sample_counts"] = {name:counts[name] for name in metrics}
+    return row
 
 
 class FigureTests(unittest.TestCase):
@@ -162,6 +181,72 @@ class FigureTests(unittest.TestCase):
         self.assertEqual(center["source_error_samples"],45)
         self.assertIn("do not independently establish pixel-level occlusion",by_id["core_shutter_prediction"]["caption"])
 
+    def test_p95_overshoot_position_commands_and_operational_events_keep_units_denominators_and_original_failure(self):
+        row = recovery_trial()
+        row["metrics"].update(base_link_distance_p95_m=.8,base_link_height_p95_m=.3,kf_position_p95_m=.4,kf_velocity_p95_mps=.2,
+            base_link_distance_overshoot_m=0.,base_link_height_overshoot_m=.1,position_command_rate_rms_mps=.5,
+            position_command_second_difference_rms_mps2=.7)
+        data = figures.validate_summary(summary([row,trial(seed=5,status="PENDING",value=None)]))
+        specs,_ = figures.make_specs(data);by_id = {item["figure_id"]:item for item in specs}
+        self.assertIn("absolute-error",by_id["core_navigation_p95"]["metrics"][0][1])
+        self.assertIn("opposite-side",by_id["core_overshoot"]["metrics"][0][1])
+        self.assertIn("m/s)",by_id["core_position_command_variation"]["metrics"][0][1])
+        self.assertIn("m/s^2",by_id["core_position_command_variation"]["metrics"][1][1])
+        self.assertIn("not measured vehicle motion",by_id["core_position_command_variation"]["caption"])
+        rates = by_id["core_operational_recovery_fractions"]
+        selected = next(item for item in rates["rows"] if item["metric"] == "short_same_track_task_observed_recovery_fraction" and item["seed"] == 4)
+        self.assertEqual((selected["value"],selected["operational_fraction_numerator"],selected["operational_fraction_denominator"]),(.25,1,4))
+        self.assertEqual(selected["status"],"FAIL")
+        timing = by_id["core_operational_recovery_time"]["rows"][0]
+        self.assertEqual((timing["source_error_samples"],timing["source_window_samples"]),(None,1))
+        self.assertIn("not independent physical identity or ReID",rates["caption"])
+        self.assertEqual(sum(item["count"] for item in by_id["core_short_requested_shutter_outcomes"]["rows"]),4)
+        self.assertEqual(sum(item["count"] for item in by_id["core_explicit_selection_outcomes"]["rows"]),3)
+        self.assertEqual(sum(item["count"] for item in by_id["core_recovery_source_status"]["rows"] if item["category"] == "NOT_IN_INPUT_SUMMARY"),2)
+        self.assertTrue(all(item["trials_with_missing_source"] == 1 for item in by_id["core_explicit_selection_outcomes"]["rows"]))
+
+    def test_recovery_missing_timing_censoring_and_fraction_denominators_cannot_turn_into_zero_or_trial_counts(self):
+        row = recovery_trial(invalid_timing=True)
+        self.assertIsNone(row["metrics"]["short_post_open_measured_recovery_observed_fraction"])
+        self.assertEqual(row["recovery_evidence"]["short_requested_shutter"]["missing_or_invalid_timing_windows"],1)
+        data = figures.validate_summary(summary([row]));specs,_ = figures.make_specs(data)
+        recovery = next(item for item in specs if item["figure_id"] == "core_operational_recovery_fractions")
+        self.assertEqual(len(recovery["metrics"]),1)
+        self.assertEqual(recovery["metrics"][0][0],"short_same_track_task_recovery_fraction_given_known_recovery")
+        for defect in ("fill_missing_fraction","wrong_window_denominator","time_sample_is_trial_n","fraction_over_one","censored_time_as_zero"):
+            bad = deepcopy(row)
+            if defect == "fill_missing_fraction":bad["metrics"]["short_post_open_measured_recovery_observed_fraction"] = 0.
+            elif defect == "wrong_window_denominator":bad["recovery_evidence"]["explicit_selection"]["classified_confirmation_windows"] = 3
+            elif defect == "time_sample_is_trial_n":bad["metric_sample_counts"]["short_same_track_task_recovery_mean_s"] = 10
+            elif defect == "fraction_over_one":bad["metrics"]["explicit_selection_observed_confirmation_fraction"] = 1.2
+            else:
+                metric = "explicit_selection_observed_confirmation_mean_s"
+                bad["recovery_evidence"]["explicit_selection"].update(observed_confirmation_windows=0,
+                    confirmation_right_censored_windows=2,classified_confirmation_windows=2)
+                bad["metrics"].update(explicit_selection_observed_confirmation_fraction=0.,explicit_selection_observed_confirmation_p95_s=None)
+                bad["metrics"][metric] = 0.
+            with self.subTest(defect=defect),self.assertRaises(ValueError):figures.validate_summary(summary([bad]))
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp);row = trial();row["metrics"]["base_link_distance_p95_m"] = .7
+            data = summary([row]);data.pop("evidence_scope");data["implementation_sources"] = {"scripts/summarize_reliability_v4.py":"0"*64}
+            path = root/"old_summary.json";write(path,data)
+            with self.assertRaisesRegex(ValueError,"older signed-p95"):
+                figures.build(path,root/"out",only=["core_navigation_p95"])
+            self.assertFalse((root/"out").exists())
+
+    def test_tiny_operational_window_chart_and_csv_retain_missing_source_censoring_and_all_windows(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp);path = root/"summary.json";write(path,summary([recovery_trial(),trial(seed=5,status="PENDING",value=None)]))
+            manifest = figures.build(path,root/"out",only=["core_short_requested_shutter_outcomes"],fixture_only=True)
+            self.assertEqual(len(manifest["figures"]),3)
+            svg = (root/"out/core_short_requested_shutter_outcomes.svg").read_text(encoding="utf-8")
+            self.assertIn("FIXTURE_ONLY",svg);self.assertIn("not independent trials",svg)
+            with (root/"out/all_operational_recovery_evidence.csv").open(encoding="utf-8-sig") as stream:evidence = list(csv.DictReader(stream))
+            with (root/"out/all_operational_recovery_windows.csv").open(encoding="utf-8-sig") as stream:windows = list(csv.DictReader(stream))
+            self.assertEqual(len(evidence),4);self.assertEqual(len(windows),7)
+            self.assertTrue(any(item["source_status"] == "NOT_IN_INPUT_SUMMARY" and item["requested_windows"] == "" for item in evidence))
+            self.assertTrue(any(item["window_status"] == "RIGHT_CENSORED_NOT_FAILURE" and item["status"] == "FAIL" for item in windows))
+
     def test_pending_replay_never_opens_unbound_trial_files(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp)/"summary.json";write(path,{"evaluation_status":"PENDING_EXPORT_AND_ONLINE_EQUIVALENCE","complete_verified_matrix":False})
@@ -232,22 +317,42 @@ class FigureTests(unittest.TestCase):
             self.assertIn("FIXTURE_ONLY",(root/"out"/"core_verdicts.svg").read_text(encoding="utf-8"))
 
     def test_tiny_numeric_and_pair_renderers_keep_failed_and_zero_pair_subsets_visible(self):
+        from matplotlib.figure import Figure
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             rows = [trial(group=group,seed=seed,status="FAIL",value=value) for group,seed,value in
                     (("stage1_position",4,.8),("stage1_velocity",4,.4),("stage1_position",5,1.1),("stage1_velocity",5,.5))]
-            data = summary(rows,pairs=[paired(rows)])
+            passing = [trial(category="car",group=group,seed=seed,status="PASS",value=value)
+                       for group,seed,value in (("stage1_position",4,.6),("stage1_velocity",4,.3),
+                                               ("stage1_position",5,.7),("stage1_velocity",5,.4))]
+            contrast=paired(passing)
+            data = summary(rows+passing,pairs=[paired(rows),contrast])
             specs,_ = figures.make_specs(figures.validate_summary(data))
             selected = [item for item in specs if item["figure_id"] in {"core_navigation_errors","core_paired_navigation_errors"}]
             self.assertEqual(len(selected),2)
+            original_save=Figure.savefig;inspected=[]
+            def inspect_and_save(fig,path,**kwargs):
+                if Path(path).suffix==".png":
+                    fig.canvas.draw()
+                    for axis in fig.axes:
+                        if not axis.get_visible():continue
+                        for collection in axis.collections:
+                            radius=max(collection.get_sizes(),default=0.)**.5*fig.dpi/144
+                            for _,y in axis.transData.transform(collection.get_offsets()):
+                                self.assertGreater(y-radius,axis.bbox.y0)
+                                self.assertLess(y+radius,axis.bbox.y1)
+                    inspected.append(Path(path).name)
+                return original_save(fig,path,**kwargs)
             for item in selected:
-                paths = figures.render(item,root)
+                with patch.object(Figure,"savefig",autospec=True,side_effect=inspect_and_save):
+                    paths = figures.render(item,root)
                 self.assertEqual(len(paths),3)
                 svg = next(path for path in paths if path.suffix == ".svg").read_text(encoding="utf-8")
                 self.assertIn("FIXTURE_ONLY",svg)
                 if item["kind"] == "paired":
                     self.assertIn("n=0/10",svg)
                     self.assertIn("CI absent",svg)
+            self.assertEqual(len(inspected),2)
 
 
 if __name__ == "__main__":unittest.main()

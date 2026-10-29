@@ -40,8 +40,11 @@ def stage2_motion_profile(elapsed_s: float, *, target_class: str = "person",
                           ) -> tuple[tuple[float, float], ...]:
     """Return body-forward speed and yaw rate for each physical actor.
 
-    ``crossing`` exchanges the lateral lanes of two depth-separated actors;
-    their image projections can cross the selected centre actor. ``ambiguity``
+    ``crossing`` performs one smooth lateral lane exchange, then keeps the
+    actors separated; their images can cross the selected centre actor.
+    The 18 s quintic duration matches the former sinusoid's peak lateral speed
+    (17.905 s rounded), and ends with zero lateral speed and acceleration.
+    ``ambiguity``
     brings actor 1 alongside actor 0, holds for one second, then separates.
     This intentionally tests safe suspension, not appearance-based ReID.
     Actors have no ground-contact dynamics. VelocityControl applies body-frame
@@ -65,9 +68,9 @@ def stage2_motion_profile(elapsed_s: float, *, target_class: str = "person",
         actor_vx, actor_vy, actor_ax, actor_ay = vx, 0.0, 0.0, 0.0
         if t > 0 and scenario_kind == "crossing":
             sign = 1.0 if index == 1 else -1.0
-            omega = 2.0 * math.pi / 30.0
-            actor_vy = sign * amplitude * omega * math.sin(omega * t)
-            actor_ay = sign * amplitude * omega ** 2 * math.cos(omega * t)
+            derivative, second = _smoothstep_derivatives(t, 18.0)
+            actor_vy = sign * 2.0 * amplitude * derivative
+            actor_ay = sign * 2.0 * amplitude * second
         elif t > 0 and scenario_kind == "ambiguity" and index == 1:
             dx = (3.0 if target_class == "person" else 6.0) - 0.2
             dy = amplitude - 0.05
@@ -106,8 +109,10 @@ class Stage2Motion(Node):
         self._speed = float(self.get_parameter("speed_mps").value)
         stage2_motion_profile(0, target_class=self._class, scenario_kind=self._kind, speed_mps=self._speed)
         self._timeline = MotionTimeline()
-        self._publishers = [self.create_publisher(Twist, f"/scenario/target_{index}/cmd_vel", 10)
-                            for index in range(3)]
+        # Node._publishers is rclpy's registry for every message type. Keep
+        # motion commands separate so stop() cannot publish Twist to events.
+        self._velocity_publishers = [self.create_publisher(Twist, f"/scenario/target_{index}/cmd_vel", 10)
+                                     for index in range(3)]
         self._events = self.create_publisher(String, "/scenario/stage2_profile", 10)
         self.create_subscription(String, "/tracking/flight_phase", self._on_phase, 10)
         self.create_timer(0.05, self._tick)
@@ -123,7 +128,7 @@ class Stage2Motion(Node):
                    else max(0.0, self._now() - self._timeline.started_s))
         commands = stage2_motion_profile(elapsed, target_class=self._class,
                                          scenario_kind=self._kind, speed_mps=self._speed)
-        for publisher, (speed, yaw_rate) in zip(self._publishers, commands):
+        for publisher, (speed, yaw_rate) in zip(self._velocity_publishers, commands):
             command = Twist()
             command.linear.x, command.angular.z = speed, yaw_rate
             publisher.publish(command)
@@ -134,7 +139,7 @@ class Stage2Motion(Node):
         self._events.publish(event)
 
     def stop(self):
-        for publisher in self._publishers:
+        for publisher in self._velocity_publishers:
             publisher.publish(Twist())
 
 

@@ -167,6 +167,10 @@ class ReliabilityReportTests(unittest.TestCase):
         text = builder.render_markdown(package["documents"]["report"])
         for phrase in ("m/s²", "rad/s²", "仿真s", "short_requested_shutter请求时间窗", "不能单独证明", "没有适用组"):
             self.assertIn(phrase, text)
+        for phrase in ("物理距离95%绝对误差分位数", "物理高度反向超调", "导航速度误差p95", "位置设定值二阶差分",
+                       "操作层恢复", "检查已知分母", "右删失不是失败", "初始选择和重新选择",
+                       "身份unknown样本数", "不是机体实测速度/加速度"):
+            self.assertIn(phrase, text)
 
     def test_detection_review_cache_and_static_subset_metrics_are_source_bound(self):
         fixture, report, review, _ = self.detection_fixture()

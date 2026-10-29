@@ -80,6 +80,54 @@ class FollowControllerTests(unittest.TestCase):
         self.assertLess(abs(float(distance_error)), 1.0)
         self.assertGreater(float(velocity[0]), 0.4)
 
+    def test_position_feedback_removes_moving_target_lag_for_different_inner_gains(self) -> None:
+        # Independent position plants need a reference lead to move. Closing
+        # feedback on desired-reference leaves a permanent v/K_inner error.
+        dt = 0.05
+        for inner_gain in (0.8, 1.0, 1.5):
+            with self.subTest(inner_gain=inner_gain):
+                controller = FollowController(config=FollowConfig(
+                    mode="position", slew_position=True, desired_distance=5.0,
+                    position_gain=0.6, max_speed=2.0, max_acceleration=3.0,
+                    max_position_lead=2.0))
+                vehicle_position = np.zeros(3)
+                tail_errors = []
+                for step in range(800):
+                    target_x = 8.0 + 0.5 * step * dt
+                    command = controller.update(
+                        TargetState(position=[target_x, 0, 0], velocity=[0.5, 0, 0]),
+                        VehicleState(position=vehicle_position), dt=dt)
+                    self.assertIsNone(command.velocity)
+                    self.assertLessEqual(float(np.linalg.norm(command.position - vehicle_position)), 2.0 + 1e-12)
+                    velocity = np.clip(inner_gain * (command.position - vehicle_position), -2.0, 2.0)
+                    vehicle_position += velocity * dt
+                    if step >= 600:
+                        tail_errors.append(target_x + 0.5 * dt - vehicle_position[0] - 5.0)
+                self.assertLess(float(np.sqrt(np.mean(np.square(tail_errors)))), 0.05)
+
+    def test_position_initial_gap_closes_with_delayed_inner_velocity(self) -> None:
+        # This independent illustrative plant cannot replace a real PX4 flight.
+        controller = FollowController(config=FollowConfig(
+            mode="position", slew_position=True, desired_distance=5.0,
+            position_gain=0.6, max_speed=2.0, max_acceleration=3.0,
+            max_position_lead=2.0))
+        dt, inner_gain, velocity_tau = 0.05, 0.95, 0.25
+        position, velocity = np.zeros(3), np.zeros(3)
+        errors, speeds = [], []
+        for step in range(275):
+            target_x = 8.2 + 0.5 * step * dt
+            command = controller.update(
+                TargetState(position=[target_x, 0, 0], velocity=[0.5, 0, 0]),
+                VehicleState(position=position, velocity=velocity), dt=dt)
+            requested = np.clip(inner_gain * (command.position - position), -2.0, 2.0)
+            velocity += np.clip((requested - velocity) / velocity_tau, -3.0, 3.0) * dt
+            position += velocity * dt
+            errors.append(target_x + 0.5 * dt - position[0] - 5.0)
+            speeds.append(float(np.linalg.norm(velocity)))
+        self.assertLess(max(abs(value) for value in errors[-60:]), 0.5)
+        self.assertLess(abs(errors[-1]), 0.1)
+        self.assertLess(max(speeds), 2.0)
+
     def test_position_restart_discards_reference_from_before_loss(self) -> None:
         controller = FollowController(config=FollowConfig(
             mode="position", slew_position=True, max_speed=1.5, max_acceleration=1.0))

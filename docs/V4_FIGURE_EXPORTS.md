@@ -26,3 +26,9 @@ python scripts/build_reliability_v4_figures.py \
 `manifest.json`合同为schema1、`kind: RELIABILITY_V4_FIGURES`，包含 `summary_path/summary_sha256`、可选 `replay_summary_path/replay_summary_sha256`、`figures`、`csv`、`pending`、`omitted_figure_ids`、`cohorts`、`input_sources`、`source_hashes`。每张图项包含 `figure_id/path/sha256/bytes/format/caption/scope/source_role`；同figure_id对应PNG/PDF/SVG三项。报告/Word流水线逐件核验后可嵌PNG，同时保留矢量文件与原始CSV来源。最终manifest最后写出，不代表飞行验收或项目完成。
 
 轻量专项：`python -B -m unittest tests.test_reliability_v4_figures -q`。测试使用小型合成JSON，只渲染少量明确的fixture小图以核对状态/数值/配对三种图型；不读取真实留出数据、不生成正式论文成果。
+
+新增图族展示物理距离/高度的95%绝对误差分位数、KF误差范数p95及移动任务反侧超调；前两项必须先由当前源码绑定的summary重建，旧signed-p95摘要不能直接改标绝对误差。位置模式另展示设定点一阶变化率RMS（m/s）与二阶差分RMS（m/s²）。所有命令变化指标包含有意跟随/重选瞬态，不是机体实测运动或纯噪声。每族也可使用原summary的逐seed配对差与条件区间。
+
+操作层恢复图保留三种不同分母的短请求窗观察比例、仅同track_id与target_uuid恢复成功时的条件时间，以及初始选框/重选合并的显式确认比例和条件时间；均不称物理重捕获或ReID。缺失/非法原时间字段会使两项全短窗观察比例保持null；显式null只表示未观察/无时间，不能作为失败。条件已知恢复率与有效成功时间仍可单独展示。确认右删失、身份检查未知、未观察/无时间、缺失/不一致分别保留。
+
+独立计数图分别展示每组可读来源的池化请求窗结局及全部计划飞行的来源状态，不能把窗口数当独立试验数。始终导出 `all_operational_recovery_evidence.csv` 与 `all_operational_recovery_windows.csv`，包含原飞行状态、逐窗状态、所有窗口分母及 `missing_or_invalid_timing_windows`。逐飞行指标CSV的恢复时间使用 `source_window_samples`；`source_error_samples`在这些行为空，比例的实际分子/分母另列，不用trial n替代。

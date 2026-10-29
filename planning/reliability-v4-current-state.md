@@ -1,5 +1,7 @@
 # 当前工作交接（持续开发，非验收报告）
 
+最新检查点：2026-10-29，Humble14已完成源复制冻结、四包构建（10.2s）、真实模块/ament导入隔离及Linux全套检查：1148项，33.189s，OK（2项跳过，平台/专属文档运行时原因单列）。正在开始两类新clean与完整核心开发验证，尚不能声明14飞行通过。总505文件源manifest SHA256为`7d17744b9957233a80b1a168cb467d13a44e14a196665e916f5686d7cde55ce6`，协议SHA256为`7264a01e823339aa8d4adfe006353a6b2184e36d4e359a40acdcd6daeeca847b`。相对13在线变化恰为预期9路径；新增发布器生命周期及模型资源回归已包含。13另存`ABANDONED_DEVELOPMENT_PLAN_REASON.json`，记录3个已尝试与9个待执行槽及原文件hash，原计划/终态未改。B的嵌套遮挡物证据漏洞已最小修复，38项身份专项及独立复核通过；图表14项专项和端点小图目视检查通过。这些均不能代替新飞行证据。正式280次仍未登记或执行，留出1000–1009未使用。report_repair持唯一重窗口，串行完成两类clean和12格核心开发；轻量文档与只读源码工作可并行。最近公开main仍为`b2c46d6032d69f5c4dee5ce9289f75739b429934`，当前正在准备基于14全套检查的新开发检查点。
+
 用户要求继续直到三阶段、重复实验与交付完成，且已授权GitHub推送。不要将此文件或少量探针当作项目已完成。最近公开开发commit为 `f965c4aa76d1c8bdad25f01795a31d176bd9dde0`；该提交后继续进行收尾修复与文档/图表流水线开发。
 
 ## 固定边界
@@ -105,3 +107,30 @@
 - 12car clean20s：runner0；全部ROS子进程正常退出，infra.stop=false且reasons=[]；raw/timing/adapted3844全部配对，source/native/bag/render均PASS。最后Clock39.000与target/vehicle GT同戳，导航210/210真值100%；base_link距离/高度RMSE0.6059/0.2633m，稳定时间2.6/2.4s且到末端。
 - 两clean没有设计遮挡，surface的INCOMPLETE不能改为完整安全PASS；它们只关闭基础设施与无遮挡物理跟随关口。report现按既定授权创建同源seed004两类×六组12格不可变PROBE计划，随后逐槽执行；正式1000–1009仍未使用。
 - 新图表、文档、检测审核接入、定标和实际开发关口生成器已完成对应fixture/只读review；main准备下一开发checkpoint。Linux Node24已安装至专属/root/uav_document_tools（官方SHA下载，纯JS docx实测可用），Word隐藏独立实例转PDF脚本就绪，尚未生成正式文档。
+
+## 新公开检查点与首个完整遮挡任务
+
+- 已提交并推送`b2c46d6032d69f5c4dee5ce9289f75739b429934`，远端main经ls-remote核对一致，发布时工作树clean，60个已审查路径，未上传results/权重/私有runtime manifest，敏感扫描和diffcheck通过。未确认Actions状态。
+- 12核心PROBE计划位于`results/frozen_fullplan_v4_humble12/reliability_v4_humble12_probe_seed004_matrix/plan.json`，摘要`fa33dfd4fbf837edb4c1a8e0f8f736e29e34518b47857612b1524607672160e8`。首槽`person_stage1_velocity_seed004`实际45s+短/长遮挡+显式重选完成，flight0、source6339三流全配对、native/surface PASS、457/457真值、nav有效覆盖0.8621444、base_link距离/高度RMSE0.81966945/0.17127929m、稳定时间35.1/32.1s且到末端、末Clock63.948全部GT同戳、无残留或runtime错误。
+- 此槽原终态仍为INFRASTRUCTURE_ERROR：旧`research_failures.py`只认acceptance.result/result，误把三个实际合法的evaluation_status报告识别为MISSING_OR_INVALID。完整原记录保留，剩余11槽没有推进，不将该infra_stop=true槽强行充开发readiness或定标来源。
+- 已定方案：精确修纯离线分类器识别全部实际source/native/navigation/physical/legacy report schema与状态，未知或缺证仍停止。将确实仅飞行后使用的research_failures模块显式列OFFLINE_HELPERS。新13冻结/构建/隔离/全suite，证明所有实际飞行关键源与12一致后无需重飞两clean；前瞻新建同seed004两类六组12格，定标固定其两个stage1_velocity。旧12首槽和未执行槽另存放弃说明，绝不改plan/原终态。
+- 原计划两项安全触发不在核心/扩展矩阵：auto_unique三个候选的歧义悬停、locked_target刻意几何多解的歧义。github代理正在给出最终同源两类×两情形共4条额外开发安全probe的严格命令，独立于120/160分母，不读取留出。
+
+## 13 新核心开发与真实汇总接线
+
+- 13四包/隔离完成，Linux1115项检查通过（2项跳过，33.727s）。`freeze_validation/origin_humble12_source_classification.json`明确记录238个飞行关键源/世界/模型全部与12相同，协议也相同；差异仅为具名离线工具和编排。两skip另存`unittest_skip_explanation.json`，分别因Linux环境无Windows PowerShell、普通flight/test PATH没有独立安装的Node/docx，未声称真实文档渲染完成。
+- 新13固定seed004核心12格计划SHA256：`fb4b797400ffe01c9bfc111dc816cfbdef01368d68aeeabb276d3f4680ab4c20`。首`person_stage1_velocity_seed004`已完成：flight0、infra_stop=false、source6334三流全部配对、native/surface PASS，nav/GT461/461、有效覆盖0.8590021692、base_link距离/高度RMSE0.8613766429/0.1746204915m、稳定35.2/32.2s且至末端、全部GT与最终Clock63.896同戳、无残留。短窗同track/UUID恢复0.116s；长遮挡悬停/制动及禁止自行恢复、显式重选后持续跟踪通过。原终态EVALUATION_PENDING仅因性能门尚未登记，记录不可改。
+- root使用当前summary源码只读新计划，生成`results/development_summary_v4_humble13_snapshot01`（1.0s，1终态/1运行/10待）。首槽无report issues；绝对距离/高度p95为2.3584190565/0.2741565643m，8项操作层恢复/显式确认指标已真实接入，显式确认0.096s。位置模式命令变化在velocity槽为null符合模式定义。此开发快照不能充正式结果、定标或最终门。
+- summary/report各21项专项通过，新增恢复完整分母/未知/右删失、绝对p95与位置命令变化。新版图表14项专项通过；真实图仍待数据，夹具图不能充实证。代理正在整理歧义安全与检测审核的精确执行卡。
+- 已前瞻固定最终可视交付选源：`planning/reliability-v4-delivery-selections.json`规定正式seed1000两类六组12条完整演示、两类stage1_velocity同seed检测审核。失败/缺片不得替换成功种子，完整机会与排除保留；检测仅是独立审核完全可见的仿真子集。
+- 首完整任务实际227.44墙秒，正式280据此约18小时，剩余总体估算已向用户改为22–30小时，后续按真实吞吐更新。D约169.5GiB空闲；首槽bag458.42MiB、telemetry35.83MiB，后续逐组计量容量并为临时spool保留余量。C仅约0.7GiB、E约9.65GiB，不能假设其他盘可容纳正式数据。旧bag/失败证据不删。
+
+## 13 实质问题、旁路诊断与14候选
+
+- 第2槽person_stage1_position完成但真实距离性能不足：RMSE1.4536511m，末误差0.8332m且距离稳定右删失；高度RMSE0.2398641m、source/native/surface均通过。根因包括参考发生器仅调节`desired-previous_reference`而没有闭合实际机位误差，造成纯位置内环恒速滞后；每轴1m参考领先量也限制重选后追赶。root已改主树为`desired-vehicle.position`反馈、仍积分previous，六类配置与ROS默认每轴领先量改为[2,2,.5]；速度/加速度/时效/验收门不变。消息级无效输入出口加portable.reset。纯控制12项、消息边界10项通过，两代理独立审查无阻断；真实飞行仍待14。详见`docs/V4_POSITION_REFERENCE_CONTROL.md`。
+- 第3槽person_stage2_crossing飞行完整但stop失败，原终态INFRASTRUCTURE_ERROR：Stage2Motion自定义`_publishers`与rclpy注册列表冲突，stop误向String发布器发送Twist。其他ROS节点正常退出。主树改名`_velocity_publishers`，真实Humble两类别×SIGINT/SIGTERM共4项验证退出0、三路末命令为零、无traceback；冻结13不改。
+- 原13三槽和剩余9个PENDING均保留。未在原trial补写评价，而是新建矩阵diagnostics旁路读取原包，并核原trial/plan/slot前后SHA一致。第一次暴露离线模型root硬编码旧PX4路径；主树两个helper现显式解析STAGE1_PX4_ROOT、记录实际SDF路径/SHA并拒绝缺声明资源fallback，真实gz展开与11项相关回归通过。诊断revision01漏复制依赖mesh失败也保留；revision02复制完整模型后完成。
+- 13crossing的revision02诊断：source/native通过；surface与指定个体持续跟踪失败，但禁止自动换人/预测时效/长丢悬停均通过。独立物理身份固定REQUEST到完整Clock共466格，correct288/wrong0/unknown178，known=.618026；导航465/465真值、valid349/465=.750538，距离/高度RMSE1.212474/.169422m，末段稳定删失。后段HOLD来自框重叠的保守导航拒绝，非时效门失效。路径`results/frozen_fullplan_v4_humble13/reliability_v4_humble13_probe_seed004_matrix/diagnostics/person_stage2_crossing_seed004_models_root_revision02/`。
+- 两项前瞻14候选已分别声明边界：A核心crossing改一次18s quintic车道交换后保持，18s来自匹配原首半sin峰横速17.905s取整，名义22s完成；全程/末端门不改，原周期压力失败不改，不冒充在线几何改进。主树轨迹6检查通过，DRAFT协议加完整时间线，见`docs/V4_MULTI_TARGET_SCENARIO.md`。B仅离线物理身份拟用完整独立静态mesh的全光学深度范围证明所选目标严格前于全部重叠actor；需完整全部actor/exact source-time几何/无快门等专门证据，缺任何条件仍unknown。github代理实现B，原MOT可见子集和runtime保护不动。
+- root实际看过原13四帧开发视频接触表`results/development_visual_v4_humble13_crossing01/contact_sheet.png`：所选近处行人在约58s的HOLD画面中可见，背景两人框重叠；此图仅视觉诊断，视频相对时刻不是精确源戳证明。原视频未变。
+- 最终视频依赖已在Humble安装：ffmpeg/ffprobe包`7:4.4.2-0ubuntu0.22.04.1`，dpkg delta仅新增ffmpeg，无原包升级/移除。真实4帧H264编码/探测通过，安装来源、二进制SHA和样片归档`results/freeze_validation/ffmpeg_install01/`。当前尚未freeze14/正式飞行；等待B专项完成后统一新冻结、四包/隔离/Linux及两类/12格实测。

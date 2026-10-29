@@ -67,7 +67,7 @@ class ControllerNode(Node):
         self.declare_parameter("integral_limit", 2.0)
         self.declare_parameter("max_acceleration_mps2", [3.0, 3.0, 3.0])
         self.declare_parameter("slew_position", True)
-        self.declare_parameter("max_position_lead_m", [1.0, 1.0, 0.5])
+        self.declare_parameter("max_position_lead_m", [2.0, 2.0, 0.5])
         self.declare_parameter("desired_offset_m", [0.0, 0.0, 0.0])
         self.declare_parameter("deadzone_m", 0.0)
         self.declare_parameter("failsafe_mode", "hold")
@@ -233,6 +233,9 @@ class ControllerNode(Node):
         self._status_pub.publish(status)
 
     def _publish_failsafe(self, stamp: object, reason: str) -> None:
+        # Timestamp/orientation failures bypass the portable update path.
+        # Discard its moving reference before fresh input can resume control.
+        self._controller.reset()
         message = TrackingCommand()
         message.header.stamp = stamp
         message.header.frame_id = "map"

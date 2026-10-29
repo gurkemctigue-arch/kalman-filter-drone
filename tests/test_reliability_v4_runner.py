@@ -401,7 +401,7 @@ class ReliabilityV4Tests(unittest.TestCase):
     def test_replay_tools_bind_full_manifest_but_do_not_force_flight_source_changes(self):
         offline = {"scripts/export_estimator_replay_v4.py", "scripts/run_estimator_replay_v4.py",
                    "uav_tracking/replay_comparison.py", "uav_tracking/replay_export.py",
-                   "uav_tracking/navigation_reproduction.py"}
+                   "uav_tracking/navigation_reproduction.py", "uav_tracking/research_failures.py"}
         online = {"uav_tracking/recording_archive.py", "uav_tracking/core/kalman.py"}
         hashes = {relative:v4.sha(ROOT/relative) for relative in offline | online}
         self.assertEqual(set(v4.offline_source_hashes(hashes)), offline)

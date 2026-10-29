@@ -1,6 +1,8 @@
 # RGB-D UAV target tracking and following
 
-**当前分支是 v4 开发检查点，尚未完成修复后的正式验收。** `nav04`、`nav05` 的失败记录保留；Ubuntu 22.04/Humble 已完成隔离构建、RGB-D 桥接和部分原生起飞开发探针，完整两类别、遮挡、多目标、云台与正式 120 槽验收仍未完成。请先查看 [v4 当前状态](docs/V4_WORK_STATUS.md)、[Humble 实测记录](docs/HUMBLE_ISOLATED_VALIDATION.md) 和 [验收合同](docs/V4_ACCEPTANCE_CONTRACT.md)。下文 v3 报告与结果计数属于历史冻结版本。
+**当前分支是 v4 开发检查点，尚未完成修复后的正式验收。** 本检查点承接 `b2c46d6`。Ubuntu 22.04/Humble14 已完成四包构建（10.2 s）、真实模块与 ament 来源隔离检查；Linux 套件运行 **1148 项测试，结果 OK（跳过 2 项，33.189 s）**。Humble14 尚无开发飞行通过记录；Humble12 两类 clean20s 的源时钟、原生起飞、录包、CPU 渲染、正常退出与真值末尾闭合证据不能代替新版本的飞行验收。
+
+Humble13 的进一步开发暴露了位置控制的持续滞后，以及交叉期间重叠框触发保守导航 HOLD 的边界。Humble14 包含位置参考与失效复位、场景节点生命周期、模型资源解析修复，以及有限换道和严格离线前景身份证据；实际遮挡、多目标和云台效果仍须新版本飞行验证。原失败、缺证与安全悬停记录保留。最新逐次状态见 [当前交接记录](planning/reliability-v4-current-state.md)、[v4 开发状态](docs/V4_WORK_STATUS.md) 和 [剩余执行计划](planning/reliability-v4-remaining-execution.md)；下文 v3 报告与结果计数属于历史冻结版本。
 
 核心 120 槽覆盖两类目标与六组工程条件；原计划距离、噪声、延迟、加减速等八个扩展条件另有 160 槽，共 280 槽，当前均未开始正式运行。范围和剩余工作见 [执行计划](planning/reliability-v4-remaining-execution.md)。
 

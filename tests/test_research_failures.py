@@ -42,7 +42,118 @@ def codes(report):
     return {item["code"] for item in report["reasons"]}
 
 
+def named_report(root, name, status):
+    script = {"px4_source_clock_report.json":"evaluate_px4_source_clock.py",
+              "native_startup_report.json":"evaluate_native_startup.py",
+              "navigation_reference_evaluation.json":"evaluate_navigation_reference.py",
+              "physical_identity.json":"evaluate_physical_identity.py"}[name]
+    report={"schema_version":1,"evaluation_status":status,
+            "evaluation_source":{"script":"/frozen/scripts/"+script,"script_sha256":"a"*64,"dependencies":{}},
+            "source_trial" if name=="physical_identity.json" else "trial":str(root.resolve())}
+    if name in {"px4_source_clock_report.json","native_startup_report.json"}:
+        field="source_clock_pass" if name.startswith("px4_") else "native_startup_pass"
+        report.update({field:status=="PASS","failures":{"failure":1} if status=="FAIL" else {},
+                       "incomplete_evidence":{"missing":1} if status.startswith("INCOMPLETE") else {}})
+        if name.startswith("px4_"):
+            report.update(clock_domain_valid=status=="PASS",vehicle_frame_continuity_valid=status=="PASS",counts={})
+        else:
+            report["checks"]={"startup":True if status=="PASS" else False if status=="FAIL" else None}
+    elif status=="INCOMPLETE_EVIDENCE":
+        report["reason"]="No independently evaluable interval"
+    elif name=="navigation_reference_evaluation.json":
+        report.update(incomplete_reasons=[],interval={},whole_interval={},kf_navigation={})
+    else:
+        report.update(tasks={},conservative_selected_identity={"correct":0,"wrong":0,"unknown":10},
+                      conservative_task_time_identity={"correct":0,"wrong":0,"unknown":100})
+    return report
+
+
 class ResearchFailureTests(unittest.TestCase):
+    def test_named_v4_status_reports_complete_without_claiming_recorded_metrics_pass(self):
+        for name,status in (("px4_source_clock_report.json","PASS"),("native_startup_report.json","PASS"),
+                            ("navigation_reference_evaluation.json","RECORDED_WITH_CENSORED_FAILURES"),
+                            ("physical_identity.json","RECORDED_WITH_EXPLICIT_UNKNOWN_INTERVALS")):
+            with self.subTest(name=name),tempfile.TemporaryDirectory() as temporary:
+                root=Path(temporary);healthy(root)
+                write_json(root/name,named_report(root,name,status))
+                result=classify_infrastructure_failure(root,evaluator_attempts=[{"report":name,"returncode":0}])
+                self.assertFalse(result["stop"],result["reasons"])
+                entry=result["evidence"]["evaluator_execution"][0]
+                self.assertEqual(entry["completed_report_verdict"],status)
+                if status.startswith("RECORDED_"):
+                    self.assertNotEqual(entry["completed_report_verdict"],"PASS")
+
+    def test_named_failure_and_incomplete_reports_preserve_expected_negative_exits(self):
+        cases=[(name,status) for name in ("px4_source_clock_report.json","native_startup_report.json")
+               for status in ("FAIL","INCOMPLETE" if name.startswith("px4_") else "INCOMPLETE_EVIDENCE")]
+        cases += [(name,"INCOMPLETE_EVIDENCE") for name in ("navigation_reference_evaluation.json","physical_identity.json")]
+        for name,status in cases:
+            with self.subTest(name=name,status=status),tempfile.TemporaryDirectory() as temporary:
+                root=Path(temporary);healthy(root)
+                write_json(root/name,named_report(root,name,status))
+                result=classify_infrastructure_failure(root,evaluator_attempts=[{"report":name,"returncode":2}])
+                self.assertFalse(result["stop"],result["reasons"])
+
+    def test_unknown_or_inconsistent_named_status_reports_still_stop(self):
+        for mutation in (lambda row:row.update(schema_version=2),lambda row:row.update(schema_version=True),
+                         lambda row:row.update(evaluation_status="UNKNOWN"),lambda row:row.update(evaluation_status=[]),
+                         lambda row:row.update(source_clock_pass=False),lambda row:row.update(clock_domain_valid=False),
+                         lambda row:row.update(failures={"contradictory":1}),lambda row:row.pop("evaluation_source"),
+                         lambda row:row.update(trial="/different/trial")):
+            with tempfile.TemporaryDirectory() as temporary:
+                root=Path(temporary);healthy(root)
+                name="px4_source_clock_report.json"
+                report=named_report(root,name,"PASS");mutation(report)
+                write_json(root/name,report)
+                self.assertIn("EVALUATOR_REPORT_MISSING_OR_INVALID",codes(classify_infrastructure_failure(
+                    root,evaluator_attempts=[{"report":name,"returncode":0}])))
+        with tempfile.TemporaryDirectory() as temporary:
+            root=Path(temporary);healthy(root)
+            name="native_startup_report.json"
+            report=named_report(root,name,"PASS");report["checks"]["startup"]=False
+            write_json(root/name,report)
+            self.assertIn("EVALUATOR_REPORT_MISSING_OR_INVALID",codes(classify_infrastructure_failure(
+                root,evaluator_attempts=[{"report":name,"returncode":0}])))
+
+    def test_recorded_status_cannot_hide_traceback_crash_or_unexpected_exit(self):
+        for code,text,expected in ((1,"","EVALUATOR_EXECUTION_FAILED"),
+                (2,"","EVALUATOR_EXECUTION_FAILED"),(-11,"","EVALUATOR_PROCESS_CRASH"),
+                (0,"Traceback (most recent call last):\nRuntimeError: later failure\n","EVALUATOR_EXCEPTION_AFTER_REPORT")):
+            with tempfile.TemporaryDirectory() as temporary:
+                root=Path(temporary);healthy(root)
+                name="navigation_reference_evaluation.json"
+                write_json(root/name,named_report(root,name,"RECORDED_WITH_CENSORED_FAILURES"))
+                (root/"navigation.log").write_text(text)
+                result=classify_infrastructure_failure(root,evaluator_attempts=[{"report":name,"returncode":code,"log":"navigation.log"}])
+                self.assertIn(expected,codes(result))
+
+    def test_known_status_in_unknown_report_file_is_not_a_completed_named_schema(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root=Path(temporary);healthy(root)
+            report=named_report(root,"physical_identity.json","RECORDED_WITH_EXPLICIT_UNKNOWN_INTERVALS")
+            write_json(root/"unknown_evaluator.json",report)
+            result=classify_infrastructure_failure(root,evaluator_attempts=[{"report":"unknown_evaluator.json","returncode":0}])
+            self.assertIn("EVALUATOR_REPORT_MISSING_OR_INVALID",codes(result))
+
+    def test_legacy_surface_stage2_and_gimbal_verdict_shapes_remain_supported(self):
+        for name,report,code in (
+                ("flight_evaluation.json",{"schema_version":3,"acceptance":{"result":"PASS"}},0),
+                ("stage2_evaluation.json",{"schema_version":1,"result":"FAIL"},2),
+                ("gimbal_evaluation.json",{"schema_version":3,"result":"FAIL_OR_INCOMPLETE"},2)):
+            with self.subTest(name=name),tempfile.TemporaryDirectory() as temporary:
+                root=Path(temporary);healthy(root);write_json(root/name,report)
+                result=classify_infrastructure_failure(root,evaluator_attempts=[{"report":name,"returncode":code}])
+                self.assertFalse(result["stop"],result["reasons"])
+
+    def test_incomplete_named_payload_cannot_claim_a_recorded_report(self):
+        for name,status,key in (("navigation_reference_evaluation.json","RECORDED_WITH_CENSORED_FAILURES","whole_interval"),
+                                ("physical_identity.json","RECORDED_WITH_EXPLICIT_UNKNOWN_INTERVALS","conservative_task_time_identity")):
+            with tempfile.TemporaryDirectory() as temporary:
+                root=Path(temporary);healthy(root)
+                report=named_report(root,name,status);report.pop(key);write_json(root/name,report)
+                result=classify_infrastructure_failure(root,evaluator_attempts=[{"report":name,"returncode":0}])
+                self.assertIn("EVALUATOR_REPORT_MISSING_OR_INVALID",codes(result))
+
     def test_parent_launch_zero_does_not_hide_failing_child_at_shutdown(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

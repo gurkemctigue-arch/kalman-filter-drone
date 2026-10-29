@@ -33,6 +33,16 @@
   "estimator_method": "adaptive_kf",
   "condition": "clean",
   "motion_profile_kind": "standard",
+  "multi_target_crossing_profile": {
+    "revision": "single_quintic_lane_exchange_v1",
+    "common_acceleration_s": 2.0,
+    "straight_preparation_s": 2.0,
+    "lateral_exchange_duration_s": 18.0,
+    "lateral_displacement_amplitudes": 2.0,
+    "nominal_lane_exchange_center_after_follow_s": 13.0,
+    "nominal_lane_exchange_end_after_follow_s": 22.0,
+    "policy": "One finite quintic lane exchange followed by forward travel in the exchanged lanes. The 18 s duration is the nearest whole second to 17.905 s, matching the previous first sinusoidal exchange's peak lateral speed. Actual paths and separation require independent GT evaluation. Historical Humble13 used periodic sinusoidal exchanges, retains its conservative HOLD/performance failures, and is not pooled or paired with this prospective task revision. All full-interval navigation, physical identity, safety and final-settling gates remain unchanged; this task revision is not an online occlusion-geometry improvement."
+  },
   "desired_height_m": 2.0,
   "takeoff_height_m": 3.0,
   "takeoff_mode": "px4_native",
@@ -50,5 +60,12 @@
   },
   "failure_policy": "One simulator at a time. A trial is attempted once. Terminal records, failures and interrupted attempts are immutable. Resume consumes only PENDING slots. Infrastructure failures stop continuation and require a separately recorded diagnosis before any further pending slot; they never authorize a retry.",
   "identity_policy": "Initial middle box selection for multi-target conditions; hybrid_3d association; no nearest/confidence fallback and no full ReID. The acceptance denominator is fixed 10 Hz REQUEST-to-full-recorded-clock time, retaining unknown/unobserved tails. Legacy diagnostic-frame coverage remains diagnostic. Any observed wrong physical actor in either evidence stream fails; an unconfirmed requested task fails. Every task is independently mapped from its REQUEST box at source image time. A schema-v2 development gate must bind immutable probe plans/terminal records and actual reports for all 2 classes x 6 groups, flight-critical source/model/runtime hashes and separately identified offline evaluator hashes.",
+  "offline_selected_identity_visibility": {
+    "revision": "whole_static_mesh_optical_z_front_v1",
+    "strict_optical_z_separation_m": 0.05,
+    "exact_source_geometry_tolerance_s": 1e-9,
+    "required_actor_count": 3,
+    "policy": "Keep the unique image IoU>=0.5 match, fully-in-frame extent, freshness, shutter guards and fixed REQUEST-to-full-clock identity denominator. For positive same-class GT-box overlap only, an additional sufficient certificate requires all three declared actors and complete rigid static render meshes, audited closed-scene assets, exact-source vehicle/actor geometry and exact physical camera/base geometry for a gimbal recording. Every overlapping other actor must have its whole-mesh optical-z minimum strictly greater than the chosen actor's whole-mesh maximum plus 0.05 m. Missing/unsupported geometry, near-plane crossings, multiple feasible image matches or overlapping depth bands remain UNKNOWN. This offline-only rule never chooses an online identity, supplies a runtime measurement, establishes YOLO box completeness, changes the MOT visible subset or removes unknown time cells. Freeze its evaluator and asset provenance before formal outcomes; preserve historical reports and failures."
+  },
   "comparison_policy": "Report all 120 slots and all failures. Pair v4 classes/groups by the same held-out registered seed 1000..1009 where applicable. Active/midpoint visual improvements do not replace base_link physical following errors. Historical v3 uses paired seeds 0..9 for its separate four-baseline study; these v4 trials are not paired reruns of v3 and do not repeat that estimator comparison."
 }
