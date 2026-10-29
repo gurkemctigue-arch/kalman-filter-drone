@@ -1,8 +1,8 @@
 # RGB-D UAV target tracking and following
 
-**当前分支是 v4 开发检查点，尚未完成修复后的正式验收。** 本检查点承接 `b2c46d6`。Ubuntu 22.04/Humble14 已完成四包构建（10.2 s）、真实模块与 ament 来源隔离检查；Linux 套件运行 **1148 项测试，结果 OK（跳过 2 项，33.189 s）**。Humble14 尚无开发飞行通过记录；Humble12 两类 clean20s 的源时钟、原生起飞、录包、CPU 渲染、正常退出与真值末尾闭合证据不能代替新版本的飞行验收。
+**当前分支是 v4 开发检查点，尚未完成修复后的正式验收。** 本检查点承接 `d1b2500`。Ubuntu 22.04/Humble15 已完成四包构建（9.97 s）、真实模块与 ament 来源隔离检查；Linux 套件运行 **1156 项测试，结果 OK（跳过 2 项，33.256 s）**。Humble15 尚无开发飞行通过记录，套件结果不能代替飞行验收。
 
-Humble13 的进一步开发暴露了位置控制的持续滞后，以及交叉期间重叠框触发保守导航 HOLD 的边界。Humble14 包含位置参考与失效复位、场景节点生命周期、模型资源解析修复，以及有限换道和严格离线前景身份证据；实际遮挡、多目标和云台效果仍须新版本飞行验证。原失败、缺证与安全悬停记录保留。最新逐次状态见 [当前交接记录](planning/reliability-v4-current-state.md)、[v4 开发状态](docs/V4_WORK_STATUS.md) 和 [剩余执行计划](planning/reliability-v4-remaining-execution.md)；下文 v3 报告与结果计数属于历史冻结版本。
+Humble14 两类 clean20s 已完成独立基础设施、真值和物理跟随检查；首个完整遮挡任务因录制闭合失败保留 FAIL，其余11槽保留待执行。Humble15 修复暂停前的实际源回调就绪门，并把闭合/归档失败纳入基础设施停止条件；总10秒预算和最终对应关系要求不变。真实 DDS 四用例中，暂停 RPC 使用 fixture；这些属于组件检查，实际遮挡、多目标和云台效果仍须新版本飞行验证。原失败、缺证与安全悬停记录保留。最新逐次状态见 [当前交接记录](planning/reliability-v4-current-state.md)、[v4 开发状态](docs/V4_WORK_STATUS.md) 和 [剩余执行计划](planning/reliability-v4-remaining-execution.md)；下文 v3 报告与结果计数属于历史冻结版本。
 
 核心 120 槽覆盖两类目标与六组工程条件；原计划距离、噪声、延迟、加减速等八个扩展条件另有 160 槽，共 280 槽，当前均未开始正式运行。范围和剩余工作见 [执行计划](planning/reliability-v4-remaining-execution.md)。
 

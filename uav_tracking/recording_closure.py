@@ -114,6 +114,29 @@ class StreamDrainState:
     def pause_ack(self, wall_s):
         self.pause_ack_wall_s=wall_s
 
+    def ready_to_pause(self, wall_s):
+        """Require real source callbacks before stopping volatile publishers.
+
+        Discovery of clock/raw alone cannot establish timing, adapted or GT
+        subscriptions. Reuse the unchanged correspondence checks, while the
+        exact final-clock/quiet requirements remain post-pause checks.
+        """
+        observed=self.assess(wall_s)
+        post_pause_only={'world_pause_not_acknowledged','missing_truth_at_final_clock',
+                         'source_streams_not_yet_quiet'}
+        failures=[reason for reason in observed['failures'] if reason not in post_pause_only]
+        missing=[kind+':'+name for kind,frames in self.truth_stamps.items()
+                 for name,stamps in frames.items() if not stamps]
+        if missing:failures.append('declared_truth_frames_not_observed')
+        return {'ready':not failures,'failures':failures,'counts':dict(self.counts),
+                'clock_observed':self.clock_ns is not None,'raw_observed':self.last_raw is not None,
+                'last_clock_ns':self.clock_ns,'last_raw_source_us':observed['last_raw_source_us'],
+                'last_raw_diagnostic':observed['last_raw_diagnostic'],
+                'expected_adapted_observed':observed['expected_adapted_observed'],
+                'missing_declared_truth_frames':missing,
+                'truth_latest_source_ns':observed['truth_latest_source_ns'],
+                'semantics':'All required subscriptions must have delivered actual source data before pause. Accepted raw needs its observed adapted output; rejected raw does not. Exact final-clock truth and quiescence are still required after ACK.'}
+
     def assess(self, wall_s):
         failures=[]
         if self.pause_ack_wall_s is None:failures.append('world_pause_not_acknowledged')

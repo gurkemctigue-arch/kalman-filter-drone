@@ -137,6 +137,88 @@ def _json_safe(value: Any) -> Any:
     return value
 
 
+def _recording_pass_problem(name: str, report: dict) -> str | None:
+    """Check the producer's PASS contract; never infer engineering success."""
+    if report.get("error"):
+        return "PASS report also records an error"
+    if name == "recording_closure.json":
+        if report.get("scope") != "WORLD_PAUSE_ACK_AND_OBSERVED_FINAL_SOURCE_CORRESPONDENCE_BEFORE_RECORDER_CLOSE":
+            return "Unknown recording-closure scope"
+        pause = report.get("pause_request")
+        observations = report.get("observations")
+        final = observations[-1] if isinstance(observations, list) and observations else None
+        if (not isinstance(pause, dict) or pause.get("command_pause") is not True
+                or type(pause.get("returncode")) is not int or pause["returncode"] != 0
+                or not isinstance(pause.get("response"), str) or "true" not in pause["response"]):
+            return "PASS closure lacks a successful pause acknowledgement"
+        if (not isinstance(final, dict) or final.get("ready") is not True
+                or final.get("failures") != [] or final.get("errors") != []
+                or final.get("missing_truth_frames_at_final_clock", []) != []):
+            return "PASS closure lacks a ready, failure-free final observation"
+        if (report.get("observer_cleanup_completed") is not True
+                or _finite(report.get("closed_streams_elapsed_wall_s")) is None
+                or report["closed_streams_elapsed_wall_s"] < 0):
+            return "PASS closure lacks completed stream/observer closure"
+    else:
+        if report.get("policy") != "ext4_sqlite_close_standard_zstd_verified_native_read":
+            return "Unknown recording-integrity policy"
+        raw, native = report.get("raw_validation"), report.get("native_reader_validation")
+        if (type(report.get("recorder_exit_code")) is not int or report["recorder_exit_code"] != 0
+                or not isinstance(raw, dict) or raw.get("status") != "PASS"
+                or not isinstance(native, dict) or native.get("status") != "PASS"
+                or native.get("full_stream_read") is not True
+                or type(raw.get("message_count")) is not int or raw["message_count"] <= 0
+                or type(native.get("message_count")) is not int or native["message_count"] != raw["message_count"]
+                or not isinstance(raw.get("topic_counts"), dict) or not raw["topic_counts"]
+                or native.get("topic_counts") != raw["topic_counts"]):
+            return "PASS archive lacks consistent successful raw/native validation"
+        compressed = report.get("compressed_files")
+        if (not isinstance(compressed, list) or not compressed
+                or any(not isinstance(item, dict) or item.get("zstd_test") != "PASS" for item in compressed)
+                or not re.fullmatch(r"[a-f0-9]{64}", str(report.get("published_metadata_sha256", "")))):
+            return "PASS archive lacks compressed-file or published-metadata evidence"
+    return None
+
+
+def classify_recording_artifacts(trial_dir: Path) -> dict:
+    """Read only closure/archive JSON; absent legacy artifacts stay unknown.
+
+    This branch is also usable for a separately named, JSON-only diagnosis of
+    an immutable failed trial. A valid PASS only avoids this branch's stop.
+    """
+    directory = Path(trial_dir).resolve()
+    reasons, files, reports = [], {}, {}
+    for name, label in (("recording_closure.json", "RECORDING_CLOSURE"),
+                        ("bag_integrity.json", "RECORDING_INTEGRITY")):
+        path = directory / name
+        files[name] = {"exists": path.exists()}
+        if not path.exists():
+            reports[name] = {"status": "MISSING_LEGACY_UNKNOWN"}
+            continue
+        try:
+            raw = path.read_bytes()
+            files[name].update(bytes=len(raw), sha256=hashlib.sha256(raw).hexdigest())
+            report = json.loads(raw.decode("utf-8-sig"))
+            if (not isinstance(report, dict) or type(report.get("schema_version")) is not int
+                    or report["schema_version"] != 1 or not isinstance(report.get("status"), str)
+                    or not report["status"]):
+                raise ValueError("Expected a schema-v1 recording report with explicit status")
+            reports[name] = {key: report.get(key) for key in ("schema_version", "status", "error", "scope", "policy")}
+            if report["status"] != "PASS":
+                reasons.append({"code": label + "_FAILED", "source": name,
+                    "message": "Recording report explicitly did not pass: " + report["status"]})
+            else:
+                problem = _recording_pass_problem(name, report)
+                if problem:
+                    raise ValueError(problem)
+        except (OSError, UnicodeError, ValueError, TypeError) as error:
+            reports.setdefault(name, {})["validation_error"] = str(error)
+            reasons.append({"code": "INVALID_" + label + "_REPORT", "source": name,
+                            "message": "Present recording report is unreadable or inconsistent: " + str(error)})
+    return _json_safe({"stop": bool(reasons), "reasons": reasons, "files": files, "reports": reports,
+        "scope": "Closure/archive JSON only; no bag or telemetry reads, and no engineering PASS conclusion"})
+
+
 def classify_infrastructure_failure(trial_dir: Path, *, evaluator_attempts: list[dict] | None = None) -> dict:
     """Return ``{stop: bool, reasons: list[dict], evidence: dict}``.
 
@@ -174,6 +256,12 @@ def classify_infrastructure_failure(trial_dir: Path, *, evaluator_attempts: list
         except (OSError, UnicodeError, ValueError) as error:
             evidence["parse_errors"].append({"source": name, "error": str(error)})
             return None
+
+    recording = classify_recording_artifacts(directory)
+    evidence["recording_artifacts"] = recording
+    evidence["files"].update(recording["files"])
+    for item in recording["reasons"]:
+        reason(item["code"], item["message"], item["source"])
 
     monitor = read_json("summary.json") or {}
     evidence["monitor"] = {key: monitor.get(key) for key in (

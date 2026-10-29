@@ -108,3 +108,9 @@ python -B -m unittest discover -s tests -p test_document_runtime_preparation.py 
 ```
 
 Python测试只用不可变合成JSON；Node测试只在内存打包标注FIXTURE_ONLY的OpenXML，并检查A4、双宽度、表头、分页属性、标题与目录，不写DOCX/PDF。实际可读性与逐页检查仍待真实文档生成。
+
+## Windows本机入口与独立分享
+
+生成交付前，先对实际最终冻结工程的`results`执行`readlink -f`，把`delivery_root`直接设为解析得到的`/mnt/d`物理路径下的全新目录。`summary`、`figures`、`document_package`、`videos`与`word`均使用这个绝对根。不要把`/root/.../results`符号链接拼写作为报告输出路径：图像路径已解析到`/mnt/d`时，词法`relpath`可能跨越两个路径拼写，生成Windows不可用的相对链接。
+
+本机原证据已在D盘，可通过相对路径指向同项目`results`，无需复制大rosbag。交付后必须在Windows实际打开统一入口、报告、视频与summary，并逐链接核对图像、PDF、CSV/JSON和原证据；不能以生成器退出0代替检查。独立分享包只导出Word/PDF、图、视频与小型索引，明确原始录包等本地证据在分享环境中不可用；复制HTML或保留来源绝对路径，不表示接收者能访问原全部证据。

@@ -13,6 +13,46 @@ def diagnostic(sample=1., *, accepted=True):
 
 
 class RecordingClosureTests(unittest.TestCase):
+    def test_pause_readiness_waits_for_timing_accepted_adapted_and_every_declared_gt(self):
+        state=StreamDrainState(expected_truth_frames={'target':['actor0','actor1'],'vehicle':['uav']})
+        state.clock(1_000_000_000,0.)
+        state.raw(1_000_000,1_000_000,0.)
+        self.assertIn('last_raw_without_corresponding_diagnostic',state.ready_to_pause(0.)['failures'])
+        state.timing(diagnostic(),.1)
+        self.assertIn('last_accepted_diagnostic_without_adapted_odometry',state.ready_to_pause(.1)['failures'])
+        state.adapted(1_000_000_000,.2)
+        state.truth('target',[('actor0',990_000_000)],.3)
+        state.truth('vehicle',[('uav',990_000_000)],.3)
+        result=state.ready_to_pause(.3)
+        self.assertFalse(result['ready'])
+        self.assertEqual(result['missing_declared_truth_frames'],['target:actor1'])
+        state.truth('target',[('actor1',990_000_000)],2.8)
+        self.assertTrue(state.ready_to_pause(2.8)['ready'])
+        # Initial delivery is not permission to weaken the final GT match.
+        state.pause_ack(2.9)
+        self.assertIn('missing_truth_at_final_clock',state.assess(3.5)['failures'])
+
+    def test_pause_readiness_rejected_raw_does_not_wait_for_nonexistent_adapted(self):
+        state=StreamDrainState(expected_truth_frames={'target':['actor'],'vehicle':['uav']})
+        state.clock(1_000_000_000,0.)
+        state.raw(1_000_000,1_000_000,0.)
+        state.timing(diagnostic(accepted=False),.1)
+        state.truth('target',[('actor',1_000_000_000)],.2)
+        state.truth('vehicle',[('uav',1_000_000_000)],.2)
+        self.assertTrue(state.ready_to_pause(.2)['ready'])
+        self.assertEqual(state.ready_to_pause(.2)['counts']['adapted'],0)
+
+    def test_pause_readiness_does_not_treat_unrelated_truth_callbacks_as_declared_frames(self):
+        state=StreamDrainState(expected_truth_frames={'target':['actor']})
+        state.clock(1_000_000_000,0.)
+        state.raw(1_000_000,1_000_000,0.)
+        state.timing(diagnostic(accepted=False),.1)
+        state.truth('target',[('other_actor',1_000_000_000)],.2)
+        result=state.ready_to_pause(4.)
+        self.assertFalse(result['ready'])
+        self.assertEqual(result['counts']['truth_target'],1)
+        self.assertEqual(result['missing_declared_truth_frames'],['target:actor'])
+
     def test_no_pause_ack_or_unobserved_stream_cannot_claim_a_drain(self):
         state=StreamDrainState()
         self.assertFalse(state.assess(1.)["ready"])

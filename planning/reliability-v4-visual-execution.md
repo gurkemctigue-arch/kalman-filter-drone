@@ -111,3 +111,16 @@ PowerShell执行，使用新的PDF名：
 实际打开summary、报告HTML、视频HTML及最终交付导航；逐个点图、PDF、视频和来源索引。使用本地HTTP时要核链接位于实际document root内，不能把服务根目录以外的原bag路径伪作可下载URL。大bag可作为明确的本地绝对路径/独立工件索引保留，不直接塞进Git。
 
 最后归档：图表/CSV manifest、固定12行视频源与缺失清单、转码manifest、检测审核及SHA、文档包sources、DOCX/PDF渲染和逐页检查记录、依赖/权重说明、原bag索引，以及对应GitHub源码commit。没有真实检查记录的项继续标pending；旧v3文档与演示保持历史版本标签。
+
+## 本机路径的实际填写提示
+
+`frozen_root`填写实际最终冻结工程，先解析其`results`符号链接，再为上述全部命令统一使用D盘物理路径下的全新交付根：
+
+```bash
+resolved_results="$(readlink -f -- "$frozen_root/results")"
+delivery_root="$resolved_results/v4_delivery01"
+```
+
+确认`resolved_results`实际位于`/mnt/d`；`summary/figures/document_package/videos/word`都放在该根下并传入其绝对路径。不要混用`/root/.../results`拼写与已解析的`/mnt/d`图片路径，报告中的词法相对链接可能因此错误。本机可相对引用D盘原试验目录，无需复制大bag；必须实际打开HTML、视频与summary，逐项点验图像、PDF、CSV/JSON及原证据链接。
+
+另做独立分享包时只复制Word/PDF、图、视频及小索引，并单列仅本机可查的原证据。视频页或其他HTML指向包外原录制的链接不能冒充分享包可用链接；保留本机完整入口，分享入口只链接实际随包文件并说明原全部证据未随包提供。

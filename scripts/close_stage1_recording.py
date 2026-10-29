@@ -73,15 +73,21 @@ def pause_and_drain(output: Path, *, world: str, env: dict, expected_truth_frame
         if expected_truth_frames:
             node.create_subscription(TFMessage,"/ground_truth/poses",lambda message:truth('target',message),100)
             node.create_subscription(TFMessage,"/ground_truth/vehicle_poses",lambda message:truth('vehicle',message),100)
-        # Observe actual delivery before pausing. Initial adapted delivery is
-        # optional: a rejected last raw must never require nonexistent odometry.
-        warm_deadline=min(beginning+timeout_wall_s,time.monotonic()+2.)
-        while time.monotonic()<warm_deadline and (state.clock_ns is None or state.last_raw is None):
+        # A new volatile subscriber can discover different publishers at
+        # different times. Pausing before every required callback has arrived
+        # can permanently hide GT/timing even while the recorder has them.
+        # Discovery and post-pause drain share the original total wall budget.
+        warm_deadline=beginning+timeout_wall_s
+        readiness=state.ready_to_pause(time.monotonic())
+        while not readiness['ready'] and time.monotonic()<warm_deadline:
             if check_alive:check_alive()
-            executor.spin_once(timeout_sec=.05)
+            executor.spin_once(timeout_sec=min(.05,max(0.,warm_deadline-time.monotonic())))
+            readiness=state.ready_to_pause(time.monotonic())
         report["before_pause"]={"clock_observed":state.clock_ns is not None,
             "raw_observed":state.last_raw is not None,"counts":dict(state.counts),
-            "elapsed_wall_s":time.monotonic()-beginning}
+            "elapsed_wall_s":time.monotonic()-beginning,"readiness":readiness}
+        if not readiness['ready']:
+            raise RuntimeError("Required source callbacks not ready within recording closure wall budget; world was not paused")
         if check_alive:check_alive()
         remaining=beginning+timeout_wall_s-time.monotonic()
         if remaining<=0:raise RuntimeError("Recording closure wall budget expired before pause request")

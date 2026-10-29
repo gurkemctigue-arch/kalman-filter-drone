@@ -2,12 +2,14 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 
-from uav_tracking.research_failures import classify_infrastructure_failure
+from uav_tracking.research_failures import classify_infrastructure_failure, classify_recording_artifacts
 
 
 def write_json(path, value):
@@ -68,7 +70,100 @@ def named_report(root, name, status):
     return report
 
 
+def recording_reports():
+    """Producer-shaped closure/archive reports, independent of tracking verdict."""
+    return {"recording_closure.json": {"schema_version":1,"status":"PASS",
+        "scope":"WORLD_PAUSE_ACK_AND_OBSERVED_FINAL_SOURCE_CORRESPONDENCE_BEFORE_RECORDER_CLOSE",
+        "pause_request":{"command_pause":True,"returncode":0,"response":"data: true\n"},
+        "observations":[{"ready":True,"failures":[],"errors":[],"missing_truth_frames_at_final_clock":[]}],
+        "closed_streams_elapsed_wall_s":1.,"observer_cleanup_completed":True},
+        "bag_integrity.json": {"schema_version":1,"status":"PASS",
+        "policy":"ext4_sqlite_close_standard_zstd_verified_native_read","recorder_exit_code":0,
+        "raw_validation":{"status":"PASS","message_count":180,"topic_counts":{"/clock":100,"/vehicle/odometry":80}},
+        "native_reader_validation":{"status":"PASS","message_count":180,"full_stream_read":True,
+                                    "topic_counts":{"/clock":100,"/vehicle/odometry":80}},
+        "compressed_files":[{"zstd_test":"PASS"}],"published_metadata_sha256":"a"*64}}
+
+
 class ResearchFailureTests(unittest.TestCase):
+    def test_failed_closure_stops_despite_archive_monitor_and_evaluators_passing(self):
+        for status in ("FAIL","SKIPPED","PENDING"):
+            with self.subTest(status=status),tempfile.TemporaryDirectory() as temporary:
+                root=Path(temporary);healthy(root)
+                reports=recording_reports();reports["recording_closure.json"].update(status=status,
+                    error="Recording source streams did not become quiet and fully drain within wall budget")
+                for name,row in reports.items():write_json(root/name,row)
+                write_json(root/"flight_evaluation.json",{"acceptance":{"result":"PASS"}})
+                result=classify_infrastructure_failure(root)
+                self.assertTrue(result["stop"])
+                self.assertIn("RECORDING_CLOSURE_FAILED",codes(result))
+                self.assertNotIn("RECORDING_INTEGRITY_FAILED",codes(result))
+                artifact=root/"recording_closure.json";raw=artifact.read_bytes()
+                evidence=result["evidence"]["files"][artifact.name]
+                self.assertEqual(evidence["bytes"],len(raw))
+                self.assertEqual(evidence["sha256"],hashlib.sha256(raw).hexdigest())
+                self.assertIn("drain",result["evidence"]["recording_artifacts"]["reports"][artifact.name]["error"])
+
+    def test_archive_failure_stops_even_when_closure_passes(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root=Path(temporary);healthy(root)
+            reports=recording_reports();reports["bag_integrity.json"]={"schema_version":1,"status":"FAIL",
+                "error":"Recording finalization failed; original ext4 spool retained"}
+            for name,row in reports.items():write_json(root/name,row)
+            result=classify_infrastructure_failure(root)
+            self.assertIn("RECORDING_INTEGRITY_FAILED",codes(result))
+            self.assertNotIn("RECORDING_CLOSURE_FAILED",codes(result))
+
+    def test_missing_legacy_artifacts_or_valid_pass_do_not_promote_tracking_failure(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root=Path(temporary);healthy(root)
+            write_json(root/"summary.json",{"max_vehicle_altitude_m":3.,"monitor_exit_code":1,
+                "basic_flight_passed":False,"termination_reason":"wall_timeout"})
+            for present in (False,True):
+                if present:
+                    for name,row in recording_reports().items():write_json(root/name,row)
+                result=classify_infrastructure_failure(root)
+                self.assertFalse(result["stop"],result["reasons"])
+                self.assertIs(result["evidence"]["monitor"]["basic_flight_passed"],False)
+                self.assertNotIn("engineering_result",result)
+                self.assertEqual(result["evidence"]["recording_artifacts"]["files"]["recording_closure.json"]["exists"],present)
+
+    def test_present_malformed_reports_and_inconsistent_pass_claims_stop(self):
+        for name in recording_reports():
+            for defect in ("truncated","not_object","schema_bool","schema_unknown","status_missing","status_bool",
+                           "error_with_pass","contradictory_evidence"):
+                with self.subTest(name=name,defect=defect),tempfile.TemporaryDirectory() as temporary:
+                    root=Path(temporary);healthy(root);row=recording_reports()[name]
+                    if defect=="not_object":row=[]
+                    elif defect=="schema_bool":row["schema_version"]=True
+                    elif defect=="schema_unknown":row["schema_version"]=2
+                    elif defect=="status_missing":row.pop("status")
+                    elif defect=="status_bool":row["status"]=True
+                    elif defect=="error_with_pass":row["error"]="producer failed"
+                    elif defect=="contradictory_evidence":
+                        if name=="recording_closure.json":row["observations"][-1]["ready"]=False
+                        else:row["native_reader_validation"]["message_count"]-=1
+                    write_json(root/name,row)
+                    if defect=="truncated":(root/name).write_bytes(b'{"schema_version":1,')
+                    result=classify_infrastructure_failure(root)
+                    expected="INVALID_RECORDING_CLOSURE_REPORT" if name.startswith("recording_closure") else "INVALID_RECORDING_INTEGRITY_REPORT"
+                    self.assertIn(expected,codes(result))
+                    self.assertIn("sha256",result["evidence"]["files"][name])
+                    self.assertIn("validation_error",result["evidence"]["recording_artifacts"]["reports"][name])
+
+    def test_json_only_recording_diagnosis_never_reads_telemetry_or_bag(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root=Path(temporary);healthy(root)
+            for name,row in recording_reports().items():write_json(root/name,row)
+            original=Path.read_bytes;read=[]
+            def only_recording_json(path):
+                self.assertIn(path.name,recording_reports())
+                read.append(path.name);return original(path)
+            with patch.object(Path,"read_bytes",autospec=True,side_effect=only_recording_json):
+                result=classify_recording_artifacts(root)
+            self.assertFalse(result["stop"],result["reasons"])
+            self.assertCountEqual(read,recording_reports())
+
     def test_named_v4_status_reports_complete_without_claiming_recorded_metrics_pass(self):
         for name,status in (("px4_source_clock_report.json","PASS"),("native_startup_report.json","PASS"),
                             ("navigation_reference_evaluation.json","RECORDED_WITH_CENSORED_FAILURES"),
