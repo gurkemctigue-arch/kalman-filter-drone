@@ -49,7 +49,10 @@ uav_tracking_controller:
     max_position_lead_m: [2.0, 2.0, 0.5]
     position_gain: [0.60, 0.60, 0.50]
     integral_gain: [0.02, 0.02, 0.02]
-    max_acceleration_mps2: [3.0, 3.0, 3.0]
+    # Smooth velocity setpoint changes during pursuit and explicit reselection.
+    max_acceleration_mps2: [0.7, 0.7, 0.5]
+    # Retain the existing position-reference acceleration limits.
+    max_position_acceleration_mps2: [3.0, 3.0, 3.0]
     max_velocity_mps: [2.0, 2.0, 1.0]
     integral_limit: 1.0
     prediction_timeout_s: 0.75

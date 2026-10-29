@@ -308,7 +308,8 @@ def main() -> None:
         activation_phase_topic="/tracking/flight_phase", image_reliability="reliable")
     parameters["uav_tracking_flight_supervisor"]["ros__parameters"].update(
         auto_start=True, simulation_only=True, takeoff_height_m=args.takeoff_height_m,
-        takeoff_mode=args.takeoff_mode, use_sim_time=True)
+        takeoff_mode=args.takeoff_mode, use_sim_time=True,
+        supervisor_diagnostics_topic="/tracking/supervisor_diagnostics")
     if args.takeoff_mode == "px4_native":
         parameters["uav_tracking_flight_supervisor"]["ros__parameters"].update(
             native_takeoff_timeout_sim_s=40.0, native_wall_timeout_s=180.0,
@@ -425,7 +426,7 @@ def main() -> None:
             }, indent=2), encoding="utf-8")
             topics = ["/clock", "/camera/color/image_raw", "/camera/aligned_depth_to_color/image_raw", "/camera/color/camera_info",
                       "/tracking/observations", "/tracking/observation_frames", "/tracking/state", "/tracking/status", "/tracking/command", "/tracking/flight_command",
-                      "/tracking/flight_phase", "/tracking/detection_diagnostics", "/tracking/selection", "/vehicle/odometry", "/vehicle/odometry_timing", "/tf", "/tf_static",
+                      "/tracking/flight_phase", "/tracking/supervisor_diagnostics", "/tracking/detection_diagnostics", "/tracking/selection", "/vehicle/odometry", "/vehicle/odometry_timing", "/tf", "/tf_static",
                       "/fmu/out/vehicle_odometry", "/fmu/out/vehicle_status_v1", "/fmu/out/vehicle_command_ack",
                       "/fmu/out/vehicle_local_position_v1", "/fmu/out/estimator_status_flags",
                       "/fmu/in/vehicle_command", "/fmu/in/trajectory_setpoint", "/fmu/in/offboard_control_mode",

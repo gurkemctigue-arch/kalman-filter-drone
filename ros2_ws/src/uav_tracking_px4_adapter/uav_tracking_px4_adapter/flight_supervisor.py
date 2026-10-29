@@ -17,6 +17,7 @@ import time
 from typing import Any
 
 from uav_tracking_px4_adapter.source_clock import OdometrySourceClock
+from uav_tracking_px4_adapter.supervisor_audit import SupervisorTimingAudit
 
 from uav_tracking.ros_lifecycle import shutdown_requests
 
@@ -80,6 +81,7 @@ class FlightSupervisor(Node):
             "heartbeat_topic": "/fmu/in/offboard_control_mode",
             "vehicle_command_topic": "/fmu/in/vehicle_command",
             "phase_topic": "/tracking/flight_phase",
+            "supervisor_diagnostics_topic": "/tracking/supervisor_diagnostics",
             "takeoff_height_m": 3.0,
             "takeoff_mode": "offboard_velocity",
             "local_position_topic": "/fmu/out/vehicle_local_position_v1",
@@ -167,10 +169,12 @@ class FlightSupervisor(Node):
         self._native_started_source_s = self._native_started_wall_s = None
         self._native_finished_source_s = self._native_finished_wall_s = None
         self._native_last_source_s = None
+        self._timing_audit = SupervisorTimingAudit()
         self._yaw = float(self.get_parameter("takeoff_yaw_rad").value)
         self._flight_pub = self.create_publisher(TrackingCommand, self._p("flight_command_topic"), 20)
         self._vehicle_command_pub = self.create_publisher(VehicleCommand, self._p("vehicle_command_topic"), 10)
         self._phase_pub = self.create_publisher(String, self._p("phase_topic"), 10)
+        self._diagnostics_pub = self.create_publisher(String, self._p("supervisor_diagnostics_topic"), 10)
         self.create_subscription(Odometry, self._p("vehicle_odom_topic"), self._on_odom, qos_profile_sensor_data)
         self.create_subscription(VehicleStatus, self._p("vehicle_status_topic"), self._on_status, qos_profile_sensor_data)
         self.create_subscription(OffboardControlMode, self._p("heartbeat_topic"), self._on_heartbeat, qos_profile_sensor_data)
@@ -181,6 +185,7 @@ class FlightSupervisor(Node):
             self.create_subscription(EstimatorStatusFlags, self._p("estimator_flags_topic"), self._on_estimator_flags,
                                      qos_profile_sensor_data)
         self.create_timer(1.0 / float(self.get_parameter("publish_rate_hz").value), self._tick)
+        self._create_diagnostics_timer()
         if self._native_takeoff:
             # A ROS-time timer stops when /clock pauses. This independent
             # steady timer must still enforce the native wall-time ceiling.
@@ -214,17 +219,73 @@ class FlightSupervisor(Node):
         self._odom_received_source_s = self.get_clock().now().nanoseconds * 1e-9
 
     def _on_status(self, message: Any) -> None:
+        audit = self._audit()
+        callback_wall_s = time.monotonic()
+        callback_ros_ns = self.get_clock().now().nanoseconds
+        acceptance_ros_ns = callback_ros_ns
+        source_ns = OdometrySourceClock._source_ns(getattr(message, "timestamp", None))
+        audit.receive(callback_wall_s, callback_ros_ns, source_ns)
         if getattr(self, "_status_timestamp_mode", "receipt_wall") == "source_sim":
             now_ns = self._status_ros_now_ns()
+            acceptance_ros_ns = now_ns
             stamp = getattr(message, "timestamp", None)
             result = self._status_clock.resolve(stamp, stamp, now_ns)
             if self._status_ros_regressed or not result.accepted:
                 self._status_last_rejection = (
                     "ros_clock_regression_restart_required" if self._status_ros_regressed else result.reason
                 )
+                audit.reject(callback_wall_s, now_ns, source_ns, self._status_last_rejection)
                 return
             self._status_last_rejection = "none"
         self._status, self._status_received = message, time.monotonic()
+        audit.accept(self._status_received, acceptance_ros_ns, source_ns)
+
+    def _audit(self) -> SupervisorTimingAudit:
+        # Existing pure __new__ fixtures do not run the ROS constructor.
+        audit = getattr(self, "_timing_audit", None)
+        if audit is None:
+            audit = self._timing_audit = SupervisorTimingAudit()
+        return audit
+
+    def _create_diagnostics_timer(self) -> None:
+        # Independent of ROS /clock, but still serviced by this node's executor.
+        # A blocked executor delays diagnostics too; external receipt monitoring
+        # is necessary to distinguish callback starvation from transport stalls.
+        self._diagnostics_clock = Clock(clock_type=ClockType.STEADY_TIME)
+        self._diagnostics_timer = self.create_timer(1.0, self._publish_supervisor_diagnostics,
+                                                   clock=self._diagnostics_clock)
+
+    def _publish_supervisor_diagnostics(self) -> None:
+        now = time.monotonic()
+        ros_ns = self.get_clock().now().nanoseconds
+        payload = self._audit().snapshot(wall_s=now, ros_ns=ros_ns, unix_ns=time.time_ns())
+        odometry = getattr(self, "_odom", None)
+        odom_ns = self._native_odom_stamp_ns(odometry)
+        status = getattr(self, "_status", None)
+        status_ns = OdometrySourceClock._source_ns(getattr(status, "timestamp", None))
+        status_clock = getattr(self, "_status_clock", None)
+        source_age_ns = getattr(status_clock, "max_age_ns", None)
+        source_future_ns = getattr(status_clock, "max_future_ns", None)
+        payload.update(
+            phase=getattr(self, "_phase", None), phase_reason=getattr(self, "_reason", None),
+            status_timestamp_mode=getattr(self, "_status_timestamp_mode", "receipt_wall"),
+            control_last_status_rejection=getattr(self, "_status_last_rejection", None),
+            accepted_control_status={"source_stamp_ns": status_ns,
+                                     "received_wall_monotonic_s": getattr(self, "_status_received", None) if status is not None else None,
+                                     "age_wall_s": now - self._status_received if status is not None else None,
+                                     "age_source_s": (ros_ns - status_ns) / 1e9 if status_ns is not None else None},
+            odometry={"source_stamp_ns": odom_ns,
+                      "received_wall_monotonic_s": getattr(self, "_odom_received", None) if odometry is not None else None,
+                      "age_wall_s": now - self._odom_received if odometry is not None else None,
+                      "age_source_s": (ros_ns - odom_ns) / 1e9 if odom_ns is not None else None},
+            guard_limits={"status_wall_s": self._number("status_timeout_s"),
+                          "status_source_age_s": source_age_ns / 1e9 if source_age_ns is not None else None,
+                          "status_source_future_s": source_future_ns / 1e9 if source_future_ns is not None else None,
+                          "odometry_wall_s": self._number("odometry_timeout_s")},
+        )
+        message = String()
+        message.data = json.dumps(payload, allow_nan=False, separators=(",", ":"))
+        self._diagnostics_pub.publish(message)
 
     def _status_ros_now_ns(self) -> int:
         """Observe ROS time on callbacks and ticks; a regression requires restart."""
@@ -564,6 +625,7 @@ class FlightSupervisor(Node):
 
     def _tick(self) -> None:
         now = time.monotonic()
+        self._audit().tick(now)
         outgoing = self._velocity_command()
         fresh = self._fresh_state(now)
         if self._phase == "DISABLED":
