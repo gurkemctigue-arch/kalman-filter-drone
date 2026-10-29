@@ -62,6 +62,51 @@ def preserved_hashes(plan):
     return {str(path): v4.sha(path) for path in paths}
 
 
+def gimbal_overrides(plan, source_path):
+    """Pure fixture executions, explicitly never a claim of bag evaluation."""
+    registration = Path(plan["output"]).parent / "six_gimbal_fixture_registration.json"
+    registered_evidence = builder.register_gimbal_reevaluations(source_path, source_path, registration)
+    registered = registered_evidence["created_utc"]
+    source_plan = registered_evidence["source_plan"]
+    slots = []
+    for trial in plan["trials"]:
+        if not trial["group"].startswith("stage3_"):
+            continue
+        spec = next(spec for spec in trial["evaluations"] if spec["kind"] == "gimbal")
+        directory = Path(trial["directory"])
+        report = v4.load(spec["report"])
+        report["result"] = "PASS"  # Synthetic replacement, never real evidence.
+        original = {"source_plan":source_path, "slot_record":v4.record_path(plan, trial),
+                    "original_report":Path(spec["report"]), "recording_closure":directory / "recording_closure.json",
+                    "bag_integrity":directory / "bag_integrity.json"}
+        for name in ("recording_closure", "bag_integrity"):
+            fixtures.write(original[name], {"scope":"ORCHESTRATION_FIXTURE_ONLY"})
+        report["input_bindings"] = {name:{"path":str(path.resolve()), "sha256":v4.sha(path)} for name, path in original.items()}
+        replacement = directory / "gimbal_terminal_audit_v4.json"
+        fixtures.write(replacement, report)
+        command = v4.wrapper_command(Path(plan["frozen_root"]), Path(spec["script"]).name,
+            directory / "rosbag", "--mode", trial["gimbal_mode"],
+            *(["--selected-target"] if trial["group"] == "stage3_multi_active" else []),
+            "--source-plan", source_path, "--slot-record", original["slot_record"],
+            "--original-report", original["original_report"], "--output", replacement)
+        log = directory / "gimbal_fixture_reevaluation.log"
+        log.write_text("ORCHESTRATION_FIXTURE_ONLY: no bag evaluated\n", encoding="utf-8")
+        slots.append({"slot_id":trial["id"], "record_file_sha256":v4.sha(original["slot_record"]),
+            "evaluation_overrides":[{"kind":"gimbal", "original_report_sha256":v4.sha(original["original_report"]),
+                "report":str(replacement), "report_sha256":v4.sha(replacement), "evaluation_root":plan["frozen_root"],
+                "execution":{"command":command, "started_utc":registered, "finished_utc":v4.utc_now(),
+                    "returncode":0, "error":None, "log":str(log), "log_sha256":v4.sha(log)}}]})
+    path = Path(plan["output"]).parent / "six_gimbal_fixture_overrides.json"
+    manifest = {"schema_version":1,"kind":"RELIABILITY_V4_SIX_STAGE3_GIMBAL_REEVALUATIONS",
+        "evidence_scope":"ORCHESTRATION_FIXTURE_ONLY", "registered_utc":registered,"created_utc":v4.utc_now(),
+        "source_plan":source_plan,
+        "prospective_registration":{"path":str(registration),"sha256":v4.sha(registration)},
+        "evaluation_source_hashes":v4.offline_source_hashes(plan["source_hashes"]),
+        "predetermined_gimbal_slots":sorted(item["slot_id"] for item in slots),"slots":slots}
+    fixtures.write(path, manifest)
+    return path, manifest
+
+
 class UnsafeExtensions(extensions.ExtensionCommands):
     def __call__(self, command, log, root, timeout):
         result = super().__call__(command, log, root, timeout)
@@ -73,7 +118,78 @@ class UnsafeExtensions(extensions.ExtensionCommands):
         return result
 
 
+class OriginalGimbalFailures(fixtures.FakeCommands):
+    def __call__(self, command, log, root, timeout):
+        result = super().__call__(command, log, root, timeout)
+        if Path(command[2]).name == "evaluate_stage3_gimbal.py":
+            path = Path(command[command.index("--output") + 1])
+            report = v4.load(path); report["result"] = "FAIL_OR_INCOMPLETE"
+            fixtures.write(path, report); result["returncode"] = 2
+        return result
+
+
 class ProbeGateBuilderTests(unittest.TestCase):
+    def test_unregistered_target_can_register_six_diagnostics_but_cannot_publish_acceptance_gate(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); _, source = matrix(root)
+            protocol = v4.load(root / v4.PROTOCOL_PATH)
+            protocol["navigation_acceptance"]["status"] = "DRAFT"
+            fixtures.write(root / v4.PROTOCOL_PATH, protocol)
+            target = fixtures.plan(root, groups=list(v4.GROUPS), classes=list(v4.CLASSES), seeds=[7], suffix="ungated_diagnostics")
+            target_path = Path(target["output"]) / "plan.json"
+            registration_path = root / "results/diagnostics_registration.json"
+            registered = builder.register_gimbal_reevaluations(target_path, source, registration_path)
+            self.assertEqual(len(registered["planned_evaluations"]), 6)
+            self.assertEqual(v4.load(root / v4.PROTOCOL_PATH)["navigation_acceptance"]["status"], "DRAFT")
+            self.assertFalse(any(Path(row["report"]).exists() for row in registered["planned_evaluations"]))
+            output = root / "results/ungated_acceptance_gate.json"
+            with self.assertRaisesRegex(ValueError, "must be REGISTERED"):
+                builder.run(target_path, [source], output)
+            self.assertFalse(output.exists())
+
+    def test_explicit_complete_six_gimbal_manifest_preserves_original_reports_and_records(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); plan, path = matrix(root, commands=OriginalGimbalFailures()); before = preserved_hashes(plan)
+            manifest_path, manifest = gimbal_overrides(plan, path)
+            output = root / "results/six_gimbal_gate.json"
+            gate = builder.run(path, [path], output, overrides_manifest=manifest_path)
+            self.assertEqual(len([item for item in gate["probe_slots"] if item.get("evaluation_overrides")]), 6)
+            self.assertEqual(gate["evaluation_overrides_manifest"]["manifest"], manifest)
+            self.assertEqual(gate["generation"]["source_terminal_status_counts"], {"PASS":6,"FAIL":6})
+            self.assertEqual(preserved_hashes(plan), before)
+            v4.validate_probe_gate(builder.verification_context(plan, output, gate, extension=False, registration_utc=None))
+            with self.assertRaises(FileExistsError):
+                builder.register_gimbal_reevaluations(path, path, root / "results/late_registration.json")
+            self.assertFalse((root / "results/late_registration.json").exists())
+
+    def test_gimbal_manifest_rejects_partial_selection_wrong_old_sha_bad_command_or_missing_log(self):
+        for defect in ("partial", "old_sha", "command", "log", "chronology", "registration", "selected_target"):
+            with self.subTest(defect=defect), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp); plan, path = matrix(root)
+                manifest_path, manifest = gimbal_overrides(plan, path)
+                if defect == "partial":
+                    manifest["slots"].pop()
+                elif defect == "old_sha":
+                    manifest["slots"][0]["record_file_sha256"] = "0" * 64
+                elif defect == "registration":
+                    manifest["prospective_registration"]["sha256"] = "0" * 64
+                elif defect == "selected_target":
+                    entry = next(item for item in manifest["slots"] if "stage3_multi_active" in item["slot_id"])
+                    entry["evaluation_overrides"][0]["execution"]["command"].remove("--selected-target")
+                else:
+                    entry = manifest["slots"][0]["evaluation_overrides"][0]
+                    if defect == "command":
+                        entry["execution"]["command"][2] = "/wrong/evaluator.py"
+                    elif defect == "log":
+                        entry["execution"]["log_sha256"] = "0" * 64
+                    else:
+                        entry["execution"]["started_utc"] = "2000-01-01T00:00:00Z"
+                fixtures.write(manifest_path, manifest)
+                output = root / "results/rejected_gimbal_gate.json"
+                with self.assertRaises(ValueError):
+                    builder.run(path, [path], output, overrides_manifest=manifest_path)
+                self.assertFalse(output.exists())
+
     def test_core_validates_real_temporary_artifact_then_publishes_without_rewriting_evidence(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp); plan, path = matrix(root); before = preserved_hashes(plan)

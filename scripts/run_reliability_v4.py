@@ -70,6 +70,7 @@ REPORT_PROVENANCE_HELPERS = {
                          "uav_tracking/research_labels.py", "uav_tracking/research_metrics.py", "uav_tracking/stage2_identity.py"),
     "source_clock":SOURCE_CLOCK_HELPERS,
     "native_startup":("scripts/evaluate_stage1_flight.py",),
+    "gimbal":("scripts/evaluate_stage1_flight.py", "uav_tracking/control/gimbal_geometry.py"),
 }
 
 
@@ -223,6 +224,15 @@ def wrapper_command(root, script, *args):
     return ["bash", str(root / "scripts/run_research_session.sh"), str(root / "scripts" / script), *map(str, args)]
 
 
+def gimbal_reevaluation_command(evaluation_root, source_plan, previous, trial, output):
+    original = next(spec for spec in trial["evaluations"] if spec["kind"] == "gimbal")
+    return wrapper_command(Path(evaluation_root), Path(original["script"]).name,
+        Path(trial["directory"]) / "rosbag", "--mode", trial["gimbal_mode"],
+        *(["--selected-target"] if trial["group"] == "stage3_multi_active" else []),
+        "--source-plan", source_plan, "--slot-record", record_path(previous, trial),
+        "--original-report", original["report"], "--output", output)
+
+
 def trial_spec(root, protocol, prefix, cls, group, seed, wall_timeout):
     multi = group in {"stage2_crossing", "stage3_multi_active"}
     stage = 1 if group.startswith("stage1_") else 2 if group == "stage2_crossing" else 3
@@ -282,7 +292,8 @@ def trial_spec(root, protocol, prefix, cls, group, seed, wall_timeout):
         add("selected_target_safety", "evaluate_stage2_flight.py", [*common, "--require-occlusions",
             "--terminal-expectation", "tracking"], "stage2_evaluation.json")
     if stage == 3:
-        add("gimbal", "evaluate_stage3_gimbal.py", [directory / "rosbag", "--mode", spec["gimbal_mode"]], "gimbal_evaluation.json")
+        add("gimbal", "evaluate_stage3_gimbal.py", [directory / "rosbag", "--mode", spec["gimbal_mode"],
+            *(["--selected-target"] if group == "stage3_multi_active" else [])], "gimbal_evaluation.json")
     if multi:
         add("physical_identity", "evaluate_physical_identity.py", [directory, "--target-class", cls], "physical_identity.json")
     nav_args = [directory, "--target-class", cls]
@@ -650,6 +661,13 @@ def validate_plan(plan, path=None):
     for original, regenerated in zip(plan["trials"], expected):
         for previous, current in zip(original["evaluations"], regenerated["evaluations"]):
             current["available_at_freeze"] = previous["available_at_freeze"]
+            # Historical development commands are immutable evidence. The
+            # only supported legacy command delta is this offline metric flag;
+            # new and formal plans always freeze the selected-target metric.
+            if (mode == "PROBE" and original.get("group") == "stage3_multi_active"
+                    and previous.get("kind") == "gimbal" and "--selected-target" not in previous["command"]
+                    and plan["source_hashes"].get("scripts/run_reliability_v4.py") != sha(__file__)):
+                current["command"] = [value for value in current["command"] if value != "--selected-target"]
     if expected != plan["trials"]:
         raise ValueError("Registered trial commands/configuration differ from the v4 protocol")
     if plan["mode"] == "FORMAL" and (len(names) != 120 or plan["selected_classes"] != list(CLASSES)
@@ -1081,8 +1099,19 @@ def read_evaluation(spec, execution, plan=None):
                 raise ValueError("Evaluator input bag is not bound to this trial")
         code = execution.get("returncode")
         negative = verdict in {"FAIL", "FAIL_OR_INCOMPLETE", "INCOMPLETE_EVIDENCE", "INCOMPLETE"}
-        if code != 0 and not (code == 2 and negative and kind in {"navigation", "physical_identity", "selected_target_safety", "source_clock", "native_startup"}):
+        if code != 0 and not (code == 2 and negative and kind in {"navigation", "physical_identity", "selected_target_safety", "source_clock", "native_startup", "gimbal"}):
             raise ValueError("Evaluator return code contradicts its report")
+        if kind == "gimbal" and plan is not None:
+            provenance = report.get("evaluation_source", {})
+            evaluation_root = Path(spec.get("evaluation_root", plan["frozen_root"]))
+            expected_helpers = {str(evaluation_root / helper):plan["source_hashes"].get(helper)
+                                for helper in REPORT_PROVENANCE_HELPERS[kind]}
+            if (provenance.get("script_sha256") != plan["source_hashes"].get(spec["script"])
+                    or provenance.get("dependencies") != expected_helpers
+                    or any(value is None for value in expected_helpers.values())):
+                raise ValueError("Gimbal evaluator/helper provenance differs from frozen evaluation")
+            if "--selected-target" in spec["command"] and report.get("centering_source") != "selected_fresh_track_box":
+                raise ValueError("Multi-target gimbal metrics must use the selected fresh track box")
         if kind == "native_startup":
             checks = report.get("checks")
             if (report.get("native_startup_pass") is not (verdict == "PASS")
@@ -1421,7 +1450,7 @@ def validate_probe_gate(plan, *, extensions=False):
     """Recheck 12 core or 16 extension development cells against actual files.
 
     References preserve the original immutable trial and record. Only the
-    four provenance-bearing offline evaluators may receive a separately named
+    registered provenance-bearing offline evaluators may receive a separately named
     override; their actual source/helper hashes must match this new evaluation
     revision. No bags are opened and no earlier record is rewritten here.
     Extensions retain disclosed algorithm failures under stress, while source
@@ -1454,6 +1483,22 @@ def validate_probe_gate(plan, *, extensions=False):
     slots = gate.get("probe_slots")
     if not isinstance(slots, list) or not slots:
         raise ValueError("Development probe gate requires immutable probe slot evidence")
+    gimbal_overrides = {(str(Path(item["plan_path"]).resolve()), item["slot_id"]):item.get("evaluation_overrides", [])
+                        for item in slots if any(entry.get("kind") == "gimbal" for entry in item.get("evaluation_overrides", []))}
+    manifest_binding = gate.get("evaluation_overrides_manifest")
+    if gimbal_overrides or manifest_binding is not None:
+        if not isinstance(manifest_binding, dict):
+            raise ValueError("Gimbal overrides require the explicit complete six-slot manifest")
+        helper = Path(__file__).with_name("build_reliability_v4_probe_gate.py")
+        if sha(helper) != plan["source_hashes"].get("scripts/build_reliability_v4_probe_gate.py"):
+            raise ValueError("Gimbal override manifest validator source differs")
+        module_spec = importlib.util.spec_from_file_location("v4_gimbal_override_manifest_validator", helper)
+        module = importlib.util.module_from_spec(module_spec)
+        module_spec.loader.exec_module(module)
+        declared, actual_binding = module.read_evaluation_overrides_manifest(manifest_binding.get("path"), plan,
+            [item["plan_path"] for item in slots], extension=extensions)
+        if actual_binding != manifest_binding or declared != gimbal_overrides:
+            raise ValueError("Gimbal override manifest/file/all-six-slot bindings differ")
     cache, seen, cells, known_failures = {}, set(), set(), []
     for item in slots:
         if not isinstance(item, dict):
@@ -1517,6 +1562,22 @@ def validate_probe_gate(plan, *, extensions=False):
                     raise ValueError("Offline override must preserve the old report and bind a new report in the same trial")
                 spec["report"] = str(report_path)
                 spec["evaluation_root"] = override["evaluation_root"]
+                if kind == "gimbal":
+                    # Bind the actual separately executed new command; do not
+                    # replace the original slot's historical command/report.
+                    command = override["execution"].get("command", [])
+                    required = gimbal_reevaluation_command(spec["evaluation_root"], source, previous, original, report_path)
+                    if command != required:
+                        raise ValueError("Gimbal offline override actual command/selected-target binding differs")
+                    spec["command"] = required
+                    report = load(report_path)
+                    bound = report.get("input_bindings", {})
+                    originals = {"source_plan": source, "slot_record": record_path(previous, original),
+                                 "original_report": next(Path(old["report"]) for old in original["evaluations"] if old["kind"] == kind),
+                                 "recording_closure": Path(trial["directory"]) / "recording_closure.json",
+                                 "bag_integrity": Path(trial["directory"]) / "bag_integrity.json"}
+                    if any(bound.get(name) != {"path":str(path.resolve()), "sha256":sha(path)} for name, path in originals.items()):
+                        raise ValueError("Gimbal offline override original/closure/archive SHA binding differs")
                 checked = read_evaluation(spec, override["execution"], evaluation_plan)
                 entries = [entry for entry in entries if entry.get("kind") != kind] + [checked]
             if kind in REPORT_PROVENANCE_HELPERS:

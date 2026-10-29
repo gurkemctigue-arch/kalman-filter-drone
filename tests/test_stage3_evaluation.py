@@ -3,10 +3,13 @@
 from __future__ import annotations
 
 import json
+from copy import deepcopy
 from pathlib import Path
 import sys
+import tempfile
 from types import SimpleNamespace as NS
 import unittest
+from unittest.mock import patch
 
 import numpy as np
 
@@ -56,7 +59,136 @@ def fixture(mode="active"):
     return records
 
 
+def paused_fixture(copies=3):
+    rows = []
+    for row in fixture():
+        if row.topic == "/gimbal/joint_states":
+            row.message.header.frame_id = "gimbal"
+            row.message.velocity = []
+            row.message.effort = []
+            rows.append(evaluation.stage1.Record("/clock", row.time_s, NS(clock=stamp(row.time_s)), row.time_s))
+        rows.append(evaluation.stage1.Record(row.topic, row.time_s, row.message, row.time_s))
+    last = next(row for row in reversed(rows) if row.topic == "/gimbal/joint_states")
+    rows += [deepcopy(last) for _ in range(copies)]
+    count = sum(row.topic == "/clock" for row in rows)
+    metadata = {"clock_records_preserved": True, "clock_samples_read": count}
+    context = {"recording_closure": {"schema_version":1, "status":"PASS",
+        "scope":"WORLD_PAUSE_ACK_AND_OBSERVED_FINAL_SOURCE_CORRESPONDENCE_BEFORE_RECORDER_CLOSE",
+        "pause_request":{"command_pause":True,"returncode":0,"response":"data: true\n\n"},
+        "observer_cleanup_completed":True, "pause_ack_elapsed_wall_s":.1,
+        "observations":[{"ready":True,"failures":[],"errors":[],"last_clock_ns":6_000_000_000}]},
+        "bag_integrity":{"schema_version":1,"status":"PASS","recorder_exit_code":0,
+            "raw_validation":{"status":"PASS"},
+            "native_reader_validation":{"status":"PASS","topic_counts":{"/clock":count}}}}
+    return rows, metadata, context
+
+
 class Stage3EvaluationTests(unittest.TestCase):
+    def test_reader_preserves_complete_clock_and_restores_topic_filter(self):
+        topics = evaluation.stage1.TOPICS
+        with patch.object(evaluation.stage1, "read_rosbag", return_value=([], {})) as reader:
+            evaluation.read_records(Path("fixture"))
+            reader.assert_called_once_with(Path("fixture"), preserve_clock=True)
+        self.assertIs(evaluation.stage1.TOPICS, topics)
+
+    def test_cli_exclusively_publishes_provenance_bound_report_and_rejects_overwrite_before_bag_read(self):
+        rows, metadata, context = paused_fixture()
+        with tempfile.TemporaryDirectory() as tmp:
+            trial = Path(tmp); bag = trial / "rosbag"; bag.mkdir()
+            context["bag_integrity"]["destination"] = str(bag)
+            for name, content in context.items():
+                (trial / (name + ".json")).write_text(json.dumps(content), encoding="utf-8")
+            source = trial / "plan.json"; source.write_text("{}", encoding="utf-8")
+            slot = trial / "slot.json"; slot.write_text("{}", encoding="utf-8")
+            old = trial / "gimbal_evaluation.json"; old.write_text("{}", encoding="utf-8")
+            output = trial / "gimbal_new.json"
+            argv = [str(bag), "--mode", "active", "--source-plan", str(source), "--slot-record", str(slot),
+                    "--original-report", str(old), "--output", str(output)]
+            metadata["bag"] = str(bag.resolve())
+            with patch.object(evaluation, "read_records", return_value=(rows, metadata)), patch("builtins.print"):
+                self.assertEqual(evaluation.main(argv), 0)
+            report = json.loads(output.read_text(encoding="utf-8"))
+            self.assertEqual(report["evaluation_source"], evaluation.evaluation_source_provenance())
+            self.assertEqual(report["input_bindings"]["original_report"], evaluation.small_file_binding(old))
+            self.assertEqual(report["input_bindings"]["source_plan"], evaluation.small_file_binding(source))
+            self.assertEqual(old.read_text(), "{}")
+            with patch.object(evaluation, "read_records") as reader, self.assertRaises(FileExistsError):
+                evaluation.main(argv)
+            reader.assert_not_called()
+
+    def test_only_closure_bound_complete_identical_terminal_copies_are_excluded(self):
+        rows, metadata, context = paused_fixture()
+        report = evaluation.evaluate_records(rows, metadata, "active", pause_context=context)
+        self.assertEqual(report["result"], "PASS", report["checks"])
+        feedback = report["physical_feedback"]
+        self.assertEqual(feedback["samples"], 251)
+        self.assertEqual(feedback["recorded_samples"], 254)
+        self.assertEqual(feedback["duplicate_or_nonincreasing_source_stamps"], 3)
+        self.assertEqual(len(feedback["delivery_source_order_errors"]), 3)
+        self.assertEqual(feedback["effective_duplicate_or_nonincreasing_source_stamps"], 0)
+        self.assertEqual(feedback["terminal_redundant_message_audit"]["accepted_redundant_samples"], 3)
+        self.assertEqual(evaluation.evaluate_records(rows, metadata, "active")["result"], "FAIL_OR_INCOMPLETE")
+
+    def test_complete_payload_conflicts_cannot_be_hidden_by_identical_three_angles(self):
+        for field, value in (("velocity", [.1, 0, 0]), ("effort", [0, .1, 0]), ("position", [.1, 0, 0])):
+            rows, metadata, context = paused_fixture()
+            setattr(rows[-1].message, field, value)
+            report = evaluation.evaluate_records(rows, metadata, "active", pause_context=context)
+            self.assertEqual(report["result"], "FAIL_OR_INCOMPLETE")
+            self.assertEqual(report["physical_feedback"]["terminal_redundant_message_audit"]["accepted_redundant_samples"], 0)
+        rows, metadata, context = paused_fixture()
+        rows[-1].message.header.frame_id = "different"
+        self.assertEqual(evaluation.evaluate_records(rows, metadata, "active", pause_context=context)["result"], "FAIL_OR_INCOMPLETE")
+
+    def test_missing_failed_closure_clock_gap_regression_and_final_mismatch_fail_closed(self):
+        for defect in ("no_clock", "missing_clock", "clock_regression", "closure_fail", "no_ack", "final_mismatch", "incomplete_payload"):
+            rows, metadata, context = paused_fixture()
+            if defect == "no_clock":
+                rows = [row for row in rows if row.topic != "/clock"]
+            elif defect == "missing_clock":
+                rows.pop(next(index for index, row in enumerate(rows) if row.topic == "/clock"))
+            elif defect == "clock_regression":
+                clocks = [row for row in rows if row.topic == "/clock"]
+                clocks[10].message.clock = stamp(.01)
+            elif defect == "closure_fail":
+                context["recording_closure"]["status"] = "FAIL"
+            elif defect == "no_ack":
+                context["recording_closure"]["pause_request"]["response"] = "data: false"
+            elif defect == "final_mismatch":
+                context["recording_closure"]["observations"][-1]["last_clock_ns"] += 1
+            else:
+                del rows[-1].message.velocity
+            report = evaluation.evaluate_records(rows, metadata, "active", pause_context=context)
+            self.assertEqual(report["result"], "FAIL_OR_INCOMPLETE", defect)
+
+    def test_live_middle_or_regressing_feedback_and_later_zero_stay_failures(self):
+        for defect in ("middle", "resume", "regression", "later_zero", "receive_mismatch"):
+            rows, metadata, context = paused_fixture()
+            if defect == "middle":
+                index = next(index for index, row in enumerate(rows) if row.topic == "/gimbal/joint_states")
+                rows.insert(index + 1, deepcopy(rows[index]))
+            elif defect == "resume":
+                rows.append(evaluation.stage1.Record("/clock", 6.1, NS(clock=stamp(6.1)), 6.1))
+                metadata["clock_samples_read"] += 1
+                context["bag_integrity"]["native_reader_validation"]["topic_counts"]["/clock"] += 1
+                context["recording_closure"]["observations"][-1]["last_clock_ns"] = 6_100_000_000
+            elif defect in {"regression", "later_zero"}:
+                source = 0. if defect == "later_zero" else 5.99
+                message = deepcopy(rows[-1].message); message.header.stamp = stamp(source)
+                rows.append(evaluation.stage1.Record("/gimbal/joint_states", source, message, 6.))
+            else:
+                rows[-1] = evaluation.stage1.Record(rows[-1].topic, 6., rows[-1].message, 5.99)
+            self.assertEqual(evaluation.evaluate_records(rows, metadata, "active", pause_context=context)["result"], "FAIL_OR_INCOMPLETE", defect)
+
+    def test_terminal_redundancy_never_supplies_fifty_unique_timed_samples(self):
+        rows, metadata, context = paused_fixture(copies=100)
+        joints = [index for index, row in enumerate(rows) if row.topic == "/gimbal/joint_states"]
+        remove = set(joints[:230])
+        rows = [row for index, row in enumerate(rows) if index not in remove]
+        report = evaluation.evaluate_records(rows, metadata, "active", pause_context=context)
+        self.assertFalse(report["checks"]["three_encoder_joints_recorded"])
+        self.assertEqual(report["physical_feedback"]["samples"], 21)
+
     def test_complete_independent_feedback_tf_physics_evidence_passes(self):
         report = evaluation.evaluate_records(fixture(), {}, "active")
         self.assertEqual(report["result"], "PASS", report["checks"])

@@ -97,6 +97,9 @@ def fixture(root, *, navigation=True, gates=False, ros_distro="jazzy"):
         path = root/relative
         if not path.exists():
             path.write_text("# ORCHESTRATION_FIXTURE_ONLY: offline helper, never executed\n", encoding="utf-8")
+    path = root / "uav_tracking/control/gimbal_geometry.py"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text("# ORCHESTRATION_FIXTURE_ONLY: gimbal geometry dependency\n", encoding="utf-8")
     (root / "models").mkdir()
     (root / "models/yolo11n.pt").write_bytes(b"person-model-fixture")
     (root / "models/yolo11s.pt").write_bytes(b"car-model-fixture")
@@ -314,7 +317,9 @@ class FakeCommands:
             elif script == "evaluate_stage2_flight.py":
                 report = {"schema_version": 1, "result": "PASS", "inputs": {"bag": str(bag)}}
             elif script == "evaluate_stage3_gimbal.py":
-                report = {"schema_version": 3, "result": "PASS", "metadata": {"bag": str(bag)}}
+                report = {"schema_version": 3, "result": "PASS", "metadata": {"bag": str(bag)},
+                    "centering_source":"selected_fresh_track_box" if "--selected-target" in command else "all_detections_in_single_target_world",
+                    "evaluation_source":provenance(root, "gimbal", "scripts/"+script)}
             elif script == "evaluate_physical_identity.py":
                 report = physical_identity_report(directory)
                 report["evaluation_source"] = provenance(root, "physical_identity", "scripts/"+script)
@@ -358,6 +363,23 @@ def fixture_probe_gate(root):
 
 
 class ReliabilityV4Tests(unittest.TestCase):
+    def test_selected_gimbal_flag_is_required_in_new_plans_but_legacy_probe_commands_are_preserved(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); fixture(root)
+            legacy = plan(root, groups=["stage3_multi_active"], suffix="legacy_gimbal")
+            spec = next(row for row in legacy["trials"][0]["evaluations"] if row["kind"] == "gimbal")
+            self.assertIn("--selected-target", spec["command"])
+            spec["command"].remove("--selected-target")
+            legacy["plan_sha256"] = v4.digest(legacy, ("plan_sha256",))
+            v4.validate_plan(legacy)
+            shutil.copy2(ROOT / "scripts/run_reliability_v4.py", root / "scripts/run_reliability_v4.py")
+            current = plan(root, groups=["stage3_multi_active"], suffix="current_gimbal")
+            spec = next(row for row in current["trials"][0]["evaluations"] if row["kind"] == "gimbal")
+            spec["command"].remove("--selected-target")
+            current["plan_sha256"] = v4.digest(current, ("plan_sha256",))
+            with self.assertRaisesRegex(ValueError, "Registered trial commands"):
+                v4.validate_plan(current)
+
     def test_actual_renderer_archive_is_required_and_driver_environment_is_bound(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp); fixture(root, gates=True); frozen = plan(root, seeds=[0])

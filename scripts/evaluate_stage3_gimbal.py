@@ -10,9 +10,13 @@ from __future__ import annotations
 import argparse
 from bisect import bisect_left
 from collections import Counter
+from datetime import datetime, timezone
+import hashlib
 import json
 import math
 from pathlib import Path
+import struct
+import sys
 from typing import Any
 
 import numpy as np
@@ -71,31 +75,135 @@ def gazebo_frame_key(frame: str) -> str:
     return frame.replace("::", "/").strip("/")
 
 
-def read_records(bag: Path):
+def read_records(bag: Path, *, preserve_clock: bool = True):
     original = stage1.TOPICS
     try:
         stage1.TOPICS = TOPICS
-        records, metadata = stage1.read_rosbag(bag)
+        records, metadata = stage1.read_rosbag(bag, preserve_clock=preserve_clock)
     finally:
         stage1.TOPICS = original
     return records, metadata
 
 
+def small_file_binding(path: Path) -> dict[str, str]:
+    path = Path(path).resolve(strict=True)
+    if not path.is_file() or path.stat().st_size > 16 * 1024 * 1024:
+        raise ValueError("Expected a small provenance file: " + str(path))
+    return {"path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
+
+
+def evaluation_source_provenance() -> dict[str, Any]:
+    script = Path(__file__).resolve()
+    root = script.parent.parent
+    helpers = (root / "scripts/evaluate_stage1_flight.py", root / "uav_tracking/control/gimbal_geometry.py")
+    return {"script": str(script), "script_sha256": small_file_binding(script)["sha256"],
+            "dependencies": {str(path): small_file_binding(path)["sha256"] for path in helpers},
+            "scope": "Offline physical gimbal geometry and complete recorded Clock/closure-bound terminal redundant feedback audit"}
+
+
+def complete_joint_payload(message: Any) -> tuple:
+    """Compare every JointState field, including ordering and IEEE float bits."""
+    header = message.header
+    if not isinstance(header.frame_id, str):
+        raise ValueError("invalid JointState frame")
+    names = tuple(message.name)
+    if not names or not all(isinstance(name, str) for name in names):
+        raise ValueError("invalid JointState names")
+    arrays = []
+    for field in ("position", "velocity", "effort"):
+        values = tuple(getattr(message, field))
+        if len(values) not in ({len(names)} if field == "position" else {0, len(names)}):
+            raise ValueError("incomplete JointState " + field)
+        if any(stage1.finite(value) is None for value in values):
+            raise ValueError("nonfinite JointState " + field)
+        arrays.append(tuple(struct.pack("!d", float(value)).hex() for value in values))
+    return (int(header.stamp.sec), int(header.stamp.nanosec), header.frame_id, names, *arrays)
+
+
+def terminal_redundant_audit(records, metadata, feedback_records, pause_context):
+    """Never infer a pause merely from a repeated stamp or unchanged angles."""
+    audit = {"enabled": pause_context is not None, "valid_pause_evidence": False,
+             "failure_reasons": [], "accepted_redundant_samples": 0, "final_clock_s": None,
+             "accepted_feedback_indices": [], "complete_payload_sha256": None}
+    if pause_context is None:
+        return audit
+    errors = audit["failure_reasons"]
+    try:
+        closure, archive = pause_context["recording_closure"], pause_context["bag_integrity"]
+        request = closure["pause_request"]
+        observed = closure["observations"][-1]
+        if (closure.get("schema_version") != 1 or closure.get("status") != "PASS"
+                or closure.get("scope") != "WORLD_PAUSE_ACK_AND_OBSERVED_FINAL_SOURCE_CORRESPONDENCE_BEFORE_RECORDER_CLOSE"
+                or request.get("command_pause") is not True or request.get("returncode") != 0
+                or request.get("response", "").strip() != "data: true"
+                or closure.get("observer_cleanup_completed") is not True
+                or observed.get("ready") is not True or observed.get("failures") or observed.get("errors")
+                or stage1.finite(closure.get("pause_ack_elapsed_wall_s")) is None
+                or closure["pause_ack_elapsed_wall_s"] < 0):
+            errors.append("missing_successful_pause_ack_and_final_closure")
+        if (archive.get("schema_version") != 1 or archive.get("status") != "PASS"
+                or archive.get("recorder_exit_code") != 0
+                or archive.get("raw_validation", {}).get("status") != "PASS"
+                or archive.get("native_reader_validation", {}).get("status") != "PASS"):
+            errors.append("missing_successful_closed_archive")
+        clocks = [row for row in records if row.topic == "/clock"]
+        values = [stage1.stamp_s(row.message.clock) for row in clocks]
+        expected = archive["native_reader_validation"]["topic_counts"]["/clock"]
+        if (not values or metadata.get("clock_records_preserved") is not True
+                or metadata.get("clock_samples_read") != len(values) or len(values) != expected
+                or metadata.get("read_errors") or metadata.get("unavailable_types")
+                or any(stage1.finite(value) is None or value < 0 for value in values)
+                or any(after < before for before, after in zip(values, values[1:]))):
+            errors.append("incomplete_or_regressing_recorded_clock")
+        final = values[-1] if values else None
+        audit["final_clock_s"] = final
+        if (final is None or final <= 0 or round(final * 1e9) != observed.get("last_clock_ns")
+                or any(row.received_sim_s is not None and row.received_sim_s > final + 1e-9 for row in records)):
+            errors.append("closure_final_clock_mismatch")
+        if errors:
+            return audit
+        audit["valid_pause_evidence"] = True
+        # A suffix in the original JointState delivery stream only. A live
+        # duplicate or an earlier pause followed by resumed time is retained.
+        start = len(feedback_records)
+        while start and feedback_records[start - 1].time_s == final and feedback_records[start - 1].received_sim_s == final:
+            start -= 1
+        if len(feedback_records) - start < 2:
+            return audit
+        payload = complete_joint_payload(feedback_records[start].message)
+        if any(complete_joint_payload(row.message) != payload for row in feedback_records[start:]):
+            errors.append("conflicting_complete_terminal_jointstate_payload")
+            return audit
+        accepted = list(range(start + 1, len(feedback_records)))
+        audit.update(accepted_feedback_indices=accepted, accepted_redundant_samples=len(accepted),
+                     complete_payload_sha256=hashlib.sha256(repr(payload).encode()).hexdigest(),
+                     retained_unique_feedback_index=start)
+    except (AttributeError, KeyError, TypeError, ValueError, IndexError) as error:
+        errors.append("invalid_pause_evidence: " + str(error))
+    return audit
+
+
 def evaluate_records(records: list[stage1.Record], metadata: dict[str, Any], mode: str,
-                     selected_target: bool = False) -> dict[str, Any]:
+                     selected_target: bool = False, pause_context: dict[str, Any] | None = None) -> dict[str, Any]:
     if mode not in {"active", "midpoint"}:
         raise ValueError("mode must be active or midpoint")
     # Preserve recorded delivery order for epoch checks before sorting the
     # remaining channels by their source timestamps.
     feedback_records = [row for row in records if row.topic == "/gimbal/joint_states"]
+    pause_audit = terminal_redundant_audit(records, metadata, feedback_records, pause_context)
+    redundant = set(pause_audit["accepted_feedback_indices"])
     records = sorted(records, key=lambda row: row.time_s)
     groups: dict[str, list[stage1.Record]] = {}
     for row in records:
         groups.setdefault(row.topic, []).append(row)
     failures: Counter[str] = Counter()
+    for error in pause_audit["failure_reasons"]:
+        failures["terminal_pause_audit: " + error] += 1
     feedback, startup_feedback, feedback_order_errors = [], [], []
+    raw_feedback, raw_order_errors = [], []
     previous_positive_source = None
-    for row in feedback_records:
+    raw_previous_positive_source = None
+    for feedback_index, row in enumerate(feedback_records):
         try:
             angles = ordered_joint_positions(row.message.name, row.message.position)
             timestamp = stage1.finite(row.time_s)
@@ -107,6 +215,13 @@ def evaluate_records(records: list[stage1.Record], metadata: dict[str, Any], mod
                 startup_feedback.append((timestamp, angles))
                 if not np.array_equal(startup_feedback[0][1], angles):
                     raise ValueError("conflicting startup feedback without advancing source time")
+                continue
+            if raw_previous_positive_source is not None and timestamp <= raw_previous_positive_source:
+                raw_order_errors.append({"previous_source_s": raw_previous_positive_source, "source_s": timestamp,
+                                         "received_sim_s": row.received_sim_s})
+            raw_previous_positive_source = timestamp
+            raw_feedback.append((timestamp, angles))
+            if feedback_index in redundant:
                 continue
             if previous_positive_source is not None and timestamp <= previous_positive_source:
                 feedback_order_errors.append({"previous_source_s": previous_positive_source,
@@ -123,6 +238,8 @@ def evaluate_records(records: list[stage1.Record], metadata: dict[str, Any], mod
     duplicate_feedback = sum(after[0] <= before[0] for before, after in zip(feedback, feedback[1:]))
     duplicate_pairs = [(before, after) for before, after in zip(feedback, feedback[1:]) if after[0] <= before[0]]
     duplicate_conflicts = sum(not np.array_equal(before[1], after[1]) for before, after in duplicate_pairs)
+    raw_feedback.sort(key=lambda row: row[0])
+    raw_duplicate_pairs = [(before, after) for before, after in zip(raw_feedback, raw_feedback[1:]) if after[0] <= before[0]]
     diagnostics = []
     for row in groups.get("/gimbal/diagnostics", []):
         try:
@@ -303,7 +420,7 @@ def evaluate_records(records: list[stage1.Record], metadata: dict[str, Any], mod
         checks.update(midpoint_never_publishes_active_yaw=len(groups.get("/gimbal/body_yaw_reference", [])) == 0 and not active_diagnostics,
                       midpoint_setpoint_is_zero=bool(diagnostics) and all(data.get("desired_angles_rad") in (None, [0.0, 0.0, 0.0]) for _, data in diagnostics))
     return {
-        "schema_version": 3, "evaluator_version": "3_audited_paused_startup_feedback",
+        "schema_version": 3, "evaluator_version": "4_closure_bound_terminal_redundancy",
         "mode": mode, "result": "PASS" if all(checks.values()) else "FAIL_OR_INCOMPLETE",
         "centering_source": "selected_fresh_track_box" if selected_target else "all_detections_in_single_target_world",
         "checks": checks, "metadata": metadata, "channel_errors": dict(failures),
@@ -314,16 +431,20 @@ def evaluate_records(records: list[stage1.Record], metadata: dict[str, Any], mod
                               "recorded_samples": len(feedback_records),
                               "startup_unready_samples": len(startup_feedback),
                               "startup_unready_angles_rad": startup_feedback[0][1].tolist() if startup_feedback else None,
-                              "delivery_source_order_errors": feedback_order_errors,
-                              "duplicate_or_nonincreasing_source_stamps": duplicate_feedback,
-                              "conflicting_duplicate_source_stamps": duplicate_conflicts,
+                              "delivery_source_order_errors": raw_order_errors,
+                              "duplicate_or_nonincreasing_source_stamps": len(raw_duplicate_pairs),
+                              "conflicting_duplicate_source_stamps": sum(not np.array_equal(before[1], after[1]) for before, after in raw_duplicate_pairs),
+                              "effective_delivery_source_order_errors": feedback_order_errors,
+                              "effective_duplicate_or_nonincreasing_source_stamps": duplicate_feedback,
+                              "effective_conflicting_duplicate_source_stamps": duplicate_conflicts,
+                              "terminal_redundant_message_audit": pause_audit,
                               "nonpositive_source_stamp_samples": sum(stage1.finite(row.time_s) is not None and row.time_s <= 0
                                                                         for row in feedback_records),
                               "duplicate_source_examples": [
                                   {"prior_source_s": before[0], "source_s": after[0],
                                    "prior_angles_rad": before[1].tolist(), "angles_rad": after[1].tolist(),
                                    "same_angles": bool(np.array_equal(before[1], after[1]))}
-                                  for before, after in duplicate_pairs[:20]],
+                                  for before, after in raw_duplicate_pairs[:20]],
                               "max_command_encoder_difference_rad": max_lag, "diagnostic_encoder_error_rad": stage1.summary(diagnostic_feedback_errors)},
         "geometry": {"tf_source_stamp_samples": tf_source_stamps, "static_camera_tf_count": static_camera_count,
                      "tf_angle_error_rad": stage1.summary(tf_angle_errors), "tf_translation_error_m": stage1.summary(tf_translation_errors),
@@ -337,6 +458,7 @@ def evaluate_records(records: list[stage1.Record], metadata: dict[str, Any], mod
                          "A physical lag check is evidence of distinct channels; it is not a calibrated servo bandwidth measurement.",
                          "Explicit inactive invalid-source diagnostics with frozen commands are audited as not-ready and excluded from source-aligned encoder/lag metrics; ready diagnostics remain strict.",
                          "Initial identical stamp-zero joint feedback from a paused world is audited without counting as timed evidence; conflicts, positive-time duplicates/backtracking, and later zero stamps remain failures.",
+                         "Only a complete identical terminal JointState suffix at the global final source/receipt Clock may be audited as redundant after independent successful pause-ACK/recording-closure and complete nonregressing Clock/archive validation; raw errors remain recorded and redundant copies supply no timed evidence.",
                          "Hard yaw lead projection/reset takes precedence over reference derivative bounds during external body-yaw jumps."],
     }
 
@@ -354,22 +476,56 @@ def compare_reports(active: dict[str, Any], midpoint: dict[str, Any]) -> dict[st
                                                     "One paired trial demonstrates engineering behavior, not statistical significance."]}
 
 
-def main() -> None:
+def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("bag", type=Path)
     parser.add_argument("--mode", choices=["active", "midpoint"], required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--compare-midpoint", type=Path, help="Previously evaluated midpoint JSON")
     parser.add_argument("--selected-target", action="store_true", help="Multi-target trials: use only the selected fresh track box for centering")
-    args = parser.parse_args()
+    parser.add_argument("--recording-closure", type=Path, help="Defaults to the trial recording_closure.json")
+    parser.add_argument("--bag-integrity", type=Path, help="Defaults to the trial bag_integrity.json")
+    parser.add_argument("--source-plan", type=Path, help="Reevaluation: immutable original plan, with --slot-record and --original-report")
+    parser.add_argument("--slot-record", type=Path)
+    parser.add_argument("--original-report", type=Path)
+    args = parser.parse_args(argv)
+    if args.output.exists():
+        raise FileExistsError("Refusing to replace an existing report: " + str(args.output))
+    trial = args.bag.resolve().parent
+    bound_paths = {"recording_closure": args.recording_closure or trial / "recording_closure.json",
+                   "bag_integrity": args.bag_integrity or trial / "bag_integrity.json"}
+    historical = (args.source_plan, args.slot_record, args.original_report)
+    if any(historical) and not all(historical):
+        parser.error("Reevaluation requires --source-plan, --slot-record and --original-report together")
+    if all(historical):
+        if args.original_report.resolve() == args.output.resolve():
+            parser.error("Reevaluation output must preserve the original report")
+        bound_paths.update(source_plan=args.source_plan, slot_record=args.slot_record, original_report=args.original_report)
+    bindings, context = {}, {}
+    for name, path in bound_paths.items():
+        bindings[name] = small_file_binding(path)
+        if name in {"recording_closure", "bag_integrity"}:
+            if path.resolve().parent != trial:
+                parser.error("Closure/archive proof must belong to this trial")
+            context[name] = json.loads(path.read_text(encoding="utf-8-sig"))
+    archive = context["bag_integrity"]
+    if Path(archive.get("destination", "")).resolve() != args.bag.resolve():
+        parser.error("Archive destination does not bind this bag")
     records, metadata = read_records(args.bag)
-    report = evaluate_records(records, metadata, args.mode, args.selected_target)
+    report = evaluate_records(records, metadata, args.mode, args.selected_target, context)
+    report.update(trial=str(trial), evaluation_source=evaluation_source_provenance(), input_bindings=bindings,
+                  created_utc=datetime.now(timezone.utc).isoformat())
     if args.compare_midpoint:
         report["matched_midpoint_comparison"] = compare_reports(report, json.loads(args.compare_midpoint.read_text(encoding="utf-8")))
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2, allow_nan=False), encoding="utf-8")
+    # Recheck small inputs after bag deserialization; no large bag is hashed.
+    if any(small_file_binding(path) != bindings[name] for name, path in bound_paths.items()):
+        raise ValueError("Evaluation provenance input changed while reading the bag")
+    with args.output.open("x", encoding="utf-8") as handle:
+        handle.write(json.dumps(report, ensure_ascii=False, indent=2, allow_nan=False) + "\n")
     print(json.dumps({"result": report["result"], "checks": report["checks"], "output": str(args.output)}, ensure_ascii=False))
+    return 0 if report["result"] == "PASS" else 2
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())
