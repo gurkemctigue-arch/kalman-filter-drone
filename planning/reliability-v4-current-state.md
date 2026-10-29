@@ -1,5 +1,13 @@
 # 当前工作交接（持续开发，非验收报告）
 
+2026-10-29 最新实测：Humble18 canonical12 已全部结束，9 EVALUATION_PENDING、3 FAIL、0 INFRA；原始失败记录保留。失败为汽车 stage1 position（原生起飞双源稳定判据不一致）、汽车 stage2 crossing（遮挡刺激及尾段跟踪未通过）、汽车 stage3 multi active（遮挡前及重选后丢失）。汽车位置控制的原生起飞检查在 1 秒窗口首格超出 0.18 m 判据约 0.535 mm，原 FAIL 有效；其他两项仍须实际图像与关联诊断，不能只凭遮挡命令成功确认推出渲染遮挡生效。六项阶段三的云台原评估全部 PASS，不改写目标安全失败。正式 seeds1000–1009 尚未使用，0/280；四安全和16扩展未启动，先修复汽车问题再以新冻结来源验证。
+
+新增登记/容量预算工具已经过实际专项回归：70 项在 2.671 s 内通过，源文件 SHA 前后不变；只验证测试夹具，未执行真实参数登记、正式计划封存或28格实际容量预算。实际 SDF/mesh 几何预检也已通过：5 项检查均为 true，解析两类模型和相机安装，不读 bag、不启动仿真、不运行检测推理。这些证据均为开发验证，不能作为正式飞行或研究完成证明。最近已公开的开发检查点为 `9de341e6731b4372ad0566c0068c76503967b2c2`。
+
+以下为保留的历史进展，时间较早的运行中描述不代表当前状态。
+
+2026-10-29 13:50 CST：Humble18 两类 clean 已完成：person 3782 组、car 3788 组 raw/timing/adapted 精确配对，GT 分别 204/204、205/205；源钟、原生起飞、渲染、录制闭合和进程检查通过，距离/高度 RMSE 分别 .320295/.261610 m、.742355/.279843 m。canonical12 新计划 digest 为 `449c0aaad3ba0cfb74eef367c5238e2fcf4ee7abea9ff50e98bec41405667df0`，正在唯一重窗口串行运行；首槽 person velocity 已完成 EVALUATION_PENDING（数值门未登记），GT455/455、nav .861538、距/高 .823002/.166283 m，无 INFRA。12 槽结束后先审核真实结果，再决定四安全和16扩展，不自动拿执行完成当工程通过。正式仍 0/280。开发检查点 `9de341e6731b4372ad0566c0068c76503967b2c2` 已实际 push 并远程回读核验。用户授权的游戏目录已删除、释放逻辑71.217GiB，D实测约224GiB；正式容量仍待28格实际预算。
+
 最新实测：Humble18具名build-attempt03成功，四包colcon10.0s、1234项Linux测试38.699s OK（原2项跳过）、FastCDR cache/flags/link核验及7模块/4ament隔离均通过，517源文件前后SHA不变。原两次构建失败及partial产物保留，新包装只修环境调用，不改冻源或系统库。report正按已授权路线运行新person/car clean，再执行预定seed004完整core12；当前实际闭环效果尚未验证，正式0/280。安全4和扩展16已静态准备，须新core证据后启动。
 
 2026-10-29 13:31 CST：18 build-attempt02实际启动colcon，但接口包因FastCDR新旧API混用失败，4.78s、0 packages finished；旧ledger/log及partial保留，完整suite与飞行尚未运行。独立Cache/flags对照确认新caller经运行环境把agent_install/bin加入PATH，使CMake选择agent的FastCDR，而17成功构建选`/opt/ros/humble/lib/cmake/fastcdr`。github正准备外部具名attempt03：干净PATH+venv、明确Humble fastcdr_DIR、三构建目录同ext4原inode归档、新colcon日志与来源验证；不改517冻源/系统库。root已授权report在静态检查交付后直接build-attempt03及后续validate/两clean/core，不需新用户确认；仍仅一个重窗口、未知infra先诊断，原失败不覆盖。最新已push `143b0dd`（rev2离线边界修复），在线候选修改尚未声称Linux集成通过。用户磁盘清理已完成，仅授权游戏被删。

@@ -39,7 +39,7 @@ evaluate_detection_recordings.py RECORDING_JSON [RECORDING_JSON ...] --output DI
 - 原目录必须有`rosbag/metadata.yaml`及实际存储、`telemetry.jsonl`、`summary.json`、`run_config.json`、`configuration/runtime_parameters.yaml`、`configuration/source_sha256.json`。`recorded`推理要求三份配置/权重登记实际存在。
 - 抽取器要求诊断`/tracking/detection_diagnostics`、RGB`/camera/color/image_raw`、CameraInfo、`/ground_truth/poses`与`/ground_truth/vehicle_poses`；独立真值中必须唯一解析到`target_person`/`target_car`与`stage1_uav`。同采集时刻多条`/tracking/observations`会拒绝。
 - 抽取器只支持此处的单目标、固定`x500_stage1`相机。它静态展开`models/x500_stage1/model.sdf`，不读取主动云台关节真值，不能直接拿阶段三主动或多目标bag替代。当前stage1世界确实采用该模型，但正式bag仍须实查topic/真值和模型来源，不能仅凭组名认定兼容。
-- 必须在能访问原Linux路径且已构建ROS消息的环境执行。`research_env.sh`载入本源码树的ROS/overlay；需要`rosbag2_py`、cv2、NumPy、PyYAML及后续Torch/Ultralytics。静态相机外参还调用`gz sdf -p`，使用`/root/PX4-Autopilot/Tools/simulation/gz/models`展开继承模型；这是SDF解析，不启动仿真。
+- 必须在能访问原Linux路径且已构建ROS消息的环境执行。先明确选择最终根的Humble环境与实际PX4，再由`research_env.sh`载入该源码树的ROS/overlay；需要`rosbag2_py`、cv2、NumPy、PyYAML及后续Torch/Ultralytics。静态相机外参调用`gz sdf -p`，现有抽取器按`STAGE1_PX4_ROOT`选择继承模型，并记录实际递归SDF来源SHA；当前Humble使用`/root/uav_humble22/PX4-Autopilot-v4mag/Tools/simulation/gz/models`。未显式设置时才采用历史`/root/PX4-Autopilot`默认；该目录在当前UAVHumble22不存在，不能照抄旧路径。显式资源缺失会拒绝，不回退其他安装；这是SDF解析，不启动仿真，也不需要新增抽取CLI参数。
 - 使用与实际飞行一致的最终冻结模型、mesh、外参和camera intrinsics。核当前SDF与槽内`configuration/x500_stage1_model.sdf`、目标模型快照一致；抽取记录展开SDF摘要及mesh源摘要。相机/mesh不一致或关键topic缺失时停止，登记缺项，不用在线检测框替代GT。
 
 当前CLI**不要求额外静态Gazebo录制**：可从上述固定相机飞行bag提取静态网格投影标签；“静态渲染”指目标视觉网格没有骨骼动画，不指飞行器/目标不运动。若原包不满足条件，它也不会自动补拍静态数据。额外录制须作为另行说明的补充，不能顶替预指定缺失槽。
@@ -54,6 +54,9 @@ person_trial='/absolute/directory/from/core-plan/person-slot'
 car_trial='/absolute/directory/from/core-plan/car-slot'
 detection_run='/absolute/new/v4_detection_seed1000_run01'
 
+export HUMBLE22_PROJECT_ROOT="$evaluation_root"
+export HUMBLE22_PX4_ROOT=/root/uav_humble22/PX4-Autopilot-v4mag
+source "$HUMBLE22_PROJECT_ROOT/scripts/humble22_env.sh"
 cd "$evaluation_root"
 bash scripts/research_env.sh scripts/extract_research_recording.py "$person_trial" \
   --target-class person --sample-period-s 1 --max-images 45 \
