@@ -1,12 +1,12 @@
 # RGB-D UAV target tracking and following
 
-**当前分支是 v4 开发检查点，尚未完成修复后的正式验收。** 本检查点承接 `ea46897`。Ubuntu 22.04/Humble16 已完成四包构建（10.0 s）、真实模块与 ament 来源隔离检查；Linux 套件运行 **1161 项测试，结果 OK（跳过 2 项，33.217 s）**。新同源实际验证进行中，完整工程验收和正式研究尚未完成。
+**当前分支是 v4 开发检查点，尚未完成正式验收。** Ubuntu 22.04/Humble18 已通过四包构建（10.0 s）、真实模块与 ament 来源隔离、FastCDR 依赖来源检查，以及 **1234 项 Linux 测试（OK，跳过 2 项，38.699 s）**。新的两类目标仿真与完整12场景验证正在进行；正式280槽尚未开始。
 
-Humble16 显式补齐阶段三快照中的里程计 topic 与零跟随偏置，数值沿用实际节点默认；离线端点查找修复保持原严格1ns精确匹配条件。12核心与16扩展的28格参数生成和独立配置解析已通过，实际完整任务仍须新版本验证。Humble15 的原阶段三缺证终态、其余待执行槽和独立汽车诊断，以及更早失败均保留；新16矩阵重新生成同源证据。最新逐次状态见 [当前交接记录](planning/reliability-v4-current-state.md)、[v4 开发状态](docs/V4_WORK_STATUS.md) 和 [剩余执行计划](planning/reliability-v4-remaining-execution.md)；下文 v3 报告与结果计数属于历史冻结版本。
+实图诊断确认了汽车追赶时的相机裁框，以及嵌套检测过早建立重复轨迹的问题。修复降低汽车追赶加速度，并保守延迟缺乏独立支持的新轨迹出生；新增15项和既有45项跟踪行为测试通过，闭环效果仍待新仿真验证。云台暂停反馈经独立登记的全部六场景具名离线重评通过，原始报告与失败记录保持不变。上一Humble17完整开发矩阵的6项 `EVALUATION_PENDING` 和6项 `FAIL`继续保留；待数值验收不等于通过。见 [修复与验证边界](planning/reliability-v4-humble18-repair.md)、[当前交接记录](planning/reliability-v4-current-state.md) 和 [剩余执行计划](planning/reliability-v4-remaining-execution.md)；下文 v3 报告与结果计数属于历史冻结版本。
 
 核心 120 槽覆盖两类目标与六组工程条件；原计划距离、噪声、延迟、加减速等八个扩展条件另有 160 槽，共 280 槽，当前均未开始正式运行。范围和剩余工作见 [执行计划](planning/reliability-v4-remaining-execution.md)。
 
-中文验收入口：[结果工件说明](docs/RESULTS_ARTIFACTS.md) · [查看与复核方法](docs/验收使用指南.md) · [三阶段实际状态](docs/THREE_STAGE_STATUS.md) · [最终计划书](docs/最终版毕业设计计划书_最终版.docx)。结果页面和报告属于本地归档工件，保留历史失败、身份未知、缺失及未执行项；工程通过与正式重复研究完成分别判断。
+中文验收入口：[结果工件说明](docs/RESULTS_ARTIFACTS.md) · [查看与复核方法](docs/验收使用指南.md) · [三阶段实际状态](docs/THREE_STAGE_STATUS.md) · [已归档计划书](docs/最终版毕业设计计划书_最终版.docx)。结果页面和报告属于本地归档工件，保留历史失败、身份未知、缺失及未执行项；工程通过与正式重复研究完成分别判断。
 
 This repository implements a simulation-first RGB-D UAV target following system with YOLO11, 3-D Kalman filtering and PX4 Offboard control. Estimation and control remain independent from ROS 2, PX4 and Gazebo so the same core can be tested, replayed and connected to a future vehicle adapter.
 

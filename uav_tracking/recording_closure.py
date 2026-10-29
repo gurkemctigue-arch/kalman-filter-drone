@@ -51,6 +51,7 @@ class StreamDrainState:
         self.pause_ack_wall_s=None
         self.clock_ns=None
         self.last_raw=None
+        self.observed_raw_keys={}
         self.diagnostics={}
         self.last_diagnostic_key=None
         self.odometry_headers=set()
@@ -89,6 +90,9 @@ class StreamDrainState:
         self.counts['raw']+=1
         self.last_change['raw']=wall_s
         self.last_raw=(sample_us,publication_us)
+        self.observed_raw_keys[self.last_raw]=None
+        while len(self.observed_raw_keys)>256:
+            del self.observed_raw_keys[next(iter(self.observed_raw_keys))]
 
     def timing(self, diagnostic, wall_s):
         self.counts['timing']+=1
@@ -117,14 +121,28 @@ class StreamDrainState:
     def ready_to_pause(self, wall_s):
         """Require real source callbacks before stopping volatile publishers.
 
-        Discovery of clock/raw alone cannot establish timing, adapted or GT
-        subscriptions. Reuse the unchanged correspondence checks, while the
-        exact final-clock/quiet requirements remain post-pause checks.
+        A complete observed pair establishes delivery while publishers are
+        running. Their newest cross-topic callbacks need not be simultaneous.
+        Final newest-source correspondence remains an unchanged post-pause
+        requirement in assess().
         """
         observed=self.assess(wall_s)
         post_pause_only={'world_pause_not_acknowledged','missing_truth_at_final_clock',
-                         'source_streams_not_yet_quiet'}
+                         'source_streams_not_yet_quiet',
+                         'last_raw_without_corresponding_diagnostic',
+                         'last_accepted_diagnostic_without_adapted_odometry',
+                         'latest_diagnostic_does_not_match_last_raw'}
         failures=[reason for reason in observed['failures'] if reason not in post_pause_only]
+        matched_keys=[key for key in reversed(self.observed_raw_keys) if key in self.diagnostics]
+        complete_keys=[key for key in matched_keys if not self.diagnostics[key]['accepted'] or
+                       seconds_to_integer(self.diagnostics[key]['odometry_header_s'],1_000_000_000)
+                       in self.odometry_headers]
+        if not matched_keys:
+            failures.append('no_observed_raw_with_corresponding_diagnostic')
+        elif not complete_keys:
+            failures.append('accepted_diagnostic_without_observed_adapted_odometry')
+        matched_key=complete_keys[0] if complete_keys else None
+        matched_diagnostic=self.diagnostics[matched_key] if matched_key is not None else None
         missing=[kind+':'+name for kind,frames in self.truth_stamps.items()
                  for name,stamps in frames.items() if not stamps]
         if missing:failures.append('declared_truth_frames_not_observed')
@@ -133,9 +151,11 @@ class StreamDrainState:
                 'last_clock_ns':self.clock_ns,'last_raw_source_us':observed['last_raw_source_us'],
                 'last_raw_diagnostic':observed['last_raw_diagnostic'],
                 'expected_adapted_observed':observed['expected_adapted_observed'],
+                'observed_complete_source_us':list(matched_key) if matched_key is not None else None,
+                'observed_complete_diagnostic':matched_diagnostic,
                 'missing_declared_truth_frames':missing,
                 'truth_latest_source_ns':observed['truth_latest_source_ns'],
-                'semantics':'All required subscriptions must have delivered actual source data before pause. Accepted raw needs its observed adapted output; rejected raw does not. Exact final-clock truth and quiescence are still required after ACK.'}
+                'semantics':'All required subscriptions must have delivered actual source data before pause, including one observed raw/diagnostic pair and its adapted output when accepted. Latest-source correspondence, exact final-clock truth and quiescence are still required after ACK.'}
 
     def assess(self, wall_s):
         failures=[]

@@ -1,5 +1,7 @@
 # v4 剩余工作执行顺序
 
+最新17检查点：16原第3多目标槽因活流最新raw/timing异步错开而closure warm超时，另有已单独保留的诊断命令误启动进程事故；原2EVAL/1INFRA/9PENDING保留不变。最小warm修复的17项纯行为和六条真实DDS组件验证通过后，Humble17冻结509源（manifest `474181773f6affffc8ed4a6e9e676caba3f22dcded3413132d65054d2437dc74`），四包10.7s、隔离与1164项Linux检查（2 skip）通过。17两类新clean已闭合，canonical12新计划摘要`6a592653c786f14bd8692d5df9ff5b62b07764ff763dcb1a9980b76ca99bf584`已完成前三组独立验证、第4person stage3_midpoint运行中；四安全及16扩展尚未执行。源/算法门、10s闭合预算、最终GT/Clock及0.5s quiet不放宽。详细最新实测见current-state。前瞻登记顺序已另列`reliability-v4-final-registration-execution.md`，包括先创建未执行正式core定义再补四法对它的SHA/digest绑定。外层准入工具在tools目录单独开发/核验，不改变17飞行源，也尚无真实正式准入PASS。
+
 最新16检查点：两stage3配置已显式补齐与实际默认一致的两topic及零offset，12核心+16扩展的实际runtime生成、runner审计、源钟配置解析和导航配置解析共28格全部通过。合并纯离线端点修补后，Humble16冻结509源文件，manifest SHA256 `f86162a31906293ffefad24f95e47b1af0e4736f854d0b05849f620aa13d0643`；四包10.0s、module/ament隔离、1161项Linux检查（33.217s，OK，2项平台/专属文档运行时跳过）已通过。正在全新两clean，随后canonical12格seed004；16新矩阵直接使用修补后的评价源，不再为了旧15额外整批重评。15原3EVAL_PENDING/1INFRA/8PENDING及新car45独立诊断均保留，不能代替最终定标来源或16开发gate。
 
 存储待核：D约163.7GiB，已存cleanlike数据估计正式加开发/临时/材料需162–182GiB，故障双流与主动云台膨胀仍待16扩展实际容量采样。root已异步询问用户其他≥100GB数据盘，等待信息期间继续开发；正式前必须用各类实际bytes确认足够空间及≥8GiB临时裕量，不能依赖未量化缓存回收、移改旧证据或虚拟ext4的空闲容量。

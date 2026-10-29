@@ -50,5 +50,12 @@ def track_snapshot(result: Any, *, target_uuid: str | None, acquisition_s: float
         "ambiguous_track_ids": list(result.ambiguous_track_ids),
         "ambiguous_detection_indices": list(result.ambiguous_detection_indices),
         "merge_uncertainty_detection_indices": list(result.merge_uncertainty_detection_indices),
+        # These are new observations deferred in a particular acquisition,
+        # not identities or fresh evidence in a timer-projected snapshot.
+        "spawn_deferred_detection_indices": ([] if projected else list(
+            getattr(result, "spawn_deferred_detection_indices", ()))),
+        "spawn_deferred_reasons": ([] if projected else [
+            {"detection_index": index, "reason": reason}
+            for index, reason in getattr(result, "spawn_deferred_reasons", ())]),
         "tracks": tracks,
     }

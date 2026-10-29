@@ -17,9 +17,9 @@ class RecordingClosureTests(unittest.TestCase):
         state=StreamDrainState(expected_truth_frames={'target':['actor0','actor1'],'vehicle':['uav']})
         state.clock(1_000_000_000,0.)
         state.raw(1_000_000,1_000_000,0.)
-        self.assertIn('last_raw_without_corresponding_diagnostic',state.ready_to_pause(0.)['failures'])
+        self.assertIn('no_observed_raw_with_corresponding_diagnostic',state.ready_to_pause(0.)['failures'])
         state.timing(diagnostic(),.1)
-        self.assertIn('last_accepted_diagnostic_without_adapted_odometry',state.ready_to_pause(.1)['failures'])
+        self.assertIn('accepted_diagnostic_without_observed_adapted_odometry',state.ready_to_pause(.1)['failures'])
         state.adapted(1_000_000_000,.2)
         state.truth('target',[('actor0',990_000_000)],.3)
         state.truth('vehicle',[('uav',990_000_000)],.3)
@@ -60,6 +60,58 @@ class RecordingClosureTests(unittest.TestCase):
         result=state.assess(1.)
         self.assertIn("clock_not_observed",result["failures"])
         self.assertIn("raw_not_observed",result["failures"])
+
+    def test_live_interleaved_latest_callbacks_do_not_hide_an_observed_complete_pair(self):
+        state=StreamDrainState(expected_truth_frames={'target':['actor'],'vehicle':['uav']})
+        state.clock(1_000_000_000,0.)
+        state.raw(1_000_000,1_000_000,0.)
+        state.timing(diagnostic(),.1)
+        state.adapted(1_000_000_000,.2)
+        state.truth('target',[('actor',1_000_000_000)],.2)
+        state.truth('vehicle',[('uav',1_000_000_000)],.2)
+        for index in range(2,10):
+            state.raw(index*1_000_000,index*1_000_000,index)
+            if index>2:
+                state.timing(diagnostic(index-1),index+.1)
+                state.adapted((index-1)*1_000_000_000,index+.2)
+            result=state.ready_to_pause(index+.3)
+            self.assertTrue(result['ready'])
+            self.assertLess(result['observed_complete_source_us'][0],state.last_raw[0])
+        # Readiness is permission to pause, never permission to close an
+        # unmatched final stream or omit final-clock truth.
+        state.pause_ack(10.)
+        state.clock(9_000_000_000,10.)
+        state.truth('target',[('actor',9_000_000_000)],10.)
+        state.truth('vehicle',[('uav',9_000_000_000)],10.)
+        self.assertIn('last_raw_without_corresponding_diagnostic',state.assess(11.)['failures'])
+        self.assertIn('latest_diagnostic_does_not_match_last_raw',state.assess(11.)['failures'])
+        state.timing(diagnostic(9),11.)
+        state.adapted(9_000_000_000,11.1)
+        self.assertTrue(state.assess(11.6)['ready'])
+
+    def test_unrelated_raw_diagnostic_and_adapted_cannot_create_a_complete_pair(self):
+        state=StreamDrainState()
+        state.clock(3_000_000_000,0.)
+        state.raw(1_000_000,1_000_000,0.)
+        state.timing(diagnostic(2),.1)
+        state.adapted(2_000_000_000,.2)
+        self.assertFalse(state.ready_to_pause(.2)['ready'])
+        state.timing(diagnostic(1),.3)
+        self.assertFalse(state.ready_to_pause(.3)['ready'])
+        state.adapted(1_000_000_000,.4)
+        self.assertTrue(state.ready_to_pause(.4)['ready'])
+        state.timing({'accepted':True},.5)
+        self.assertIn('malformed_diagnostic_observed',state.ready_to_pause(.5)['failures'])
+
+    def test_old_raw_evicted_from_bounded_history_cannot_establish_live_readiness(self):
+        state=StreamDrainState()
+        state.clock(300_000_000_000,0.)
+        state.raw(1_000_000,1_000_000,0.)
+        for index in range(2,259):
+            state.raw(index*1_000_000,index*1_000_000,index)
+        self.assertEqual(len(state.observed_raw_keys),256)
+        state.timing(diagnostic(1,accepted=False),300.)
+        self.assertFalse(state.ready_to_pause(300.)['ready'])
 
     def test_delayed_diagnostic_and_adapted_delivery_extend_the_required_window(self):
         state=StreamDrainState()

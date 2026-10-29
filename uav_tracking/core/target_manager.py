@@ -34,6 +34,11 @@ class TargetUpdate:
     # Conservative merge evidence reserves observations without admitting
     # them through the strict measurement/association gates.
     merge_uncertainty_detection_indices: Tuple[int, ...] = ()
+    # Unmatched observations can lack independent support for a new object.
+    # Deferral creates no track/ID and never asserts that two boxes share an
+    # identity. Indices still refer to the complete class-filtered input.
+    spawn_deferred_detection_indices: Tuple[int, ...] = ()
+    spawn_deferred_reasons: Tuple[Tuple[int, str], ...] = ()
 
 
 class TargetManager:
@@ -50,6 +55,12 @@ class TargetManager:
     AUTO_UNIQUE = TargetMode.AUTO_UNIQUE
     LOCKED_TARGET = TargetMode.LOCKED_TARGET
     Mode = TargetMode
+
+    # At least 95% of the small box lies inside an established observation,
+    # and it covers at most 80% of the outer box. This identifies uncertain
+    # nested births, not duplicate detections or permission to fuse them.
+    SPAWN_CONTAINMENT_MIN = 0.95
+    SPAWN_AREA_RATIO_MAX = 0.80
 
     def __init__(
         self,
@@ -127,6 +138,8 @@ class TargetManager:
         self._ambiguous_track_ids: set[int] = set()
         self._ambiguous_detection_indices: set[int] = set()
         self._merge_uncertainty_detection_indices: set[int] = set()
+        self._ambiguous_detection_track_ids: dict[int, set[int]] = {}
+        self._spawn_deferred_reasons: dict[int, str] = {}
         self._pending_target_index: Optional[int] = None
         self._pending_target_track_id: Optional[int] = None
         self._frame_index = 0
@@ -174,6 +187,8 @@ class TargetManager:
         self._ambiguous_track_ids.clear()
         self._ambiguous_detection_indices.clear()
         self._merge_uncertainty_detection_indices.clear()
+        self._ambiguous_detection_track_ids.clear()
+        self._spawn_deferred_reasons.clear()
         self._pending_target_index = None
         self._pending_target_track_id = None
         self._frame_index = 0
@@ -495,6 +510,8 @@ class TargetManager:
         self._ambiguous_track_ids = set()
         self._ambiguous_detection_indices = set()
         self._merge_uncertainty_detection_indices = set()
+        self._ambiguous_detection_track_ids = {}
+        self._spawn_deferred_reasons = {}
         candidates = [
             track
             for track in self._tracks.values()
@@ -554,6 +571,10 @@ class TargetManager:
                         selected_component.extend(by_detection[index] - retired_tracks)
                 self._ambiguous_track_ids.difference_update(retired_tracks)
                 self._ambiguous_detection_indices.difference_update(released_indices)
+            self._ambiguous_detection_track_ids = {
+                index: by_detection.get(index, set()) & self._ambiguous_track_ids
+                for index in self._ambiguous_detection_indices
+            }
             pairs = [pair for pair in pairs
                      if pair[1] not in self._ambiguous_track_ids and pair[1] not in retired_tracks]
         pairs.sort(key=lambda item: (item[0], item[1], item[2]))
@@ -572,6 +593,79 @@ class TargetManager:
             matched_detections.add(detection_index)
             assignment[track_id] = detection_index
         return assignment, matched_tracks, matched_detections
+
+    def _defer_nested_births(
+        self, detections: Sequence[Detection], assignment: Mapping[int, int],
+        matched_detection_indices: set[int], timestamp: Optional[float],
+    ) -> None:
+        """Reserve uncertain nested candidates without inventing identities.
+
+        Real cars can also appear nested. Keep every observation and every
+        existing association/ambiguity; only postpone a previously unmatched
+        candidate's birth until it has independent spatial or image support.
+        A tentative Track is insufficient: it would already compete in the
+        association graph and could indefinitely freeze the selected track.
+        """
+        if self.association_mode != "hybrid_3d" or not self.reject_ambiguous_associations:
+            return
+
+        def reliable(track: Track) -> bool:
+            if (track.state not in {TrackState.CONFIRMED, TrackState.COASTING}
+                    or track.hits < self.min_hits or track._filter is None
+                    or not track._filter.initialized or track.last_measurement_timestamp is None):
+                return False
+            if self.max_coast_duration_s is not None and timestamp is not None:
+                return 0.0 <= timestamp - track.last_measurement_timestamp <= self.max_coast_duration_s
+            return track.missed <= self.max_coast_frames
+
+        # Only this acquisition's actually accepted assignment or reserved
+        # ambiguity edges can anchor deferral. A stale retained image box or
+        # a newly invented track is never independent supporting evidence.
+        anchors: set[int] = set()
+        for track_id, index in assignment.items():
+            track = self._tracks[track_id]
+            if reliable(track) and track._matched_this_frame:
+                anchors.add(index)
+        for index, track_ids in self._ambiguous_detection_track_ids.items():
+            if any(reliable(self._tracks[track_id]) for track_id in track_ids):
+                anchors.add(index)
+
+        for index, candidate in enumerate(detections):
+            if index in matched_detection_indices or index == self._pending_target_index:
+                # Explicit user selection is fresh task evidence. It must be
+                # allowed to initialize the requested box and a new UUID.
+                continue
+            small = candidate.bbox
+            small_area = (small[2] - small[0]) * (small[3] - small[1])
+            if small_area <= 0.0:
+                continue
+            for anchor_index in sorted(anchors):
+                anchor = detections[anchor_index]
+                if candidate.class_id != anchor.class_id:
+                    continue
+                outer = anchor.bbox
+                outer_area = (outer[2] - outer[0]) * (outer[3] - outer[1])
+                if outer_area <= 0.0 or small_area > self.SPAWN_AREA_RATIO_MAX * outer_area:
+                    continue
+                intersection = (max(0.0, min(small[2], outer[2]) - max(small[0], outer[0]))
+                                * max(0.0, min(small[3], outer[3]) - max(small[1], outer[1])))
+                if intersection < self.SPAWN_CONTAINMENT_MIN * small_area:
+                    continue
+                candidate_position = self._position_of_detection(candidate)
+                anchor_position = self._position_of_detection(anchor)
+                if candidate_position is not None and anchor_position is not None:
+                    # Preserve independent depth evidence for genuinely
+                    # separate objects, even when one image box contains the
+                    # other. This bound is never used to accept a measurement.
+                    if float(np.linalg.norm(candidate_position - anchor_position)) > self.association_max_distance:
+                        continue
+                    reason = "nested_unmatched_within_existing_distance_domain"
+                else:
+                    # Missing depth cannot prove an independent new object.
+                    # No 3-D measurement/freshness is synthesized by deferral.
+                    reason = "nested_unmatched_without_depth_separation_evidence"
+                self._spawn_deferred_reasons[index] = reason
+                break
 
     def _update_track(self, track: Track, detection: Detection, *, timestamp: Optional[float] = None) -> bool:
         accepted = True
@@ -832,9 +926,10 @@ class TargetManager:
         for track in list(self._tracks.values()):
             if track.track_id not in matched_track_ids and track.state != TrackState.REMOVED:
                 self._coast_track(track, frame_timestamp)
+        self._defer_nested_births(filtered, assignment, matched_detection_indices, frame_timestamp)
         new_track_by_detection: dict[int, int] = {}
         for index, detection in enumerate(filtered):
-            if index not in matched_detection_indices:
+            if index not in matched_detection_indices and index not in self._spawn_deferred_reasons:
                 new_track = self._new_track(detection, timestamp=frame_timestamp)
                 new_track_by_detection[index] = new_track.track_id
         self._apply_pending_lock(filtered, assignment, new_track_by_detection)
@@ -875,6 +970,8 @@ class TargetManager:
             ambiguous_track_ids=tuple(sorted(self._ambiguous_track_ids)),
             ambiguous_detection_indices=tuple(sorted(self._ambiguous_detection_indices)),
             merge_uncertainty_detection_indices=tuple(sorted(self._merge_uncertainty_detection_indices)),
+            spawn_deferred_detection_indices=tuple(sorted(self._spawn_deferred_reasons)),
+            spawn_deferred_reasons=tuple(sorted(self._spawn_deferred_reasons.items())),
         )
         return self._last_result
 

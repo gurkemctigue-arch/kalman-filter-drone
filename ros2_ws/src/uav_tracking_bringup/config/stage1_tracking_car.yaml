@@ -57,7 +57,9 @@ uav_tracking_controller:
     desired_offset_m: [0.0, 0.0, 0.0]
     position_gain: [0.60, 0.60, 0.50]
     integral_gain: [0.02, 0.02, 0.02]
-    max_acceleration_mps2: [3.0, 3.0, 3.0]
+    # Bound pursuit pitch so the fixed RGB-D camera keeps a complete car box.
+    # The stage-two car controller uses the same physical acceleration limits.
+    max_acceleration_mps2: [0.7, 0.7, 0.5]
     deadzone_m: 0.0
     max_velocity_mps: [2.0, 2.0, 1.0]
     integral_limit: 1.0
