@@ -83,6 +83,7 @@ def fixture(root, *, navigation=True, gates=False, ros_distro="jazzy"):
                  "evaluate_stage1_flight.py", "evaluate_stage2_flight.py", "evaluate_stage3_gimbal.py", "evaluate_physical_identity.py",
                  "configure_gazebo_magnetic_contract.py", "prepare_px4_magnetic_compatibility.py", "evaluate_px4_source_clock.py",
                  "capture_gazebo_magnetic_libraries.py", "evaluate_online_state_accuracy.py", "extract_research_recording.py",
+                 "evaluate_follow_dynamics.py",
                  "px4_stage1_startup.sh", "run_stage1_flight.sh", "evaluate_native_startup.py", "capture_gazebo_rendering.py"):
         path = root / "scripts" / name
         path.parent.mkdir(exist_ok=True)

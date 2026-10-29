@@ -15,11 +15,13 @@ import time
 from typing import Any
 
 from uav_tracking_px4_adapter.source_clock import OdometrySourceClock
-from uav_tracking_px4_adapter.shutdown_guard import is_known_shutdown_subscription_error
+
+from uav_tracking.ros_lifecycle import shutdown_requests
 
 try:
     import rclpy
-    from rclpy.executors import ExternalShutdownException
+    from rclpy.executors import ExternalShutdownException, SingleThreadedExecutor
+    from rclpy.signals import SignalHandlerOptions
     from nav_msgs.msg import Odometry
     from px4_msgs.msg import EstimatorStatusFlags, OffboardControlMode, VehicleCommand, VehicleLocalPosition, VehicleStatus
     from rclpy.clock import Clock, ClockType
@@ -582,31 +584,31 @@ class FlightSupervisor(Node):
 
 def main(args: list[str] | None = None) -> None:
     if rclpy is None:
-        raise RuntimeError("ROS 2 and px4_msgs are required")
-    rclpy.init(args=args)
-    node = None
-    try:
-        node = FlightSupervisor()
-        rclpy.spin(node)
-    except (KeyboardInterrupt, ExternalShutdownException):
-        pass
-    except RuntimeError as error:
-        context_ok = None
+        raise RuntimeError("ROS 2 and this node's message dependencies are required")
+    with shutdown_requests() as requested:
+        # The default rclpy signal handler can invalidate the context during
+        # subscription.take_message. Stop the executor before the context.
+        rclpy.init(args=args, signal_handler_options=SignalHandlerOptions.NO)
+        node = None
+        executor = None
         try:
-            if node is not None:
-                context_ok = node.context.ok()
-        except (AttributeError, RuntimeError):
-            # Unknown context state cannot turn a runtime fault into shutdown.
+            node = FlightSupervisor()
+            executor = SingleThreadedExecutor(context=node.context)
+            executor.add_node(node)
+            while node.context.ok() and not requested.is_set():
+                executor.spin_once(timeout_sec=0.2)
+        except (KeyboardInterrupt, ExternalShutdownException):
             pass
-        if not is_known_shutdown_subscription_error(error, context_ok=context_ok):
-            raise
-        print("Flight supervisor: closed-context subscription take race during shutdown", flush=True)
-    finally:
-        try:
-            if node is not None:
-                node.destroy_node()
         finally:
-            rclpy.try_shutdown()
+            try:
+                try:
+                    if executor is not None:
+                        executor.shutdown()
+                finally:
+                    if node is not None:
+                        node.destroy_node()
+            finally:
+                rclpy.try_shutdown()
 
 
 if __name__ == "__main__":

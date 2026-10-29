@@ -1,9 +1,7 @@
 """A shutdown-only take race must never hide a live-flight RuntimeError."""
-from types import SimpleNamespace
 import unittest
-from unittest.mock import patch
-
-from tests.test_flight_supervisor import flight
+from tests import test_ros_node_shutdown as lifecycle_fixtures
+from tests import test_flight_supervisor as adapter_fixtures  # Installs the ROS source package path.
 from uav_tracking_px4_adapter.shutdown_guard import (
     KNOWN_SUBSCRIPTION_TAKE_ERROR, is_known_shutdown_subscription_error,
 )
@@ -30,31 +28,18 @@ class ShutdownGuardTests(unittest.TestCase):
                       RuntimeError(KNOWN_SUBSCRIPTION_TAKE_ERROR), ValueError(KNOWN_SUBSCRIPTION_TAKE_ERROR)):
             self.assertFalse(is_known_shutdown_subscription_error(error, context_ok=False))
 
-    def test_main_suppresses_only_matching_shutdown_race_and_always_cleans_up(self):
-        for context_ok, message, suppressed in ((False, KNOWN_SUBSCRIPTION_TAKE_ERROR, True),
-                (True, KNOWN_SUBSCRIPTION_TAKE_ERROR, False), (None, KNOWN_SUBSCRIPTION_TAKE_ERROR, False),
-                (False, "actual controller failure", False)):
+    def test_main_preserves_runtime_errors_after_replacing_async_signal_shutdown(self):
+        for context_ok, message in ((False, KNOWN_SUBSCRIPTION_TAKE_ERROR),
+                (True, KNOWN_SUBSCRIPTION_TAKE_ERROR), (False, "actual controller failure")):
             with self.subTest(context_ok=context_ok, message=message):
-                events = []
                 error = recorded_error(message)
-                node = SimpleNamespace(context=SimpleNamespace(ok=lambda:context_ok),
-                                       destroy_node=lambda:events.append("destroy"))
-                def spin(_node):
-                    raise error
-                ros = SimpleNamespace(init=lambda **kw:None, spin=spin,
-                                      try_shutdown=lambda:events.append("shutdown"))
-                class ExternalShutdown(Exception):
-                    pass
-                with patch.object(flight, "rclpy", ros), patch.object(flight, "FlightSupervisor", return_value=node), \
-                        patch.object(flight, "ExternalShutdownException", ExternalShutdown, create=True):
-                    if suppressed:
-                        with patch("builtins.print"):
-                            flight.main([])
-                    else:
-                        with self.assertRaises(RuntimeError) as caught:
-                            flight.main([])
-                        self.assertIs(caught.exception, error)
-                self.assertEqual(events, ["destroy", "shutdown"])
+                main,events,_=lifecycle_fixtures.RosNodeShutdownTests().invoke(
+                    "uav_tracking_px4_adapter/uav_tracking_px4_adapter/flight_supervisor.py",
+                    "FlightSupervisor",spin_error=error,already_closed=not context_ok)
+                with self.assertRaises(RuntimeError) as caught:
+                    main([])
+                self.assertIs(caught.exception,error)
+                self.assertEqual(events[-3:], ["executor_shutdown","destroy","try_shutdown"])
 
 
 if __name__ == "__main__":

@@ -95,26 +95,33 @@ class CompletionTests(unittest.TestCase):
         node = Mock()
         node.finished.return_value = True
         node.finish.return_value = {"monitor_exit_code": 1}
-        ros = SimpleNamespace(init=Mock(), ok=Mock(return_value=True), shutdown=Mock(), spin_once=Mock())
+        ros = SimpleNamespace(init=Mock(), try_shutdown=Mock())
         with patch.object(monitor, "rclpy", ros), patch.object(monitor, "FlightMonitor", return_value=node), \
+                patch.object(monitor,"SingleThreadedExecutor",Mock(),create=True), \
+                patch.object(monitor,"SignalHandlerOptions",SimpleNamespace(NO="NO"),create=True), \
                 patch("sys.argv", ["monitor", "--output", "unused_test_output"]):
             self.assertEqual(monitor.main(), 1)
         node.finish.assert_called_once_with(interrupted=False)
         node.destroy_node.assert_called_once()
-        ros.shutdown.assert_called_once()
+        ros.try_shutdown.assert_called_once()
 
     def test_main_records_keyboard_interrupt_as_failed_completion_and_cleans_up(self):
         node = Mock()
         node.finished.return_value = False
         node.finish.return_value = {"monitor_exit_code": 1}
-        ros = SimpleNamespace(init=Mock(), ok=Mock(return_value=True), shutdown=Mock(),
-                              spin_once=Mock(side_effect=KeyboardInterrupt))
+        ros = SimpleNamespace(init=Mock(), try_shutdown=Mock())
+        executor = Mock()
+        executor.spin_once.side_effect=KeyboardInterrupt
         with patch.object(monitor, "rclpy", ros), patch.object(monitor, "FlightMonitor", return_value=node), \
+                patch.object(monitor,"SingleThreadedExecutor",Mock(return_value=executor),create=True), \
+                patch.object(monitor,"SignalHandlerOptions",SimpleNamespace(NO="NO"),create=True), \
+                patch.object(monitor,"ExternalShutdownException",type("ExternalShutdown",(Exception,),{}),create=True), \
                 patch("sys.argv", ["monitor", "--output", "unused_test_output"]):
             self.assertEqual(monitor.main(), 1)
         node.finish.assert_called_once_with(interrupted=True)
         node.destroy_node.assert_called_once()
-        ros.shutdown.assert_called_once()
+        executor.shutdown.assert_called_once()
+        ros.try_shutdown.assert_called_once()
 
 
 if __name__ == "__main__":

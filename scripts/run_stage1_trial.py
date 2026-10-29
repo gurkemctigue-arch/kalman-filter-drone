@@ -351,6 +351,7 @@ def main() -> None:
     processes = {}
     logs = []
     recording_spool = None
+    simulation_resumed = False
 
     def start(name, command):
         log = (output / f"{name}.log").open("w", encoding="utf-8")
@@ -474,6 +475,7 @@ def main() -> None:
         (output / "unpause.log").write_text(resumed.stdout, encoding="utf-8")
         if resumed.returncode != 0 or "true" not in resumed.stdout:
             raise RuntimeError("Gazebo did not acknowledge unpause")
+        simulation_resumed = True
         # Service advertisement while paused does not prove that rendering
         # initialized. Capture actual mapped ELFs only after unpause.
         from capture_gazebo_rendering import capture_ready as capture_ready_rendering
@@ -496,6 +498,28 @@ def main() -> None:
         if monitor.returncode != 0:
             raise RuntimeError(f"Flight monitor failed with exit code {monitor.returncode}; see monitor.log")
     finally:
+        active_error = sys.exc_info()[1]
+        closure_error = None
+        if recording_spool is not None and simulation_resumed:
+            def check_recording_processes():
+                for name in ["gazebo", "agent", "px4", "ros", "bag"]:
+                    if processes[name].poll() is not None:
+                        raise RuntimeError(f"{name} exited before recording closure; see its log")
+                if "process has died" in (output / "ros.log").read_text(errors="replace"):
+                    raise RuntimeError("ROS component failed before recording closure; see ros.log")
+            try:
+                from close_stage1_recording import pause_and_drain
+                from uav_tracking.recording_closure import declared_truth_frames
+                pause_and_drain(output / "recording_closure.json", world=world, env=env,
+                                expected_truth_frames=declared_truth_frames(runtime_world),
+                                check_alive=check_recording_processes)
+            except Exception as error:
+                closure_error = error
+        elif recording_spool is not None:
+            (output / "recording_closure.json").write_text(json.dumps({
+                "schema_version": 1, "status": "SKIPPED", "reason": "physics_was_not_resumed",
+                "policy": "Startup failure evidence retained; no successful closure or trial is claimed"
+            }, indent=2), encoding="utf-8")
         # Close the uncompressed ext4 recording before any archive operation.
         # Standard zstd and native-reader verification happen after all flight
         # processes stop; recorder exit zero alone is not recording acceptance.
@@ -530,6 +554,8 @@ def main() -> None:
                 }, indent=2), encoding="utf-8")
                 raise RuntimeError("Recording finalization failed; original ext4 spool retained") from error
             (output / "bag_integrity.json").write_text(json.dumps(archive, indent=2), encoding="utf-8")
+        if closure_error is not None and active_error is None:
+            raise RuntimeError("Recording closed without proved source-stream drain; see recording_closure.json") from closure_error
 
 
 if __name__ == "__main__":

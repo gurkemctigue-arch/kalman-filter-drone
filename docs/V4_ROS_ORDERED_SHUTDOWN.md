@@ -1,0 +1,13 @@
+# ROS 2节点的顺序退出
+
+Humble11 person clean20s保存了源时钟、真值尾段和闭环数据，但原ROS日志仍有一个真实子进程退出1。launch发出SIGINT后，state_estimator在rclpy的`_take_subscription` / `take_message`中抛出`RuntimeError: Unable to convert call argument to Python object (compile in debug mode for details)`。launch父进程退出0不能掩盖该失败，旧槽及日志不改。
+
+自有飞行节点、场景驱动、故障桥及监测器现采用同一生命周期：`uav_tracking.ros_lifecycle.shutdown_requests`只把SIGINT/SIGTERM置为幂等请求；`SignalHandlerOptions.NO`关闭rclpy默认的异步context收尾；与节点同Context的显式SingleThreadedExecutor通过有限墙钟等待返回后检查请求。主线程先停executor，再销毁节点及其worker，最后关闭context，期间重复信号仍只置位。场景驱动在context仍有效时发送最后零速度，monitor保存原有中断失败结论。
+
+共享模块不导入ROS，所有适配器继续从已安装的便携Python包单向依赖它，未新增ROS包间依赖。detector原有的native worker join顺序保留。supervisor入口原有的已知错误特判已移除；运行中或已停止context上的任何真实RuntimeError均继续抛出，基础设施分类规则不变。
+
+这次修复不改变估计、控制、目标身份、安全门、物理计分分母或旧结果。入口fixture验证清理顺序与真实异常传播；真实Humble高频ROS负载和完整新仿真槽另行记录，fixture不替代飞行验收。
+
+Humble12冻结后的四包构建、实际导入与ament前缀隔离、Linux1095项测试通过（1项跳过）。真实Humble/DDS500Hz名义负载烟测22行为通过：11入口重复SIGINT/SIGTERM、10入口注入的真实callback RuntimeError仍退出1并清理、monitor正常完成。除实际sensor fault bridge外，烟测使用生产main函数与真实ROS fixture节点，因此只证明入口生命周期。记录为`results/frozen_fullplan_v4_humble12/freeze_validation/public_ros_lifecycle12_smoke03/summary.json`。smoke01脚本事件参数错误、smoke02仅观测try_shutdown而漏记detector的shutdown末步，两次原件保留于独立日志目录。
+
+随后两条全新clean20s仿真均runner0，全部自有ROS子进程正常退出，独立source/native/bag/render及基础设施检查通过。person的raw/timing/adapted为3787/3787/3787，car为3844/3844/3844。最终Clock分别38.428s与39.000s，目标及无人机GT精确同戳；物理导航完整分母分别207/207与210/210，base_link距离和高度最终稳定均有连续证据。clean未配置遮挡，因此原surface报告的INCOMPLETE保留；这两槽不代表遮挡/身份/云台验收，也不替代开发12格与正式重复。

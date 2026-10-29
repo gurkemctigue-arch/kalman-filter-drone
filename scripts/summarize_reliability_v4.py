@@ -39,6 +39,15 @@ METRICS = {
     "navigation_valid_coverage": ("navigation", "kf_navigation.valid_state_coverage"),
     "navigation_position_truth_coverage": ("navigation", "kf_navigation.position_truth_coverage"),
     "navigation_velocity_truth_coverage": ("navigation", "kf_navigation.velocity_truth_coverage"),
+    "velocity_command_jitter_rms_mps2": ("navigation", "control_jitter.velocity_command_delta_over_dt_mps2.rmse"),
+    "yaw_command_jitter_rms_radps2": ("navigation", "control_jitter.yaw_rate_delta_over_dt_radps2.rmse"),
+    "image_center_rmse_px": ("navigation", "visual_control_metrics.detected_center_error_px.rmse"),
+    "image_center_normalized_rmse": ("navigation", "visual_control_metrics.detected_center_normalized_error.rmse"),
+    "image_center_observed_coverage": ("navigation", "visual_control_metrics.observed_center_coverage"),
+    "image_to_first_command_sim_mean_s": ("navigation", "visual_control_metrics.image_to_first_tracking_command_sim_s.mean"),
+    "image_to_first_command_sim_p95_s": ("navigation", "visual_control_metrics.image_to_first_tracking_command_sim_s.p95"),
+    "short_requested_shutter_prediction_position_rmse_m": ("navigation", "short_shutter_prediction.position_error_m.rmse"),
+    "short_requested_shutter_valid_prediction_coverage": ("navigation", "short_shutter_prediction.valid_prediction_coverage"),
     "detector_processed_sim_fps": ("surface_flight", "detector.processed_fps_in_sim_time"),
     "detector_inference_wall_mean_s": ("surface_flight", "detector.inference_wall_s.mean"),
     "detector_inference_wall_p95_s": ("surface_flight", "detector.inference_wall_s.p95"),
@@ -138,6 +147,22 @@ def extract_metrics(reports):
     return metrics, censoring
 
 
+def metric_sample_counts(reports):
+    """Preserve each error/latency statistic's real sample count when saved.
+
+    Coverage numerators, trial n, MOT task n and settling windows are different
+    denominators; none substitutes for an unavailable scalar-error count.
+    """
+    result = {name: None for name in METRIC_NAMES}
+    for name, (kind, path) in METRICS.items():
+        parent, statistic = path.rsplit(".", 1)
+        if statistic in {"rmse", "mean", "p95", "median"}:
+            value = at(reports.get(kind), parent + ".count")
+            if type(value) is int and value >= 0:
+                result[name] = value
+    return result
+
+
 def report_documents(plan, trial, record):
     """Read only registered, immutable, hash-bound report JSON, never loose files."""
     documents, sources, issues = {}, [], []
@@ -220,6 +245,7 @@ def read_cohort(path, cohort):
             "engineering_result": record.get("engineering_result"),
             "infrastructure_stop": record.get("infrastructure_stop"), "flight_exit_code": record.get("flight_exit_code"),
             "evaluation_status": evaluation_status, "metrics": metrics, "settling": censoring,
+            "metric_sample_counts": metric_sample_counts(reports),
             "report_issues": issues, "sources": sources})
         rows[-1]["required_evaluator_kinds"] = [item["kind"] for item in trial["evaluations"]]
         source_files.extend(sources)

@@ -9,7 +9,6 @@ rest of the graph can be tested with a replay or a replacement detector.
 from __future__ import annotations
 
 from collections import deque
-from contextlib import contextmanager
 from dataclasses import dataclass
 import json
 import math
@@ -38,6 +37,7 @@ except ImportError:  # pragma: no cover - exercised only without ROS 2.
     Node = object  # type: ignore[misc,assignment]
     get_package_share_directory = None  # type: ignore[assignment]
 
+from uav_tracking.ros_lifecycle import shutdown_requests
 from uav_tracking.core import CameraIntrinsics, bbox_iou, depth_roi_stats, pinhole_backproject
 from uav_tracking.core.navigation import sample_depth_points
 from uav_tracking_nodes.inference_worker import NonQueuingWorker
@@ -59,38 +59,6 @@ class InferenceSnapshot:
     previous_acquisition_s: float | None = None
 
 
-@contextmanager
-def shutdown_requests():
-    """Keep repeated shutdown signals from interrupting native worker joins.
-
-    ROS's default SIGINT handling can raise a second KeyboardInterrupt while
-    ThreadPoolExecutor is joining torch inference. A join interrupted there
-    can leave native work alive at interpreter teardown and cause SIGABRT.
-    These handlers only request shutdown and remain installed until worker,
-    publishers and ROS context have all closed, in that order.
-    """
-    # A Python signal handler only needs an atomic boolean store. Avoid
-    # acquiring an Event's non-reentrant lock from a repeated signal.
-    @dataclass
-    class Request:
-        value: bool = False
-
-        def is_set(self):
-            return self.value
-
-    requested = Request()
-    previous = {}
-
-    def request_stop(_signal_number, _frame):
-        requested.value = True
-
-    try:
-        for number in (signal.SIGINT, signal.SIGTERM):
-            previous[number] = signal.signal(number, request_stop)
-        yield requested
-    finally:
-        for number, handler in previous.items():
-            signal.signal(number, handler)
 
 
 class DetectorNode(Node):

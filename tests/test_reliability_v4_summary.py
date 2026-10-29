@@ -88,6 +88,15 @@ class ReliabilitySummaryTests(unittest.TestCase):
         self.assertEqual((value["n"], value["n_missing"], value["mean"]), (1, 1, 0.))
         self.assertFalse(result["all_engineering_pass"])
 
+    def test_metric_sample_counts_do_not_substitute_trials_for_error_samples(self):
+        reports = {"navigation": {"control_jitter": {"velocity_command_delta_over_dt_mps2": {"rmse": .2, "count": 45}},
+                                   "kf_navigation": {"metrics": {"kf_position_error_m": {"rmse": None, "count": 0}}}}}
+        counts = summarizer.metric_sample_counts(reports)
+        self.assertEqual(counts["velocity_command_jitter_rms_mps2"], 45)
+        self.assertEqual(counts["kf_position_rmse_m"], 0)
+        self.assertIsNone(counts["navigation_valid_coverage"])
+        self.assertIsNone(counts["image_to_first_command_sim_mean_s"])
+
     def test_native_navigation_detector_and_censoring_use_new_schema(self):
         core = self.core(seeds=[4])
         terminal(core, core["trials"][0], censored=True)

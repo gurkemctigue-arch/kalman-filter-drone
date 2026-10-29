@@ -229,6 +229,11 @@ class ReplayEvidenceTests(unittest.TestCase):
             report = cli.load(root/"run"/(trial["slot_id"]+".json"))
             self.assertEqual(report["evaluation_status"], "COMPUTED_PENDING_ONLINE_EQUIVALENCE")
             self.assertTrue(report["export_evidence_issues"])
+            artifact = summary["trial_report_artifacts"][0]
+            self.assertEqual(artifact["slot_id"],trial["slot_id"])
+            self.assertEqual(artifact["sha256"],cli.file_sha256(root/"run"/artifact["path"]))
+            config_artifact = summary["registered_configuration_artifact"]
+            self.assertEqual(config_artifact["sha256"],cli.file_sha256(root/"run"/config_artifact["path"]))
 
     def test_cli_exit_zero_requires_a_complete_verified_matrix(self):
         for complete, expected in ((False, 2), (True, 0)):

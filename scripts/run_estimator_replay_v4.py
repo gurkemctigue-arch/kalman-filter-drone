@@ -330,7 +330,7 @@ def run(config, manifest_path, output, *, source_root=ROOT):
     output = Path(output)
     output.mkdir(parents=True, exist_ok=False)
     write_new(output / "registered_configuration.json", config)
-    reports, missing = [], []
+    reports, missing, artifacts = [], [], []
     for slot,item in slots.items():
         if item is None:
             missing.append({"slot_id":slot,"reason":"MISSING_DECLARED"});continue
@@ -349,12 +349,15 @@ def run(config, manifest_path, output, *, source_root=ROOT):
             report["evaluation_source"] = provenance
             report["input_file_sha256"] = item["sha256"]
             write_new(output / (slot + ".json"), report)
+            artifacts.append({"slot_id":slot,"path":slot+".json","sha256":file_sha256(output/(slot+".json"))})
             reports.append(report)
         except (OSError, ValueError, KeyError, TypeError) as error:
             missing.append({"slot_id":slot,"reason":f"INCOMPLETE_OR_INVALID_INPUT:{type(error).__name__}:{error}"})
     summary = paired_trial_summary(reports, config)
     summary.update(missing_or_invalid_inputs=missing, evaluation_source=provenance,
-                   input_manifest_file_sha256=file_sha256(manifest_path))
+                   input_manifest_file_sha256=file_sha256(manifest_path),trial_report_artifacts=artifacts,
+                   registered_configuration_artifact={"path":"registered_configuration.json",
+                       "sha256":file_sha256(output/"registered_configuration.json")})
     write_new(output / "summary.json", summary)
     return summary
 

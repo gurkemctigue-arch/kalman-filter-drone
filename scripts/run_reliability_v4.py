@@ -59,9 +59,12 @@ OFFLINE_HELPERS = {"scripts/extract_research_recording.py", "uav_tracking/resear
                    "uav_tracking/replay_comparison.py", "uav_tracking/replay_export.py",
                    "uav_tracking/navigation_reproduction.py"}
 OFFLINE_HELPERS.add("scripts/summarize_reliability_v4.py")
+OFFLINE_HELPERS.update({"scripts/build_reliability_v4_figures.py", "scripts/build_reliability_v4_report.py",
+                        "scripts/calibrate_estimator_replay_v4.py", "scripts/build_reliability_v4_probe_gate.py",
+                        "scripts/prepare_document_node24.py"})
 REPORT_PROVENANCE_HELPERS = {
     "navigation":("scripts/evaluate_stage1_flight.py", "scripts/evaluate_online_state_accuracy.py",
-                  "scripts/extract_research_recording.py", "uav_tracking/research_dynamics.py", "uav_tracking/research_labels.py"),
+                  "scripts/evaluate_follow_dynamics.py", "scripts/extract_research_recording.py", "uav_tracking/research_dynamics.py", "uav_tracking/research_labels.py"),
     "physical_identity":("scripts/evaluate_stage1_flight.py", "scripts/extract_research_recording.py",
                          "uav_tracking/research_labels.py", "uav_tracking/research_metrics.py", "uav_tracking/stage2_identity.py"),
     "source_clock":SOURCE_CLOCK_HELPERS,

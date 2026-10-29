@@ -24,7 +24,13 @@ class SeedRunnerTests(unittest.TestCase):
         self.run_registered_seed(73,74)
         self.run_registered_seed(0,1)
 
-    def run_registered_seed(self,registered,actual):
+    def test_recording_closure_precedes_recorder_stop_and_archive(self):
+        self.run_registered_seed(0,1,with_bag=True)
+
+    def test_closure_failure_still_closes_and_archives_failed_trial(self):
+        self.run_registered_seed(0,1,with_bag=True,closure_fails=True)
+
+    def run_registered_seed(self,registered,actual,*,with_bag=False,closure_fails=False):
         with tempfile.TemporaryDirectory() as temporary:
             root=Path(temporary)
             bringup=root/"ros2_ws/src/uav_tracking_bringup"
@@ -43,6 +49,7 @@ class SeedRunnerTests(unittest.TestCase):
             persisted.parent.mkdir(parents=True)
             persisted.write_bytes(b"before flight persisted parameters")
             environments={}
+            lifecycle=[]
             class Process:
                 def __init__(self,command,**kwargs):
                     self.name=Path(kwargs["stdout"].name).stem
@@ -57,6 +64,7 @@ class SeedRunnerTests(unittest.TestCase):
                     return self.returncode
                 def send_signal(self,signum):pass
                 def wait(self,**kwargs):
+                    lifecycle.append("stop_"+self.name)
                     if self.name=="px4":persisted.write_bytes(b"after normal firmware save")
                     self.returncode=0
                     return 0
@@ -73,20 +81,50 @@ class SeedRunnerTests(unittest.TestCase):
                 "evidence_scope":"ORCHESTRATION_FIXTURE_ONLY_NO_PROCESS_LAUNCHED"}))
             graph_wait = SimpleNamespace(wait_ready=Mock(return_value={
                 "status":"PASS", "evidence_scope":"ORCHESTRATION_FIXTURE_ONLY_NO_ROS_GRAPH"}))
+            def closure(output,**kwargs):
+                kwargs["check_alive"]()
+                lifecycle.append("pause_and_drain")
+                output.write_text(json.dumps({"status":"FAIL" if closure_fails else "PASS",
+                    "evidence_scope":"ORCHESTRATION_FIXTURE_ONLY_NO_PROCESS_LAUNCHED"}))
+                if closure_fails:raise RuntimeError("injected drain failure")
+            closing=SimpleNamespace(pause_and_drain=Mock(side_effect=closure))
+            def spool(_output):
+                destination=root/"spool"
+                destination.mkdir()
+                return destination
+            def archive(*args):
+                lifecycle.append("archive")
+                return {"status":"PASS","evidence_scope":"ORCHESTRATION_FIXTURE_ONLY"}
+            argv=["trial","--name","seed_trial","--seed",str(registered),
+                  "--model-path","models/yolo11n.pt"]
+            if not with_bag:argv.append("--no-bag")
             with patch.object(runner,"__file__",str(root/"scripts/run_stage1_trial.py")), \
-                    patch("sys.argv",["trial","--name","seed_trial","--seed",str(registered),"--no-bag",
-                                      "--model-path","models/yolo11n.pt"]), \
+                    patch("sys.argv",argv), \
                     patch.object(runner.subprocess,"Popen",Process),patch.object(runner.subprocess,"run",probe), \
                     patch.object(runner.time,"sleep"),patch.object(runner.os,"killpg",create=True), \
+                    patch.object(runner,"create_recording_spool",side_effect=spool), \
+                    patch.object(runner,"finalize_recording",side_effect=archive), \
                     patch.dict(sys.modules,{"capture_gazebo_rendering":rendering_capture,
-                                            "wait_stage1_graph":graph_wait}), \
+                                            "wait_stage1_graph":graph_wait,
+                                            "close_stage1_recording":closing}), \
                     patch.dict(os.environ,{"STAGE1_PX4_ROOT":str(px4)}):
-                runner.main()
+                if closure_fails:
+                    with self.assertRaisesRegex(RuntimeError,"without proved source-stream drain"):
+                        runner.main()
+                else:runner.main()
+            if with_bag:
+                closing.pause_and_drain.assert_called_once()
+                self.assertEqual(closing.pause_and_drain.call_args.kwargs['expected_truth_frames'],
+                                 {'target':['target_person'],'vehicle':['stage1_uav']})
+                self.assertLess(lifecycle.index("pause_and_drain"),lifecycle.index("stop_bag"))
+                self.assertLess(lifecycle.index("stop_bag"),lifecycle.index("stop_ros"))
+                self.assertLess(lifecycle.index("stop_ros"),lifecycle.index("archive"))
+            else:closing.pause_and_drain.assert_not_called()
             rendering_capture.capture_ready.assert_called_once_with(731,"auto")
             graph_wait.wait_ready.assert_called_once()
             self.assertEqual(graph_wait.wait_ready.call_args.args,
                              (root.resolve()/"results/seed_trial/graph_startup_readiness.json",))
-            self.assertFalse(graph_wait.wait_ready.call_args.kwargs["require_recorder"])
+            self.assertEqual(graph_wait.wait_ready.call_args.kwargs["require_recorder"],with_bag)
             config=json.loads((root/"results/seed_trial/run_config.json").read_text())
             self.assertEqual(config["seed"],registered)
             self.assertEqual(config["gazebo_seed"],actual)

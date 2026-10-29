@@ -23,8 +23,9 @@ sys.path.insert(0, str(ROOT))
 import evaluate_stage1_flight as bag_tools
 from evaluate_stage1_flight import read_monitor_events, shutter_windows, stamp_s, summary, vector
 from evaluate_online_state_accuracy import (
-    PoseSeries, anchor_truth, declared_enu_evidence, freeze_ego_alignment,
+    PoseSeries, anchor_truth, command_jitter, declared_enu_evidence, freeze_ego_alignment,
 )
+from evaluate_follow_dynamics import visual_metrics
 from extract_research_recording import pose_dict
 from uav_tracking.research_dynamics import transient_metrics
 
@@ -172,7 +173,8 @@ def evaluation_source_provenance():
     """Actual evaluator source, separate from the flight's frozen revision."""
     script = Path(__file__).resolve()
     dependencies = [script.parent / name for name in (
-        "evaluate_stage1_flight.py", "evaluate_online_state_accuracy.py", "extract_research_recording.py")]
+        "evaluate_stage1_flight.py", "evaluate_online_state_accuracy.py", "extract_research_recording.py",
+        "evaluate_follow_dynamics.py")]
     dependencies += [ROOT / "uav_tracking" / name for name in ("research_dynamics.py", "research_labels.py")]
     return {"script":str(script), "script_sha256":hashlib.sha256(script.read_bytes()).hexdigest(),
             "dependencies":{str(path):hashlib.sha256(path.read_bytes()).hexdigest() for path in dependencies},
@@ -193,6 +195,33 @@ def _transients(samples, start, end, distance, *, task=None):
     return result
 
 
+def short_shutter_prediction(samples, windows):
+    """Describe actual navigation predictions inside requested short windows.
+
+    The shutter request is an experimental interval, not pixel-level proof of
+    occlusion. Empty-detection and service-ACK evidence stay in flight reports.
+    Missing state or truth remains in the fixed-grid coverage denominator.
+    """
+    reports = []
+    errors = []
+    scheduled = predicted = supported = 0
+    for window in windows:
+        start, end = window["start_s"], window["end_s"]
+        if end is None or not 0 < end - start <= MAX_PREDICTION_S:
+            continue
+        rows = [row for row in samples if start <= row["time_s"] <= end]
+        predictions = [row for row in rows if row.get("navigation_state") == 2 and row["navigation_valid"]]
+        values = [row["kf_position_error_m"] for row in predictions if row.get("kf_position_error_m") is not None]
+        reports.append({**window, "scheduled_samples": len(rows), "valid_prediction_samples": len(predictions),
+                        "truth_supported_prediction_samples": len(values), "position_error_m": summary(values)})
+        scheduled += len(rows); predicted += len(predictions); supported += len(values); errors.extend(values)
+    return {"requested_short_windows": len(reports), "scheduled_samples": scheduled,
+            "valid_prediction_samples": predicted, "truth_supported_prediction_samples": supported,
+            "valid_prediction_coverage": predicted / scheduled if scheduled else None,
+            "position_error_m": summary(errors), "windows": reports,
+            "definition": "Fixed 10 Hz samples inside complete requested shutter intervals no longer than 0.75 s; only actual fresh PREDICTED navigation states contribute errors, using independently mapped truth at receipt-grid time. Request intervals alone do not prove rendered occlusion. No timer prediction outside those intervals is counted; missing states/truth retain coverage counts."}
+
+
 def evaluate(records, config, *, physical=None, events=None):
     """Score independent ground centers; silent streams and hover tails persist.
 
@@ -205,7 +234,7 @@ def evaluate(records, config, *, physical=None, events=None):
     body_offset = _configuration(config)
     records = list(records)
     trajectories = defaultdict(list)
-    odometry = []; states = []; statuses = []; selections = []; diagnostics = []
+    odometry = []; states = []; statuses = []; selections = []; diagnostics = []; commands = []
     follow = None
     malformed = Counter()
     for record in records:
@@ -239,6 +268,15 @@ def evaluate(records, config, *, physical=None, events=None):
             statuses.append((operational, message))
         elif record.topic == "/tracking/selection" and message.action == 0:
             selections.append((operational, message))
+        elif record.topic == "/tracking/command":
+            try:
+                command = {"time_s": stamp_s(message.header.stamp), "valid": bool(message.valid), "mode": int(message.mode),
+                           "linear_mps": vector(message.linear_mps), "yaw_rate_radps": float(message.yaw_rate_radps)}
+                if not np.isfinite([command["time_s"], *command["linear_mps"], command["yaw_rate_radps"]]).all():
+                    raise ValueError("Nonfinite command")
+                commands.append(command)
+            except (AttributeError, TypeError, ValueError):
+                malformed["malformed_tracking_command"] += 1
         elif record.topic == DIAGNOSTIC_TOPIC:
             try:
                 payload = json.loads(message.data)
@@ -335,6 +373,7 @@ def evaluate(records, config, *, physical=None, events=None):
             truth_counts["missing_bracketed_vehicle_or_target_truth"] += 1
         reason = _state_reason(state, timestamp, task if multi else None)
         row["navigation_valid"] = reason is None
+        row["navigation_state"] = int(state.state) if state is not None else None
         row["navigation_reason"] = reason or "valid"
         row["active"] = bool(reason is None and status is not None and int(status.lifecycle) in (2, 3)
                              and int(status.track_id) == int(state.track_id))
@@ -509,6 +548,10 @@ def evaluate(records, config, *, physical=None, events=None):
                           "inactive_control_samples":sum(not row["active"] for row in samples),
                           "truth_missing_reasons":dict(truth_counts), "metrics":_metrics(samples, keys),
                           "transients":_transients(samples, follow, end, distance)},
+        "control_jitter":command_jitter(sorted((row for row in commands if follow <= row["time_s"] <= end),
+                                               key=lambda row: row["time_s"])),
+        "visual_control_metrics":visual_metrics(records, states, statuses, follow, end, multi=multi),
+        "short_shutter_prediction":short_shutter_prediction(samples, shutters),
         "windows":windows, "malformed_input_counts":dict(malformed),
         "frames":samples, "raw_frames":raw_frames, "message_frames":message_frames,
         "claim_boundary":(

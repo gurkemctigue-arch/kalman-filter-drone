@@ -6,9 +6,12 @@ import math
 
 import numpy as np
 
+from uav_tracking.ros_lifecycle import shutdown_requests
+
 try:
     import rclpy
-    from rclpy.executors import ExternalShutdownException
+    from rclpy.executors import ExternalShutdownException, SingleThreadedExecutor
+    from rclpy.signals import SignalHandlerOptions
     from nav_msgs.msg import Odometry
     from geometry_msgs.msg import Vector3Stamped
     from rclpy.node import Node
@@ -245,21 +248,31 @@ class ControllerNode(Node):
 
 def main(args: list[str] | None = None) -> None:
     if rclpy is None:
-        raise RuntimeError("ROS 2 is required to run controller_node")
-    rclpy.init(args=args)
-    node = None
-    try:
-        node = ControllerNode()
-        rclpy.spin(node)
-    except (KeyboardInterrupt, ExternalShutdownException):
-        pass
-    finally:
+        raise RuntimeError("ROS 2 and this node's message dependencies are required")
+    with shutdown_requests() as requested:
+        # The default rclpy signal handler can invalidate the context during
+        # subscription.take_message. Stop the executor before the context.
+        rclpy.init(args=args, signal_handler_options=SignalHandlerOptions.NO)
+        node = None
+        executor = None
         try:
-            if node is not None:
-                node.destroy_node()
+            node = ControllerNode()
+            executor = SingleThreadedExecutor(context=node.context)
+            executor.add_node(node)
+            while node.context.ok() and not requested.is_set():
+                executor.spin_once(timeout_sec=0.2)
+        except (KeyboardInterrupt, ExternalShutdownException):
+            pass
         finally:
-            # SIGINT may already have closed the default context.
-            rclpy.try_shutdown()
+            try:
+                try:
+                    if executor is not None:
+                        executor.shutdown()
+                finally:
+                    if node is not None:
+                        node.destroy_node()
+            finally:
+                rclpy.try_shutdown()
 
 
 if __name__ == "__main__":

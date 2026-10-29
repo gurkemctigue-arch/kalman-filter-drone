@@ -8,6 +8,8 @@ import math
 
 import numpy as np
 
+from uav_tracking.ros_lifecycle import shutdown_requests
+
 
 def perturb_depth(depth: np.ndarray, *, seed: int, stamp_ns: int,
                   noise_std_m: float = 0.0, hole_fraction: float = 0.0) -> np.ndarray:
@@ -39,9 +41,11 @@ def frame_dropped(seed: int, stamp_ns: int, fraction: float) -> bool:
 
 def main() -> None:
     import rclpy
+    from rclpy.executors import ExternalShutdownException, SingleThreadedExecutor
     from rclpy.node import Node
     from rclpy.parameter import Parameter
     from rclpy.qos import QoSProfile, ReliabilityPolicy
+    from rclpy.signals import SignalHandlerOptions
     from sensor_msgs.msg import Image, CameraInfo
     from cv_bridge import CvBridge
 
@@ -95,16 +99,28 @@ def main() -> None:
                 _, publisher, message = self.pending.popleft()
                 publisher.publish(message)
 
-    rclpy.init()
-    node = FaultBridge()
-    try:
-        rclpy.spin(node)
-    except KeyboardInterrupt:
-        pass
-    finally:
-        node.destroy_node()
-        if rclpy.ok():
-            rclpy.shutdown()
+    with shutdown_requests() as requested:
+        rclpy.init(signal_handler_options=SignalHandlerOptions.NO)
+        node = None
+        executor = None
+        try:
+            node = FaultBridge()
+            executor = SingleThreadedExecutor(context=node.context)
+            executor.add_node(node)
+            while node.context.ok() and not requested.is_set():
+                executor.spin_once(timeout_sec=0.2)
+        except (KeyboardInterrupt, ExternalShutdownException):
+            pass
+        finally:
+            try:
+                try:
+                    if executor is not None:
+                        executor.shutdown()
+                finally:
+                    if node is not None:
+                        node.destroy_node()
+            finally:
+                rclpy.try_shutdown()
 
 
 if __name__ == "__main__":

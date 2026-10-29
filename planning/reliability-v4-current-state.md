@@ -1,6 +1,6 @@
 # 当前工作交接（持续开发，非验收报告）
 
-用户要求继续直到三阶段、重复实验与交付完成，且已授权GitHub推送。不要将此文件或少量探针当作项目已完成。最近公开commit为 `6cba40534ecdf884741dc7e837b10ef81f4fc540`；本轮后续修改尚未提交。
+用户要求继续直到三阶段、重复实验与交付完成，且已授权GitHub推送。不要将此文件或少量探针当作项目已完成。最近公开开发commit为 `f965c4aa76d1c8bdad25f01795a31d176bd9dde0`；该提交后继续进行收尾修复与文档/图表流水线开发。
 
 ## 固定边界
 
@@ -64,10 +64,44 @@
 - report已接收收敛指令，先实际最小pub/sub/Trigger验证所有公开API、QoS兼容/不兼容与清理，然后从08加入明确修订新09冻结、构建/全套与两clean。一次重窗口仍由report管理。
 - summary离线工具已稳定并加进OFFLINE_HELPERS；github候选74文件约1.26MB，未stage/commit，等待collector稳定与全源检查。root已轻量review扩展登记/真实core引用、安全边界及summary schema，未发现额外阻塞。
 
+## 09 实测、GitHub 检查点与当前收尾工作
+
+- 09 person新20s：启动门4.831wall秒真实PASS；native12.652源秒/25.305墙秒，runner总100.088墙秒；所有进程0、bag完整；原source evaluator raw/timing/adapted各3817，全配对、0缺证/0clock/frame失败，native PASS。nav/GT205/205，base_link距离/高度RMSE0.315299/0.260421m，末端settled=true（4.0/2.5s）。最后一条非网格nav真值bracket缺失单列unknown，主网格完整；model_origin高度censored不等于受控base_link失败。
+- 同09 car新20s：启动门4.208墙秒PASS，native12.600源秒/25.200墙秒；runner99.947墙秒，全部进程0、bag/native/render PASS，nav/GT205/205，base_link距离/高度RMSE0.623901/0.255986m。但source INCOMPLETE：raw3819、timing/adapted3818。唯一缺口精确为全包最后raw seq22468，source38.740/receipt38.744；之前末配对source38.732，首0.572完全配对。原09car证据/判定保留，不能拼组件PASS为整体通过。
+- 因果收尾修复：report正在新增独立ROS收尾probe，monitor终态后bag/ROS/PX4/GZ保持活着，先实际收Clock/raw/timing，pause world实际ACK后持续spin，要求Clock不前进、raw/diag/adapted计数稳定、末raw(sample/publication)确有对应diag；仅accepted=true才需对应adapted header，reject不等无效odom。短稳定窗、10s墙钟上限，逐观察存档；再关recorder和运行节点。全Clock/失败尾段照录照评、不裁尾、不豁免最后raw。先真实最小pub/sub验证乱序/延迟/reject及清理，再新10冻结和新两clean。
+- 外部已备`D:/WSL/UAVHumble22-validation/freeze_humble10.sh`，尚未执行。10应从主树合入新的收尾生产源及当前全部离线工具，明确登记相对09的新增生产差异，不能再要求flight-critical与09相同。四包/隔离/全Linux后两clean及核心12/扩展16开发；候选开发seed4，不碰1000–1009。
+- GitHub开发检查点已提交并push main：`f965c4aa76d1c8bdad25f01795a31d176bd9dde0`，远端ls-remote确认一致、提交后clean。主树1036 tests OK，9 Windows平台跳过，168.924s；289源码/配置开测前后不变，扫描PASS。Actions未确认（公共API出口限流、本机无gh），不能冒称CI PASS。
+- 用户已收到更新工期：两类20s探针整次均约100wall秒，280正式按12–14小时估计，含开发矩阵/统计/交付按剩余16–24小时规划，依赖后续收尾和算法开发关口通过；并非无条件承诺。当前D空闲约175.79GiB、RAM空闲约14.04GiB；仍严格一次一个重任务。
+- docx代理现实现新版报告/最终计划书流水线（按已读docx skill、docx-js），github代理实现新版图表PNG/PDF/SVG/CSV及来源manifest；均只写离线代码和轻量fixture，不造正式结果、不读heldout。新离线Python脚本须在OFFLINE_HELPERS，CJS文档源码单独记录hash。root负责后续真实验证/定标/冻结与整体推进。
+
 ## 接下来
 
-1. 新06隔离构建/全套及两类真实CPU clean20s，验证已修复的基础设施确实适用于飞行。
-2. 完成真实离线证据gate与专项，更新公开开发检查点；不能用PASS布尔自证审计通过。
-3. 短/长遮挡与显式重选、位置、多目标、中位/主动/多目标云台；完成两类别×六组12格开发矩阵并核对原计划扩展条件。
-4. 最终两类×六组完整开发关口后注册性能门与replay R0/Q/P0/EMA/common gate，正式120槽串行，每槽一次保留失败。120槽按本机实测约8–10小时，仅串行正式运行，开发诊断和交付另计。
-5. 完成20条正式stage1_velocity条件离线四法统计、最终图表/视频/Word/PDF/入口和GitHub同步，实际完成后才能最终汇报。
+1. 新10隔离构建/全套及两类真实CPU clean20s，验证pause ACK→完整尾流排空→关闭录包的真实效果。最小真实ROS五场景已经验证（延迟/乱序/reject/晚raw/缺diag），不替代新飞行。
+2. 最终同一飞行源的两类×六组12格核心开发，固定seed004；两类stage1_velocity为预先指定的R0定标来源。短/长遮挡、显式重选、位置、多目标、中位/主动/多目标云台均实际验收。
+3. 完成两类×八条件16格扩展开发；先固定性能门，再注册核心/扩展协议与replay参数/来源。保留故意压力工况的真实性能失败及任何新基础设施失败，不改旧槽。
+4. 正式120核心+160扩展=280槽串行，每槽一次，完整分母；按当前实测整次耗时暂估12–14小时，开发诊断和交付另计。
+5. 完成20条正式stage1_velocity同测量四法统计、检测/身份评价、图表/视频/Word/PDF/入口和GitHub同步。实际完成后才能最终汇报。
+
+## 本次接续与离线定标工具
+
+- 已重新核对main、三位活动代理与实际WSL进程，未重启或重复09任何槽。report继续独占重任务窗口；docx与github仅做离线文档/图表代码。
+- 新`calibrate_estimator_replay_v4.py`从预指定seed004两类完整PROBE槽导出的已审计数组计算几何R均值。保留在线门控拒绝但独立几何有效的观测，去重不重复加权，读取完整FOLLOW→Clock尾，显式排除原因和采集ID；不混入R_pose、不拟合真值、无隐式jitter、不自动登记。已增加具名slot原run_config/bag_integrity小文件SHA与export原包路径绑定，8项专项通过，尚未对最终开发数据执行。
+- 10两类clean20s的source/raw/timing/adapted均全部配对，原生起飞/录包/渲染/全部进程退出通过，汽车末端稳定。行人209网格中最后1个真值缺bracket（最后GT38.880、Clock38.908）导致settling如实右删失，原报告不改。
+- 原因已定位为评价专用PosePublisher的30Hz采样边界。按官方精确tag源码（频率非正时每physics步发布）将16处GT插件设为-1；closure新增全部声明target/vehicle最终GT同Clock源戳闭合检查，仅用于离线录制，不馈送跟踪/控制/关联。真实最小ROS6场景验证晚GT等待、缺actor超时与清理。
+- 新11四包/真实模块和ament隔离通过，Linux1087项测试通过（1项跳过，30.988s）；两类新clean20s正在串行验证。新版nav/summary已接控制命令变化率、画面中心/覆盖、图像到首跟踪命令仿真延迟、请求短遮挡内实际导航预测误差及真实error样本数；55项相关检查通过。图表与Word流水线已各自完成合成fixture验证，尚无正式数据/正式文档。
+
+## 11 行人实测与节点关闭竞态
+
+- 11person的source/raw/timing/adapted3733/3733/3733、native、bag、render均PASS；全部target/vehicle最后GT与Clock37.888同戳，205/205网格真值完整，base_link距离/高度RMSE约0.3148/0.2575m，稳定时间4.2/2.5s且维持至末端。真值每physics步采集修复有真实证据。
+- 严格ROS子进程审计发现state_estimator在launch发SIGINT后、rclpy._take_subscription.take_message报pybind RuntimeError并exit1；原11失败保留，car未跑，不得以launch主进程0或物理正常覆盖。
+- 原因是默认rclpy信号处理异步关闭Context而executor仍取消息；report正统一自有节点生命周期为SignalHandlerOptions.NO、只设停止请求、同Context显式executor、先停executor/worker再destroy node最后shutdown context。运行期callback RuntimeError继续抛，不扩大例外吞错。需真实高频ROS SIGINT负载验证，再新12冻结和两clean，随后固定seed004核心12格。
+- 为长批量任务启动临时Windows防睡眠请求，不改系统电源方案。专属进程PID28584；外部记录`D:/WSL/UAVHumble22-validation/keep_project_awake_process.json`。租约最长30小时；任务完成后移除同目录`keep_project_awake_lease.json`使进程自行释放请求。不要结束用户其他应用。
+- docx正在接真实检测审核小工件，并准备专用Linux Node24官方SHA下载与现有Windows Word隐藏独立实例转PDF；尚未实际渲染正式Word/PDF。github正在实现只读开发关口组装器，必须经现有validator核验真实12/16格后才发布；不会代写登记或执行正式种子。
+
+## 12 双类 clean 闭合与进入核心开发
+
+- 12四包/真实module与ament隔离通过，Linux1095项检查完成（1项跳过，32.625s）；生产main+真实ROS高频fixture的22项生命周期行为全部通过，涵盖重复SIGINT/SIGTERM、真实RuntimeError仍退出1并清理、monitor正常主动完成。无扩大RuntimeError吞错。
+- 12person clean20s：runner0；全部8 ROS子进程正常退出，infra.stop=false且reasons=[]；raw/timing/adapted3787全部配对，source/native/bag/render均PASS。最后Clock38.428与target/vehicle GT同戳，导航207/207真值100%；base_link距离/高度RMSE0.3262/0.2583m，稳定时间4.3/2.6s且到末端。
+- 12car clean20s：runner0；全部ROS子进程正常退出，infra.stop=false且reasons=[]；raw/timing/adapted3844全部配对，source/native/bag/render均PASS。最后Clock39.000与target/vehicle GT同戳，导航210/210真值100%；base_link距离/高度RMSE0.6059/0.2633m，稳定时间2.6/2.4s且到末端。
+- 两clean没有设计遮挡，surface的INCOMPLETE不能改为完整安全PASS；它们只关闭基础设施与无遮挡物理跟随关口。report现按既定授权创建同源seed004两类×六组12格不可变PROBE计划，随后逐槽执行；正式1000–1009仍未使用。
+- 新图表、文档、检测审核接入、定标和实际开发关口生成器已完成对应fixture/只读review；main准备下一开发checkpoint。Linux Node24已安装至专属/root/uav_document_tools（官方SHA下载，纯JS docx实测可用），Word隐藏独立实例转PDF脚本就绪，尚未生成正式文档。

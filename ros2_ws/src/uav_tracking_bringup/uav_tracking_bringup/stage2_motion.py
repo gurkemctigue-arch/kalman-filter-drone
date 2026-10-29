@@ -10,9 +10,12 @@ from __future__ import annotations
 import json
 import math
 
+from uav_tracking.ros_lifecycle import shutdown_requests
+
 try:
     import rclpy
-    from rclpy.executors import ExternalShutdownException
+    from rclpy.executors import ExternalShutdownException, SingleThreadedExecutor
+    from rclpy.signals import SignalHandlerOptions
     from geometry_msgs.msg import Twist
     from rclpy.node import Node
     from std_msgs.msg import String
@@ -135,26 +138,37 @@ class Stage2Motion(Node):
             publisher.publish(Twist())
 
 
-def main(args=None):
+def main(args: list[str] | None = None) -> None:
     if rclpy is None:
-        raise RuntimeError("ROS 2 is required")
-    rclpy.init(args=args)
-    node = None
-    try:
-        node = Stage2Motion()
-        rclpy.spin(node)
-    except (KeyboardInterrupt, ExternalShutdownException):
-        pass
-    finally:
+        raise RuntimeError("ROS 2 and this node's message dependencies are required")
+    with shutdown_requests() as requested:
+        # The default rclpy signal handler can invalidate the context during
+        # subscription.take_message. Stop the executor before the context.
+        rclpy.init(args=args, signal_handler_options=SignalHandlerOptions.NO)
+        node = None
+        executor = None
         try:
-            if node is not None:
-                try:
-                    if rclpy.ok():
-                        node.stop()
-                finally:
-                    node.destroy_node()
+            node = Stage2Motion()
+            executor = SingleThreadedExecutor(context=node.context)
+            executor.add_node(node)
+            while node.context.ok() and not requested.is_set():
+                executor.spin_once(timeout_sec=0.2)
+        except (KeyboardInterrupt, ExternalShutdownException):
+            pass
         finally:
-            rclpy.try_shutdown()
+            try:
+                try:
+                    if executor is not None:
+                        executor.shutdown()
+                finally:
+                    if node is not None:
+                        try:
+                            if node.context.ok():
+                                node.stop()
+                        finally:
+                            node.destroy_node()
+            finally:
+                rclpy.try_shutdown()
 
 
 if __name__ == "__main__":

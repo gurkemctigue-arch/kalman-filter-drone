@@ -88,6 +88,34 @@ def transform_diagnostics(records, function):
 
 
 class NavigationEvaluationTests(unittest.TestCase):
+    def test_command_jitter_and_end_to_end_navigation_latency_use_recorded_streams(self):
+        records, config, _ = fixture()
+        for timestamp, speed in ((6.1, 0.), (6.2, .2), (6.3, .4)):
+            command = NS(header=header(timestamp), valid=True, mode=1,
+                         linear_mps=xyz([speed, 0., 0.]), yaw_rate_radps=speed)
+            records.append(Record("/tracking/command", timestamp, command, timestamp))
+        result = evaluation.evaluate(records, config)
+        jitter = result["control_jitter"]
+        self.assertAlmostEqual(jitter["velocity_command_delta_over_dt_mps2"]["rmse"], 2.)
+        self.assertEqual(jitter["valid_velocity_commands"], 3)
+        self.assertGreater(result["visual_control_metrics"]["source_images_with_first_tracking_command"], 0)
+        self.assertEqual(result["short_shutter_prediction"]["requested_short_windows"], 0)
+
+    def test_short_prediction_does_not_count_ordinary_timer_predictions_or_missing_truth_as_zero(self):
+        samples = [{"time_s": timestamp, "navigation_state": state, "navigation_valid": valid,
+                    "kf_position_error_m": error} for timestamp, state, valid, error in
+                   ((1., 2, True, 100.), (2., 2, True, .5), (2.1, 2, True, None),
+                    (2.2, 3, False, None), (2.3, 1, True, .1), (4., 2, True, 200.))]
+        windows = [{"start_s": 2., "end_s": 2.3}, {"start_s": 3., "end_s": 6.},
+                   {"start_s": 7., "end_s": None}]
+        result = evaluation.short_shutter_prediction(samples, windows)
+        self.assertEqual(result["requested_short_windows"], 1)
+        self.assertEqual(result["scheduled_samples"], 4)
+        self.assertEqual(result["valid_prediction_samples"], 2)
+        self.assertEqual(result["truth_supported_prediction_samples"], 1)
+        self.assertEqual(result["position_error_m"]["rmse"], .5)
+        self.assertEqual(result["valid_prediction_coverage"], .5)
+
     def test_clock_only_tail_extends_denominators_without_inventing_state_or_truth(self):
         records, config, _ = fixture()
         baseline = evaluation.evaluate(records,config)

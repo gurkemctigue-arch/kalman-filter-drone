@@ -5,6 +5,7 @@ flight code is started. The final integrated signal behavior remains a
 separate end-to-end check after the frozen research run.
 """
 import ast
+from contextlib import contextmanager
 from pathlib import Path
 from types import SimpleNamespace
 import unittest
@@ -31,10 +32,18 @@ class RosNodeShutdownTests(unittest.TestCase):
     def invoke(self, source, constructor_name, *, spin_error=None, already_closed=False,
                constructor_error=None, destroy_error=None):
         events=[];context={"ok":True}
+        requested=SimpleNamespace(value=False)
+        requested.is_set=lambda:requested.value
+        node_context=SimpleNamespace(ok=lambda:context["ok"])
+
+        @contextmanager
+        def requests():
+            yield requested
 
         class Node:
             def __init__(self):
                 events.append("construct")
+                self.context=node_context
                 if constructor_error is not None:
                     raise constructor_error
 
@@ -48,22 +57,43 @@ class RosNodeShutdownTests(unittest.TestCase):
                 if destroy_error is not None:
                     raise destroy_error
 
-        def spin(node):
-            events.append("spin")
-            if already_closed:
-                context["ok"]=False
-            if spin_error is not None:
-                raise spin_error
+        class Executor:
+            def __init__(self, *, context):
+                self_context=context
+                if self_context is not node_context:
+                    raise AssertionError("executor must own the node's context")
+                events.append("executor")
+
+            def add_node(self, node):
+                events.append("add")
+
+            def spin_once(self, timeout_sec):
+                events.append("spin")
+                requested.value=True
+                if already_closed:
+                    context["ok"]=False
+                if spin_error is not None:
+                    raise spin_error
+
+            def shutdown(self):
+                events.append("executor_shutdown")
 
         def shutdown():
             events.append("try_shutdown")
             context["ok"]=False
 
-        fake_ros=SimpleNamespace(init=lambda **kwargs: events.append("init"), spin=spin,
+        def init(**kwargs):
+            if kwargs.get("signal_handler_options") != "NO":
+                raise AssertionError("rclpy must not asynchronously close this context")
+            events.append("init")
+
+        fake_ros=SimpleNamespace(init=init,
                                  ok=lambda:context["ok"], try_shutdown=shutdown)
         tree=ast.parse((ROOT/source).read_text(encoding="utf-8"))
         main=next(node for node in tree.body if isinstance(node,ast.FunctionDef) and node.name=="main")
-        namespace={"rclpy":fake_ros,"ExternalShutdownException":ExternalShutdown,constructor_name:Node}
+        namespace={"rclpy":fake_ros,"ExternalShutdownException":ExternalShutdown,constructor_name:Node,
+                   "shutdown_requests":requests,"SignalHandlerOptions":SimpleNamespace(NO="NO"),
+                   "SingleThreadedExecutor":Executor}
         exec(compile(ast.Module(body=[main],type_ignores=[]),str(ROOT/source),"exec"),namespace)
         return namespace["main"],events,context
 
@@ -72,7 +102,8 @@ class RosNodeShutdownTests(unittest.TestCase):
             with self.subTest(source=source):
                 main,events,context=self.invoke(source,constructor,spin_error=KeyboardInterrupt(),already_closed=True)
                 main([])
-                self.assertEqual(events,["init","construct","spin","destroy","try_shutdown"])
+                self.assertEqual(events,["init","construct","executor","add","spin",
+                                         "executor_shutdown","destroy","try_shutdown"])
                 self.assertFalse(context["ok"])
 
     def test_external_context_shutdown_is_a_normal_exit(self):
@@ -87,7 +118,8 @@ class RosNodeShutdownTests(unittest.TestCase):
             with self.subTest(source=source):
                 main,events,context=self.invoke(source,constructor)
                 main([])
-                self.assertEqual(events,["init","construct","spin"]+(["stop"] if motion else [])+["destroy","try_shutdown"])
+                self.assertEqual(events,["init","construct","executor","add","spin","executor_shutdown"]
+                                 +(["stop"] if motion else [])+["destroy","try_shutdown"])
                 self.assertFalse(context["ok"])
 
     def test_real_callback_errors_remain_failures_after_cleanup(self):
@@ -97,6 +129,18 @@ class RosNodeShutdownTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError,"callback failed"):
                     main([])
                 self.assertEqual(events[-2:],["destroy","try_shutdown"])
+
+    def test_runtime_errors_are_not_suppressed_even_if_context_has_stopped(self):
+        for source,constructor,_ in ENTRYPOINTS:
+            for closed in (False,True):
+                with self.subTest(source=source,closed=closed):
+                    error=RuntimeError("Unable to convert call argument to Python object (compile in debug mode for details)")
+                    main,events,_=self.invoke(source,constructor,spin_error=error,already_closed=closed)
+                    with self.assertRaises(RuntimeError) as caught:
+                        main([])
+                    self.assertIs(caught.exception,error)
+                    self.assertIn("executor_shutdown",events)
+                    self.assertEqual(events[-2:],["destroy","try_shutdown"])
 
     def test_failed_node_construction_closes_context_without_destroying_missing_node(self):
         for source,constructor,_ in ENTRYPOINTS:

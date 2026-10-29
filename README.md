@@ -2,7 +2,7 @@
 
 **当前分支是 v4 开发检查点，尚未完成修复后的正式验收。** `nav04`、`nav05` 的失败记录保留；Ubuntu 22.04/Humble 已完成隔离构建、RGB-D 桥接和部分原生起飞开发探针，完整两类别、遮挡、多目标、云台与正式 120 槽验收仍未完成。请先查看 [v4 当前状态](docs/V4_WORK_STATUS.md)、[Humble 实测记录](docs/HUMBLE_ISOLATED_VALIDATION.md) 和 [验收合同](docs/V4_ACCEPTANCE_CONTRACT.md)。下文 v3 报告与结果计数属于历史冻结版本。
 
-核心 120 槽只覆盖登记的类别与六组工程条件；原计划全部距离、噪声、延迟等工况还需独立扩展，当前均未完成正式运行。范围和剩余工作见 [执行计划](planning/reliability-v4-remaining-execution.md)。
+核心 120 槽覆盖两类目标与六组工程条件；原计划距离、噪声、延迟、加减速等八个扩展条件另有 160 槽，共 280 槽，当前均未开始正式运行。范围和剩余工作见 [执行计划](planning/reliability-v4-remaining-execution.md)。
 
 中文验收入口：[结果工件说明](docs/RESULTS_ARTIFACTS.md) · [查看与复核方法](docs/验收使用指南.md) · [三阶段实际状态](docs/THREE_STAGE_STATUS.md) · [最终计划书](docs/最终版毕业设计计划书_最终版.docx)。结果页面和报告属于本地归档工件，保留历史失败、身份未知、缺失及未执行项；工程通过与正式重复研究完成分别判断。
 

@@ -25,10 +25,12 @@ try:
     from cv_bridge import CvBridge
     from nav_msgs.msg import Odometry
     from px4_msgs.msg import VehicleStatus, TrajectorySetpoint
+    from rclpy.executors import ExternalShutdownException, SingleThreadedExecutor
     from rclpy.node import Node
     from rclpy.duration import Duration
     from rclpy.time import Time
     from rclpy.qos import QoSProfile, ReliabilityPolicy, qos_profile_sensor_data
+    from rclpy.signals import SignalHandlerOptions
     from ros_gz_interfaces.srv import SetEntityPose
     from sensor_msgs.msg import Image
     from std_msgs.msg import String
@@ -39,6 +41,7 @@ except ImportError:  # Keep the evidence checks testable without a ROS install.
     Node = object
 
 from uav_tracking.control.gimbal_geometry import quaternion_rotation
+from uav_tracking.ros_lifecycle import shutdown_requests
 
 
 SETPOINT_COUNTER_KEYS = (
@@ -673,21 +676,33 @@ def main() -> int:
     args = parser.parse_args()
     if not math.isfinite(args.monitor_tick_s) or not .01 <= args.monitor_tick_s <= .10:
         parser.error("monitor tick must be finite and in [0.01,0.10] seconds")
-    rclpy.init()
-    node = FlightMonitor(args)
-    interrupted = False
-    try:
-        while rclpy.ok() and not node.finished():
-            rclpy.spin_once(node, timeout_sec=0.1)
-    except KeyboardInterrupt:
-        interrupted = True
-    finally:
+    with shutdown_requests() as requested:
+        rclpy.init(signal_handler_options=SignalHandlerOptions.NO)
+        node = None
+        executor = None
+        interrupted = False
         try:
-            summary = node.finish(interrupted=interrupted)
+            node = FlightMonitor(args)
+            executor = SingleThreadedExecutor(context=node.context)
+            executor.add_node(node)
+            while node.context.ok() and not requested.is_set() and not node.finished():
+                executor.spin_once(timeout_sec=0.1)
+            interrupted = requested.is_set()
+        except (KeyboardInterrupt, ExternalShutdownException):
+            interrupted = True
         finally:
-            node.destroy_node()
-            if rclpy.ok():
-                rclpy.shutdown()
+            try:
+                try:
+                    if executor is not None:
+                        executor.shutdown()
+                finally:
+                    if node is not None:
+                        try:
+                            summary = node.finish(interrupted=interrupted)
+                        finally:
+                            node.destroy_node()
+            finally:
+                rclpy.try_shutdown()
     return int(summary["monitor_exit_code"])
 
 
