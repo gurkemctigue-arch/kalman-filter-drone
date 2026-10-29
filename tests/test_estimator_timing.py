@@ -285,6 +285,62 @@ class EstimatorAdapterTimingTests(unittest.TestCase):
         self.assertEqual(self.messages[-1].state, FakeState.STATE_LOST)
         self.assertEqual(self.messages[-1].target_uuid, identity)
 
+    def test_late_empty_acquisition_between_timer_ticks_expires_at_receipt(self) -> None:
+        for mode in (TargetMode.AUTO_UNIQUE, TargetMode.LOCKED_TARGET):
+            with self.subTest(mode=mode):
+                self.setUp()
+                self.node._manager = manager(mode)
+                if mode == TargetMode.LOCKED_TARGET:
+                    self.node._manager.lock_detection(0, target_uuid="selected-car")
+                self.time = 50.5
+                self.node._commit_observations([observation(50.4)], observation(50.4))
+                identity = self.messages[-1].target_uuid
+                self.flush(51.144)  # Last timer still inside the 0.75 s limit.
+                self.assertEqual(self.messages[-1].state, FakeState.STATE_PREDICTED)
+                self.time = 51.160
+                late_source = observation(51.0)
+                self.assertTrue(self.node._commit_observations([], late_source))
+                self.assertEqual(self.messages[-1].state, FakeState.STATE_LOST)
+                self.assertFalse(self.messages[-1].target_visible)
+                self.assertEqual(self.node._manager.status, TargetStatus.LOST)
+                self.assertEqual(self.node._manager.target.last_measurement_timestamp, 50.4)
+                self.assertAlmostEqual(self.messages[-1].prediction_age_s, .760)
+                self.assertAlmostEqual(self.node._stamp_seconds(self.messages[-1].header.stamp), 51.160)
+                self.assertAlmostEqual(self.node._stamp_seconds(late_source.header.stamp), 51.0)
+                # A later return must not silently restart the expired task.
+                self.time = 51.3
+                self.node._commit_observations([observation(51.2)], observation(51.2))
+                self.assertEqual(self.messages[-1].state, FakeState.STATE_LOST)
+                self.assertEqual(self.messages[-1].target_uuid, identity)
+                self.node._manager.lock_detection(0, target_uuid="explicit-reselection")
+                self.time = 51.5
+                self.node._commit_observations([observation(51.4)], observation(51.4))
+                self.assertEqual(self.messages[-1].state, FakeState.STATE_MEASURED)
+                self.assertEqual(self.messages[-1].target_uuid, "explicit-reselection")
+
+    def test_late_good_measurement_cannot_hide_expired_gap_before_next_timer(self) -> None:
+        self.time = 50.5
+        self.node._commit_observations([observation(50.4)], observation(50.4))
+        self.flush(51.144)
+        self.time = 51.160
+        self.node._commit_observations([observation(51.0)], observation(51.0))
+        self.assertEqual(self.messages[-1].state, FakeState.STATE_LOST)
+        self.assertEqual(self.node._manager.target.last_measurement_timestamp, 50.4)
+        self.assertEqual(self.node._manager.target._filter.timestamp, 51.0)
+
+    def test_good_measurement_at_exact_receipt_expiry_boundary_keeps_acquisition_time(self) -> None:
+        self.time = 50.5
+        self.node._commit_observations([observation(50.4)], observation(50.4))
+        identity = self.messages[-1].target_uuid
+        self.time = 51.15  # Exactly 0.75 seconds since the previous measurement.
+        source = observation(51.0)
+        self.node._commit_observations([source], source)
+        self.assertEqual(self.messages[-1].state, FakeState.STATE_MEASURED)
+        self.assertEqual(self.messages[-1].target_uuid, identity)
+        self.assertEqual(self.node._manager.target.last_measurement_timestamp, 51.0)
+        self.assertEqual(self.node._manager.target._filter.timestamp, 51.0)
+        self.assertAlmostEqual(self.node._stamp_seconds(self.messages[-1].header.stamp), 51.0)
+
     def test_prediction_keeps_original_camera_header_and_full_covariance(self) -> None:
         source = self.deliver(0.0, 0.10)
         self.flush(0.13)

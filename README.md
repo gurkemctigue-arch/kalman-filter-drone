@@ -2,7 +2,7 @@
 
 **当前分支是 v4 开发检查点，三阶段功能已实现，最终验收与正式重复研究尚未完成。** 最新执行快照、来源和失败边界见[当前交接记录](planning/reliability-v4-current-state.md)，后续工作依[可靠性修复与交付方案](planning/reliability-v4-next-actions-20261030.md)推进。公开文档是带时间的快照；本机[进度入口](results/project_progress/current/index.html)读取受监任务的最新状态。
 
-Ubuntu 22.04/Humble25 已完成四包构建、模块/ament 与 FastCDR 来源核验、消息序列化和全套1390项检查（1385通过、5项精确平台跳过），两类clean20均完成。完整核心验证保留原始失败；新的[原生起飞交接等待候选](planning/reliability-v4-native-handoff-guard-20261030.md)仍须同源飞行验证。测试通过、程序执行完成和整次工程验收分别判断；下文 v3 报告与结果计数属于历史冻结版本。
+Ubuntu 22.04/Humble25 已完成四包构建、模块/ament 与 FastCDR 来源核验、消息序列化和全套1390项检查（1385通过、5项精确平台跳过），两类clean20均完成。核心12格全部执行，9 PASS、3 FAIL；六个行人格均PASS，汽车起飞交接、交叉跟踪和多目标主动云台FAIL。新的[原生起飞交接等待候选](planning/reliability-v4-native-handoff-guard-20261030.md)仍须同源飞行验证；[汽车局部框与缺测诊断](planning/reliability-v4-car-fragment-diagnosis-20261030.md)继续定位检测可靠性问题。测试通过、程序执行完成和整次工程验收分别判断；下文 v3 报告与结果计数属于历史冻结版本。
 
 核心 120 槽覆盖两类目标与六组工程条件；原计划距离、噪声、延迟、加减速等八个扩展条件另有 160 槽，共 280 槽，当前均未开始正式运行。范围和剩余工作见 [执行计划](planning/reliability-v4-remaining-execution.md)。
 

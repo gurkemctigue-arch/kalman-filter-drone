@@ -378,6 +378,10 @@ class StateEstimatorNode(Node):
                     metadata=metadata,
                 )
             )
+        # TF/geometry work can span the last output tick. Enforce elapsed
+        # loss before a delayed good measurement can refresh the old task's
+        # anchor; filtering still commits only the acquisition timestamp.
+        self._expire_elapsed_target()
         result = self._manager.update_with_result(detections, timestamp=timestamp)
         if getattr(self, "_navigation_enabled", False):
             self._update_navigation(result, observations, source, timestamp)
@@ -611,7 +615,28 @@ class StateEstimatorNode(Node):
                        fusion_accepted=update.accepted, fusion_reason=update.reason)
         self._navigation_last_diagnostics = details
 
+    def _expire_elapsed_target(self) -> tuple[Any, Any] | None:
+        """Latch actual elapsed loss without advancing image/filter time."""
+        target = self._manager.target
+        if target is None or target.last_measurement_timestamp is None:
+            return None
+        now = self.get_clock().now()
+        # Both anchors originate in integer ROS stamps. Comparing their
+        # nanoseconds avoids moving the exact boundary through float scaling.
+        measurement_ns = round(float(target.last_measurement_timestamp) * 1_000_000_000)
+        limit_ns = round(float(self.get_parameter("max_prediction_duration_s").value) * 1_000_000_000)
+        if now.nanoseconds - measurement_ns > limit_ns:
+            now_s = self._stamp_seconds(now.to_msg())
+            return self._manager.predict_with_result(now_s), now.to_msg()
+        return None
+
     def _publish(self, result: Any, source: TargetObservation, publish_stamp: Any | None = None) -> None:
+        # Acquisition callbacks also publish between output ticks. Expiry is
+        # checked at publication so navigation and track telemetry cannot
+        # advertise an active state already older than the unchanged limit.
+        expired = self._expire_elapsed_target()
+        if expired is not None:
+            result, publish_stamp = expired
         message = TargetState()
         # ROS messages are mutable Python objects. Never change the cached
         # image header when stamping a current-time prediction.

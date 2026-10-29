@@ -1,6 +1,6 @@
 # 三阶段实现与实际验收状态
 
-**当前开发目标为 v4（Ubuntu 22.04 / ROS 2 Humble），三阶段代码均已实现，最终验收尚未完成。** Humble25已通过四包构建、模块/ament与FastCDR来源核验、消息序列化及1390项检查（1385通过、5项精确平台跳过）。两类clean20均完成；完整核心开发批次的每槽终态与新增候选修复见[当前交接记录](../planning/reliability-v4-current-state.md)。不以测试计数或单项云台检查代替整次飞行验收；正式仍为0/280。
+**当前开发目标为 v4（Ubuntu 22.04 / ROS 2 Humble），三阶段代码均已实现，最终验收尚未完成。** Humble25已通过四包构建、模块/ament与FastCDR来源核验、消息序列化及1390项检查（1385通过、5项精确平台跳过）。两类clean20均完成；核心12格全部尝试，9 PASS、3 FAIL，运行与清理正常。六个行人格均PASS；汽车起飞交接、交叉跟踪和多目标主动云台FAIL。每槽终态与新增候选修复见[当前交接记录](../planning/reliability-v4-current-state.md)及[汽车检测失效诊断](../planning/reliability-v4-car-fragment-diagnosis-20261030.md)。不以测试计数或单项云台检查代替整次飞行验收；正式仍为0/280。
 
 后续按[可靠性修复与交付方案](../planning/reliability-v4-next-actions-20261030.md)推进同源核心、安全及扩展验证，再完成定标、容量准入、正式重复和统计交付。本机[进度入口](../results/project_progress/current/index.html)显示受监任务的最新状态。**下文全部计数和“已结束”描述属于历史 v3 / Jazzy 归档**，不代表 v4 / Humble 已通过；历史材料保留供复核。
 
