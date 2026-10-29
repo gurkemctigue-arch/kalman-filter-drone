@@ -26,5 +26,13 @@ string camera_frame
 float32[] navigation_points_camera_m
 geometry_msgs/Vector3 navigation_bottom_ray_camera
 # Inside image bounds and no overlap with another confident detection (any class).
-# False forbids footprint geometry; surface identity tracking remains separate.
+# Strict baseline. False needs complete directed visibility evidence downstream;
+# missing / uncertain evidence still forbids geometry. Surface tracking is separate.
 bool navigation_bbox_complete
+# Original 2-pixel image-border condition, independent of box intersections.
+bool navigation_bbox_inside_image
+# All positive-area intersections with confident detections of any class.
+uint32 navigation_overlap_count
+# Additional same-stamp support outside every OTHER visible detection box.
+# Used only for visibility models; never replaces the original navigation cloud.
+float32[] navigation_visibility_support_camera_m

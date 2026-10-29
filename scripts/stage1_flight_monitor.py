@@ -1,8 +1,8 @@
 """Record a real visual PX4 trial; never publish target observations/commands.
 
 The optional collisionless shutter is a test stimulus in front of the vehicle
-camera, positioned using vehicle odometry (fixed camera) or feedback-driven
-optical TF (stage-three gimbal). Target ground truth is not
+camera, positioned and refreshed using measured optical TF in every stage.
+Target ground truth is not
 subscribed to here. Offline evaluation may consume the recorded truth later.
 With --reselect-after-loss, a separately logged, explicit selection message
 uses one recent detector box to start a new task after the long-loss test.
@@ -173,11 +173,8 @@ class FlightMonitor(Node):
              "render_margin_s": SHUTTER_RENDER_MARGIN_S, "state": "waiting"},
         ]
         self.shutter_last_pose_update_s = -math.inf
-        self.shutter_tf_buffer = None
-        self.shutter_tf_listener = None
-        if args.world == "stage3_flight":
-            self.shutter_tf_buffer = Buffer(cache_time=Duration(seconds=5.0))
-            self.shutter_tf_listener = TransformListener(self.shutter_tf_buffer, self)
+        self.shutter_tf_buffer = Buffer(cache_time=Duration(seconds=5.0))
+        self.shutter_tf_listener = TransformListener(self.shutter_tf_buffer, self)
         self.armed_seen = False
         self.offboard_seen = False
         self.reselection_uuid = None
@@ -405,33 +402,24 @@ class FlightMonitor(Node):
         self.collect_shutter_response()
         if self.shutter_future is not None:
             return None
-        dynamic_camera = getattr(getattr(self, "args", None), "world", "stage1_flight") == "stage3_flight"
-        refresh = bool(dynamic_camera and active and self.shutter_requested)
+        # Even a fixed mount moves with the aircraft. A world-fixed plane can
+        # be left behind during the dwell despite a successful close ACK.
+        refresh = bool(active and self.shutter_requested)
         if refresh and self.now_s() - self.shutter_last_pose_update_s < 0.20:
             return
-        if (active == self.shutter_requested and not refresh and not cleanup) or (active and not dynamic_camera and self.odom is None):
+        if active == self.shutter_requested and not refresh and not cleanup:
             return
         if not self.shutter_client.service_is_ready():
             return
         if active:
-            if dynamic_camera:
-                try:
-                    transform = self.shutter_tf_buffer.lookup_transform("map", "camera_link", Time(), timeout=Duration(seconds=0.0))
-                    position, orientation, tf_source_s = shutter_pose_from_camera_transform(transform, self.now_s())
-                    x, y, z = position
-                    pose_source = "measured_camera_tf"
-                except (TransformException, ValueError, TypeError) as exc:
-                    self.event("shutter_pose_unavailable", active=active, refresh=refresh, reason=str(exc))
-                    return
-            else:
-                p, q = self.odom.pose.pose.position, self.odom.pose.pose.orientation
-                # Fixed-camera legacy stimulus, unchanged for stage one/two.
-                v = np.array([0.90, 0.0, 0.0])
-                qv = np.array([q.x, q.y, q.z])
-                rotated = v + 2.0 * np.cross(qv, np.cross(qv, v) + q.w * v)
-                x, y, z = np.array([p.x, p.y, p.z]) + rotated
-                orientation = [q.x, q.y, q.z, q.w]
-                pose_source, tf_source_s = "vehicle_odometry_fixed_camera", None
+            try:
+                transform = self.shutter_tf_buffer.lookup_transform("map", "camera_link", Time(), timeout=Duration(seconds=0.0))
+                position, orientation, tf_source_s = shutter_pose_from_camera_transform(transform, self.now_s())
+                x, y, z = position
+                pose_source = "measured_camera_tf"
+            except (TransformException, ValueError, TypeError) as exc:
+                self.event("shutter_pose_unavailable", active=active, refresh=refresh, reason=str(exc))
+                return
         else:
             x, y, z = 0.0, 0.0, -50.0
             orientation = [0.0, 0.0, 0.0, 1.0]
@@ -498,7 +486,7 @@ class FlightMonitor(Node):
                 state = "holding"
             if state == "holding":
                 if now_s + 1e-9 < episode["open_not_before_s"]:
-                    self.set_shutter(True)  # retain measured-TF refresh on the moving gimbal
+                    self.set_shutter(True)  # retain measured-TF refresh as the camera moves
                     return
                 request_id = self.set_shutter(False)
                 if request_id is not None:

@@ -98,8 +98,12 @@ class ShutterTimingTests(unittest.TestCase):
         self.responses[0].ready = True
         self.tick(23.1)
         self.assertAlmostEqual(self.node.occlusion_schedule[0]["open_not_before_s"], 23.35)
+        self.assertTrue(self.node.shutter_pending["refresh"])
+        self.responses[1].ready = True
         self.tick(23.349)
-        self.assertEqual(len(self.requests), 1)
+        self.assertEqual([row["active"] for row in self.edges()], [True])
+        self.assertTrue(self.node.shutter_pending["refresh"])
+        self.responses[2].ready = True
         self.tick(23.35)
         self.assertEqual([row["active"] for row in self.edges()], [True, False])
         self.assertAlmostEqual(self.edges()[1]["time_s"] - 23.1, 0.25)
@@ -160,9 +164,12 @@ class ShutterTimingTests(unittest.TestCase):
         self.responses[2].ready = True
         self.tick(35.3)
         self.tick(38.349)
-        self.assertEqual(len(self.requests), 3)
+        self.assertEqual([row["active"] for row in self.edges()], [True, False, True])
+        self.assertTrue(self.node.shutter_pending["refresh"])
+        self.responses[3].ready = True
         self.tick(38.35)
-        self.assertEqual(len(self.requests), 4)
+        self.assertEqual(len(self.requests), 5)
+        self.assertEqual([row["active"] for row in self.edges()], [True, False, True, False])
 
     def test_failed_open_ack_does_not_complete_successfully(self):
         self.tick(22.0)

@@ -114,6 +114,13 @@ class SetpointEvidenceTests(unittest.TestCase):
 
 
 class ShutterCorrelationTests(unittest.TestCase):
+    def setUp(self):
+        for name, value in (("Time", lambda: NS()), ("Duration", lambda **kwargs: NS()),
+                            ("TransformException", RuntimeError)):
+            patcher = patch.object(monitor, name, value, create=True)
+            patcher.start()
+            self.addCleanup(patcher.stop)
+
     def make_node(self, future):
         node = monitor.FlightMonitor.__new__(monitor.FlightMonitor)
         node.shutter_future, node.shutter_pending = None, None
@@ -124,6 +131,15 @@ class ShutterCorrelationTests(unittest.TestCase):
         node.event = lambda kind, **fields: node.events.append({"time_s": node.now_s(), "kind": kind, **fields})
         node.odom = NS(pose=NS(pose=NS(position=NS(x=0., y=0., z=3.), orientation=NS(x=0., y=0., z=0., w=1.))))
         node.shutter_client = NS(service_is_ready=lambda: True, call_async=lambda request: future)
+        node.shutter_last_pose_update_s = -math.inf
+        def measured_camera_tf(*args, **kwargs):
+            stamp_ns = round(node.clock_s * 1e9)
+            return NS(header=NS(stamp=NS(sec=stamp_ns // 1_000_000_000,
+                                        nanosec=stamp_ns % 1_000_000_000), frame_id="map"),
+                      child_frame_id="camera_link",
+                      transform=NS(translation=NS(x=0., y=0., z=3.),
+                                   rotation=NS(x=0., y=0., z=0., w=1.)))
+        node.shutter_tf_buffer = NS(lookup_transform=measured_camera_tf)
         return node
 
     @staticmethod
@@ -138,13 +154,21 @@ class ShutterCorrelationTests(unittest.TestCase):
             node.clock_s = 10.3
             node.set_shutter(True)
             node.set_shutter(False)
-        request, response, opened = node.events
+        request, response, refresh, refresh_response, opened = node.events
+        self.assertEqual([row["kind"] for row in node.events],
+                         ["shutter", "shutter_service_result", "shutter_pose_update",
+                          "shutter_pose_update_result", "shutter"])
         self.assertEqual(request["request_id"], response["request_id"])
         self.assertTrue(response["active"])
         self.assertEqual(response["request_time_s"], 10.)
         self.assertEqual(response["time_s"], 10.3)
         self.assertTrue(response["success"])
-        self.assertEqual(opened["request_id"], 2)
+        self.assertEqual(refresh["request_id"], refresh_response["request_id"])
+        self.assertNotEqual(request["request_id"], refresh["request_id"])
+        self.assertEqual(refresh_response["request_time_s"], 10.3)
+        self.assertEqual(refresh_response["time_s"], 10.3)
+        self.assertTrue(refresh_response["success"])
+        self.assertEqual(opened["request_id"], 3)
         self.assertFalse(opened["active"])
 
     def test_failed_future_records_failed_response_for_the_exact_action(self):

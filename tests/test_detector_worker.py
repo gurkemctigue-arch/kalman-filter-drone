@@ -28,6 +28,73 @@ def image(stamp_s):
                         frame_id="camera_link"), width=4, height=4)
 
 
+class NavigationOverlapEvidenceTests(unittest.TestCase):
+    def evidence(self, boxes, depth):
+        return detector.navigation_overlap_evidence(
+            boxes, depth, CameraIntrinsics(100., 100., 50., 50.),
+            depth_scale=1., min_depth_m=.2, max_depth_m=50.)
+
+    def test_subpixel_overlap_keeps_all_touched_cells_and_original_depth(self):
+        boxes = [(4, .9, 2, (10., 10., 20.01, 30.)),
+                 (9, .8, 2, (20., 15.2, 40., 25.2))]
+        depth = np.full((100, 100), 5., np.float32)
+        depth[15:26, 20] = np.arange(11) + 5
+        pair, = self.evidence(boxes, depth)
+        self.assertEqual((pair["u0"], pair["v0"], pair["width"], pair["height"]), (20, 15, 1, 11))
+        self.assertEqual((pair["expected_pixel_count"], pair["valid_pixel_count"]), (11, 11))
+        self.assertTrue(pair["depth_complete"])
+        np.testing.assert_allclose(np.array(pair["points_camera_m"]).reshape(-1, 3)[:, 2], np.arange(11) + 5)
+        self.assertEqual((pair["candidate_a_id"], pair["candidate_b_id"]), (4, 9))
+
+    def test_one_invalid_pixel_never_becomes_complete_by_filtering(self):
+        boxes = [(0, .9, 2, (10., 10., 25., 30.)),
+                 (1, .9, 2, (20., 20., 40., 40.))]
+        for invalid in (np.nan, np.inf, 0., .1, 51.):
+            with self.subTest(invalid=invalid):
+                depth = np.full((100, 100), 5., np.float32)
+                depth[22, 22] = invalid
+                pair, = self.evidence(boxes, depth)
+                self.assertEqual(pair["expected_pixel_count"], 50)
+                self.assertEqual(pair["valid_pixel_count"], 49)
+                self.assertEqual(len(pair["points_camera_m"]), 49*3)
+                self.assertFalse(pair["depth_complete"])
+
+    def test_over_budget_and_outside_image_keep_unknown_unclipped_extent(self):
+        for boxes, expected in (
+            ([(0, .9, 2, (0., 0., 90., 90.)), (1, .9, 0, (5., 5., 95., 95.))], 85*85),
+            ([(0, .9, 2, (-5., 10., 25., 30.)), (1, .9, 0, (-3., 20., 40., 40.))], 28*10),
+        ):
+            with self.subTest(boxes=boxes):
+                pair, = self.evidence(boxes, np.full((100, 100), 5., np.float32))
+                self.assertEqual(pair["expected_pixel_count"], expected)
+                self.assertEqual(pair["valid_pixel_count"], 0)
+                self.assertEqual(pair["points_camera_m"], [])
+                self.assertFalse(pair["depth_complete"])
+        self.assertEqual(pair["u0"], -3)
+
+    def test_all_classes_and_nested_pairs_retained_without_visibility_decision(self):
+        boxes = [(2, .9, 2, (10., 10., 30., 30.)),
+                 (5, .9, 0, (15., 15., 25., 25.)),
+                 (7, .9, 3, (25., 25., 45., 45.))]
+        pairs = self.evidence(boxes, np.full((100, 100), 5., np.float32))
+        self.assertEqual([(pair["candidate_a_id"], pair["candidate_b_id"]) for pair in pairs], [(2, 5), (2, 7)])
+        self.assertEqual([(pair["class_a_id"], pair["class_b_id"]) for pair in pairs], [(2, 0), (2, 3)])
+
+    def test_unrepresentable_rectangle_stays_explicit_unknown_without_ros_integer_overflow(self):
+        for box_a, box_b in (
+            ((-3e9, 0., 10., 10.), (-3e9, 0., 20., 10.)),
+            ((0., 0., 1e6, 1e6), (0., 0., 1e6, 1e6)),
+        ):
+            with self.subTest(box_a=box_a):
+                boxes = [(0, .9, 2, box_a), (1, .9, 2, box_b)]
+                pair, = self.evidence(boxes, np.full((100, 100), 5., np.float32))
+                self.assertFalse(pair["rectangle_representable"])
+                self.assertFalse(pair["depth_complete"])
+                self.assertEqual([pair[key] for key in ("u0", "v0", "width", "height", "expected_pixel_count", "valid_pixel_count")], [0]*6)
+                self.assertEqual(pair["points_camera_m"], [])
+                self.assertEqual(pair["bbox_a_px"], list(box_a))
+
+
 class WorkerTests(unittest.TestCase):
     def test_busy_submissions_are_dropped_without_a_backlog(self):
         entered, release = Event(), Event()
@@ -364,7 +431,8 @@ class DetectorSchedulingTests(unittest.TestCase):
                 factory = lambda: NS(position_camera_m=NS(), navigation_bottom_ray_camera=NS())
                 with patch.object(detector, "String", lambda: NS(data=""), create=True), \
                         patch.object(detector, "TargetObservation", factory, create=True), \
-                        patch.object(detector, "TargetObservationArray", NS, create=True):
+                        patch.object(detector, "TargetObservationArray", NS, create=True), \
+                        patch.object(detector, "NavigationOverlap", NS, create=True):
                     rgb, depth = image(1), image(1)
                     rgb.width = rgb.height = depth.width = depth.height = 100
                     node._on_rgb(rgb); node._on_depth(depth); node._process_latest()
@@ -373,7 +441,22 @@ class DetectorSchedulingTests(unittest.TestCase):
                 selected = observations[0]
                 self.assertTrue(selected.depth_valid, "surface identity observation is still published")
                 self.assertEqual(selected.navigation_bbox_complete, not overlapping)
-                self.assertEqual(bool(selected.navigation_points_camera_m), not overlapping)
+                self.assertTrue(selected.navigation_bbox_inside_image)
+                self.assertEqual(selected.navigation_overlap_count, int(overlapping))
+                self.assertTrue(selected.navigation_points_camera_m, "full original cloud survives a strict overlap veto")
+                self.assertEqual(bool(selected.navigation_visibility_support_camera_m), overlapping)
+                if overlapping:
+                    pair, = frames[0].navigation_overlaps
+                    self.assertTrue(pair.depth_complete)
+                    self.assertEqual(pair.expected_pixel_count, pair.valid_pixel_count)
+                    self.assertEqual(len(pair.points_camera_m), pair.expected_pixel_count * 3)
+                    self.assertEqual((pair.class_a_id, pair.class_b_id), (0, other_class))
+                    exclusive = np.array(selected.navigation_visibility_support_camera_m).reshape(-1, 3)
+                    eu, ev = 100*exclusive[:, 0]/exclusive[:, 2]+50, 100*exclusive[:, 1]/exclusive[:, 2]+50
+                    ox1, oy1, ox2, oy2 = other_box
+                    self.assertFalse(np.any((eu >= ox1) & (eu < ox2) & (ev >= oy1) & (ev < oy2)))
+                else:
+                    self.assertEqual(frames[0].navigation_overlaps, [])
                 points = np.array(frames[0].navigation_ground_points_camera_m).reshape(-1, 3)
                 u, v = 100*points[:, 0]/points[:, 2]+50, 100*points[:, 1]/points[:, 2]+50
                 x1, y1, x2, y2 = other_box

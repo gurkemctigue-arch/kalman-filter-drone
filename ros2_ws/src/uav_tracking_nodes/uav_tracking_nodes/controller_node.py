@@ -54,6 +54,16 @@ def fresh_gimbal_yaw(reference: object, now_ns: int, frame: str, timeout_s: floa
     return value
 
 
+def _max_acceleration_for_mode(node: object, mode: str) -> np.ndarray:
+    """Keep old common limits unless position mode explicitly overrides them."""
+
+    common = list(node.get_parameter("max_acceleration_mps2").value)
+    node.declare_parameter("max_position_acceleration_mps2", common)
+    selected = (node.get_parameter("max_position_acceleration_mps2").value
+                if mode == "position" else common)
+    return np.asarray(selected, dtype=float)
+
+
 class ControllerNode(Node):
     def __init__(self) -> None:
         super().__init__("uav_tracking_controller")
@@ -91,7 +101,7 @@ class ControllerNode(Node):
                 position_gain=np.asarray(self.get_parameter("position_gain").value, dtype=float),
                 integral_gain=np.asarray(self.get_parameter("integral_gain").value, dtype=float),
                 integral_limit=float(self.get_parameter("integral_limit").value),
-                max_acceleration=np.asarray(self.get_parameter("max_acceleration_mps2").value, dtype=float),
+                max_acceleration=_max_acceleration_for_mode(self, mode),
                 slew_position=bool(self.get_parameter("slew_position").value),
                 max_position_lead=np.asarray(self.get_parameter("max_position_lead_m").value, dtype=float),
                 deadzone=float(self.get_parameter("deadzone_m").value),

@@ -32,6 +32,9 @@ from uav_tracking.core import Detection, TargetManager, TargetMode, TargetStatus
 from uav_tracking.core.models import TrackState
 from uav_tracking.core.uncertainty import pose_point_covariance
 from uav_tracking.core.navigation import NavigationEstimate, NavigationPrior, fit_ground_plane, estimate_footprint_from_points
+from uav_tracking.core.visibility import (
+    MAX_OVERLAP_PIXELS, assess_overlap_visibility, fit_unique_visibility_model, nested_boxes,
+)
 from uav_tracking.control.gimbal_geometry import quaternion_rotation
 from .stage2_telemetry import track_snapshot
 
@@ -380,6 +383,104 @@ class StateEstimatorNode(Node):
             self._update_navigation(result, observations, source, timestamp)
         self._publish(result, source)
 
+    def _navigation_visibility(self, observation: Any, observations: list[Any], source: Any,
+                               timestamp: float, plane: Any, matrix: Any) -> tuple[bool, dict[str, Any]]:
+        """Read accepted matches once; uncertainty never changes task identity."""
+        if getattr(observation, "navigation_bbox_complete", False):
+            return True, {"reason": "original_strict_bbox_complete"}
+        evidence: dict[str, Any] = {"reason": "incomplete_or_occluded_detection_box", "pairs": []}
+        if (getattr(observation, "class_name", None) != "car"
+                or not getattr(observation, "navigation_bbox_inside_image", False)):
+            return False, evidence
+        selected_id = int(observation.candidate_id)
+        count = getattr(observation, "navigation_overlap_count", 0)
+        pairs = [pair for pair in getattr(source, "navigation_overlaps", [])
+                 if selected_id in (int(pair.candidate_a_id), int(pair.candidate_b_id))]
+        if not isinstance(count, int) or count <= 0 or len(pairs) != count:
+            return False, {**evidence, "reason": "visibility_missing_overlap_metadata"}
+        accepted: dict[int, list[Any]] = defaultdict(list)
+        for track in self._manager.tracks:
+            if (track._matched_this_frame and track.last_measurement_timestamp == timestamp
+                    and track.last_detection is not None and track.position_3d is not None):
+                candidate = track.last_detection.metadata.get("candidate_id")
+                if candidate is not None:
+                    accepted[int(candidate)].append(track)
+        by_id: dict[int, list[Any]] = defaultdict(list)
+        for item in observations:
+            by_id[int(item.candidate_id)].append(item)
+        model_cache = {}
+        rotation, camera = matrix[:3, :3], matrix[:3, 3]
+
+        def original_box(item):
+            return [getattr(item, field) for field in
+                    ("bbox_x_min_px", "bbox_y_min_px", "bbox_x_max_px", "bbox_y_max_px")]
+
+        def model(candidate):
+            if candidate not in model_cache:
+                item = by_id[candidate][0]
+                support = np.asarray(getattr(item, "navigation_visibility_support_camera_m", []), dtype=float)
+                if support.size < 36 or support.size % 3:
+                    raise ValueError("visibility_exclusive_support_missing")
+                world = support.reshape(-1, 3) @ rotation.T + camera
+                model_cache[candidate] = fit_unique_visibility_model(
+                    world, ground_plane=plane, camera_position_world=camera,
+                    camera_forward_world=rotation[:, 2], prior=self._navigation_prior)
+            return model_cache[candidate]
+
+        seen = set()
+        for pair in pairs:
+            a, b = int(pair.candidate_a_id), int(pair.candidate_b_id)
+            key = tuple(sorted((a, b)))
+            if a == b or key in seen:
+                return False, {**evidence, "reason": "visibility_duplicate_overlap_pair"}
+            seen.add(key)
+            other_id = b if a == selected_id else a
+            if (len(by_id[selected_id]) != 1 or len(by_id[other_id]) != 1
+                    or len(accepted[selected_id]) != 1 or len(accepted[other_id]) != 1
+                    or accepted[selected_id][0].track_id == accepted[other_id][0].track_id):
+                return False, {**evidence, "reason": "visibility_pair_not_uniquely_accepted"}
+            other = by_id[other_id][0]
+            if (other.class_name != "car" or not getattr(other, "navigation_bbox_inside_image", False)
+                    or self._stamp_key(other.header.stamp) != self._stamp_key(source.header.stamp)
+                    or (other.camera_frame or other.header.frame_id) != source.header.frame_id
+                    or int(pair.class_a_id) != int(by_id[a][0].class_id)
+                    or int(pair.class_b_id) != int(by_id[b][0].class_id)):
+                return False, {**evidence, "reason": "visibility_cross_class_or_edge"}
+            box_a, box_b = original_box(by_id[a][0]), original_box(by_id[b][0])
+            if (not np.array_equal(np.asarray(pair.bbox_a_px), np.asarray(box_a))
+                    or not np.array_equal(np.asarray(pair.bbox_b_px), np.asarray(box_b))
+                    or nested_boxes(box_a, box_b)):
+                return False, {**evidence, "reason": "visibility_nested_or_bbox_mismatch"}
+            expected = int(pair.width) * int(pair.height)
+            if (not getattr(pair, "rectangle_representable", True) or not bool(pair.depth_complete)
+                    or expected != int(pair.expected_pixel_count)
+                    or not 0 < expected <= MAX_OVERLAP_PIXELS or int(pair.valid_pixel_count) != expected):
+                return False, {**evidence, "reason": "visibility_overlap_depth_incomplete"}
+            # Validate outward-rounded intersection metadata independently of
+            # detector flags; no unknown pair may disappear from the denominator.
+            lower = np.maximum(np.asarray(box_a[:2]), np.asarray(box_b[:2]))
+            upper = np.minimum(np.asarray(box_a[2:]), np.asarray(box_b[2:]))
+            start, end = np.floor(lower).astype(int), np.ceil(upper).astype(int)
+            if (np.any(upper <= lower) or (pair.u0, pair.v0, pair.width, pair.height)
+                    != (int(start[0]), int(start[1]), int(end[0]-start[0]), int(end[1]-start[1]))):
+                return False, {**evidence, "reason": "visibility_overlap_rectangle_mismatch"}
+            raw = np.asarray(pair.points_camera_m, dtype=float)
+            if (raw.size != 3 * expected or not np.isfinite(raw).all()
+                    or np.any(raw.reshape(-1, 3)[:, 2] <= 0)):
+                return False, {**evidence, "reason": "visibility_overlap_point_count_mismatch"}
+            selected_model, other_model = model(selected_id), model(other_id)
+            verdict = assess_overlap_visibility(
+                selected_model, other_model, raw.reshape(-1, 3) @ rotation.T + camera,
+                expected_pixels=expected, valid_pixels=int(pair.valid_pixel_count), ground_plane=plane)
+            evidence["pairs"].append({"other_candidate_id": other_id, **verdict,
+                                      "selected_model": selected_model.diagnostics,
+                                      "selected_model_reason": selected_model.reason,
+                                      "other_model": other_model.diagnostics,
+                                      "other_model_reason": other_model.reason})
+            if not verdict["allowed"]:
+                return False, {**evidence, "reason": verdict["reason"]}
+        return True, {**evidence, "reason": "directed_front_visible"}
+
     def _navigation_reference(self, result: Any, observations: list[Any], source: Any, timestamp: float) -> tuple[Any, dict[str, Any]]:
         """Use only the accepted selected candidate; preserve surface identity."""
         target = result.target
@@ -421,8 +522,6 @@ class StateEstimatorNode(Node):
                     reference = NavigationEstimate(reason="mixed_navigation_camera_frames")
                 elif key != self._navigation_transform_key or matrix is None:
                     reference = NavigationEstimate(reason="missing_same_stamp_camera_transform")
-                elif not getattr(observation, "navigation_bbox_complete", False):
-                    reference = NavigationEstimate(reason="incomplete_or_occluded_detection_box")
                 elif ground.size < 120 or ground.size % 3 or points.size < 36 or points.size % 3:
                     reference = NavigationEstimate(reason="insufficient_same_stamp_depth_support")
                 else:
@@ -436,6 +535,11 @@ class StateEstimatorNode(Node):
                                    ground_inliers=plane.inlier_count, ground_samples=plane.sample_count,
                                    ground_residual_std_m=plane.residual_std_m)
                     if plane.valid:
+                        allowed, visibility = self._navigation_visibility(
+                            observation, observations, source, timestamp, plane, matrix)
+                        details["visibility"] = visibility
+                        if not allowed:
+                            return NavigationEstimate(reason=visibility["reason"]), details
                         ray = observation.navigation_bottom_ray_camera
                         reference = estimate_footprint_from_points(
                             object_world, ground_plane=plane, camera_position_world=camera,
@@ -485,7 +589,7 @@ class StateEstimatorNode(Node):
         track_id = int(target.track_id) if target is not None else 0
         try:
             reference, details = self._navigation_reference(result, observations, source, timestamp)
-        except (TypeError, ValueError, OverflowError, np.linalg.LinAlgError) as error:
+        except (AttributeError, TypeError, ValueError, OverflowError, np.linalg.LinAlgError) as error:
             # Malformed optional geometry must stop following, not terminate
             # the RGB-D identity estimator or Offboard heartbeat chain.
             reference = NavigationEstimate(reason="invalid_navigation_geometry:" + str(error))

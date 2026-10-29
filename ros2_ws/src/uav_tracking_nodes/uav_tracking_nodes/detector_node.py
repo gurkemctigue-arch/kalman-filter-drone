@@ -31,16 +31,63 @@ try:  # ROS imports are intentionally kept inside the adapter package.
     from rclpy.signals import SignalHandlerOptions
     from sensor_msgs.msg import CameraInfo, Image
     from std_msgs.msg import String
-    from uav_tracking_interfaces.msg import TargetObservation, TargetObservationArray
+    from uav_tracking_interfaces.msg import NavigationOverlap, TargetObservation, TargetObservationArray
 except ImportError:  # pragma: no cover - exercised only without ROS 2.
     rclpy = None
     Node = object  # type: ignore[misc,assignment]
     get_package_share_directory = None  # type: ignore[assignment]
 
 from uav_tracking.ros_lifecycle import shutdown_requests
-from uav_tracking.core import CameraIntrinsics, bbox_iou, depth_roi_stats, pinhole_backproject
+from uav_tracking.core import CameraIntrinsics, depth_roi_stats, pinhole_backproject
 from uav_tracking.core.navigation import sample_depth_points
 from uav_tracking_nodes.inference_worker import NonQueuingWorker
+
+
+def navigation_overlap_evidence(visible_boxes, depth, intrinsics, *, depth_scale,
+                                min_depth_m, max_depth_m):
+    """Collect every touched intersection pixel; do not decide visibility.
+
+    The 4096-cell cap bounds per-pair transport/work. Out-of-image, over-budget
+    or partially invalid evidence stays incomplete, never a smaller valid ROI.
+    Pure dictionaries also allow the exact acquisition rule in recorded checks.
+    """
+
+    height, width = depth.shape
+    pairs = []
+    for index, (candidate_a, _, class_a, box_a) in enumerate(visible_boxes):
+        for candidate_b, _, class_b, box_b in visible_boxes[index + 1:]:
+            low_u, low_v = max(box_a[0], box_b[0]), max(box_a[1], box_b[1])
+            high_u, high_v = min(box_a[2], box_b[2]), min(box_a[3], box_b[3])
+            if low_u >= high_u or low_v >= high_v:
+                continue
+            left, top = math.floor(low_u), math.floor(low_v)
+            right, bottom = math.ceil(high_u), math.ceil(high_v)
+            expected = (right - left) * (bottom - top)
+            representable = (-2**31 <= left < 2**31 and -2**31 <= top < 2**31
+                             and 0 < right-left < 2**32 and 0 < bottom-top < 2**32
+                             and 0 < expected < 2**32)
+            pair = dict(candidate_a_id=candidate_a, candidate_b_id=candidate_b,
+                        class_a_id=class_a, class_b_id=class_b,
+                        bbox_a_px=list(box_a), bbox_b_px=list(box_b),
+                        u0=left if representable else 0, v0=top if representable else 0,
+                        width=right-left if representable else 0, height=bottom-top if representable else 0,
+                        expected_pixel_count=expected if representable else 0, valid_pixel_count=0,
+                        rectangle_representable=representable,
+                        depth_complete=False, points_camera_m=[])
+            if (representable and 0 <= left < right <= width and 0 <= top < bottom <= height
+                    and 0 < expected <= 4096):
+                u, v = np.meshgrid(np.arange(left, right), np.arange(top, bottom))
+                z = depth[top:bottom, left:right].astype(float) * float(depth_scale)
+                valid = np.isfinite(z) & (z > 0) & (z >= min_depth_m) & (z <= max_depth_m)
+                pair["valid_pixel_count"] = int(valid.sum())
+                valid_z = z[valid]
+                points = np.column_stack(((u[valid]-intrinsics.cx)*valid_z/intrinsics.fx,
+                                          (v[valid]-intrinsics.cy)*valid_z/intrinsics.fy,
+                                          valid_z))
+                pair["points_camera_m"] = points.reshape(-1).astype(float).tolist()
+                pair["depth_complete"] = pair["valid_pixel_count"] == expected
+            pairs.append(pair)
+    return pairs
 
 
 @dataclass(frozen=True)
@@ -346,9 +393,17 @@ class DetectorNode(Node):
             if score < threshold:
                 continue
             bounds = tuple(float(value) for value in box.xyxy[0].tolist())
-            if len(bounds) != 4 or not all(math.isfinite(value) for value in bounds) or bounds[2] <= bounds[0] or bounds[3] <= bounds[1]:
+            if (len(bounds) != 4 or not all(math.isfinite(value) and abs(value) <= np.finfo(np.float32).max for value in bounds)
+                    or bounds[2] <= bounds[0] or bounds[3] <= bounds[1]):
                 continue
             visible_boxes.append((candidate_id, score, detected_class, bounds))
+        overlaps = []
+        if getattr(self, "_navigation_enabled", False):
+            overlaps = navigation_overlap_evidence(
+                visible_boxes, depth, snapshot.intrinsics,
+                depth_scale=float(parameters["depth_scale"]),
+                min_depth_m=float(parameters["min_depth_m"]),
+                max_depth_m=float(parameters["max_depth_m"]))
         detections, observations = [], []
         for candidate_id, score, detected_class, (x1, y1, x2, y2) in visible_boxes:
             if detected_class != class_id:
@@ -388,31 +443,44 @@ class DetectorNode(Node):
                 observation.position_camera_m.y = float(point[1])
                 observation.position_camera_m.z = float(point[2])
             if getattr(self, "_navigation_enabled", False):
-                overlap = any(other_id != candidate_id and bbox_iou((x1, y1, x2, y2), other_box) > 0
-                              for other_id, _, _, other_box in visible_boxes)
-                observation.navigation_bbox_complete = bool(
-                    x1 > 2 and y1 > 2 and x2 < message.width - 2 and y2 < message.height - 2 and not overlap)
-                # A partial long side can resemble a complete end face.
-                # Known overlap cannot be repaired by removing its pixels or
-                # choosing the nearer depth cluster of an unknown individual.
+                touching = [pair for pair in overlaps
+                            if candidate_id in (pair["candidate_a_id"], pair["candidate_b_id"])]
+                inside = x1 > 2 and y1 > 2 and x2 < message.width - 2 and y2 < message.height - 2
+                observation.navigation_bbox_inside_image = bool(inside)
+                observation.navigation_overlap_count = len(touching)
+                observation.navigation_bbox_complete = bool(inside and not touching)
+                # Keep the original full support even for overlapping boxes.
+                # Extra exclusive points only support a downstream depth-order
+                # model; that model never substitutes this for the full cloud.
                 points = sample_depth_points(
                     depth, snapshot.intrinsics, (x1, y1, x2, y2), stride=2,
                     depth_scale=float(parameters["depth_scale"]), max_points=500,
                     min_depth_m=float(parameters["min_depth_m"]), max_depth_m=float(parameters["max_depth_m"]),
-                ) if observation.navigation_bbox_complete else np.empty((0, 3))
+                ) if inside else np.empty((0, 3))
                 observation.navigation_points_camera_m = points.reshape(-1).astype(float).tolist()
+                exclusive = sample_depth_points(
+                    depth, snapshot.intrinsics, (x1, y1, x2, y2),
+                    exclude_bboxes=[other_box for other_id, _, _, other_box in visible_boxes if other_id != candidate_id],
+                    stride=2, depth_scale=float(parameters["depth_scale"]), max_points=500,
+                    min_depth_m=float(parameters["min_depth_m"]), max_depth_m=float(parameters["max_depth_m"]),
+                ) if inside and touching else np.empty((0, 3))
+                observation.navigation_visibility_support_camera_m = exclusive.reshape(-1).astype(float).tolist()
                 ray = pinhole_backproject(((x1 + x2) / 2, y2), 1.0, snapshot.intrinsics)
                 observation.navigation_bottom_ray_camera.x = float(ray[0])
                 observation.navigation_bottom_ray_camera.y = float(ray[1])
                 observation.navigation_bottom_ray_camera.z = float(ray[2])
             observations.append(observation)
             detections.append({
+                "candidate_id": int(candidate_id),
+                "class_id": detected_class,
                 "confidence": score,
                 "bbox": [x1, y1, x2, y2],
                 "depth_valid": bool(observation.depth_valid),
                 "depth_m": float(observation.depth_m),
                 "depth_valid_ratio": float(stats.valid_fraction),
                 "navigation_bbox_complete": bool(getattr(observation, "navigation_bbox_complete", False)),
+                "navigation_bbox_inside_image": bool(getattr(observation, "navigation_bbox_inside_image", False)),
+                "navigation_overlap_count": int(getattr(observation, "navigation_overlap_count", 0)),
             })
         ground_points = np.empty((0, 3))
         if getattr(self, "_navigation_enabled", False):
@@ -439,6 +507,12 @@ class DetectorNode(Node):
                     frame.observations = observations
                     if getattr(self, "_navigation_enabled", False):
                         frame.navigation_ground_points_camera_m = ground_points.reshape(-1).astype(float).tolist()
+                        frame.navigation_overlaps = []
+                        for payload in overlaps:
+                            pair_message = NavigationOverlap()
+                            for name, value in payload.items():
+                                setattr(pair_message, name, value)
+                            frame.navigation_overlaps.append(pair_message)
                     frame_publisher.publish(frame)
                 for observation in observations:
                     self._publisher.publish(observation)
@@ -463,6 +537,8 @@ class DetectorNode(Node):
                 "image_size": [int(message.width), int(message.height)],
                 "navigation_enabled": bool(getattr(self, "_navigation_enabled", False)),
                 "navigation_ground_sample_count": len(ground_points),
+                "navigation_overlap_pair_count": len(overlaps),
+                "navigation_incomplete_overlap_pair_count": sum(not pair["depth_complete"] for pair in overlaps),
                 "detections": detections,
             })
             self._diagnostics_pub.publish(diagnostics)

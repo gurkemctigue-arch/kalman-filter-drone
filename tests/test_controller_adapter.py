@@ -30,6 +30,34 @@ def vector(x=0.0, y=0.0, z=0.0) -> SimpleNamespace:
     return SimpleNamespace(x=x, y=y, z=z)
 
 
+def acceleration_parameters(common, position=None) -> SimpleNamespace:
+    parameters = {"max_acceleration_mps2": list(common)}
+    if position is not None:
+        parameters["max_position_acceleration_mps2"] = list(position)
+    return SimpleNamespace(
+        get_parameter=lambda key: SimpleNamespace(value=parameters[key]),
+        declare_parameter=lambda key, default: parameters.setdefault(key, list(default)),
+    )
+
+
+class ControllerAccelerationParameterTests(unittest.TestCase):
+    def test_legacy_custom_common_limit_is_inherited_in_both_modes(self) -> None:
+        common = [1.2, 0.8, 0.4]
+        for mode in ("velocity", "position"):
+            with self.subTest(mode=mode):
+                parameters = acceleration_parameters(common)
+                actual = controller._max_acceleration_for_mode(parameters, mode)
+                np.testing.assert_allclose(actual, common)
+                self.assertEqual(parameters.get_parameter("max_position_acceleration_mps2").value, common)
+
+    def test_position_override_leaves_velocity_limit_unchanged(self) -> None:
+        common, position = [0.7, 0.7, 0.5], [3.0, 3.0, 3.0]
+        for mode, expected in (("velocity", common), ("position", position)):
+            with self.subTest(mode=mode):
+                parameters = acceleration_parameters(common, position)
+                np.testing.assert_allclose(controller._max_acceleration_for_mode(parameters, mode), expected)
+
+
 class FakeTargetState:
     STATE_MEASURED, STATE_PREDICTED = 1, 2
     STATE_AMBIGUOUS = 4
@@ -177,6 +205,26 @@ class ControllerMessageBoundaryTests(unittest.TestCase):
         self.assertEqual(vars(self.commands[-1].linear_mps), dict(x=0.0, y=0.0, z=0.0))
         self.assertEqual(self.statuses[-1].lifecycle, FakeStatus.LIFECYCLE_HOVER)
         self.assertEqual(self.statuses[-1].reason, "target_ambiguous")
+
+    def test_mode_acceleration_choice_preserves_exclusive_command_fields(self) -> None:
+        for mode, expected_mode in (("velocity", FakeCommand.MODE_VELOCITY),
+                                    ("position", FakeCommand.MODE_POSITION)):
+            with self.subTest(mode=mode):
+                parameters = acceleration_parameters([0.7, 0.7, 0.5], [3.0, 3.0, 3.0])
+                self.node._controller = FollowController(config=FollowConfig(
+                    mode=mode, slew_position=True, desired_distance=5.0, desired_height=2.0,
+                    max_acceleration=controller._max_acceleration_for_mode(parameters, mode),
+                    target_timeout=0.75, vehicle_timeout=0.5))
+                self.node._step()
+                command = self.commands[-1]
+                self.assertTrue(command.valid)
+                self.assertEqual(command.mode, expected_mode)
+                if mode == "velocity":
+                    self.assertAlmostEqual(command.linear_mps.x, 0.7 * 0.05)
+                    self.assertEqual(vars(command.position_m), dict(x=0.0, y=0.0, z=0.0))
+                else:
+                    self.assertAlmostEqual(command.position_m.x, 3.0 * 0.05 ** 2)
+                    self.assertEqual(vars(command.linear_mps), dict(x=0.0, y=0.0, z=0.0))
 
 
 if __name__ == "__main__":

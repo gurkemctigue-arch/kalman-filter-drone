@@ -10,7 +10,9 @@ It never creates target observations or reads simulator ground truth.
 from __future__ import annotations
 
 import copy
+import json
 import math
+from numbers import Integral, Real
 import time
 from typing import Any
 
@@ -156,6 +158,11 @@ class FlightSupervisor(Node):
         self._attempts = 0
         self._ever_armed = False
         self._native_local = self._estimator_flags = None
+        self._odom_received_source_s: float | None = None
+        self._native_local_received_source_s: float | None = None
+        self._native_local_received_wall_s: float | None = None
+        self._native_goal_anchor: dict[str, Any] | None = None
+        self._native_settle_diagnostic: dict[str, Any] | None = None
         self._native_settle_started_s: float | None = None
         self._native_started_source_s = self._native_started_wall_s = None
         self._native_finished_source_s = self._native_finished_wall_s = None
@@ -204,6 +211,7 @@ class FlightSupervisor(Node):
         except ValueError:
             return
         self._odom, self._odom_received = message, time.monotonic()
+        self._odom_received_source_s = self.get_clock().now().nanoseconds * 1e-9
 
     def _on_status(self, message: Any) -> None:
         if getattr(self, "_status_timestamp_mode", "receipt_wall") == "source_sim":
@@ -252,14 +260,114 @@ class FlightSupervisor(Node):
 
     def _on_native_local(self, message: Any) -> None:
         self._native_local = message
+        self._native_local_received_source_s = self.get_clock().now().nanoseconds * 1e-9
+        self._native_local_received_wall_s = time.monotonic()
 
     def _on_estimator_flags(self, message: Any) -> None:
         self._estimator_flags = message
 
-    def _native_readiness_issues(self, *, inflight: bool = False) -> list[str]:
+    def _native_readiness_issues(self, *, inflight: bool = False,
+                                 source_s: float | None = None) -> list[str]:
         return readiness_issues(self._native_local, self._estimator_flags,
-                                self.get_clock().now().nanoseconds * 1e-9,
+                                self.get_clock().now().nanoseconds * 1e-9 if source_s is None else source_s,
                                 require_inflight_alignment=inflight)
+
+    @staticmethod
+    def _native_finite(value: Any) -> float | None:
+        if isinstance(value, Real) and not isinstance(value, bool) and math.isfinite(float(value)):
+            return float(value)
+        return None
+
+    @staticmethod
+    def _native_source_us(value: Any) -> int | None:
+        return int(value) if isinstance(value, Integral) and not isinstance(value, bool) and 0 < value < 2**64 else None
+
+    @staticmethod
+    def _native_odom_stamp_ns(odometry: Any) -> int | None:
+        stamp = getattr(getattr(odometry, "header", None), "stamp", None)
+        sec, nsec = getattr(stamp, "sec", None), getattr(stamp, "nanosec", None)
+        if any(not isinstance(value, Integral) or isinstance(value, bool) for value in (sec, nsec)):
+            return None
+        if sec < 0 or not 0 <= nsec < 1_000_000_000:
+            return None
+        value = int(sec) * 1_000_000_000 + int(nsec)
+        return value if value > 0 else None
+
+    def _native_settle_issues(self, *, source_s: float, wall_s: float,
+                              require_physical_settle: bool = True) -> list[str]:
+        """Check both actual callback caches against one ENU goal; no GT.
+
+        A callback-cache observation does not establish rosbag delivery order.
+        All unknown diagnostic values stay null; nothing is inferred from an
+        old report. Readiness thresholds and the one-second budget are unchanged.
+        The completed native goal's distance/speed limits apply to the settle
+        interval and each mode request, not to pending or confirmed Offboard.
+        All source, EKF and finite-state checks remain active during handoff.
+        """
+        issues = list(self._native_readiness_issues(inflight=True, source_s=source_s))
+        local, odom = self._native_local, self._odom
+        raw_goal = self._goal
+        goal = [self._native_finite(value) for value in raw_goal] if raw_goal is not None else None
+        if goal is None or len(goal) != 3 or any(value is None for value in goal):
+            issues.append("native_goal_invalid")
+            goal = None
+
+        def physical(position, velocity, prefix):
+            position = [self._native_finite(value) for value in position]
+            velocity = [self._native_finite(value) for value in velocity]
+            error = speed = None
+            if any(value is None for value in (*position, *velocity)):
+                issues.append(prefix + "_physical_state_invalid")
+            else:
+                if goal is not None:
+                    error = math.dist(position, goal)
+                    if not math.isfinite(error):
+                        error = None
+                        issues.append(prefix + "_position_error_invalid")
+                    elif require_physical_settle and error > self._number("takeoff_position_tolerance_m"):
+                        issues.append(prefix + "_position_not_settled")
+                speed = math.hypot(*velocity)
+                if not math.isfinite(speed):
+                    speed = None
+                    issues.append(prefix + "_speed_invalid")
+                elif require_physical_settle and speed > self._number("native_settle_speed_mps"):
+                    issues.append(prefix + "_speed_not_settled")
+            return {"position_enu_m": position, "position_error_m": error, "speed_mps": speed}
+
+        lp = [getattr(local, field, None) for field in ("y", "x", "z")]
+        lp[2] = -lp[2] if self._native_finite(lp[2]) is not None else None
+        local_check = physical(lp, [getattr(local, field, None) for field in ("vx", "vy", "vz")], "native_local")
+        pose = getattr(getattr(odom, "pose", None), "pose", None)
+        position = getattr(pose, "position", None)
+        velocity = getattr(getattr(getattr(odom, "twist", None), "twist", None), "linear", None)
+        odom_check = physical([getattr(position, field, None) for field in ("x", "y", "z")],
+                              [getattr(velocity, field, None) for field in ("x", "y", "z")], "native_adapted")
+        odom_stamp_ns = self._native_odom_stamp_ns(odom)
+        if odom_stamp_ns is None:
+            issues.append("native_adapted_source_stamp_invalid")
+        else:
+            age_s = source_s - odom_stamp_ns * 1e-9
+            # Same source freshness bounds as the unchanged independent audit.
+            if age_s > .50 + 1e-9:
+                issues.append("native_adapted_source_stale")
+            elif age_s < -.05 - 1e-9:
+                issues.append("native_adapted_source_future")
+        local_check.update(timestamp_sample_us=self._native_source_us(getattr(local, "timestamp_sample", None)),
+                           timestamp_us=self._native_source_us(getattr(local, "timestamp", None)),
+                           callback_ros_s=getattr(self, "_native_local_received_source_s", None),
+                           callback_wall_s=getattr(self, "_native_local_received_wall_s", None))
+        odom_check.update(header_stamp_ns=odom_stamp_ns,
+                          callback_ros_s=getattr(self, "_odom_received_source_s", None),
+                          callback_wall_s=getattr(self, "_odom_received", None))
+        self._native_settle_diagnostic = {
+            "scope": "ONLINE_CALLBACK_CACHE_ONLY_NOT_RECORDER_CAUSAL_REPLAY",
+            "check_ros_s": source_s, "check_wall_s": wall_s,
+            "goal_enu_m": goal, "ground_anchor": getattr(self, "_native_goal_anchor", None),
+            "local": local_check, "adapted": odom_check,
+            "physical_settle_required": require_physical_settle,
+            "issues": issues, "checks_ready": not issues,
+        }
+        return issues
 
     def _native_budget_failure(self, source_s: float, wall_s: float, *, check_source: bool = True) -> str | None:
         source_start = self._native_started_source_s
@@ -290,8 +398,17 @@ class FlightSupervisor(Node):
                          f"native_started_wall_s={self._native_started_wall_s:.9f}; "
                          f"native_elapsed_source_s={end_source-self._native_started_source_s:.9f}; "
                          f"native_elapsed_wall_s={end_wall-self._native_started_wall_s:.9f}; ")
+        diagnostic = ""
+        if (getattr(self, "_native_takeoff", False)
+                and self._phase in ("REQUEST_NATIVE_TAKEOFF", "NATIVE_TAKEOFF", "REQUEST_OFFBOARD", "ABORTED")):
+            value = getattr(self, "_native_settle_diagnostic", None)
+            if value is None:
+                value = {"scope": "ACTUAL_ONLINE_ANCHOR_NO_SETTLE_CHECK_YET",
+                         "goal_enu_m": [self._native_finite(v) for v in self._goal] if self._goal is not None else None,
+                         "ground_anchor": getattr(self, "_native_goal_anchor", None)}
+            diagnostic = "native_diag=" + json.dumps(value, separators=(",", ":"), allow_nan=False) + "; "
         state = String()
-        state.data = f"{self._phase}: {self._reason}; {evidence}source_sim_s={source_s:.9f}"
+        state.data = f"{self._phase}: {self._reason}; {evidence}{diagnostic}source_sim_s={source_s:.9f}"
         self._phase_pub.publish(state)
 
     def _native_wall_watchdog(self) -> None:
@@ -465,6 +582,14 @@ class FlightSupervisor(Node):
                             return
                         x, y, z = self._position()
                         self._goal = (x, y, z + self._number("takeoff_height_m"))
+                        if getattr(self, "_native_takeoff", False):
+                            self._native_goal_anchor = {
+                                "position_enu_m": [x, y, z],
+                                "odom_header_stamp_ns": self._native_odom_stamp_ns(self._odom),
+                                "odom_callback_ros_s": getattr(self, "_odom_received_source_s", None),
+                                "odom_callback_wall_s": self._odom_received,
+                                "captured_ros_s": self.get_clock().now().nanoseconds * 1e-9,
+                            }
                         self._request_started = now
                         self._change_phase("REQUEST_NATIVE_TAKEOFF" if getattr(self, "_native_takeoff", False)
                                            else "REQUEST_OFFBOARD", "heartbeat prestream complete")
@@ -505,15 +630,10 @@ class FlightSupervisor(Node):
                 self._native_finished_wall_s = now
                 self._abort(native_budget_failure, now)
             else:
-                position = self._position()
-                error = math.sqrt(sum((a - b) ** 2 for a, b in zip(position, self._goal)))
-                velocity = self._odom.twist.twist.linear
-                speed = math.sqrt(sum(float(value) ** 2 for value in (velocity.x, velocity.y, velocity.z)))
-                ready = (self._status.nav_state == VehicleStatus.NAVIGATION_STATE_AUTO_LOITER
-                         and not self._native_readiness_issues(inflight=True)
-                         and error <= self._number("takeoff_position_tolerance_m")
-                         and math.isfinite(speed) and speed <= self._number("native_settle_speed_mps"))
                 now_s = self.get_clock().now().nanoseconds * 1e-9
+                settle_issues = self._native_settle_issues(source_s=now_s, wall_s=now)
+                ready = (self._status.nav_state == VehicleStatus.NAVIGATION_STATE_AUTO_LOITER
+                         and not settle_issues)
                 if ready:
                     if self._native_settle_started_s is None:
                         self._native_settle_started_s = now_s
@@ -528,8 +648,10 @@ class FlightSupervisor(Node):
         elif self._phase == "REQUEST_OFFBOARD":
             if not fresh or self._status.failsafe:
                 self._abort("activation guard: " + ", ".join(self._state_guard_issues(now, False)), now)
-            elif getattr(self, "_native_takeoff", False) and self._native_readiness_issues(inflight=True):
-                self._abort("native final alignment/readiness lost during Offboard handoff", now)
+            elif getattr(self, "_native_takeoff", False) and self._native_settle_issues(
+                    source_s=self.get_clock().now().nanoseconds * 1e-9, wall_s=now,
+                    require_physical_settle=False):
+                self._abort("native final alignment/readiness/state validity lost during Offboard handoff", now)
             elif self._armed_offboard():
                 self._ever_armed = True
                 self._takeoff_started = now
@@ -540,7 +662,17 @@ class FlightSupervisor(Node):
                     self._abort("activation attempts exhausted; inspect VehicleCommandAck", now)
                 elif not bool(self._status.pre_flight_checks_pass):
                     self._abort("PX4 preflight checks stopped passing", now)
+                elif (getattr(self, "_native_takeoff", False)
+                      and (self._status.arming_state != VehicleStatus.ARMING_STATE_ARMED
+                           or self._status.nav_state != VehicleStatus.NAVIGATION_STATE_AUTO_LOITER)):
+                    self._abort("native Offboard mode request requires armed AUTO_LOITER", now)
+                elif getattr(self, "_native_takeoff", False) and self._native_settle_issues(
+                        source_s=self.get_clock().now().nanoseconds * 1e-9, wall_s=now):
+                    self._abort("native physical settle lost before Offboard mode request", now)
                 else:
+                    # Recheck the original dual-source limits before every
+                    # actual mode request. Waiting for a response or observing
+                    # armed Offboard is already beyond that native settle gate.
                     if self._status.nav_state != VehicleStatus.NAVIGATION_STATE_OFFBOARD:
                         self._request(VehicleCommand.VEHICLE_CMD_DO_SET_MODE, 1.0, 6.0)
                     else:

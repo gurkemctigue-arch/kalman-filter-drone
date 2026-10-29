@@ -449,6 +449,11 @@ def _car_reference(points: np.ndarray, plane: GroundPlane, camera: np.ndarray, p
                                "visible_face_height_spans_m":[face["height_span"] for face in summaries],
                                "length_prior_m":prior.length_m, "width_prior_m":prior.width_m,
                                "motion_heading_source":motion_source, "motion_geometry_alignment_cosine":agreement,
+                               "visible_face_normals_world":[face["normal"].tolist() for face in summaries],
+                               "visible_face_points_world":[face["point"].tolist() for face in summaries],
+                               "visible_face_sigma_m":[face["sigma"] for face in summaries],
+                               "body_length_axis_world":length_axis.tolist(),
+                               "body_lateral_axis_world":np.cross(n, length_axis).tolist(),
                                "observability":"upright supported end/side face(s), unique dimension assignment; dimensions are declared priors"})
 
 

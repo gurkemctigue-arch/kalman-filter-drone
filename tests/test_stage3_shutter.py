@@ -1,4 +1,4 @@
-"""Gimbal occlusion stimulus follows measured optical TF, not body heading."""
+"""Every flight-stage occlusion stimulus follows measured optical TF."""
 
 from __future__ import annotations
 
@@ -118,6 +118,44 @@ class ShutterServiceTests(unittest.TestCase):
         self.assertEqual(self.requests, [])
         self.assertEqual(self.node.shutter_events, [])
         self.assertEqual(self.events[-1]["kind"], "shutter_pose_unavailable")
+
+    def test_fixed_mount_worlds_refresh_with_moving_camera_without_body_fallback(self):
+        for index, world in enumerate(("stage1_flight", "stage2_flight")):
+            with self.subTest(world=world):
+                self.node.args.world = world
+                self.node.odom = None
+                self.time = 10.0 + 5 * index
+                def moving_transform(*args, **kwargs):
+                    measured = transform(self.time)
+                    measured.transform.translation.x = self.time
+                    return measured
+                self.node.shutter_tf_buffer.lookup_transform = moving_transform
+                first = len(self.requests)
+                self.node.set_shutter(True)
+                self.time += .1
+                self.node.set_shutter(True)
+                self.assertEqual(len(self.requests), first + 1)
+                self.time += .2
+                self.node.set_shutter(True)
+                self.assertEqual(len(self.requests), first + 2)
+                self.assertAlmostEqual(self.requests[-1].pose.position.x - self.requests[-2].pose.position.x, .3)
+                self.assertEqual(self.events[-1]["pose_source"], "measured_camera_tf")
+                self.assertTrue(self.events[-1]["refresh"])
+                self.node.set_shutter(False)
+                self.node.set_shutter(False)
+                self.assertEqual(self.requests[-1].pose.position.z, -50.)
+
+    def test_fixed_mount_with_stale_tf_cannot_fall_back_to_fresh_vehicle_odometry(self):
+        self.node.odom = NS(pose=NS(pose=NS(position=NS(x=0., y=0., z=3.),
+                                           orientation=NS(x=0., y=0., z=0., w=1.))))
+        self.node.shutter_tf_buffer.lookup_transform = lambda *args, **kwargs: transform(9.0)
+        for world in ("stage1_flight", "stage2_flight"):
+            with self.subTest(world=world):
+                self.node.args.world = world
+                self.node.set_shutter(True)
+                self.assertEqual(self.requests, [])
+                self.assertFalse(self.node.shutter_requested)
+                self.assertEqual(self.events[-1]["kind"], "shutter_pose_unavailable")
 
 
 if __name__ == "__main__":

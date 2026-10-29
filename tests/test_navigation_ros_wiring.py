@@ -45,6 +45,88 @@ class NavigationWiringTests(unittest.TestCase):
         self.result = self.node._manager.update_with_result([
             Detection((10, 10, 100, 100), "car", .95, 1., (10, 0, 1), metadata={"candidate_id": 7})], timestamp=1.)
 
+    def directed_frame(self, selected_index=0):
+        """Two originally accepted candidates and measured face/ground input."""
+        self.node._manager = TargetManager(min_hits=1)
+        self.node._manager.lock_detection(selected_index, target_uuid="explicit_task")
+        matrix = np.eye(4)
+        matrix[:3, :3] = [[0., 0., 1.], [-1., 0., 0.], [0., -1., 0.]]
+        matrix[:3, 3] = [0., 0., 3.]
+        self.node._navigation_transform = matrix
+        rotation, camera = matrix[:3, :3], matrix[:3, 3]
+
+        def optical(points):
+            return ((points-camera) @ rotation).ravel().tolist()
+
+        x, y = np.meshgrid(np.linspace(6., 25., 30), np.linspace(-3., 3., 20))
+        ground = np.column_stack((x.ravel(), y.ravel(), np.zeros(x.size)))
+        observations, detections = [], []
+        for candidate, depth, box in ((7, 8., [10., 10., 100., 100.]),
+                                      (8, 18., [99.5, 99.5, 180., 180.])):
+            y, z = np.meshgrid(np.linspace(-.9, .9, 24), np.linspace(.15, 1.35, 16))
+            face = np.column_stack((np.full(y.size, depth), y.ravel(), z.ravel()))
+            item = NS(candidate_id=candidate, camera_frame="camera", header=header(),
+                      class_name="car", class_id=2, confidence=.95, depth_valid_ratio=.9, depth_std_m=.03,
+                      bbox_x_min_px=box[0], bbox_y_min_px=box[1], bbox_x_max_px=box[2], bbox_y_max_px=box[3],
+                      navigation_bbox_complete=False, navigation_bbox_inside_image=True,
+                      navigation_overlap_count=1, navigation_visibility_support_camera_m=optical(face),
+                      navigation_points_camera_m=optical(face), navigation_bottom_ray_camera=NS(x=0., y=.2, z=1.))
+            observations.append(item)
+            detections.append(Detection(box, "car", .95, 1., (depth, 0., .75), metadata={"candidate_id": candidate}))
+        pair = NS(candidate_a_id=7, candidate_b_id=8, class_a_id=2, class_b_id=2,
+                  bbox_a_px=[10., 10., 100., 100.], bbox_b_px=[99.5, 99.5, 180., 180.],
+                  u0=99, v0=99, width=1, height=1, expected_pixel_count=1, valid_pixel_count=1,
+                  depth_complete=True, points_camera_m=optical(np.array([[8., 0., .8]])))
+        source = NS(header=header(), navigation_ground_points_camera_m=optical(ground), navigation_overlaps=[pair])
+        result = self.node._manager.update_with_result(detections, timestamp=1.)
+        return result, observations, source, pair
+
+    def test_directional_visibility_allows_selected_front_without_switching_task(self):
+        result, observations, source, _pair = self.directed_frame()
+        original_track = result.target.track_id
+        with patch.object(self.node._manager, "update_with_result", side_effect=AssertionError("no second association")):
+            self.node._update_navigation(result, observations, source, 1.)
+        diagnostic = self.node._navigation_last_diagnostics
+        self.assertTrue(diagnostic["fusion_accepted"], diagnostic)
+        self.assertEqual(diagnostic["visibility"]["reason"], "directed_front_visible")
+        self.assertEqual(self.node._manager.target_uuid, "explicit_task")
+        self.assertEqual(self.node._manager.target_track_id, original_track)
+        self.assertFalse(observations[0].navigation_bbox_complete, "strict baseline flag must remain false")
+
+    def test_selected_back_stays_selected_and_is_denied_navigation(self):
+        result, observations, source, _pair = self.directed_frame(selected_index=1)
+        original_track = result.target.track_id
+        self.node._update_navigation(result, observations, source, 1.)
+        diagnostic = self.node._navigation_last_diagnostics
+        self.assertFalse(diagnostic["fusion_accepted"])
+        self.assertEqual(diagnostic["visibility"]["reason"], "depth_order_uncertain_or_behind")
+        self.assertEqual(self.node._manager.target_uuid, "explicit_task")
+        self.assertEqual(self.node._manager.target_track_id, original_track)
+
+    def test_directional_visibility_retains_uncertain_pair_vetoes(self):
+        for defect in ("hole", "cross_class", "missing_pair", "wrong_frame", "no_other_match", "nested"):
+            with self.subTest(defect=defect):
+                self.setUp()
+                result, observations, source, pair = self.directed_frame()
+                if defect == "hole":
+                    pair.depth_complete, pair.valid_pixel_count = False, 0
+                elif defect == "cross_class":
+                    observations[1].class_name = "person"
+                elif defect == "missing_pair":
+                    source.navigation_overlaps = []
+                elif defect == "wrong_frame":
+                    observations[1].camera_frame = "another_camera"
+                elif defect == "no_other_match":
+                    next(track for track in self.node._manager.tracks
+                         if track.last_detection.metadata["candidate_id"] == 8)._matched_this_frame = False
+                else:
+                    observations[1].bbox_x_min_px, observations[1].bbox_y_min_px = 20., 20.
+                    observations[1].bbox_x_max_px, observations[1].bbox_y_max_px = 80., 80.
+                    pair.bbox_b_px = [20., 20., 80., 80.]
+                self.node._update_navigation(result, observations, source, 1.)
+                self.assertFalse(self.node._navigation_last_diagnostics["fusion_accepted"])
+                self.assertEqual(self.node._manager.target_uuid, "explicit_task")
+
     def test_accepted_surface_candidate_yields_independent_ground_center(self):
         self.node._update_navigation(self.result, [self.observation], self.source, 1.)
         diagnostic = self.node._navigation_last_diagnostics
