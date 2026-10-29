@@ -13,6 +13,7 @@ import hashlib
 import html
 import json
 from pathlib import Path
+import re
 import shutil
 import subprocess
 from urllib.parse import quote
@@ -50,6 +51,21 @@ def relative_url(path: Path, directory: Path) -> str:
     return quote(Path(os.path.relpath(path, directory)).as_posix(), safe="/")
 
 
+def passthrough_arguments(executable: str) -> list[str]:
+    """Select advertised timestamp passthrough support, including FFmpeg 4.4."""
+    result = subprocess.run(
+        [executable, "-hide_banner", "-h", "full"],
+        capture_output=True, text=True, encoding="utf-8", errors="replace",
+        check=True, timeout=30,
+    )
+    help_text = result.stdout + "\n" + result.stderr
+    if re.search(r"(?m)^\s*-fps_mode(?:\s|$)", help_text):
+        return ["-fps_mode", "passthrough"]
+    if re.search(r"(?m)^\s*-vsync(?:\s|$)", help_text):
+        return ["-vsync", "0"]
+    raise RuntimeError("FFmpeg does not advertise -fps_mode or -vsync timestamp passthrough")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--trial", type=Path, action="append", required=True,
@@ -79,12 +95,14 @@ def main() -> None:
         parser.error("Delivery output must be outside original trial directories")
     version = subprocess.run([ffmpeg, "-version"], capture_output=True,
                              text=True, check=True).stdout.splitlines()[0]
+    timing_arguments = passthrough_arguments(ffmpeg)
     output.mkdir(parents=True)
     manifest = {
         "schema_version": 1,
         "created_utc": datetime.now(timezone.utc).isoformat(),
         "tool_sha256": digest(Path(__file__)),
         "ffmpeg": version,
+        "frame_sync_arguments": timing_arguments,
         "selection": "Explicit operator-selected illustrations; never a success-rate sample",
         "time_semantics": "Original recorded frame rate and source overlays; no trimming, interpolation or respeeding",
         "trials": [],
@@ -111,7 +129,7 @@ def main() -> None:
         save_manifest()
         command = [ffmpeg, "-nostdin", "-n", "-v", "error", "-i", str(source),
                    "-map", "0:v:0", "-an", "-c:v", "libx264", "-threads", "2",
-                   "-preset", "medium", "-crf", "20", "-pix_fmt", "yuv420p", "-fps_mode", "passthrough",
+                   "-preset", "medium", "-crf", "20", "-pix_fmt", "yuv420p", *timing_arguments,
                    "-movflags", "+faststart", str(destination)]
         record["argv"] = command
         try:

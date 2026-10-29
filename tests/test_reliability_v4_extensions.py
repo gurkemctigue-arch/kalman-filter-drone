@@ -114,11 +114,16 @@ class ExtensionTests(unittest.TestCase):
 
     def test_each_condition_changes_only_declared_flight_options(self):
         with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp); extension_fixture(root)
+            root = Path(tmp); extension = extension_fixture(root)
+            historical_duration = {**extension, "duration_s": 45.}
+            with self.assertRaisesRegex(ValueError, "duration_s"):
+                v4.validate_extension_protocol(historical_duration, v4.load(root / v4.PROTOCOL_PATH))
             result = make(root, seeds=[4])
             for trial in result["trials"]:
                 command = trial["flight_command"]
                 option = lambda name: command[command.index(name) + 1]
+                self.assertEqual(trial["duration_s"], 75.)
+                self.assertEqual(float(option("--duration")), 75.)
                 self.assertEqual(option("--condition"), trial["condition"])
                 self.assertEqual(option("--motion-profile-kind"), trial["motion_profile_kind"])
                 self.assertEqual(float(option("--desired-distance-m")), trial["desired_distance_m"])

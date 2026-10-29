@@ -1,5 +1,11 @@
 # 当前工作交接（持续开发，非验收报告）
 
+历史执行快照（2026-10-29 19:55:39 UTC / 北京时间 2026-10-30 03:55:39；本段不是实时状态）：Humble23 已按核心与扩展统一 75 s FOLLOW 冻结。四个 ROS 软件包真实构建通过；Linux 全套 1335 项检查中 1333 项通过、2 项按原条件跳过，冻结源前后 SHA 不变，运行验收尚未得出结论。五项导航数值门已 REGISTERED（距离 RMSE ≤1.0 m、高度 RMSE ≤0.40 m、有效导航覆盖 ≥0.80、真值覆盖 ≥0.99、指定个体物理身份覆盖 ≥0.80），同时保留末尾 3 s 稳定要求与原安全门；身份覆盖门仅适用于 stage2_crossing 和 stage3_multi_active。数值登记不等于正式协议封存：整体状态仍为 DRAFT_NOT_FROZEN_NOT_EXECUTED，正式仍为 0/280。
+
+该快照时，seed004 的 12 格核心开发批次由唯一串行 driver 与 Windows progress observer 执行，已记录首槽 person_stage1_velocity_seed004 的 START_SLOT；未记录任何槽的完成结论。12 核心及 16 扩展的完整 75 s readiness、四项歧义安全实测、四法定标、正式前容量准入、正式 120+160 次与统计交付仍须依真实结果推进，不以开始运行代替通过。证据：results/frozen_fullplan_v4_humble23/freeze_validation/build_validation_summary.json 及 reliability_v4_humble23_probe_seed004_matrix 下的 plan.json、serial_driver/events.jsonl 和 slots 小标记。
+
+以下为较早记录，按原文保留；其中“最新”“当前”“进行中”或“无仿真运行”等描述仅对应各自记录时点，不代表上方快照之后的实时状态。
+
 2026-10-30 复核（覆盖下方所有“进行中”描述）：Humble21 核心批次已于北京时间 10 月 29 日 20:14 因第七槽状态接收超时停止，当前无仿真运行。6 个行人槽为 1 FAIL、5 EVALUATION_PENDING；汽车速度槽为 INFRASTRUCTURE_ERROR，其余5槽未执行。待验收原因为导航数值门尚未 REGISTERED，不能计 PASS。汽车无遮挡基础短测也仍有22/219个导航状态失效、距离与高度稳定时间均右删失；行人 base_link 基础短测持续稳定，但不能外推到全任务。浏览器副本转换已因 FFmpeg 4.4 参数不兼容失败，没有新预览副本。4安全、16扩展及正式280槽尚未开始。完整逐项证据与边界见[2026-10-30可靠性复核](../docs/V4_RELIABILITY_REVIEW_20261030.md)。本次仅核对已有小工件并更正状态记录，没有新飞行或统计。
 
 2026-10-29 最新 Humble21 实测：526 个源文件 canonical SHA `5eb1787a7cd2791b976edef6db0d40159907e7eabd6ecc5ff09384e96a94cff8`。四包构建、九模块/四 ament 来源、十一项真实消息序列化与系统 FastCDR 核验通过；Linux 全套 1302 项、72.578 s，`OK (skipped=2)`，源码前后不变。两类 20 秒请求的 clean 飞行均完成：行人/汽车的录包、源钟、原生起飞、录制闭合及基础设施检查通过；全区间距离/高度 RMSE 分别为 0.35419/0.24922 m、0.72507/0.29271 m。原20交接中止和19测试错误完整保留。canonical12 已生成并开始唯一串行运行，首槽 person velocity 进行中；这两条 clean 不能代替三阶段验收。4安全、16扩展与正式 280 项尚未开始，正式仍 0/280。本地静态预览为 `results/frozen_fullplan_v4_humble21/development_live_snapshot01/index.html`，只展示实际两条开发录制、评价与未完成清单；浏览器 H.264 副本安排在当前 core 批次之后。以下为保留的较早记录，当前状态以本段为准。

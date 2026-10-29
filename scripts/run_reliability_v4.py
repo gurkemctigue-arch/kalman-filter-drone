@@ -189,7 +189,7 @@ def source_hashes(root):
 
 def validate_protocol(protocol):
     exact = {"classes": list(CLASSES), "groups": list(GROUPS), "seeds": list(FORMAL_SEEDS),
-             "formal_trial_count": 120, "duration_s": 45., "short_occlusion_s": .2,
+             "formal_trial_count": 120, "duration_s": 75., "short_occlusion_s": .2,
              "long_occlusion_s": 3., "real_time_factor": .5, "max_inference_rate_hz": 10.,
              "gazebo_render_driver":"llvmpipe",
              "monitor_tick_s": .02, "control_reference": "ground_footprint", "desired_height_m": 2.,
@@ -247,12 +247,12 @@ def trial_spec(root, protocol, prefix, cls, group, seed, wall_timeout):
             "takeoff_mode": "px4_native",
             "gazebo_render_driver": protocol["gazebo_render_driver"],
             "gimbal_mode": "active" if group in {"stage3_active", "stage3_multi_active"} else "midpoint",
-            "scenario_kind": "crossing" if multi else "parallel", "duration_s": 45.,
+            "scenario_kind": "crossing" if multi else "parallel", "duration_s": 75.,
             "speed_mps": random.Random(seed).uniform(.45, .55), "wall_timeout_s": wall_timeout,
             **deepcopy(setting)}
     command = wrapper_command(root, "run_stage1_trial.py", "--name", spec["name"], "--class", cls,
         "--stage", stage, "--seed", seed, "--speed-mps", repr(spec["speed_mps"]),
-        "--duration", "45.0", "--condition", "clean", "--estimator-method", "adaptive_kf",
+        "--duration", "75.0", "--condition", "clean", "--estimator-method", "adaptive_kf",
         "--command-mode", spec["command_mode"], "--target-mode", spec["target_mode"],
         "--association-mode", spec["association_mode"], "--initial-select", spec["initial_select"],
         "--initial-min-candidates", spec["initial_min_candidates"], "--gimbal-mode", spec["gimbal_mode"],
@@ -311,7 +311,7 @@ def validate_extension_protocol(extension, protocol, *, formal=False):
     expected = {"schema_version": 1, "study_kind": "POST_REPAIR_PAIRED_CONDITION_EXTENSIONS",
                 "classes": list(CLASSES), "conditions": list(EXTENSION_CONDITIONS),
                 "seeds": list(FORMAL_SEEDS), "formal_trial_count": 160,
-                "duration_s": 45., "far_distance_m_by_class": {"person": 7., "car": 12.},
+                "duration_s": 75., "far_distance_m_by_class": {"person": 7., "car": 12.},
                 "reference_groups": {condition: ("stage1_position" if condition == "speed_changes_position"
                                                 else "stage1_velocity") for condition in EXTENSION_CONDITIONS}}
     for key, value in expected.items():
@@ -398,6 +398,7 @@ def extension_trial_spec(root, protocol, extension, prefix, cls, condition, seed
 
     spec = renamed(spec)
     spec.update(id=identifier, name=name, extension_condition=condition,
+                duration_s=extension["duration_s"],
                 comparison_reference_id=f"{cls}_{group}_seed{seed:03d}",
                 condition=condition if condition in EXTENSION_CONDITIONS[:5] else "clean",
                 motion_profile_kind="speed_changes" if condition.startswith("speed_changes_") else "standard")
@@ -407,7 +408,7 @@ def extension_trial_spec(root, protocol, extension, prefix, cls, condition, seed
     def option(command, flag, value):
         command[command.index(flag) + 1] = str(value)
 
-    for flag, value in (("--condition", spec["condition"]),
+    for flag, value in (("--duration", spec["duration_s"]), ("--condition", spec["condition"]),
                         ("--motion-profile-kind", spec["motion_profile_kind"]),
                         ("--desired-distance-m", spec["desired_distance_m"])):
         option(spec["flight_command"], flag, value)
@@ -818,7 +819,7 @@ def runtime_configuration(plan, trial):
         expected = {key: trial[key] for key in ("name", "target_class", "stage", "seed", "speed_mps", "command_mode", "takeoff_mode",
             "gimbal_mode", "target_mode", "association_mode", "initial_select", "initial_min_candidates", "scenario_kind",
             "multi_target", "inference_image_size", "inference_threads", "desired_distance_m", "gazebo_render_driver")}
-        expected.update(duration=45., control_reference="ground_footprint", real_time_factor=.5,
+        expected.update(duration=trial["duration_s"], control_reference="ground_footprint", real_time_factor=.5,
             max_inference_rate_hz=10., monitor_tick_s=.02, condition=trial.get("condition", "clean"), estimator_method="adaptive_kf",
             occlusions=True, reselect_after_loss=True, short_occlusion_s=.2,
             magnetic_environment="gazebo_enu", magnetic_runtime_manifest=str(Path(plan["frozen_root"]) / MAGNETIC_RUNTIME_PATH),

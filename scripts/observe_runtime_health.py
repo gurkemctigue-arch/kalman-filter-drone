@@ -15,6 +15,7 @@ import json
 import math
 import os
 from pathlib import Path
+import re
 import shutil
 import signal
 import sys
@@ -33,6 +34,7 @@ def _sibling(name):
 host_observer = _sibling("watch_sim_resources")
 link_observer = _sibling("observe_ros_link")
 GROUPS = ("gazebo", "px4", "python", "recorder")
+GAZEBO_SIM_LIBRARY = re.compile(rb"libgz-sim[0-9]+(?:-gz)?\.so(?:\.[0-9]+)*")
 
 
 def process_group(comm, argv):
@@ -66,34 +68,115 @@ def parse_process_stat(raw):
 
 class ProcessSampler:
     """Disjoint group aggregates; CPU 100 percent means one logical CPU."""
-    def __init__(self, proc_root=Path("/proc"), clock_ticks=None, page_size=None):
+    def __init__(self, proc_root=Path("/proc"), clock_ticks=None, page_size=None, *,
+                 maps_rescan_s=30., maps_checks_per_sample=8, maps_max_bytes=1024 * 1024):
         self.proc_root = Path(proc_root)
         self.clock_ticks = clock_ticks if clock_ticks is not None else os.sysconf("SC_CLK_TCK")
         self.page_size = page_size if page_size is not None else os.sysconf("SC_PAGE_SIZE")
+        if (not math.isfinite(maps_rescan_s) or maps_rescan_s <= 0
+                or maps_checks_per_sample < 1 or maps_max_bytes < 1):
+            raise ValueError("maps scan interval, count and byte budget must be positive")
+        self.maps_rescan_s = maps_rescan_s
+        self.maps_checks_per_sample = maps_checks_per_sample
+        self.maps_max_bytes = maps_max_bytes
+        self._maps_cache = {}  # (PID, kernel start ticks), never paths or maps text.
         self.previous = {}
         self.previous_s = None
+
+    def _gazebo_from_maps(self, directory):
+        """Inspect bounded mapping bytes privately; only exact library basenames count."""
+        consumed = 0
+        with (directory / "maps").open("rb") as handle:
+            while consumed <= self.maps_max_bytes:
+                line = handle.readline(self.maps_max_bytes - consumed + 1)
+                if not line:
+                    return None, consumed, False
+                consumed += len(line)
+                if consumed > self.maps_max_bytes:
+                    return None, self.maps_max_bytes, True
+                fields = line.rstrip(b"\n").split(None, 5)
+                if len(fields) != 6 or not fields[4].isdigit() or int(fields[4]) == 0:
+                    continue
+                path = fields[5]
+                if path.endswith(b" (deleted)"):
+                    path = path[:-10]
+                if path.startswith(b"/") and GAZEBO_SIM_LIBRARY.fullmatch(path.rsplit(b"/", 1)[-1]):
+                    return "gazebo", consumed, False
+        return None, consumed, True
 
     def sample(self, monotonic_s):
         groups = {name: {"process_count": 0, "rss_bytes": 0, "cpu_percent_one_core": None,
                          "cpu_observed_processes": 0, "new_or_reused_processes": 0} for name in GROUPS}
         current, cpu_delta = {}, {name: 0 for name in GROUPS}
-        errors = 0
+        errors, classified, pending = 0, [], []
+        seen = set()
+        maps_audit = {"checks": 0, "cache_hits": 0, "bytes_inspected": 0,
+                      "truncated_checks": 0, "deferred_checks": 0,
+                      "rescan_interval_wall_s": self.maps_rescan_s,
+                      "max_checks_per_sample": self.maps_checks_per_sample,
+                      "max_bytes_per_check": self.maps_max_bytes}
         elapsed = None if self.previous_s is None else monotonic_s - self.previous_s
         for directory in self.proc_root.iterdir():
             if not directory.name.isdecimal():
                 continue
             try:
+                stat = parse_process_stat((directory / "stat").read_text(encoding="ascii"))
                 comm = (directory / "comm").read_text(encoding="utf-8", errors="replace").strip()
                 with (directory / "cmdline").open("rb") as handle:
                     argv = [part.decode("utf-8", errors="replace") for part in handle.read(8192).split(b"\0") if part]
                 group = process_group(comm, argv)
-                if group is None:
-                    continue
-                stat = parse_process_stat((directory / "stat").read_text(encoding="ascii"))
             except (OSError, ValueError, IndexError):
                 errors += 1  # Exiting processes/permissions are observations, not zero usage.
                 continue
             pid = int(directory.name)
+            if group is not None:
+                classified.append((pid, stat, group))
+                continue
+            identity = (pid, stat["start_ticks"])
+            seen.add(identity)
+            cached = self._maps_cache.get(identity)
+            age = None if cached is None else monotonic_s - cached["checked_s"]
+            if age is not None and 0 <= age < self.maps_rescan_s:
+                maps_audit["cache_hits"] += 1
+                if cached["group"] is not None:
+                    pending.append((directory, stat, identity, cached, False))
+                continue
+            pending.append((directory, stat, identity, cached, True))
+
+        # Recheck known Gazebo identities first, then unseen/oldest candidates.
+        # A large host process table cannot trigger a full maps scan each second.
+        pending.sort(key=lambda item: (item[3] is None or item[3]["group"] != "gazebo",
+                                       float("-inf") if item[3] is None else item[3]["checked_s"]))
+        for directory, stat, identity, cached, needs_scan in pending:
+            if needs_scan and maps_audit["checks"] >= self.maps_checks_per_sample:
+                maps_audit["deferred_checks"] += 1
+                continue
+            try:
+                if needs_scan:
+                    maps_audit["checks"] += 1
+                    try:
+                        group, consumed, truncated = self._gazebo_from_maps(directory)
+                        maps_audit["bytes_inspected"] += consumed
+                        maps_audit["truncated_checks"] += int(truncated)
+                    except OSError:
+                        errors += 1
+                        group = None
+                else:
+                    group = cached["group"]
+                after = parse_process_stat((directory / "stat").read_text(encoding="ascii"))
+                if after["start_ticks"] != identity[1]:
+                    raise ValueError("process identity changed during private classification")
+            except (OSError, ValueError, IndexError):
+                errors += 1
+                self._maps_cache.pop(identity, None)
+                continue
+            if needs_scan:
+                self._maps_cache[identity] = {"checked_s": monotonic_s, "group": group}
+            if group is not None:
+                classified.append((identity[0], after, group))
+        self._maps_cache = {identity: value for identity, value in self._maps_cache.items() if identity in seen}
+
+        for pid, stat, group in classified:
             current[pid] = {**stat, "group": group}
             groups[group]["process_count"] += 1
             groups[group]["rss_bytes"] += max(0, stat["rss_pages"]) * self.page_size
@@ -111,7 +194,8 @@ class ProcessSampler:
         self.previous, self.previous_s = current, monotonic_s
         return {"interval_monotonic_s": elapsed, "groups": groups, "read_error_count": errors,
                 "logical_cpu_count": os.cpu_count(), "process_commands_recorded": False,
-                "semantics": "Groups are disjoint; RSS sums shared pages per process. CPU excludes unobserved lifetimes and new/reused PIDs; 100% is one core, not whole-host percentage."}
+                "maps_fallback": maps_audit,
+                "semantics": "Groups are disjoint; RSS sums shared pages per process. CPU excludes unobserved lifetimes and new/reused PIDs; 100% is one core, not whole-host percentage. Unclassified processes use bounded, identity-cached Gazebo library checks; deferred, unreadable or truncated checks may undercount Gazebo."}
 
 
 class RosTimingState:

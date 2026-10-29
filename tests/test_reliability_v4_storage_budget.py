@@ -77,7 +77,8 @@ def fixture(temporary, *, split=False):
             for group in groups:
                 name = f"{label}_{cls}_{group}_seed004"
                 trial = {"id": name, "name": name, "seed": 4, "target_class": cls,
-                         "group": group, "extension_condition": group, "duration_s": 45.,
+                         "group": group, "extension_condition": group,
+                         "duration_s": 75.,
                          "directory": str(results / name)}
                 plan["trials"].append(trial)
         write(output / "plan.json", seal(plan, "plan_sha256"))
@@ -93,8 +94,9 @@ def fixture(temporary, *, split=False):
                        "raw_validation": {"status": "PASS", "files": [{"path": "data.db3", "bytes": count * 3}]},
                        "compressed_files": [{"path": "data.db3.zstd", "bytes": count, "raw_bytes": count * 3}],
                        "native_reader_validation": {"full_stream_read": True}}
-            summary = {"termination_reason": "follow_duration_reached", "follow_start_s": 18., "end_sim_s": 62.98}
-            closure = {"status": "PASS", "observations": [{"last_clock_ns": 64_000_000_000}]}
+            end_s = 18. + trial["duration_s"]
+            summary = {"termination_reason": "follow_duration_reached", "follow_start_s": 18., "end_sim_s": end_s - .02}
+            closure = {"status": "PASS", "observations": [{"last_clock_ns": int((end_s + 1.) * 1e9)}]}
             for relative, data in (("bag_integrity.json", archive), ("summary.json", summary),
                                    ("recording_closure.json", closure)):
                 write(directory / relative, data)
@@ -242,6 +244,17 @@ class StorageBudgetTests(unittest.TestCase):
                     update_named_sample(sample, "closure", {"status": "PASS", "observations": [{"last_clock_ns": 62_000_000_000}]})
                 with self.assertRaises(guard.Refusal):
                     budget.assemble(**f.arguments, backend=f.backend)
+
+    def test_old_45_second_development_cells_cannot_supply_75_second_budget(self):
+        for label in ("core", "extension"):
+            with self.subTest(label=label), tempfile.TemporaryDirectory() as temporary:
+                f = fixture(temporary)
+                plan = f.plans[label]
+                plan["trials"][0]["duration_s"] = 45.
+                write(f.paths[label], seal(plan, "plan_sha256"))
+                with self.assertRaisesRegex(guard.Refusal, "75-second"):
+                    budget.assemble(**f.arguments, backend=f.backend)
+                self.assertEqual(f.backend.queries, [])
 
     def test_forged_terminal_without_completed_zero_exit_is_rejected(self):
         for field, value in (("execution_status", "RUNNING"), ("flight_exit_code", 2), ("flight_exit_code", False)):

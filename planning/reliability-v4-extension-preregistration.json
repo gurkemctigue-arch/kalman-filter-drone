@@ -6,7 +6,8 @@
   "conditions": ["depth_noise", "depth_holes", "dropout", "latency", "combined", "speed_changes_velocity", "speed_changes_position", "far_distance"],
   "seeds": [1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009],
   "formal_trial_count": 160,
-  "duration_s": 45.0,
+  "duration_s": 75.0,
+  "duration_policy": "Prospective 75 s FOLLOW for all condition extensions, matching the new 75 s core so paired comparisons retain equal duration. This is a task-protocol change, not an algorithm improvement. Original shutter/reselection times, safety gates and complete evaluation denominators remain unchanged. Preserve historical 45 s outcomes and bytes separately; formal admission requires actual 75 s measurements for all 12 core and 16 extension development cells and a fresh physical-volume capacity budget, without deleting original evidence to conceal insufficient space.",
   "far_distance_m_by_class": {"person": 7.0, "car": 12.0},
   "reference_groups": {
     "depth_noise": "stage1_velocity",

@@ -84,7 +84,9 @@ def read_development_plan(path, label, bindings):
         directory = Path(trial["directory"])
         guard.require(directory.is_absolute() and directory.resolve().is_relative_to(results)
                       and directory.name == trial["name"], "Trial outside original development results")
-        guard.require(finite(trial.get("duration_s"), "registered duration", minimum=1.) == 45., "Expected registered 45-second exposure")
+        expected_duration = 75.
+        guard.require(finite(trial.get("duration_s"), "registered duration", minimum=1.) == expected_duration,
+                      f"Expected registered {label} {expected_duration:g}-second exposure")
         cells[key] = trial
     guard.require(set(cells) == {(label, cls, group) for cls in guard.CLASSES for group in groups}, "Missing development cell")
     return binding, plan, cells

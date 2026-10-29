@@ -1,8 +1,12 @@
 # 最终前瞻登记与 280 槽执行依赖审查
 
+2026-10-30 当前更新：项目已单独采纳[工程要求决策](reliability-v4-engineering-requirements-decision-20261030.md)，导航数值门为距离/高度RMSE上限1.0/0.40米、导航/真值/指定个体物理身份覆盖下限0.80/0.99/**0.80**，并保留末端持续稳定。数值登记与本机[采纳回执](../results/development_20261030/numerical_gates_adoption01.json)不等同正式准入；核心和扩展均为75秒，整体协议仍DRAFT、正式0/280。旧0.75身份门提议不采用。后续正式登记必须实际核对需求文档、SHA与登记UTC，不能只依赖数值域校验。
+
+现有 `tools/reliability_v4_register.py` 提供 `safety-summary`、`replay-config` 和 `seal` 三个独立组装入口；`tools/reliability_v4_guard.py check/run-one` 负责实际逐槽准入。它们不替代core/extension协议登记或正式计划生成，均需真实12核心、4安全、16扩展、定标和容量输入。下文更早的“registrar未实现”等描述仅表示当时状态；不得据此重复开发已有工具。Humble23及所有旧冻结字节保持不变，本页只更新主树执行说明。
+
 本文件仅依据现有源码、三份草案和执行卡作轻量审查；没有登记协议、创建正式计划、运行仿真、解包、重算录制或推送 GitHub。`3ad042df64c53e8b6b6636d17f78912ab04db17f` 仍是本次审查起点的公开检查点。Humble16 原计划、记录与缺证不变；正在修复的 closure readiness 源码须先由主代理完成验证。下面的 `FINAL_DEV` 表示最终修复后、已完成实际开发证据的那个新根，不能预先认定为 Humble16。
 
-后续实现更新：审查发现的外层缺口现已落实为 `tools/reliability_v4_guard.py`，输入合同和真实执行命令见 `planning/reliability-v4-guard-inputs.md`。它将四安全、三登记、R0与12/16开发证据及实际宿主容量合并为逐槽准入；没有修改原runner/飞行/评价源，也没有执行正式槽。以下“尚无守护入口”等语句保留为发现缺口时的历史描述；实际正式执行必须使用新 `run-one`，不能直接用裸runner批跑。专用registrar仍未实现，真实输入仍须完成。
+后续实现更新：审查发现的外层缺口现已落实为 `tools/reliability_v4_guard.py`，输入合同和真实执行命令见 `planning/reliability-v4-guard-inputs.md`。它将四安全、三登记、R0与12/16开发证据及实际宿主容量合并为逐槽准入；没有修改原runner/飞行/评价源，也没有执行正式槽。以下“尚无守护入口”等语句保留为发现缺口时的历史描述；实际正式执行必须使用新 `run-one`，不能直接用裸runner批跑。现成registrar的三项组装入口见顶部更新，真实输入仍须完成。
 
 ## 实际依赖顺序
 
@@ -106,11 +110,11 @@ bash "$tracking_final/scripts/run_research_session.sh" \
 
 ## 尚未接好的登记输入和硬门
 
-当前没有专用正式 registrar CLI；本文件没有发明可执行的 `register` 命令。登记必须由主代理在新的最终根显式生成并验证，至少完成下表。根内原开发协议不能就地改写。
+现有registrar CLI负责安全汇总、四法配置和最终封存，不自动生成core/extension协议的登记或正式计划。后两项仍须在新的最终根显式生成并验证，至少完成下表；不得发明不存在的 `register` 子命令。根内原开发协议不能就地改写。
 
 | 登记/绑定 | 精确字段与验证依赖 |
 | --- | --- |
-| core | 顶层 `status=REGISTERED`、实际登记UTC和证据来源；`navigation_acceptance.status=REGISTERED`；候选采用值 `maximum_base_link_distance_rmse_m=1.0`、`maximum_base_link_height_rmse_m=0.40`、`minimum_valid_state_coverage=0.80`、`minimum_truth_coverage=0.99`、`minimum_physical_identity_coverage=0.75`、`require_final_window_settled=true`，由 `validate_navigation_gates` 验证；原3s稳定定义和安全门不改。顶层status本身目前不是 runner 的替代安全门 |
+| core | 顶层 `status=REGISTERED`、实际登记UTC和证据来源；`navigation_acceptance.status=REGISTERED`；独立[工程要求决策](reliability-v4-engineering-requirements-decision-20261030.md)已采纳 `maximum_base_link_distance_rmse_m=1.0`、`maximum_base_link_height_rmse_m=0.40`、`minimum_valid_state_coverage=0.80`、`minimum_truth_coverage=0.99`、`minimum_physical_identity_coverage=0.80`、`require_final_window_settled=true`。`validate_navigation_gates`只核登记标记、数值域和布尔，需求来源文件SHA与实际登记UTC须另外核实；原3s稳定定义和安全门不改。数值已登记不等于顶层协议/正式准入已登记 |
 | extension | `status=REGISTERED`、`registration_utc`、`development_readiness={path,sha256,evidence}`；evidence 为实际16格 gate 对象。UTC须晚于16开发终态且早于正式 core `created_utc` 与每条正式飞行。不可只填 PASS 布尔值 |
 | 四法 calibration | 把实际 R0 candidate 的 `candidate_parameters` 逐项写入 `calibration`，置其 `status=REGISTERED`；保留禁止用留出数据定参的标记。同步更新 implementation_status 的真实说明，不能保留“参数未登记”同时声称完成 |
 | 四法正式绑定 | `freeze_requirements.final_engineering_plan_path/file_sha256/digest` 来自实际120 core；这里的 `flight_source_hashes` 要写 **完整 `core_plan.source_hashes`**，不是 `run_reliability_v4.flight_source_hashes()` 的过滤子集；`model_hashes`用实际 plan值；runtime map 恰为 `px4_runtime_manifest_sha256`、`magnetic_library_registration_sha256` |

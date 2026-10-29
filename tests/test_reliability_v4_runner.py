@@ -76,8 +76,11 @@ def fixture(root, *, navigation=True, gates=False, ros_distro="jazzy"):
     protocol["magnetic_library_registration"] = ("config/gazebo_magnetic_runtime_humble22.json"
                                                 if ros_distro == "humble"
                                                 else "config/gazebo_magnetic_runtime.json")
-    if gates:
-        protocol["navigation_acceptance"] = registered_gates()
+    # Numeric registration in the real project must not change this fixture's
+    # explicit registered/unregistered scenario or supply real flight evidence.
+    protocol["navigation_acceptance"] = (registered_gates() if gates else {
+        "status": "UNREGISTERED_PENDING_SYNTHETIC_FIXTURE",
+        "note": "ORCHESTRATION_FIXTURE_ONLY: numeric gates deliberately unregistered"})
     write(root / v4.PROTOCOL_PATH, protocol)
     for name in ("run_reliability_v4.py", "run_stage1_trial.py", "run_research_session.sh", "ros_python.sh",
                  "evaluate_stage1_flight.py", "evaluate_stage2_flight.py", "evaluate_stage3_gimbal.py", "evaluate_physical_identity.py",
@@ -513,7 +516,8 @@ class ReliabilityV4Tests(unittest.TestCase):
                     self.assertEqual([t["seed"] for t in rows], list(range(1000, 1010)))
                     for trial in rows:
                         command = trial["flight_command"]
-                        for flag, expected in [("--duration", "45.0"), ("--real-time-factor", "0.5"),
+                        self.assertEqual(trial["duration_s"], 75.)
+                        for flag, expected in [("--duration", "75.0"), ("--real-time-factor", "0.5"),
                                                ("--max-inference-rate-hz", "10.0"), ("--monitor-tick-s", "0.02"),
                                                ("--control-reference", "ground_footprint")]:
                             self.assertEqual(command[command.index(flag) + 1], expected)
@@ -558,7 +562,19 @@ class ReliabilityV4Tests(unittest.TestCase):
     def test_draft_preregistration_has_no_false_formal_completion(self):
         protocol = v4.load(ROOT / v4.PROTOCOL_PATH)
         self.assertEqual(protocol["status"], "DRAFT_NOT_FROZEN_NOT_EXECUTED")
-        self.assertNotEqual(protocol["navigation_acceptance"]["status"], "REGISTERED")
+        self.assertIsNone(protocol.get("registration_utc"))
+        self.assertNotIsInstance(protocol.get("development_readiness"), dict)
+        gates = protocol["navigation_acceptance"]
+        self.assertEqual(gates["status"], "REGISTERED")
+        expected = {"maximum_base_link_distance_rmse_m": 1., "maximum_base_link_height_rmse_m": .4,
+                    "minimum_valid_state_coverage": .8, "minimum_truth_coverage": .99,
+                    "minimum_physical_identity_coverage": .8, "require_final_window_settled": True}
+        for key, value in expected.items():
+            self.assertEqual(gates[key], value, key)
+        extension = v4.load(ROOT / v4.EXTENSION_PROTOCOL_PATH)
+        self.assertEqual(extension["status"], "DRAFT_NOT_FROZEN_NOT_EXECUTED")
+        self.assertIsNone(extension.get("registration_utc"))
+        self.assertNotIsInstance(extension.get("development_readiness"), dict)
 
     def test_model_source_config_and_new_files_are_checked_before_any_command(self):
         for relative in ["models/yolo11n.pt", "config/safety.yaml", "scripts/new_algorithm.py", v4.PROTOCOL_PATH]:
@@ -843,6 +859,10 @@ class ReliabilityV4Tests(unittest.TestCase):
             altered = deepcopy(frozen); altered["protocol"]["safety_gates"]["max_prediction_duration_s"] = 2.
             altered["plan_sha256"] = v4.digest(altered, ("plan_sha256",))
             with self.assertRaisesRegex(ValueError, "safety"):
+                run(altered)
+            altered = deepcopy(frozen); altered["protocol"]["duration_s"] = 45.
+            altered["plan_sha256"] = v4.digest(altered, ("plan_sha256",))
+            with self.assertRaisesRegex(ValueError, "duration_s"):
                 run(altered)
 
     def test_actual_world_hash_field_and_vehicle_covariance_switch_are_qualified(self):

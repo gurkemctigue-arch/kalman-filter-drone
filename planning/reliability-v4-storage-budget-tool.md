@@ -12,8 +12,9 @@ PASS，不调用 runner，也不准入任何正式槽。工具和测试的创建
   每格原 `bag_integrity.json`、`summary.json`、`recording_closure.json` 和终态记录。
   原试验可保留 `FAIL` 或 `EVALUATION_PENDING`，但必须真实 `COMPLETED`、flight
   exit 为整数 0、无 infrastructure stop、归档和 closure 闭合，且最终录制 Clock
-  覆盖 `follow_start + 45s`。正常 monitor 最后一帧可能记为 44.98s，不能用该帧
-  取代收尾后的完整源钟区间。20s clean、缺格和中止试验不能充当 45s 对应槽。
+  覆盖 `follow_start + 75s`。正常 monitor 最后一帧可能记为 74.98s，不能用该帧
+  取代收尾后的完整源钟区间。2026-10-30 前瞻协议的12核心和16扩展均为75s；
+  原45s、20s clean、缺格和中止试验不能充当75s对应槽或直接提供其容量实测。
 - 现有 guard 的 `storage-probe` 原 JSON，必须是
   `RELIABILITY_V4_PHYSICAL_STORAGE_INVENTORY` / `METADATA_ONLY_NOT_FORMAL_ADMISSION`。
   组装器用 `NativeStorage` 重新核对实际 DrvFS/9p 挂载、Windows UniqueId、当前

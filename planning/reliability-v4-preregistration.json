@@ -8,7 +8,8 @@
   "seeds": [1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009],
   "seed_partition_policy": "Development has already used seeds 0, 1 and 3. Formal v4 uses previously unexecuted held-out seeds 1000..1009, frozen before formal outcomes; development probes must not consume them. The same registered v4 seed is reused across classes/groups. PX4/Gazebo process seed remains registered_seed+1. Historical v3 paired seeds 0..9 remain a separate four-baseline study, with no paired v3-v4 claim.",
   "formal_trial_count": 120,
-  "duration_s": 45.0,
+  "duration_s": 75.0,
+  "duration_policy": "Prospective task-protocol revision, not an algorithm repair: core and condition-extension FOLLOW both last 75 s, preserving equal-duration paired comparisons. Keep the original +32 s explicit reselection, +/-1 s shutter guards, all REQUEST-to-full-clock UNKNOWN cells, and final-settling gates. Ideal planned events already impose approximately 10.3 s of structurally uncertifiable identity time; an 80% coverage requirement allows only 9 s in 45 s and is therefore unattainable even ideally. At 75 s the same illustrative 80% budget permits 15 s, leaving approximately 4.7 s for confirmation, recorded tails and occasional missed evidence; this is a design budget, not observed coverage or a registered numeric gate. Preserve all historical 45 s/Humble22 results unchanged and do not pool unequal durations as algorithm improvement. Require actual 75 s measurements for all 28 development cells and a new capacity budget before formal execution; never substitute historical 45 s sizes. Numeric navigation requirements are registered separately in navigation_acceptance; overall formal admission still requires complete final-source development readiness, calibration, sealing and a fresh capacity budget. This duration change alone cannot authorize formal execution.",
   "short_occlusion_s": 0.2,
   "long_occlusion_s": 3.0,
   "occlusions": true,
@@ -55,8 +56,21 @@
     "car": {"model": "models/yolo11s.pt", "inference_image_size": 640, "inference_threads": 4, "desired_distance_m": 9.0}
   },
   "navigation_acceptance": {
-    "status": "UNREGISTERED_PENDING_DEVELOPMENT_PROBES",
-    "note": "Evidence completeness and process exit zero are not PASS. Formal freeze and execution are prohibited until valid numeric base_link distance/height RMSE limits, minimum navigation/truth/full-task physical identity coverage and the explicit final-settling requirement are REGISTERED. Development probes may remain EVALUATION_PENDING until these gates are chosen; the final complete 2-class x 6-group development matrix must then independently pass the registered gates before any held-out formal seed is consumed. No numeric performance gates are selected after seeing formal results. Physical identity coverage uses fixed 0.1 s time cells from the first REQUEST through the full recorded clock end, including silent tails, unconfirmed requests and unknown cells."
+    "status": "REGISTERED",
+    "registered_utc": "2026-10-29T19:40:23.479593+00:00",
+    "maximum_base_link_distance_rmse_m": 1.0,
+    "maximum_base_link_height_rmse_m": 0.4,
+    "minimum_valid_state_coverage": 0.8,
+    "minimum_truth_coverage": 0.99,
+    "minimum_physical_identity_coverage": 0.8,
+    "require_final_window_settled": true,
+    "requirements_source": "planning/reliability-v4-engineering-requirements-decision-20261030.md",
+    "requirements_source_sha256": "1a31cd93b47991489ea57ea11ae3ee98a5f5a53e5eba9c52cc3e03f48868c2c6",
+    "physical_identity_required_groups": [
+      "stage2_crossing",
+      "stage3_multi_active"
+    ],
+    "note": "Prospective project engineering requirements selected before held-out outcomes, for complete 75 s tasks. Full denominators, unknowns, original safety gates and final active settled suffix are retained. Numeric registration alone does not authorize formal flights: full final-source 12-core and 16-extension development readiness, calibration, protocol sealing and actual capacity admission remain mandatory. No adaptive-KF superiority or real-flight claim."
   },
   "failure_policy": "One simulator at a time. A trial is attempted once. Terminal records, failures and interrupted attempts are immutable. Resume consumes only PENDING slots. Infrastructure failures stop continuation and require a separately recorded diagnosis before any further pending slot; they never authorize a retry.",
   "identity_policy": "Initial middle box selection for multi-target conditions; hybrid_3d association; no nearest/confidence fallback and no full ReID. The acceptance denominator is fixed 10 Hz REQUEST-to-full-recorded-clock time, retaining unknown/unobserved tails. Legacy diagnostic-frame coverage remains diagnostic. Any observed wrong physical actor in either evidence stream fails; an unconfirmed requested task fails. Every task is independently mapped from its REQUEST box at source image time. A schema-v2 development gate must bind immutable probe plans/terminal records and actual reports for all 2 classes x 6 groups, flight-critical source/model/runtime hashes and separately identified offline evaluator hashes.",
