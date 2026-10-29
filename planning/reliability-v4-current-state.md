@@ -1,5 +1,11 @@
 # 当前工作交接（持续开发，非验收报告）
 
+历史执行快照（2026-10-29 22:09:32 UTC / 北京时间 2026-10-30 06:09:32；非实时状态）：Humble25 已完成四个 ROS 软件包真实构建、模块/ament 隔离与消息序列化核验；Linux 全套 1390 项检查中 1385 通过、5 项按精确平台条件跳过。两类 clean20 已完整执行，导航检查均 PASS，桥来源、实际映射、正常收尾和录包通过，源绑定前后不变且无残留；无设计遮挡的 surface 原判定仍为 INCOMPLETE_EVIDENCE，不能替代完整工程验收。
+
+75 s seed004 核心开发矩阵的六个行人槽（stage1_velocity、stage1_position、stage2_crossing、stage3_midpoint、stage3_active、stage3_multi_active）均已留下 PASS 原终态，flight_exit_code=0、infrastructure_stop=false。第 7 槽 car_stage1_velocity_seed004 于 22:07:42.947182 UTC 记录 driver START，原 started 标记为 22:07:46.914123 UTC；本快照尚无汽车终态。完整 12 格分母当前为 6 PASS、1 RUNNING、5 PENDING，六个汽车工况仍须完成，整批 core12 尚未验收。
+
+正式仍为 0/280。后续仍需完整核心收尾与独立 review、四项歧义安全、16 格扩展、两条指定速度录包的定标、真实 28 格容量预算及最终登记/准入，再进行正式重复试验和统计交付。Humble24 的一条 clean 完成、一条起飞前 ESRCH 基础设施中止及其核心全 PENDING，Humble23 的 3 PASS、1 INFRASTRUCTURE_ERROR、8 PENDING 均保留；不能回填旧失败，也未证明原桥 SIGSEGV 的唯一根因。证据来自 results/frozen_fullplan_v4_humble25/freeze_validation/build_validation_summary.json、results/frozen_fullplan_v4_humble25/reliability_v4_humble25_clean20_serial01/execution_terminal.json、核心矩阵原 slots 和 serial_driver/events.jsonl。下方为更早快照。
+
 执行快照（2026-10-29 21:08:06 UTC；非实时状态）：Humble24 已冻结 554 源，canonical SHA 为 `9c534444b6cb7bf330dbf7c9a4af3e9e5c082eb9c43ce5bf7911fb924e157b4b`；四包真实构建、模块/ament 隔离及消息序列化通过，Linux 1385 项测试中 1380 通过、5 项精确平台跳过。行人 clean20 完整飞行、桥 live/退出、录包和导航检查通过（距离/高度 RMSE 为 0.300800/0.315549 m，导航与真值覆盖均为 1）；未设计遮挡的 surface 原结果仍为 INCOMPLETE_EVIDENCE，不能称完整工程验收。
 
 第二条汽车 clean20 在解除仿真暂停前中止：新来源检查枚举子进程后，读取 `/proc/3562/stat` 遇到子进程已经退出的 ESRCH，原代码仅处理 ENOENT。原始异常、启动标记和终态已保留；这不是汽车跟随算法失败。整批返回 2、无残留，源 SHA 前后不变；核心12仍全部 PENDING，正式仍 0/280。接下来只在主树修复瞬态普通子进程/线程的 ESRCH，保留 leader 与已确认桥身份失效的拒绝行为，然后建立全新 Humble25 同源验证。旧24不覆盖、不补跑。
