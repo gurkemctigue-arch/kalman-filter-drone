@@ -46,10 +46,12 @@ class NativeTakeoffTests(unittest.TestCase):
         node._status.nav_state = STATUS.NAVIGATION_STATE_AUTO_LOITER
         values = {"odometry_timeout_s": .5, "status_timeout_s": 1., "command_timeout_s": .5,
                   "takeoff_position_tolerance_m": .18, "native_settle_speed_mps": .2,
-                  "native_settle_s": 1., "takeoff_timeout_s": 40., "command_retry_s": 1.,
+                  "native_settle_s": 1., "native_handoff_guard_s": .25,
+                  "takeoff_timeout_s": 40., "command_retry_s": 1.,
                   "native_takeoff_timeout_sim_s": 40., "native_wall_timeout_s": 180.,
                   "takeoff_height_m": 3., "heartbeat_prestream_s": 1.2,
                   "max_command_attempts": 15}
+        node._test_params = values
         node.get_parameter = lambda key: SimpleNamespace(value=values[key])
         node.requests = []
         node._request = lambda *args: node.requests.append(args)
@@ -120,9 +122,141 @@ class NativeTakeoffTests(unittest.TestCase):
         self.assertIsNone(node._native_settle_started_s)
         node._native_readiness_issues = lambda **kwargs: []
         self.tick(node, 43.)
-        self.tick(node, 44.1)
+        self.tick(node, 44.25)
         self.assertEqual(node._phase, "REQUEST_OFFBOARD")
         self.assertEqual(node.last_output.linear_mps.x, 0.)
+
+    def test_guard_requires_full_source_duration_and_reports_actual_timer(self):
+        node = self.node()
+        self.tick(node, 42.)
+        observed = self.diagnostic(node)
+        self.assertEqual(observed["settle_started_source_s"], 42.)
+        self.assertEqual(observed["settle_timing_observed_source_s"], 42.)
+        self.assertEqual(observed["settle_elapsed_source_s"], 0.)
+        self.assertEqual(observed["settle_required_total_s"], 1.25)
+        self.assertEqual(observed["native_handoff_guard_s"], .25)
+        for source_s, elapsed in ((43., 1.), (43.249, 1.249)):
+            self.tick(node, source_s)
+            self.assertEqual(node._phase, "NATIVE_TAKEOFF")
+            self.assertFalse(node.requests)
+            self.assertAlmostEqual(self.diagnostic(node)["settle_elapsed_source_s"], elapsed)
+        self.tick(node, 43.25)
+        self.assertEqual(node._phase, "REQUEST_OFFBOARD")
+        self.assertEqual(self.diagnostic(node)["settle_elapsed_source_s"], 1.25)
+        self.assertFalse(node.requests)
+        self.tick(node, 43.3)
+        observed = self.diagnostic(node)
+        self.assertAlmostEqual(observed["check_ros_s"], 43.3)
+        self.assertEqual(observed["settle_timing_observed_source_s"], 43.25)
+        self.assertEqual(observed["settle_elapsed_source_s"], 1.25)
+        self.assertEqual(node.requests, [(COMMAND.VEHICLE_CMD_DO_SET_MODE, 1., 6.)])
+
+    def test_guard_uses_source_time_during_slow_or_paused_simulation(self):
+        node = self.node()
+        self.tick(node, 42., 100.1)
+        for source_s, wall_s in ((42., 130.), (43., 150.), (43.249, 150.1)):
+            node._status_received = wall_s
+            self.tick(node, source_s, wall_s)
+            self.assertEqual(node._phase, "NATIVE_TAKEOFF")
+            self.assertFalse(node.requests)
+        node._status_received = 150.2
+        self.tick(node, 43.25, 150.2)
+        self.assertEqual(node._phase, "REQUEST_OFFBOARD")
+        self.assertEqual(self.diagnostic(node)["settle_elapsed_source_s"], 1.25)
+
+    def test_guard_does_not_require_an_additional_wall_duration(self):
+        node = self.node()
+        self.tick(node, 42., 100.1)
+        self.tick(node, 43.25, 100.2)
+        self.assertEqual(node._phase, "REQUEST_OFFBOARD")
+        self.assertEqual(self.diagnostic(node)["settle_elapsed_source_s"], 1.25)
+
+    def test_zero_guard_keeps_the_original_full_one_second_gate(self):
+        node = self.node()
+        node._test_params["native_handoff_guard_s"] = 0.
+        self.tick(node, 42.)
+        self.tick(node, 42.999)
+        self.assertEqual(node._phase, "NATIVE_TAKEOFF")
+        self.tick(node, 43.)
+        self.assertEqual(node._phase, "REQUEST_OFFBOARD")
+        self.assertEqual(self.diagnostic(node)["settle_required_total_s"], 1.)
+
+    def test_invalid_guard_is_rejected_by_initialization_before_ros_entities(self):
+        for invalid in (-.001, math.nan, math.inf, -math.inf, True, None, ".25"):
+            with self.subTest(invalid=invalid):
+                values = {}
+
+                def declare(_node, name, default):
+                    values[name] = invalid if name == "native_handoff_guard_s" else default
+
+                with patch.object(flight, "super", return_value=SimpleNamespace(__init__=lambda *_args: None), create=True), \
+                        patch.object(flight.FlightSupervisor, "declare_parameter", declare, create=True), \
+                        patch.object(flight.FlightSupervisor, "get_parameter",
+                                     lambda _node, name: SimpleNamespace(value=values[name]), create=True):
+                    with self.assertRaisesRegex(ValueError, "native_handoff_guard_s"):
+                        flight.FlightSupervisor()
+
+    def test_guard_does_not_extend_the_original_source_or_wall_budgets(self):
+        source_node = self.node()
+        self.tick(source_node, 76.9)
+        self.tick(source_node, 77.)
+        self.assertEqual(source_node._phase, "NATIVE_TAKEOFF")
+        self.assertEqual(source_node._test_params["native_takeoff_timeout_sim_s"], 40.)
+        self.tick(source_node, 77.000001)
+        self.assertEqual(source_node._phase, "ABORTED")
+        self.assertIn("native_source_budget_exhausted", source_node._reason)
+        self.assertFalse(source_node.requests)
+
+        wall_node = self.node()
+        wall_node._status_received = 274.8
+        self.tick(wall_node, 42., 274.8)
+        wall_node._status_received = 275.
+        self.tick(wall_node, 42.1, 275.)
+        self.assertEqual(wall_node._phase, "NATIVE_TAKEOFF")
+        self.assertEqual(wall_node._test_params["native_wall_timeout_s"], 180.)
+        wall_node._status_received = 275.000001
+        self.tick(wall_node, 42.2, 275.000001)
+        self.assertEqual(wall_node._phase, "ABORTED")
+        self.assertIn("native_wall_budget_exhausted", wall_node._reason)
+        self.assertFalse(wall_node.requests)
+
+    def test_readiness_freshness_or_loiter_loss_restarts_the_guard_interval(self):
+        for kind in ("local_readiness", "adapted_freshness", "loiter"):
+            with self.subTest(kind=kind):
+                node = self.node()
+                self.tick(node, 42.)
+                self.tick(node, 43.2)
+                if kind == "local_readiness":
+                    node._native_readiness_issues = lambda **kwargs: ["local_position_source_stale"]
+                elif kind == "adapted_freshness":
+                    node._odom.header.stamp = stamp(42.)
+                else:
+                    node._status.nav_state = STATUS.NAVIGATION_STATE_AUTO_TAKEOFF
+                self.tick(node, 43.24, publish_samples=kind != "adapted_freshness")
+                self.assertEqual(node._phase, "NATIVE_TAKEOFF")
+                self.assertIsNone(node._native_settle_started_s)
+                self.assertIsNone(self.diagnostic(node)["settle_elapsed_source_s"])
+                node._native_readiness_issues = lambda **kwargs: []
+                node._status.nav_state = STATUS.NAVIGATION_STATE_AUTO_LOITER
+                self.tick(node, 43.25)
+                self.tick(node, 44.499)
+                self.assertEqual(node._phase, "NATIVE_TAKEOFF")
+                self.tick(node, 44.5)
+                self.assertEqual(node._phase, "REQUEST_OFFBOARD")
+
+    def test_wall_watchdog_does_not_invent_new_settle_observations(self):
+        node = self.node()
+        self.tick(node, 42., 100.1)
+        with patch.object(flight, "TrackingCommand", FakeCommand, create=True), \
+                patch.object(flight, "String", lambda: SimpleNamespace(data=""), create=True), \
+                patch.object(flight.time, "monotonic", return_value=275.000001):
+            node._native_wall_watchdog()
+        self.assertEqual(node._phase, "ABORTED")
+        observed = self.diagnostic(node)
+        self.assertEqual(observed["check_ros_s"], 42.)
+        self.assertEqual(observed["settle_timing_observed_source_s"], 42.)
+        self.assertEqual(observed["settle_elapsed_source_s"], 0.)
+        self.assertFalse(node.requests)
 
     def test_native_takeoff_accepted_mode_only_requests_arm(self):
         node = self.node("REQUEST_NATIVE_TAKEOFF")
@@ -300,7 +434,7 @@ class NativeTakeoffTests(unittest.TestCase):
         self.assertEqual(node._phase,"NATIVE_TAKEOFF")
 
     def test_completed_native_budget_stays_frozen_during_offboard_handoff(self):
-        node=self.node();self.tick(node,42.);self.tick(node,43.1)
+        node=self.node();self.tick(node,42.);self.tick(node,43.25)
         self.assertEqual(node._phase,"REQUEST_OFFBOARD")
         elapsed=node._native_finished_source_s-node._native_started_source_s
         self.tick(node,44.)
@@ -334,7 +468,7 @@ class NativeTakeoffTests(unittest.TestCase):
         self.tick(node, 42.)
         self.assertEqual(self.diagnostic(node)["local"]["position_enu_m"], [1.25, -2.5, 3.75])
         self.assertEqual(node._native_settle_started_s, 42.)
-        self.tick(node, 43.)
+        self.tick(node, 43.25)
         self.assertEqual(node._phase, "REQUEST_OFFBOARD")
         self.assertFalse(node.requests, "phase transition itself must not send a mode command")
 
@@ -357,28 +491,39 @@ class NativeTakeoffTests(unittest.TestCase):
         node._native_local.vx = node._odom.twist.twist.linear.x = .20
         self.tick(node, 42.)
         self.assertTrue(self.diagnostic(node)["checks_ready"])
-        self.tick(node, 43.)
+        self.tick(node, 43.25)
         self.assertEqual(node._phase, "REQUEST_OFFBOARD")
 
-    def test_either_source_failure_restarts_the_full_original_one_second(self):
+    def test_either_source_failure_restarts_settle_and_independent_guard(self):
         for source in ("local", "adapted"):
-            with self.subTest(source=source):
-                node = self.node()
-                self.tick(node, 42.)
-                self.tick(node, 42.9)
-                self.assertEqual(node._native_settle_started_s, 42.)
-                position = node._native_local if source == "local" else node._odom.pose.pose.position
-                field = "y" if source == "local" else "x"
-                setattr(position, field, .19)
-                self.tick(node, 42.95)
-                self.assertIsNone(node._native_settle_started_s)
-                setattr(position, field, 0.)
-                self.tick(node, 43.)
-                self.assertEqual(node._native_settle_started_s, 43.)
-                self.tick(node, 43.999)
-                self.assertEqual(node._phase, "NATIVE_TAKEOFF")
-                self.tick(node, 44.)
-                self.assertEqual(node._phase, "REQUEST_OFFBOARD")
+            for kind in ("position", "speed"):
+                with self.subTest(source=source, kind=kind):
+                    self.check_guard_restart(source, kind)
+
+    def check_guard_restart(self, source, kind):
+        node = self.node()
+        self.tick(node, 42.)
+        self.tick(node, 43.2)
+        self.assertEqual(node._native_settle_started_s, 42.)
+        if kind == "position":
+            sample = node._native_local if source == "local" else node._odom.pose.pose.position
+            field, invalid = ("y" if source == "local" else "x"), .19
+        else:
+            sample = node._native_local if source == "local" else node._odom.twist.twist.linear
+            field, invalid = ("vx" if source == "local" else "x"), .2001
+        setattr(sample, field, invalid)
+        self.tick(node, 43.24)
+        self.assertIsNone(node._native_settle_started_s)
+        observed = self.diagnostic(node)
+        self.assertIsNone(observed["settle_started_source_s"])
+        self.assertIsNone(observed["settle_elapsed_source_s"])
+        setattr(sample, field, 0.)
+        self.tick(node, 43.25)
+        self.assertEqual(node._native_settle_started_s, 43.25)
+        self.tick(node, 44.499)
+        self.assertEqual(node._phase, "NATIVE_TAKEOFF")
+        self.tick(node, 44.5)
+        self.assertEqual(node._phase, "REQUEST_OFFBOARD")
 
     def test_either_source_loss_before_mode_command_aborts_without_request(self):
         for source in ("local", "adapted"):
@@ -446,7 +591,12 @@ class NativeTakeoffTests(unittest.TestCase):
         node._odom.pose.pose.position = SimpleNamespace(x=1.25, y=-2.5, z=.25)
         self.tick(node, 42., 100.1)
         self.assertEqual(node._phase, "REQUEST_NATIVE_TAKEOFF")
-        anchor = self.diagnostic(node)["ground_anchor"]
+        observed = self.diagnostic(node)
+        self.assertIsNone(observed["settle_started_source_s"])
+        self.assertIsNone(observed["settle_timing_observed_source_s"])
+        self.assertIsNone(observed["settle_elapsed_source_s"])
+        self.assertEqual(observed["settle_required_total_s"], 1.25)
+        anchor = observed["ground_anchor"]
         self.assertEqual(node._goal, (1.25, -2.5, 3.25))
         self.assertEqual(anchor, {"position_enu_m": [1.25, -2.5, .25],
                                   "odom_header_stamp_ns": 42_000_000_000,

@@ -514,7 +514,7 @@ def main() -> None:
     if args.takeoff_mode == "px4_native":
         parameters["uav_tracking_flight_supervisor"]["ros__parameters"].update(
             native_takeoff_timeout_sim_s=40.0, native_wall_timeout_s=180.0,
-            native_settle_s=1.0, native_settle_speed_mps=.20,
+            native_settle_s=1.0, native_handoff_guard_s=.25, native_settle_speed_mps=.20,
             takeoff_position_tolerance_m=.18,
             local_position_topic="/fmu/out/vehicle_local_position_v1",
             estimator_flags_topic="/fmu/out/estimator_status_flags")

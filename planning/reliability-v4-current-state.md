@@ -1,5 +1,9 @@
 # 当前工作交接（持续开发，非验收报告）
 
+执行快照（2026-10-29 22:26:05 UTC / 北京时间2026-10-30 06:26:05；非实时状态）：Humble25核心12格当前为7 PASS、1 FAIL、1 RUNNING、3 PENDING。行人六格均PASS，汽车位置模式PASS；汽车速度模式仅原生起飞交接评价FAIL，完整跟随测得距离/高度RMSE为0.75422/0.15870米，导航覆盖0.91634、真值覆盖1，不能把这个起飞失败直接称为跟随算法失败。已完成八槽的源时钟、桥pre/live/after、录包归档和进程收尾均经小文件复核。检查点位于本机`D:/WSL/UAVHumble22-validation/humble25_core_checkpoint01.json`，它仍保留全部12格分母，不能当整批终态。
+
+起飞交接原窗口首点16.500源秒的位置误差0.1800423484米，超过原0.18米门限约0.04235毫米，原FAIL保留。在线与录制重建锚点确有约0.24578毫米差异，但小日志不足以证明唯一根因。已实现[独立0.25源秒连续稳定余量候选](reliability-v4-native-handoff-guard-20261030.md)，保留原离线1秒、0.18米、0.20米每秒和40源秒/180墙钟秒预算；73项主机专项检查通过、独立源码审查无阻断。真实回执在`results/development_20261030/native_handoff_guard01/host_review.json`。候选未写入运行中的25冻结源，须新Humble26同源构建与完整开发飞行验证；正式仍0/280，不能宣布修复已完成。
+
 历史执行快照（2026-10-29 22:09:32 UTC / 北京时间 2026-10-30 06:09:32；非实时状态）：Humble25 已完成四个 ROS 软件包真实构建、模块/ament 隔离与消息序列化核验；Linux 全套 1390 项检查中 1385 通过、5 项按精确平台条件跳过。两类 clean20 已完整执行，导航检查均 PASS，桥来源、实际映射、正常收尾和录包通过，源绑定前后不变且无残留；无设计遮挡的 surface 原判定仍为 INCOMPLETE_EVIDENCE，不能替代完整工程验收。
 
 75 s seed004 核心开发矩阵的六个行人槽（stage1_velocity、stage1_position、stage2_crossing、stage3_midpoint、stage3_active、stage3_multi_active）均已留下 PASS 原终态，flight_exit_code=0、infrastructure_stop=false。第 7 槽 car_stage1_velocity_seed004 于 22:07:42.947182 UTC 记录 driver START，原 started 标记为 22:07:46.914123 UTC；本快照尚无汽车终态。完整 12 格分母当前为 6 PASS、1 RUNNING、5 PENDING，六个汽车工况仍须完成，整批 core12 尚未验收。

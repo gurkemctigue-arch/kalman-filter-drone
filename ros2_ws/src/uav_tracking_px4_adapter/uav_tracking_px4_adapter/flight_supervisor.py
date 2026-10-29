@@ -87,6 +87,7 @@ class FlightSupervisor(Node):
             "local_position_topic": "/fmu/out/vehicle_local_position_v1",
             "estimator_flags_topic": "/fmu/out/estimator_status_flags",
             "native_settle_s": 1.0,
+            "native_handoff_guard_s": 0.25,
             "native_settle_speed_mps": 0.20,
             "native_takeoff_timeout_sim_s": 40.0,
             "native_wall_timeout_s": 180.0,
@@ -120,6 +121,9 @@ class FlightSupervisor(Node):
         for budget in ("native_takeoff_timeout_sim_s", "native_wall_timeout_s"):
             if not math.isfinite(self._number(budget)) or self._number(budget) <= 0:
                 raise ValueError("native startup budgets must be positive finite durations")
+        guard_s = self._native_finite(self.get_parameter("native_handoff_guard_s").value)
+        if guard_s is None or guard_s < 0:
+            raise ValueError("native_handoff_guard_s must be a nonnegative finite duration")
         requested_rtf = self._number("requested_simulation_real_time_factor")
         status_timeout = self._number("status_timeout_s")
         if not (math.isfinite(requested_rtf) and 0 < requested_rtf <= 1
@@ -360,7 +364,7 @@ class FlightSupervisor(Node):
 
         A callback-cache observation does not establish rosbag delivery order.
         All unknown diagnostic values stay null; nothing is inferred from an
-        old report. Readiness thresholds and the one-second budget are unchanged.
+        old report. Readiness thresholds and the one-second audit are unchanged.
         The completed native goal's distance/speed limits apply to the settle
         interval and each mode request, not to pending or confirmed Offboard.
         All source, EKF and finite-state checks remain active during handoff.
@@ -467,6 +471,22 @@ class FlightSupervisor(Node):
                 value = {"scope": "ACTUAL_ONLINE_ANCHOR_NO_SETTLE_CHECK_YET",
                          "goal_enu_m": [self._native_finite(v) for v in self._goal] if self._goal is not None else None,
                          "ground_anchor": getattr(self, "_native_goal_anchor", None)}
+            value = dict(value)
+            settle_start = self._native_finite(getattr(self, "_native_settle_started_s", None))
+            # A later watchdog/phase publication must not invent a new settle
+            # observation. After completion, the verified interval stays frozen.
+            observed_s = self._native_finite(value.get("check_ros_s"))
+            finished_s = self._native_finite(self._native_finished_source_s)
+            if observed_s is not None and finished_s is not None:
+                observed_s = min(observed_s, finished_s)
+            elapsed_s = (observed_s - settle_start if settle_start is not None
+                         and observed_s is not None and observed_s >= settle_start else None)
+            guard_s = self._number("native_handoff_guard_s")
+            value.update(settle_started_source_s=settle_start,
+                         settle_timing_observed_source_s=observed_s,
+                         settle_elapsed_source_s=elapsed_s,
+                         settle_required_total_s=self._number("native_settle_s") + guard_s,
+                         native_handoff_guard_s=guard_s)
             diagnostic = "native_diag=" + json.dumps(value, separators=(",", ":"), allow_nan=False) + "; "
         state = String()
         state.data = f"{self._phase}: {self._reason}; {evidence}{diagnostic}source_sim_s={source_s:.9f}"
@@ -699,7 +719,11 @@ class FlightSupervisor(Node):
                 if ready:
                     if self._native_settle_started_s is None:
                         self._native_settle_started_s = now_s
-                    elif now_s - self._native_settle_started_s >= self._number("native_settle_s"):
+                    # The independent audit still checks the final original
+                    # settle window; this extra continuous source-time guard
+                    # keeps its start away from the first ready boundary.
+                    elif now_s - self._native_settle_started_s >= (self._number("native_settle_s")
+                                                                 + self._number("native_handoff_guard_s")):
                         self._attempts = 0
                         self._request_started = now
                         self._controller_command, self._command_received = None, 0.0
