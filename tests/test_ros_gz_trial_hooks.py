@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import ast
 from copy import deepcopy
+import errno
 import json
 from pathlib import Path
 from types import SimpleNamespace
@@ -194,6 +195,118 @@ class RosGzTrialHookTests(unittest.TestCase):
         self.backend.identities[self.backend.pid] = (999, self.backend.start_ticks)
         with self.assertRaisesRegex(RuntimeError, "parent identity changed"):
             trial.find_owned_parameter_bridge(self.backend.leader, backend=self.backend)
+
+    def test_transient_child_and_thread_esrch_still_find_the_real_bridge(self):
+        transient = 300
+        self.backend.links[self.backend.leader].append(transient)
+        self.backend.links[transient] = []
+        self.backend.identities[transient] = (self.backend.leader, 333)
+        self.backend.refresh_children()
+        thread_file = self.backend.proc_root / str(self.backend.middle) / "task/201/children"
+        thread_file.parent.mkdir()
+        thread_file.write_text("", encoding="ascii")
+        original_proc, original_exe = self.backend.proc_text, self.backend.exe_path
+        original_children = trial._ros_gz_children
+        for stage in ("stat", "exe", "tasks"):
+            with self.subTest(child_disappears_during=stage):
+                def proc(pid, filename):
+                    if ((pid == transient and filename == "stat" and stage == "stat")
+                            or (pid == self.backend.middle and filename == "task/201/children")):
+                        raise ProcessLookupError(errno.ESRCH, "Fixture process/thread exited")
+                    return original_proc(pid, filename)
+
+                def executable(pid):
+                    if pid == transient and stage == "exe":
+                        raise ProcessLookupError(errno.ESRCH, "Fixture child exited")
+                    return original_exe(pid)
+
+                def children(pid, backend, budget):
+                    if pid == transient and stage == "tasks":
+                        raise ProcessLookupError(errno.ESRCH, "Fixture child exited")
+                    return original_children(pid, backend, budget)
+
+                with mock.patch.object(self.backend, "proc_text", side_effect=proc), \
+                        mock.patch.object(self.backend, "exe_path", side_effect=executable), \
+                        mock.patch.object(trial, "_ros_gz_children", side_effect=children):
+                    owned = trial.find_owned_parameter_bridge(self.backend.leader, backend=self.backend)
+                self.assertEqual(owned["process"]["pid"], self.backend.pid)
+
+    def test_leader_esrch_is_fatal_at_initial_and_final_identity_checks(self):
+        original = self.backend.proc_text
+        for failed_read in (1, 3):
+            reads = 0
+
+            def proc(pid, filename):
+                nonlocal reads
+                if pid == self.backend.leader and filename == "stat":
+                    reads += 1
+                    if reads == failed_read:
+                        raise ProcessLookupError(errno.ESRCH, "Fixture leader exited")
+                return original(pid, filename)
+
+            with self.subTest(failed_leader_read=failed_read), \
+                    mock.patch.object(self.backend, "proc_text", side_effect=proc):
+                with self.assertRaises(ProcessLookupError):
+                    trial.find_owned_parameter_bridge(self.backend.leader, backend=self.backend)
+
+    def test_bridge_confirmed_by_executable_cannot_disappear_as_an_ordinary_child(self):
+        original = trial._ros_gz_children
+
+        def children(pid, backend, budget):
+            if pid == self.backend.pid:
+                raise ProcessLookupError(errno.ESRCH, "Fixture confirmed bridge exited")
+            return original(pid, backend, budget)
+
+        with mock.patch.object(trial, "_ros_gz_children", side_effect=children):
+            with self.assertRaises(ProcessLookupError):
+                trial.find_owned_parameter_bridge(self.backend.leader, backend=self.backend)
+
+    def test_pinned_bridge_esrch_cannot_switch_to_a_new_candidate(self):
+        self.register_plugin()  # Keep the first bridge in the initialization wait.
+        context = self.context()
+        replacement = 4321
+        departed = False
+        original_proc, original_exe = self.backend.proc_text, self.backend.exe_path
+
+        def replace_bridge(_):
+            nonlocal departed
+            departed = True
+            self.backend.links[self.backend.middle] = [self.backend.pid, replacement]
+            self.backend.links[replacement] = []
+            self.backend.identities[replacement] = (self.backend.middle, 444)
+            self.backend.refresh_children()
+
+        def proc(pid, filename):
+            if departed and pid == self.backend.pid and filename == "stat":
+                raise ProcessLookupError(errno.ESRCH, "Fixture pinned bridge exited")
+            return original_proc(pid, filename)
+
+        with mock.patch.object(self.backend, "proc_text", side_effect=proc), \
+                mock.patch.object(self.backend, "exe_path", side_effect=lambda pid: str(self.fixture.executable) if pid == replacement else original_exe(pid)), \
+                mock.patch.object(trial.time, "sleep", side_effect=replace_bridge) as wait, \
+                mock.patch.object(runtime, "verify_live_process") as verify:
+            with self.assertRaisesRegex(RuntimeError, "could not be verified before unpause"):
+                trial.capture_owned_ros_gz_runtime(context, self.snapshot, self.backend.leader,
+                    backend=self.backend, timeout_s=1.)
+        wait.assert_called_once()
+        verify.assert_not_called()
+        error = json.loads((self.snapshot / "ros_gz_runtime_actual_error.json").read_text())
+        self.assertIn("identity/ownership changed during startup wait", error["error"])
+        self.assertFalse((self.snapshot / "ros_gz_runtime_actual.json").exists())
+
+    def test_permission_and_other_os_errors_are_not_disappearing_processes(self):
+        original = self.backend.proc_text
+        for code, error_type in ((errno.EACCES, PermissionError), (errno.EIO, OSError)):
+            for stage in ("stat", "thread"):
+                def proc(pid, filename):
+                    if pid == self.backend.middle and filename == ("stat" if stage == "stat" else "task/200/children"):
+                        raise error_type(code, "Fixture access failure")
+                    return original(pid, filename)
+
+                with self.subTest(errno=code, stage=stage), \
+                        mock.patch.object(self.backend, "proc_text", side_effect=proc):
+                    with self.assertRaises(error_type):
+                        trial.find_owned_parameter_bridge(self.backend.leader, backend=self.backend)
 
     def test_multiple_owned_bridges_and_bounds_are_rejected(self):
         other = 4321

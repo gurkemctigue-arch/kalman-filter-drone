@@ -26,3 +26,7 @@
 后续实测：显式插件登记已完成，旧候选原字节归档；新候选文件SHA为`08cbc9ea8a2b6e50b71efc4910e5adef7c309b742fb0e9177cd803e934a028af`，锁定71个依赖和1个插件。`A01_commands05`实际进程核验了73个ELF映射（含可执行文件），并确认强引用1、真实析构及所有owned进程0退出。02/03/05三条有效生命周期证据的汇总为`A01_final_validation01.json`，SHA为`a5c8d2a593d4c8ea17a809723f12dafca28cca016b1e5aa4ae3934878ac1ed1b`，只允许新开发准入，不等于飞行或正式工程PASS。原崩溃尚未取得堆栈的限制继续保留。
 
 冻结24前另完成单条既有开发录包的无损压缩比较，报告位于`results/development_20261030/pre_humble24_compression01/comparison.json`。相同2,161,209,344原始字节，-9/long27为724,613,997字节（较既有-3省1.7066%，压缩15.44秒），-15/long27为704,829,623字节（省4.3904%，98.78秒）；两种均通过精确字节SHA、150,116条消息及各topic计数的Humble原生读取验证，原证据不变。本次决定保留既有`-T1 -3 --check`策略，`recording_archive.py`未修改。该独立partial比较不替代完整28格容量准入，也没有执行旧23封存的后续压缩包装。
+
+Humble24 已完成真实四包构建与1385项Linux测试（1380通过、5项明确平台跳过）。行人clean20验证完整launch的桥preflight/live/after、正常退出与录包，导航数值检查通过。汽车clean20起飞前，owned来源检查从kernel children枚举到的一个普通子进程在读取stat前退出，产生`ProcessLookupError/ESRCH`；原扫描只捕获`FileNotFoundError/ENOENT`，因此在解除暂停前失败。整批正确停止，无残留，旧源未变；两条原尝试和核心12全PENDING保留。新修复仅将普通扫描子进程/线程的ESRCH视同已支持的ENOENT；leader消失、已确认桥消失或替换、权限/其他I/O错误继续拒绝。此问题属于新增来源检查的进程生命周期边界，与原桥SIGSEGV分开记录，后续用新Humble25来源验证。
+
+该最小扫描修复已完成，20项hooks与8项shutdown测试共28项通过。独立修复摘要为 `D:/WSL/UAVHumble22-validation/humble24_owned_proc_exit_diagnostic01/repair_validation01.json`，SHA为`05334aee5fa4005fa08df5272ca0f18288717b7253ef05c97f0579ce95b6cdc2`；绑定原异常、原driver终态、新runner/tests字节及真实host专项回执。测试覆盖stat/exe/tasks枚举阶段的瞬态子进程、退出线程、leader失效、已确认桥退出、禁止转选替代进程、EACCES/EIO继续拒绝。这仅是扫描缺陷的专项验证，不等于Humble25完整飞行已通过。

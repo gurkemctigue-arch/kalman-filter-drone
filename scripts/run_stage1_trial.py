@@ -110,7 +110,7 @@ def _ros_gz_children(pid, backend, thread_budget):
     for task in tasks:
         try:
             fields = backend.proc_text(pid, "task/" + task.name + "/children").split()
-        except FileNotFoundError:  # A thread can end after task enumeration.
+        except (FileNotFoundError, ProcessLookupError):  # A thread can end after task enumeration.
             continue
         if any(not field.isdigit() or int(field) <= 0 for field in fields):
             raise RuntimeError("Malformed owned process children record")
@@ -134,17 +134,21 @@ def find_owned_parameter_bridge(leader_pid, *, expected_leader=None, backend=Non
         seen.add(pid)
         if len(seen) > process_limit:
             raise RuntimeError("Owned bridge discovery exceeded its process bound")
+        bridge_candidate = False
         try:
             identity = parse_process_stat(backend.proc_text(pid, "stat"), pid)
             if parent is not None and identity["parent_pid"] != parent:
                 raise RuntimeError("Owned process parent identity changed during discovery")
             executable = backend.exe_path(pid)
+            bridge_candidate = Path(executable.removesuffix(" (deleted)")).name == "parameter_bridge"
             children, count = _ros_gz_children(pid, backend, thread_limit - threads)
-        except FileNotFoundError:
+        except (FileNotFoundError, ProcessLookupError):
+            if pid == leader_pid or bridge_candidate:
+                raise
             continue
         threads += count
         chain = [*chain, identity]
-        if Path(executable.removesuffix(" (deleted)")).name == "parameter_bridge":
+        if bridge_candidate:
             candidates.append({"leader": leader, "process": identity, "ancestor_chain": chain})
         queue.extend((child, pid, chain) for child in children)
     if parse_process_stat(backend.proc_text(leader_pid, "stat"), leader_pid) != leader:
