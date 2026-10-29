@@ -83,7 +83,93 @@ def paused_fixture(copies=3):
     return rows, metadata, context
 
 
+def clock_boundary_fixture(copies=3):
+    rows, metadata, context = paused_fixture(copies)
+    final_clock_index = next(index for index, row in enumerate(rows) if row.topic == "/clock" and row.time_s == 6.)
+    final_clock = rows.pop(final_clock_index)
+    prior_index = next(index for index, row in enumerate(rows) if row.topic == "/gimbal/joint_states" and row.time_s == 6.)
+    prior = rows[prior_index]
+    rows[prior_index] = evaluation.stage1.Record(prior.topic, prior.time_s, prior.message, 5.996)
+    rows.insert(prior_index, evaluation.stage1.Record("/clock", 5.996, NS(clock=stamp(5.996)), 5.996))
+    rows.insert(prior_index + 2, final_clock)
+    rows = [evaluation.stage1.Record(row.topic, row.time_s, row.message, row.received_sim_s, index)
+            for index, row in enumerate(rows)]
+    metadata["clock_samples_read"] += 1
+    context["bag_integrity"]["native_reader_validation"]["topic_counts"]["/clock"] += 1
+    return rows, metadata, context
+
+
 class Stage3EvaluationTests(unittest.TestCase):
+    def test_real_feedback_before_immediately_following_final_clock_is_retained(self):
+        for copies in (1, 3):
+            rows, metadata, context = clock_boundary_fixture(copies)
+            prior = next(row for row in rows if row.topic == "/gimbal/joint_states" and row.time_s == 6.)
+            report = evaluation.evaluate_records(rows, metadata, "active", pause_context=context)
+            self.assertEqual(report["result"], "PASS", report["checks"])
+            feedback = report["physical_feedback"]
+            audit = feedback["terminal_redundant_message_audit"]
+            self.assertEqual(feedback["samples"], 251)
+            self.assertEqual(feedback["duplicate_or_nonincreasing_source_stamps"], copies)
+            self.assertEqual(feedback["effective_duplicate_or_nonincreasing_source_stamps"], 0)
+            self.assertEqual(audit["accepted_redundant_samples"], copies)
+            self.assertEqual(audit["retention_mode"], "real_feedback_before_immediately_following_final_clock")
+            self.assertEqual(audit["retained_source_s"], 6.)
+            self.assertEqual(audit["retained_received_sim_s"], 5.996)
+            self.assertEqual(audit["retained_record_sequence"], prior.record_sequence)
+            self.assertEqual(evaluation.evaluate_records(rows, metadata, "active")["result"], "FAIL_OR_INCOMPLETE")
+
+    def test_cross_topic_retention_rejects_conflict_clock_step_large_lead_and_multiple_early_duplicates(self):
+        for defect in ("position", "velocity", "frame", "clock_step", "large_lead", "lead_limit_plus_one_ns", "two_early_duplicates", "missing_sequence", "regressing_sequence"):
+            rows, metadata, context = clock_boundary_fixture()
+            prior_index = next(index for index, row in enumerate(rows) if row.topic == "/gimbal/joint_states" and row.time_s == 6.)
+            prior = rows[prior_index]
+            if defect in {"position", "velocity"}:
+                setattr(prior.message, defect, [.25, .0, .0])
+            elif defect == "frame":
+                prior.message.header.frame_id = "different"
+            elif defect == "clock_step":
+                rows.insert(prior_index + 1, evaluation.stage1.Record("/clock", 5.998, NS(clock=stamp(5.998)), 5.998))
+                rows = [evaluation.stage1.Record(row.topic, row.time_s, row.message, row.received_sim_s, index)
+                        for index, row in enumerate(rows)]
+                metadata["clock_samples_read"] += 1
+                context["bag_integrity"]["native_reader_validation"]["topic_counts"]["/clock"] += 1
+            elif defect in {"large_lead", "lead_limit_plus_one_ns"}:
+                receipt = 5.94 if defect == "large_lead" else 5.949999999
+                rows[prior_index] = evaluation.stage1.Record(prior.topic, prior.time_s, prior.message, receipt, prior.record_sequence)
+            elif defect == "two_early_duplicates":
+                rows.insert(prior_index + 1, deepcopy(prior))
+                rows = [evaluation.stage1.Record(row.topic, row.time_s, row.message, row.received_sim_s, index)
+                        for index, row in enumerate(rows)]
+            else:
+                sequence = None if defect == "missing_sequence" else rows[prior_index-1].record_sequence
+                rows[prior_index] = evaluation.stage1.Record(prior.topic, prior.time_s, prior.message, prior.received_sim_s, sequence)
+            report = evaluation.evaluate_records(rows, metadata, "active", pause_context=context)
+            self.assertEqual(report["result"], "FAIL_OR_INCOMPLETE", defect)
+            self.assertGreater(report["physical_feedback"]["effective_duplicate_or_nonincreasing_source_stamps"], 0, defect)
+            self.assertNotEqual(report["physical_feedback"]["terminal_redundant_message_audit"].get("retention_mode"),
+                                "real_feedback_before_immediately_following_final_clock", defect)
+            if defect == "lead_limit_plus_one_ns":
+                self.assertIn("preceding_final_source_not_within_existing_future_tolerance",
+                              report["physical_feedback"]["terminal_redundant_message_audit"]["preceding_retention_rejected_reasons"])
+
+    def test_cross_topic_retention_accepts_the_exact_existing_fifty_ms_boundary(self):
+        rows, metadata, context = clock_boundary_fixture()
+        rows = [row for row in rows if not 5.95 < row.time_s < 6.]
+        index = next(index for index, row in enumerate(rows) if row.topic == "/gimbal/joint_states" and row.time_s == 6.)
+        prior = rows[index]
+        rows[index] = evaluation.stage1.Record(prior.topic, prior.time_s, prior.message, 5.95)
+        rows.insert(index, evaluation.stage1.Record("/clock", 5.95, NS(clock=stamp(5.95)), 5.95))
+        rows = [evaluation.stage1.Record(row.topic, row.time_s, row.message, row.received_sim_s, index)
+                for index, row in enumerate(rows)]
+        count = sum(row.topic == "/clock" for row in rows)
+        metadata["clock_samples_read"] = count
+        context["bag_integrity"]["native_reader_validation"]["topic_counts"]["/clock"] = count
+        report = evaluation.evaluate_records(rows, metadata, "active", pause_context=context)
+        self.assertEqual(report["result"], "PASS", report["checks"])
+        audit = report["physical_feedback"]["terminal_redundant_message_audit"]
+        self.assertEqual(audit["retained_received_sim_s"], 5.95)
+        self.assertEqual(audit["accepted_redundant_samples"], 3)
+
     def test_reader_preserves_complete_clock_and_restores_topic_filter(self):
         topics = evaluation.stage1.TOPICS
         with patch.object(evaluation.stage1, "read_rosbag", return_value=([], {})) as reader:

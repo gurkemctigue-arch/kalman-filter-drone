@@ -82,7 +82,7 @@ def gimbal_overrides(plan, source_path):
         for name in ("recording_closure", "bag_integrity"):
             fixtures.write(original[name], {"scope":"ORCHESTRATION_FIXTURE_ONLY"})
         report["input_bindings"] = {name:{"path":str(path.resolve()), "sha256":v4.sha(path)} for name, path in original.items()}
-        replacement = directory / "gimbal_terminal_audit_v4.json"
+        replacement = directory / v4.GIMBAL_REEVALUATION_FILENAME
         fixtures.write(replacement, report)
         command = v4.wrapper_command(Path(plan["frozen_root"]), Path(spec["script"]).name,
             directory / "rosbag", "--mode", trial["gimbal_mode"],

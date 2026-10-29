@@ -88,7 +88,7 @@ def register_gimbal_reevaluations(target_plan, probe_plan, output):
                 or saved.get("flight_exit_code") != 0 or saved.get("status") not in v4.TERMINAL):
             raise ValueError("Registration requires six completed immutable original flights")
         original = next(spec for spec in trial["evaluations"] if spec["kind"] == "gimbal")
-        report = Path(trial["directory"]) / "gimbal_terminal_audit_v4.json"
+        report = Path(trial["directory"]) / v4.GIMBAL_REEVALUATION_FILENAME
         if report.exists():
             raise FileExistsError("Prospective reevaluation output already exists: " + str(report))
         planned.append({"slot_id":trial["id"], "record_file_sha256":v4.sha(record),
@@ -166,7 +166,7 @@ def read_evaluation_overrides_manifest(path, target, probe_paths, *, extension):
         if Path(override.get("evaluation_root", "")).resolve() != Path(target["frozen_root"]).resolve():
             raise ValueError("Override evaluator must use the target frozen source")
         report = Path(override["report"])
-        if (not report.is_file() or report.resolve() == Path(spec["report"]).resolve()
+        if (not report.is_file() or report.name != v4.GIMBAL_REEVALUATION_FILENAME or report.resolve() == Path(spec["report"]).resolve()
                 or report.parent.resolve() != Path(trial["directory"]).resolve()
                 or v4.sha(report) != override.get("report_sha256")):
             raise ValueError("Override must bind a new report while preserving the original")

@@ -24,10 +24,26 @@ the closure's final source time.
 Only the contiguous final JointState run at that global final source and
 receive time can be redundant. Every JointState field must match, including
 header, names/order, position, velocity and effort; float payloads are compared
-by their IEEE bits. Retain the first sample as independent timed feedback and
-exclude only its later redundant copies from geometry/interpolation/sample
-denominators. Original positive duplicate counts and original delivery-order
-errors remain in the report alongside effective counts and a payload hash.
+by their IEEE bits. Normally retain the first terminal sample as independent
+timed feedback and exclude its later redundant copies.
+
+A real final-source feedback sample can arrive just before the Clock callback
+for that final time. Revision 2 retains this preceding real sample when the
+complete delivery sequence is valid, its latest preceding Clock equals its
+receive time, its first following Clock is the global final Clock, its source
+leads its receive Clock by at most exactly 50,000,000 nanoseconds, and its
+complete payload equals the subsequent terminal run. The terminal run must
+start after that final Clock callback, with no earlier feedback at the same
+source time. Only subsequent copies whose source and receive times both equal
+the global final Clock are excluded; the preceding real sample is retained.
+Its source, receive time and record sequence remain explicit in the audit.
+
+Redundant copies supply no geometry/interpolation/sample denominators.
+Original positive duplicate counts and original delivery-order errors remain
+in the report alongside effective counts and a payload hash. Missing or
+regressing delivery sequence, an intermediate Clock, conflicting preceding
+payload, excess source lead or multiple early duplicates cannot satisfy this
+additional boundary case.
 
 Live or middle duplicates, time resumed after a duplicate, payload conflicts,
 regression, later zero, missing complete Clock, unsuccessful pause/closure or
@@ -67,8 +83,12 @@ This command exclusively creates the registration and runs zero evaluators.
 It records all six original slot/report SHA bindings and exact future argv,
 including `--selected-target` for the two multi-target slots. It refuses an
 existing registration or an already existing reevaluation output. The fixed
-new report name is `gimbal_terminal_audit_v4.json`, inside each original trial.
+new report name is `gimbal_terminal_audit_rev2.json`, inside each original trial.
 Every original flight must already have an immutable completed record.
+Keep every revision-1 source snapshot, registration, execution manifest,
+`gimbal_terminal_audit_v4.json` report and its original FAIL unchanged. Use a
+new source root, new registration and new six-slot execution manifest for
+revision 2; no revision-1 execution or registration can substitute for them.
 
 Execute each `planned_evaluations[].command` exactly, serially, during the
 designated bag-analysis window. Preserve actual start/end UTC, exit code,

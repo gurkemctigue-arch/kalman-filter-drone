@@ -168,16 +168,54 @@ def terminal_redundant_audit(records, metadata, feedback_records, pause_context)
         start = len(feedback_records)
         while start and feedback_records[start - 1].time_s == final and feedback_records[start - 1].received_sim_s == final:
             start -= 1
-        if len(feedback_records) - start < 2:
+        if len(feedback_records) - start < 1:
             return audit
         payload = complete_joint_payload(feedback_records[start].message)
         if any(complete_joint_payload(row.message) != payload for row in feedback_records[start:]):
             errors.append("conflicting_complete_terminal_jointstate_payload")
             return audit
-        accepted = list(range(start + 1, len(feedback_records)))
+        retained = start
+        retention_mode = "first_terminal_sample"
+        boundary_rejections = []
+        # The first real final-source message may arrive just before its
+        # cross-topic Clock callback. Keep that real sample; only messages
+        # actually received at the final Clock can be redundant copies.
+        if start and feedback_records[start - 1].time_s == final:
+            prior = feedback_records[start - 1]
+            lead_ns = (None if stage1.finite(prior.received_sim_s) is None
+                       else round(final * 1e9) - round(prior.received_sim_s * 1e9))
+            sequences = [row.record_sequence for row in records]
+            if (any(type(value) is not int or value < 0 for value in sequences)
+                    or any(after <= before for before, after in zip(sequences, sequences[1:]))):
+                boundary_rejections.append("missing_or_nonincreasing_complete_delivery_sequence")
+            if lead_ns is None or not 0 < lead_ns <= 50_000_000:
+                boundary_rejections.append("preceding_final_source_not_within_existing_future_tolerance")
+            if any(row.time_s == final for row in feedback_records[:start - 1]):
+                boundary_rejections.append("earlier_final_source_feedback_already_exists")
+            if not boundary_rejections:
+                previous_clocks = [row for row in records if row.topic == "/clock" and row.record_sequence < prior.record_sequence]
+                later_clocks = [row for row in records if row.topic == "/clock" and row.record_sequence > prior.record_sequence]
+                if (not previous_clocks or stage1.stamp_s(previous_clocks[-1].message.clock) != prior.received_sim_s
+                        or not later_clocks or stage1.stamp_s(later_clocks[0].message.clock) != final
+                        or feedback_records[start].record_sequence <= later_clocks[0].record_sequence):
+                    boundary_rejections.append("preceding_feedback_does_not_immediately_cross_final_clock")
+            try:
+                if complete_joint_payload(prior.message) != payload:
+                    boundary_rejections.append("preceding_complete_jointstate_payload_conflicts")
+            except (AttributeError, TypeError, ValueError):
+                boundary_rejections.append("preceding_complete_jointstate_payload_unavailable")
+            if not boundary_rejections:
+                retained = start - 1
+                retention_mode = "real_feedback_before_immediately_following_final_clock"
+        accepted = list(range(start if retained < start else start + 1, len(feedback_records)))
+        retained_record = feedback_records[retained]
         audit.update(accepted_feedback_indices=accepted, accepted_redundant_samples=len(accepted),
                      complete_payload_sha256=hashlib.sha256(repr(payload).encode()).hexdigest(),
-                     retained_unique_feedback_index=start)
+                     retained_unique_feedback_index=retained, retention_mode=retention_mode,
+                     preceding_retention_rejected_reasons=boundary_rejections,
+                     retained_source_s=retained_record.time_s,
+                     retained_received_sim_s=retained_record.received_sim_s,
+                     retained_record_sequence=retained_record.record_sequence)
     except (AttributeError, KeyError, TypeError, ValueError, IndexError) as error:
         errors.append("invalid_pause_evidence: " + str(error))
     return audit
@@ -420,7 +458,7 @@ def evaluate_records(records: list[stage1.Record], metadata: dict[str, Any], mod
         checks.update(midpoint_never_publishes_active_yaw=len(groups.get("/gimbal/body_yaw_reference", [])) == 0 and not active_diagnostics,
                       midpoint_setpoint_is_zero=bool(diagnostics) and all(data.get("desired_angles_rad") in (None, [0.0, 0.0, 0.0]) for _, data in diagnostics))
     return {
-        "schema_version": 3, "evaluator_version": "4_closure_bound_terminal_redundancy",
+        "schema_version": 3, "evaluator_version": "5_clock_boundary_terminal_redundancy",
         "mode": mode, "result": "PASS" if all(checks.values()) else "FAIL_OR_INCOMPLETE",
         "centering_source": "selected_fresh_track_box" if selected_target else "all_detections_in_single_target_world",
         "checks": checks, "metadata": metadata, "channel_errors": dict(failures),

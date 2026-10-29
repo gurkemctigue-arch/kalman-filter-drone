@@ -72,6 +72,7 @@ REPORT_PROVENANCE_HELPERS = {
     "native_startup":("scripts/evaluate_stage1_flight.py",),
     "gimbal":("scripts/evaluate_stage1_flight.py", "uav_tracking/control/gimbal_geometry.py"),
 }
+GIMBAL_REEVALUATION_FILENAME = "gimbal_terminal_audit_rev2.json"
 
 
 def offline_source_hashes(hashes):
@@ -1560,6 +1561,8 @@ def validate_probe_gate(plan, *, extensions=False):
                         or report_path.parent.resolve() != Path(trial["directory"]).resolve()
                         or not report_path.is_file() or sha(report_path) != override.get("report_sha256")):
                     raise ValueError("Offline override must preserve the old report and bind a new report in the same trial")
+                if kind == "gimbal" and report_path.name != GIMBAL_REEVALUATION_FILENAME:
+                    raise ValueError("Gimbal offline override must use the new separately named revision report")
                 spec["report"] = str(report_path)
                 spec["evaluation_root"] = override["evaluation_root"]
                 if kind == "gimbal":
