@@ -34,6 +34,14 @@ class PoseSeries:
 
     def at(self, timestamp):
         index = bisect_left(self.times, timestamp)
+        # Apply the existing strict exact-sample tolerance on either side.
+        # A grid endpoint one ULP above the last sample is still that sample,
+        # not permission to extrapolate across missing source time.
+        for adjacent in (index, index-1):
+            if 0 <= adjacent < len(self.times) and abs(self.times[adjacent]-timestamp) < 1e-9:
+                # Keep the stable first-row lookup for duplicate exact stamps.
+                exact = bisect_left(self.times, self.times[adjacent])
+                return interpolate_pose(self.rows[exact:exact+1], self.times[adjacent])
         return interpolate_pose(self.rows[max(0,index-1):index+1], timestamp)
 
 

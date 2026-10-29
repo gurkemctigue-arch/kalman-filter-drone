@@ -44,6 +44,7 @@ uav_tracking_controller:
     enable_gimbal_yaw_reference: true
     desired_distance_m: 9.0
     desired_height_m: 2.0
+    desired_offset_m: [0.0, 0.0, 0.0]
     slew_position: true
     max_position_lead_m: [2.0, 2.0, 0.5]
     position_gain: [0.60, 0.60, 0.50]
@@ -58,6 +59,8 @@ uav_tracking_px4_adapter:
   ros__parameters:
     use_sim_time: true
     command_topic: /tracking/command
+    vehicle_odometry_topic: /fmu/out/vehicle_odometry
+    vehicle_odom_topic: /vehicle/odometry
     vehicle_status_topic: /fmu/out/vehicle_status_v1
     vehicle_status_timeout_s: 1.0
     publish_rate_hz: 20.0

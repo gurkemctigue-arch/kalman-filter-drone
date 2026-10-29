@@ -2,6 +2,7 @@
 from __future__ import annotations
 import importlib.util
 import json
+import math
 from pathlib import Path
 import sys
 import tempfile
@@ -19,6 +20,47 @@ def trajectory(position, count=161):
 
 
 class OnlineStateAccuracyTests(unittest.TestCase):
+    def test_pose_series_endpoint_and_single_sample_ulps_return_the_actual_pose(self):
+        rows=[{"time_s":2.,"position_m":[1.,2.,3.],"quaternion_xyzw":[0,0,0,1]},
+              {"time_s":39.352,"position_m":[4.,5.,6.],"quaternion_xyzw":[0,0,2**-.5,2**-.5]}]
+        for samples in (rows,rows[:1],rows[1:]):
+            series=evaluation.PoseSeries(samples)
+            for row in samples:
+                expected=series.at(row["time_s"])
+                for direction in (-math.inf,math.inf):
+                    query=math.nextafter(row["time_s"],direction)
+                    with self.subTest(samples=len(samples),endpoint=row["time_s"],direction=direction):
+                        actual=series.at(query)
+                        self.assertIsNotNone(actual)
+                        np.testing.assert_array_equal(actual[0],expected[0])
+                        np.testing.assert_array_equal(actual[1],expected[1])
+        # The real development-grid representation is the next float above it.
+        self.assertEqual(math.nextafter(39.352,math.inf),39.352000000000004)
+
+    def test_pose_series_strict_exact_boundary_does_not_expand_extrapolation_or_long_gaps(self):
+        row={"time_s":0.,"position_m":[1.,2.,3.],"quaternion_xyzw":[0,0,0,1]}
+        single=evaluation.PoseSeries([row])
+        for sign in (-1,1):
+            self.assertIsNotNone(single.at(sign*math.nextafter(1e-9,0.)))
+            for distance in (1e-9,math.nextafter(1e-9,math.inf),2e-9,.1):
+                with self.subTest(sign=sign,distance=distance):
+                    self.assertIsNone(single.at(sign*distance))
+        long_gap=evaluation.PoseSeries([row,dict(row,time_s=.3,position_m=[4.,5.,6.])])
+        for query in (.05,.15,.25,-2e-9,.3+2e-9):
+            self.assertIsNone(long_gap.at(query))
+        self.assertIsNone(evaluation.PoseSeries([]).at(0.))
+        bracket=evaluation.PoseSeries([row,dict(row,time_s=.1,position_m=[3.,4.,5.])])
+        np.testing.assert_allclose(bracket.at(.05)[0],[2.,3.,4.],atol=0,rtol=0)
+
+    def test_pose_series_duplicate_exact_stamps_keep_stable_first_pose_lookup(self):
+        first={"time_s":1.,"position_m":[1.,2.,3.],"quaternion_xyzw":[0,0,0,1]}
+        duplicate=dict(first,position_m=[9.,8.,7.])
+        # PoseSeries retains sorted source rows; it does not add a new GT
+        # consistency policy or change navigation's separate de-duplication.
+        series=evaluation.PoseSeries([first,duplicate])
+        for query in (1.,math.nextafter(1.,-math.inf),math.nextafter(1.,math.inf)):
+            np.testing.assert_array_equal(series.at(query)[0],first["position_m"])
+
     def test_recorded_runtime_world_takes_precedence_over_source_world(self):
         with tempfile.TemporaryDirectory(dir=scripts.parent/"results",prefix="test_world_evidence_") as temporary:
             trial=Path(temporary);config=trial/"configuration";config.mkdir()
