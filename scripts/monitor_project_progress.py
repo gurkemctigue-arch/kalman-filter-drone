@@ -24,6 +24,8 @@ OWNER = "uav-project-progress-v1"
 ACTIVE = {"RUNNING", "EVALUATING"}
 STATES = sorted(ACTIVE | {"STOPPED_FAULT", "COMPLETED", "STALE", "UNVERIFIED"})
 MAX_SOURCE_BYTES = 8 * 1024 * 1024
+REPLACE_RETRY_SECONDS = 0.5
+REPLACE_RETRY_INTERVAL = 0.02
 
 
 def utc_now():
@@ -45,10 +47,31 @@ def read_json(path):
     return json.loads(path.read_text(encoding="utf-8-sig"))
 
 
-def atomic_json(path, value):
+def sharing_conflict(error):
+    """Windows readers may temporarily deny replacement of an open snapshot."""
+    return isinstance(error, OSError) and getattr(error, "winerror", None) in {5, 32, 33}
+
+
+def atomic_text(path, content):
+    path = Path(path)
     temporary = path.with_name(path.name + "." + uuid.uuid4().hex + ".tmp")
-    temporary.write_text(json.dumps(value, indent=2, ensure_ascii=False, allow_nan=False) + "\n", encoding="utf-8")
-    os.replace(temporary, path)
+    try:
+        temporary.write_text(content, encoding="utf-8")
+        deadline = time.monotonic() + REPLACE_RETRY_SECONDS
+        while True:
+            try:
+                os.replace(temporary, path)
+                return
+            except OSError as error:
+                if not sharing_conflict(error) or time.monotonic() >= deadline:
+                    raise
+                time.sleep(REPLACE_RETRY_INTERVAL)
+    finally:
+        temporary.unlink(missing_ok=True)
+
+
+def atomic_json(path, value):
+    atomic_text(path, json.dumps(value, indent=2, ensure_ascii=False, allow_nan=False) + "\n")
 
 
 def prepare_output(value):
@@ -306,9 +329,7 @@ document.getElementById('status').textContent=status;document.getElementById('re
 document.getElementById('freshness').textContent='快照UTC：'+data.generated_utc+'；快照年龄：'+Math.max(0,age).toFixed(1)+'秒；最后心跳：'+(data.heartbeat_utc||'未记录');
 document.getElementById('details').textContent=JSON.stringify(data,null,2);}
 update();setInterval(update,1000);</script></html>'''.replace("PAYLOAD", payload)
-    temporary = output / ("index." + uuid.uuid4().hex + ".tmp")
-    temporary.write_text(content, encoding="utf-8")
-    os.replace(temporary, output / "index.html")
+    atomic_text(output / "index.html", content)
     return report
 
 
@@ -371,12 +392,26 @@ def monitor(args, output, previous):
             state["heartbeat_utc"] = utc_now()
             code = child.poll() if child else None
             live = verify_process(target)["verified_alive"]
-            if code is not None or not live:
+            if (code is not None or not live) and not task["finished_utc"]:
                 task.update(finished_utc=utc_now(), returncode=code)
                 if child is None:
                     task["outcome_note"] = "External process disappeared; its exit code is unavailable"
-            atomic_json(output / "monitor_state.json", state)
-            report = write_report(output, state, notify=args.notify and task["finished_utc"] is not None)
+            try:
+                atomic_json(output / "monitor_state.json", state)
+                report = write_report(output, state, notify=args.notify and task["finished_utc"] is not None)
+            except OSError as error:
+                if not sharing_conflict(error):
+                    raise
+                # A busy browser/file reader must not end an otherwise healthy
+                # monitor. Published pages expire normally until writes resume.
+                # This also retries a terminal report without rerunning the task.
+                state["last_publication_error"] = {
+                    "utc": utc_now(), "winerror": error.winerror, "error": str(error)}
+                print(json.dumps({"event": "SNAPSHOT_PUBLICATION_RETRY",
+                                  **state["last_publication_error"]}, ensure_ascii=True),
+                      file=sys.stderr, flush=True)
+                time.sleep(args.interval)
+                continue
             if task["finished_utc"]:
                 print(json.dumps({"status": report["status"], "task": task["id"], "output": str(output)}, ensure_ascii=True))
                 return code if code is not None and 0 <= code <= 125 else 2 if child else 0

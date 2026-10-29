@@ -1,5 +1,6 @@
 """Real short processes and evidence boundaries; no WSL, ROS or simulation."""
 import importlib.util
+from contextlib import contextmanager
 import json
 import os
 from pathlib import Path
@@ -7,14 +8,35 @@ import signal
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 import unittest
+from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts/monitor_project_progress.py"
 SPEC = importlib.util.spec_from_file_location("project_progress", SCRIPT)
 monitor = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(monitor)
+
+
+@contextmanager
+def deny_windows_replacement(path):
+    """An ordinary reader sharing reads/writes but not Windows DELETE access."""
+    import ctypes
+    from ctypes import wintypes
+    kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+    kernel.CreateFileW.argtypes = [wintypes.LPCWSTR, wintypes.DWORD, wintypes.DWORD,
+                                  ctypes.c_void_p, wintypes.DWORD, wintypes.DWORD, wintypes.HANDLE]
+    kernel.CreateFileW.restype = wintypes.HANDLE
+    kernel.CloseHandle.argtypes = [wintypes.HANDLE]
+    handle = kernel.CreateFileW(str(path), 0x80000000, 3, None, 3, 0x80, None)
+    if handle == ctypes.c_void_p(-1).value:
+        raise ctypes.WinError(ctypes.get_last_error())
+    try:
+        yield
+    finally:
+        kernel.CloseHandle(handle)
 
 
 class ProjectProgressTests(unittest.TestCase):
@@ -41,6 +63,94 @@ class ProjectProgressTests(unittest.TestCase):
 
     def read_report(self):
         return json.loads((self.output / "progress.json").read_text(encoding="utf-8"))
+
+    @unittest.skipUnless(os.name == "nt", "Real Windows sharing semantics")
+    def test_real_windows_reader_releasing_lock_allows_json_and_html_publication(self):
+        for filename in ("progress.json", "index.html"):
+            with self.subTest(filename=filename):
+                path = self.directory / filename
+                path.write_text("old", encoding="utf-8")
+                locked, release = threading.Event(), threading.Event()
+
+                def reader():
+                    with deny_windows_replacement(path):
+                        locked.set()
+                        release.wait(2)
+
+                thread = threading.Thread(target=reader)
+                thread.start()
+                try:
+                    self.assertTrue(locked.wait(2))
+                    timer = threading.Timer(.08, release.set)
+                    timer.start()
+                    if filename.endswith(".json"):
+                        monitor.atomic_json(path, {"updated": True})
+                        self.assertEqual(monitor.read_json(path), {"updated": True})
+                    else:
+                        monitor.atomic_text(path, "<html>new</html>")
+                        self.assertEqual(path.read_text(), "<html>new</html>")
+                    timer.join()
+                finally:
+                    release.set()
+                    thread.join(timeout=2)
+                self.assertEqual(list(self.directory.glob("*.tmp")), [])
+
+    @unittest.skipUnless(os.name == "nt", "Real Windows sharing semantics")
+    def test_real_windows_persistent_lock_preserves_snapshot_and_cleans_temporary(self):
+        path = self.directory / "progress.json"
+        path.write_text('{"old": true}', encoding="utf-8")
+        with deny_windows_replacement(path), mock.patch.object(monitor, "REPLACE_RETRY_SECONDS", .04):
+            with self.assertRaises(OSError) as caught:
+                monitor.atomic_json(path, {"updated": True})
+        self.assertIn(caught.exception.winerror, {5, 32, 33})
+        self.assertEqual(monitor.read_json(path), {"old": True})
+        self.assertEqual(list(self.directory.glob("*.tmp")), [])
+
+    def test_nonsharing_replace_error_is_not_retried_and_cleans_temporary(self):
+        path = self.directory / "progress.json"
+        path.write_text('{"old": true}', encoding="utf-8")
+        with mock.patch.object(monitor.os, "replace", side_effect=OSError("disk failure")) as replace:
+            with self.assertRaisesRegex(OSError, "disk failure"):
+                monitor.atomic_json(path, {"updated": True})
+        self.assertEqual(replace.call_count, 1)
+        self.assertEqual(monitor.read_json(path), {"old": True})
+        self.assertEqual(list(self.directory.glob("*.tmp")), [])
+
+    @unittest.skipUnless(os.name == "nt", "Real Windows sharing semantics")
+    def test_real_monitor_survives_busy_snapshot_without_restarting_or_killing_target(self):
+        command = [sys.executable, str(SCRIPT), "run", "--output", str(self.output),
+                   "--phase", "evaluation", "--interval", ".03", "--stale-after", "1",
+                   "--", sys.executable, "-c", "import time; time.sleep(2)"]
+        wrapper = subprocess.Popen(command, cwd=ROOT, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                   text=True, creationflags=subprocess.CREATE_NO_WINDOW)
+        expected = None
+        try:
+            deadline = time.monotonic() + 3
+            while not (self.output / "progress.json").exists() and time.monotonic() < deadline:
+                time.sleep(.01)
+            self.assertTrue((self.output / "progress.json").exists())
+            state = monitor.read_json(self.output / "monitor_state.json")
+            expected = state["task"]["process"]
+            with deny_windows_replacement(self.output / "progress.json"):
+                time.sleep(.75)  # Exceeds the bounded per-publication retry window.
+                self.assertIsNone(wrapper.poll())
+                self.assertTrue(monitor.verify_process(expected)["verified_alive"])
+            stdout, stderr = wrapper.communicate(timeout=5)
+            self.assertEqual(wrapper.returncode, 0, stderr)
+            self.assertIn("SNAPSHOT_PUBLICATION_RETRY", stderr)
+            report = self.read_report()
+            self.assertEqual(report["status"], "COMPLETED")
+            self.assertEqual(report["task"]["process"]["start_token"], expected["start_token"])
+            self.assertEqual(report["task"]["returncode"], 0)
+            self.assertEqual(len(report["tasks"]), 1)
+            self.assertEqual(list(self.output.glob("*.tmp")), [])
+            self.assertFalse((self.output / "monitor.lock.json").exists())
+        finally:
+            if wrapper.poll() is None:
+                wrapper.kill()
+                wrapper.communicate(timeout=3)
+            if expected and monitor.verify_process(expected)["verified_alive"]:
+                os.kill(expected["pid"], signal.SIGTERM)
 
     def test_real_owned_process_success_records_exit_and_creation_identity(self):
         result = self.run_child("import time; time.sleep(.12)")
