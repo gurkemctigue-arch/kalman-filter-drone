@@ -1,6 +1,10 @@
 # 三阶段实现与实际验收状态
 
-**当前开发目标为 v4（Ubuntu 22.04 / ROS 2 Humble），三阶段代码均已实现，最终验收尚未完成。** Humble25已通过四包构建、模块/ament与FastCDR来源核验、消息序列化及1390项检查（1385通过、5项精确平台跳过）。两类clean20均完成；核心12格全部尝试，9 PASS、3 FAIL，运行与清理正常。六个行人格均PASS；汽车起飞交接、交叉跟踪和多目标主动云台FAIL。每槽终态与新增候选修复见[当前交接记录](../planning/reliability-v4-current-state.md)及[汽车检测失效诊断](../planning/reliability-v4-car-fragment-diagnosis-20261030.md)。不以测试计数或单项云台检查代替整次飞行验收；正式仍为0/280。
+**当前开发目标为 v4（Ubuntu 22.04 / ROS 2 Humble），三阶段代码均已实现，最终验收尚未完成。** 最新快照创建于北京时间2026-10-30 09:38:31：Humble28冻结566个来源文件，四包构建、模块/ament与FastCDR来源及11项真实CDR消息往返通过；Linux全套1434项中1429通过、5项精确平台跳过，用时47.781秒，来源保持不变。新版本统一非实时RTF=0.25及600秒飞行wall预算，原保护门保持。截至快照，两类20秒clean已启动且尚无批次终态，核心12格全部PENDING，正式0/280，完整容量未准入。
+
+Humble27历史：行人20秒clean导航PASS，原RTF=0.5汽车clean因测量供给时效超过0.75源秒保护而失联，核心12格保持全部PENDING。同冻结27的独立汽车RTF=0.25诊断完成20源秒跟随，导航距离/高度RMSE为0.74435/0.30698米，导航及真值覆盖204/204，末段距离和高度均稳定；源时钟、原生起飞、归档及清理检查通过。无设计遮挡的surface评价仍为INCOMPLETE_EVIDENCE。单次非实时诊断不能证明75秒工程验收、正式重复、实时或实机性能，也不覆盖原0.5失败；其结果仅支持统一新资源配置继续开发。
+
+Humble25历史核心12格为9 PASS、3 FAIL，六个行人格均PASS，汽车起飞交接、交叉跟踪和多目标主动云台FAIL。Humble26启动失败、Humble27原汽车失败及全部旧记录保持。每槽终态与新增候选见[当前交接记录](../planning/reliability-v4-current-state.md)及[汽车检测失效诊断](../planning/reliability-v4-car-fragment-diagnosis-20261030.md)；测试计数、单项云台或单次20秒导航通过均不能代替三阶段最终验收。
 
 后续按[可靠性修复与交付方案](../planning/reliability-v4-next-actions-20261030.md)推进同源核心、安全及扩展验证，再完成定标、容量准入、正式重复和统计交付。本机[进度入口](../results/project_progress/current/index.html)显示受监任务的最新状态。**下文全部计数和“已结束”描述属于历史 v3 / Jazzy 归档**，不代表 v4 / Humble 已通过；历史材料保留供复核。
 

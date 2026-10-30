@@ -1,8 +1,16 @@
 # 当前工作交接（持续开发，非验收报告）
 
-最新执行快照（2026-10-30，Humble27构建验证完成后）：已冻结565个文件，来源canonical为`1a9aa3ae1bb9457d2d3240169832763c640a870b63a94a652b4017a15a6ac27f`，最终review SHA-256为`88d5fe5b8ad1a95e3de5228ed2a32c1d3290704730a365269948cdc8a1eef9a9`。四个ROS包构建、模块/ament隔离、FastCDR来源和真实消息序列化往返均通过；Linux全套1427项检查中1422通过、5项按精确平台条件跳过，用时46.597秒，returncode=0、source_unchanged=true。实际回执为本机`results/frozen_fullplan_v4_humble27/freeze_validation/build_validation_summary.json`。
+最新执行快照（创建于北京时间2026-10-30 09:38:31，非实时状态）：Humble28已完成566个来源文件冻结，canonical为`df8e4b1bf2adc7ffad4f72449ad85db3ff9a7ff4eb18bb2ca53e330d02022ac2`，最终review SHA-256为`64587bf16c69f728278455b3d3074686ea1bca730ad68f9a8203107fa5b1d2ca`。四包实际构建用时12.4秒，模块/ament隔离、FastCDR来源及11项真实CDR消息往返通过；Linux全套1434项检查中1429通过、5项按精确平台条件跳过，用时47.781秒，returncode=0、source_unchanged=true。实际回执与manifest位于本机`results/frozen_fullplan_v4_humble28/freeze_validation/`。
 
-本快照形成时两类20秒clean检查正在串行执行；首个行人场景已通过暂停前桥身份验证并进入原生起飞，尚无完整飞行通过结论。新27核心12格PROBE计划已建立且全部PENDING，正式仍0/280；后续仍须完成同源clean检查、12核心、4安全、16扩展及容量核算。
+新28统一采用非实时RTF=0.25和600秒飞行wall预算；原0.60秒观测、0.75秒预测/控制、180秒原生起飞、1800秒停飞后处理及身份保护保持。截至本快照，两类20秒clean正在串行执行，尚无该批终态，原12核心计划已创建且全部PENDING；正式仍0/280，完整28格容量未准入。后续须完成同源clean、12核心、4安全、16扩展、定标及容量检查，不能将较低源时间年龄解释为墙钟推理加速或实机实时能力。此文档是冻结后的新主树状态快照，不修改冻结28来源或manifest。
+
+Humble27资源诊断历史（2026-10-30）：原RTF=0.5行人20秒clean已完成，独立导航PASS，距离/高度RMSE为0.3254266/0.3014140米，导航和真值覆盖均1.0，末段距离与高度均稳定。原0.5汽车clean失败后停止该批；小工件诊断确认47/47相邻测量机会的下一处理时刻距上次采集为0.796–1.024源秒，超过原0.75秒预测保护。首次源18.4秒测量在18.88秒被接受，控制器在19.152秒因年龄0.752秒拒绝，估计器19.160秒锁存LOST；下一源18.8秒观测到19.308秒才完成，入站年龄0.508秒仍在0.60秒内。后续无所选测量和关联变化是失联锁存后的结果，不能把这次初始失效说成入站stale或关联错误；流水线墙钟时长也不等于纯神经网络推理时长。
+
+同一冻结27、汽车m960/四线程/seed004/20源秒/原300秒flight wall的独立新诊断仅将RTF从0.5改为0.25，现已执行结束且flight返回0。独立导航JSON保留完整204/204分母，距离RMSE为0.7443489505米、高度0.3069763173米，导航与真值覆盖均1.0，末段距离/高度稳定，两项数值门均满足；源时钟和原生起飞评价PASS。无设计短长遮挡的surface原结论仍为INCOMPLETE_EVIDENCE，缺失话题/输入读取错误均为0且保留失败事件。归档/录制关闭、ROS退出、观察器正常收尾及来源不变均通过，残留进程为空。工件位于本机`results/frozen_fullplan_v4_humble27/humble27_car_rtf025_diagnostic01/`，独立四评价在`evaluation01/`；该新诊断不替换原0.5失败，不计入canonical或正式槽位，也不建立75秒可靠性、容量或实时/实机结论。
+
+资源选择按新的[统一仿真资源决定](reliability-v4-simulation-resource-20261030.md)执行；原27核心12格仍全部PENDING，不恢复旧批。0.5与0.25记录分别保留，不能合并为同一冻结比较；同一最终来源完整开发验证之前，正式种子不授权使用。
+
+Humble27构建快照：已冻结565个文件，来源canonical为`1a9aa3ae1bb9457d2d3240169832763c640a870b63a94a652b4017a15a6ac27f`，最终review SHA-256为`88d5fe5b8ad1a95e3de5228ed2a32c1d3290704730a365269948cdc8a1eef9a9`。四个ROS包构建、模块/ament隔离、FastCDR来源和真实消息序列化往返均通过；Linux全套1427项检查中1422通过、5项按精确平台条件跳过，用时46.597秒，returncode=0、source_unchanged=true。实际回执为本机`results/frozen_fullplan_v4_humble27/freeze_validation/build_validation_summary.json`。
 
 [typed生命周期修复](reliability-v4-owned-process-lifecycle-20261030.md)的53项主机专项回归及3项真实Linux内核进程检查全部通过，实际回执分别为本机`D:/WSL/UAVHumble22-validation/humble27_proc_host01.json`及同目录`humble27_actual_proc_lifecycle01.json`。新来源仅对完整合法Z/X抛出专用异常，并只在普通非leader子进程父身份相符时跳过；畸形记录、leader、已选桥丢失和桥替换仍失败。真实OS检查使用自有live子进程、真实未回收Z和临时命名sleep，范围不包含真实ROS桥、ELF注册或飞行；其成功不能代替完整闭环验收。
 

@@ -12,6 +12,8 @@ import tempfile
 import unittest
 from unittest.mock import Mock, patch
 
+import yaml
+
 from tests import test_reliability_v4_guard as fixtures
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -110,6 +112,36 @@ def replay_inputs(root):
 
 
 class SafetyAssemblyTests(unittest.TestCase):
+    def test_resource_mismatch_cannot_publish_a_safety_candidate_after_hash_rebinding(self):
+        for defect in ("config_rtf", "config_wall", "supervisor_rtf", "flight_rtf", "flight_wall"):
+            with self.subTest(defect=defect), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary)
+                inputs, context, runtime, facts = safety_inputs(root)
+                slot = facts["slots"][0]
+                if defect.startswith("config_"):
+                    binding = slot["evidence"]["run_config"]; data = register.guard.load(binding["path"])
+                    key = "real_time_factor" if defect == "config_rtf" else "wall_timeout"
+                    data[key] = .5 if key == "real_time_factor" else 300.
+                    slot["evidence"]["run_config"] = write(Path(binding["path"]), data)
+                elif defect == "supervisor_rtf":
+                    binding = slot["evidence"]["runtime_parameters"]; path = Path(binding["path"])
+                    data = yaml.safe_load(path.read_text())
+                    data["uav_tracking_flight_supervisor"]["ros__parameters"]["requested_simulation_real_time_factor"] = .5
+                    path.write_text(yaml.safe_dump(data), encoding="utf-8")
+                    slot["evidence"]["runtime_parameters"] = register.guard.file_binding(path)
+                else:
+                    argv = slot["executions"]["flight"]["argv"]
+                    flag = "--real-time-factor" if defect == "flight_rtf" else "--wall-timeout"
+                    argv[argv.index(flag)+1] = "0.5" if defect == "flight_rtf" else "300.0"
+                    registry = register.guard.load(facts["registry"]["path"])
+                    next(row for row in registry["trials"] if row["id"] == slot["id"])["flight_argv"] = argv
+                    facts["registry"] = write(Path(facts["registry"]["path"]), registry)
+                write(inputs["facts"], facts)
+                with patch.object(register, "gate_context", return_value=(runtime, context)), \
+                        self.assertRaisesRegex(ValueError, "simulation resources"):
+                    register.run_action("safety-summary", inputs, root / "refused")
+                self.assertFalse((root / "refused/safety_summary_candidate.json").exists())
+
     def test_preserves_original_slots_and_real_sigint_without_fabricated_registration(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

@@ -10,9 +10,12 @@ import importlib.util
 import json
 import os
 from pathlib import Path
+import shlex
+import shutil
 from types import SimpleNamespace
 import tempfile
 import subprocess
+import sys
 import unittest
 from unittest.mock import Mock, patch
 
@@ -153,7 +156,8 @@ def safety_fixture(root, *, linked=False):
         (dev/'results').mkdir()
     for name in ('scripts/run_stage1_trial.py','uav_tracking/research_failures.py'):
         path=dev/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_text('# inert fixture\n')
-    resources=guard.load(ROOT/'planning/reliability-v4-preregistration.json')['resources']
+    protocol=guard.load(ROOT/'planning/reliability-v4-preregistration.json')
+    resources=protocol['resources']
     source_hashes={name:guard.sha(dev/name) for name in ('scripts/run_stage1_trial.py','uav_tracking/research_failures.py')}
     for cls in guard.CLASSES:
         model=dev/resources[cls]['model'];model.parent.mkdir(exist_ok=True);model.write_bytes(b'fixture model')
@@ -179,7 +183,8 @@ def safety_fixture(root, *, linked=False):
                 'initial_select':'none' if auto else 'middle','initial_min_candidates':2 if auto else 3,
                 'scenario_kind':'parallel' if auto else 'ambiguity','duration':35. if auto else 50.,
                 'condition':'clean','motion_profile_kind':'standard','takeoff_mode':'px4_native','takeoff_height_m':3.,
-                'control_reference':'ground_footprint','real_time_factor':.5,'max_inference_rate_hz':10.,'monitor_tick_s':.02,
+                'control_reference':'ground_footprint','real_time_factor':protocol['real_time_factor'],'max_inference_rate_hz':10.,'monitor_tick_s':.02,
+                'wall_timeout':protocol['flight_wall_timeout_s'],
                 'gazebo_render_driver':'llvmpipe','px4_time_mode':'source_sim','magnetic_environment':'gazebo_enu',
                 'propagate_vehicle_uncertainty':True,'occlusions':False,'reselect_after_loss':False,
                 'no_follow_duration_s':35. if auto else None,'supervisor_status_timestamp_mode':'source_sim',
@@ -193,7 +198,7 @@ def safety_fixture(root, *, linked=False):
                 'uav_tracking_controller':{'state_topic':'/tracking/navigation_state','desired_height_m':2.,'prediction_timeout_s':.75},
                 'uav_tracking_px4_adapter':{'use_sim_time':True,'odometry_timestamp_mode':'source_sim','odometry_source_max_age_s':.5,
                     'odometry_source_max_future_s':.05,'vehicle_odometry_topic':'/fmu/out/vehicle_odometry','vehicle_odom_topic':'/vehicle/odometry'},
-                'uav_tracking_flight_supervisor':{'takeoff_mode':'px4_native','status_timestamp_mode':'source_sim','status_source_max_age_s':1.,'status_source_max_future_s':.05,'status_timeout_s':10.}}
+                'uav_tracking_flight_supervisor':{'takeoff_mode':'px4_native','status_timestamp_mode':'source_sim','status_source_max_age_s':1.,'status_source_max_future_s':.05,'status_timeout_s':10.,'requested_simulation_real_time_factor':protocol['real_time_factor']}}
             values={'run_config':('run_config.json',config),
                 'source_snapshot':('configuration/source_sha256.json',{key:value for key,value in source_hashes.items() if key.endswith(('.py','.sh','.msg')) or key==resource['model']}),
                 'bag_integrity':('bag_integrity.json',{'status':'PASS'}),
@@ -215,7 +220,9 @@ def safety_fixture(root, *, linked=False):
             parameter_path.write_text(yaml.safe_dump({name:{'ros__parameters':value} for name,value in params.items()}),encoding='utf-8')
             evidence['runtime_parameters']=guard.file_binding(parameter_path)
             flight=prefix+[str(dev/'scripts/run_stage1_trial.py'),'--name',identifier,'--class',cls,'--seed','4',
-                '--target-mode',config['target_mode'],'--scenario-kind',config['scenario_kind']]
+                '--target-mode',config['target_mode'],'--scenario-kind',config['scenario_kind'],
+                '--real-time-factor',str(protocol['real_time_factor']),
+                '--wall-timeout',str(protocol['flight_wall_timeout_s'])]
             commands={'flight':flight,
                 'source_clock':prefix+['scripts/evaluate_px4_source_clock.py',str(trial),'--output',evidence['source_clock']['path']],
                 'native_startup':prefix+['scripts/evaluate_native_startup.py',str(trial),'--output',evidence['native_startup']['path']],
@@ -245,7 +252,8 @@ def safety_fixture(root, *, linked=False):
     summary={'schema_version':1,'kind':'RELIABILITY_V4_FINAL_SAFETY_SUMMARY','result':'PASS','evidence_scope':'REAL_RECORDED_DEVELOPMENT_EVIDENCE',
         'created_utc':'2026-10-20T00:00:06+00:00','bindings':bindings,'source_facts':facts_binding,'slots':slots}
     manifest={'safety':write(root/'safety.json',summary)}
-    context=SimpleNamespace(core={'protocol':{'resources':resources}},development=development,development_path=Path(dev_binding['path']),
+    context=SimpleNamespace(core={'protocol':{'resources':resources,'real_time_factor':protocol['real_time_factor'],
+        'flight_wall_timeout_s':protocol['flight_wall_timeout_s']}},development=development,development_path=Path(dev_binding['path']),
         gate_bindings=bindings,registration_times=[guard.utc('2026-10-20T00:00:07+00:00')]*3)
     calls=[]
     def infrastructure(directory,attempts):
@@ -423,6 +431,66 @@ class InitialAndResolutionTests(unittest.TestCase):
 
 
 class SafetyTests(unittest.TestCase):
+    def test_safety_card_bash_constructs_both_classes_from_the_actual_plan(self):
+        if os.name == 'nt':
+            git=shutil.which('git')
+            bash=Path(git).resolve().parent.parent/'bin/bash.exe' if git else Path('missing-host-git-bash')
+        else:
+            bash=Path(shutil.which('bash') or 'missing-host-bash')
+        if not bash.is_file():self.skipTest('Native host bash is unavailable; never use a WSL launcher')
+        card=(ROOT/'planning/reliability-v4-ambiguity-execution.md').read_text(encoding='utf-8')
+        block=card.split('```bash\n',1)[1].split('\n```',1)[0]
+        protocol=guard.load(ROOT/'planning/reliability-v4-preregistration.json')
+        with tempfile.TemporaryDirectory() as temporary:
+            root=Path(temporary).resolve();plan=root/'plan.json';log=root/'argv.jsonl'
+            capture=root/'capture.py';script=root/'card.sh'
+            capture.write_text('import json,sys\nwith open(sys.argv[1],"a",encoding="utf-8") as f: f.write(json.dumps(sys.argv[2:])+"\\n")\n',encoding='utf-8')
+            prelude='set -euo pipefail\n'
+            prelude+='tracking_fixture_python='+shlex.quote(Path(sys.executable).as_posix())+'\n'
+            prelude+='tracking_fixture_capture='+shlex.quote(capture.as_posix())+'\n'
+            prelude+='tracking_fixture_log='+shlex.quote(log.as_posix())+'\n'
+            prelude+='python3() { "$tracking_fixture_python" -X utf8 "$@"; }\n'
+            # Every apparent command is intercepted before it could launch ROS.
+            prelude+='bash() { "$tracking_fixture_python" -X utf8 "$tracking_fixture_capture" "$tracking_fixture_log" "$@"; }\n'
+            body=block.replace('tracking_plan=/absolute/path/to/the/final_source_probe/plan.json',
+                               'tracking_plan='+shlex.quote(plan.as_posix()),1)
+            script.write_text(prelude+body+'\ntracking_common_checks() { :; }\ntracking_run_class person\ntracking_run_class car\n',encoding='utf-8',newline='\n')
+            sentinel=deepcopy(protocol)
+            # An inert data-flow fixture proves that constants in the card
+            # cannot accidentally pass merely by matching today's protocol.
+            sentinel.update(real_time_factor=.125,flight_wall_timeout_s=777.)
+            for cls in guard.CLASSES:
+                sentinel['resources'][cls].update(model='models/fixture_'+cls+'.pt',
+                    inference_image_size=288 if cls=='person' else 864,inference_threads=1,
+                    desired_distance_m=6. if cls=='person' else 10.)
+            for selected in (protocol,sentinel):
+                write(plan,{'frozen_root':root.as_posix(),'protocol':selected})
+                log.write_text('',encoding='utf-8')
+                environment={**os.environ,'PYTHONUTF8':'1','MSYS2_ARG_CONV_EXCL':'*'}
+                completed=subprocess.run([str(bash),'--noprofile','--norc',str(script)],
+                    cwd=root,env=environment,capture_output=True,text=True,timeout=30,
+                    creationflags=subprocess.CREATE_NO_WINDOW if os.name=='nt' else 0)
+                self.assertEqual(completed.returncode,0,completed.stderr)
+                calls=[json.loads(line) for line in log.read_text(encoding='utf-8').splitlines()]
+                flights=[row for row in calls if Path(row[1]).name=='run_stage1_trial.py']
+                self.assertEqual(len(calls),8)
+                self.assertEqual(len(flights),4)
+                self.assertEqual({(row[row.index('--class')+1],row[row.index('--target-mode')+1]) for row in flights},
+                    {(cls,mode) for cls in guard.CLASSES for mode in ('auto_unique','locked_target')})
+                for argv in flights:
+                    option=lambda key:argv[argv.index('--'+key)+1]
+                    resource=selected['resources'][option('class')]
+                    self.assertEqual(float(option('real-time-factor')),selected['real_time_factor'])
+                    self.assertEqual(float(option('wall-timeout')),selected['flight_wall_timeout_s'])
+                    self.assertEqual(Path(option('model-path')).resolve(),(root/resource['model']).resolve())
+                    self.assertEqual(int(option('inference-image-size')),resource['inference_image_size'])
+                    self.assertEqual(int(option('inference-threads')),resource['inference_threads'])
+                    self.assertEqual(float(option('desired-distance-m')),resource['desired_distance_m'])
+                    self.assertEqual(option('takeoff-mode'),'px4_native')
+                    self.assertEqual(float(option('takeoff-height-m')),3.)
+                    self.assertNotIn('--occlusions',argv)
+                    self.assertNotIn('--reselect-after-loss',argv)
+
     @staticmethod
     def refresh(manifest,summary,facts):
         summary['source_facts']=write(Path(summary['source_facts']['path']),facts)
@@ -434,6 +502,32 @@ class SafetyTests(unittest.TestCase):
             self.assertIn('ros__parameters:',Path(s['slots'][0]['evidence']['runtime_parameters']['path']).read_text())
             guard.validate_safety(m,c,r)
             self.assertEqual(len(calls),4)
+
+    def test_safety_simulation_resources_cannot_drift_after_legitimate_rebinding(self):
+        for defect in ('config_rtf','config_wall','supervisor_rtf','flight_rtf','flight_wall'):
+            with self.subTest(defect=defect),tempfile.TemporaryDirectory() as temporary:
+                m,c,r,s,f,_=safety_fixture(Path(temporary))
+                slot=s['slots'][0]
+                if defect.startswith('config_'):
+                    key='real_time_factor' if defect=='config_rtf' else 'wall_timeout'
+                    binding=slot['evidence']['run_config'];data=guard.load(binding['path'])
+                    data[key]=.5 if key=='real_time_factor' else 300.
+                    slot['evidence']['run_config']=write(Path(binding['path']),data)
+                elif defect=='supervisor_rtf':
+                    binding=slot['evidence']['runtime_parameters'];path=Path(binding['path'])
+                    data=yaml.safe_load(path.read_text())
+                    data['uav_tracking_flight_supervisor']['ros__parameters']['requested_simulation_real_time_factor']=.5
+                    path.write_text(yaml.safe_dump(data),encoding='utf-8')
+                    slot['evidence']['runtime_parameters']=guard.file_binding(path)
+                else:
+                    argv=slot['executions']['flight']['argv']
+                    flag='--real-time-factor' if defect=='flight_rtf' else '--wall-timeout'
+                    argv[argv.index(flag)+1]='0.5' if defect=='flight_rtf' else '300.0'
+                    registry=guard.load(f['registry']['path'])
+                    next(row for row in registry['trials'] if row['id']==slot['id'])['flight_argv']=argv
+                    f['registry']=write(Path(f['registry']['path']),registry)
+                self.refresh(m,s,f)
+                with self.assertRaises(guard.Refusal):guard.validate_safety(m,c,r)
 
     def test_real_results_link_preserves_lexical_classifier_root(self):
         with tempfile.TemporaryDirectory() as temporary:

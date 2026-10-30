@@ -200,7 +200,7 @@ class FakeCommands:
             config.update(target_class=option("class"))
             for key in ["stage", "seed", "initial_min_candidates", "inference_image_size", "inference_threads"]:
                 config[key] = int(option(key))
-            for key in ["speed_mps", "desired_distance_m", "duration", "real_time_factor", "max_inference_rate_hz", "monitor_tick_s", "short_occlusion_s"]:
+            for key in ["speed_mps", "desired_distance_m", "duration", "real_time_factor", "wall_timeout", "max_inference_rate_hz", "monitor_tick_s", "short_occlusion_s"]:
                 config[key] = float(option(key))
             config.update(multi_target="--multi-target" in command, occlusions=True, reselect_after_loss=True,
                           propagate_vehicle_uncertainty="--propagate-vehicle-uncertainty" in command,
@@ -225,7 +225,7 @@ class FakeCommands:
                     "native_takeoff_timeout_sim_s":40., "native_wall_timeout_s":180.,
                     "status_timestamp_mode":"source_sim", "status_source_max_age_s":1.,
                     "status_source_max_future_s":.05, "status_timeout_s":10.,
-                    "requested_simulation_real_time_factor":.5,
+                    "requested_simulation_real_time_factor":config["real_time_factor"],
                     "auto_start":True,"simulation_only":True},
             }
             write(directory / "configuration/runtime_parameters.yaml", {key: {"ros__parameters": value} for key, value in parameters.items()})
@@ -251,7 +251,7 @@ class FakeCommands:
             plugin = world_tree.find("world/plugin")
             ET.SubElement(plugin, "use_earth_frame_ned").text = "false"
             ET.SubElement(plugin, "use_units_gauss").text = "true"
-            world_tree.find("world/physics/real_time_factor").text = ".5"
+            world_tree.find("world/physics/real_time_factor").text = str(config["real_time_factor"])
             runtime_world = directory / "configuration/runtime_world.sdf"
             world_tree.write(runtime_world, encoding="utf-8", xml_declaration=True)
             runtime_manifest = directory / "configuration/px4_magnetic_runtime.json"
@@ -366,6 +366,78 @@ def fixture_probe_gate(root):
 
 
 class ReliabilityV4Tests(unittest.TestCase):
+    def test_registered_simulation_resources_reject_old_or_arbitrary_rtf_and_wall_budget(self):
+        protocol = v4.load(ROOT / v4.PROTOCOL_PATH)
+        v4.validate_protocol(protocol)
+        for key, values in (("real_time_factor", (.5, .3, 0., True, float("nan"))),
+                            ("flight_wall_timeout_s", (300., 599., True, float("inf")))):
+            for value in values:
+                changed = deepcopy(protocol)
+                changed[key] = value
+                with self.subTest(key=key, value=value), self.assertRaisesRegex(ValueError, key):
+                    v4.validate_protocol(changed)
+        self.assertEqual(protocol["safety_gates"], {"max_observation_age_s":.6,
+            "max_prediction_duration_s":.75, "mahalanobis_gate":9.21,
+            "lost_requires_explicit_reselection":True, "runtime_ground_truth_forbidden":True})
+
+    def test_cli_default_registers_600_second_flight_and_separate_1800_archive_budget(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); fixture(root)
+            with patch.object(v4, "verify_external_runtime", side_effect=fixture_runtime_verifier):
+                self.assertEqual(v4.main(["plan", "--frozen-root", str(root),
+                    "--output", "results/default_resources", "--prefix", "reliability_v4_default_resources",
+                    "--probe", "--seeds", "4", "--groups", "stage1_velocity", "--classes", "person"]), 0)
+            frozen = v4.load(root / "results/default_resources/plan.json")
+            self.assertEqual(frozen["trials"][0]["wall_timeout_s"], 600.)
+            self.assertEqual(frozen["postprocessing_timeout_s"], 1800.)
+            self.assertEqual(frozen["trial_timeout_s"], 2400.)
+            self.assertEqual(frozen["evaluation_timeout_s"], 1800.)
+            v4.validate_plan(frozen)
+
+    def test_formal_wall_budget_cannot_use_a_probe_override_even_after_reseal(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); fixture(root)
+            with self.assertRaisesRegex(ValueError, "Formal flight wall"):
+                make_fixture_plan(root, "results/refused_formal_budget", "reliability_v4_refused_budget",
+                    formal=True, wall_timeout=300.)
+            probe = make_fixture_plan(root, "results/small_probe_budget", "reliability_v4_small_budget",
+                groups=["stage1_velocity"], classes=["person"], seeds=[4], wall_timeout=10.)
+            v4.validate_plan(probe)
+            for mode in ("FORMAL", "EXTENSION_FORMAL"):
+                changed = deepcopy(probe)
+                changed["mode"] = mode
+                changed["plan_sha256"] = v4.digest(changed, ("plan_sha256",))
+                with self.subTest(mode=mode), self.assertRaisesRegex(ValueError, "Formal flight wall"):
+                    v4.validate_plan(changed)
+
+    def test_actual_rtf_arguments_supervisor_and_world_must_match_frozen_protocol(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); fixture(root)
+            frozen = plan(root, groups=["stage1_velocity"], classes=["person"], seeds=[4])
+            trial = frozen["trials"][0]
+            directory = Path(trial["directory"])
+            FakeCommands()(trial["flight_command"], root / "fake_flight.log", root, frozen["trial_timeout_s"])
+            self.assertEqual(v4.runtime_configuration(frozen, trial)["errors"], [])
+            paths = [directory / name for name in ("run_config.json", "configuration/runtime_parameters.yaml",
+                "configuration/runtime_world.sdf", "configuration/magnetic_environment.json")]
+            originals = {path:path.read_bytes() for path in paths}
+            for defect, expected in (("arguments", "run_config:real_time_factor"),
+                                     ("wall", "run_config:wall_timeout"),
+                                     ("supervisor", "requested_simulation_real_time_factor"),
+                                     ("world", "magnetic:final_world_real_time_factor")):
+                for path, data in originals.items():path.write_bytes(data)
+                if defect in {"arguments", "wall"}:
+                    data = v4.load(paths[0]); data["real_time_factor" if defect == "arguments" else "wall_timeout"] = .5 if defect == "arguments" else 300.
+                    write(paths[0], data)
+                elif defect == "supervisor":
+                    data = v4.load(paths[1]); data["uav_tracking_flight_supervisor"]["ros__parameters"]["requested_simulation_real_time_factor"] = .5
+                    write(paths[1], data)
+                else:
+                    tree = ET.parse(paths[2]); tree.find("world/physics/real_time_factor").text = ".5"; tree.write(paths[2])
+                    data = v4.load(paths[3]); data["runtime_world_sha256"] = v4.sha(paths[2]); write(paths[3], data)
+                with self.subTest(defect=defect):
+                    self.assertTrue(any(expected in error for error in v4.runtime_configuration(frozen, trial)["errors"]))
+
     def test_postprocessing_budget_preserves_flight_timeout_and_rejects_plan_budget_changes(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp); fixture(root)
@@ -541,7 +613,9 @@ class ReliabilityV4Tests(unittest.TestCase):
                     for trial in rows:
                         command = trial["flight_command"]
                         self.assertEqual(trial["duration_s"], 75.)
-                        for flag, expected in [("--duration", "75.0"), ("--real-time-factor", "0.5"),
+                        self.assertEqual(trial["wall_timeout_s"], 600.)
+                        self.assertEqual(actual["trial_timeout_s"], 2400.)
+                        for flag, expected in [("--duration", "75.0"), ("--real-time-factor", "0.25"),
                                                ("--max-inference-rate-hz", "10.0"), ("--monitor-tick-s", "0.02"),
                                                ("--control-reference", "ground_footprint")]:
                             self.assertEqual(command[command.index(flag) + 1], expected)

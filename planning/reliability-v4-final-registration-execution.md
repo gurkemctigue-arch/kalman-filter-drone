@@ -29,6 +29,7 @@ tracking_dev=/root/uav_tracking_fullplan_FINAL_DEV
 tracking_dev_core="$tracking_dev/results/ACTUAL_CANONICAL12/plan.json"
 tracking_dev_extension="$tracking_dev/results/ACTUAL_EXTENSION16/plan.json"
 tracking_final=/root/uav_tracking_fullplan_FINAL_ROOT
+tracking_flight_wall="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["flight_wall_timeout_s"])' "$tracking_final/planning/reliability-v4-preregistration.json")"
 tracking_tag=reliability_v4_FINAL_TAG
 tracking_calibration="$tracking_dev/results/${tracking_tag}_development_calibration"
 export HUMBLE22_PROJECT_ROOT="$tracking_dev"
@@ -66,12 +67,12 @@ bash "$tracking_final/scripts/run_research_session.sh" \
   "$tracking_final/scripts/run_reliability_v4.py" plan \
   --frozen-root "$tracking_final" --probe --seeds 4 \
   --output "results/${tracking_tag}_gate_target_core" \
-  --prefix "${tracking_tag}_gate_target_core" --wall-timeout 300
+  --prefix "${tracking_tag}_gate_target_core" --wall-timeout "$tracking_flight_wall"
 bash "$tracking_final/scripts/run_research_session.sh" \
   "$tracking_final/scripts/run_reliability_v4.py" plan \
   --frozen-root "$tracking_final" --probe --extensions --seeds 4 \
   --output "results/${tracking_tag}_gate_target_extension" \
-  --prefix "${tracking_tag}_gate_target_extension" --wall-timeout 300
+  --prefix "${tracking_tag}_gate_target_extension" --wall-timeout "$tracking_flight_wall"
 tracking_core_gate="$tracking_final/results/${tracking_tag}_core_gate.json"
 tracking_extension_gate="$tracking_final/results/${tracking_tag}_extension_gate.json"
 bash "$tracking_final/scripts/run_research_session.sh" \
@@ -98,12 +99,12 @@ tracking_formal_extension="$tracking_final/results/${tracking_tag}_extension/pla
 bash "$tracking_final/scripts/run_research_session.sh" \
   "$tracking_final/scripts/run_reliability_v4.py" plan \
   --frozen-root "$tracking_final" --formal --probe-gate "$tracking_core_gate" \
-  --output "results/${tracking_tag}_core" --prefix "${tracking_tag}_core" --wall-timeout 300
+  --output "results/${tracking_tag}_core" --prefix "${tracking_tag}_core" --wall-timeout "$tracking_flight_wall"
 bash "$tracking_final/scripts/run_research_session.sh" \
   "$tracking_final/scripts/run_reliability_v4.py" plan \
   --frozen-root "$tracking_final" --formal --extensions --probe-gate "$tracking_core_gate" \
   --reference-plan "$tracking_formal_core" \
-  --output "results/${tracking_tag}_extension" --prefix "${tracking_tag}_extension" --wall-timeout 300
+  --output "results/${tracking_tag}_extension" --prefix "${tracking_tag}_extension" --wall-timeout "$tracking_flight_wall"
 ```
 
 不传 classes/groups/conditions/seeds 子集：formal 强制完整120/160。即使只先运行 core，最终根存在 extension 协议时，core formal 创建也会要求它已登记且真实16开发 gate 有效。

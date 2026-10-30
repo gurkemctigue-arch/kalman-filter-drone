@@ -124,6 +124,9 @@ class ExtensionTests(unittest.TestCase):
                 option = lambda name: command[command.index(name) + 1]
                 self.assertEqual(trial["duration_s"], 75.)
                 self.assertEqual(float(option("--duration")), 75.)
+                self.assertEqual(float(option("--real-time-factor")), .25)
+                self.assertEqual(float(option("--wall-timeout")), 600.)
+                self.assertEqual(result["trial_timeout_s"], 2400.)
                 self.assertEqual(option("--condition"), trial["condition"])
                 self.assertEqual(option("--motion-profile-kind"), trial["motion_profile_kind"])
                 self.assertEqual(float(option("--desired-distance-m")), trial["desired_distance_m"])

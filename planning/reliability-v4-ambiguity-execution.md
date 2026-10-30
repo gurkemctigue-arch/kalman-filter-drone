@@ -1,6 +1,6 @@
 # 最终同源的四条歧义安全开发执行卡
 
-这是一张待执行开发卡，不是结果或协议登记。本卡不执行仿真；实际运行由主代理串行安排。四槽独立于核心12格、正式120核心和160扩展分母，不消耗1000–1009，不重跑或覆盖任何历史槽。使用最终已验证飞行源对应的新PROBE计划定位冻结根；13仅是当前候选修订，若后续更换冻结根则记录实际修订，不能沿用旧修订成功结论。
+这是一张待执行开发卡，不是结果或协议登记。本卡不执行仿真；实际运行由主代理串行安排。四槽独立于核心12格、正式120核心和160扩展分母，不消耗1000–1009，不重跑或覆盖任何历史槽。使用最终已验证飞行源对应的新PROBE计划定位冻结根；28是当前准备中的资源配置修订，尚无该版本安全专项通过结论。若后续更换冻结根则记录实际修订，不能沿用旧修订成功结论。
 
 当前固定矩阵不足以强制覆盖两项行为：auto_unique只见一个目标；三目标crossing的stage2评价未要求实际所选目标几何歧义，零歧义窗口可使条件检查成立；160扩展也只继承单目标。历史两类auto_unique、行人ambiguity和汽车ambiguity v5的严格通过只作历史依据，原失败和未知区间保持不变。
 
@@ -18,34 +18,29 @@
 ```bash
 tracking_plan=/absolute/path/to/the/final_source_probe/plan.json
 tracking_root="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["frozen_root"])' "$tracking_plan")"
-tracking_tag=reliability_v4_safety13
+tracking_rtf="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["protocol"]["real_time_factor"])' "$tracking_plan")"
+tracking_wall_timeout="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["protocol"]["flight_wall_timeout_s"])' "$tracking_plan")"
+tracking_tag=reliability_v4_safety28
 tracking_card=/absolute/path/to/reliability-v4-ambiguity-execution.md
 
 tracking_run_class() {
   tracking_class="$1"
-  if [ "$tracking_class" = person ]; then
-    tracking_model=yolo11n.pt
-    tracking_size=320
-    tracking_threads=2
-    tracking_distance=5
-  else
-    tracking_model=yolo11s.pt
-    tracking_size=640
-    tracking_threads=4
-    tracking_distance=9
-  fi
+  tracking_model="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["protocol"]["resources"][sys.argv[2]]["model"])' "$tracking_plan" "$tracking_class")"
+  tracking_size="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["protocol"]["resources"][sys.argv[2]]["inference_image_size"])' "$tracking_plan" "$tracking_class")"
+  tracking_threads="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["protocol"]["resources"][sys.argv[2]]["inference_threads"])' "$tracking_plan" "$tracking_class")"
+  tracking_distance="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["protocol"]["resources"][sys.argv[2]]["desired_distance_m"])' "$tracking_plan" "$tracking_class")"
   tracking_common=(
     --stage 2 --class "$tracking_class" --seed 4
     --condition clean --estimator-method adaptive_kf
     --command-mode velocity --gimbal-mode midpoint
-    --real-time-factor 0.5 --max-inference-rate-hz 10
+    --real-time-factor "$tracking_rtf" --max-inference-rate-hz 10
     --monitor-tick-s 0.02 --control-reference ground_footprint
     --motion-profile-kind standard
-    --model-path "$tracking_root/models/$tracking_model"
+    --model-path "$tracking_root/$tracking_model"
     --inference-image-size "$tracking_size" --inference-threads "$tracking_threads"
     --desired-distance-m "$tracking_distance"
     --takeoff-height-m 3 --takeoff-mode px4_native
-    --wall-timeout 300 --render-backend egl --gazebo-render-driver llvmpipe
+    --wall-timeout "$tracking_wall_timeout" --render-backend egl --gazebo-render-driver llvmpipe
     --magnetic-environment gazebo_enu
     --magnetic-runtime-manifest "$tracking_root/config/px4_magnetic_runtime.json"
     --magnetic-library-registration "$tracking_root/config/gazebo_magnetic_runtime_humble22.json"

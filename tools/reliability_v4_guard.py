@@ -413,7 +413,9 @@ def validate_safety(manifest, context, runtime):
             "scenario_kind":"parallel" if case == "auto_unique_multi" else "ambiguity",
             "duration":35. if case == "auto_unique_multi" else 50., "condition":"clean", "motion_profile_kind":"standard",
             "takeoff_mode":"px4_native", "takeoff_height_m":3., "control_reference":"ground_footprint",
-            "real_time_factor":.5, "max_inference_rate_hz":10., "monitor_tick_s":.02,
+            "real_time_factor":context.core["protocol"]["real_time_factor"],
+            "wall_timeout":context.core["protocol"]["flight_wall_timeout_s"],
+            "max_inference_rate_hz":10., "monitor_tick_s":.02,
             "gazebo_render_driver":"llvmpipe", "px4_time_mode":"source_sim", "magnetic_environment":"gazebo_enu",
             "propagate_vehicle_uncertainty":True, "occlusions":False, "reselect_after_loss":False,
             "no_follow_duration_s":35. if case == "auto_unique_multi" else None,
@@ -442,7 +444,8 @@ def validate_safety(manifest, context, runtime):
             "uav_tracking_px4_adapter":{"use_sim_time":True, "odometry_timestamp_mode":"source_sim", "odometry_source_max_age_s":.5,
                 "odometry_source_max_future_s":.05, "vehicle_odometry_topic":"/fmu/out/vehicle_odometry", "vehicle_odom_topic":"/vehicle/odometry"},
             "uav_tracking_flight_supervisor":{"takeoff_mode":"px4_native", "status_timestamp_mode":"source_sim",
-                "status_source_max_age_s":1., "status_source_max_future_s":.05, "status_timeout_s":10.}}
+                "status_source_max_age_s":1., "status_source_max_future_s":.05, "status_timeout_s":10.,
+                "requested_simulation_real_time_factor":context.core["protocol"]["real_time_factor"]}}
         require(all(parameters.get(node, {}).get("ros__parameters", {}).get(key) == value
                     for node, values in node_checks.items() for key, value in values.items()), "Actual safety runtime YAML safety contract differs")
         executions = slot.get("executions", {})
@@ -454,6 +457,8 @@ def validate_safety(manifest, context, runtime):
                 and option(flight_argv,"--name") == directory.name and option(flight_argv,"--class") == cls
                 and int(option(flight_argv,"--seed")) == 4 and option(flight_argv,"--target-mode") == expected["target_mode"]
                 and option(flight_argv,"--scenario-kind") == expected["scenario_kind"]
+                and float(option(flight_argv,"--real-time-factor")) == expected["real_time_factor"]
+                and float(option(flight_argv,"--wall-timeout")) == expected["wall_timeout"]
                 and "--occlusions" not in flight_argv and "--reselect-after-loss" not in flight_argv, "Safety flight invocation does not name original frozen trial/mode")
         for kind in ("source_clock", "native_startup", "specialized", "terminal_speed"):
             _, finished = validate_execution(executions[kind], after=flight_end)

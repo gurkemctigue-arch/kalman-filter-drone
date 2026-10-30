@@ -128,6 +128,18 @@ def assemble_safety(target_path, gate_path, facts_path, validation_path):
             guard.require(guard.utc(execution["finished_utc"]) <= guard.utc(facts["created_utc"]),
                           "Safety facts precede an actual execution finish")
         guard.require(executions["flight"]["argv"] == trial["flight_argv"], "Safety flight argv differs from its prospective registry")
+        registered_rtf = context.core["protocol"]["real_time_factor"]
+        parameters_path = guard.bound(slot["evidence"]["runtime_parameters"], json_data=False)
+        import yaml
+        parameters = yaml.safe_load(parameters_path.read_text(encoding="utf-8"))
+        guard.require(artifacts["run_config"][1].get("real_time_factor") == registered_rtf
+                      and float(guard.option(executions["flight"]["argv"], "--real-time-factor")) == registered_rtf
+                      and artifacts["run_config"][1].get("wall_timeout") == context.core["protocol"]["flight_wall_timeout_s"]
+                      and float(guard.option(executions["flight"]["argv"], "--wall-timeout")) == context.core["protocol"]["flight_wall_timeout_s"]
+                      and isinstance(parameters, dict)
+                      and parameters.get("uav_tracking_flight_supervisor", {}).get("ros__parameters", {}).get(
+                          "requested_simulation_real_time_factor") == registered_rtf,
+                      "Safety actual simulation resources differ from frozen core protocol")
         guard.require(executions["terminal_speed"]["code_script"] == registry["tail_script"],
                       "Safety terminal execution binds a different independent script")
         for kind in ("source_clock", "native_startup"):

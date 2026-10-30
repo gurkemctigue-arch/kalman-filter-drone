@@ -191,7 +191,8 @@ def source_hashes(root):
 def validate_protocol(protocol):
     exact = {"classes": list(CLASSES), "groups": list(GROUPS), "seeds": list(FORMAL_SEEDS),
              "formal_trial_count": 120, "duration_s": 75., "short_occlusion_s": .2,
-             "long_occlusion_s": 3., "real_time_factor": .5, "max_inference_rate_hz": 10.,
+             "long_occlusion_s": 3., "real_time_factor": .25, "flight_wall_timeout_s": 600.,
+             "max_inference_rate_hz": 10.,
              "gazebo_render_driver":"llvmpipe",
              "monitor_tick_s": .02, "control_reference": "ground_footprint", "desired_height_m": 2.,
              "magnetic_environment": "gazebo_enu", "magnetic_runtime_manifest": MAGNETIC_RUNTIME_PATH,
@@ -257,7 +258,7 @@ def trial_spec(root, protocol, prefix, cls, group, seed, wall_timeout):
         "--command-mode", spec["command_mode"], "--target-mode", spec["target_mode"],
         "--association-mode", spec["association_mode"], "--initial-select", spec["initial_select"],
         "--initial-min-candidates", spec["initial_min_candidates"], "--gimbal-mode", spec["gimbal_mode"],
-        "--scenario-kind", spec["scenario_kind"], "--real-time-factor", "0.5", "--max-inference-rate-hz", "10.0",
+        "--scenario-kind", spec["scenario_kind"], "--real-time-factor", protocol["real_time_factor"], "--max-inference-rate-hz", "10.0",
         "--monitor-tick-s", "0.02", "--control-reference", "ground_footprint", "--motion-profile-kind", "standard",
         "--model-path", root / setting["model"], "--inference-image-size", setting["inference_image_size"],
         "--inference-threads", setting["inference_threads"], "--desired-distance-m", setting["desired_distance_m"],
@@ -481,7 +482,7 @@ def freeze_magnetic_libraries(root, protocol, hashes):
             "claim_limit":"Per-environment installed package registration; actual loaded process ELFs must match per trial"}
 
 
-def make_plan(root, output, prefix, *, formal=False, seeds=None, groups=None, classes=None, wall_timeout=300., probe_gate=None):
+def make_plan(root, output, prefix, *, formal=False, seeds=None, groups=None, classes=None, wall_timeout=600., probe_gate=None):
     root = Path(root).resolve(strict=True)
     output = Path(output)
     output = output if output.is_absolute() else root / output
@@ -494,6 +495,8 @@ def make_plan(root, output, prefix, *, formal=False, seeds=None, groups=None, cl
         raise ValueError("wall_timeout must be positive and finite")
     protocol = load(root / PROTOCOL_PATH)
     validate_protocol(protocol)
+    if formal and wall_timeout != protocol["flight_wall_timeout_s"]:
+        raise ValueError("Formal flight wall timeout differs from frozen protocol")
     extension_binding = None
     if formal and (root / EXTENSION_PROTOCOL_PATH).is_file():
         extension = load(root / EXTENSION_PROTOCOL_PATH)
@@ -578,7 +581,7 @@ def make_plan(root, output, prefix, *, formal=False, seeds=None, groups=None, cl
 
 
 def make_extension_plan(root, output, prefix, *, formal=False, seeds=None, conditions=None,
-                        classes=None, wall_timeout=300., probe_gate=None, reference_plan=None):
+                        classes=None, wall_timeout=600., probe_gate=None, reference_plan=None):
     root = Path(root).resolve(strict=True)
     extension = load(root / EXTENSION_PROTOCOL_PATH)
     protocol = load(root / PROTOCOL_PATH)
@@ -649,6 +652,8 @@ def validate_plan(plan, path=None):
     mode = plan.get("mode")
     if mode not in {"FORMAL", "PROBE", "EXTENSION_FORMAL", "EXTENSION_PROBE"}:
         raise ValueError("Unknown v4 plan mode")
+    if mode in {"FORMAL", "EXTENSION_FORMAL"} and wall_timeout != plan["protocol"]["flight_wall_timeout_s"]:
+        raise ValueError("Formal flight wall timeout differs from frozen protocol")
     extension_mode = mode.startswith("EXTENSION_")
     if extension_mode:
         extension_binding = plan.get("extension_protocol_binding", {})
@@ -829,7 +834,8 @@ def runtime_configuration(plan, trial):
         expected = {key: trial[key] for key in ("name", "target_class", "stage", "seed", "speed_mps", "command_mode", "takeoff_mode",
             "gimbal_mode", "target_mode", "association_mode", "initial_select", "initial_min_candidates", "scenario_kind",
             "multi_target", "inference_image_size", "inference_threads", "desired_distance_m", "gazebo_render_driver")}
-        expected.update(duration=trial["duration_s"], control_reference="ground_footprint", real_time_factor=.5,
+        expected.update(duration=trial["duration_s"], wall_timeout=trial["wall_timeout_s"],
+            control_reference="ground_footprint", real_time_factor=plan["protocol"]["real_time_factor"],
             max_inference_rate_hz=10., monitor_tick_s=.02, condition=trial.get("condition", "clean"), estimator_method="adaptive_kf",
             occlusions=True, reselect_after_loss=True, short_occlusion_s=.2,
             magnetic_environment="gazebo_enu", magnetic_runtime_manifest=str(Path(plan["frozen_root"]) / MAGNETIC_RUNTIME_PATH),
@@ -868,7 +874,7 @@ def runtime_configuration(plan, trial):
                                                "native_takeoff_timeout_sim_s":40., "native_wall_timeout_s":180.,
                                                "status_timestamp_mode":"source_sim", "status_source_max_age_s":1.,
                                                "status_source_max_future_s":.05, "status_timeout_s":10.,
-                                               "requested_simulation_real_time_factor":.5,
+                                               "requested_simulation_real_time_factor":plan["protocol"]["real_time_factor"],
                                                "auto_start":True, "simulation_only":True},
         }
         for node, values in expected_parameters.items():
@@ -1055,7 +1061,7 @@ def magnetic_environment_evidence(plan, trial):
         for coordinate in ("latitude_deg", "longitude_deg"):
             if not math.isclose(float(spherical.findtext(coordinate)), float(lookup["reference_"+coordinate]), abs_tol=1e-8, rel_tol=0.):
                 errors.append("magnetic:actual_world_" + coordinate)
-        if float(world.findtext("physics/real_time_factor", "nan")) != .5:
+        if float(world.findtext("physics/real_time_factor", "nan")) != plan["protocol"]["real_time_factor"]:
             errors.append("magnetic:final_world_real_time_factor")
         mounts = evidence.get("sensor_mount", {})
         if mounts.get("sensor_orientation_in_body_flu") != "identity":
@@ -1791,7 +1797,7 @@ def main(argv=None):
     create.add_argument("--seeds", type=int, nargs="+")
     create.add_argument("--groups", choices=GROUPS, nargs="+")
     create.add_argument("--classes", choices=CLASSES, nargs="+")
-    create.add_argument("--wall-timeout", type=float, default=300.)
+    create.add_argument("--wall-timeout", type=float, default=600.)
     create.add_argument("--probe-gate", type=Path)
     create.add_argument("--extensions", action="store_true", help="Separate eight-condition matrix; does not change the 120 core slots")
     create.add_argument("--conditions", choices=EXTENSION_CONDITIONS, nargs="+")
