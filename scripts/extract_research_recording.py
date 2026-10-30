@@ -38,6 +38,36 @@ def source_hash(path):
     return digest.hexdigest()
 
 
+def measurement_observation(available):
+    """Keep every candidate; ambiguity gives no single replay measurement.
+
+    A stage-one *scene* can still produce several detections of one vehicle.
+    This offline extractor must neither abort detection evaluation nor use
+    truth/confidence to choose a convenient observation for the legacy replay.
+    """
+    candidates = [{
+        "candidate_id": int(item.candidate_id),
+        "class_name": str(item.class_name),
+        "acquisition_s": stamp_s(item.header.stamp),
+        "confidence": float(item.confidence),
+        "depth_valid": bool(item.depth_valid),
+        "depth_m": float(item.depth_m),
+        "depth_valid_ratio": float(item.depth_valid_ratio),
+        "depth_std_m": float(item.depth_std_m),
+        "position_camera_m": [float(getattr(item.position_camera_m, axis)) for axis in "xyz"],
+        "bbox": [float(getattr(item, name)) for name in (
+            "bbox_x_min_px", "bbox_y_min_px", "bbox_x_max_px", "bbox_y_max_px")],
+    } for item in available]
+    if len(available) != 1:
+        reason = "multiple_candidates_no_single_measurement" if available else "no_observation"
+        return None, {"observation_count": len(available), "observation_reason": reason,
+                      "candidate_observations": candidates}
+    observation = available[0]
+    return observation, {"observation_count": 1,
+                         "observation_reason": "unique_observation" if observation.depth_valid else "unique_invalid_depth",
+                         "candidate_observations": candidates}
+
+
 def camera_model_resources(root:Path) -> tuple[list[Path],str]:
     """Use the explicitly selected PX4 tree; never search another installation."""
     configured=os.environ.get("STAGE1_PX4_ROOT")
@@ -168,9 +198,7 @@ def main():
         target_pose=interpolate_pose(target,timestamp)
         arrival_pose=interpolate_pose(target,arrival)
         available=observations.get(round(timestamp,6),[])
-        if len(available)>1:
-            raise ValueError("Stage-one extraction refuses ambiguous same-frame multiple observations")
-        observation=available[0] if available else None
+        observation,observation_evidence=measurement_observation(available)
         point=None
         if vehicle_pose is not None:
             vp,vr=vehicle_pose;camera_pose=(vp+vr@mount_p,vr@mount_r)
@@ -179,7 +207,7 @@ def main():
                 point=(camera_pose[0]+camera_pose[1]@np.asarray([cp.x,cp.y,cp.z])).tolist()
         else:
             camera_pose=None
-        row={"time_s":timestamp,"arrival_s":arrival,"point_world_m":point,
+        row={"time_s":timestamp,"arrival_s":arrival,"point_world_m":point,**observation_evidence,
              "confidence":float(observation.confidence) if observation else None,
              "valid_fraction":float(observation.depth_valid_ratio) if observation else 0.0,
              "depth_std_m":float(observation.depth_std_m) if observation else 0.0,
@@ -249,6 +277,8 @@ def main():
             "extraction_command":[sys.executable,*sys.argv],
             "bag_storage":storage,"read_counts":dict(counts),"camera":camera,"mount":mount_info,"mesh":mesh_info,
             "recorded_detector_confidence_floor":.45,
+            "legacy_replay_observation_policy":"Only exactly one recorded observation supplies a measurement; multiple candidates remain recorded, point_world_m=null. No truth/confidence selection. This is not the selected navigation KF replay interface.",
+            "observation_reason_counts":dict(Counter(row["observation_reason"] for row in rows)),
             "detection_metric_readiness":"PENDING_VISUAL_REVIEW_AND_LOW_CONFIDENCE_OFFLINE_INFERENCE",
             "detection_subset_protocol":"One sample per second in chronological order, up to max_images; only independent GT full-frame geometry and +/-1s guarded shutter-free images are eligible. Images chosen irrespective of detector success. Projected boxes are amodal; visible-label equivalence must be visually checked. All opportunities and exclusions remain recorded.",
             "pose_interpolation":"bracketed linear translation and normalized shortest-arc quaternion interpolation; no extrapolation; max .10s bracket endpoint distance",
