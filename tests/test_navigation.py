@@ -42,6 +42,92 @@ def adjacent_car_faces(length=4.6, width=1.8, center=(10., 0., 0.)):
     return np.vstack((end, side)) + center
 
 
+class PixelExclusionTests(unittest.TestCase):
+    @staticmethod
+    def pixels(points):
+        return {tuple(pixel) for pixel in np.rint(points[:, :2]/points[:, 2:3]).astype(int)}
+
+    @staticmethod
+    def touches(pixel, box):
+        u, v = pixel
+        return (box[2] > box[0] and box[3] > box[1]
+                and max(u, box[0]) < min(u+1, box[2])
+                and max(v, box[1]) < min(v+1, box[3]))
+
+    def test_fractional_other_box_excludes_361_203_without_changing_full_cloud(self):
+        depth = np.ones((210, 370))
+        args = dict(bbox=(359., 201., 365., 207.), max_points=1000)
+        full = sample_depth_points(depth, (1, 1, 0, 0), **args)
+        box = (361.2589, 202.3, 364.4, 205.7)
+        exclusive = sample_depth_points(depth, (1, 1, 0, 0), exclude_bboxes=[box], **args)
+        self.assertIn((361, 203), self.pixels(full))
+        self.assertNotIn((361, 203), self.pixels(exclusive))
+        self.assertEqual(self.pixels(exclusive), {p for p in self.pixels(full) if not self.touches(p, box)})
+        np.testing.assert_array_equal(full, sample_depth_points(depth, (1, 1, 0, 0), **args))
+
+    def test_each_fractional_edge_and_corner_removes_every_touched_cell(self):
+        all_pixels = {(u, v) for v in range(6) for u in range(6)}
+        boxes = [(1.9, 2.2, 2.1, 2.8), (2.9, 2.2, 3.1, 2.8),
+                 (2.2, 1.9, 2.8, 2.1), (2.2, 2.9, 2.8, 3.1),
+                 (1.9, 1.9, 2.1, 2.1), (2.9, 1.9, 3.1, 2.1),
+                 (1.9, 2.9, 2.1, 3.1), (2.9, 2.9, 3.1, 3.1)]
+        for box in boxes:
+            with self.subTest(box=box):
+                sampled = self.pixels(sample_depth_points(np.ones((6, 6)), (1, 1, 0, 0),
+                    exclude_bboxes=[box], max_points=1000))
+                self.assertNotIn((2, 2), sampled)
+                self.assertEqual(sampled, {p for p in all_pixels if not self.touches(p, box)})
+
+    def test_integer_edges_are_half_open_and_subpixel_disjoint_roi_is_unchanged(self):
+        image = np.ones((8, 8))
+        all_pixels = {(u, v) for v in range(8) for u in range(8)}
+        sampled = self.pixels(sample_depth_points(image, (1, 1, 0, 0),
+            exclude_bboxes=[(2., 2., 3., 3.)], max_points=1000))
+        self.assertEqual(sampled, all_pixels-{(2, 2)})
+        args = dict(bbox=(2.1, 2.1, 6.9, 6.9), max_points=1000)
+        full = sample_depth_points(image, (1, 1, 0, 0), **args)
+        exclusive = sample_depth_points(image, (1, 1, 0, 0),
+            exclude_bboxes=[(6.95, 2.2, 7.05, 6.8)], **args)
+        np.testing.assert_array_equal(exclusive, full)
+        self.assertEqual(self.pixels(full), {(u, v) for v in (3, 4, 5) for u in (3, 4, 5)})
+
+    def test_degenerate_exclusions_stay_empty_before_rounding_and_finite_checks_remain(self):
+        image = np.ones((8, 8))
+        full = sample_depth_points(image, (1, 1, 0, 0), max_points=1000)
+        boxes = [(2.1, 2.1, 2.1, 2.8), (2.1, 2.8, 2.8, 2.8),
+                 (2.9, 2.1, 2.1, 2.8), (2.1, 2.9, 2.8, 2.1), (.1, .1, .1, .1)]
+        for box in boxes:
+            with self.subTest(box=box):
+                np.testing.assert_array_equal(full, sample_depth_points(image, (1, 1, 0, 0),
+                    exclude_bboxes=[box], max_points=1000))
+        for box in ((np.inf, 0, np.inf, 0), (0, np.nan, 2, 3), (0, 1, 2)):
+            with self.subTest(box=box), self.assertRaisesRegex(ValueError, "finite xyxy"):
+                sample_depth_points(image, (1, 1, 0, 0), exclude_bboxes=[box])
+
+    def test_clipped_exclusions_never_wrap_or_overflow_image_cells(self):
+        image = np.ones((6, 6))
+        all_pixels = {(u, v) for v in range(6) for u in range(6)}
+        for box in ((-.2, 1.2, .2, 2.2), (-2., -2., -.1, -.1),
+                    (5.8, 5.8, 8., 8.), (-1e100, -1e100, 1e100, 1e100)):
+            with self.subTest(box=box):
+                sampled = self.pixels(sample_depth_points(image, (1, 1, 0, 0),
+                    exclude_bboxes=[box], max_points=1000))
+                self.assertEqual(sampled, {p for p in all_pixels if not self.touches(p, box)})
+
+    def test_stride_cap_depth_validity_and_all_exclusion_cells_are_preserved(self):
+        image = np.full((24, 32), 4.)
+        image[3, 2], image[6, 5], image[9, 8], image[12, 11] = np.nan, 0., 51., .05
+        boxes = [(-.2, 4.1, 4.2, 10.2), (10.4, 8.6, 16.2, 15.9), (22.1, 17.2, 35., 20.9)]
+        args = dict(bbox=(1.2, 2.4, 29.9, 21.8), exclude_bboxes=boxes, stride=2, max_points=17)
+        points = sample_depth_points(image, (1, 1, 0, 0), **args)
+        self.assertEqual(len(points), 17)
+        np.testing.assert_array_equal(points, sample_depth_points(image, (1, 1, 0, 0), **args))
+        self.assertTrue(np.all(points[:, 2] == 4.))
+        pixels = self.pixels(points)
+        self.assertTrue(all((u-2) % 3 == 0 and (v-3) % 3 == 0 for u, v in pixels))
+        self.assertTrue(all(not self.touches(p, box) for p in pixels for box in boxes))
+
+
 class DepthAndGroundTests(unittest.TestCase):
     def test_sampling_excludes_all_boxes_and_invalid_depth(self):
         depth = np.full((30, 40), 3.)

@@ -16,9 +16,19 @@ import shutil
 import sqlite3
 import subprocess
 import tempfile
+import time
 import uuid
 
 import yaml
+
+
+ZSTD_ARCHIVE_ARGUMENTS = ("-T1", "-19", "--long=27", "--check")
+
+
+def archive_compression_profile() -> dict:
+    """Describe the fixed lossless profile used for future closed recordings."""
+    return {"name": "zstd19_long27", "executable": "zstd", "arguments": list(ZSTD_ARCHIVE_ARGUMENTS),
+            "threads": 1, "level": 19, "long_window_log": 27, "checksum": True}
 
 
 class RecordingArchiveError(RuntimeError):
@@ -146,6 +156,8 @@ def finalize_recording(spool: Path, destination: Path, recorder_exit_code: int, 
         raise RecordingArchiveError("Recording spool ownership or new destination does not match")
     if recorder_exit_code != 0:
         raise RecordingArchiveError("Recorder did not close successfully; spool retained")
+    processing_started_at_utc = datetime.now(timezone.utc).isoformat()
+    processing_started = time.monotonic()
     source = spool / "rosbag"
     raw = validate_sqlite_recording(source)
     archive = spool / "archive"
@@ -157,7 +169,10 @@ def finalize_recording(spool: Path, destination: Path, recorder_exit_code: int, 
         compressed_name = item["path"] + ".zstd"
         compressed = archive / compressed_name
         compressed.parent.mkdir(parents=True, exist_ok=True)
-        subprocess.run(["zstd", "-T1", "-3", "--check", "-q", str(source_file), "-o", str(compressed)], check=True)
+        compression_command = ["zstd", *ZSTD_ARCHIVE_ARGUMENTS, "-q", str(source_file), "-o", str(compressed)]
+        compression_started = time.monotonic()
+        subprocess.run(compression_command, check=True)
+        compression_wall_s = time.monotonic() - compression_started
         subprocess.run(["zstd", "--test", "-q", str(compressed)], check=True)
         digest, size = hashlib.sha256(), 0
         with subprocess.Popen(["zstd", "--decompress", "--stdout", "-q", str(compressed)], stdout=subprocess.PIPE) as process:
@@ -166,7 +181,8 @@ def finalize_recording(spool: Path, destination: Path, recorder_exit_code: int, 
             if process.wait() or digest.hexdigest() != item["sha256"] or size != item["bytes"]:
                 raise RecordingArchiveError("Standard zstd roundtrip differs from validated SQLite bytes")
         compressed_files.append({"path": compressed_name, "sha256": sha256(compressed), "bytes": compressed.stat().st_size,
-                                 "raw_sha256": item["sha256"], "raw_bytes": item["bytes"], "zstd_test": "PASS"})
+                                 "raw_sha256": item["sha256"], "raw_bytes": item["bytes"], "zstd_test": "PASS",
+                                 "compression_command": compression_command, "compression_wall_s": compression_wall_s})
     metadata = info["rosbag2_bagfile_information"]
     metadata.update(compression_format="zstd", compression_mode="FILE",
                     relative_file_paths=[item["path"] for item in compressed_files])
@@ -193,6 +209,7 @@ def finalize_recording(spool: Path, destination: Path, recorder_exit_code: int, 
     result = {"schema_version": 1, "status": "PASS", "policy": "ext4_sqlite_close_standard_zstd_verified_native_read",
               "source_spool": str(spool), "destination": str(destination), "recorder_exit_code": recorder_exit_code,
               "raw_validation": raw, "compressed_files": compressed_files, "native_reader_validation": native,
+              "compression_profile": archive_compression_profile(),
               "zstd_version": subprocess.check_output(["zstd", "--version"], text=True).strip(),
               "published_metadata_sha256": sha256(destination / "metadata.yaml"),
               "finished_at_utc": datetime.now(timezone.utc).isoformat(), "spool_retained": False}
@@ -201,4 +218,7 @@ def finalize_recording(spool: Path, destination: Path, recorder_exit_code: int, 
         result["spool_retained"] = True
     else:
         shutil.rmtree(spool)
+    result["archive_processing"] = {"started_at_utc": processing_started_at_utc,
+        "finished_at_utc": datetime.now(timezone.utc).isoformat(), "wall_s": time.monotonic() - processing_started,
+        "scope": "closed_recording_validation_compression_native_read_verified_copy_and_owned_spool_cleanup"}
     return result

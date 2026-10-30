@@ -18,7 +18,7 @@ import xml.etree.ElementTree as ET
 
 import yaml
 
-from uav_tracking.recording_archive import create_recording_spool, finalize_recording
+from uav_tracking.recording_archive import archive_compression_profile, create_recording_spool, finalize_recording
 
 
 def simulation_status_watchdog_s(requested_real_time_factor: float) -> float:
@@ -619,6 +619,8 @@ def main() -> None:
             (snapshot / "recording_policy.json").write_text(json.dumps({
                 "schema_version": 1, "policy": "ext4_sqlite_close_standard_zstd_verified_native_read",
                 "recorder_storage": "sqlite3", "recorder_compression": "none",
+                "compression_profile": archive_compression_profile(),
+                "archive_phase": "after_all_flight_processes_stopped_and_recorder_closed",
                 "spool": str(recording_spool), "published_bag": str(output / "rosbag"),
                 "checks": ["recorder_exit_zero", "sqlite_integrity", "metadata_topic_counts",
                            "standard_zstd_complete_frame", "exact_byte_roundtrip", "native_reader_full_count",

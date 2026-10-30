@@ -46,6 +46,31 @@ class NavigationOverlapEvidenceTests(unittest.TestCase):
         np.testing.assert_allclose(np.array(pair["points_camera_m"]).reshape(-1, 3)[:, 2], np.arange(11) + 5)
         self.assertEqual((pair["candidate_a_id"], pair["candidate_b_id"]), (4, 9))
 
+    def test_361_203_remains_in_full_overlap_evidence_but_never_exclusive_support(self):
+        boxes = [(4, .9, 2, (359., 201., 365., 207.)),
+                 (9, .8, 2, (361.2589, 202.3, 364.4, 205.7))]
+        depth = np.full((212, 370), 5.)
+        depth[203, 361] = 7.
+        original_depth = depth.copy()
+        pair, = self.evidence(boxes, depth)
+        self.assertEqual((pair["u0"], pair["v0"], pair["width"], pair["height"]), (361, 202, 4, 4))
+        self.assertEqual((pair["expected_pixel_count"], pair["valid_pixel_count"]), (16, 16))
+        self.assertTrue(pair["depth_complete"])
+        camera = CameraIntrinsics(100., 100., 50., 50.)
+        def pixel_depths(points):
+            points = np.asarray(points).reshape(-1, 3)
+            pixels = np.rint(100*points[:, :2]/points[:, 2:3]+50).astype(int)
+            return {tuple(pixel): z for pixel, z in zip(pixels, points[:, 2])}
+        full = detector.sample_depth_points(depth, camera, boxes[0][3], max_points=1000)
+        exclusive = detector.sample_depth_points(depth, camera, boxes[0][3],
+            exclude_bboxes=[boxes[1][3]], max_points=1000)
+        self.assertEqual(pixel_depths(full)[(361, 203)], 7.)
+        self.assertEqual(pixel_depths(pair["points_camera_m"])[(361, 203)], 7.)
+        self.assertNotIn((361, 203), pixel_depths(exclusive))
+        np.testing.assert_array_equal(depth, original_depth)
+        self.assertEqual(self.evidence([(0, .9, 2, (2.1, 2.1, 6.9, 6.9)),
+                                       (1, .9, 2, (6.95, 2.2, 7.05, 6.8))], depth), [])
+
     def test_one_invalid_pixel_never_becomes_complete_by_filtering(self):
         boxes = [(0, .9, 2, (10., 10., 25., 30.)),
                  (1, .9, 2, (20., 20., 40., 40.))]
@@ -419,7 +444,7 @@ class DetectorSchedulingTests(unittest.TestCase):
                 node._navigation_enabled = True
                 node._camera_size = (100, 100)
                 node._intrinsics = CameraIntrinsics(100., 100., 50., 50.)
-                other_box = [50., 30., 70., 70.] if overlapping else [70., 30., 90., 70.]
+                other_box = [56.25, 32.25, 72.25, 72.25] if overlapping else [72.25, 32.25, 88.25, 72.25]
                 boxes = [NS(conf=[.9], cls=[0], xyxy=[np.array([20., 20., 60., 80.])]),
                          NS(conf=[.9], cls=[other_class], xyxy=[np.array(other_box)])]
                 _, observations = self.configure_fake_inference(node, lambda *_args, **kw: [NS(boxes=boxes)])
@@ -452,15 +477,17 @@ class DetectorSchedulingTests(unittest.TestCase):
                     self.assertEqual(len(pair.points_camera_m), pair.expected_pixel_count * 3)
                     self.assertEqual((pair.class_a_id, pair.class_b_id), (0, other_class))
                     exclusive = np.array(selected.navigation_visibility_support_camera_m).reshape(-1, 3)
-                    eu, ev = 100*exclusive[:, 0]/exclusive[:, 2]+50, 100*exclusive[:, 1]/exclusive[:, 2]+50
+                    eu, ev = np.rint(100*exclusive[:, :2]/exclusive[:, 2:3]+50).astype(int).T
                     ox1, oy1, ox2, oy2 = other_box
-                    self.assertFalse(np.any((eu >= ox1) & (eu < ox2) & (ev >= oy1) & (ev < oy2)))
+                    self.assertFalse(np.any((np.maximum(eu, ox1) < np.minimum(eu+1, ox2))
+                                            & (np.maximum(ev, oy1) < np.minimum(ev+1, oy2))))
                 else:
                     self.assertEqual(frames[0].navigation_overlaps, [])
                 points = np.array(frames[0].navigation_ground_points_camera_m).reshape(-1, 3)
-                u, v = 100*points[:, 0]/points[:, 2]+50, 100*points[:, 1]/points[:, 2]+50
-                x1, y1, x2, y2 = other_box
-                self.assertFalse(np.any((u >= x1) & (u <= x2) & (v >= y1) & (v <= y2)))
+                u, v = np.rint(100*points[:, :2]/points[:, 2:3]+50).astype(int).T
+                for x1, y1, x2, y2 in ([20., 20., 60., 80.], other_box):
+                    self.assertFalse(np.any((np.maximum(u, x1) < np.minimum(u+1, x2))
+                                            & (np.maximum(v, y1) < np.minimum(v+1, y2))))
                 self.assertTrue(all(item.header == frames[0].header for item in observations))
 
     def test_slow_inference_is_resubmitted_on_next_poll_without_period_quantization(self):

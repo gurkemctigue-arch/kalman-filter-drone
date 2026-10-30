@@ -1,6 +1,14 @@
 # 当前工作交接（持续开发，非验收报告）
 
-最新诊断与候选：crossing固定93帧/279可见框的YOLO11s/m配对比较已实际结束，s为275 TP/12 FP/4 FN，m为267/0/12，尚未选模型。m消除上部局部框但总漏检更多且较慢；独立多目标主动云台44帧/132可见框已在推理前完成盲审冻结。多目标telemetry03还证明51.160秒迟到回调存在实际过期状态短暂按采集时刻发布的漏洞；控制器已先悬停。主树已实现提交前与发布前的当前源时间过期锁存候选，18项时序检查、新增8项独立回归均通过，完整host套件1409项中1400通过、9跳过；未冻结/构建新飞行源。详见[汽车诊断](reliability-v4-car-fragment-diagnosis-20261030.md)和[输出时效候选](reliability-v4-publication-expiry-20261030.md)。
+最新执行快照（2026-10-30，Humble26构建验证完成后）：冻结来源canonical为`b9c6a1091d6123a85e13580d3ef6efe1a7e338982d772657d150cc651068941e`。四个ROS软件包构建、模块/ament隔离、FastCDR来源及真实消息序列化往返均通过；Linux全套1417项检查中1412通过、5项按精确平台条件跳过，测试用时49.068秒，returncode=0、source_unchanged=true。实际回执为本机`results/frozen_fullplan_v4_humble26/freeze_validation/build_validation_summary.json`，5个跳过的ID、原因和平台条件均已逐项核实。
+
+12格核心PROBE计划已建立，计划SHA-256为`1b33a7ddf2c52134f0d980e08889ddf9b9c1114e493f5b2af76034577ef7c9a7`，全部PENDING。首条20秒clean检查在pre-unpause阶段失败，8.79秒后退出1：`find_owned_parameter_bridge`遍历普通`/proc`进程时，`parse_process_stat`报告`Proc identity is truncated or no longer alive`。尚未进入跟随验证，不能将此启动基础设施失败称为跟随算法失败；原26冻结来源不变，进程已清理且无残留。当前定位修复，后续须以新开发来源冻结、构建并复验，不重写26失败或继续其核心计划。
+
+尚无本轮飞行通过结论，后续仍须完成同源clean检查、12核心、4安全、16扩展及容量核算。原Humble25的9 PASS/3 FAIL保持不变，正式仍0/280，1000至1009种子未授权使用。观测0.60秒、预测0.75秒、身份及歧义保护均保持。
+
+冻结前开发准备快照（2026-10-30）：五种汽车检测配置已在同一批137帧上比较。选定[YOLO11m/960](reliability-v4-detector-m960-development-selection-20261030.md)进入下一轮闭环开发：crossing为279 TP/2 FP/0 FN，multi为132/2/0；这不是正式检测泛化或飞行通过证据。原始深度与CameraInfo的三帧几何复现已完成，全部7对重叠均保留；发现[排除框像素单元语义不一致](reliability-v4-pixel-exclusion-20261030.md)，新来源统一floor/ceil touched-cell排除，原fullcloud和完整overlap不删减。新[无损归档候选](reliability-v4-lossless-archive-20261030.md)在一个完整75秒汽车样本上实测减少31.8721%，逐字节及148711条原生读回通过；28格容量仍未准入。
+
+多目标telemetry03证明51.160秒迟到回调存在实际过期状态短暂按采集时刻发布的漏洞；控制器已先悬停。主树已实现提交前与发布前的当前源时间过期锁存候选，完整host套件1409项中1400通过、9跳过；像素排除修复及新归档另有专项回归。此准备快照形成时尚待Humble26最终来源审查和新冻结/构建；该步骤现已由上方新回执更新，飞行效果仍待验证。详见[汽车诊断](reliability-v4-car-fragment-diagnosis-20261030.md)和[输出时效候选](reliability-v4-publication-expiry-20261030.md)。以下为历史交接快照。
 
 核心终态快照（2026-10-29 22:51:14 UTC / 北京时间2026-10-30 06:51:14）：Humble25同源12格已完整执行，9 PASS、3 FAIL；driver返回0，观察器正常收尾、无残留，12组桥来源/退出和归档检查正常。全部行人六格PASS；汽车位置模式、中位云台、单目标主动云台PASS。汽车速度模式仅原生起飞交接FAIL；汽车交叉和多目标主动云台FAIL。正式仍0/280，不执行25后续正式准入或把三项失败回填成功。
 

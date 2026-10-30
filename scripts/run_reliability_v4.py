@@ -29,6 +29,7 @@ import xml.etree.ElementTree as ET
 ROOT = Path(__file__).resolve().parents[1]
 CLASSES = ("person", "car")
 FORMAL_SEEDS = tuple(range(1000, 1010))
+POSTPROCESSING_TIMEOUT_S = 1800.
 GROUPS = ("stage1_velocity", "stage1_position", "stage2_crossing", "stage3_midpoint",
           "stage3_active", "stage3_multi_active")
 TERMINAL = {"PASS", "FAIL", "INCOMPLETE_EVIDENCE", "EVALUATION_PENDING", "INFRASTRUCTURE_ERROR", "INTERRUPTED"}
@@ -215,7 +216,7 @@ def validate_protocol(protocol):
     if protocol.get("safety_gates") != expected_gates:
         raise ValueError("The original safety gates cannot be relaxed")
     resources = protocol.get("resources", {})
-    for cls, model, size, threads, distance in (("person", "yolo11n.pt", 320, 2, 5.), ("car", "yolo11s.pt", 640, 4, 9.)):
+    for cls, model, size, threads, distance in (("person", "yolo11n.pt", 320, 2, 5.), ("car", "yolo11m.pt", 960, 4, 9.)):
         if resources.get(cls) != {"model": "models/" + model, "inference_image_size": size,
                                   "inference_threads": threads, "desired_distance_m": distance}:
             raise ValueError("Frozen resource configuration differs for " + cls)
@@ -563,7 +564,10 @@ def make_plan(root, output, prefix, *, formal=False, seeds=None, groups=None, cl
             "development_probe_gate": gate, "selected_classes": classes, "selected_groups": groups, "selected_seeds": seeds,
             "magnetic_runtime_binding": magnetic_runtime,
             "magnetic_library_binding": magnetic_libraries,
-            "trial_timeout_s": wall_timeout + 360., "evaluation_timeout_s": 1800., "trials": trials}
+            # This extra outer-process budget covers closed-recorder archive
+            # work after flight processes stop; --wall-timeout stays unchanged.
+            "postprocessing_timeout_s": POSTPROCESSING_TIMEOUT_S,
+            "trial_timeout_s": wall_timeout + POSTPROCESSING_TIMEOUT_S, "evaluation_timeout_s": 1800., "trials": trials}
     if formal:
         if extension_binding is not None:
             plan["extension_protocol_binding"] = extension_binding
@@ -636,6 +640,12 @@ def validate_plan(plan, path=None):
     names = [trial["name"] for trial in plan["trials"]]
     if not names or len(names) != len(set(names)):
         raise ValueError("Duplicate or empty trial set")
+    wall_timeout = finite_number(plan["trials"][0].get("wall_timeout_s"), "wall_timeout_s", minimum=0.)
+    postprocessing_timeout = finite_number(plan.get("postprocessing_timeout_s"), "postprocessing_timeout_s", minimum=0.)
+    trial_timeout = finite_number(plan.get("trial_timeout_s"), "trial_timeout_s", minimum=0.)
+    if (wall_timeout <= 0 or postprocessing_timeout != POSTPROCESSING_TIMEOUT_S
+            or trial_timeout != wall_timeout + postprocessing_timeout):
+        raise ValueError("Registered post-flight processing budget/outer trial timeout differs")
     mode = plan.get("mode")
     if mode not in {"FORMAL", "PROBE", "EXTENSION_FORMAL", "EXTENSION_PROBE"}:
         raise ValueError("Unknown v4 plan mode")

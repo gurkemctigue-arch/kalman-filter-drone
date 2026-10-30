@@ -105,7 +105,7 @@ def fixture(root, *, navigation=True, gates=False, ros_distro="jazzy"):
     path.write_text("# ORCHESTRATION_FIXTURE_ONLY: gimbal geometry dependency\n", encoding="utf-8")
     (root / "models").mkdir()
     (root / "models/yolo11n.pt").write_bytes(b"person-model-fixture")
-    (root / "models/yolo11s.pt").write_bytes(b"car-model-fixture")
+    (root / "models/yolo11m.pt").write_bytes(b"car-model-fixture")
     (root / "config").mkdir()
     (root / "config/safety.yaml").write_text("prediction: 0.75\n", encoding="utf-8")
     (root / "config/gazebo_magnetic_reference.json").write_bytes((ROOT / "config/gazebo_magnetic_reference.json").read_bytes())
@@ -366,6 +366,30 @@ def fixture_probe_gate(root):
 
 
 class ReliabilityV4Tests(unittest.TestCase):
+    def test_postprocessing_budget_preserves_flight_timeout_and_rejects_plan_budget_changes(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); fixture(root)
+            frozen = make_fixture_plan(root, "results/archive_budget", "reliability_v4_archive_budget",
+                groups=["stage1_velocity"], classes=["person"], seeds=[0], wall_timeout=241.5)
+            self.assertEqual(frozen["postprocessing_timeout_s"],1800.)
+            self.assertEqual(frozen["trial_timeout_s"],2041.5)
+            self.assertEqual(frozen["evaluation_timeout_s"],1800.)
+            command = frozen["trials"][0]["flight_command"]
+            self.assertEqual(command[command.index("--wall-timeout")+1],"241.5")
+            self.assertEqual(frozen["trials"][0]["wall_timeout_s"],241.5)
+            v4.validate_plan(frozen)
+            for defect in ("missing", "old_budget", "outer_timeout", "boolean"):
+                with self.subTest(defect=defect):
+                    changed = deepcopy(frozen)
+                    if defect == "missing":changed.pop("postprocessing_timeout_s")
+                    elif defect == "old_budget":
+                        changed.update(postprocessing_timeout_s=360.,trial_timeout_s=601.5)
+                    elif defect == "boolean":changed["postprocessing_timeout_s"] = True
+                    else:changed["trial_timeout_s"] += 1.
+                    changed["plan_sha256"] = v4.digest(changed,("plan_sha256",))
+                    with self.assertRaisesRegex(ValueError,"postprocessing_timeout_s|post-flight"):
+                        v4.validate_plan(changed)
+
     def test_selected_gimbal_flag_is_required_in_new_plans_but_legacy_probe_commands_are_preserved(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp); fixture(root)
@@ -532,8 +556,10 @@ class ReliabilityV4Tests(unittest.TestCase):
                         self.assertEqual(Path(command[command.index("--magnetic-library-registration") + 1]).resolve(),
                                          (root/actual["protocol"]["magnetic_library_registration"]).resolve())
                         self.assertIn("--reselect-after-loss", command)
-                        self.assertEqual(trial["inference_image_size"], 640 if cls == "car" else 320)
+                        self.assertEqual(trial["inference_image_size"], 960 if cls == "car" else 320)
                         self.assertEqual(trial["inference_threads"], 4 if cls == "car" else 2)
+                        self.assertEqual(Path(command[command.index("--model-path") + 1]).resolve(),
+                                         (root / "models" / ("yolo11m.pt" if cls == "car" else "yolo11n.pt")).resolve())
             multi = next(t for t in actual["trials"] if t["group"] == "stage3_multi_active")
             self.assertIn("--multi-target", multi["flight_command"])
             self.assertEqual(multi["target_mode"], "locked_target")

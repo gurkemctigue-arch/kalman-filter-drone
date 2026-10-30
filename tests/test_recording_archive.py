@@ -6,6 +6,7 @@ import sqlite3
 import subprocess
 import tempfile
 import unittest
+from unittest.mock import patch
 
 import yaml
 
@@ -111,7 +112,8 @@ class RecordingIntegrityTests(unittest.TestCase):
                 raw=subprocess.check_output(["zstd","-d","-c","-q",str(compressed)])
                 self.assertEqual(raw,original)
                 return Rows(("/clock","/pose","/clock"))
-            result=finalize_recording(spool,trial/"rosbag",0,reader)
+            with patch("uav_tracking.recording_archive.subprocess.run", wraps=subprocess.run) as run:
+                result=finalize_recording(spool,trial/"rosbag",0,reader)
             self.assertEqual(result["status"],"PASS")
             self.assertFalse(spool.exists())
             archive=trial/"rosbag"
@@ -120,6 +122,14 @@ class RecordingIntegrityTests(unittest.TestCase):
             metadata=yaml.safe_load((archive/"metadata.yaml").read_text())["rosbag2_bagfile_information"]
             self.assertEqual(metadata["relative_file_paths"],["recording.db3.zstd"])
             self.assertEqual(result["compressed_files"][0]["raw_sha256"],hashlib.sha256(original).hexdigest())
+            compressed=result["compressed_files"][0]
+            actual_command=run.call_args_list[0].args[0]
+            self.assertEqual(actual_command[:5],["zstd","-T1","-19","--long=27","--check"])
+            self.assertEqual(compressed["compression_command"],actual_command)
+            self.assertEqual(result["compression_profile"]["arguments"],actual_command[1:5])
+            self.assertGreaterEqual(compressed["compression_wall_s"],0.)
+            self.assertGreaterEqual(result["archive_processing"]["wall_s"],compressed["compression_wall_s"])
+            self.assertIn("closed_recording",result["archive_processing"]["scope"])
 
     @unittest.skipUnless(shutil.which("zstd"),"Standard zstd CLI integration runs in the prepared Linux environment")
     def test_reader_failure_retains_raw_and_compressed_artifacts_without_publishing(self):

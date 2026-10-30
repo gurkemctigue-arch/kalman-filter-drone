@@ -131,9 +131,11 @@ def sample_depth_points(
 ) -> np.ndarray:
     """Deterministically sample finite aligned depth as camera optical Nx3.
 
-    ``bbox`` and exclusions use xyxy pixels with an exclusive upper bound.
-    Exclusions are applied before the final evenly spaced cap. A zero/invalid
-    ROI yields an empty cloud. This function has no frame transform or TF read.
+    ``bbox`` keeps its inward-rounded sampling bounds. Positive-area exclusion
+    boxes remove every touched [u,u+1)x[v,v+1) pixel cell (floor low, ceil high,
+    clipped to the image), before the final evenly spaced cap. Degenerate
+    exclusions remove nothing. A zero/invalid ROI yields an empty cloud.
+    This function has no frame transform or TF read.
     """
 
     image = np.asarray(depth_image)
@@ -162,7 +164,13 @@ def sample_depth_points(
         exclusion = np.asarray(exclusion, dtype=float)
         if exclusion.shape != (4,) or not np.all(np.isfinite(exclusion)):
             raise ValueError("exclude_bboxes must contain finite xyxy boxes")
-        keep &= ~((u >= exclusion[0]) & (u < exclusion[2]) & (v >= exclusion[1]) & (v < exclusion[3]))
+        if exclusion[2] <= exclusion[0] or exclusion[3] <= exclusion[1]:
+            continue
+        exclude_left = max(0, min(width, math.floor(exclusion[0])))
+        exclude_top = max(0, min(height, math.floor(exclusion[1])))
+        exclude_right = max(0, min(width, math.ceil(exclusion[2])))
+        exclude_bottom = max(0, min(height, math.ceil(exclusion[3])))
+        keep &= ~((u >= exclude_left) & (u < exclude_right) & (v >= exclude_top) & (v < exclude_bottom))
     u, v, z = u[keep], v[keep], z[keep]
     if len(z) > max_points:
         indices = np.linspace(0, len(z)-1, int(max_points), dtype=int)

@@ -53,7 +53,7 @@
   "safety_gates": {"max_observation_age_s": 0.6, "max_prediction_duration_s": 0.75, "mahalanobis_gate": 9.21, "lost_requires_explicit_reselection": true, "runtime_ground_truth_forbidden": true},
   "resources": {
     "person": {"model": "models/yolo11n.pt", "inference_image_size": 320, "inference_threads": 2, "desired_distance_m": 5.0},
-    "car": {"model": "models/yolo11s.pt", "inference_image_size": 640, "inference_threads": 4, "desired_distance_m": 9.0}
+    "car": {"model": "models/yolo11m.pt", "inference_image_size": 960, "inference_threads": 4, "desired_distance_m": 9.0}
   },
   "navigation_acceptance": {
     "status": "REGISTERED",
