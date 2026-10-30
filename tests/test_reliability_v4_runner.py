@@ -69,7 +69,9 @@ def provenance(root, kind, script):
 def fixture(root, *, navigation=True, gates=False, ros_distro="jazzy"):
     protocol = v4.load(ROOT / v4.PROTOCOL_PATH)
     protocol.pop("model_adaptation", None)
+    protocol.pop("car_input_scale_registration", None)
     protocol["resources"]["car"]["model"] = "models/yolo11m.pt"
+    protocol["resources"]["car"]["inference_image_size"] = 960
     # Historical fixture coverage remains explicitly legacy/off even when a
     # future real registration opts into the independent geometry candidate.
     for setting in protocol["resources"].values():

@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "revision": "car_train20_04_m640_cpu4_v1",
+  "scope": "DEVELOPMENT_20S_ONLY_NOT_COMPLETE_READINESS",
+  "resource": {
+    "model": "models/yolo11m_car_sim_train20_04.pt",
+    "model_sha256": "bf7a56de4ae1658f8101fc6089247e8b984c2965b58d6b4963b4b5977e9ca00c",
+    "inference_image_size": 640,
+    "actual_input_shape": [1, 3, 480, 640],
+    "inference_threads": 4,
+    "device": "cpu",
+    "precision": "CPU native PT FP32"
+  },
+  "quality": {
+    "summary_path": "/mnt/d/WSL/UAVHumble22-validation/humble31_car04_scale_regression01/score01/summary.json",
+    "summary_sha256": "570775127105dab3138ecc001b1815b05994763306546504fee1cfe6e9cca0e4",
+    "candidate_id": "train20_04_best_m640",
+    "candidate_opportunities": 260,
+    "unknown_predictions": 0,
+    "gate": "PASS_PAIRED_DEVELOPMENT_REGRESSION_ONLY",
+    "baseline": "Existing immutable train20_04_best_m960 predictions; view038 FP retained in baseline evidence"
+  },
+  "diagnostic": {
+    "name": "diagnostic_humble31_car04_m640_t4_seed004_20s_01",
+    "duration_s": 20.0,
+    "source_commit": "fee12f856cf30a5f7e0c6c182c3f1380ee387503",
+    "source_canonical_sha256": "c9be288ba551146bd0a4d6482c788976041017ba80a6b36a5c820c4432cfe9be",
+    "evidence_root": "results/frozen_fullplan_v4_humble31/humble31_car_scale_diagnostic01",
+    "flight_terminal": {"path": "s640_driver/execution_terminal.json", "sha256": "75eea1f5c963eda01a27c54bfce9ff7c99fddbc5152a35e1eeb98c850bfeb904"},
+    "evaluation_terminal": {"path": "s640_evaluation01/execution_terminal.json", "sha256": "079f9f9d4d5cffe765595b76aedb91b4d9eafce6f17790dde68d4cb054f81485"},
+    "reports": {
+      "source_clock": {"path": "s640_evaluation01/px4_source_clock_evaluation.json", "sha256": "bb43190aaea75b85c1a30aafcebdf9d034028c0533caabb723912d46b5907a89", "status": "PASS"},
+      "native_startup": {"path": "s640_evaluation01/native_startup_evaluation.json", "sha256": "78ca120860e207a5e0dc97ee89ae83cb38c626863da0dcc4764852390cb78a06", "status": "PASS"},
+      "navigation": {"path": "s640_evaluation01/navigation_reference_evaluation.json", "sha256": "50bca1974ae46546ab185d72b99243700b5f8b837d288d761b4309acf1926b93", "status": "RECORDED_WITH_CENSORED_FAILURES"},
+      "surface": {"path": "s640_evaluation01/surface_flight_evaluation.json", "sha256": "598e204d1ae541b60c5e4f2cf0e48f4b096bd330d1ead951af497603ca72d56a", "status": "INCOMPLETE_EVIDENCE"}
+    }
+  },
+  "formal_seeds_used": [],
+  "complete_development_readiness": false,
+  "claim_boundary": "Quality and a separate 20 s single-car diagnostic support only this prospective input-size revision. Original failures and censored/incomplete reports remain unchanged. Complete final-source 75 s core, safety, identity, gimbal and extension validation remains required."
+}

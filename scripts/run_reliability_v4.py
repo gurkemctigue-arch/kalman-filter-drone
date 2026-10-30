@@ -103,6 +103,12 @@ CAR_MODEL_ADAPTATION_TRAIN04 = {
     "posthoc_epoch_choice": False,
     "scope": "DEVELOPMENT_ADAPTATION_ONLY",
 }
+CAR_INPUT_SCALE_REGISTRATION_TRAIN04_640 = {
+    "revision": "car_train20_04_m640_cpu4_v1",
+    "receipt": {"path": "config/car_sim_train20_04_m640_resource_receipt.json",
+                "sha256": "0bccbdc96ce8d09d8f396fc283c7b08eb5457ccc84065cb493e74c4b45771549"},
+    "scope": "DEVELOPMENT_20S_ONLY_NOT_COMPLETE_READINESS",
+}
 _UNSPECIFIED_HASH_MAP = object()
 
 
@@ -135,8 +141,11 @@ def validate_model_adaptation_binding(protocol, hashes, model_hashes=_UNSPECIFIE
     required = {adaptation["model"]: adaptation["model_sha256"],
                 **{adaptation[key]["path"]: adaptation[key]["sha256"]
                    for key in ("training_receipt", "dataset_manifest")}}
+    if "car_input_scale_registration" in protocol:
+        receipt = protocol["car_input_scale_registration"]["receipt"]
+        required[receipt["path"]] = receipt["sha256"]
     if any(hashes.get(path) != expected for path, expected in required.items()):
-        raise ValueError("Adapted car model or original training/dataset source SHA256 differs or is missing")
+        raise ValueError("Adapted car model, original training/dataset or resource receipt SHA256 differs or is missing")
     if model_hashes is not _UNSPECIFIED_HASH_MAP and model_hashes != {key: value for key, value in hashes.items() if key.endswith(".pt")}:
         raise ValueError("Adapted model registry must retain the complete frozen source model hash mapping")
     if config_hashes is not _UNSPECIFIED_HASH_MAP and config_hashes != {
@@ -326,7 +335,15 @@ def validate_protocol(protocol):
         raise ValueError("Class resources must be an object")
     car_model = resources["car"].get("model") if isinstance(resources.get("car"), dict) else None
     registration = car_model_adaptation_registration(car_model)
-    for cls, model, size, threads, distance in (("person", "yolo11n.pt", 320, 2, 5.), ("car", "yolo11m.pt", 960, 4, 9.)):
+    car_size = 960
+    if "car_input_scale_registration" in protocol:
+        if (protocol["car_input_scale_registration"] != CAR_INPUT_SCALE_REGISTRATION_TRAIN04_640
+                or car_model != CAR_ADAPTED_MODEL_TRAIN04
+                or type(resources["car"].get("inference_image_size")) is not int
+                or type(resources["car"].get("inference_threads")) is not int):
+            raise ValueError("The car input-scale resource revision requires its exact04/640/CPU4 registration")
+        car_size = 640
+    for cls, model, size, threads, distance in (("person", "yolo11n.pt", 320, 2, 5.), ("car", "yolo11m.pt", car_size, 4, 9.)):
         setting = resources.get(cls)
         correlated_two_face_setting(setting, cls)
         legacy_setting = {key: value for key, value in setting.items() if key != CORRELATED_BOUND_FIELD}
@@ -1681,8 +1698,9 @@ def validate_probe_gate(plan, *, extensions=False):
                 raise ValueError("Development probe geometry mode differs from final class registration")
             if (any(previous["protocol"]["resources"][cls]["model"] != plan["protocol"]["resources"][cls]["model"]
                     for cls in CLASSES)
-                    or previous["protocol"].get("model_adaptation") != plan["protocol"].get("model_adaptation")):
-                raise ValueError("Development probe selected model/adaptation differs from final class registration")
+                    or previous["protocol"].get("model_adaptation") != plan["protocol"].get("model_adaptation")
+                    or previous["protocol"].get("car_input_scale_registration") != plan["protocol"].get("car_input_scale_registration")):
+                raise ValueError("Development probe selected model/adaptation/resource revision differs from final class registration")
             cache[source_key] = previous, read_slots(previous)
         previous, records = cache[source_key]
         slot_id = item["slot_id"]

@@ -99,7 +99,7 @@
     },
     "car": {
       "model": "models/yolo11m_car_sim_train20_04.pt",
-      "inference_image_size": 960,
+      "inference_image_size": 640,
       "inference_threads": 4,
       "desired_distance_m": 9.0,
       "navigation_correlated_two_face_bound": true
@@ -132,6 +132,14 @@
     "policy": "Keep the unique image IoU>=0.5 match, fully-in-frame extent, freshness, shutter guards and fixed REQUEST-to-full-clock identity denominator. For positive same-class GT-box overlap only, an additional sufficient certificate requires all three declared actors and complete rigid static render meshes, audited closed-scene assets, exact-source vehicle/actor geometry and exact physical camera/base geometry for a gimbal recording. Every overlapping other actor must have its whole-mesh optical-z minimum strictly greater than the chosen actor's whole-mesh maximum plus 0.05 m. Missing/unsupported geometry, near-plane crossings, multiple feasible image matches or overlapping depth bands remain UNKNOWN. This offline-only rule never chooses an online identity, supplies a runtime measurement, establishes YOLO box completeness, changes the MOT visible subset or removes unknown time cells. Freeze its evaluator and asset provenance before formal outcomes; preserve historical reports and failures."
   },
   "comparison_policy": "Report all 120 slots and all failures. Pair v4 classes/groups by the same held-out registered seed 1000..1009 where applicable. Active/midpoint visual improvements do not replace base_link physical following errors. Historical v3 uses paired seeds 0..9 for its separate four-baseline study; these v4 trials are not paired reruns of v3 and do not repeat that estimator comparison.",
+  "car_input_scale_registration": {
+    "revision": "car_train20_04_m640_cpu4_v1",
+    "receipt": {
+      "path": "config/car_sim_train20_04_m640_resource_receipt.json",
+      "sha256": "0bccbdc96ce8d09d8f396fc283c7b08eb5457ccc84065cb493e74c4b45771549"
+    },
+    "scope": "DEVELOPMENT_20S_ONLY_NOT_COMPLETE_READINESS"
+  },
   "model_adaptation": {
     "target_class": "car",
     "model": "models/yolo11m_car_sim_train20_04.pt",
