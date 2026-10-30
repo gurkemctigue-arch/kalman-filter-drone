@@ -1,5 +1,6 @@
 """Timing attribution and real detector lifecycle without ROS/model loading."""
 
+from contextlib import ExitStack
 import json
 from threading import Lock
 from types import SimpleNamespace as NS
@@ -127,13 +128,15 @@ class DetectorTimingTests(unittest.TestCase):
             clock.advance(.2)
             return original_stats(*args, **kwargs)
 
-        self.enterContext(patch.object(detector, 'InferenceTiming', lambda: InferenceTiming(
+        patches = ExitStack()
+        self.addCleanup(patches.close)
+        patches.enter_context(patch.object(detector, 'InferenceTiming', lambda: InferenceTiming(
             wall_clock=clock.wall,cpu_clock=clock.cpu)))
-        self.enterContext(patch.object(detector.time,'perf_counter',clock.wall))
-        self.enterContext(patch.object(detector,'depth_roi_stats',stats))
-        self.enterContext(patch.object(detector,'String',lambda:NS(data=''),create=True))
-        self.enterContext(patch.object(detector,'TargetObservation',lambda:NS(position_camera_m=NS()),create=True))
-        self.enterContext(patch.object(detector,'TargetObservationArray',NS,create=True))
+        patches.enter_context(patch.object(detector.time,'perf_counter',clock.wall))
+        patches.enter_context(patch.object(detector,'depth_roi_stats',stats))
+        patches.enter_context(patch.object(detector,'String',lambda:NS(data=''),create=True))
+        patches.enter_context(patch.object(detector,'TargetObservation',lambda:NS(position_camera_m=NS()),create=True))
+        patches.enter_context(patch.object(detector,'TargetObservationArray',NS,create=True))
         return node,snapshot,clock,outputs,expected_error
 
     def report(self, node):
