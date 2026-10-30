@@ -487,6 +487,7 @@ class RosGzTrialHookTests(unittest.TestCase):
         process = SimpleNamespace(poll=lambda: 0)
         failure = ValueError("runtime changed during shutdown")
         namespace = {**trial.__dict__, "original_error": original_error, "recording_spool": self.directory / "spool",
+            "recording_observer": None,
             "simulation_resumed": False, "output": self.directory, "snapshot": self.snapshot,
             "parameter_evidence": {}, "parameter_manifest": self.snapshot / "px4_parameters.json",
             "px4_root": self.directory, "magnetic_runtime": None, "ros_gz_runtime": {"fixture": True},
