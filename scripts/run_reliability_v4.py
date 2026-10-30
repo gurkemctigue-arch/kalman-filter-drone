@@ -63,7 +63,7 @@ OFFLINE_HELPERS.add("scripts/summarize_reliability_v4.py")
 OFFLINE_HELPERS.add("uav_tracking/research_failures.py")
 OFFLINE_HELPERS.update({"scripts/build_reliability_v4_figures.py", "scripts/build_reliability_v4_report.py",
                         "scripts/calibrate_estimator_replay_v4.py", "scripts/build_reliability_v4_probe_gate.py",
-                        "scripts/prepare_document_node24.py"})
+                        "scripts/prepare_document_node24.py", "scripts/audit_car_model_regressions.py"})
 REPORT_PROVENANCE_HELPERS = {
     "navigation":("scripts/evaluate_stage1_flight.py", "scripts/evaluate_online_state_accuracy.py",
                   "scripts/evaluate_follow_dynamics.py", "scripts/extract_research_recording.py", "uav_tracking/research_dynamics.py", "uav_tracking/research_labels.py"),
@@ -89,19 +89,44 @@ CAR_MODEL_ADAPTATION = {
     "posthoc_epoch_choice": False,
     "scope": "DEVELOPMENT_ADAPTATION_ONLY",
 }
+CAR_ADAPTED_MODEL_TRAIN04 = "models/yolo11m_car_sim_train20_04.pt"
+CAR_MODEL_ADAPTATION_TRAIN04 = {
+    "target_class": "car", "model": CAR_ADAPTED_MODEL_TRAIN04,
+    "model_sha256": "bf7a56de4ae1658f8101fc6089247e8b984c2965b58d6b4963b4b5977e9ca00c",
+    "training_receipt": {"path": "config/car_sim_train20_04_training_receipt.json",
+                         "sha256": "8b0d87baebd54f3ee46f0fd3d91fbd11354c723adbc1406d8bcc69a888e028a5"},
+    "dataset_manifest": {"path": "config/car_sim_train20_04_dataset_manifest.json",
+                         "sha256": "c7abb224412bd550f32dadc0e99c3ed627effc4f3d41e3769a6bf5ede143c128"},
+    "training_epochs": 20,
+    "checkpoint_selection": "PREDECLARED_FRAMEWORK_BEST_PT_ORIGINAL_VALIDATION_FITNESS_MAP50_95",
+    "posthoc_epoch_choice": False,
+    "scope": "DEVELOPMENT_ADAPTATION_ONLY",
+}
 _UNSPECIFIED_HASH_MAP = object()
+
+
+def car_model_adaptation_registration(model):
+    """Look up only exact named histories; registration does not enable one.
+
+    Build the lookup on each call so existing inert-fixture overrides of the
+    original registration still exercise every production binding check.
+    """
+    if not isinstance(model, str):
+        return None
+    return {CAR_ADAPTED_MODEL: CAR_MODEL_ADAPTATION,
+            CAR_ADAPTED_MODEL_TRAIN04: CAR_MODEL_ADAPTATION_TRAIN04}.get(model)
 
 
 def validate_model_adaptation_binding(protocol, hashes, model_hashes=_UNSPECIFIED_HASH_MAP,
                                       config_hashes=_UNSPECIFIED_HASH_MAP):
-    """The one named candidate binds actual frozen bytes and original sources.
+    """Each named candidate binds actual frozen bytes and original sources.
 
     The scope describes the adaptation data/selection, not a permanent bar on
     formal validation. Independent later development and held-out gates remain
     necessary. Legacy model registrations need no adaptation entry.
     """
     validate_protocol(protocol)
-    if protocol["resources"]["car"]["model"] != CAR_ADAPTED_MODEL:
+    if car_model_adaptation_registration(protocol["resources"]["car"]["model"]) is None:
         return
     if not isinstance(hashes, dict):
         raise ValueError("Adapted car model requires its complete frozen source hash mapping")
@@ -298,18 +323,19 @@ def validate_protocol(protocol):
     resources = protocol.get("resources", {})
     if not isinstance(resources, dict):
         raise ValueError("Class resources must be an object")
-    adapted = isinstance(resources.get("car"), dict) and resources["car"].get("model") == CAR_ADAPTED_MODEL
+    car_model = resources["car"].get("model") if isinstance(resources.get("car"), dict) else None
+    registration = car_model_adaptation_registration(car_model)
     for cls, model, size, threads, distance in (("person", "yolo11n.pt", 320, 2, 5.), ("car", "yolo11m.pt", 960, 4, 9.)):
         setting = resources.get(cls)
         correlated_two_face_setting(setting, cls)
         legacy_setting = {key: value for key, value in setting.items() if key != CORRELATED_BOUND_FIELD}
-        expected_model = CAR_ADAPTED_MODEL if cls == "car" and adapted else "models/" + model
+        expected_model = car_model if cls == "car" and registration is not None else "models/" + model
         if legacy_setting != {"model": expected_model, "inference_image_size": size,
                                   "inference_threads": threads, "desired_distance_m": distance}:
             raise ValueError("Frozen resource configuration differs for " + cls)
-    if adapted:
+    if registration is not None:
         adaptation = protocol.get("model_adaptation")
-        if (not isinstance(adaptation, dict) or adaptation != CAR_MODEL_ADAPTATION
+        if (not isinstance(adaptation, dict) or adaptation != registration
                 or type(adaptation.get("training_epochs")) is not int
                 or type(adaptation.get("posthoc_epoch_choice")) is not bool):
             raise ValueError("The adapted car model requires its exact original model_adaptation registration")

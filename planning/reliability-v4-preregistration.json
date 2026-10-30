@@ -3,9 +3,30 @@
   "status": "DRAFT_NOT_FROZEN_NOT_EXECUTED",
   "study_kind": "POST_REPAIR_ENGINEERING_VALIDATION",
   "scope": "New v4 engineering validation; does not replace or repeat the frozen v3 four-estimator study. Historical failures, interruptions and unknown identity intervals remain unchanged.",
-  "classes": ["person", "car"],
-  "groups": ["stage1_velocity", "stage1_position", "stage2_crossing", "stage3_midpoint", "stage3_active", "stage3_multi_active"],
-  "seeds": [1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009],
+  "classes": [
+    "person",
+    "car"
+  ],
+  "groups": [
+    "stage1_velocity",
+    "stage1_position",
+    "stage2_crossing",
+    "stage3_midpoint",
+    "stage3_active",
+    "stage3_multi_active"
+  ],
+  "seeds": [
+    1000,
+    1001,
+    1002,
+    1003,
+    1004,
+    1005,
+    1006,
+    1007,
+    1008,
+    1009
+  ],
   "seed_partition_policy": "Development has already used seeds 0, 1 and 3. Formal v4 uses previously unexecuted held-out seeds 1000..1009, frozen before formal outcomes; development probes must not consume them. The same registered v4 seed is reused across classes/groups. PX4/Gazebo process seed remains registered_seed+1. Historical v3 paired seeds 0..9 remain a separate four-baseline study, with no paired v3-v4 claim.",
   "formal_trial_count": 120,
   "duration_s": 75.0,
@@ -30,7 +51,13 @@
   "magnetic_environment_policy": "Use Gazebo ENU/gauss magnetic output with the pinned isolated PX4 FLU-to-FRD bridge patch. Freeze the verified source/dependency/ELF runtime manifest before a plan is created; verify actual startup log, binary and source binding for every trial. Gazebo and PX4 lookup tables remain different. No target GT or trajectory-fit correction. The historical v3 and coherent_wmm intervention evidence remain unchanged. The manifest does not yet exist until the real isolated build is verified; never fabricate it.",
   "propagate_vehicle_uncertainty": true,
   "px4_time_mode": "source_sim",
-  "supervisor_status_timing": {"status_timestamp_mode": "source_sim", "status_source_max_age_s": 1.0, "status_source_max_future_s": 0.05, "status_timeout_wall_s": 10.0, "wall_check_clock": "ROS-time control tick; no independent status steady timer"},
+  "supervisor_status_timing": {
+    "status_timestamp_mode": "source_sim",
+    "status_source_max_age_s": 1.0,
+    "status_source_max_future_s": 0.05,
+    "status_timeout_wall_s": 10.0,
+    "wall_check_clock": "ROS-time control tick; no independent status steady timer"
+  },
   "source_time_policy": "Disable XRCE Agent wall-clock mapping before client startup only for this Gazebo simulation. Independently audit raw PX4, timing diagnostics and source-stamped adapted odometry, keeping callback receipt and recorder delivery distinct and retaining all clock-tail silence. Invalid domains/regressions or a locked vehicle-frame reset fail the trial even when online protection correctly rejects them. Source-clock evaluator PASS is necessary but does not establish navigation performance or flight success. Preserve original bounds and register numeric navigation gates only after development probes, before formal trials.",
   "vehicle_uncertainty_policy": "Propagate reported PX4 pose covariance into navigation measurement covariance, including attitude uncertainty. This prospective setting remains subject to development probes and does not change the original innovation/safety gates.",
   "estimator_method": "adaptive_kf",
@@ -51,11 +78,32 @@
   "takeoff_mode": "px4_native",
   "takeoff_policy": "PX4 NAV_TAKEOFF and ARM precede Offboard; startup must observe AUTO_LOITER, final magnetic/yaw alignment, healthy same-instance VLP/odometry and settled pose before REQUEST_OFFBOARD. MIS_TAKEOFF_ALT=3, COM_TAKEOFF_ACT=0 and SENS_IMU_MODE=1 are explicit pre-rcS overrides. An independent recorded-command/mode/readiness native_startup evaluator must pass; online readiness helper replay is not independent evidence. Resets after Offboard locking still hold the mission under the original frame-guard contract.",
   "vehicle_control_point": "base_link",
-  "vehicle_control_point_offset_flu_m": [0.0, 0.0, 0.24],
-  "safety_gates": {"max_observation_age_s": 0.6, "max_prediction_duration_s": 0.75, "mahalanobis_gate": 9.21, "lost_requires_explicit_reselection": true, "runtime_ground_truth_forbidden": true},
+  "vehicle_control_point_offset_flu_m": [
+    0.0,
+    0.0,
+    0.24
+  ],
+  "safety_gates": {
+    "max_observation_age_s": 0.6,
+    "max_prediction_duration_s": 0.75,
+    "mahalanobis_gate": 9.21,
+    "lost_requires_explicit_reselection": true,
+    "runtime_ground_truth_forbidden": true
+  },
   "resources": {
-    "person": {"model": "models/yolo11n.pt", "inference_image_size": 320, "inference_threads": 2, "desired_distance_m": 5.0},
-    "car": {"model": "models/yolo11m.pt", "inference_image_size": 960, "inference_threads": 4, "desired_distance_m": 9.0}
+    "person": {
+      "model": "models/yolo11n.pt",
+      "inference_image_size": 320,
+      "inference_threads": 2,
+      "desired_distance_m": 5.0
+    },
+    "car": {
+      "model": "models/yolo11m_car_sim_train20_04.pt",
+      "inference_image_size": 960,
+      "inference_threads": 4,
+      "desired_distance_m": 9.0,
+      "navigation_correlated_two_face_bound": true
+    }
   },
   "navigation_acceptance": {
     "status": "REGISTERED",
@@ -79,9 +127,26 @@
   "offline_selected_identity_visibility": {
     "revision": "whole_static_mesh_optical_z_front_v1",
     "strict_optical_z_separation_m": 0.05,
-    "exact_source_geometry_tolerance_s": 1e-9,
+    "exact_source_geometry_tolerance_s": 1e-09,
     "required_actor_count": 3,
     "policy": "Keep the unique image IoU>=0.5 match, fully-in-frame extent, freshness, shutter guards and fixed REQUEST-to-full-clock identity denominator. For positive same-class GT-box overlap only, an additional sufficient certificate requires all three declared actors and complete rigid static render meshes, audited closed-scene assets, exact-source vehicle/actor geometry and exact physical camera/base geometry for a gimbal recording. Every overlapping other actor must have its whole-mesh optical-z minimum strictly greater than the chosen actor's whole-mesh maximum plus 0.05 m. Missing/unsupported geometry, near-plane crossings, multiple feasible image matches or overlapping depth bands remain UNKNOWN. This offline-only rule never chooses an online identity, supplies a runtime measurement, establishes YOLO box completeness, changes the MOT visible subset or removes unknown time cells. Freeze its evaluator and asset provenance before formal outcomes; preserve historical reports and failures."
   },
-  "comparison_policy": "Report all 120 slots and all failures. Pair v4 classes/groups by the same held-out registered seed 1000..1009 where applicable. Active/midpoint visual improvements do not replace base_link physical following errors. Historical v3 uses paired seeds 0..9 for its separate four-baseline study; these v4 trials are not paired reruns of v3 and do not repeat that estimator comparison."
+  "comparison_policy": "Report all 120 slots and all failures. Pair v4 classes/groups by the same held-out registered seed 1000..1009 where applicable. Active/midpoint visual improvements do not replace base_link physical following errors. Historical v3 uses paired seeds 0..9 for its separate four-baseline study; these v4 trials are not paired reruns of v3 and do not repeat that estimator comparison.",
+  "model_adaptation": {
+    "target_class": "car",
+    "model": "models/yolo11m_car_sim_train20_04.pt",
+    "model_sha256": "bf7a56de4ae1658f8101fc6089247e8b984c2965b58d6b4963b4b5977e9ca00c",
+    "training_receipt": {
+      "path": "config/car_sim_train20_04_training_receipt.json",
+      "sha256": "8b0d87baebd54f3ee46f0fd3d91fbd11354c723adbc1406d8bcc69a888e028a5"
+    },
+    "dataset_manifest": {
+      "path": "config/car_sim_train20_04_dataset_manifest.json",
+      "sha256": "c7abb224412bd550f32dadc0e99c3ed627effc4f3d41e3769a6bf5ede143c128"
+    },
+    "training_epochs": 20,
+    "checkpoint_selection": "PREDECLARED_FRAMEWORK_BEST_PT_ORIGINAL_VALIDATION_FITNESS_MAP50_95",
+    "posthoc_epoch_choice": false,
+    "scope": "DEVELOPMENT_ADAPTATION_ONLY"
+  }
 }

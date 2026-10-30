@@ -22,13 +22,13 @@ import uuid
 import yaml
 
 
-ZSTD_ARCHIVE_ARGUMENTS = ("-T1", "-19", "--long=27", "--check")
+ZSTD_ARCHIVE_ARGUMENTS = ("-T4", "-19", "--long=27", "--check")
 
 
 def archive_compression_profile() -> dict:
     """Describe the fixed lossless profile used for future closed recordings."""
     return {"name": "zstd19_long27", "executable": "zstd", "arguments": list(ZSTD_ARCHIVE_ARGUMENTS),
-            "threads": 1, "level": 19, "long_window_log": 27, "checksum": True}
+            "threads": 4, "level": 19, "long_window_log": 27, "checksum": True}
 
 
 class RecordingArchiveError(RuntimeError):

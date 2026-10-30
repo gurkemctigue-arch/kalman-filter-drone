@@ -124,7 +124,7 @@ class RecordingIntegrityTests(unittest.TestCase):
             self.assertEqual(result["compressed_files"][0]["raw_sha256"],hashlib.sha256(original).hexdigest())
             compressed=result["compressed_files"][0]
             actual_command=run.call_args_list[0].args[0]
-            self.assertEqual(actual_command[:5],["zstd","-T1","-19","--long=27","--check"])
+            self.assertEqual(actual_command[:5],["zstd","-T4","-19","--long=27","--check"])
             self.assertEqual(compressed["compression_command"],actual_command)
             self.assertEqual(result["compression_profile"]["arguments"],actual_command[1:5])
             self.assertGreaterEqual(compressed["compression_wall_s"],0.)

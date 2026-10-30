@@ -543,33 +543,37 @@ class CorrelatedBoundRegistrationTests(unittest.TestCase):
 class ModelAdaptationRegistrationTests(unittest.TestCase):
     """Source/hash capability tests with inert tiny files, never model loading."""
 
+    adaptation_constant = "CAR_MODEL_ADAPTATION"
+
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory()
         self.addCleanup(self.temporary.cleanup)
         self.root = Path(self.temporary.name)
         fixture(self.root)
 
-    def registered_protocol(self):
+    def registered_protocol(self, adaptation=None):
         protocol = v4.load(self.root/v4.PROTOCOL_PATH)
-        protocol["resources"]["car"]["model"] = v4.CAR_ADAPTED_MODEL
-        protocol["model_adaptation"] = deepcopy(v4.CAR_MODEL_ADAPTATION)
+        adaptation = deepcopy(getattr(v4, self.adaptation_constant) if adaptation is None else adaptation)
+        protocol["resources"]["car"]["model"] = adaptation["model"]
+        protocol["model_adaptation"] = adaptation
         return protocol
 
-    def enable_inert_candidate(self):
+    def enable_inert_candidate(self, registration_name=None):
         # These are explicit test doubles for fixed approved SHA values. Their
         # paths and selection rules stay fixed, and production SHA constants
         # are separately pinned below. No real checkpoint is copied or opened.
-        adaptation = deepcopy(v4.CAR_MODEL_ADAPTATION)
-        weight = self.root/v4.CAR_ADAPTED_MODEL
+        registration_name = registration_name or self.adaptation_constant
+        adaptation = deepcopy(getattr(v4, registration_name))
+        weight = self.root/adaptation["model"]
         weight.write_bytes(b"ORCHESTRATION_FIXTURE_ONLY: not a trained model")
         adaptation["model_sha256"] = v4.sha(weight)
         for key in ("training_receipt", "dataset_manifest"):
             path = self.root/adaptation[key]["path"]
             write(path, {"evidence_scope": "ORCHESTRATION_FIXTURE_ONLY", "artifact": key})
             adaptation[key]["sha256"] = v4.sha(path)
-        registration = patch.object(v4, "CAR_MODEL_ADAPTATION", adaptation)
+        registration = patch.object(v4, registration_name, adaptation)
         registration.start(); self.addCleanup(registration.stop)
-        protocol = self.registered_protocol()
+        protocol = self.registered_protocol(adaptation)
         write(self.root/v4.PROTOCOL_PATH, protocol)
         return adaptation
 
@@ -642,13 +646,13 @@ class ModelAdaptationRegistrationTests(unittest.TestCase):
         self.assertIn("models/yolo11m.pt", frozen["model_hashes"], "The original model is retained")
         self.assertEqual(frozen["config_hashes"][adaptation["training_receipt"]["path"]], adaptation["training_receipt"]["sha256"])
         command = frozen["trials"][0]["flight_command"]
-        self.assertEqual(Path(command[command.index("--model-path")+1]).resolve(), (self.root/v4.CAR_ADAPTED_MODEL).resolve())
+        self.assertEqual(Path(command[command.index("--model-path")+1]).resolve(), (self.root/adaptation["model"]).resolve())
         self.assertNotIn(v4.CORRELATED_BOUND_FLAG, command, "Selecting a detector must not enable the geometry candidate")
         with patch.object(v4, "verify_external_runtime", side_effect=fixture_runtime_verifier):
             v4.verify_sources(frozen)
         person_only = self.make(classes=["person"], suffix="adaptation_person")
         self.assertEqual(person_only["trials"][0]["model"], "models/yolo11n.pt")
-        self.assertIn(v4.CAR_ADAPTED_MODEL, person_only["model_hashes"])
+        self.assertIn(adaptation["model"], person_only["model_hashes"])
 
     def test_resealed_hash_maps_cannot_omit_or_replace_registered_sources(self):
         adaptation = self.enable_inert_candidate(); original = self.make()
@@ -726,6 +730,72 @@ class ModelAdaptationRegistrationTests(unittest.TestCase):
         gate_path = self.root/"model_gate.json"; write(gate_path, evidence)
         current["development_probe_gate"] = {"path": str(gate_path), "sha256": v4.sha(gate_path), "evidence": evidence}
         with patch.object(v4, "read_slots", side_effect=AssertionError("selected model must bind before record reuse")), \
+                self.assertRaisesRegex(ValueError, "selected model/adaptation"):
+            v4.validate_probe_gate(current)
+
+
+class Train04ModelAdaptationRegistrationTests(ModelAdaptationRegistrationTests):
+    """Apply the same actual-byte/CLI/readiness checks to the separate04 history."""
+
+    adaptation_constant = "CAR_MODEL_ADAPTATION_TRAIN04"
+
+    def test_only_one_exact_prospective_adaptation_and_unchanged_resources_are_allowed(self):
+        # The inherited check also pins the original01 constants unchanged.
+        super().test_only_one_exact_prospective_adaptation_and_unchanged_resources_are_allowed()
+        registration = v4.CAR_MODEL_ADAPTATION_TRAIN04
+        self.assertEqual(v4.CAR_ADAPTED_MODEL_TRAIN04, "models/yolo11m_car_sim_train20_04.pt")
+        self.assertEqual(registration["model"], v4.CAR_ADAPTED_MODEL_TRAIN04)
+        self.assertEqual(registration["model_sha256"], "bf7a56de4ae1658f8101fc6089247e8b984c2965b58d6b4963b4b5977e9ca00c")
+        self.assertEqual(registration["training_receipt"], {
+            "path": "config/car_sim_train20_04_training_receipt.json",
+            "sha256": "8b0d87baebd54f3ee46f0fd3d91fbd11354c723adbc1406d8bcc69a888e028a5"})
+        self.assertEqual(registration["dataset_manifest"], {
+            "path": "config/car_sim_train20_04_dataset_manifest.json",
+            "sha256": "c7abb224412bd550f32dadc0e99c3ed627effc4f3d41e3769a6bf5ede143c128"})
+
+    def test_model_receipt_and_dataset_cannot_cross_registered_histories(self):
+        registrations = (v4.CAR_MODEL_ADAPTATION, v4.CAR_MODEL_ADAPTATION_TRAIN04)
+        for expected, other in (registrations, registrations[::-1]):
+            original = self.registered_protocol(expected)
+            for key in (None, "model", "model_sha256", "training_receipt", "dataset_manifest"):
+                candidate = deepcopy(original)
+                if key is None:
+                    candidate["model_adaptation"] = deepcopy(other)
+                else:
+                    candidate["model_adaptation"][key] = deepcopy(other[key])
+                with self.subTest(model=expected["model"], key=key), self.assertRaisesRegex(ValueError, "model_adaptation"):
+                    v4.validate_protocol(candidate)
+        protocol = self.registered_protocol()
+        for model in ("models/yolo11m_car_sim_train20_02.pt", "models/yolo11m_car_sim_train20_03.pt",
+                      "../models/yolo11m_car_sim_train20_04.pt", "/absolute/yolo11m_car_sim_train20_04.pt", []):
+            candidate = deepcopy(protocol); candidate["resources"]["car"]["model"] = model
+            with self.subTest(model=model), self.assertRaisesRegex(ValueError, "resource"):
+                v4.validate_protocol(candidate)
+
+    def test_train01_readiness_cannot_certify_train04_with_identical_file_pool(self):
+        self.enable_inert_candidate("CAR_MODEL_ADAPTATION")
+        self.enable_inert_candidate()
+        current_protocol = v4.load(self.root/v4.PROTOCOL_PATH)
+        write(self.root/v4.PROTOCOL_PATH, self.registered_protocol(v4.CAR_MODEL_ADAPTATION))
+        previous = self.make(suffix="train01"); v4.persist_plan(previous)
+        write(self.root/v4.PROTOCOL_PATH, current_protocol)
+        current = self.make(suffix="train04")
+        self.assertEqual(previous["source_hashes"], current["source_hashes"])
+        self.assertEqual(previous["model_hashes"], current["model_hashes"])
+        evidence = {"schema_version": 2, "result": "PASS", "ready_for_formal_reliability_v4": True,
+                    "checks": {key: True for key in v4.PROBE_CHECKS},
+                    "bindings": {"flight_source_hashes": v4.flight_source_hashes(current["source_hashes"]),
+                        "evaluation_source_hashes": v4.offline_source_hashes(current["source_hashes"]),
+                        "model_hashes": current["model_hashes"],
+                        "magnetic_runtime_manifest_sha256": current["magnetic_runtime_binding"]["manifest_sha256"],
+                        "magnetic_library_registration_sha256": current["magnetic_library_binding"]["registration_sha256"],
+                        "navigation_acceptance_sha256": v4.digest(current["protocol"]["navigation_acceptance"])},
+                    "probe_slots": [{"plan_path": str(Path(previous["output"])/"plan.json"),
+                                     "plan_file_sha256": v4.sha(Path(previous["output"])/"plan.json"),
+                                     "slot_id": previous["trials"][0]["id"], "record_file_sha256": "0"*64}]}
+        gate_path = self.root/"train04_model_gate.json"; write(gate_path, evidence)
+        current["development_probe_gate"] = {"path": str(gate_path), "sha256": v4.sha(gate_path), "evidence": evidence}
+        with patch.object(v4, "read_slots", side_effect=AssertionError("selected history must bind before record reuse")), \
                 self.assertRaisesRegex(ValueError, "selected model/adaptation"):
             v4.validate_probe_gate(current)
 
@@ -887,7 +957,8 @@ class ReliabilityV4Tests(unittest.TestCase):
     def test_replay_tools_bind_full_manifest_but_do_not_force_flight_source_changes(self):
         offline = {"scripts/export_estimator_replay_v4.py", "scripts/run_estimator_replay_v4.py",
                    "uav_tracking/replay_comparison.py", "uav_tracking/replay_export.py",
-                   "uav_tracking/navigation_reproduction.py", "uav_tracking/research_failures.py"}
+                   "uav_tracking/navigation_reproduction.py", "uav_tracking/research_failures.py",
+                   "scripts/audit_car_model_regressions.py"}
         online = {"uav_tracking/recording_archive.py", "uav_tracking/core/kalman.py"}
         hashes = {relative:v4.sha(ROOT/relative) for relative in offline | online}
         self.assertEqual(set(v4.offline_source_hashes(hashes)), offline)
