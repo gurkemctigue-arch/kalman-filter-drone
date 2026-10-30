@@ -92,6 +92,81 @@ def registered_fixture(root, *, algorithm_failure=False):
     return core_gate, Path(core["output"])/"plan.json"
 
 
+class CorrelatedBoundExtensionTests(unittest.TestCase):
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.root = Path(self.temporary.name)
+        extension_fixture(self.root)
+
+    def declare(self):
+        protocol = v4.load(self.root/v4.PROTOCOL_PATH)
+        for cls in v4.CLASSES:
+            protocol["resources"][cls][v4.CORRELATED_BOUND_FIELD] = cls == "car"
+        fixtures.write(self.root/v4.PROTOCOL_PATH, protocol)
+
+    def test_class_geometry_setting_survives_every_extension_condition(self):
+        self.declare()
+        frozen = make(self.root, seeds=[4])
+        v4.validate_plan(frozen)
+        self.assertEqual(len(frozen["trials"]), 16)
+        for trial in frozen["trials"]:
+            enabled = trial["target_class"] == "car"
+            self.assertIs(trial[v4.CORRELATED_BOUND_FIELD], enabled)
+            self.assertEqual(trial["flight_command"].count(v4.CORRELATED_BOUND_FLAG), int(enabled))
+            self.assertEqual(v4.correlated_two_face_trial_binding(frozen, trial), (enabled, True))
+
+    def test_extension_runtime_requires_both_registered_bool_archives(self):
+        self.declare()
+        frozen = make(self.root, seeds=[4], conditions=["latency"])
+        for trial in frozen["trials"]:
+            ExtensionCommands()(trial["flight_command"], self.root/(trial["id"]+".log"), self.root, 1.)
+            self.assertEqual(v4.runtime_configuration(frozen, trial)["errors"], [])
+            directory = Path(trial["directory"])
+            config_path = directory/"run_config.json"
+            yaml_path = directory/"configuration/runtime_parameters.yaml"
+            config, parameters = v4.load(config_path), v4.load(yaml_path)
+            for location in ("arguments", "yaml"):
+                arguments, runtime = deepcopy(config), deepcopy(parameters)
+                if location == "arguments":arguments.pop("correlated_two_face_bound")
+                else:runtime["uav_tracking_state_estimator"]["ros__parameters"].pop(v4.CORRELATED_BOUND_FIELD)
+                fixtures.write(config_path, arguments); fixtures.write(yaml_path, runtime)
+                label = ("run_config:correlated_two_face_bound" if location == "arguments" else
+                         "runtime_parameters:uav_tracking_state_estimator:"+v4.CORRELATED_BOUND_FIELD)
+                self.assertIn(label, v4.runtime_configuration(frozen, trial)["errors"])
+
+    def test_resealed_extension_cannot_change_class_or_cli_opt_in(self):
+        self.declare()
+        original = make(self.root, seeds=[4], conditions=["latency"], classes=["car"])
+        for defect in ("missing_spec", "off_spec", "cli", "resource"):
+            with self.subTest(defect=defect):
+                frozen = deepcopy(original); trial = frozen["trials"][0]
+                if defect == "missing_spec":trial.pop(v4.CORRELATED_BOUND_FIELD)
+                elif defect == "off_spec":trial[v4.CORRELATED_BOUND_FIELD] = False
+                elif defect == "cli":trial["flight_command"].remove(v4.CORRELATED_BOUND_FLAG)
+                else:frozen["protocol"]["resources"]["car"][v4.CORRELATED_BOUND_FIELD] = False
+                frozen["plan_sha256"] = v4.digest(frozen, ("plan_sha256",))
+                with self.assertRaises(ValueError):v4.validate_plan(frozen)
+
+    def test_old_extension_is_off_and_hidden_runtime_enablement_is_rejected(self):
+        frozen = make(self.root, seeds=[4], conditions=["latency"], classes=["car"])
+        trial = frozen["trials"][0]
+        self.assertNotIn(v4.CORRELATED_BOUND_FIELD, trial)
+        ExtensionCommands()(trial["flight_command"], self.root/"legacy.log", self.root, 1.)
+        directory = Path(trial["directory"])
+        config_path, yaml_path = directory/"run_config.json", directory/"configuration/runtime_parameters.yaml"
+        config, parameters = v4.load(config_path), v4.load(yaml_path)
+        config.pop("correlated_two_face_bound")
+        estimator = parameters["uav_tracking_state_estimator"]["ros__parameters"]
+        estimator.pop(v4.CORRELATED_BOUND_FIELD)
+        fixtures.write(config_path, config); fixtures.write(yaml_path, parameters)
+        self.assertEqual(v4.runtime_configuration(frozen, trial)["errors"], [])
+        estimator[v4.CORRELATED_BOUND_FIELD] = True
+        fixtures.write(yaml_path, parameters)
+        self.assertIn("runtime_parameters:uav_tracking_state_estimator:"+v4.CORRELATED_BOUND_FIELD,
+                      v4.runtime_configuration(frozen, trial)["errors"])
+
+
 class ExtensionTests(unittest.TestCase):
     def test_draft_generates_sixteen_development_cells_without_heldout_seeds(self):
         with tempfile.TemporaryDirectory() as tmp:

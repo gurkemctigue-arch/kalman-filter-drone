@@ -111,6 +111,73 @@ def replay_inputs(root):
     return {"core_plan": core_path, "candidate": candidate_path}, context, runtime, candidate, draft_path
 
 
+class GeometrySafetyAssemblyTests(unittest.TestCase):
+    def test_matching_new_geometry_archives_assemble_without_changing_facts(self):
+        for enabled in (False, True):
+            with self.subTest(enabled=enabled), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary)
+                inputs, context, runtime, facts = safety_inputs(root)
+                fixtures.bind_geometry_safety_fixture(context, facts, car=enabled)
+                write(inputs['facts'], facts)
+                original = inputs['facts'].read_bytes()
+                with patch.object(register, 'gate_context', return_value=(runtime, context)):
+                    result = register.run_action('safety-summary', inputs, root/'assembled')
+                self.assertEqual(register.guard.load(result['artifact']['path'])['slots'], facts['slots'])
+                self.assertEqual(inputs['facts'].read_bytes(), original)
+
+    def test_off_safety_does_not_prove_a_new_on_registration(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            inputs, context, runtime, _facts = safety_inputs(root)
+            context.core['protocol']['resources']['car'][register.guard.CORRELATED_BOUND_FIELD] = True
+            with patch.object(register, 'gate_context', return_value=(runtime, context)), \
+                    self.assertRaisesRegex(ValueError, 'Safety geometry'):
+                register.run_action('safety-summary', inputs, root/'refused')
+            self.assertFalse((root/'refused/safety_summary_candidate.json').exists())
+
+    def test_rebinding_hashes_cannot_hide_unregistered_runtime_enablement(self):
+        for location in ('arguments', 'yaml', 'argv'):
+            with self.subTest(location=location), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary)
+                inputs, context, runtime, facts = safety_inputs(root)
+                slot = next(row for row in facts['slots'] if row['target_class'] == 'car')
+                if location == 'arguments':
+                    binding = slot['evidence']['run_config']; data = register.guard.load(binding['path'])
+                    data['correlated_two_face_bound'] = True
+                    slot['evidence']['run_config'] = write(Path(binding['path']), data)
+                elif location == 'yaml':
+                    binding = slot['evidence']['runtime_parameters']; path = Path(binding['path'])
+                    data = yaml.safe_load(path.read_text(encoding='utf-8'))
+                    data['uav_tracking_state_estimator']['ros__parameters'][register.guard.CORRELATED_BOUND_FIELD] = True
+                    path.write_text(yaml.safe_dump(data), encoding='utf-8')
+                    slot['evidence']['runtime_parameters'] = register.guard.file_binding(path)
+                else:
+                    argv = slot['executions']['flight']['argv']; argv.append(register.guard.CORRELATED_BOUND_FLAG)
+                    registry = register.guard.load(facts['registry']['path'])
+                    next(row for row in registry['trials'] if row['id'] == slot['id'])['flight_argv'] = argv
+                    facts['registry'] = write(Path(facts['registry']['path']), registry)
+                write(inputs['facts'], facts)
+                with patch.object(register, 'gate_context', return_value=(runtime, context)), \
+                        self.assertRaisesRegex(ValueError, 'Safety geometry'):
+                    register.run_action('safety-summary', inputs, root/'refused')
+
+    def test_new_explicit_off_still_requires_yaml_evidence(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            inputs, context, runtime, facts = safety_inputs(root)
+            fixtures.bind_geometry_safety_fixture(context, facts, car=False)
+            slot = facts['slots'][0]
+            binding = slot['evidence']['runtime_parameters']; path = Path(binding['path'])
+            data = yaml.safe_load(path.read_text(encoding='utf-8'))
+            data['uav_tracking_state_estimator']['ros__parameters'].pop(register.guard.CORRELATED_BOUND_FIELD)
+            path.write_text(yaml.safe_dump(data), encoding='utf-8')
+            slot['evidence']['runtime_parameters'] = register.guard.file_binding(path)
+            write(inputs['facts'], facts)
+            with patch.object(register, 'gate_context', return_value=(runtime, context)), \
+                    self.assertRaisesRegex(ValueError, 'Safety geometry.*missing'):
+                register.run_action('safety-summary', inputs, root/'refused')
+
+
 class SafetyAssemblyTests(unittest.TestCase):
     def test_resource_mismatch_cannot_publish_a_safety_candidate_after_hash_rebinding(self):
         for defect in ("config_rtf", "config_wall", "supervisor_rtf", "flight_rtf", "flight_wall"):

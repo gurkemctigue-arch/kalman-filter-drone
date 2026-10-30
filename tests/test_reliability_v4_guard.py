@@ -158,6 +158,8 @@ def safety_fixture(root, *, linked=False):
         path=dev/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_text('# inert fixture\n')
     protocol=guard.load(ROOT/'planning/reliability-v4-preregistration.json')
     resources=protocol['resources']
+    for resource in resources.values():
+        resource.pop(guard.CORRELATED_BOUND_FIELD, None)
     source_hashes={name:guard.sha(dev/name) for name in ('scripts/run_stage1_trial.py','uav_tracking/research_failures.py')}
     for cls in guard.CLASSES:
         model=dev/resources[cls]['model'];model.parent.mkdir(exist_ok=True);model.write_bytes(b'fixture model')
@@ -265,6 +267,82 @@ def safety_fixture(root, *, linked=False):
         gazebo_rendering_evidence=lambda *a,**k:{'errors':[]},magnetic_environment_evidence=lambda *a,**k:{'errors':[]},
         infrastructure_evidence=infrastructure))
     return manifest,context,runtime,summary,facts,calls
+
+
+def bind_geometry_safety_fixture(context, facts, *, car=True):
+    """Bind inert, newly declared per-class geometry fixtures, never flights."""
+    registry = guard.load(facts['registry']['path'])
+    for cls, resource in context.core['protocol']['resources'].items():
+        resource[guard.CORRELATED_BOUND_FIELD] = car if cls == 'car' else False
+    for slot in facts['slots']:
+        enabled = context.core['protocol']['resources'][slot['target_class']][guard.CORRELATED_BOUND_FIELD]
+        binding = slot['evidence']['run_config']; config = guard.load(binding['path'])
+        config['correlated_two_face_bound'] = enabled
+        slot['evidence']['run_config'] = write(Path(binding['path']), config)
+        binding = slot['evidence']['runtime_parameters']; path = Path(binding['path'])
+        parameters = yaml.safe_load(path.read_text(encoding='utf-8'))
+        parameters['uav_tracking_state_estimator']['ros__parameters'][guard.CORRELATED_BOUND_FIELD] = enabled
+        path.write_text(yaml.safe_dump(parameters), encoding='utf-8')
+        slot['evidence']['runtime_parameters'] = guard.file_binding(path)
+        argv = slot['executions']['flight']['argv']
+        if enabled:argv.append(guard.CORRELATED_BOUND_FLAG)
+        next(row for row in registry['trials'] if row['id'] == slot['id'])['flight_argv'] = list(argv)
+    facts['registry'] = write(Path(facts['registry']['path']), registry)
+
+
+class GeometryBoundEvidenceTests(unittest.TestCase):
+    def test_old_archives_allow_missing_or_false_and_refuse_hidden_enablement(self):
+        for absent in (True, False):
+            config = {} if absent else {'correlated_two_face_bound': False}
+            estimator = {} if absent else {guard.CORRELATED_BOUND_FIELD: False}
+            self.assertFalse(guard.geometry_bound_evidence({}, 'car', config,
+                {'uav_tracking_state_estimator': {'ros__parameters': estimator}}, []))
+        for location in ('arguments', 'yaml'):
+            for bad in (True, 0, 1, 'false', None):
+                config, estimator = {}, {}
+                if location == 'arguments':config['correlated_two_face_bound'] = bad
+                else:estimator[guard.CORRELATED_BOUND_FIELD] = bad
+                with self.subTest(location=location, bad=bad), self.assertRaises(guard.Refusal):
+                    guard.geometry_bound_evidence({}, 'car', config,
+                        {'uav_tracking_state_estimator': {'ros__parameters': estimator}}, [])
+        with self.assertRaises(guard.Refusal):
+            guard.geometry_bound_evidence({}, 'car', {}, {}, [guard.CORRELATED_BOUND_FLAG])
+
+    def test_new_class_bool_requires_matching_cli_and_both_archives(self):
+        for enabled in (False, True):
+            resource = {guard.CORRELATED_BOUND_FIELD: enabled}
+            config = {'correlated_two_face_bound': enabled}
+            parameters = {'uav_tracking_state_estimator': {'ros__parameters': {guard.CORRELATED_BOUND_FIELD: enabled}}}
+            argv = [guard.CORRELATED_BOUND_FLAG] if enabled else []
+            self.assertIs(guard.geometry_bound_evidence(resource, 'car', config, parameters, argv), enabled)
+            for location in ('arguments', 'yaml', 'cli'):
+                a, p, command = deepcopy(config), deepcopy(parameters), list(argv)
+                if location == 'arguments':a.clear()
+                elif location == 'yaml':p['uav_tracking_state_estimator']['ros__parameters'].clear()
+                else:command = [] if enabled else [guard.CORRELATED_BOUND_FLAG]
+                with self.subTest(enabled=enabled, location=location), self.assertRaises(guard.Refusal):
+                    guard.geometry_bound_evidence(resource, 'car', a, p, command)
+        for cls, bad in (('person', True), ('car', 0), ('car', 'true'), ('car', None)):
+            with self.subTest(cls=cls, bad=bad), self.assertRaises(guard.Refusal):
+                guard.geometry_bound_evidence({guard.CORRELATED_BOUND_FIELD: bad}, cls, {}, {}, [])
+        for argv in ([guard.CORRELATED_BOUND_FLAG]*2, [guard.CORRELATED_BOUND_FLAG+'=true']):
+            with self.assertRaises(guard.Refusal):
+                guard.geometry_bound_evidence({guard.CORRELATED_BOUND_FIELD: True}, 'car',
+                    {'correlated_two_face_bound': True},
+                    {'uav_tracking_state_estimator': {'ros__parameters': {guard.CORRELATED_BOUND_FIELD: True}}}, argv)
+
+    def test_full_guard_accepts_matching_candidate_and_refuses_off_safety_for_on(self):
+        for complete in (True, False):
+            with self.subTest(complete=complete), tempfile.TemporaryDirectory() as temporary:
+                m, c, r, s, f, _ = safety_fixture(Path(temporary))
+                if complete:
+                    bind_geometry_safety_fixture(c, f)
+                    SafetyTests.refresh(m, s, f)
+                    guard.validate_safety(m, c, r)
+                else:
+                    c.core['protocol']['resources']['car'][guard.CORRELATED_BOUND_FIELD] = True
+                    with self.assertRaisesRegex(guard.Refusal, 'Safety geometry'):
+                        guard.validate_safety(m, c, r)
 
 
 class EvidenceTests(unittest.TestCase):
@@ -462,7 +540,8 @@ class SafetyTests(unittest.TestCase):
             for cls in guard.CLASSES:
                 sentinel['resources'][cls].update(model='models/fixture_'+cls+'.pt',
                     inference_image_size=288 if cls=='person' else 864,inference_threads=1,
-                    desired_distance_m=6. if cls=='person' else 10.)
+                    desired_distance_m=6. if cls=='person' else 10.,
+                    navigation_correlated_two_face_bound=cls=='car')
             for selected in (protocol,sentinel):
                 write(plan,{'frozen_root':root.as_posix(),'protocol':selected})
                 log.write_text('',encoding='utf-8')
@@ -486,10 +565,21 @@ class SafetyTests(unittest.TestCase):
                     self.assertEqual(int(option('inference-image-size')),resource['inference_image_size'])
                     self.assertEqual(int(option('inference-threads')),resource['inference_threads'])
                     self.assertEqual(float(option('desired-distance-m')),resource['desired_distance_m'])
+                    self.assertEqual(argv.count(guard.CORRELATED_BOUND_FLAG),
+                                     int(resource.get(guard.CORRELATED_BOUND_FIELD, False)))
                     self.assertEqual(option('takeoff-mode'),'px4_native')
                     self.assertEqual(float(option('takeoff-height-m')),3.)
                     self.assertNotIn('--occlusions',argv)
                     self.assertNotIn('--reselect-after-loss',argv)
+            invalid = deepcopy(sentinel)
+            invalid['resources']['person'][guard.CORRELATED_BOUND_FIELD] = True
+            write(plan, {'frozen_root': root.as_posix(), 'protocol': invalid})
+            log.write_text('', encoding='utf-8')
+            completed = subprocess.run([str(bash), '--noprofile', '--norc', str(script)],
+                cwd=root, env=environment, capture_output=True, text=True, timeout=15,
+                creationflags=subprocess.CREATE_NO_WINDOW if os.name=='nt' else 0)
+            self.assertNotEqual(completed.returncode, 0)
+            self.assertEqual(log.read_text(encoding='utf-8'), '')
 
     @staticmethod
     def refresh(manifest,summary,facts):

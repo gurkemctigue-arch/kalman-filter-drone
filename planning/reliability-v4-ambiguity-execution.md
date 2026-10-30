@@ -15,6 +15,8 @@
 
 下面的bash模板只提供命令。`tracking_root`应由明确指定的实际PROBE计划的`frozen_root`取得；`tracking_tag`须事前登记并从未使用。不要直接使用旧stage23整批flight模板：其默认起飞、时间、参考点、磁场和汽车资源不同。四槽不加人工快门或长失后重选，避免抢先触发另一种失联事件。
 
+几何候选开关也只从该计划对应类别的资源声明读取。旧计划缺字段时为关闭；新字段必须为布尔值，只有汽车可启用。事前登记的原始argv、实际`run_config.correlated_two_face_bound`和运行YAML中的`navigation_correlated_two_face_bound`须与声明一致；新显式True或False均须完整保存证据。关闭候选取得的安全结果不能作为启用候选的验证结果。
+
 ```bash
 tracking_plan=/absolute/path/to/the/final_source_probe/plan.json
 tracking_root="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["frozen_root"])' "$tracking_plan")"
@@ -29,6 +31,16 @@ tracking_run_class() {
   tracking_size="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["protocol"]["resources"][sys.argv[2]]["inference_image_size"])' "$tracking_plan" "$tracking_class")"
   tracking_threads="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["protocol"]["resources"][sys.argv[2]]["inference_threads"])' "$tracking_plan" "$tracking_class")"
   tracking_distance="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["protocol"]["resources"][sys.argv[2]]["desired_distance_m"])' "$tracking_plan" "$tracking_class")"
+  tracking_bound="$(python3 - "$tracking_plan" "$tracking_class" <<'BOUND_PY'
+import json, sys
+with open(sys.argv[1], encoding="utf-8-sig") as handle:
+    resource = json.load(handle)["protocol"]["resources"][sys.argv[2]]
+enabled = resource.get("navigation_correlated_two_face_bound", False)
+if type(enabled) is not bool or enabled and sys.argv[2] != "car":
+    raise ValueError("Invalid class geometry declaration; only car may enable the candidate")
+print(int(enabled))
+BOUND_PY
+  )" || return
   tracking_common=(
     --stage 2 --class "$tracking_class" --seed 4
     --condition clean --estimator-method adaptive_kf
@@ -46,6 +58,9 @@ tracking_run_class() {
     --magnetic-library-registration "$tracking_root/config/gazebo_magnetic_runtime_humble22.json"
     --propagate-vehicle-uncertainty --px4-time-mode source_sim
   )
+  if [[ "$tracking_bound" == 1 ]]; then
+    tracking_common+=(--correlated-two-face-bound)
+  fi
 
   tracking_name="${tracking_tag}_${tracking_class}_auto_unique_multi_seed004"
   bash "$tracking_root/scripts/run_research_session.sh" \

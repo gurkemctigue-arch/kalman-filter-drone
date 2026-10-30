@@ -28,6 +28,8 @@ CLASSES = ("person", "car")
 GROUPS = ("stage1_velocity", "stage1_position", "stage2_crossing", "stage3_midpoint", "stage3_active", "stage3_multi_active")
 CONDITIONS = ("depth_noise", "depth_holes", "dropout", "latency", "combined", "speed_changes_velocity", "speed_changes_position", "far_distance")
 SAFETY_CASES = ("auto_unique_multi", "locked_ambiguity")
+CORRELATED_BOUND_FIELD = "navigation_correlated_two_face_bound"
+CORRELATED_BOUND_FLAG = "--correlated-two-face-bound"
 DELIVERIES = ("offline_replay20", "videos12", "detection_audit", "figures_documents", "runtime_logs")
 SPEED_CHECKS = ("input_decode_complete", "odom_tail_spans_five_seconds", "odom_tail_covers_original_end",
                 "all_observed_odom_speeds_le_0_30_mps", "gt_tail_spans_five_seconds", "gt_tail_covers_original_end",
@@ -55,6 +57,33 @@ class Refusal(ValueError):
 def require(condition, message):
     if not condition:
         raise Refusal(message)
+
+
+def geometry_bound_evidence(resource, cls, configuration, parameters, flight_argv):
+    """Bind safety evidence to the same class geometry mode as the core.
+
+    This local check also audits historical roots whose frozen runner predates
+    the optional field. Missing historical fields imply off; a present field
+    is always a strict bool. New explicit registrations require both archives.
+    """
+    require(isinstance(resource, dict) and cls in CLASSES, "Safety geometry class resource is invalid")
+    explicit = CORRELATED_BOUND_FIELD in resource
+    enabled = resource.get(CORRELATED_BOUND_FIELD, False)
+    require(type(enabled) is bool and (not enabled or cls == "car"), "Safety geometry registration must be a class boolean; only car may enable it")
+    require(isinstance(configuration, dict) and isinstance(parameters, dict), "Safety geometry archives must contain objects")
+    estimator = parameters.get("uav_tracking_state_estimator", {})
+    require(isinstance(estimator, dict) and isinstance(estimator.get("ros__parameters", {}), dict), "Safety geometry estimator YAML is malformed")
+    for values, key, label in ((configuration, "correlated_two_face_bound", "run_config"),
+                               (estimator.get("ros__parameters", {}), CORRELATED_BOUND_FIELD, "runtime YAML")):
+        if key not in values:
+            require(not explicit, "Safety geometry " + label + " evidence is missing")
+        else:
+            require(type(values[key]) is bool and values[key] is enabled, "Safety geometry " + label + " differs from class registration")
+    require(isinstance(flight_argv, list) and all(isinstance(value, str) for value in flight_argv)
+            and flight_argv.count(CORRELATED_BOUND_FLAG) == int(enabled)
+            and not any(value.startswith(CORRELATED_BOUND_FLAG + "=") for value in flight_argv),
+            "Safety geometry actual flight argv differs from class registration")
+    return enabled
 
 
 def canonical(value):
@@ -476,6 +505,7 @@ def validate_safety(manifest, context, runtime):
                 and float(option(flight_argv,"--real-time-factor")) == expected["real_time_factor"]
                 and float(option(flight_argv,"--wall-timeout")) == expected["wall_timeout"]
                 and "--occlusions" not in flight_argv and "--reselect-after-loss" not in flight_argv, "Safety flight invocation does not name original frozen trial/mode")
+        geometry_bound_evidence(resource, cls, configuration, parameters, flight_argv)
         for kind in ("source_clock", "native_startup", "specialized", "terminal_speed"):
             _, finished = validate_execution(executions[kind], after=flight_end)
             require(finished <= utc(facts["created_utc"]) <= utc(summary["created_utc"]), "Safety facts/summary predates actual evaluation")

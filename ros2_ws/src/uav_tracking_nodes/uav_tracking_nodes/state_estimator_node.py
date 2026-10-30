@@ -68,6 +68,7 @@ class StateEstimatorNode(Node):
         self.declare_parameter("max_coast_frames", 8)
         self.declare_parameter("max_lost_frames", 30)
         self.declare_parameter("navigation_enabled", False)
+        self.declare_parameter("navigation_correlated_two_face_bound", False)
         self.declare_parameter("navigation_state_topic", "/tracking/navigation_state")
         self.declare_parameter("navigation_diagnostics_topic", "/tracking/navigation_diagnostics")
         # Explicit family priors, in length/width/height order. They describe
@@ -82,6 +83,8 @@ class StateEstimatorNode(Node):
         if self._propagate_vehicle_uncertainty:
             self.create_subscription(Odometry, str(self.get_parameter("vehicle_odom_topic").value), self._on_pose_uncertainty, 20)
         self._navigation_enabled = bool(self.get_parameter("navigation_enabled").value)
+        self._navigation_correlated_two_face_bound = bool(
+            self.get_parameter("navigation_correlated_two_face_bound").value)
         if self._navigation_enabled:
             from .navigation_estimator import NavigationEstimator
             pose_std = float(self.get_parameter("navigation_pose_std_m").value)
@@ -428,7 +431,8 @@ class StateEstimatorNode(Node):
                 world = support.reshape(-1, 3) @ rotation.T + camera
                 model_cache[candidate] = fit_unique_visibility_model(
                     world, ground_plane=plane, camera_position_world=camera,
-                    camera_forward_world=rotation[:, 2], prior=self._navigation_prior)
+                    camera_forward_world=rotation[:, 2], prior=self._navigation_prior,
+                    correlated_two_face_bound=getattr(self, "_navigation_correlated_two_face_bound", False))
             return model_cache[candidate]
 
         seen = set()

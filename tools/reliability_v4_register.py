@@ -140,6 +140,9 @@ def assemble_safety(target_path, gate_path, facts_path, validation_path):
                       and parameters.get("uav_tracking_flight_supervisor", {}).get("ros__parameters", {}).get(
                           "requested_simulation_real_time_factor") == registered_rtf,
                       "Safety actual simulation resources differ from frozen core protocol")
+        guard.geometry_bound_evidence(context.core["protocol"]["resources"][slot["target_class"]],
+                                      slot["target_class"], artifacts["run_config"][1], parameters,
+                                      executions["flight"]["argv"])
         guard.require(executions["terminal_speed"]["code_script"] == registry["tail_script"],
                       "Safety terminal execution binds a different independent script")
         for kind in ("source_clock", "native_startup"):

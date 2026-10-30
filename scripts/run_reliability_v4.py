@@ -74,6 +74,45 @@ REPORT_PROVENANCE_HELPERS = {
     "gimbal":("scripts/evaluate_stage1_flight.py", "uav_tracking/control/gimbal_geometry.py"),
 }
 GIMBAL_REEVALUATION_FILENAME = "gimbal_terminal_audit_rev2.json"
+CORRELATED_BOUND_FIELD = "navigation_correlated_two_face_bound"
+CORRELATED_BOUND_FLAG = "--correlated-two-face-bound"
+
+
+def correlated_two_face_setting(setting, cls):
+    """Old registrations imply off; a new declaration is a strict class bool."""
+    if not isinstance(setting, dict):
+        raise ValueError("Invalid class resources for " + str(cls))
+    if CORRELATED_BOUND_FIELD not in setting:
+        return False
+    enabled = setting[CORRELATED_BOUND_FIELD]
+    if type(enabled) is not bool or enabled and cls != "car":
+        raise ValueError(CORRELATED_BOUND_FIELD + " must be an explicit boolean and only car may enable it")
+    return enabled
+
+
+def correlated_two_face_trial_binding(plan, trial):
+    """Bind registration, immutable trial spec and its exact CLI opt-in."""
+    cls = trial["target_class"]
+    resource = plan["protocol"]["resources"][cls]
+    enabled = correlated_two_face_setting(resource, cls)
+    explicit = CORRELATED_BOUND_FIELD in resource
+    if ((CORRELATED_BOUND_FIELD in trial) != explicit
+            or correlated_two_face_setting(trial, cls) is not enabled):
+        raise ValueError("Trial " + CORRELATED_BOUND_FIELD + " differs from class registration")
+    command = trial["flight_command"]
+    if (not isinstance(command, list) or command.count(CORRELATED_BOUND_FLAG) != int(enabled)
+            or any(isinstance(value, str) and value.startswith(CORRELATED_BOUND_FLAG + "=") for value in command)):
+        raise ValueError("Trial " + CORRELATED_BOUND_FLAG + " differs from class registration")
+    return enabled, explicit
+
+
+def _bound_boolean_evidence(mapping, key, expected, required, errors, label):
+    if not isinstance(mapping, dict) or key not in mapping:
+        if required:
+            errors.append(label)
+        return
+    if type(mapping[key]) is not bool or mapping[key] is not expected:
+        errors.append(label)
 
 
 def offline_source_hashes(hashes):
@@ -217,8 +256,13 @@ def validate_protocol(protocol):
     if protocol.get("safety_gates") != expected_gates:
         raise ValueError("The original safety gates cannot be relaxed")
     resources = protocol.get("resources", {})
+    if not isinstance(resources, dict):
+        raise ValueError("Class resources must be an object")
     for cls, model, size, threads, distance in (("person", "yolo11n.pt", 320, 2, 5.), ("car", "yolo11m.pt", 960, 4, 9.)):
-        if resources.get(cls) != {"model": "models/" + model, "inference_image_size": size,
+        setting = resources.get(cls)
+        correlated_two_face_setting(setting, cls)
+        legacy_setting = {key: value for key, value in setting.items() if key != CORRELATED_BOUND_FIELD}
+        if legacy_setting != {"model": "models/" + model, "inference_image_size": size,
                                   "inference_threads": threads, "desired_distance_m": distance}:
             raise ValueError("Frozen resource configuration differs for " + cls)
 
@@ -240,6 +284,7 @@ def trial_spec(root, protocol, prefix, cls, group, seed, wall_timeout):
     multi = group in {"stage2_crossing", "stage3_multi_active"}
     stage = 1 if group.startswith("stage1_") else 2 if group == "stage2_crossing" else 3
     setting = protocol["resources"][cls]
+    correlated_bound = correlated_two_face_setting(setting, cls)
     identifier = f"{cls}_{group}_seed{seed:03d}"
     spec = {"id": identifier, "name": f"{prefix}_{identifier}", "group": group, "target_class": cls,
             "seed": seed, "gazebo_seed": seed + 1, "stage": stage, "multi_target": group == "stage3_multi_active",
@@ -271,6 +316,8 @@ def trial_spec(root, protocol, prefix, cls, group, seed, wall_timeout):
         "--occlusions", "--short-occlusion-s", "0.2", "--reselect-after-loss")
     if spec["multi_target"]:
         command.append("--multi-target")
+    if correlated_bound:
+        command.append(CORRELATED_BOUND_FLAG)
     spec["flight_command"] = command
     world_name = f"stage3_multi_{cls}.sdf" if spec["multi_target"] else f"stage{stage}_flight_{cls}.sdf"
     spec["world_source"] = "ros2_ws/src/uav_tracking_bringup/worlds/" + world_name
@@ -676,6 +723,7 @@ def validate_plan(plan, path=None):
                     for cls in plan["selected_classes"] for group in plan["selected_groups"] for seed in plan["selected_seeds"]]
     # Availability is frozen evidence. Never recompute it from a later tree.
     for original, regenerated in zip(plan["trials"], expected):
+        correlated_two_face_trial_binding(plan, original)
         for previous, current in zip(original["evaluations"], regenerated["evaluations"]):
             current["available_at_freeze"] = previous["available_at_freeze"]
             # Historical development commands are immutable evidence. The
@@ -830,6 +878,7 @@ def runtime_configuration(plan, trial):
     directory = Path(trial["directory"])
     errors = []
     try:
+        correlated_bound, explicit_bound = correlated_two_face_trial_binding(plan, trial)
         config = load(directory / "run_config.json")
         expected = {key: trial[key] for key in ("name", "target_class", "stage", "seed", "speed_mps", "command_mode", "takeoff_mode",
             "gimbal_mode", "target_mode", "association_mode", "initial_select", "initial_min_candidates", "scenario_kind",
@@ -848,6 +897,9 @@ def runtime_configuration(plan, trial):
         if "motion_profile_kind" in trial:
             expected["motion_profile_kind"] = trial["motion_profile_kind"]
         errors.extend("run_config:" + key for key, value in expected.items() if config.get(key) != value)
+        _bound_boolean_evidence(config, "correlated_two_face_bound", correlated_bound, explicit_bound,
+                                errors, "run_config:correlated_two_face_bound")
+        expected["correlated_two_face_bound"] = correlated_bound
         path = directory / "configuration/runtime_parameters.yaml"
         try:
             parameters = load(path)  # JSON is also valid YAML; useful to pure fixtures.
@@ -880,6 +932,9 @@ def runtime_configuration(plan, trial):
         for node, values in expected_parameters.items():
             actual = parameters.get(node, {}).get("ros__parameters", {})
             errors.extend(f"runtime_parameters:{node}:{key}" for key, value in values.items() if actual.get(key) != value)
+        estimator = parameters.get("uav_tracking_state_estimator", {}).get("ros__parameters", {})
+        _bound_boolean_evidence(estimator, CORRELATED_BOUND_FIELD, correlated_bound, explicit_bound,
+                                errors, "runtime_parameters:uav_tracking_state_estimator:" + CORRELATED_BOUND_FIELD)
         rendering = gazebo_rendering_evidence(directory, trial["gazebo_render_driver"])
         errors.extend(rendering["errors"])
         magnetic = magnetic_environment_evidence(plan, trial)
@@ -887,7 +942,7 @@ def runtime_configuration(plan, trial):
         return {"errors": errors, "arguments": expected, "magnetic_environment": magnetic,
                 "gazebo_rendering": rendering,
                 "run_config_sha256": sha(directory / "run_config.json"), "runtime_parameters_sha256": sha(path)}
-    except (OSError, ValueError, KeyError, TypeError, ImportError) as error:
+    except (OSError, ValueError, KeyError, TypeError, AttributeError, ImportError) as error:
         return {"errors": [*errors, f"runtime_configuration_unreadable:{type(error).__name__}:{error}"]}
 
 
@@ -1537,6 +1592,10 @@ def validate_probe_gate(plan, *, extensions=False):
                     or previous["magnetic_runtime_binding"]["manifest_sha256"] != expected_binding["magnetic_runtime_manifest_sha256"]
                     or previous["magnetic_library_binding"]["registration_sha256"] != expected_binding["magnetic_library_registration_sha256"]):
                 raise ValueError("Development probe flight-critical source/model/runtime differs")
+            if any(correlated_two_face_setting(previous["protocol"]["resources"][cls], cls)
+                   is not correlated_two_face_setting(plan["protocol"]["resources"][cls], cls)
+                   for cls in CLASSES):
+                raise ValueError("Development probe geometry mode differs from final class registration")
             cache[source_key] = previous, read_slots(previous)
         previous, records = cache[source_key]
         slot_id = item["slot_id"]

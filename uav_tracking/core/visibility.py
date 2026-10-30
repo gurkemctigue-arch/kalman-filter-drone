@@ -13,6 +13,7 @@ from typing import Any
 import numpy as np
 
 from .navigation import GroundPlane, NavigationPrior, _car_reference
+from .body_bounds import BOUND_STATUS, TwoFaceBodyBoundCase, correlated_two_face_front_bound
 
 
 CONFIDENCE_MULTIPLIER = 3.0
@@ -74,7 +75,8 @@ def nested_boxes(box_a, box_b) -> bool:
 
 def fit_unique_visibility_model(points_world, *, ground_plane: GroundPlane,
                                 camera_position_world, camera_forward_world,
-                                prior: NavigationPrior) -> VisibilityModel:
+                                prior: NavigationPrior,
+                                correlated_two_face_bound: bool = False) -> VisibilityModel:
     """Enumerate supported foreground groups; never choose the nearest group.
 
     Each supported group must admit the existing unique end/side face model.
@@ -157,6 +159,33 @@ def fit_unique_visibility_model(points_world, *, ground_plane: GroundPlane,
                        "camera_forward_world": forward.tolist(),
                        "visible_front_lo_m": visible_lo, "visible_back_hi_m": visible_hi,
                        "body_front_lo_m": front, "geometry": metadata}
+        if correlated_two_face_bound:
+            # Preserve the unique measured model and selected-support envelope.
+            # Only the other body's directional confidence bound can change;
+            # all association, complete-pixel and geometry checks still apply.
+            bound = correlated_two_face_front_bound(TwoFaceBodyBoundCase(
+                forward_world=tuple(forward), camera_position_world_m=tuple(camera),
+                face_normals_world=tuple(map(tuple, normals)), face_points_world_m=tuple(map(tuple, face_points)),
+                face_labels=tuple(metadata["face_labels"]),
+                face_std_m=tuple(metadata["visible_face_sigma_m"]),
+                ground_normal_world=tuple(ground_plane.normal), ground_offset_m=ground_plane.offset,
+                ground_covariance_4x4=ground_plane.covariance,
+                ground_residual_std_m=ground_plane.residual_std_m,
+                dimensions_m=tuple(dimensions), dimension_std_m=tuple(prior.dimension_std_m),
+                heading_std_rad=prior.heading_std_rad, depth_noise_std_m=DEPTH_NOISE_STD_M,
+                registration_std_m=REGISTRATION_STD_M,
+            ))
+            diagnostics["correlated_two_face_bound"] = {
+                "status": bound.status, "reason": bound.reason, "metadata": bound.metadata,
+                "legacy_body_front_lo_m": front,
+            }
+            if (bound.status == BOUND_STATUS and bound.lower_bound_m is not None
+                    and math.isfinite(bound.lower_bound_m)):
+                front = float(bound.lower_bound_m)
+                diagnostics["body_front_lo_m"] = front
+                diagnostics["body_front_bound_method"] = "correlated_two_face_fixed_normal_3sigma"
+            else:
+                diagnostics["body_front_bound_method"] = "legacy_independent_aggregation_fallback"
         return VisibilityModel(valid=True, reason="unique_visible_car_faces", center_world_m=center,
                                axes_world=axes, dimensions_m=dimensions, face_normals_world=normals,
                                face_points_world=face_points, measured_support_world=visible.copy(),

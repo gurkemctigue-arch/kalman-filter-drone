@@ -1,6 +1,7 @@
 """Frozen v4 orchestration fixtures; no simulator, ROS, or bag database reads."""
 from copy import deepcopy
 import importlib.util
+import itertools
 import json
 from pathlib import Path
 import shutil
@@ -67,6 +68,10 @@ def provenance(root, kind, script):
 
 def fixture(root, *, navigation=True, gates=False, ros_distro="jazzy"):
     protocol = v4.load(ROOT / v4.PROTOCOL_PATH)
+    # Historical fixture coverage remains explicitly legacy/off even when a
+    # future real registration opts into the independent geometry candidate.
+    for setting in protocol["resources"].values():
+        setting.pop(v4.CORRELATED_BOUND_FIELD, None)
     # Test repositories have an explicit synthetic environment independent of
     # the production protocol selected by the workspace running this suite.
     # In particular a Humble freeze must not make this Jazzy fixture claim to
@@ -203,6 +208,7 @@ class FakeCommands:
             for key in ["speed_mps", "desired_distance_m", "duration", "real_time_factor", "wall_timeout", "max_inference_rate_hz", "monitor_tick_s", "short_occlusion_s"]:
                 config[key] = float(option(key))
             config.update(multi_target="--multi-target" in command, occlusions=True, reselect_after_loss=True,
+                          correlated_two_face_bound=v4.CORRELATED_BOUND_FLAG in command,
                           propagate_vehicle_uncertainty="--propagate-vehicle-uncertainty" in command,
                           supervisor_status_timestamp_mode="source_sim", supervisor_status_source_max_age_s=1.,
                           supervisor_status_source_max_future_s=.05, supervisor_status_timeout_wall_s=10.,
@@ -212,6 +218,7 @@ class FakeCommands:
                 "uav_tracking_detection": {"navigation_enabled": True, "depth_max_age_s": .02,
                     **{key: config[key] for key in ["model_path", "inference_image_size", "inference_threads", "max_inference_rate_hz"]}},
                 "uav_tracking_state_estimator": {"navigation_enabled": True, "max_observation_age_s": .60,
+                    v4.CORRELATED_BOUND_FIELD: config["correlated_two_face_bound"],
                     "propagate_vehicle_uncertainty": True,
                     "max_prediction_duration_s": .75, "mahalanobis_gate": 9.21,
                     **{key: config[key] for key in ["target_mode", "association_mode", "estimator_method"]}},
@@ -363,6 +370,172 @@ def fixture_probe_gate(root):
     path = root/"probe_gate.json"
     write(path, gate)
     return path
+
+
+class CorrelatedBoundRegistrationTests(unittest.TestCase):
+    """Geometry-only registration fixtures; no real detector or flight evidence."""
+
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.root = Path(self.temporary.name)
+        fixture(self.root)
+
+    def declare(self, car=True, person=False):
+        protocol = v4.load(self.root / v4.PROTOCOL_PATH)
+        protocol["resources"]["car"][v4.CORRELATED_BOUND_FIELD] = car
+        protocol["resources"]["person"][v4.CORRELATED_BOUND_FIELD] = person
+        write(self.root / v4.PROTOCOL_PATH, protocol)
+        return protocol
+
+    def make(self, classes=None, groups=None):
+        return plan(self.root, classes=classes or ["person", "car"],
+                    groups=groups or ["stage1_velocity"], seeds=[4], persist=False)
+
+    def runtime(self, frozen, trial):
+        FakeCommands()(trial["flight_command"], self.root/(trial["id"]+".log"), self.root, 1.)
+        return v4.runtime_configuration(frozen, trial)
+
+    def test_class_registration_is_strict_and_keeps_fixed_model_rules(self):
+        legacy = v4.load(self.root / v4.PROTOCOL_PATH)
+        v4.validate_protocol(legacy)
+        for enabled in (False, True):
+            registered = deepcopy(legacy)
+            registered["resources"]["car"][v4.CORRELATED_BOUND_FIELD] = enabled
+            registered["resources"]["person"][v4.CORRELATED_BOUND_FIELD] = False
+            v4.validate_protocol(registered)
+        for cls, value in (("person", True), ("car", 0), ("car", 1),
+                           ("car", "false"), ("car", None), ("person", 0)):
+            with self.subTest(cls=cls, value=value):
+                registered = deepcopy(legacy)
+                registered["resources"][cls][v4.CORRELATED_BOUND_FIELD] = value
+                with self.assertRaisesRegex(ValueError, v4.CORRELATED_BOUND_FIELD):
+                    v4.validate_protocol(registered)
+        registered = self.declare()
+        registered["resources"]["car"]["model"] = "models/unreviewed.pt"
+        with self.assertRaisesRegex(ValueError, "resource"):
+            v4.validate_protocol(registered)
+
+    def test_registered_flags_bind_specs_and_exact_cli_by_class(self):
+        self.declare()
+        frozen = self.make(groups=["stage1_velocity", "stage2_crossing", "stage3_multi_active"])
+        v4.validate_plan(frozen)
+        for trial in frozen["trials"]:
+            enabled = trial["target_class"] == "car"
+            self.assertIs(trial[v4.CORRELATED_BOUND_FIELD], enabled)
+            self.assertEqual(trial["flight_command"].count(v4.CORRELATED_BOUND_FLAG), int(enabled))
+            self.assertEqual(v4.correlated_two_face_trial_binding(frozen, trial), (enabled, True))
+
+    def test_legacy_plan_and_missing_or_false_archived_flags_remain_off(self):
+        frozen = self.make(classes=["car"])
+        trial = frozen["trials"][0]
+        self.assertNotIn(v4.CORRELATED_BOUND_FIELD, trial)
+        self.assertNotIn(v4.CORRELATED_BOUND_FLAG, trial["flight_command"])
+        self.assertEqual(self.runtime(frozen, trial)["errors"], [])
+        directory = Path(trial["directory"])
+        config_path = directory/"run_config.json"
+        yaml_path = directory/"configuration/runtime_parameters.yaml"
+        config, parameters = v4.load(config_path), v4.load(yaml_path)
+        config.pop("correlated_two_face_bound")
+        parameters["uav_tracking_state_estimator"]["ros__parameters"].pop(v4.CORRELATED_BOUND_FIELD)
+        write(config_path, config); write(yaml_path, parameters)
+        self.assertEqual(v4.runtime_configuration(frozen, trial)["errors"], [])
+        self.assertEqual(v4.correlated_two_face_trial_binding(frozen, trial), (False, False))
+
+    def test_old_plan_cannot_silently_enable_or_mistype_either_runtime_flag(self):
+        frozen = self.make(classes=["car"])
+        trial = frozen["trials"][0]
+        self.assertEqual(self.runtime(frozen, trial)["errors"], [])
+        directory = Path(trial["directory"])
+        config_path, yaml_path = directory/"run_config.json", directory/"configuration/runtime_parameters.yaml"
+        config, parameters = v4.load(config_path), v4.load(yaml_path)
+        for location in ("arguments", "yaml"):
+            for value in (True, 0, 1, "false", None):
+                with self.subTest(location=location, value=value):
+                    arguments, runtime = deepcopy(config), deepcopy(parameters)
+                    if location == "arguments":
+                        arguments["correlated_two_face_bound"] = value
+                    else:
+                        runtime["uav_tracking_state_estimator"]["ros__parameters"][v4.CORRELATED_BOUND_FIELD] = value
+                    write(config_path, arguments); write(yaml_path, runtime)
+                    errors = v4.runtime_configuration(frozen, trial)["errors"]
+                    expected = ("run_config:correlated_two_face_bound" if location == "arguments" else
+                                "runtime_parameters:uav_tracking_state_estimator:"+v4.CORRELATED_BOUND_FIELD)
+                    self.assertIn(expected, errors)
+
+    def test_new_true_and_false_declarations_require_both_matching_archives(self):
+        self.declare()
+        frozen = self.make()
+        for trial in frozen["trials"]:
+            with self.subTest(cls=trial["target_class"]):
+                self.assertEqual(self.runtime(frozen, trial)["errors"], [])
+                directory = Path(trial["directory"])
+                config_path = directory/"run_config.json"
+                yaml_path = directory/"configuration/runtime_parameters.yaml"
+                config, parameters = v4.load(config_path), v4.load(yaml_path)
+                expected = trial[v4.CORRELATED_BOUND_FIELD]
+                for location, defect in itertools.product(("arguments", "yaml"), ("missing", "opposite", "integer")):
+                    with self.subTest(location=location, defect=defect):
+                        arguments, runtime = deepcopy(config), deepcopy(parameters)
+                        container, key = ((arguments, "correlated_two_face_bound") if location == "arguments" else
+                                          (runtime["uav_tracking_state_estimator"]["ros__parameters"], v4.CORRELATED_BOUND_FIELD))
+                        if defect == "missing":container.pop(key)
+                        else:container[key] = not expected if defect == "opposite" else int(expected)
+                        write(config_path, arguments); write(yaml_path, runtime)
+                        errors = v4.runtime_configuration(frozen, trial)["errors"]
+                        label = ("run_config:correlated_two_face_bound" if location == "arguments" else
+                                 "runtime_parameters:uav_tracking_state_estimator:"+v4.CORRELATED_BOUND_FIELD)
+                        self.assertIn(label, errors)
+
+    def test_resealed_trial_or_command_cannot_change_the_registered_flag(self):
+        self.declare()
+        original = self.make(classes=["car"])
+        for defect in ("missing_spec", "false_spec", "integer_spec", "missing_cli", "duplicate_cli", "assignment_cli", "protocol"):
+            with self.subTest(defect=defect):
+                frozen = deepcopy(original); trial = frozen["trials"][0]
+                if defect == "missing_spec":trial.pop(v4.CORRELATED_BOUND_FIELD)
+                elif defect == "false_spec":trial[v4.CORRELATED_BOUND_FIELD] = False
+                elif defect == "integer_spec":trial[v4.CORRELATED_BOUND_FIELD] = 1
+                elif defect == "missing_cli":trial["flight_command"].remove(v4.CORRELATED_BOUND_FLAG)
+                elif defect == "duplicate_cli":trial["flight_command"].append(v4.CORRELATED_BOUND_FLAG)
+                elif defect == "assignment_cli":trial["flight_command"].append(v4.CORRELATED_BOUND_FLAG+"=true")
+                else:frozen["protocol"]["resources"]["car"][v4.CORRELATED_BOUND_FIELD] = False
+                frozen["plan_sha256"] = v4.digest(frozen, ("plan_sha256",))
+                with self.assertRaises(ValueError):v4.validate_plan(frozen)
+                self.assertTrue(v4.runtime_configuration(frozen, trial)["errors"])
+
+    def test_legacy_plan_cannot_add_even_a_false_unregistered_trial_field(self):
+        original = self.make(classes=["car"])
+        for value in (False, True):
+            frozen = deepcopy(original)
+            frozen["trials"][0][v4.CORRELATED_BOUND_FIELD] = value
+            if value:frozen["trials"][0]["flight_command"].append(v4.CORRELATED_BOUND_FLAG)
+            frozen["plan_sha256"] = v4.digest(frozen, ("plan_sha256",))
+            with self.assertRaises(ValueError):v4.validate_plan(frozen)
+
+    def test_off_development_gate_cannot_certify_on_with_identical_sources(self):
+        previous = self.make()
+        v4.persist_plan(previous)
+        self.declare()
+        current = make_fixture_plan(self.root, "results/on_candidate", "reliability_v4_on_candidate",
+                                    classes=["person", "car"], groups=["stage1_velocity"], seeds=[5])
+        self.assertEqual(previous["source_hashes"], current["source_hashes"], "The flag is protocol data, not a source-code delta")
+        evidence = {"schema_version": 2, "result": "PASS", "ready_for_formal_reliability_v4": True,
+                    "checks": {key: True for key in v4.PROBE_CHECKS},
+                    "bindings": {"flight_source_hashes": v4.flight_source_hashes(current["source_hashes"]),
+                        "evaluation_source_hashes": v4.offline_source_hashes(current["source_hashes"]),
+                        "model_hashes": current["model_hashes"],
+                        "magnetic_runtime_manifest_sha256": current["magnetic_runtime_binding"]["manifest_sha256"],
+                        "magnetic_library_registration_sha256": current["magnetic_library_binding"]["registration_sha256"],
+                        "navigation_acceptance_sha256": v4.digest(current["protocol"]["navigation_acceptance"])},
+                    "probe_slots": [{"plan_path": str(Path(previous["output"])/"plan.json"),
+                                     "plan_file_sha256": v4.sha(Path(previous["output"])/"plan.json"),
+                                     "slot_id": previous["trials"][0]["id"], "record_file_sha256": "0"*64}]}
+        gate_path = self.root/"geometry_gate.json"; write(gate_path, evidence)
+        current["development_probe_gate"] = {"path": str(gate_path), "sha256": v4.sha(gate_path), "evidence": evidence}
+        with patch.object(v4, "read_slots", side_effect=AssertionError("geometry binding must precede old record reuse")), \
+                self.assertRaisesRegex(ValueError, "geometry mode"):
+            v4.validate_probe_gate(current)
 
 
 class ReliabilityV4Tests(unittest.TestCase):

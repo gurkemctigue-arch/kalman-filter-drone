@@ -103,6 +103,30 @@ class NavigationWiringTests(unittest.TestCase):
         self.assertEqual(self.node._manager.target_uuid, "explicit_task")
         self.assertEqual(self.node._manager.target_track_id, original_track)
 
+    def test_correlated_bound_opt_in_reaches_geometry_without_reassociating_identity(self):
+        result, observations, source, _pair = self.directed_frame()
+        original_track = result.target.track_id
+        self.node._navigation_correlated_two_face_bound = True
+        with patch.object(adapter, "fit_unique_visibility_model", wraps=adapter.fit_unique_visibility_model) as fit, \
+                patch.object(self.node._manager, "update_with_result", side_effect=AssertionError("no second association")):
+            self.node._update_navigation(result, observations, source, 1.)
+        self.assertEqual(fit.call_count, 2)
+        self.assertTrue(all(call.kwargs["correlated_two_face_bound"] for call in fit.call_args_list))
+        diagnostic = self.node._navigation_last_diagnostics
+        self.assertTrue(diagnostic["fusion_accepted"], diagnostic)
+        self.assertEqual(self.node._manager.target_uuid, "explicit_task")
+        self.assertEqual(self.node._manager.target_track_id, original_track)
+        # One-face models deliberately fall back, including with the switch on.
+        for name in ("selected_model", "other_model"):
+            self.assertEqual(diagnostic["visibility"]["pairs"][0][name]["body_front_bound_method"],
+                             "legacy_independent_aggregation_fallback")
+        pair = source.navigation_overlaps[0]
+        pair.depth_complete = False
+        self.node._update_navigation(result, observations, source, 1.)
+        self.assertFalse(self.node._navigation_last_diagnostics["fusion_accepted"])
+        self.assertEqual(self.node._manager.target_track_id, original_track)
+        self.assertEqual(self.node._manager.target_uuid, "explicit_task")
+
     def test_directional_visibility_retains_uncertain_pair_vetoes(self):
         for defect in ("hole", "cross_class", "missing_pair", "wrong_frame", "no_other_match", "nested"):
             with self.subTest(defect=defect):
