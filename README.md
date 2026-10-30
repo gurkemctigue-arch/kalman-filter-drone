@@ -2,7 +2,11 @@
 
 **当前分支是 v4 开发检查点，三阶段功能已实现，最终验收与正式重复研究尚未完成。** 最新执行快照、来源和失败边界见[当前交接记录](planning/reliability-v4-current-state.md)，后续工作依[可靠性修复与交付方案](planning/reliability-v4-next-actions-20261030.md)推进。公开文档是带时间的快照；本机[进度入口](results/project_progress/current/index.html)读取受监任务的最新状态。
 
-最新检查点（2026-10-30）：Ubuntu 22.04/Humble26 已完成新来源冻结、四包构建、模块/ament 隔离、FastCDR 来源核验和真实消息序列化往返；Linux 全套1417项检查中1412通过、5项按精确平台条件跳过，用时49.068秒，检查前后冻结来源不变。首条20秒clean检查在pre-unpause桥进程身份发现时失败，8.79秒后退出1；普通`/proc`进程遍历触发`Proc identity is truncated or no longer alive`，尚未进入跟随验证，已清理且无残留。12格核心PROBE全部PENDING，须修复后新冻结再验证。起飞等待、输出时效、像素排除修复与[汽车m960检测候选](planning/reliability-v4-detector-m960-development-selection-20261030.md)尚无本轮飞行通过结论，[新无损归档](planning/reliability-v4-lossless-archive-20261030.md)的完整28格容量仍未准入。
+最新检查点（2026-10-30）：Ubuntu 22.04/Humble27 已冻结565个文件，完成四包构建、模块/ament 隔离、FastCDR 来源核验和真实消息序列化往返；Linux全套1427项检查中1422通过、5项按精确平台条件跳过，用时46.597秒，冻结来源前后不变。本快照形成时两类20秒clean检查正在串行执行，首个行人场景已通过暂停前桥验证并进入原生起飞，尚无完整飞行通过结论；新核心12格计划已建立且全部PENDING。[进程生命周期修复](planning/reliability-v4-owned-process-lifecycle-20261030.md)另有53项主机专项回归和3项真实Linux进程检查通过，完整同源飞行仍待验证。
+
+原Humble26首条clean检查的pre-unpause失败与核心12格全部PENDING保持；原日志不能区分截断记录与Z/X，不能据此宣布旧失败已修复。正式试验仍0/280，完整28格容量未准入。下方26构建与失败记录保留为历史检查点。
+
+Humble26检查点（2026-10-30）：Ubuntu 22.04/Humble26 已完成新来源冻结、四包构建、模块/ament 隔离、FastCDR 来源核验和真实消息序列化往返；Linux 全套1417项检查中1412通过、5项按精确平台条件跳过，用时49.068秒，检查前后冻结来源不变。首条20秒clean检查在pre-unpause桥进程身份发现时失败，8.79秒后退出1；普通`/proc`进程遍历触发`Proc identity is truncated or no longer alive`，尚未进入跟随验证，已清理且无残留。12格核心PROBE全部PENDING，须修复后新冻结再验证。起飞等待、输出时效、像素排除修复与[汽车m960检测候选](planning/reliability-v4-detector-m960-development-selection-20261030.md)尚无本轮飞行通过结论，[新无损归档](planning/reliability-v4-lossless-archive-20261030.md)的完整28格容量仍未准入。
 
 Humble25原核心12格的9 PASS、3 FAIL保持不变：六个行人格均PASS，汽车起飞交接、交叉跟踪和多目标主动云台FAIL。正式试验仍为0/280。测试通过、程序执行完成和整次工程验收分别判断；下文 v3 报告与结果计数属于历史冻结版本。
 

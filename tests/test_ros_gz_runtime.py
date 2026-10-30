@@ -86,6 +86,54 @@ class FixtureBackend(runtime.RuntimeBackend):
         return Path(path)
 
 
+class ProcessStatTests(unittest.TestCase):
+    @staticmethod
+    def record(state="S", *, pid=300, parent=100):
+        fields = ["0"] * 20
+        fields[:4] = [state, str(parent), "100", "100"]
+        fields[19] = "333"
+        return str(pid) + " (fixture (child) process) " + " ".join(fields)
+
+    def test_live_identity_and_parenthesized_command_preserve_return_schema(self):
+        self.assertEqual(runtime.parse_process_stat(self.record(), 300),
+            {"pid": 300, "parent_pid": 100, "process_group": 100, "session": 100, "start_ticks": 333})
+
+    def test_only_complete_dead_records_raise_typed_error_with_identity_evidence(self):
+        for state in ("Z", "X"):
+            with self.subTest(state=state), self.assertRaises(runtime.ProcessNotAliveError) as caught:
+                runtime.parse_process_stat(self.record(state), 300)
+            self.assertIsInstance(caught.exception, runtime.RuntimeRegistrationError)
+            self.assertEqual(caught.exception.state, state)
+            self.assertEqual(caught.exception.process["parent_pid"], 100)
+            self.assertEqual(caught.exception.process["start_ticks"], 333)
+            self.assertIn(f"pid=300 state={state}", str(caught.exception))
+
+    def test_malformed_dead_records_never_receive_transient_type(self):
+        for state in ("Z", "X"):
+            record = self.record(state)
+            prefix, fields = record.rsplit(") ", 1)
+            for label, malformed in (
+                ("truncated", record.rsplit(" ", 1)[0]),
+                ("wrong-pid", record.replace("300 (", "301 (", 1)),
+                ("missing-separator", record.replace(") " + state, ")" + state, 1)),
+                ("invalid-start", record.rsplit(" ", 1)[0] + " 3_33"),
+                ("invalid-parent", prefix + ") " + fields.replace(state + " 100", state + " invalid", 1)),
+                ("negative-parent", self.record(state, parent=-1)),
+                ("invalid-other-integer", prefix + ") " + fields.replace(" 0 ", " broken ", 1)),
+            ):
+                with self.subTest(state=state, malformed=label), self.assertRaises(runtime.RuntimeRegistrationError) as caught:
+                    runtime.parse_process_stat(malformed, 300)
+                self.assertNotIsInstance(caught.exception, runtime.ProcessNotAliveError)
+                self.assertIn("pid=300", str(caught.exception))
+
+    def test_unknown_state_and_nonpositive_pid_are_not_live_or_transient(self):
+        for record, pid in ((self.record("unknown"), 300), (self.record("Q"), 300),
+                            (self.record(pid=0), 0), (self.record(pid=-1), -1)):
+            with self.subTest(pid=pid, record=record), self.assertRaises(runtime.RuntimeRegistrationError) as caught:
+                runtime.parse_process_stat(record, pid)
+            self.assertNotIsInstance(caught.exception, runtime.ProcessNotAliveError)
+
+
 class RosGzRuntimeTests(unittest.TestCase):
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory(prefix="ros_gz_runtime_fixture_", dir=ROOT)

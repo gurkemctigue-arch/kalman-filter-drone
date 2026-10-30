@@ -121,7 +121,7 @@ def _ros_gz_children(pid, backend, thread_budget):
 def find_owned_parameter_bridge(leader_pid, *, expected_leader=None, backend=None,
                               process_limit=64, thread_limit=512):
     """Follow only kernel child lists, with creation/parent identities checked."""
-    from uav_tracking.ros_gz_runtime import RuntimeBackend, parse_process_stat
+    from uav_tracking.ros_gz_runtime import ProcessNotAliveError, RuntimeBackend, parse_process_stat
     backend = backend or RuntimeBackend()
     leader = parse_process_stat(backend.proc_text(leader_pid, "stat"), leader_pid)
     if expected_leader is not None and leader != expected_leader:
@@ -142,6 +142,13 @@ def find_owned_parameter_bridge(leader_pid, *, expected_leader=None, backend=Non
             executable = backend.exe_path(pid)
             bridge_candidate = Path(executable.removesuffix(" (deleted)")).name == "parameter_bridge"
             children, count = _ros_gz_children(pid, backend, thread_limit - threads)
+        except ProcessNotAliveError as error:
+            if pid == leader_pid or bridge_candidate:
+                raise
+            if parent is not None and error.process["parent_pid"] != parent:
+                raise RuntimeError("Owned dead process parent identity changed during discovery "
+                                   f"(pid={pid} state={error.state})") from error
+            continue
         except (FileNotFoundError, ProcessLookupError):
             if pid == leader_pid or bridge_candidate:
                 raise

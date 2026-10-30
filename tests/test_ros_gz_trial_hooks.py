@@ -23,6 +23,7 @@ class OwnedBackend(fixtures.FixtureBackend):
         self.leader = 100
         self.middle = 200
         self.identities = {self.leader: (1, 111), self.middle: (self.leader, 222), self.pid: (self.middle, self.start_ticks)}
+        self.states = {}
         self.links = {self.leader: [self.middle], self.middle: [self.pid], self.pid: []}
         self.refresh_children()
 
@@ -38,7 +39,7 @@ class OwnedBackend(fixtures.FixtureBackend):
         if filename == "stat":
             parent, start = self.identities[pid]
             fields = ["0"] * 20
-            fields[:4] = ["S", str(parent), str(self.leader), str(self.leader)]
+            fields[:4] = [self.states.get(pid, "S"), str(parent), str(self.leader), str(self.leader)]
             fields[19] = str(start)
             return str(pid) + " (fixture process) " + " ".join(fields)
         return super().proc_text(pid, filename)
@@ -249,6 +250,112 @@ class RosGzTrialHookTests(unittest.TestCase):
                 with self.assertRaises(ProcessLookupError):
                     trial.find_owned_parameter_bridge(self.backend.leader, backend=self.backend)
 
+    def test_well_formed_dead_ordinary_children_do_not_block_real_bridge(self):
+        transient = 300
+        self.backend.links[self.backend.leader].append(transient)
+        self.backend.identities[transient] = (self.backend.leader, 333)
+        self.backend.refresh_children()
+        original_exe = self.backend.exe_path
+
+        def executable(pid):
+            if pid == transient:
+                raise AssertionError("A confirmed dead ordinary child has no executable probe")
+            return original_exe(pid)
+
+        for state in ("Z", "X"):
+            self.backend.states[transient] = state
+            with self.subTest(state=state), mock.patch.object(self.backend, "exe_path", side_effect=executable):
+                owned = trial.find_owned_parameter_bridge(self.backend.leader, backend=self.backend)
+            self.assertEqual(owned["process"]["pid"], self.backend.pid)
+
+    def test_malformed_dead_child_is_fatal_instead_of_being_skipped(self):
+        transient = 300
+        self.backend.links[self.backend.leader].append(transient)
+        self.backend.identities[transient] = (self.backend.leader, 333)
+        self.backend.refresh_children()
+        original = self.backend.proc_text
+        for state in ("Z", "X"):
+            self.backend.states[transient] = state
+            for malformed in ("truncated", "bad-start", "bad-parent"):
+                def proc(pid, filename):
+                    record = original(pid, filename)
+                    if pid == transient and filename == "stat":
+                        if malformed == "truncated":
+                            return record.rsplit(" ", 1)[0]
+                        if malformed == "bad-start":
+                            return record.rsplit(" ", 1)[0] + " invalid"
+                        return record.replace(state + " 100", state + " 1_00", 1)
+                    return record
+
+                with self.subTest(state=state, malformed=malformed), \
+                        mock.patch.object(self.backend, "proc_text", side_effect=proc), \
+                        self.assertRaises(runtime.RuntimeRegistrationError) as caught:
+                    trial.find_owned_parameter_bridge(self.backend.leader, backend=self.backend)
+                self.assertNotIsInstance(caught.exception, runtime.ProcessNotAliveError)
+                self.assertIn(f"pid={transient} state={state}", str(caught.exception))
+
+    def test_dead_child_parent_mismatch_is_not_a_transient_lifecycle(self):
+        transient = 300
+        self.backend.links[self.backend.leader].append(transient)
+        self.backend.identities[transient] = (999, 333)
+        self.backend.refresh_children()
+        for state in ("Z", "X"):
+            self.backend.states[transient] = state
+            with self.subTest(state=state), self.assertRaisesRegex(RuntimeError, "dead process parent identity changed"):
+                trial.find_owned_parameter_bridge(self.backend.leader, backend=self.backend)
+
+    def test_leader_dead_state_is_fatal_at_every_identity_read(self):
+        original = self.backend.proc_text
+        for state in ("Z", "X"):
+            for failed_read in (1, 2, 3):
+                reads = 0
+
+                def proc(pid, filename):
+                    nonlocal reads
+                    record = original(pid, filename)
+                    if pid == self.backend.leader and filename == "stat":
+                        reads += 1
+                        if reads == failed_read:
+                            return record.replace(") S ", ") " + state + " ", 1)
+                    return record
+
+                with self.subTest(state=state, failed_leader_read=failed_read), \
+                        mock.patch.object(self.backend, "proc_text", side_effect=proc), \
+                        self.assertRaises(runtime.ProcessNotAliveError):
+                    trial.find_owned_parameter_bridge(self.backend.leader, backend=self.backend)
+
+    def test_pinned_dead_bridge_cannot_be_lost_or_replaced_during_wait(self):
+        self.register_plugin()  # Keep the selected bridge in initialization wait.
+        context = self.context()
+        replacement = 4321
+        original_exe = self.backend.exe_path
+        for state in ("Z", "X"):
+            for add_replacement in (False, True):
+                self.backend.states.clear()
+                self.backend.links[self.backend.middle] = [self.backend.pid]
+                self.backend.refresh_children()
+
+                def exit_bridge(_):
+                    self.backend.states[self.backend.pid] = state
+                    if add_replacement:
+                        self.backend.links[self.backend.middle].append(replacement)
+                        self.backend.links[replacement] = []
+                        self.backend.identities[replacement] = (self.backend.middle, 444)
+                        self.backend.refresh_children()
+
+                with self.subTest(state=state, replacement=add_replacement), \
+                        mock.patch.object(self.backend, "exe_path", side_effect=lambda pid: str(self.fixture.executable) if pid == replacement else original_exe(pid)), \
+                        mock.patch.object(trial.time, "sleep", side_effect=exit_bridge) as wait, \
+                        mock.patch.object(runtime, "verify_live_process") as verify, \
+                        self.assertRaisesRegex(RuntimeError, "could not be verified before unpause"):
+                    trial.capture_owned_ros_gz_runtime(context, self.snapshot, self.backend.leader,
+                        backend=self.backend, timeout_s=1.)
+                wait.assert_called_once()
+                verify.assert_not_called()
+                error = json.loads((self.snapshot / "ros_gz_runtime_actual_error.json").read_text())
+                self.assertIn("identity/ownership changed during startup wait", error["error"])
+                self.assertFalse((self.snapshot / "ros_gz_runtime_actual.json").exists())
+
     def test_bridge_confirmed_by_executable_cannot_disappear_as_an_ordinary_child(self):
         original = trial._ros_gz_children
 
@@ -259,6 +366,20 @@ class RosGzTrialHookTests(unittest.TestCase):
 
         with mock.patch.object(trial, "_ros_gz_children", side_effect=children):
             with self.assertRaises(ProcessLookupError):
+                trial.find_owned_parameter_bridge(self.backend.leader, backend=self.backend)
+
+    def test_executable_confirmed_bridge_cannot_raise_a_skippable_dead_condition(self):
+        original = trial._ros_gz_children
+        process = runtime.parse_process_stat(self.backend.proc_text(self.backend.pid, "stat"), self.backend.pid)
+        for state in ("Z", "X"):
+            def children(pid, backend, budget):
+                if pid == self.backend.pid:
+                    raise runtime.ProcessNotAliveError(process, state)
+                return original(pid, backend, budget)
+
+            with self.subTest(state=state), \
+                    mock.patch.object(trial, "_ros_gz_children", side_effect=children), \
+                    self.assertRaises(runtime.ProcessNotAliveError):
                 trial.find_owned_parameter_bridge(self.backend.leader, backend=self.backend)
 
     def test_pinned_bridge_esrch_cannot_switch_to_a_new_candidate(self):

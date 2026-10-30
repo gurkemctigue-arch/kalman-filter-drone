@@ -30,6 +30,17 @@ class RuntimeRegistrationError(ValueError):
     pass
 
 
+class ProcessNotAliveError(RuntimeRegistrationError):
+    """A complete, parsed proc identity is explicitly zombie or dead."""
+
+    def __init__(self, process, state):
+        self.process = dict(process)
+        self.state = state
+        super().__init__("Proc process is no longer alive "
+            f"(pid={process['pid']} state={state} parent_pid={process['parent_pid']} "
+            f"start_ticks={process['start_ticks']})")
+
+
 class RuntimeBackend:
     """Native Linux reads. Tests override probes and explicitly mark fixtures."""
     fixture_only = False
@@ -266,18 +277,34 @@ def verify_registration(value, *, patch_path=None, backend=None):
 
 
 def parse_process_stat(text, pid):
+    if type(pid) is not int or pid <= 0:
+        raise RuntimeRegistrationError(f"A positive explicit proc PID is required (pid={pid})")
     closing = text.rfind(")")
     opening = text.find("(")
-    if opening < 1 or closing < opening or text[:opening].strip() != str(pid):
-        raise RuntimeRegistrationError("Malformed or wrong-PID proc stat")
+    if (opening < 1 or closing < opening or text[:opening] != f"{pid} "
+            or not text[closing + 1:].startswith(" ")):
+        raise RuntimeRegistrationError(f"Malformed or wrong-PID proc stat (pid={pid})")
     fields = text[closing + 1:].split()
-    if len(fields) < 20 or fields[0] in {"Z", "X"}:
-        raise RuntimeRegistrationError("Proc identity is truncated or no longer alive")
+    state = fields[0] if fields else "<missing>"
+    evidence = f"pid={pid} state={state} fields={len(fields)}"
+    if len(fields) < 20:
+        raise RuntimeRegistrationError(f"Proc identity is truncated ({evidence})")
+    if state not in {"R", "S", "D", "Z", "T", "t", "X", "K", "W", "P", "I"}:
+        raise RuntimeRegistrationError(f"Invalid proc state ({evidence})")
+    # Even a Z/X record must have valid identity fields before it can be
+    # classified as an ordinary exited child by the ownership scanner.
+    if any(re.fullmatch(r"-?[0-9]+", field) is None for field in fields[1:20]):
+        raise RuntimeRegistrationError(f"Invalid proc identity integers ({evidence})")
     try:
-        return {"pid": pid, "parent_pid": int(fields[1]), "process_group": int(fields[2]),
-                "session": int(fields[3]), "start_ticks": int(fields[19])}
+        process = {"pid": pid, "parent_pid": int(fields[1]), "process_group": int(fields[2]),
+                   "session": int(fields[3]), "start_ticks": int(fields[19])}
     except ValueError as error:
-        raise RuntimeRegistrationError("Invalid proc identity integers") from error
+        raise RuntimeRegistrationError(f"Invalid proc identity integers ({evidence})") from error
+    if any(value < 0 for value in process.values()):
+        raise RuntimeRegistrationError(f"Invalid proc identity integers ({evidence})")
+    if state in {"Z", "X"}:
+        raise ProcessNotAliveError(process, state)
+    return process
 
 
 def parse_maps(text):

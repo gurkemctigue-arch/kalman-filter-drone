@@ -1,6 +1,14 @@
 # 当前工作交接（持续开发，非验收报告）
 
-最新执行快照（2026-10-30，Humble26构建验证完成后）：冻结来源canonical为`b9c6a1091d6123a85e13580d3ef6efe1a7e338982d772657d150cc651068941e`。四个ROS软件包构建、模块/ament隔离、FastCDR来源及真实消息序列化往返均通过；Linux全套1417项检查中1412通过、5项按精确平台条件跳过，测试用时49.068秒，returncode=0、source_unchanged=true。实际回执为本机`results/frozen_fullplan_v4_humble26/freeze_validation/build_validation_summary.json`，5个跳过的ID、原因和平台条件均已逐项核实。
+最新执行快照（2026-10-30，Humble27构建验证完成后）：已冻结565个文件，来源canonical为`1a9aa3ae1bb9457d2d3240169832763c640a870b63a94a652b4017a15a6ac27f`，最终review SHA-256为`88d5fe5b8ad1a95e3de5228ed2a32c1d3290704730a365269948cdc8a1eef9a9`。四个ROS包构建、模块/ament隔离、FastCDR来源和真实消息序列化往返均通过；Linux全套1427项检查中1422通过、5项按精确平台条件跳过，用时46.597秒，returncode=0、source_unchanged=true。实际回执为本机`results/frozen_fullplan_v4_humble27/freeze_validation/build_validation_summary.json`。
+
+本快照形成时两类20秒clean检查正在串行执行；首个行人场景已通过暂停前桥身份验证并进入原生起飞，尚无完整飞行通过结论。新27核心12格PROBE计划已建立且全部PENDING，正式仍0/280；后续仍须完成同源clean检查、12核心、4安全、16扩展及容量核算。
+
+[typed生命周期修复](reliability-v4-owned-process-lifecycle-20261030.md)的53项主机专项回归及3项真实Linux内核进程检查全部通过，实际回执分别为本机`D:/WSL/UAVHumble22-validation/humble27_proc_host01.json`及同目录`humble27_actual_proc_lifecycle01.json`。新来源仅对完整合法Z/X抛出专用异常，并只在普通非leader子进程父身份相符时跳过；畸形记录、leader、已选桥丢失和桥替换仍失败。真实OS检查使用自有live子进程、真实未回收Z和临时命名sleep，范围不包含真实ROS桥、ELF注册或飞行；其成功不能代替完整闭环验收。
+
+原Humble26首条clean检查仍为pre-unpause启动失败，其核心12格全部PENDING；原日志将截断记录与合法Z/X共用错误，子类型仍未知，以上新检查不能反推原根因或改写失败。原Humble25的9 PASS/3 FAIL、正式0/280和28格容量未准入均保持；观测0.60秒、预测0.75秒、身份及歧义保护不变。以下26及更早记录作为历史快照保留。
+
+Humble26构建与失败快照（2026-10-30）：冻结来源canonical为`b9c6a1091d6123a85e13580d3ef6efe1a7e338982d772657d150cc651068941e`。四个ROS软件包构建、模块/ament隔离、FastCDR来源及真实消息序列化往返均通过；Linux全套1417项检查中1412通过、5项按精确平台条件跳过，测试用时49.068秒，returncode=0、source_unchanged=true。实际回执为本机`results/frozen_fullplan_v4_humble26/freeze_validation/build_validation_summary.json`，5个跳过的ID、原因和平台条件均已逐项核实。
 
 12格核心PROBE计划已建立，计划SHA-256为`1b33a7ddf2c52134f0d980e08889ddf9b9c1114e493f5b2af76034577ef7c9a7`，全部PENDING。首条20秒clean检查在pre-unpause阶段失败，8.79秒后退出1：`find_owned_parameter_bridge`遍历普通`/proc`进程时，`parse_process_stat`报告`Proc identity is truncated or no longer alive`。尚未进入跟随验证，不能将此启动基础设施失败称为跟随算法失败；原26冻结来源不变，进程已清理且无残留。当前定位修复，后续须以新开发来源冻结、构建并复验，不重写26失败或继续其核心计划。
 
