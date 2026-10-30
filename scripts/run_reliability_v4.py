@@ -77,6 +77,47 @@ REPORT_PROVENANCE_HELPERS = {
 GIMBAL_REEVALUATION_FILENAME = "gimbal_terminal_audit_rev2.json"
 CORRELATED_BOUND_FIELD = "navigation_correlated_two_face_bound"
 CORRELATED_BOUND_FLAG = "--correlated-two-face-bound"
+CAR_SURFACE_RECOVERY_FIELD = "car_surface_recovery"
+CAR_SURFACE_RECOVERY_FLAG = "--car-surface-recovery"
+# A declaration binds this fixed implementation; it does not configure new
+# geometry, dimensions or a calibrated measurement-noise model. The fixed
+# family prior is implemented by the flight-critical detector source.
+CAR_SURFACE_RECOVERY_V1 = {
+    "enabled": True,
+    "revision": "car_surface_component_centroid_v1",
+    "method": "component_centroid_v1",
+    "surface_geometry_frame": "map",
+    "surface_tf_timeout_s": .02,
+    "surface_max_image_pixels": 307200,
+    "surface_max_roi_pixels": 307200,
+    "surface_max_visible_boxes": 64,
+    "family_dimensions_m": [4.5, 1.8, 1.5],
+    "family_dimension_std_m": [.45, .18, .15],
+    "family_prior_binding": "fixed_flight_source",
+    "measurement_reference": "visible_surface_proxy_component_centroid",
+    "unknown_action": "retain_raw_measurement",
+    "measurement_noise": "raw_roi_heuristic_plus_same_sample_pose_lever",
+    "depth_validity": "min < Z <= max",
+    "source_time_tf_required": True,
+    "geometry_correlated_two_face_bound": True,
+}
+CAR_SURFACE_RECOVERY_RUNTIME_PARAMETERS = {
+    "car_surface_recovery_method": CAR_SURFACE_RECOVERY_V1["method"],
+    **{key: CAR_SURFACE_RECOVERY_V1[key] for key in (
+        "surface_geometry_frame", "surface_tf_timeout_s", "surface_max_image_pixels",
+        "surface_max_roi_pixels", "surface_max_visible_boxes")},
+}
+SIMULATION_PACING_FIELD = "simulation_pacing_registration"
+SIMULATION_PACING_V1 = {
+    "revision": "simulation_rtf0125_wall1000_v1",
+    "real_time_factor": .125,
+    "flight_wall_timeout_s": 1000.,
+    "follow_duration_s": 75.,
+    "max_inference_rate_hz": 10.,
+    "physical_identity_sample_period_s": .1,
+    "scope": "simulation_cpu_wall_resource_only",
+    "safety_source_time_gates": "unchanged",
+}
 CAR_ADAPTED_MODEL = "models/yolo11m_car_sim_train20_01.pt"
 CAR_MODEL_ADAPTATION = {
     "target_class": "car", "model": CAR_ADAPTED_MODEL,
@@ -153,6 +194,121 @@ def validate_model_adaptation_binding(protocol, hashes, model_hashes=_UNSPECIFIE
         raise ValueError("Adaptation source registry must retain the complete frozen configuration hash mapping")
 
 
+def _fixed_registration_value_matches(actual, expected):
+    """Compare the fixed contract without Python's bool/numeric equality."""
+    if isinstance(expected, dict):
+        return (type(actual) is dict and set(actual) == set(expected)
+                and all(_fixed_registration_value_matches(actual[key], value) for key, value in expected.items()))
+    if isinstance(expected, list):
+        return (type(actual) is list and len(actual) == len(expected)
+                and all(_fixed_registration_value_matches(left, right) for left, right in zip(actual, expected)))
+    if type(expected) is float:
+        return type(actual) in {int, float} and math.isfinite(actual) and actual == expected
+    return type(actual) is type(expected) and actual == expected
+
+
+def simulation_pacing_summary(protocol):
+    """Validate the sole optional CPU pacing revision without adding defaults."""
+    if not isinstance(protocol, dict):
+        raise ValueError("Invalid " + SIMULATION_PACING_FIELD + " protocol")
+    explicit = SIMULATION_PACING_FIELD in protocol
+    if explicit and not _fixed_registration_value_matches(protocol[SIMULATION_PACING_FIELD], SIMULATION_PACING_V1):
+        raise ValueError(SIMULATION_PACING_FIELD + " must match the complete fixed v1 contract")
+    expected = ({key: SIMULATION_PACING_V1[key] for key in ("real_time_factor", "flight_wall_timeout_s")}
+                if explicit else {"real_time_factor": .25, "flight_wall_timeout_s": 600.})
+    for key, value in expected.items():
+        if not _fixed_registration_value_matches(protocol.get(key), value):
+            raise ValueError("Simulation pacing " + key + " differs from " + SIMULATION_PACING_FIELD)
+    return deepcopy(protocol[SIMULATION_PACING_FIELD]) if explicit else expected
+
+
+def simulation_pacing_declared(protocol):
+    simulation_pacing_summary(protocol)
+    return SIMULATION_PACING_FIELD in protocol
+
+
+def simulation_pacing_trial_binding(plan, trial):
+    """New pacing is explicit in each spec and its actual flight arguments."""
+    protocol = plan["protocol"]
+    pacing = simulation_pacing_summary(protocol)
+    explicit = SIMULATION_PACING_FIELD in protocol
+    if (SIMULATION_PACING_FIELD in trial) != explicit:
+        raise ValueError("Trial " + SIMULATION_PACING_FIELD + " differs from protocol registration")
+    if explicit:
+        if (not _fixed_registration_value_matches(trial[SIMULATION_PACING_FIELD], protocol[SIMULATION_PACING_FIELD])
+                or not _fixed_registration_value_matches(trial.get("wall_timeout_s"), pacing["flight_wall_timeout_s"])):
+            raise ValueError("Trial " + SIMULATION_PACING_FIELD + " differs from the fixed pacing pair")
+        command = trial["flight_command"]
+        if not isinstance(command, list) or not all(isinstance(value, str) for value in command):
+            raise ValueError("Trial simulation pacing argv is invalid")
+        for flag, expected in (("--real-time-factor", pacing["real_time_factor"]),
+                               ("--wall-timeout", pacing["flight_wall_timeout_s"]),
+                               ("--max-inference-rate-hz", 10.)):
+            if (command.count(flag) != 1 or any(value.startswith(flag + "=") for value in command)
+                    or command.index(flag) + 1 >= len(command)):
+                raise ValueError("Trial simulation pacing argv differs at " + flag)
+            try:
+                actual = float(command[command.index(flag) + 1])
+            except (ValueError, TypeError) as error:
+                raise ValueError("Trial simulation pacing argv differs at " + flag) from error
+            if not _fixed_registration_value_matches(actual, expected):
+                raise ValueError("Trial simulation pacing argv differs at " + flag)
+    return pacing
+
+
+def car_surface_recovery_setting(setting, cls):
+    """Return the validated effective policy; absent historical fields are off.
+
+    Explicit declarations, including off, contain the whole fixed v1 contract.
+    Normalization never writes defaults into an immutable protocol or trial.
+    """
+    if not isinstance(setting, dict) or cls not in CLASSES:
+        raise ValueError("Invalid " + CAR_SURFACE_RECOVERY_FIELD + " class resources")
+    if CAR_SURFACE_RECOVERY_FIELD not in setting:
+        return {"enabled": False}
+    declaration = setting[CAR_SURFACE_RECOVERY_FIELD]
+    if not isinstance(declaration, dict) or type(declaration.get("enabled")) is not bool:
+        raise ValueError(CAR_SURFACE_RECOVERY_FIELD + " requires its fixed v1 dict and a strict enabled boolean")
+    enabled = declaration["enabled"]
+    expected = {**CAR_SURFACE_RECOVERY_V1, "enabled": enabled}
+    if (enabled and cls != "car") or not _fixed_registration_value_matches(declaration, expected):
+        raise ValueError(CAR_SURFACE_RECOVERY_FIELD + " must match the fixed v1 contract; only car may enable it")
+    return deepcopy(declaration) if enabled else {"enabled": False}
+
+
+def car_surface_recovery_summary(protocol):
+    """Canonical per-class effective policies for readiness/source bindings."""
+    if not isinstance(protocol, dict) or not isinstance(protocol.get("resources"), dict):
+        raise ValueError("Invalid " + CAR_SURFACE_RECOVERY_FIELD + " protocol resources")
+    return {cls: car_surface_recovery_setting(protocol["resources"].get(cls), cls) for cls in CLASSES}
+
+
+def car_surface_recovery_declared(protocol):
+    """New bindings are conditional so legacy gate bytes stay valid."""
+    car_surface_recovery_summary(protocol)
+    return any(CAR_SURFACE_RECOVERY_FIELD in protocol["resources"][cls] for cls in CLASSES)
+
+
+def _car_surface_recovery_command_matches(command, enabled):
+    return (isinstance(command, list) and all(isinstance(value, str) for value in command)
+            and command.count(CAR_SURFACE_RECOVERY_FLAG) == int(enabled)
+            and not any(value.startswith(CAR_SURFACE_RECOVERY_FLAG + "=") for value in command))
+
+
+def car_surface_recovery_trial_binding(plan, trial):
+    """Bind the immutable declaration, trial and exact CLI opt-in."""
+    cls = trial["target_class"]
+    resource = plan["protocol"]["resources"][cls]
+    policy = car_surface_recovery_setting(resource, cls)
+    explicit = CAR_SURFACE_RECOVERY_FIELD in resource
+    if ((CAR_SURFACE_RECOVERY_FIELD in trial) != explicit
+            or car_surface_recovery_setting(trial, cls) != policy):
+        raise ValueError("Trial " + CAR_SURFACE_RECOVERY_FIELD + " differs from class registration")
+    if not _car_surface_recovery_command_matches(trial["flight_command"], policy["enabled"]):
+        raise ValueError("Trial " + CAR_SURFACE_RECOVERY_FLAG + " differs from class registration")
+    return policy["enabled"], explicit
+
+
 def correlated_two_face_setting(setting, cls):
     """Old registrations imply off; a new declaration is a strict class bool."""
     if not isinstance(setting, dict):
@@ -188,6 +344,42 @@ def _bound_boolean_evidence(mapping, key, expected, required, errors, label):
         return
     if type(mapping[key]) is not bool or mapping[key] is not expected:
         errors.append(label)
+
+
+def car_surface_recovery_runtime_evidence(resource, cls, configuration, parameters, flight_argv):
+    """Audit actual archives for both the runner and independent safety guard.
+
+    Historical missing activation fields mean off; present fields are always
+    strict booleans. New explicit on/off declarations require all fixed runtime
+    fields. Dimensions remain bound through the frozen flight source, rather
+    than pretending that runtime YAML can change the hardcoded family prior.
+    """
+    enabled = car_surface_recovery_setting(resource, cls)["enabled"]
+    explicit = CAR_SURFACE_RECOVERY_FIELD in resource
+    errors = []
+    if not _car_surface_recovery_command_matches(flight_argv, enabled):
+        errors.append("flight_command:" + CAR_SURFACE_RECOVERY_FIELD)
+    if not isinstance(configuration, dict) or not isinstance(parameters, dict):
+        return {"enabled": enabled, "explicit": explicit,
+                "errors": [*errors, "car_surface_recovery:malformed_runtime_archives"]}
+    _bound_boolean_evidence(configuration, "car_surface_recovery", enabled, explicit,
+                            errors, "run_config:car_surface_recovery")
+    method = "car_surface_recovery_method"
+    if ((explicit or method in configuration)
+            and not _fixed_registration_value_matches(configuration.get(method), CAR_SURFACE_RECOVERY_V1["method"])):
+        errors.append("run_config:" + method)
+    node = parameters.get("uav_tracking_detection", {})
+    detector = node.get("ros__parameters", {}) if isinstance(node, dict) else None
+    if not isinstance(detector, dict):
+        errors.append("runtime_parameters:uav_tracking_detection:malformed")
+    else:
+        _bound_boolean_evidence(detector, "car_surface_recovery_enabled", enabled, explicit,
+                                errors, "runtime_parameters:uav_tracking_detection:car_surface_recovery_enabled")
+        for key, expected in CAR_SURFACE_RECOVERY_RUNTIME_PARAMETERS.items():
+            if ((explicit or key in detector)
+                    and not _fixed_registration_value_matches(detector.get(key), expected)):
+                errors.append("runtime_parameters:uav_tracking_detection:" + key)
+    return {"enabled": enabled, "explicit": explicit, "errors": errors}
 
 
 def offline_source_hashes(hashes):
@@ -303,9 +495,11 @@ def source_hashes(root):
 
 
 def validate_protocol(protocol):
+    pacing = simulation_pacing_summary(protocol)
     exact = {"classes": list(CLASSES), "groups": list(GROUPS), "seeds": list(FORMAL_SEEDS),
              "formal_trial_count": 120, "duration_s": 75., "short_occlusion_s": .2,
-             "long_occlusion_s": 3., "real_time_factor": .25, "flight_wall_timeout_s": 600.,
+             "long_occlusion_s": 3., "real_time_factor": pacing["real_time_factor"],
+             "flight_wall_timeout_s": pacing["flight_wall_timeout_s"],
              "max_inference_rate_hz": 10.,
              "gazebo_render_driver":"llvmpipe",
              "monitor_tick_s": .02, "control_reference": "ground_footprint", "desired_height_m": 2.,
@@ -346,7 +540,9 @@ def validate_protocol(protocol):
     for cls, model, size, threads, distance in (("person", "yolo11n.pt", 320, 2, 5.), ("car", "yolo11m.pt", car_size, 4, 9.)):
         setting = resources.get(cls)
         correlated_two_face_setting(setting, cls)
-        legacy_setting = {key: value for key, value in setting.items() if key != CORRELATED_BOUND_FIELD}
+        car_surface_recovery_setting(setting, cls)
+        legacy_setting = {key: value for key, value in setting.items()
+                          if key not in {CORRELATED_BOUND_FIELD, CAR_SURFACE_RECOVERY_FIELD}}
         expected_model = car_model if cls == "car" and registration is not None else "models/" + model
         if legacy_setting != {"model": expected_model, "inference_image_size": size,
                                   "inference_threads": threads, "desired_distance_m": distance}:
@@ -375,10 +571,14 @@ def gimbal_reevaluation_command(evaluation_root, source_plan, previous, trial, o
 
 
 def trial_spec(root, protocol, prefix, cls, group, seed, wall_timeout):
+    pacing = simulation_pacing_summary(protocol)
+    if SIMULATION_PACING_FIELD in protocol and not _fixed_registration_value_matches(wall_timeout, pacing["flight_wall_timeout_s"]):
+        raise ValueError("Trial wall timeout differs from " + SIMULATION_PACING_FIELD)
     multi = group in {"stage2_crossing", "stage3_multi_active"}
     stage = 1 if group.startswith("stage1_") else 2 if group == "stage2_crossing" else 3
     setting = protocol["resources"][cls]
     correlated_bound = correlated_two_face_setting(setting, cls)
+    surface_recovery = car_surface_recovery_setting(setting, cls)
     identifier = f"{cls}_{group}_seed{seed:03d}"
     spec = {"id": identifier, "name": f"{prefix}_{identifier}", "group": group, "target_class": cls,
             "seed": seed, "gazebo_seed": seed + 1, "stage": stage, "multi_target": group == "stage3_multi_active",
@@ -391,6 +591,8 @@ def trial_spec(root, protocol, prefix, cls, group, seed, wall_timeout):
             "scenario_kind": "crossing" if multi else "parallel", "duration_s": 75.,
             "speed_mps": random.Random(seed).uniform(.45, .55), "wall_timeout_s": wall_timeout,
             **deepcopy(setting)}
+    if SIMULATION_PACING_FIELD in protocol:
+        spec[SIMULATION_PACING_FIELD] = deepcopy(protocol[SIMULATION_PACING_FIELD])
     command = wrapper_command(root, "run_stage1_trial.py", "--name", spec["name"], "--class", cls,
         "--stage", stage, "--seed", seed, "--speed-mps", repr(spec["speed_mps"]),
         "--duration", "75.0", "--condition", "clean", "--estimator-method", "adaptive_kf",
@@ -412,6 +614,8 @@ def trial_spec(root, protocol, prefix, cls, group, seed, wall_timeout):
         command.append("--multi-target")
     if correlated_bound:
         command.append(CORRELATED_BOUND_FLAG)
+    if surface_recovery["enabled"]:
+        command.append(CAR_SURFACE_RECOVERY_FLAG)
     spec["flight_command"] = command
     world_name = f"stage3_multi_{cls}.sdf" if spec["multi_target"] else f"stage{stage}_flight_{cls}.sdf"
     spec["world_source"] = "ros2_ws/src/uav_tracking_bringup/worlds/" + world_name
@@ -623,7 +827,7 @@ def freeze_magnetic_libraries(root, protocol, hashes):
             "claim_limit":"Per-environment installed package registration; actual loaded process ELFs must match per trial"}
 
 
-def make_plan(root, output, prefix, *, formal=False, seeds=None, groups=None, classes=None, wall_timeout=600., probe_gate=None):
+def make_plan(root, output, prefix, *, formal=False, seeds=None, groups=None, classes=None, wall_timeout=None, probe_gate=None):
     root = Path(root).resolve(strict=True)
     output = Path(output)
     output = output if output.is_absolute() else root / output
@@ -632,10 +836,13 @@ def make_plan(root, output, prefix, *, formal=False, seeds=None, groups=None, cl
         raise ValueError("A new output subdirectory inside this frozen root's results is required")
     if not re.fullmatch(r"reliability_v4_[A-Za-z0-9][A-Za-z0-9_-]{0,70}", prefix):
         raise ValueError("A new reliability_v4_NAME prefix is required")
-    if not math.isfinite(wall_timeout) or wall_timeout <= 0:
-        raise ValueError("wall_timeout must be positive and finite")
     protocol = load(root / PROTOCOL_PATH)
     validate_protocol(protocol)
+    wall_timeout = float(protocol["flight_wall_timeout_s"]) if wall_timeout is None else wall_timeout
+    if type(wall_timeout) not in {int, float} or not math.isfinite(wall_timeout) or wall_timeout <= 0:
+        raise ValueError("wall_timeout must be positive and finite")
+    if SIMULATION_PACING_FIELD in protocol and wall_timeout != protocol["flight_wall_timeout_s"]:
+        raise ValueError("Flight wall timeout differs from " + SIMULATION_PACING_FIELD)
     if formal and wall_timeout != protocol["flight_wall_timeout_s"]:
         raise ValueError("Formal flight wall timeout differs from frozen protocol")
     extension_binding = None
@@ -724,7 +931,7 @@ def make_plan(root, output, prefix, *, formal=False, seeds=None, groups=None, cl
 
 
 def make_extension_plan(root, output, prefix, *, formal=False, seeds=None, conditions=None,
-                        classes=None, wall_timeout=600., probe_gate=None, reference_plan=None):
+                        classes=None, wall_timeout=None, probe_gate=None, reference_plan=None):
     root = Path(root).resolve(strict=True)
     extension = load(root / EXTENSION_PROTOCOL_PATH)
     protocol = load(root / PROTOCOL_PATH)
@@ -741,6 +948,7 @@ def make_extension_plan(root, output, prefix, *, formal=False, seeds=None, condi
     plan = make_plan(root, output, prefix, formal=formal, seeds=seeds, classes=classes,
                      groups=None if formal else ["stage1_velocity", "stage1_position"],
                      wall_timeout=wall_timeout, probe_gate=probe_gate)
+    wall_timeout = plan["trials"][0]["wall_timeout_s"]
     plan.update(mode="EXTENSION_FORMAL" if formal else "EXTENSION_PROBE",
                 selected_groups=["stage1_velocity", "stage1_position"],
                 selected_extension_conditions=conditions,
@@ -799,6 +1007,8 @@ def validate_plan(plan, path=None):
         raise ValueError("Unknown v4 plan mode")
     if mode in {"FORMAL", "EXTENSION_FORMAL"} and wall_timeout != plan["protocol"]["flight_wall_timeout_s"]:
         raise ValueError("Formal flight wall timeout differs from frozen protocol")
+    if SIMULATION_PACING_FIELD in plan["protocol"] and wall_timeout != plan["protocol"]["flight_wall_timeout_s"]:
+        raise ValueError("Flight wall timeout differs from " + SIMULATION_PACING_FIELD)
     extension_mode = mode.startswith("EXTENSION_")
     if extension_mode:
         extension_binding = plan.get("extension_protocol_binding", {})
@@ -821,7 +1031,9 @@ def validate_plan(plan, path=None):
                     for cls in plan["selected_classes"] for group in plan["selected_groups"] for seed in plan["selected_seeds"]]
     # Availability is frozen evidence. Never recompute it from a later tree.
     for original, regenerated in zip(plan["trials"], expected):
+        simulation_pacing_trial_binding(plan, original)
         correlated_two_face_trial_binding(plan, original)
+        car_surface_recovery_trial_binding(plan, original)
         for previous, current in zip(original["evaluations"], regenerated["evaluations"]):
             current["available_at_freeze"] = previous["available_at_freeze"]
             # Historical development commands are immutable evidence. The
@@ -978,7 +1190,9 @@ def runtime_configuration(plan, trial):
     directory = Path(trial["directory"])
     errors = []
     try:
+        simulation_pacing_trial_binding(plan, trial)
         correlated_bound, explicit_bound = correlated_two_face_trial_binding(plan, trial)
+        surface_recovery, explicit_surface_recovery = car_surface_recovery_trial_binding(plan, trial)
         config = load(directory / "run_config.json")
         expected = {key: trial[key] for key in ("name", "target_class", "stage", "seed", "speed_mps", "command_mode", "takeoff_mode",
             "gimbal_mode", "target_mode", "association_mode", "initial_select", "initial_min_candidates", "scenario_kind",
@@ -1006,6 +1220,13 @@ def runtime_configuration(plan, trial):
         except ValueError:
             import yaml
             parameters = yaml.safe_load(path.read_text(encoding="utf-8"))
+        surface_evidence = car_surface_recovery_runtime_evidence(
+            plan["protocol"]["resources"][trial["target_class"]], trial["target_class"],
+            config, parameters, trial["flight_command"])
+        errors.extend(surface_evidence["errors"])
+        if explicit_surface_recovery:
+            expected.update(car_surface_recovery=surface_recovery,
+                            car_surface_recovery_method=CAR_SURFACE_RECOVERY_V1["method"])
         expected_parameters = {
             "uav_tracking_detection": {"navigation_enabled": True, "depth_max_age_s": .02,
                 "model_path": expected["model_path"], "inference_image_size": trial["inference_image_size"],
@@ -1651,6 +1872,10 @@ def validate_probe_gate(plan, *, extensions=False):
         "magnetic_library_registration_sha256":plan["magnetic_library_binding"]["registration_sha256"],
         "navigation_acceptance_sha256":digest(plan["protocol"]["navigation_acceptance"]),
     }
+    if car_surface_recovery_declared(plan["protocol"]):
+        expected_binding["car_surface_recovery_sha256"] = digest(car_surface_recovery_summary(plan["protocol"]))
+    if simulation_pacing_declared(plan["protocol"]):
+        expected_binding["simulation_pacing_sha256"] = digest(simulation_pacing_summary(plan["protocol"]))
     if gate.get("bindings") != expected_binding:
         raise ValueError("Development probe gate source/model/runtime/evaluator/threshold binding differs")
     slots = gate.get("probe_slots")
@@ -1696,6 +1921,10 @@ def validate_probe_gate(plan, *, extensions=False):
                    is not correlated_two_face_setting(plan["protocol"]["resources"][cls], cls)
                    for cls in CLASSES):
                 raise ValueError("Development probe geometry mode differs from final class registration")
+            if car_surface_recovery_summary(previous["protocol"]) != car_surface_recovery_summary(plan["protocol"]):
+                raise ValueError("Development probe car surface recovery policy differs from final class registration")
+            if simulation_pacing_summary(previous["protocol"]) != simulation_pacing_summary(plan["protocol"]):
+                raise ValueError("Development probe simulation pacing differs from final registration")
             if (any(previous["protocol"]["resources"][cls]["model"] != plan["protocol"]["resources"][cls]["model"]
                     for cls in CLASSES)
                     or previous["protocol"].get("model_adaptation") != plan["protocol"].get("model_adaptation")
@@ -1961,7 +2190,8 @@ def main(argv=None):
     create.add_argument("--seeds", type=int, nargs="+")
     create.add_argument("--groups", choices=GROUPS, nargs="+")
     create.add_argument("--classes", choices=CLASSES, nargs="+")
-    create.add_argument("--wall-timeout", type=float, default=600.)
+    create.add_argument("--wall-timeout", type=float, default=None,
+                        help="Defaults to the protocol flight budget; a registered pacing revision fixes this value")
     create.add_argument("--probe-gate", type=Path)
     create.add_argument("--extensions", action="store_true", help="Separate eight-condition matrix; does not change the 120 core slots")
     create.add_argument("--conditions", choices=EXTENSION_CONDITIONS, nargs="+")

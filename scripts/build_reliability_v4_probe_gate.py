@@ -53,7 +53,7 @@ def target_snapshot(path, *, extension, require_registered_navigation=True):
 
 
 def bindings(plan):
-    return {
+    result = {
         "flight_source_hashes": v4.flight_source_hashes(plan["source_hashes"]),
         "evaluation_source_hashes": v4.offline_source_hashes(plan["source_hashes"]),
         "model_hashes": deepcopy(plan["model_hashes"]),
@@ -61,6 +61,22 @@ def bindings(plan):
         "magnetic_library_registration_sha256": plan["magnetic_library_binding"]["registration_sha256"],
         "navigation_acceptance_sha256": v4.digest(plan["protocol"]["navigation_acceptance"]),
     }
+    if v4.car_surface_recovery_declared(plan["protocol"]):
+        result["car_surface_recovery_sha256"] = v4.digest(v4.car_surface_recovery_summary(plan["protocol"]))
+    if v4.simulation_pacing_declared(plan["protocol"]):
+        result["simulation_pacing_sha256"] = v4.digest(v4.simulation_pacing_summary(plan["protocol"]))
+    return result
+
+
+def matching_recovery_policy(target, previous):
+    """A matching source tree cannot qualify a different flight policy."""
+    if v4.car_surface_recovery_summary(previous["protocol"]) != v4.car_surface_recovery_summary(target["protocol"]):
+        raise ValueError("Probe car_surface_recovery policy differs from the target registration")
+
+
+def matching_pacing_policy(target, previous):
+    if v4.simulation_pacing_summary(previous["protocol"]) != v4.simulation_pacing_summary(target["protocol"]):
+        raise ValueError("Probe simulation pacing policy differs from the target registration")
 
 
 def register_gimbal_reevaluations(target_plan, probe_plan, output):
@@ -74,6 +90,8 @@ def register_gimbal_reevaluations(target_plan, probe_plan, output):
     source_path, previous = read_plan(probe_plan, extension=False)
     if bindings(target)["flight_source_hashes"] != bindings(previous)["flight_source_hashes"]:
         raise ValueError("Gimbal reevaluation cannot change the flight-critical source map")
+    matching_recovery_policy(target, previous)
+    matching_pacing_policy(target, previous)
     selected = [trial for trial in previous["trials"] if trial["group"].startswith("stage3_")]
     if len(selected) != 6 or {(trial["target_class"], trial["group"]) for trial in selected} != {
             (cls, group) for cls in v4.CLASSES for group in ("stage3_midpoint", "stage3_active", "stage3_multi_active")}:
@@ -206,6 +224,8 @@ def assemble(target, probe_paths, *, extension, registration_utc, overrides_mani
     fixture_only = target["magnetic_runtime_binding"]["manifest"].get("evidence_scope") == "ORCHESTRATION_FIXTURE_ONLY"
     for path in paths:
         path, previous = read_plan(path, extension=extension)
+        matching_recovery_policy(target, previous)
+        matching_pacing_policy(target, previous)
         fixture_only |= previous["magnetic_runtime_binding"]["manifest"].get("evidence_scope") == "ORCHESTRATION_FIXTURE_ONLY"
         records = v4.read_slots(previous)
         evaluation_plan = deepcopy(previous)

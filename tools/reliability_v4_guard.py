@@ -30,6 +30,8 @@ CONDITIONS = ("depth_noise", "depth_holes", "dropout", "latency", "combined", "s
 SAFETY_CASES = ("auto_unique_multi", "locked_ambiguity")
 CORRELATED_BOUND_FIELD = "navigation_correlated_two_face_bound"
 CORRELATED_BOUND_FLAG = "--correlated-two-face-bound"
+CAR_SURFACE_RECOVERY_FIELD = "car_surface_recovery"
+CAR_SURFACE_RECOVERY_FLAG = "--car-surface-recovery"
 DELIVERIES = ("offline_replay20", "videos12", "detection_audit", "figures_documents", "runtime_logs")
 SPEED_CHECKS = ("input_decode_complete", "odom_tail_spans_five_seconds", "odom_tail_covers_original_end",
                 "all_observed_odom_speeds_le_0_30_mps", "gt_tail_spans_five_seconds", "gt_tail_covers_original_end",
@@ -84,6 +86,40 @@ def geometry_bound_evidence(resource, cls, configuration, parameters, flight_arg
             and not any(value.startswith(CORRELATED_BOUND_FLAG + "=") for value in flight_argv),
             "Safety geometry actual flight argv differs from class registration")
     return enabled
+
+
+def car_surface_recovery_evidence(runtime, resource, cls, configuration, parameters, flight_argv):
+    """Use the frozen runner's policy contract, retaining legacy off evidence.
+
+    Historical frozen runners predate recovery registration. They may only
+    qualify their original implicit-off policy; new explicit declarations need
+    the shared validator as well as matching CLI and actual runtime archives.
+    """
+    validator = getattr(runtime.v4, "car_surface_recovery_runtime_evidence", None)
+    if callable(validator):
+        try:
+            evidence = validator(resource, cls, configuration, parameters, flight_argv)
+        except (TypeError, ValueError) as error:
+            raise Refusal("Safety car surface recovery registration is invalid") from error
+        require(isinstance(evidence, dict) and isinstance(evidence.get("errors"), list)
+                and not evidence["errors"], "Safety car surface recovery declaration/CLI/runtime archives differ")
+        return evidence["enabled"]
+    require(isinstance(resource, dict) and cls in CLASSES
+            and CAR_SURFACE_RECOVERY_FIELD not in resource,
+            "Safety car surface recovery declaration requires its frozen shared validator")
+    require(isinstance(configuration, dict) and isinstance(parameters, dict),
+            "Safety car surface recovery archives must contain objects")
+    detector_node = parameters.get("uav_tracking_detection", {})
+    require(isinstance(detector_node, dict) and isinstance(detector_node.get("ros__parameters", {}), dict),
+            "Safety car surface recovery detector YAML is malformed")
+    detector = detector_node.get("ros__parameters", {})
+    for values, key in ((configuration, CAR_SURFACE_RECOVERY_FIELD), (detector, "car_surface_recovery_enabled")):
+        require(key not in values or type(values[key]) is bool and values[key] is False,
+                "Safety car surface recovery historical archive must remain off")
+    require(isinstance(flight_argv, list) and all(isinstance(value, str) for value in flight_argv)
+            and not any(value == CAR_SURFACE_RECOVERY_FLAG or value.startswith(CAR_SURFACE_RECOVERY_FLAG + "=")
+                        for value in flight_argv), "Safety car surface recovery historical CLI must remain off")
+    return False
 
 
 def canonical(value):
@@ -506,6 +542,7 @@ def validate_safety(manifest, context, runtime):
                 and float(option(flight_argv,"--wall-timeout")) == expected["wall_timeout"]
                 and "--occlusions" not in flight_argv and "--reselect-after-loss" not in flight_argv, "Safety flight invocation does not name original frozen trial/mode")
         geometry_bound_evidence(resource, cls, configuration, parameters, flight_argv)
+        car_surface_recovery_evidence(runtime, resource, cls, configuration, parameters, flight_argv)
         for kind in ("source_clock", "native_startup", "specialized", "terminal_speed"):
             _, finished = validate_execution(executions[kind], after=flight_end)
             require(finished <= utc(facts["created_utc"]) <= utc(summary["created_utc"]), "Safety facts/summary predates actual evaluation")

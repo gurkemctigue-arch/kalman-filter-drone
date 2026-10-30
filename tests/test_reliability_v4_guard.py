@@ -157,9 +157,13 @@ def safety_fixture(root, *, linked=False):
     for name in ('scripts/run_stage1_trial.py','uav_tracking/research_failures.py'):
         path=dev/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_text('# inert fixture\n')
     protocol=guard.load(ROOT/'planning/reliability-v4-preregistration.json')
+    # Historical safety fixtures stay legacy/off as the real candidate evolves.
+    protocol.pop('simulation_pacing_registration', None)
+    protocol.update(real_time_factor=.25, flight_wall_timeout_s=600.)
     resources=protocol['resources']
     for resource in resources.values():
         resource.pop(guard.CORRELATED_BOUND_FIELD, None)
+        resource.pop('car_surface_recovery', None)
     source_hashes={name:guard.sha(dev/name) for name in ('scripts/run_stage1_trial.py','uav_tracking/research_failures.py')}
     for cls in guard.CLASSES:
         model=dev/resources[cls]['model'];model.parent.mkdir(exist_ok=True);model.write_bytes(b'fixture model')

@@ -103,6 +103,130 @@ def terminal_hover(states, statuses, commands, recorded_end, config, expected_uu
             "spans_s":spans,"maximum_evidence_gaps_s":gaps,"expected_target_uuid":expected_uuid}
 
 
+def ambiguity_control_evidence(opening, closing, records, recorded_end, config):
+    """Audit the held output at the deadline and every later recorded output.
+
+    Grace is a response deadline. A safe output already received before that
+    deadline remains evidence until replaced, subject to the unchanged maximum
+    evidence gap. Reader order defines the exact ambiguity boundaries; a later
+    record cannot fill an earlier gap even when its source stamp is backdated.
+    """
+    start = base.finite(opening.received_sim_s)
+    end = base.finite(closing.received_sim_s) if closing is not None else base.finite(recorded_end)
+    first, last = opening.record_sequence, closing.record_sequence if closing is not None else None
+    relevant = [row for row in records if row.topic in {"/tracking/state", "/tracking/status", "/tracking/command"}]
+    sequences = [row.record_sequence for row in relevant]
+    ordered = (all(type(value) is int and value >= 0 for value in sequences)
+               and len(sequences) == len(set(sequences)) and type(first) is int
+               and (last is None or type(last) is int and last > first))
+    rows = sorted((row for row in relevant if row.record_sequence >= first
+                   and (last is None or row.record_sequence < last)), key=lambda row: row.record_sequence) if ordered else []
+    timeline = [*rows, *([closing] if closing is not None else [])]
+    errors = []
+    if not ordered:
+        errors.append("invalid_record_sequence")
+    if start is None or end is None or start < 0 or end < start:
+        errors.append("invalid_ambiguity_receive_interval")
+    previous = start
+    for row in timeline:
+        received = base.finite(row.received_sim_s)
+        if received is None or received < 0:
+            errors.append("invalid_receive_clock")
+        elif previous is not None and received < previous:
+            errors.append("receive_clock_regression")
+        if received is not None:
+            previous = received
+    duration = end-start if start is not None and end is not None else 0.
+    deadline = start+config.control_grace_s if start is not None else None
+    result = {"start_s": start, "end_s": end, "duration_s": duration,
+        "ambiguity_evaluation_revision": 2,
+        "start_record_sequence": first, "end_record_sequence": last,
+        "control_grace_deadline_s": deadline, "boundary_evidence": "RECORD_SEQUENCE_AND_AS_OF_OUTPUT",
+        "chronology_valid": not errors, "controller_hover_and_invalid_motion_commands": None,
+        "control_samples": 0, "command_samples": 0, "streams": {}, "errors": errors,
+        "semantics": "Last recorded output at or before the response deadline plus every later output before the exact ambiguity-exit record; future records cannot backfill and each held output must remain fresh"}
+    if not ordered or start is None or end is None or start < 0 or end < start:
+        result.update(result="FAIL", controller_hover_and_invalid_motion_commands=False)
+        return result
+    if duration <= config.control_grace_s and not errors:
+        result["result"] = "WITHIN_RESPONSE_GRACE"
+        return result
+    unsafe, incomplete = False, False
+    for name, topic in (("control", "/tracking/status"), ("command", "/tracking/command")):
+        stream = [row for row in rows if row.topic == topic]
+        source_times = {}
+        previous_source = None
+        for row in stream:
+            received = base.finite(row.received_sim_s)
+            try:
+                source = base.finite(base.stamp_s(row.message.header.stamp))
+            except (AttributeError, TypeError, ValueError):
+                source = None
+            source_times[row.record_sequence] = source
+            if source is None or source <= 0 or received is None or source > received+.05:
+                errors.append(name+":invalid_source_time")
+            if source is not None and previous_source is not None and source < previous_source:
+                errors.append(name+":source_time_regression")
+            if source is not None:
+                previous_source = source
+        candidates = [row for row in stream if deadline is not None
+                      and (received := base.finite(row.received_sim_s)) is not None and received <= deadline]
+        boundary = candidates[-1] if candidates else None
+        after = [row for row in stream if deadline is not None
+                 and (received := base.finite(row.received_sim_s)) is not None and received > deadline]
+        audited = ([boundary] if boundary is not None else []) + after
+        info = {"boundary_record_sequence": boundary.record_sequence if boundary is not None else None,
+            "boundary_received_s": boundary.received_sim_s if boundary is not None else None,
+            "boundary_source_s": source_times.get(boundary.record_sequence) if boundary is not None else None,
+            "samples_after_deadline": len(after), "audited_samples": len(audited),
+            "maximum_evidence_gap_s": None, "first_unsafe_record_sequence": None}
+        result["streams"][name] = info
+        result["control_samples" if name == "control" else "command_samples"] = len(audited)
+        if boundary is None:
+            incomplete = True
+            errors.append(name+":missing_as_of_boundary_output")
+        else:
+            source = source_times[boundary.record_sequence]
+            received = base.finite(boundary.received_sim_s)
+            if (source is None or received is None or source < start or source > deadline or received < start
+                    or deadline-source > config.max_evidence_gap_s
+                    or deadline-received > config.max_evidence_gap_s):
+                incomplete = True
+                errors.append(name+":stale_or_noncausal_as_of_boundary_output")
+        for row in audited:
+            safe = (type(getattr(row.message, "lifecycle", None)) is int and row.message.lifecycle == 4
+                    if name == "control" else type(getattr(row.message, "valid", None)) is bool and row.message.valid is False)
+            if not safe:
+                unsafe = True
+                if info["first_unsafe_record_sequence"] is None:
+                    info["first_unsafe_record_sequence"] = row.record_sequence
+            received, source = base.finite(row.received_sim_s), source_times[row.record_sequence]
+            if received is None or source is None or received-source > config.max_evidence_gap_s:
+                incomplete = True
+                errors.append(name+":stale_output_source")
+        if boundary is not None and end is not None:
+            times = [base.finite(row.received_sim_s) for row in audited] + [end]
+            if all(value is not None for value in times):
+                gap = max((right-left for left, right in zip(times, times[1:])), default=0.)
+                info["maximum_evidence_gap_s"] = gap
+                if gap > config.max_evidence_gap_s:
+                    incomplete = True
+                    errors.append(name+":evidence_gap")
+                for row, held_until in zip(audited, times[1:]):
+                    source = source_times[row.record_sequence]
+                    if source is None or held_until-source > config.max_evidence_gap_s:
+                        incomplete = True
+                        errors.append(name+":source_expires_before_next_output")
+    chronological_errors = [value for value in errors if value in {
+        "invalid_record_sequence", "invalid_ambiguity_receive_interval", "invalid_receive_clock", "receive_clock_regression"}
+        or value.endswith((":invalid_source_time", ":source_time_regression"))]
+    result["chronology_valid"] = not chronological_errors
+    passed = not unsafe and not incomplete and not errors
+    result["controller_hover_and_invalid_motion_commands"] = passed
+    result["result"] = "PASS" if passed else "FAIL" if unsafe or chronological_errors else "INCOMPLETE_EVIDENCE"
+    return result
+
+
 def evaluate(records, events, config=Stage2Config(), input_metadata=None):
     if not records:
         raise ValueError("No readable records")
@@ -199,28 +323,16 @@ def evaluate(records, events, config=Stage2Config(), input_metadata=None):
         previous_uuid, previous_change = uuid, row.time_s
     ambiguity_windows = []
     opened = None
-    for row in states:
+    for row in sorted(states, key=lambda row: row.record_sequence):
         ambiguous = row.message.state == 4 and bool(getattr(row.message, "target_uuid", ""))
         if ambiguous and opened is None:
-            opened = row.time_s
+            opened = row
         elif not ambiguous and opened is not None:
-            ambiguity_windows.append((opened, row.time_s)); opened = None
+            ambiguity_windows.append((opened, row)); opened = None
     if opened is not None:
-        ambiguity_windows.append((opened, recorded_end))
-    ambiguity_results = []
-    for start, end in ambiguity_windows:
-        controls = [row for row in statuses if start+config.control_grace_s <= row.time_s < end]
-        sent = [row for row in commands if start+config.control_grace_s <= row.time_s < end]
-        enough_duration = end-start > config.control_grace_s
-        suspended = (bool(controls and sent) and all(row.message.lifecycle == 4 for row in controls)
-                     and all(not row.message.valid for row in sent)) if enough_duration else None
-        if suspended:
-            for group in (controls, sent):
-                times = [start+config.control_grace_s]+[row.time_s for row in group]+[end]
-                suspended = suspended and max(b-a for a,b in zip(times,times[1:])) <= config.max_evidence_gap_s
-        ambiguity_results.append({"start_s": start, "end_s": end, "duration_s": end-start,
-                                  "controller_hover_and_invalid_motion_commands": suspended,
-                                  "control_samples": len(controls), "command_samples": len(sent)})
+        ambiguity_windows.append((opened, None))
+    ambiguity_results = [ambiguity_control_evidence(opening, closing, records, recorded_end, config)
+                         for opening, closing in ambiguity_windows]
     geometric_ambiguity = any(row["payload"].get("target_status") == "ambiguous"
                              and row["payload"].get("target_track_id") in row["payload"].get("ambiguous_track_ids", [])
                              and bool(row["payload"].get("target_uuid")) for row in tracks)
@@ -318,8 +430,9 @@ def evaluate(records, events, config=Stage2Config(), input_metadata=None):
         "long_loss_cannot_control_before_explicit_selection": not unauthorized_loss_controls,
         "active_states_remain_fresh": not active_invalid if states else None,
         "selected_geometric_ambiguity_observed_if_required": geometric_ambiguity if config.require_ambiguity or config.terminal_expectation == "hover" else True,
-        "observed_ambiguities_suspend_control": all(row["controller_hover_and_invalid_motion_commands"] is True
-                                                   for row in ambiguity_results if row["duration_s"] > config.control_grace_s),
+        "observed_ambiguities_suspend_control": all(row["chronology_valid"] and (
+            row["duration_s"] <= config.control_grace_s or row["controller_hover_and_invalid_motion_commands"] is True)
+            for row in ambiguity_results),
         "required_short_and_long_occlusions_present": required_occlusions_present if config.require_occlusions else True,
         "recorded_occlusions_pass": all(row["result"] == "PASS" for row in occlusion_results) if occlusion_results else (None if config.require_occlusions else True),
         "detection_diagnostics_valid": not diagnostic_errors if diagnostics else None,

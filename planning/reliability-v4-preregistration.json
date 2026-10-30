@@ -35,9 +35,9 @@
   "long_occlusion_s": 3.0,
   "occlusions": true,
   "explicit_reselection": true,
-  "real_time_factor": 0.25,
-  "flight_wall_timeout_s": 600.0,
-  "simulation_resource_policy": "Prospective uniform non-real-time simulation envelope: request RTF 0.25 for both classes and every core, safety and extension cell. Frozen Humble27 car RTF 0.50 clean failure and the separately named RTF 0.25 timing diagnostic remain independent development evidence, never replacement attempts. The next frozen-source development batch must validate this envelope before formal admission. Target physical motion, source-time freshness/prediction gates, native startup limits and numeric acceptance gates remain unchanged. Actual wall processing latency and achieved RTF must be reported; this envelope establishes no real-vehicle or real-time capability. Default flight wall budget is 600 s, separate from the unchanged native 180 s and post-flight 1800 s budgets. Formal held-out seeds remain unused until final-source readiness, registration and capacity admission.",
+  "real_time_factor": 0.125,
+  "flight_wall_timeout_s": 1000.0,
+  "simulation_resource_policy": "Prospective simulation CPU wall resource revision simulation_rtf0125_wall1000_v1: request RTF 0.125 for both classes and every new core, safety and extension cell, with a fixed 1000 s flight wall budget. The explicit simulation_pacing_registration and matching top-level values are authoritative. Historical RTF 0.25/600 s evidence, including Humble35 and its original stopped driver/unhealthy observer outcome, remains unchanged and cannot qualify a different pacing revision; historical RTF 0.50 evidence also remains separate. Keep the 75 s source-time task, target physical motion, 10 Hz inference ceiling, fixed 10 Hz physical-identity evaluation grid, source-time freshness/prediction gates, numeric acceptance gates and native 180 s startup budget unchanged; post-flight processing and evaluation budgets remain 1800 s each. New same-source development validation, calibration, sealing and actual capacity admission remain required before formal held-out seeds can be used. Record actual wall processing latency and achieved RTF. This is a simulation CPU resource configuration, not a navigation fix or a claim of real-hardware real-time performance.",
   "gazebo_render_driver": "llvmpipe",
   "gazebo_render_policy": "Prospective Gazebo-process-only Mesa llvmpipe selection; record actual owned-process rendering libraries/environment. Historical auto/D3D12 trials retain their original renderer and exit failures. No silent auto override or cross-renderer performance pooling.",
   "max_inference_rate_hz": 10.0,
@@ -102,7 +102,34 @@
       "inference_image_size": 640,
       "inference_threads": 4,
       "desired_distance_m": 9.0,
-      "navigation_correlated_two_face_bound": true
+      "navigation_correlated_two_face_bound": true,
+      "car_surface_recovery": {
+        "enabled": true,
+        "revision": "car_surface_component_centroid_v1",
+        "method": "component_centroid_v1",
+        "surface_geometry_frame": "map",
+        "surface_tf_timeout_s": 0.02,
+        "surface_max_image_pixels": 307200,
+        "surface_max_roi_pixels": 307200,
+        "surface_max_visible_boxes": 64,
+        "family_dimensions_m": [
+          4.5,
+          1.8,
+          1.5
+        ],
+        "family_dimension_std_m": [
+          0.45,
+          0.18,
+          0.15
+        ],
+        "family_prior_binding": "fixed_flight_source",
+        "measurement_reference": "visible_surface_proxy_component_centroid",
+        "unknown_action": "retain_raw_measurement",
+        "measurement_noise": "raw_roi_heuristic_plus_same_sample_pose_lever",
+        "depth_validity": "min < Z <= max",
+        "source_time_tf_required": true,
+        "geometry_correlated_two_face_bound": true
+      }
     }
   },
   "navigation_acceptance": {
@@ -156,5 +183,15 @@
     "checkpoint_selection": "PREDECLARED_FRAMEWORK_BEST_PT_ORIGINAL_VALIDATION_FITNESS_MAP50_95",
     "posthoc_epoch_choice": false,
     "scope": "DEVELOPMENT_ADAPTATION_ONLY"
+  },
+  "simulation_pacing_registration": {
+    "revision": "simulation_rtf0125_wall1000_v1",
+    "real_time_factor": 0.125,
+    "flight_wall_timeout_s": 1000.0,
+    "follow_duration_s": 75.0,
+    "max_inference_rate_hz": 10.0,
+    "physical_identity_sample_period_s": 0.1,
+    "scope": "simulation_cpu_wall_resource_only",
+    "safety_source_time_gates": "unchanged"
   }
 }

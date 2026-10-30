@@ -70,12 +70,15 @@ def fixture(root, *, navigation=True, gates=False, ros_distro="jazzy"):
     protocol = v4.load(ROOT / v4.PROTOCOL_PATH)
     protocol.pop("model_adaptation", None)
     protocol.pop("car_input_scale_registration", None)
+    protocol.pop("simulation_pacing_registration", None)
+    protocol.update(real_time_factor=.25, flight_wall_timeout_s=600.)
     protocol["resources"]["car"]["model"] = "models/yolo11m.pt"
     protocol["resources"]["car"]["inference_image_size"] = 960
     # Historical fixture coverage remains explicitly legacy/off even when a
     # future real registration opts into the independent geometry candidate.
     for setting in protocol["resources"].values():
         setting.pop(v4.CORRELATED_BOUND_FIELD, None)
+        setting.pop("car_surface_recovery", None)
     # Test repositories have an explicit synthetic environment independent of
     # the production protocol selected by the workspace running this suite.
     # In particular a Humble freeze must not make this Jazzy fixture claim to
