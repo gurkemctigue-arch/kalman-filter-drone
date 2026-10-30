@@ -1,6 +1,6 @@
 # Humble29 同源构建、启动修复与开发执行记录
 
-2026-10-30，固定第二轮汽车权重与独立几何开关已进入新的 Humble29 冻结来源。四个 ROS 包实际构建和 Linux 检查通过；第一次 clean 在物理仿真恢复前因执行入口遗漏运行环境失败。原失败完整保留，新的独立 02 入口已完成轻量检查并创建全新开发计划。**这仍是开发验证，尚无 Humble29 工程验收通过结论；正式协议仍为 DRAFT，正式 0/280。**
+2026-10-30，固定第二轮汽车权重与独立几何开关已进入新的 Humble29 冻结来源。四个 ROS 包实际构建和 Linux 检查通过；第一次 clean 在物理仿真恢复前因执行入口遗漏运行环境失败。修复入口后的 clean02 完成了 person 飞行，但收尾时钟证据未满足原验收契约，已停止后续运行。两次失败均保留。**这仍是开发验证，尚无 Humble29 工程验收通过结论；核心 0/12，正式协议仍为 DRAFT，正式 0/280。**
 
 ## 同源冻结与实际构建
 
@@ -34,13 +34,19 @@
 
 新 helper manifest canonical 为 `a9e8a13ce7968c0637c8f8015e7e6c6ed559b44ec4941ecbd3012ecd86a21cf0`。每次实际 action 仍核同一冻结来源、构建收据、A01 bridge 和运行环境；轻量检查通过不等于闭环通过。
 
-## 新开发计划与当前状态
+## 新开发计划、clean02终态与下一步
 
 11:02:05 UTC，新完整 12 格 PROBE 计划实际创建成功，使用整数 seed004、两类各六组，不使用正式种子。新 plan 为 `reliability_v4_humble29_probe02_seed004_matrix/plan.json`，plan digest 为 `122f69541df6a02a8a871f275fa6f915305a7f8f03b20fb17903e3e217d71d7f`。它与原 plan01 分离，原 plan01 仍保持 0/12 已尝试。
 
-新 clean 使用 `reliability_v4_humble29_clean20_serial02` 及 `clean20_02` trial 名，后续核心批次使用新 plan 目录下的 `core_serial02`。**11:03:10 UTC，person clean20 的原始 attempt 已实际 START**；11:04:25 UTC 的监控快照为 RUNNING。car 等待同批 person 的终态和清理检查，核心 12 格尚无终态，不能把已启动写成已完成或通过。
+新 clean 使用 `reliability_v4_humble29_clean20_serial02` 及 `clean20_02` trial 名，后续核心批次使用新 plan 目录下的 `core_serial02`。11:03:10 UTC，person clean20 开始；11:04:25 UTC 的 RUNNING 快照现为历史记录。飞行过程耗时 224.253 秒，返回 0；**11:07:45 UTC，独立评价未通过，批次停止为 `STOPPED_NO_AUTOMATIC_RETRY`**，停止原因为 `ValueError:Independent evaluation failed/incomplete: source_clock`。完整 clean 终态 0/2，car 未尝试，核心 12 格未运行。
 
-当前本机可视进度页为 `results/project_progress/humble29_clean20_02/index.html`，事件源为冻结29结果目录下的 `reliability_v4_humble29_clean20_serial02/events.jsonl`。原 `humble29_clean20/index.html` 对应已停止的 01，仍作为历史保留，不能作为当前运行状态。
+源时钟原始、timing、adapted 三流各 3850 条，时钟域和坐标连续性检查通过，未缺证；原报告仍为 FAIL，存在 4 条 `diagnostic_delivery_outside_clock_contract`。原生启动报告仍为 FAIL，配置、起飞序列、起飞前就绪、交接稳定和视觉任务时序检查均通过，但 `full_recording_coverage=false`。收尾附近主包 `/clock` 比 timing/phase 落后约 56–80 ms，超过原 50 ms 门限；不能通过放宽门限、裁尾或只报飞行返回0改判。
+
+导航记录覆盖率为 1.0，距离/高度 RMSE 约 0.298/0.338 m，末段稳定；这些局部数值不代替完整工程通过。归档的 60321 条消息完整性检查通过，冻结源前后不变，清理无残留。两次原始失败、两个原计划和全部评价报告保持原字节。
+
+本机 `results/project_progress/humble29_clean20_02/index.html` 及原 `humble29_clean20/index.html` 分别保留 02 与 01 的停止记录，事件源为各冻结结果目录下的 `events.jsonl`；它们均不能表示30正在运行。
+
+截至11:30 UTC，仅完成全新 Humble30 外部工具准备：复用成熟十件构建/复制/验证结构，另有两份最终源码登记入口和两份夹具文件。31项Linux轻量夹具通过，Python AST和两份Bash语法检查通过；独立绑定32份原29构建、两计划、双失败及相关小证据，其前后SHA一致，原29模板14件未变。原28的独立89件保留和8 PASS/4 FAIL不变，30磁场覆盖来源明确为冻结29。此时没有运行30源码登记、复制、构建、仿真或正式种子，两个30目标目录也未占用。生产收尾观察器、真实ROS探针及最终提交仍须完成，随后才能冻结新源；不能将工具夹具通过描述为修复已实机验证或新源闭环通过。
 
 只有新同源两类 clean 完成、清理和证据检查正常，才执行核心 12 格；后续仍需 4 个歧义安全 probe、16 格扩展、定标、容量准入，以及冻结正式协议后的 280 次正式试验和完整交付。普通算法 FAIL/INCOMPLETE 保留并统计；基础设施、来源、observer 或残留进程错误停止批次，每个命名 attempt 只运行一次。
 
@@ -66,5 +72,9 @@
 | 外部 `humble29_development_entry02_independent_review01.json` | `af5dd5d345dcf672d680dd1c228cb0e0d6c5dd7528d8968cb540b1e2c87a1d23` |
 | 新 `reliability_v4_humble29_probe02_seed004_matrix/plan.json` | `af8276f2f37c23dcc3ee5dafaffbe42af7a333643a6699cd3e48573075f86a3d` |
 | 新 `reliability_v4_humble29_probe02_seed004_matrix/development_plan_receipt02.json` | `386f1aa6a3e654ee11ba8bd73bc319d2e63e7d0bbe3555a9983ad2d92a83b8e4` |
+| 新 `reliability_v4_humble29_clean20_serial02/execution_terminal.json` | `10690c1ac1432176d6304ef1cf30a337d83054bc894a703835757bd184b0c4a3` |
+| 新 `reliability_v4_humble29_clean20_serial02/person_evaluation02/px4_source_clock_evaluation.json` | `b6f12c6c8ca5aefc1fa837be5d551de47273332a3b9ad24ef4b14c22da76921b` |
+| 新 `reliability_v4_humble29_clean20_serial02/person_evaluation02/native_startup_evaluation.json` | `0171b04400a6d5f60f18494b71157b44a048fabc1fb12679cffc78d7c52b1a48` |
+| 外部 `humble30_helpers_preparation02.json`（31工具夹具及32份原29小证据） | `5d6ff2662b375511c501fd1b4b700523057febb246d8da04b3eb885b3fd125bd` |
 
 本文件只记录此来源已经发生的构建、查询、失败和计划创建事实。后续实际状态以新目录的 `events.jsonl`、原始 slot 终态及小文件证据为准。

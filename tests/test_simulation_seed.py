@@ -30,7 +30,10 @@ class SeedRunnerTests(unittest.TestCase):
     def test_closure_failure_still_closes_and_archives_failed_trial(self):
         self.run_registered_seed(0,1,with_bag=True,closure_fails=True)
 
-    def run_registered_seed(self,registered,actual,*,with_bag=False,closure_fails=False):
+    def test_observer_cleanup_reporting_fault_still_preserves_and_archives_failed_trial(self):
+        self.run_registered_seed(0,1,with_bag=True,observer_close_fails=True)
+
+    def run_registered_seed(self,registered,actual,*,with_bag=False,closure_fails=False,observer_close_fails=False):
         with tempfile.TemporaryDirectory() as temporary:
             root=Path(temporary)
             bringup=root/"ros2_ws/src/uav_tracking_bringup"
@@ -72,7 +75,9 @@ class SeedRunnerTests(unittest.TestCase):
                 if command[:3]==["gz","service","-l"]:output="/world/stage1_flight/control\n"
                 elif command[:3]==["ros2","topic","list"]:
                     output="/clock\n/camera/color/image_raw\n/camera/aligned_depth_to_color/image_raw\n"
-                else:output="data: true\n"
+                else:
+                    if "pause: false" in command:lifecycle.append("unpause")
+                    output="data: true\n"
                 return SimpleNamespace(returncode=0,stdout=output)
             # This seed/argv fixture launches no process. The production
             # capture must remain strict; fake PID731 has no /proc mapping.
@@ -87,7 +92,20 @@ class SeedRunnerTests(unittest.TestCase):
                 output.write_text(json.dumps({"status":"FAIL" if closure_fails else "PASS",
                     "evidence_scope":"ORCHESTRATION_FIXTURE_ONLY_NO_PROCESS_LAUNCHED"}))
                 if closure_fails:raise RuntimeError("injected drain failure")
-            closing=SimpleNamespace(pause_and_drain=Mock(side_effect=closure))
+            class ClosureObserver:
+                def __init__(self, **kwargs):
+                    self.expected_truth_frames=kwargs['expected_truth_frames']
+                    lifecycle.append("observer_construct")
+                def start(self):lifecycle.append("observer_start")
+                def check_alive(self):pass
+                def close(self):
+                    lifecycle.append("observer_close")
+                    if observer_close_fails:raise OSError("injected lifecycle report write failure")
+                    return {"healthy_cleanup":True}
+                def pause_and_drain(self, output, **kwargs):
+                    kwargs['expected_truth_frames']=self.expected_truth_frames
+                    return closure(output, **kwargs)
+            closing=SimpleNamespace(RecordingClosureObserver=Mock(side_effect=ClosureObserver))
             def spool(_output):
                 destination=root/"spool"
                 destination.mkdir()
@@ -108,18 +126,22 @@ class SeedRunnerTests(unittest.TestCase):
                                             "wait_stage1_graph":graph_wait,
                                             "close_stage1_recording":closing}), \
                     patch.dict(os.environ,{"STAGE1_PX4_ROOT":str(px4)}):
-                if closure_fails:
+                if closure_fails or observer_close_fails:
                     with self.assertRaisesRegex(RuntimeError,"without proved source-stream drain"):
                         runner.main()
                 else:runner.main()
             if with_bag:
-                closing.pause_and_drain.assert_called_once()
-                self.assertEqual(closing.pause_and_drain.call_args.kwargs['expected_truth_frames'],
+                closing.RecordingClosureObserver.assert_called_once()
+                self.assertEqual(closing.RecordingClosureObserver.call_args.kwargs['expected_truth_frames'],
                                  {'target':['target_person'],'vehicle':['stage1_uav']})
+                self.assertEqual(lifecycle.count("pause_and_drain"),1)
+                self.assertLess(lifecycle.index("observer_start"),lifecycle.index("unpause"))
                 self.assertLess(lifecycle.index("pause_and_drain"),lifecycle.index("stop_bag"))
                 self.assertLess(lifecycle.index("stop_bag"),lifecycle.index("stop_ros"))
+                self.assertLess(lifecycle.index("stop_gazebo"),lifecycle.index("observer_close"))
+                self.assertLess(lifecycle.index("observer_close"),lifecycle.index("archive"))
                 self.assertLess(lifecycle.index("stop_ros"),lifecycle.index("archive"))
-            else:closing.pause_and_drain.assert_not_called()
+            else:closing.RecordingClosureObserver.assert_not_called()
             rendering_capture.capture_ready.assert_called_once_with(731,"auto")
             graph_wait.wait_ready.assert_called_once()
             self.assertEqual(graph_wait.wait_ready.call_args.args,

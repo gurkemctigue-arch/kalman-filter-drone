@@ -1,0 +1,39 @@
+# Preconstructed recording closure observer candidate
+
+Status: CANDIDATE FOR HUMBLE30; no new flight or source-clock PASS claimed.
+
+The retained Humble29 clean02 diagnosis is `D:/WSL/UAVHumble22-validation/humble29_clean02_clock_tail01/diagnosis.json`, SHA256 `36379096d684c4c11f4bf5a621937ddbbb2c01003ac66cfd6e48219150af88fe`. It records five timing/phase deliveries more than 50 ms ahead of the preceding recorded Clock. The full original recording and its source-clock/native-startup FAIL outcomes remain unchanged. Temporal proximity to construction of the late closure subscriber motivates this candidate; it does not prove DDS discovery is the sole cause, nor guarantee a recorder executor will always deliver Clock first.
+
+Implementation plan before coding:
+
+1. Add an owned `RecordingClosureObserver` context manager to `scripts/close_stage1_recording.py`. Construct its context, node and four/six subscriptions while physics is paused, then continuously spin a dedicated executor thread throughout the trial. Startup requires a live thread, not messages from still-paused producers.
+2. Protect every `StreamDrainState` update and readiness/assessment snapshot with the same lock. Keep child checks, Gazebo service waits and thread shutdown outside that lock. Latch worker exceptions and reject readiness/drain on a dead or unhealthy observer.
+3. At closure reuse that same observer without creating participants or subscriptions. Retain original total 10-second readiness/pause/drain budget, 0.5-second quiet interval, pause acknowledgement, latest raw/diagnostic/adapted pairing and exact final-Clock declared truth requirements. Never publish synthetic Clock or use logging truth for tracking/control.
+4. Expose `start`, `check_alive`, `pause_and_drain` and idempotent bounded `close`. Finalize the closure report only after owned-resource cleanup; return cleanup failures to the runner without preventing its independent process/archive cleanup. A separate lifecycle receipt covers construction/startup failures, including trials never unpaused. Keep the historical one-shot `pause_and_drain` wrapper.
+5. Verify meaningful pure fixtures for preconstruction/reuse, continuous delivery, locked snapshots, unchanged quiet/final-truth requirements, worker failure, bounded cleanup, partial startup failure and original API behavior. The root agent owns runner wiring and subsequent real ROS probe/new-source simulation acceptance.
+
+Required subsequent evidence: prove observer construction/spinning precedes unpause, no participant creation occurs in closure, all owned resources exit, and rerun unchanged full-recording source-clock/native-startup checks on new recordings. Neither this observer nor an eventual final Clock message repairs timing/phase rows already recorded before that Clock. No tolerance increase, tail exclusion, interpolation, message reordering or old-result reclassification is authorized.
+
+Implemented API for runner wiring:
+
+```python
+observer = RecordingClosureObserver(
+    expected_truth_frames=declared_truth_frames(runtime_world),
+    lifecycle_output=output / "recording_closure_observer.json")
+observer.start()  # after producer launch, while physics is still paused
+observer.check_alive()  # startup, flight polling and closing
+observer.pause_and_drain(output / "recording_closure.json", world=world,
+    env=env, check_alive=check_recording_processes, timeout_wall_s=10.)
+# finally: pause or stop physics and perform the runner's owned process cleanup
+cleanup = observer.close()  # healthy_cleanup/status/errors; idempotent
+```
+
+`pause_and_drain` returns a pending report; only `close` writes its final report with actual `observer_cleanup_completed`. The runner retains independent cleanup/archive execution even if this cleanup returns failure. Executor shutdown, worker join and owned RMW teardown share a bounded two-second cleanup budget; stalled workers/resources remain an explicit failure rather than being killed or reported closed. Construction/startup has a separate ten-second budget and does not require messages while the world is paused. Lifecycle evidence records construction, subscription creation, worker spin and shutdown UTC/monotonic times. Only the observer's explicitly owned ROS context is shut down.
+
+The root authorized one exact startup compatibility branch after checking `source_clock.SourceStamp.diagnostics` and `OdometrySourceClock.resolve`: before the first diagnostic with positive numeric receipt time, schema 1/source_sim diagnostics with reason `ros_clock_not_started`, numeric nonboolean receipt/output exactly zero, accepted/source_time_valid both false, explicit null odometry header, and explicit source fields either null or positive finite integer-microsecond times are retained in an audit-only list. They increment timing counts and are kept verbatim in lifecycle/closure evidence, but never populate source-pair readiness or positive-clock/truth evidence. Source times may be positive because PX4 can publish before DDS Clock reaches the adapter. A later zero, boolean/negative/zero/fractional source field, incorrect mode/reason/flag or malformed row remains a failure. Any positive-receipt diagnostic, including a rejected diagnostic, permanently closes this startup-only branch. The existing `StreamDrainState` and independent evaluator are unchanged.
+
+Independent static review found that a worker stuck while holding the state lock could defeat an otherwise bounded shutdown. The candidate now keeps health/lifecycle bookkeeping independent of that callback lock. Readiness/assessment and pause-ACK updates use the remaining original closure budget; cleanup's final state snapshot uses its remaining cleanup budget and explicitly becomes unavailable/FAIL if the lock is still held. A live worker is never destroyed underneath its callback. Owned RMW teardown has a bounded daemon worker because those destruction APIs expose no timeout. These failure paths do not certify cleanup or force-kill threads.
+
+Pure verification at implementation time: 13 observer lifecycle tests passed, plus all 17 existing stream-drain tests passed. New fixtures include a callback deliberately retaining the state lock and a stalled owned resource teardown, both returning bounded cleanup failure. These fixtures construct no real ROS context or participants and establish no new flight result. Actual ROS lifecycle probe and Humble30 full-recording acceptance remain outstanding.
+
+Actual ROS API probe completed at 2026-10-30T11:36:42 UTC. In isolated domain 94, six real publishers matched the actual observer subscriptions, the empty observer correctly remained unready, and real Clock/raw/timing/adapted/truth-header callbacks established readiness. Only Gazebo pause transport was mocked. Patching ROS node/subscription construction to raise during closure confirmed that closure reuses existing participants. The worker, executor, node and owned context closed healthily in about 0.003 seconds; the exact startup-zero diagnostic was retained audit-only. Source hashes remained unchanged. The probe terminal is `D:/WSL/UAVHumble22-validation/humble30_closure_api_probe01/terminal.json`, SHA256 `0f9cfb72aa33cab35fa33a557d5e2f95952af8dfbaa35caa46d635fbfde41cc9`, status `PASS_API_PROBE_ONLY`. This resolves API/lifecycle compatibility only; no Gazebo, PX4 flight, recorder ordering or new engineering acceptance was exercised. New frozen-source full-recording trials remain required.

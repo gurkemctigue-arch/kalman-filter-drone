@@ -566,6 +566,7 @@ def main() -> None:
     logs = []
     recording_spool = None
     simulation_resumed = False
+    recording_observer = None
 
     def start(name, command):
         log = (output / f"{name}.log").open("w", encoding="utf-8")
@@ -672,10 +673,22 @@ def main() -> None:
                 fault_command.extend(["-p", f"{key}:={value}"])
             start("sensor_faults", fault_command)
         start("ros", ["bash", str(runner), "ros", args.target_class])
+        if recording_spool is not None:
+            # Establish this DDS participant while physics is still paused.
+            # Reuse its live subscriptions at closure instead of introducing
+            # discovery work into the final recorded flight interval.
+            from close_stage1_recording import RecordingClosureObserver
+            from uav_tracking.recording_closure import declared_truth_frames
+            recording_observer = RecordingClosureObserver(
+                expected_truth_frames=declared_truth_frames(runtime_world),
+                lifecycle_output=output / "recording_closure_observer.json")
+            recording_observer.start()
         # Topic names alone do not prove that the adapter or recorder has
         # matched DDS endpoints. Keep physics paused until the actual graph,
         # recorder subscriptions and a callback on the adapter are all ready.
         def check_startup_processes():
+            if recording_observer is not None:
+                recording_observer.check_alive()
             for name in ["gazebo", "agent", "px4", "ros", "monitor"] + ([] if args.no_bag else ["bag"]):
                 if processes[name].poll() is not None:
                     raise RuntimeError(f"{name} exited during paused startup; see its log")
@@ -705,6 +718,8 @@ def main() -> None:
             raise RuntimeError("Actual Gazebo rendering contract failed; see gazebo_rendering_libraries.json")
         deadline = time.monotonic() + args.wall_timeout + 15
         while monitor.poll() is None:
+            if recording_observer is not None:
+                recording_observer.check_alive()
             for name in ["gazebo", "agent", "px4", "ros"]:
                 if processes[name].poll() is not None:
                     raise RuntimeError(f"{name} exited {processes[name].returncode}; see its log")
@@ -722,17 +737,18 @@ def main() -> None:
         ros_gz_error = None
         if recording_spool is not None and simulation_resumed:
             def check_recording_processes():
+                if recording_observer is not None:
+                    recording_observer.check_alive()
                 for name in ["gazebo", "agent", "px4", "ros", "bag"]:
                     if processes[name].poll() is not None:
                         raise RuntimeError(f"{name} exited before recording closure; see its log")
                 if "process has died" in (output / "ros.log").read_text(errors="replace"):
                     raise RuntimeError("ROS component failed before recording closure; see ros.log")
             try:
-                from close_stage1_recording import pause_and_drain
-                from uav_tracking.recording_closure import declared_truth_frames
-                pause_and_drain(output / "recording_closure.json", world=world, env=env,
-                                expected_truth_frames=declared_truth_frames(runtime_world),
-                                check_alive=check_recording_processes)
+                if recording_observer is None:
+                    raise RuntimeError("No live observer was established before unpause")
+                recording_observer.pause_and_drain(output / "recording_closure.json",
+                    world=world, env=env, check_alive=check_recording_processes)
             except Exception as error:
                 closure_error = error
         elif recording_spool is not None:
@@ -745,6 +761,18 @@ def main() -> None:
         # processes stop; recorder exit zero alone is not recording acceptance.
         for name in ["monitor", "bag", "ros", "sensor_faults", "px4", "gazebo", "agent"]:
             stop(name, timeout=180 if name == "bag" else 8)
+        # Even a failed pause must not destroy a DDS participant until the
+        # recorder and physics producers have completed their owned cleanup.
+        if recording_observer is not None:
+            try:
+                observer_cleanup = recording_observer.close()
+                if not isinstance(observer_cleanup, dict) or observer_cleanup.get("healthy_cleanup") is not True:
+                    raise RuntimeError("Recording observer cleanup failed; see recording_closure_observer.json")
+            except Exception as error:
+                # A reporting or shutdown fault must not bypass recorder
+                # validation or prevent preserving the original ext4 spool.
+                if closure_error is None:
+                    closure_error = error
         for log in logs:
             log.close()
         (output / "process_exit_codes.json").write_text(json.dumps({name: p.poll() for name, p in processes.items()}, indent=2), encoding="utf-8")

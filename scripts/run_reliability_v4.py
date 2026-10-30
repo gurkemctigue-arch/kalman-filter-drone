@@ -63,7 +63,8 @@ OFFLINE_HELPERS.add("scripts/summarize_reliability_v4.py")
 OFFLINE_HELPERS.add("uav_tracking/research_failures.py")
 OFFLINE_HELPERS.update({"scripts/build_reliability_v4_figures.py", "scripts/build_reliability_v4_report.py",
                         "scripts/calibrate_estimator_replay_v4.py", "scripts/build_reliability_v4_probe_gate.py",
-                        "scripts/prepare_document_node24.py", "scripts/audit_car_model_regressions.py"})
+                        "scripts/prepare_document_node24.py", "scripts/audit_car_model_regressions.py",
+                        "scripts/analyze_task_phases_v4.py"})
 REPORT_PROVENANCE_HELPERS = {
     "navigation":("scripts/evaluate_stage1_flight.py", "scripts/evaluate_online_state_accuracy.py",
                   "scripts/evaluate_follow_dynamics.py", "scripts/extract_research_recording.py", "uav_tracking/research_dynamics.py", "uav_tracking/research_labels.py"),
