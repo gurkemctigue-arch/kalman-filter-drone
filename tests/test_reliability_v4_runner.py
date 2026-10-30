@@ -68,6 +68,8 @@ def provenance(root, kind, script):
 
 def fixture(root, *, navigation=True, gates=False, ros_distro="jazzy"):
     protocol = v4.load(ROOT / v4.PROTOCOL_PATH)
+    protocol.pop("model_adaptation", None)
+    protocol["resources"]["car"]["model"] = "models/yolo11m.pt"
     # Historical fixture coverage remains explicitly legacy/off even when a
     # future real registration opts into the independent geometry candidate.
     for setting in protocol["resources"].values():
@@ -535,6 +537,196 @@ class CorrelatedBoundRegistrationTests(unittest.TestCase):
         current["development_probe_gate"] = {"path": str(gate_path), "sha256": v4.sha(gate_path), "evidence": evidence}
         with patch.object(v4, "read_slots", side_effect=AssertionError("geometry binding must precede old record reuse")), \
                 self.assertRaisesRegex(ValueError, "geometry mode"):
+            v4.validate_probe_gate(current)
+
+
+class ModelAdaptationRegistrationTests(unittest.TestCase):
+    """Source/hash capability tests with inert tiny files, never model loading."""
+
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.root = Path(self.temporary.name)
+        fixture(self.root)
+
+    def registered_protocol(self):
+        protocol = v4.load(self.root/v4.PROTOCOL_PATH)
+        protocol["resources"]["car"]["model"] = v4.CAR_ADAPTED_MODEL
+        protocol["model_adaptation"] = deepcopy(v4.CAR_MODEL_ADAPTATION)
+        return protocol
+
+    def enable_inert_candidate(self):
+        # These are explicit test doubles for fixed approved SHA values. Their
+        # paths and selection rules stay fixed, and production SHA constants
+        # are separately pinned below. No real checkpoint is copied or opened.
+        adaptation = deepcopy(v4.CAR_MODEL_ADAPTATION)
+        weight = self.root/v4.CAR_ADAPTED_MODEL
+        weight.write_bytes(b"ORCHESTRATION_FIXTURE_ONLY: not a trained model")
+        adaptation["model_sha256"] = v4.sha(weight)
+        for key in ("training_receipt", "dataset_manifest"):
+            path = self.root/adaptation[key]["path"]
+            write(path, {"evidence_scope": "ORCHESTRATION_FIXTURE_ONLY", "artifact": key})
+            adaptation[key]["sha256"] = v4.sha(path)
+        registration = patch.object(v4, "CAR_MODEL_ADAPTATION", adaptation)
+        registration.start(); self.addCleanup(registration.stop)
+        protocol = self.registered_protocol()
+        write(self.root/v4.PROTOCOL_PATH, protocol)
+        return adaptation
+
+    def make(self, *, classes=None, suffix="adaptation"):
+        return plan(self.root, classes=classes or ["car"], groups=["stage1_velocity"],
+                    seeds=[4], suffix=suffix, persist=False)
+
+    def test_only_one_exact_prospective_adaptation_and_unchanged_resources_are_allowed(self):
+        self.assertEqual(v4.CAR_ADAPTED_MODEL, "models/yolo11m_car_sim_train20_01.pt")
+        self.assertEqual(v4.CAR_MODEL_ADAPTATION["model_sha256"], "7e7cadd59142cc6b891dc7de49298d445ca731cc72f4562896ed8e530bfc19bd")
+        self.assertEqual(v4.CAR_MODEL_ADAPTATION["training_receipt"]["sha256"], "9d25d16bc5efb73dda87a5d3d4613b17b9dd6fe7598859b549a0c33baa56aaec")
+        self.assertEqual(v4.CAR_MODEL_ADAPTATION["dataset_manifest"]["sha256"], "21e66502037627e8dfd7bed4b6aba94351eab8075e29b24d28a9045e4234d23e")
+        original = v4.load(self.root/v4.PROTOCOL_PATH)
+        registered = self.registered_protocol()
+        v4.validate_protocol(original); v4.validate_protocol(registered)
+        self.assertEqual(registered["resources"]["person"], original["resources"]["person"])
+        for model in ("models/other.pt", "models/best.pt", "../models/yolo11m_car_sim_train20_01.pt",
+                      "/absolute/yolo11m_car_sim_train20_01.pt"):
+            candidate = deepcopy(registered); candidate["resources"]["car"]["model"] = model
+            with self.subTest(model=model), self.assertRaisesRegex(ValueError, "resource"):
+                v4.validate_protocol(candidate)
+        for key, value in (("inference_image_size", 1280), ("inference_threads", 3), ("desired_distance_m", 8.)):
+            candidate = deepcopy(registered); candidate["resources"]["car"][key] = value
+            with self.subTest(key=key), self.assertRaisesRegex(ValueError, "resource"):
+                v4.validate_protocol(candidate)
+        original["model_adaptation"] = deepcopy(v4.CAR_MODEL_ADAPTATION)
+        with self.assertRaisesRegex(ValueError, "Legacy"):
+            v4.validate_protocol(original)
+
+    def test_provenance_sources_and_predeclared_twenty_epoch_selection_are_exact(self):
+        registered = self.registered_protocol()
+        for defect in ("missing", "weight_sha", "receipt_sha", "dataset_sha", "receipt_path", "dataset_path",
+                       "epochs", "float_epochs", "checkpoint", "posthoc", "integer_posthoc", "scope", "extra"):
+            with self.subTest(defect=defect):
+                candidate = deepcopy(registered); adaptation = candidate["model_adaptation"]
+                if defect == "missing":candidate.pop("model_adaptation")
+                elif defect == "weight_sha":adaptation["model_sha256"] = "0"*64
+                elif defect.endswith("_sha"):adaptation["training_receipt" if defect == "receipt_sha" else "dataset_manifest"]["sha256"] = "0"*64
+                elif defect.endswith("_path"):adaptation["training_receipt" if defect == "receipt_path" else "dataset_manifest"]["path"] = "config/unreviewed.json"
+                elif defect == "epochs":adaptation["training_epochs"] = 19
+                elif defect == "float_epochs":adaptation["training_epochs"] = 20.
+                elif defect == "checkpoint":adaptation["checkpoint_selection"] = "last.pt"
+                elif defect == "posthoc":adaptation["posthoc_epoch_choice"] = True
+                elif defect == "integer_posthoc":adaptation["posthoc_epoch_choice"] = 0
+                elif defect == "scope":adaptation["scope"] = "INDEPENDENT_VALIDATION_PASS"
+                else:adaptation["unregistered"] = True
+                with self.assertRaisesRegex(ValueError, "model_adaptation"):
+                    v4.validate_protocol(candidate)
+
+    def test_missing_actual_candidate_and_sources_reject_before_runtime_access(self):
+        write(self.root/v4.PROTOCOL_PATH, self.registered_protocol())
+        for classes in (["car"], ["person"]):
+            with self.subTest(classes=classes), \
+                    patch.object(v4, "verify_external_runtime", side_effect=AssertionError("binding must reject before external runtime")), \
+                    self.assertRaisesRegex(ValueError, "Adapted car model"):
+                v4.make_plan(self.root, "results/missing", "reliability_v4_missing", classes=classes,
+                             groups=["stage1_velocity"], seeds=[4])
+        self.assertFalse((self.root/"results/missing").exists())
+
+    def test_actual_scanned_bytes_bind_all_three_registries_and_cli(self):
+        adaptation = self.enable_inert_candidate()
+        frozen = self.make()
+        v4.validate_plan(frozen)
+        for key, expected in ((adaptation["model"], adaptation["model_sha256"]),
+                              (adaptation["training_receipt"]["path"], adaptation["training_receipt"]["sha256"]),
+                              (adaptation["dataset_manifest"]["path"], adaptation["dataset_manifest"]["sha256"])):
+            self.assertEqual(frozen["source_hashes"][key], expected)
+            self.assertEqual(v4.sha(self.root/key), expected)
+        self.assertEqual(frozen["model_hashes"][adaptation["model"]], adaptation["model_sha256"])
+        self.assertIn("models/yolo11m.pt", frozen["model_hashes"], "The original model is retained")
+        self.assertEqual(frozen["config_hashes"][adaptation["training_receipt"]["path"]], adaptation["training_receipt"]["sha256"])
+        command = frozen["trials"][0]["flight_command"]
+        self.assertEqual(Path(command[command.index("--model-path")+1]).resolve(), (self.root/v4.CAR_ADAPTED_MODEL).resolve())
+        self.assertNotIn(v4.CORRELATED_BOUND_FLAG, command, "Selecting a detector must not enable the geometry candidate")
+        with patch.object(v4, "verify_external_runtime", side_effect=fixture_runtime_verifier):
+            v4.verify_sources(frozen)
+        person_only = self.make(classes=["person"], suffix="adaptation_person")
+        self.assertEqual(person_only["trials"][0]["model"], "models/yolo11n.pt")
+        self.assertIn(v4.CAR_ADAPTED_MODEL, person_only["model_hashes"])
+
+    def test_resealed_hash_maps_cannot_omit_or_replace_registered_sources(self):
+        adaptation = self.enable_inert_candidate(); original = self.make()
+        changes = [("source_hashes", adaptation["model"]), ("source_hashes", adaptation["training_receipt"]["path"]),
+                   ("source_hashes", adaptation["dataset_manifest"]["path"]), ("model_hashes", adaptation["model"]),
+                   ("model_hashes", "models/yolo11n.pt"), ("config_hashes", adaptation["training_receipt"]["path"]),
+                   ("config_hashes", adaptation["dataset_manifest"]["path"]), ("config_hashes", "config/safety.yaml")]
+        for mapping, path in changes:
+            for defect in ("missing", "wrong_sha"):
+                with self.subTest(mapping=mapping, path=path, defect=defect):
+                    frozen = deepcopy(original)
+                    if defect == "missing":frozen[mapping].pop(path)
+                    else:frozen[mapping][path] = "0"*64
+                    frozen["plan_sha256"] = v4.digest(frozen, ("plan_sha256",))
+                    with self.assertRaises(ValueError):v4.validate_plan(frozen)
+                    with self.assertRaises(ValueError):v4.verify_sources(frozen)
+        for mapping in ("source_hashes", "model_hashes", "config_hashes"):
+            for defect in ("missing", "null", "empty"):
+                with self.subTest(mapping=mapping, defect=defect):
+                    frozen = deepcopy(original)
+                    if defect == "missing":frozen.pop(mapping)
+                    else:frozen[mapping] = None if defect == "null" else {}
+                    frozen["plan_sha256"] = v4.digest(frozen, ("plan_sha256",))
+                    with self.assertRaises(ValueError):v4.validate_plan(frozen)
+                    with self.assertRaises(ValueError):v4.verify_sources(frozen)
+
+    def test_changed_actual_weight_or_source_json_cannot_execute_frozen_plan(self):
+        adaptation = self.enable_inert_candidate(); frozen = self.make()
+        for relative in (adaptation["model"], adaptation["training_receipt"]["path"], adaptation["dataset_manifest"]["path"]):
+            with self.subTest(relative=relative):
+                path = self.root/relative; before = path.read_bytes()
+                path.write_bytes(before+b"\nchanged fixture source\n")
+                try:
+                    with patch.object(v4, "verify_external_runtime", side_effect=AssertionError("source change must reject first")), \
+                            self.assertRaisesRegex(ValueError, "Frozen source"):
+                        v4.verify_sources(frozen)
+                    with self.assertRaisesRegex(ValueError, "Adapted car model"):
+                        self.make(suffix="changed")
+                finally:path.write_bytes(before)
+
+    def test_registered_candidate_cannot_switch_trial_back_to_baseline(self):
+        self.enable_inert_candidate(); frozen = self.make()
+        trial = frozen["trials"][0]
+        trial["model"] = "models/yolo11m.pt"
+        command = trial["flight_command"]
+        command[command.index("--model-path")+1] = str(self.root/trial["model"])
+        frozen["plan_sha256"] = v4.digest(frozen, ("plan_sha256",))
+        with self.assertRaisesRegex(ValueError, "trial commands"):
+            v4.validate_plan(frozen)
+
+    def test_same_model_file_pool_cannot_certify_a_different_selected_detector(self):
+        self.enable_inert_candidate()
+        candidate_protocol = v4.load(self.root/v4.PROTOCOL_PATH)
+        baseline_protocol = deepcopy(candidate_protocol)
+        baseline_protocol["resources"]["car"]["model"] = "models/yolo11m.pt"
+        baseline_protocol.pop("model_adaptation")
+        write(self.root/v4.PROTOCOL_PATH, baseline_protocol)
+        previous = self.make(suffix="baseline")
+        v4.persist_plan(previous)
+        write(self.root/v4.PROTOCOL_PATH, candidate_protocol)
+        current = self.make()
+        self.assertEqual(previous["source_hashes"], current["source_hashes"])
+        self.assertEqual(previous["model_hashes"], current["model_hashes"])
+        evidence = {"schema_version": 2, "result": "PASS", "ready_for_formal_reliability_v4": True,
+                    "checks": {key: True for key in v4.PROBE_CHECKS},
+                    "bindings": {"flight_source_hashes": v4.flight_source_hashes(current["source_hashes"]),
+                        "evaluation_source_hashes": v4.offline_source_hashes(current["source_hashes"]),
+                        "model_hashes": current["model_hashes"],
+                        "magnetic_runtime_manifest_sha256": current["magnetic_runtime_binding"]["manifest_sha256"],
+                        "magnetic_library_registration_sha256": current["magnetic_library_binding"]["registration_sha256"],
+                        "navigation_acceptance_sha256": v4.digest(current["protocol"]["navigation_acceptance"])},
+                    "probe_slots": [{"plan_path": str(Path(previous["output"])/"plan.json"),
+                                     "plan_file_sha256": v4.sha(Path(previous["output"])/"plan.json"),
+                                     "slot_id": previous["trials"][0]["id"], "record_file_sha256": "0"*64}]}
+        gate_path = self.root/"model_gate.json"; write(gate_path, evidence)
+        current["development_probe_gate"] = {"path": str(gate_path), "sha256": v4.sha(gate_path), "evidence": evidence}
+        with patch.object(v4, "read_slots", side_effect=AssertionError("selected model must bind before record reuse")), \
+                self.assertRaisesRegex(ValueError, "selected model/adaptation"):
             v4.validate_probe_gate(current)
 
 

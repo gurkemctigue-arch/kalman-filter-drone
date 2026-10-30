@@ -76,6 +76,46 @@ REPORT_PROVENANCE_HELPERS = {
 GIMBAL_REEVALUATION_FILENAME = "gimbal_terminal_audit_rev2.json"
 CORRELATED_BOUND_FIELD = "navigation_correlated_two_face_bound"
 CORRELATED_BOUND_FLAG = "--correlated-two-face-bound"
+CAR_ADAPTED_MODEL = "models/yolo11m_car_sim_train20_01.pt"
+CAR_MODEL_ADAPTATION = {
+    "target_class": "car", "model": CAR_ADAPTED_MODEL,
+    "model_sha256": "7e7cadd59142cc6b891dc7de49298d445ca731cc72f4562896ed8e530bfc19bd",
+    "training_receipt": {"path": "config/car_sim_train20_01_training_receipt.json",
+                         "sha256": "9d25d16bc5efb73dda87a5d3d4613b17b9dd6fe7598859b549a0c33baa56aaec"},
+    "dataset_manifest": {"path": "config/car_sim_train20_01_dataset_manifest.json",
+                         "sha256": "21e66502037627e8dfd7bed4b6aba94351eab8075e29b24d28a9045e4234d23e"},
+    "training_epochs": 20,
+    "checkpoint_selection": "PREDECLARED_FRAMEWORK_BEST_PT_ORIGINAL_VALIDATION_FITNESS_MAP50_95",
+    "posthoc_epoch_choice": False,
+    "scope": "DEVELOPMENT_ADAPTATION_ONLY",
+}
+_UNSPECIFIED_HASH_MAP = object()
+
+
+def validate_model_adaptation_binding(protocol, hashes, model_hashes=_UNSPECIFIED_HASH_MAP,
+                                      config_hashes=_UNSPECIFIED_HASH_MAP):
+    """The one named candidate binds actual frozen bytes and original sources.
+
+    The scope describes the adaptation data/selection, not a permanent bar on
+    formal validation. Independent later development and held-out gates remain
+    necessary. Legacy model registrations need no adaptation entry.
+    """
+    validate_protocol(protocol)
+    if protocol["resources"]["car"]["model"] != CAR_ADAPTED_MODEL:
+        return
+    if not isinstance(hashes, dict):
+        raise ValueError("Adapted car model requires its complete frozen source hash mapping")
+    adaptation = protocol["model_adaptation"]
+    required = {adaptation["model"]: adaptation["model_sha256"],
+                **{adaptation[key]["path"]: adaptation[key]["sha256"]
+                   for key in ("training_receipt", "dataset_manifest")}}
+    if any(hashes.get(path) != expected for path, expected in required.items()):
+        raise ValueError("Adapted car model or original training/dataset source SHA256 differs or is missing")
+    if model_hashes is not _UNSPECIFIED_HASH_MAP and model_hashes != {key: value for key, value in hashes.items() if key.endswith(".pt")}:
+        raise ValueError("Adapted model registry must retain the complete frozen source model hash mapping")
+    if config_hashes is not _UNSPECIFIED_HASH_MAP and config_hashes != {
+            key: value for key, value in hashes.items() if key.endswith((".yaml", ".yml", ".json", ".sdf", ".msg"))}:
+        raise ValueError("Adaptation source registry must retain the complete frozen configuration hash mapping")
 
 
 def correlated_two_face_setting(setting, cls):
@@ -258,13 +298,23 @@ def validate_protocol(protocol):
     resources = protocol.get("resources", {})
     if not isinstance(resources, dict):
         raise ValueError("Class resources must be an object")
+    adapted = isinstance(resources.get("car"), dict) and resources["car"].get("model") == CAR_ADAPTED_MODEL
     for cls, model, size, threads, distance in (("person", "yolo11n.pt", 320, 2, 5.), ("car", "yolo11m.pt", 960, 4, 9.)):
         setting = resources.get(cls)
         correlated_two_face_setting(setting, cls)
         legacy_setting = {key: value for key, value in setting.items() if key != CORRELATED_BOUND_FIELD}
-        if legacy_setting != {"model": "models/" + model, "inference_image_size": size,
+        expected_model = CAR_ADAPTED_MODEL if cls == "car" and adapted else "models/" + model
+        if legacy_setting != {"model": expected_model, "inference_image_size": size,
                                   "inference_threads": threads, "desired_distance_m": distance}:
             raise ValueError("Frozen resource configuration differs for " + cls)
+    if adapted:
+        adaptation = protocol.get("model_adaptation")
+        if (not isinstance(adaptation, dict) or adaptation != CAR_MODEL_ADAPTATION
+                or type(adaptation.get("training_epochs")) is not int
+                or type(adaptation.get("posthoc_epoch_choice")) is not bool):
+            raise ValueError("The adapted car model requires its exact original model_adaptation registration")
+    elif "model_adaptation" in protocol:
+        raise ValueError("Legacy models cannot carry a model_adaptation registration")
 
 
 def wrapper_command(root, script, *args):
@@ -579,6 +629,7 @@ def make_plan(root, output, prefix, *, formal=False, seeds=None, groups=None, cl
             raise ValueError("Development probe gate has not passed")
         gate = {"path": str(path), "sha256": sha(path), "evidence": evidence}
     hashes = source_hashes(root)
+    validate_model_adaptation_binding(protocol, hashes)
     for required in ("scripts/run_stage1_trial.py", "scripts/run_research_session.sh", "scripts/ros_python.sh",
                      "scripts/evaluate_stage1_flight.py", "uav_tracking/research_failures.py",
                      "scripts/configure_gazebo_magnetic_contract.py", "scripts/prepare_px4_magnetic_compatibility.py",
@@ -618,6 +669,7 @@ def make_plan(root, output, prefix, *, formal=False, seeds=None, groups=None, cl
             # work after flight processes stop; --wall-timeout stays unchanged.
             "postprocessing_timeout_s": POSTPROCESSING_TIMEOUT_S,
             "trial_timeout_s": wall_timeout + POSTPROCESSING_TIMEOUT_S, "evaluation_timeout_s": 1800., "trials": trials}
+    validate_model_adaptation_binding(protocol, hashes, plan["model_hashes"], plan["config_hashes"])
     if formal:
         if extension_binding is not None:
             plan["extension_protocol_binding"] = extension_binding
@@ -673,6 +725,8 @@ def validate_plan(plan, path=None):
     if plan.get("plan_sha256") != digest(plan, ("plan_sha256",)):
         raise ValueError("Frozen plan digest changed; do not edit a registered plan")
     validate_protocol(plan["protocol"])
+    validate_model_adaptation_binding(plan["protocol"], plan.get("source_hashes"),
+                                      plan.get("model_hashes"), plan.get("config_hashes"))
     binding = plan.get("magnetic_runtime_binding", {})
     if (binding.get("manifest_path") != str(Path(plan["frozen_root"]) / MAGNETIC_RUNTIME_PATH)
             or binding.get("manifest_sha256") != plan["source_hashes"].get(MAGNETIC_RUNTIME_PATH)
@@ -756,6 +810,8 @@ def validate_plan(plan, path=None):
 
 def verify_sources(plan):
     root = Path(plan["frozen_root"])
+    validate_model_adaptation_binding(plan["protocol"], plan.get("source_hashes"),
+                                      plan.get("model_hashes"), plan.get("config_hashes"))
     if (source_hashes(root) != plan["source_hashes"] or sha(root / PROTOCOL_PATH) != plan["protocol_sha256"]
             or load(root / PROTOCOL_PATH) != plan["protocol"]):
         raise ValueError("Frozen source/model/configuration changed; keep this plan and create a new revision")
@@ -1596,6 +1652,10 @@ def validate_probe_gate(plan, *, extensions=False):
                    is not correlated_two_face_setting(plan["protocol"]["resources"][cls], cls)
                    for cls in CLASSES):
                 raise ValueError("Development probe geometry mode differs from final class registration")
+            if (any(previous["protocol"]["resources"][cls]["model"] != plan["protocol"]["resources"][cls]["model"]
+                    for cls in CLASSES)
+                    or previous["protocol"].get("model_adaptation") != plan["protocol"].get("model_adaptation")):
+                raise ValueError("Development probe selected model/adaptation differs from final class registration")
             cache[source_key] = previous, read_slots(previous)
         previous, records = cache[source_key]
         slot_id = item["slot_id"]

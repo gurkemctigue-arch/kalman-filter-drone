@@ -167,6 +167,39 @@ class CorrelatedBoundExtensionTests(unittest.TestCase):
                       v4.runtime_configuration(frozen, trial)["errors"])
 
 
+class ModelAdaptationExtensionTests(unittest.TestCase):
+    def test_extensions_retain_the_exact_adaptation_and_model_source_bindings(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            extension_fixture(root)
+            adaptation = deepcopy(v4.CAR_MODEL_ADAPTATION)
+            # Inert SHA test doubles; this test never uses real model weights.
+            weight = root/v4.CAR_ADAPTED_MODEL
+            weight.write_bytes(b"ORCHESTRATION_FIXTURE_ONLY extension detector")
+            adaptation["model_sha256"] = v4.sha(weight)
+            for key in ("training_receipt", "dataset_manifest"):
+                path = root/adaptation[key]["path"]
+                fixtures.write(path, {"evidence_scope": "ORCHESTRATION_FIXTURE_ONLY", "artifact": key})
+                adaptation[key]["sha256"] = v4.sha(path)
+            protocol = v4.load(root/v4.PROTOCOL_PATH)
+            protocol["resources"]["car"]["model"] = v4.CAR_ADAPTED_MODEL
+            protocol["model_adaptation"] = adaptation
+            fixtures.write(root/v4.PROTOCOL_PATH, protocol)
+            with patch.object(v4, "CAR_MODEL_ADAPTATION", adaptation):
+                frozen = make(root, seeds=[4], classes=["car"])
+                v4.validate_plan(frozen)
+                self.assertEqual(len(frozen["trials"]), 8)
+                self.assertEqual(frozen["protocol"]["model_adaptation"], adaptation)
+                self.assertEqual(frozen["model_hashes"][v4.CAR_ADAPTED_MODEL], adaptation["model_sha256"])
+                for trial in frozen["trials"]:
+                    self.assertEqual(trial["model"], v4.CAR_ADAPTED_MODEL)
+                    command = trial["flight_command"]
+                    self.assertEqual(Path(command[command.index("--model-path")+1]).resolve(), weight.resolve())
+                    self.assertNotIn(v4.CORRELATED_BOUND_FLAG, command)
+                with patch.object(v4, "verify_external_runtime", side_effect=fixtures.fixture_runtime_verifier):
+                    v4.verify_sources(frozen)
+
+
 class ExtensionTests(unittest.TestCase):
     def test_draft_generates_sixteen_development_cells_without_heldout_seeds(self):
         with tempfile.TemporaryDirectory() as tmp:
