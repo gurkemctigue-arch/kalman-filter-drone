@@ -1,12 +1,14 @@
 # 第二轮汽车检测修复：补视角、受限训练与重新验收
 
-状态：事前开发方案；后续实际采集已完成，第二轮尚未训练。第一轮train20_01在新视角退化，拒绝直接替换；保留其全部权重、结果、标签和失败，不改选该训练的其他epoch。Humble28原核心为8 PASS/4 FAIL，正式仍0/280。
+状态：第二轮固定20epoch训练`train20_04`于2026-10-30 08:58 UTC实际启动，尚无模型质量或闭环验收结论。第一轮train20_01在新视角退化，拒绝直接替换；保留其全部权重、结果、标签和失败，不改选该训练的其他epoch。Humble28原核心为8 PASS/4 FAIL，正式仍0/280。
 
 执行记录：新56视角六批采集全部完成，126.425墙钟秒，固定代表56/56、未尝试0；18个owned进程组全部清理、无SIGKILL。原始记录位于外部`humble28_car_multiview_dataset02/raw_capture_seed006_gzseed7/`，`experiment_terminal.json` SHA为`61767f45061b7636c320a07c82075a188202ab669b7f1b44a7cbe508ff4fedcc`；冻结采集源收据SHA为`c6726f0e34569bbc2cfcf95b3a104835de2dcd7d67ac05ce8749a39fd51387de`。逐图像素复核正在完成，仍不能将采集成功称为模型或闭环成功。
 
 后续执行：标注与数据构建已完成，56图/64车框/8空背景，其中10车有部分遮挡；236图共144训练/338框、92监测/224框。manifest SHA为`c7abb224412bd550f32dadc0e99c3ed627effc4f3d41e3769a6bf5ede143c128`，YAML SHA为`3f90e712a7d7b6d4ef215f453d2f3b813617b0311fd9ce816a2f861371923c0a`。独立数据审查SHA为`d5a7f2cf0697baf15d925077c007dfcf92ad57e15a5a05c03cb0d3e2ce884312`。
 
 资源探针`probe01`于首batch前退出，AttributeError来自检查脚本读取框架已移除的half字段，实际0 batch/0 forward/0优化步，未产生候选权重；终态SHA为`e2b961a14e9ccf717dff6ba3d8e28f244c90d79c373dee8973c5d30c21c5b0df`。只读源码确认Ultralytics8.4.188的`cfg._handle_deprecation`将请求half=False规范化为quantize=None，其余请求键不变。依赖、manifest和COMMON_ARGS不改，改为全新`probe02/train20_03/infer03`准备件，统一严格验证half字段不存在、quantize字段实际存在且None及其他原参数值，保留真实CPU/FP32/AMP验证。原`train20_02`从未启动；新名字用于保留兼容性失败和旧准备字节，不代表训练质量搜索或更换checkpoint。
+
+实际后续：`probe02`已通过，15.244秒、8batch/8forward/6优化步、0checkpoint；CPU FP32、4/1线程、1,472,688可训参数，106个BN中18个head BN train、其余eval，实际早期warmup LR最大1.62037037e-6。终态SHA为`cc0171fc05723a6f8e4bff50ba023f02f94370cb5dd15c6844c848b8c47a248c`。该原终态包含的唯一2355字节Torch模板`tmp/tmpg46zgvp8/_remote_module_non_scriptable.py`在进程退出时由TemporaryDirectory清理，11个持久文件均保留且SHA一致；模板SHA为`8205b16956fb264841ecd8644784a0d157f87df79b17c16825dc1163433ce5d8`。新`train20_04/infer04`只修此消费边界：核原probe终态、11持久文件及固定模板SHA/清理源码，另写例外收据；正式训练终态将顶层tmp明确列作辅助临时文件，14项核心证据及CSV/args/best/last仍严格绑定。18项窄fixture及两份独立审读通过，未重跑probe或伪造模板。原02/03训练准备件从未执行并保留。实际04源SHA为`a0e5243e66e85b155b57eb59da0d0d03b349a69762c930beebe5f0d36c44cc7d`，infer04为`2f2e036101d1e53f3a19e4359cdacff3a62870de74c915d37f5fee4a8502e174`；训练与后续推理是分开的实际任务。
 
 ## 已确认的问题与待验证假设
 
@@ -38,7 +40,7 @@
 
 ## 固定候选与资源探针
 
-从原`models/yolo11m.pt`重新开始，禁止接续第一轮候选或资源探针。第二轮原拟独立名字`train20_02`；因上文的规范化检查修复，实际待执行名字为`train20_03`，原名字和未执行准备件保留。
+从原`models/yolo11m.pt`重新开始，禁止接续第一轮候选或资源探针。第二轮原拟独立名字`train20_02`；因上文的规范化检查及临时artifact消费修复，实际执行名字为`train20_04`，原02/03名字和未执行准备件保留。
 
 固定20epoch、imgsz640、batch1、CPU4/interop1、FP32、AMP=False、workers0、cache=False、freeze23、AdamW、lr0=1e-4、warmup_bias_lr=0、cos_lr=False、lrf=.01、nbs64、weight_decay=.0005、seed42、patience0、COCO80。其余有效参数完整保存。nbs64意味着梯度累积，不能把每张训练图算作一次优化步。冻结特征层的BN保持eval；检测头BN按框架训练行为处理，不添加未验证的BN改写。
 
