@@ -169,7 +169,8 @@ class ReliabilityReportTests(unittest.TestCase):
             self.assertIn(phrase, text)
         for phrase in ("物理距离95%绝对误差分位数", "物理高度反向超调", "导航速度误差p95", "位置设定值二阶差分",
                        "操作层恢复", "检查已知分母", "右删失不是失败", "初始选择和重新选择",
-                       "身份unknown样本数", "不是机体实测速度/加速度"):
+                       "身份unknown样本数", "不是机体实测速度/加速度", "检测处理链墙钟耗时",
+                       "图像转换、YOLO调用、深度与导航采样及发布调用", "不是纯网络推理耗时"):
             self.assertIn(phrase, text)
 
     def test_detection_review_cache_and_static_subset_metrics_are_source_bound(self):

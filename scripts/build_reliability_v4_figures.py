@@ -56,8 +56,8 @@ METRIC_FAMILIES = {
                         ("task_mean_unoccluded_geometry_mot_id_switches","Task-mean unoccluded ID switches"),
                         ("physical_task_time_wrong_samples","Wrong physical identity (score-grid samples)"),
                         ("physical_task_time_unknown_samples","Unknown physical identity (score-grid samples)")],
-    "performance": [("detector_processed_sim_fps","Processed FPS (simulation time)"),("detector_inference_wall_mean_s","Inference mean (wall s)"),
-                    ("detector_inference_wall_p95_s","Inference p95 (wall s)"),("image_to_detector_sim_mean_s","Image-to-detector mean (simulation s)"),
+    "performance": [("detector_processed_sim_fps","Processed FPS (simulation time)"),("detector_inference_wall_mean_s","Detector processing-chain mean (wall s)"),
+                    ("detector_inference_wall_p95_s","Detector processing-chain p95 (wall s)"),("image_to_detector_sim_mean_s","Image-to-detector mean (simulation s)"),
                     ("image_to_detector_sim_p95_s","Image-to-detector p95 (simulation s)"),
                     ("image_to_first_command_sim_mean_s","Image-to-first-command mean (simulation s)"),
                     ("image_to_first_command_sim_p95_s","Image-to-first-command p95 (simulation s)")],
@@ -82,6 +82,7 @@ METRIC_FAMILIES = {
         ("explicit_selection_observed_confirmation_p95_s","Observed explicit-selection confirmation 95th percentile (simulation s)")],
 }
 FAMILY_NOTES = {
+    "performance":"The legacy inference_wall_s field measures image conversion, YOLO, depth/navigation sampling and publication calls; it is not pure network inference. Wall-clock durations and simulation-time FPS/latency do not establish real-time hardware performance.",
     "navigation_p95":"Distance/height use the absolute-error percentile; KF errors are vector norms. Percentiles are per trial, not pooled frame quantiles.",
     "overshoot":"Moving-task opposite-side error relative to the first scheduled reference sample; this is not percentage step-response overshoot.",
     "control_jitter":"Adjacent valid velocity-mode command differences include intentional following/reselection transients; these are not measured vehicle accelerations or isolated noise.",

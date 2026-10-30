@@ -168,7 +168,8 @@ class FigureTests(unittest.TestCase):
         row["metrics"].update(velocity_command_jitter_rms_mps2=0.,yaw_command_jitter_rms_radps2=.3,
             image_center_rmse_px=4.,image_center_normalized_rmse=.1,image_center_observed_coverage=.7,
             image_to_first_command_sim_mean_s=.12,image_to_first_command_sim_p95_s=.2,
-            short_requested_shutter_prediction_position_rmse_m=.6,short_requested_shutter_valid_prediction_coverage=.4)
+            short_requested_shutter_prediction_position_rmse_m=.6,short_requested_shutter_valid_prediction_coverage=.4,
+            detector_inference_wall_mean_s=.63,detector_inference_wall_p95_s=.8)
         row["metric_sample_counts"] = {"velocity_command_jitter_rms_mps2":0,"image_center_rmse_px":45,
                                       "short_requested_shutter_prediction_position_rmse_m":None}
         data = figures.validate_summary(summary([row]));specs,_ = figures.make_specs(data)
@@ -180,6 +181,12 @@ class FigureTests(unittest.TestCase):
         center = next(item for item in by_id["core_image_center"]["rows"] if item["metric"] == "image_center_rmse_px")
         self.assertEqual(center["source_error_samples"],45)
         self.assertIn("do not independently establish pixel-level occlusion",by_id["core_shutter_prediction"]["caption"])
+        performance = by_id["core_performance"]
+        self.assertIn("Detector processing-chain mean (wall s)",dict(performance["metrics"]).values())
+        self.assertIn("not pure network inference",performance["caption"])
+        self.assertEqual({item["metric"]:item["value"] for item in performance["rows"]
+                          if item["metric"].startswith("detector_inference_wall_")},
+            {"detector_inference_wall_mean_s":.63,"detector_inference_wall_p95_s":.8})
 
     def test_p95_overshoot_position_commands_and_operational_events_keep_units_denominators_and_original_failure(self):
         row = recovery_trial()

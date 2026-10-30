@@ -29,7 +29,6 @@ tracking_dev=/root/uav_tracking_fullplan_FINAL_DEV
 tracking_dev_core="$tracking_dev/results/ACTUAL_CANONICAL12/plan.json"
 tracking_dev_extension="$tracking_dev/results/ACTUAL_EXTENSION16/plan.json"
 tracking_final=/root/uav_tracking_fullplan_FINAL_ROOT
-tracking_flight_wall="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["flight_wall_timeout_s"])' "$tracking_final/planning/reliability-v4-preregistration.json")"
 tracking_tag=reliability_v4_FINAL_TAG
 tracking_calibration="$tracking_dev/results/${tracking_tag}_development_calibration"
 export HUMBLE22_PROJECT_ROOT="$tracking_dev"
@@ -63,6 +62,7 @@ calibrator 要求完整两类六组 seed004 PROBE 定义，且两个具名槽已
 ```bash
 export HUMBLE22_PROJECT_ROOT="$tracking_final"
 source "$tracking_final/scripts/humble22_env.sh"
+tracking_flight_wall="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["flight_wall_timeout_s"])' "$tracking_final/planning/reliability-v4-preregistration.json")"
 bash "$tracking_final/scripts/run_research_session.sh" \
   "$tracking_final/scripts/run_reliability_v4.py" plan \
   --frozen-root "$tracking_final" --probe --seeds 4 \

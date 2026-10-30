@@ -66,7 +66,7 @@ SUMMARY_METRICS = {
     "navigation_valid_coverage": "导航有效覆盖",
     "physical_follow_truth_coverage": "独立物理真值覆盖",
     "detector_processed_sim_fps": "检测处理帧率 / 仿真FPS",
-    "detector_inference_wall_mean_s": "检测推理耗时均值 / 墙钟s",
+    "detector_inference_wall_mean_s": "检测处理链墙钟耗时均值 / s",
     "gimbal_detected_center_normalized_rmse": "画面中心归一化RMSE",
     "gimbal_true_horizon_rmse_rad": "真实地平线RMSE / rad",
     "physical_task_time_known_coverage": "完整任务身份已知覆盖",
@@ -530,7 +530,7 @@ def report_blocks(summary, replay, outcomes, *, final=False, detection=None):
         blocks.append(table(["四法槽", "原结果/缺失终态", "工程状态", "共同支持", "原因"],
             [[row["slot_id"], row["status"], row["engineering_status"], row["common_support_met"], row["reason"]] for row in outcomes]))
     blocks += [heading("检测、身份与性能解释"), paragraph(
-        "检测处理FPS按仿真时间，推理耗时按墙钟，采集至完成延迟按仿真时间，不能混为实时性能。Precision/Recall/mAP须另用冻结配置和经审核可见标签；没有该证据则保持待完成，不能从候选可用率推算。HOTA/IDF1为任务级几何诊断，完整投影框与无遮挡子集分开；显式重选不称自动ReID。"),
+        "检测处理FPS按仿真时间；检测处理链墙钟耗时包含图像转换、YOLO调用、深度与导航采样及发布调用，不是纯网络推理耗时；采集至完成延迟按仿真时间，不能混为实时性能。Precision/Recall/mAP须另用冻结配置和经审核可见标签；没有该证据则保持待完成，不能从候选可用率推算。HOTA/IDF1为任务级几何诊断，完整投影框与无遮挡子集分开；显式重选不称自动ReID。"),
         paragraph("短遮挡预测表采用short_requested_shutter请求时间窗，不能单独证明该时刻像素被遮挡。实际遮挡证据、同一物理个体保持和恢复率须结合原surface遮挡评价及独立身份评价；UUID连续不证明重识别成功。"),
         heading("全部计划槽与缺证"), table(["队列", "槽ID", "原终态", "距离稳定", "高度稳定", "缺证数"],
             [[row["cohort"], row["slot_id"], row["status"], row["settling"]["distance"], row["settling"]["height"], len(row["report_issues"])]
