@@ -167,6 +167,25 @@ class StorageBudgetTests(unittest.TestCase):
             self.assertEqual(sum(s["status"] == "EVALUATION_PENDING" for s in statuses), 27)
             self.assertEqual(f.backend.queries, ["drive_D"])
 
+    def test_complete_recording_with_incomplete_engineering_evidence_is_budgeted_unchanged(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            f = fixture(temporary)
+            sample = f.samples[-1]
+            sample["record"]["status"] = "INCOMPLETE_EVIDENCE"
+            write(sample["paths"]["terminal"], seal(sample["record"], "record_sha256"))
+            original_terminal = sample["paths"]["terminal"].read_bytes()
+            result = budget.assemble(**f.arguments, backend=f.backend)
+            statuses = result["provenance"]["original_development_statuses"]
+            self.assertEqual(len(statuses), 28)
+            self.assertEqual(sum(row["status"] == "INCOMPLETE_EVIDENCE" for row in statuses), 1)
+            matched = next(row for row in statuses if row["terminal"]["path"] ==
+                           str(sample["paths"]["terminal"].resolve()))
+            self.assertEqual(matched["status"], "INCOMPLETE_EVIDENCE")
+            self.assertFalse(result["admission_performed"])
+            self.assertNotIn("result", result)
+            self.assertNotIn("status", result)
+            self.assertEqual(sample["paths"]["terminal"].read_bytes(), original_terminal)
+
     def test_same_volume_aggregates280_once_and_uses_largest_archive_bound(self):
         with tempfile.TemporaryDirectory() as temporary:
             f = fixture(temporary)
@@ -238,6 +257,7 @@ class StorageBudgetTests(unittest.TestCase):
             with self.subTest(field=field), tempfile.TemporaryDirectory() as temporary:
                 f = fixture(temporary)
                 sample = f.samples[0]
+                sample["record"]["status"] = "INCOMPLETE_EVIDENCE"
                 if field == "termination":
                     update_named_sample(sample, "summary", {**sample["summary"], "termination_reason": "flight_aborted"})
                 else:
@@ -257,10 +277,12 @@ class StorageBudgetTests(unittest.TestCase):
                 self.assertEqual(f.backend.queries, [])
 
     def test_forged_terminal_without_completed_zero_exit_is_rejected(self):
-        for field, value in (("execution_status", "RUNNING"), ("flight_exit_code", 2), ("flight_exit_code", False)):
+        for field, value in (("execution_status", "RUNNING"), ("flight_exit_code", 2),
+                             ("flight_exit_code", False), ("infrastructure_stop", True)):
             with self.subTest(field=field, value=value), tempfile.TemporaryDirectory() as temporary:
                 f = fixture(temporary)
                 sample = f.samples[0]
+                sample["record"]["status"] = "INCOMPLETE_EVIDENCE"
                 sample["record"][field] = value
                 write(sample["paths"]["terminal"], seal(sample["record"], "record_sha256"))
                 with self.assertRaisesRegex(guard.Refusal, "Incomplete/infrastructure"):

@@ -503,6 +503,55 @@ class SafetyTests(unittest.TestCase):
             guard.validate_safety(m,c,r)
             self.assertEqual(len(calls),4)
 
+    def external_card(self, root, manifest, context, summary, facts):
+        canonical=Path(context.development['frozen_root'])/'planning/reliability-v4-ambiguity-execution.md'
+        card=root/'external-followon.md'
+        card.write_text('Reviewed orchestration revision; original audit code follows.\n\n'+
+                        canonical.read_text(encoding='utf-8'),encoding='utf-8',newline='\n')
+        registry=guard.load(facts['registry']['path'])
+        registry['execution_card']=guard.file_binding(card)
+        facts['registry']=write(Path(facts['registry']['path']),registry)
+        for slot in summary['slots']:
+            slot['executions']['terminal_speed']['argv'][-1]=str(card)
+        self.refresh(manifest,summary,facts)
+        return card,registry
+
+    def test_bound_external_prospective_card_preserves_the_original_tail_code(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root=Path(temporary);m,c,r,s,f,calls=safety_fixture(root)
+            card,_=self.external_card(root,m,c,s,f)
+            self.assertNotEqual(card.parent,Path(c.development['frozen_root'])/'planning')
+            guard.validate_safety(m,c,r)
+            self.assertEqual(len(calls),4)
+
+    def test_external_safety_card_does_not_allow_code_hash_or_command_substitution(self):
+        for defect in ('stale_hash','changed_code','duplicate_code','changed_tail','different_argument'):
+            with self.subTest(defect=defect),tempfile.TemporaryDirectory() as temporary:
+                root=Path(temporary);m,c,r,s,f,_=safety_fixture(root)
+                card,registry=self.external_card(root,m,c,s,f)
+                if defect in ('stale_hash','changed_code','duplicate_code'):
+                    text=card.read_text(encoding='utf-8')
+                    if defect=='changed_code':
+                        text=text.replace("<<'PY'\n","<<'PY'\n# substituted audit\n",1)
+                    elif defect=='duplicate_code':
+                        text+="\n<<'PY'\npass\nPY\n"
+                    else:
+                        text+='\nUnregistered edit.\n'
+                    card.write_text(text,encoding='utf-8',newline='\n')
+                    if defect!='stale_hash':registry['execution_card']=guard.file_binding(card)
+                elif defect=='changed_tail':
+                    tail=Path(registry['tail_script']['path'])
+                    tail.write_text('# substituted audit\n',encoding='utf-8')
+                    registry['tail_script']=guard.file_binding(tail)
+                    for slot in s['slots']:
+                        slot['executions']['terminal_speed']['code_script']=registry['tail_script']
+                else:
+                    other=root/'unregistered-card.md';other.write_bytes(card.read_bytes())
+                    s['slots'][0]['executions']['terminal_speed']['argv'][-1]=str(other)
+                f['registry']=write(Path(f['registry']['path']),registry)
+                self.refresh(m,s,f)
+                with self.assertRaises(guard.Refusal):guard.validate_safety(m,c,r)
+
     def test_safety_simulation_resources_cannot_drift_after_legitimate_rebinding(self):
         for defect in ('config_rtf','config_wall','supervisor_rtf','flight_rtf','flight_wall'):
             with self.subTest(defect=defect),tempfile.TemporaryDirectory() as temporary:

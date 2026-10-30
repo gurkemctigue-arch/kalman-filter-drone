@@ -301,7 +301,27 @@ def option(command, flag):
     return command[command.index(flag)+1]
 
 
-def safety_command_contract(executions, artifacts, dev_root, directory, cls, case):
+def safety_tail_code(card):
+    text = Path(card).read_text(encoding="utf-8")
+    marker = '<<\'PY\'\n'
+    require(text.count(marker) == 1 and "\nPY\n" in text.split(marker, 1)[1],
+            "Frozen safety-card audit code is not uniquely defined")
+    return (text.split(marker, 1)[1].split("\nPY\n", 1)[0] + "\n").encode("utf-8")
+
+
+def verified_safety_card(registry, dev_root):
+    card = bound(registry["execution_card"], json_data=False)
+    canonical_card = dev_root / "planning/reliability-v4-ambiguity-execution.md"
+    code = safety_tail_code(canonical_card)
+    require(safety_tail_code(card) == code,
+            "Prospective safety card changes the frozen hover-speed audit code")
+    tail = bound(registry["tail_script"], json_data=False)
+    require(tail.read_bytes() == code,
+            "Prospective hover-speed script differs from frozen reviewed safety card")
+    return card, tail
+
+
+def safety_command_contract(executions, artifacts, dev_root, directory, cls, case, *, execution_card=None):
     prefix = ["bash", str(dev_root/"scripts/run_research_session.sh")]
     def actual_script(command, script):
         if len(command) < 3 or command[:2] != prefix:
@@ -328,12 +348,10 @@ def safety_command_contract(executions, artifacts, dev_root, directory, cls, cas
                 and Path(option(command, "--monitor-summary")).resolve() == directory/"summary.json", "Selected-ambiguity evaluator flags/recording differ")
     command = executions["terminal_speed"]["argv"]
     code_path = bound(executions["terminal_speed"]["code_script"], json_data=False)
-    card = dev_root/"planning/reliability-v4-ambiguity-execution.md"
-    text = card.read_text(encoding="utf-8")
-    marker = '<<\'PY\'\n'
-    require(text.count(marker) == 1 and "\nPY\n" in text.split(marker,1)[1], "Frozen safety-card audit code is not uniquely defined")
-    code = text.split(marker,1)[1].split("\nPY\n",1)[0]+"\n"
-    require(code_path.read_bytes() == code.encode("utf-8"), "Executed hover-speed code differs from frozen reviewed safety card")
+    card = execution_card if execution_card is not None else dev_root/"planning/reliability-v4-ambiguity-execution.md"
+    code = safety_tail_code(dev_root/"planning/reliability-v4-ambiguity-execution.md")
+    require(safety_tail_code(card) == code and code_path.read_bytes() == code,
+            "Executed hover-speed code differs from frozen reviewed safety card")
     require(len(command) == 5 and command[:2] == prefix and (command[2] == "-" or Path(command[2]).resolve() == code_path)
             and Path(command[3]).resolve() == directory and Path(command[4]).resolve() == card.resolve(), "Hover-speed original command/stdin differs")
 
@@ -358,9 +376,7 @@ def validate_safety(manifest, context, runtime):
     require(source_path == context.development_path and source_plan == context.development
             and source["plan_sha256"] == context.development["plan_sha256"]
             and registry["flight_source_hashes"] == context.gate_bindings["flight_source_hashes"], "Safety registry binds a different canonical development plan/source")
-    card_path = bound(registry["execution_card"], json_data=False)
-    require(card_path == Path(context.development["frozen_root"])/"planning/reliability-v4-ambiguity-execution.md", "Safety registry card path differs")
-    tail_path = bound(registry["tail_script"], json_data=False)
+    card_path, tail_path = verified_safety_card(registry, Path(context.development["frozen_root"]))
     bound(registry["driver"], json_data=False)
     require(utc(registry["created_utc"]) <= utc(facts["created_utc"]) <= utc(summary["created_utc"]), "Safety registry/facts/summary chronology differs")
     registered_trials = registry.get("trials", [])
@@ -463,7 +479,7 @@ def validate_safety(manifest, context, runtime):
         for kind in ("source_clock", "native_startup", "specialized", "terminal_speed"):
             _, finished = validate_execution(executions[kind], after=flight_end)
             require(finished <= utc(facts["created_utc"]) <= utc(summary["created_utc"]), "Safety facts/summary predates actual evaluation")
-        safety_command_contract(executions, artifacts, dev_root, directory, cls, case)
+        safety_command_contract(executions, artifacts, dev_root, directory, cls, case, execution_card=card_path)
         require(bound(executions["terminal_speed"]["code_script"], json_data=False) == tail_path, "Executed safety audit script differs from prospective registry")
         for kind in ("source_clock", "native_startup"):
             spec = {"kind":kind, "script":"scripts/evaluate_px4_source_clock.py" if kind == "source_clock" else "scripts/evaluate_native_startup.py",

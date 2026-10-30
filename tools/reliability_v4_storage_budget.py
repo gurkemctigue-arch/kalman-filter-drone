@@ -106,7 +106,7 @@ def read_sample(key, plan, trial, paths, bindings):
     guard.require(record.get("record_sha256") == guard.sealed(record, "record_sha256")
                   and record.get("plan_sha256") == plan["plan_sha256"]
                   and record.get("id") == trial["id"], "Changed/foreign terminal record")
-    guard.require(record.get("status") in {"PASS", "FAIL", "EVALUATION_PENDING"}
+    guard.require(record.get("status") in {"PASS", "FAIL", "INCOMPLETE_EVIDENCE", "EVALUATION_PENDING"}
                   and record.get("infrastructure_stop") is False
                   and record.get("execution_status") == "COMPLETED"
                   and type(record.get("flight_exit_code")) is int and record["flight_exit_code"] == 0,

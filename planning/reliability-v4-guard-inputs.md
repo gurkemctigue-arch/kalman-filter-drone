@@ -60,6 +60,8 @@ canonical算法为 `json.dumps(value,sort_keys=True,separators=(',', ':'),allow_
 
 实际driver先保存独立 `RELIABILITY_V4_SAFETY_PROSPECTIVE_EXECUTION_REGISTRY`、逐命令facts和原报告；最终数值gate未登记时，保持 `RELIABILITY_V4_SAFETY_EXECUTION_FACTS`，不先填未来summary的PASS。全部实际证据完成后，最终summary只组装原事实和最终gate bindings：
 
+registry 的 `execution_card` 可以引用事前绑定的独立编排修订卡。该卡必须只有一个尾速 Python 代码块，提取代码须与开发冻结根原 `planning/reliability-v4-ambiguity-execution.md` 逐字一致；实际 `tail_script` 也须保持这些原字节。原命令必须引用 registry 绑定的同一卡路径，不能用相同内容的另一文件替代。卡和脚本的 SHA、四槽参数、命令、时间、结果及末尾 5.2 秒物理速度检查仍全部核验；该兼容性不认可新的安全评价代码或放宽任何门。
+
 ```text
 schema_version: 1
 kind: RELIABILITY_V4_FINAL_SAFETY_SUMMARY
