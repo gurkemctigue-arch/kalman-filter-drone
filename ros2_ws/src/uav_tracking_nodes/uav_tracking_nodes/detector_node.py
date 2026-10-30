@@ -41,6 +41,7 @@ from uav_tracking.ros_lifecycle import shutdown_requests
 from uav_tracking.core import CameraIntrinsics, depth_roi_stats, pinhole_backproject
 from uav_tracking.core.navigation import sample_depth_points
 from uav_tracking_nodes.inference_worker import NonQueuingWorker
+from uav_tracking_nodes.inference_timing import InferenceTiming
 
 
 def navigation_overlap_evidence(visible_boxes, depth, intrinsics, *, depth_scale,
@@ -104,6 +105,8 @@ class InferenceSnapshot:
     depth_received_ros_ns: int | None = None
     submitted_wall_s: float | None = None
     previous_acquisition_s: float | None = None
+    timer_input_lock_wait_wall_s: float | None = None
+    timer_input_lock_snapshot_hold_wall_s: float | None = None
 
 
 
@@ -300,7 +303,9 @@ class DetectorNode(Node):
     def _process_latest(self) -> None:
         # This timer only snapshots/submits work. Inference must not occupy
         # the ROS executor that receives sensor messages and /clock updates.
+        timer_requested_wall = time.perf_counter()
         with self._input_lock:
+            timer_acquired_wall = time.perf_counter()
             if getattr(self, "_stopping", False):
                 return
             # Check rollback even while busy: an in-flight result from the
@@ -347,6 +352,8 @@ class DetectorNode(Node):
                 getattr(self, "_rgb_received_ros_ns", None),
                 getattr(self, "_depth_received_ros_ns", {}).get(self._stamp_nanoseconds(depth_message.header.stamp)),
                 time.perf_counter(), self._last_inference_stamp,
+                timer_acquired_wall - timer_requested_wall,
+                time.perf_counter() - timer_acquired_wall,
             )
             if self._worker.submit(snapshot):
                 self._last_inference_stamp = stamp_seconds
@@ -357,33 +364,66 @@ class DetectorNode(Node):
             self.get_logger().warning(f"YOLO inference failed: {error}")
 
     def _infer_snapshot(self, snapshot: InferenceSnapshot) -> None:
-        with self._input_lock:
+        timing = InferenceTiming()
+        outcome = {"status": "early_return", "reason": "not_completed"}
+        try:
+            self._infer_timed_snapshot(snapshot, timing, outcome)
+        except BaseException as error:
+            outcome.update(status="exception", reason=type(error).__name__)
+            raise
+        finally:
+            report = timing.snapshot(final=True)
+            try:
+                self.get_logger().info("INFERENCE_JOB_TIMING " + json.dumps({
+                    "job_key": [snapshot.clock_epoch, self._stamp_nanoseconds(snapshot.rgb.header.stamp)],
+                    "acquisition_s": self._stamp_seconds(snapshot.rgb.header.stamp),
+                    "submitted_source_s": snapshot.submitted_ros_ns * 1e-9,
+                    "timer_input_lock_wait_wall_s": snapshot.timer_input_lock_wait_wall_s,
+                    "timer_input_lock_snapshot_hold_wall_s": snapshot.timer_input_lock_snapshot_hold_wall_s,
+                    **outcome, **report,
+                }, allow_nan=False, separators=(",", ":")))
+            except Exception:
+                # An unavailable logger must not replace the original model,
+                # conversion or publisher exception delivered to the worker.
+                if outcome["status"] != "exception":
+                    raise
+
+    def _infer_timed_snapshot(self, snapshot: InferenceSnapshot, timing: InferenceTiming,
+                              outcome: dict[str, str]) -> None:
+        with timing.input_lock(self._input_lock, "entry"):
             if getattr(self, "_stopping", False):
+                outcome["reason"] = "stopping_at_entry"
                 return
             worker_started_ros_ns = self._clock_now_locked()
             if not self._snapshot_current_locked(snapshot, worker_started_ros_ns):
+                outcome["reason"] = "invalid_snapshot_at_entry"
                 return
         message, depth_message = snapshot.rgb, snapshot.depth
         stamp_seconds = self._stamp_seconds(message.header.stamp)
         parameters = snapshot.parameters
         started = time.perf_counter()
-        image = self._bridge.imgmsg_to_cv2(message, desired_encoding="bgr8")
-        depth = np.asarray(self._bridge.imgmsg_to_cv2(depth_message, desired_encoding="passthrough"))
+        with timing.stage("decode"):
+            image = self._bridge.imgmsg_to_cv2(message, desired_encoding="bgr8")
+            depth = np.asarray(self._bridge.imgmsg_to_cv2(depth_message, desired_encoding="passthrough"))
         if image.shape[:2] != depth.shape[:2] or snapshot.camera_size != (message.width, message.height):
             raise ValueError("RGB, aligned depth and CameraInfo dimensions must match")
-        result = self._model.predict(
-            image, imgsz=int(parameters["inference_image_size"]),
-            device=str(parameters["inference_device"]), verbose=False,
-        )[0]
+        with timing.stage("yolo_predict"):
+            result = self._model.predict(
+                image, imgsz=int(parameters["inference_image_size"]),
+                device=str(parameters["inference_device"]), verbose=False,
+            )[0]
         class_id = int(parameters["class_id"])
         class_name = str(parameters["class_name"])
         threshold = float(parameters["confidence_threshold"])
-        with self._input_lock:
+        with timing.input_lock(self._input_lock, "post_predict"):
             if getattr(self, "_stopping", False):
+                outcome["reason"] = "stopping_after_predict"
                 return
             if not self._snapshot_current_locked(snapshot, self._clock_now_locked()):
+                outcome["reason"] = "invalid_snapshot_after_predict"
                 return
             tracking_active, activation_stamp_s = self._tracking_active, self._activation_stamp_s
+        timing.begin("depth_navigation_geometry")
         # Other classes can occlude this target or contaminate ground samples.
         # Keep their image boxes without creating tracking candidates for them.
         visible_boxes = []
@@ -489,12 +529,16 @@ class DetectorNode(Node):
                 stride=8, depth_scale=float(parameters["depth_scale"]), max_points=1200,
                 min_depth_m=float(parameters["min_depth_m"]), max_depth_m=float(parameters["max_depth_m"]),
             )
-        with self._input_lock:
+        timing.end()
+        with timing.input_lock(self._input_lock, "publication"):
             if getattr(self, "_stopping", False):
+                outcome["reason"] = "stopping_before_publish"
                 return
             now_ns = self._clock_now_locked()
             if not self._snapshot_current_locked(snapshot, now_ns):
+                outcome["reason"] = "invalid_snapshot_before_publish"
                 return
+            timing.mark("bookkeeping")
             if tracking_active and (
                 activation_stamp_s is None or stamp_seconds >= activation_stamp_s
             ):
@@ -513,9 +557,14 @@ class DetectorNode(Node):
                             for name, value in payload.items():
                                 setattr(pair_message, name, value)
                             frame.navigation_overlaps.append(pair_message)
-                    frame_publisher.publish(frame)
-                for observation in observations:
-                    self._publisher.publish(observation)
+                    timing.mark("frame_build")
+                    with timing.stage("frame_publish"):
+                        frame_publisher.publish(frame)
+                timing.mark("bookkeeping")
+                with timing.stage("observation_publish"):
+                    for observation in observations:
+                        self._publisher.publish(observation)
+            timing.mark("bookkeeping")
             diagnostics = String()
             diagnostics.data = json.dumps({
                 "stamp_s": stamp_seconds,
@@ -540,8 +589,12 @@ class DetectorNode(Node):
                 "navigation_overlap_pair_count": len(overlaps),
                 "navigation_incomplete_overlap_pair_count": sum(not pair["depth_complete"] for pair in overlaps),
                 "detections": detections,
+                "timing_before_diagnostics": timing.snapshot(),
             })
-            self._diagnostics_pub.publish(diagnostics)
+            timing.mark("diagnostics_encode")
+            with timing.stage("diagnostics_publish"):
+                self._diagnostics_pub.publish(diagnostics)
+            outcome.update(status="completed", reason="diagnostics_published")
 
     def destroy_node(self) -> Any:
         # Do not publish the final inference during teardown. Native work

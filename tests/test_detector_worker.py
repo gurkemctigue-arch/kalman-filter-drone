@@ -314,7 +314,8 @@ class DetectorSchedulingTests(unittest.TestCase):
         }
         node.get_parameter = lambda name: NS(value=parameters[name])
         warnings = []
-        node.get_logger = lambda: NS(warning=warnings.append)
+        node._test_timing_logs = []
+        node.get_logger = lambda: NS(warning=warnings.append, info=node._test_timing_logs.append)
         node._worker = NonQueuingWorker(process or node._infer_snapshot, node._on_inference_error)
         self.addCleanup(node._worker.shutdown)
         return node, warnings
