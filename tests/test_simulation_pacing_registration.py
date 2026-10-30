@@ -203,6 +203,7 @@ class SimulationPacingRegistrationTests(unittest.TestCase):
         # Existing guard reads these values from the validated final protocol.
         with tempfile.TemporaryDirectory() as temporary:
             manifest, context, runtime, summary, facts, calls = guard_fixtures.safety_fixture(Path(temporary))
+            runtime.v4.simulation_pacing_runtime_evidence = v4.simulation_pacing_runtime_evidence
             context.core["protocol"].update(real_time_factor=.125, flight_wall_timeout_s=1000.,
                 simulation_pacing_registration=deepcopy(v4.SIMULATION_PACING_V1))
             context.gate_bindings["simulation_pacing_sha256"] = v4.digest(v4.simulation_pacing_summary(context.core["protocol"]))

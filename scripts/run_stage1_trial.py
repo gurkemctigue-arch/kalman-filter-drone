@@ -57,6 +57,18 @@ def supervisor_status_timing(px4_time_mode: str, requested_real_time_factor: flo
     }
 
 
+def apply_px4_adapter_publish_rate(parameters: dict, rate_hz: float) -> None:
+    """Archive the adapter override and existing 20 Hz loop defaults separately."""
+    if (isinstance(rate_hz, bool) or not isinstance(rate_hz, (int, float))
+            or not math.isfinite(rate_hz) or rate_hz not in (20., 50.)):
+        raise ValueError("PX4 adapter publish rate must be 20 or 50 Hz in source time")
+    parameters["uav_tracking_px4_adapter"]["ros__parameters"]["publish_rate_hz"] = float(rate_hz)
+    # Record implicit node defaults; existing configured loop rates stay intact.
+    parameters["uav_tracking_controller"]["ros__parameters"].setdefault("control_rate_hz", 20.)
+    parameters["uav_tracking_flight_supervisor"]["ros__parameters"].setdefault("publish_rate_hz", 20.)
+    parameters["uav_tracking_flight_supervisor"]["ros__parameters"].setdefault("heartbeat_prestream_s", 1.2)
+
+
 def apply_multi_target_identity(parameters: dict, bringup: Path, target_class: str) -> Path:
     """Keep designated-target safety while retaining the physical gimbal graph."""
     identity_config_path = bringup / "config" / f"stage2_tracking_{target_class}.yaml"
@@ -336,6 +348,8 @@ def main() -> None:
     parser.add_argument("--px4-time-mode", choices=["receipt", "source_sim"], default="receipt",
                         help="source_sim disables XRCE wall-time mapping before client startup and validates PX4 source time against /clock")
     parser.add_argument("--real-time-factor", type=float, default=1.0)
+    parser.add_argument("--px4-adapter-publish-rate-hz", type=float, choices=(20., 50.), default=20.,
+                        help="PX4 adapter source-time publication rate; controller/supervisor rates and wall safety limits are unchanged")
     parser.add_argument("--motion-profile-kind", choices=["standard", "speed_changes"], default="standard")
     args = parser.parse_args()
     if args.car_surface_recovery and args.target_class != "car":
@@ -537,6 +551,7 @@ def main() -> None:
     parameters["uav_tracking_px4_adapter"]["ros__parameters"].update(
         use_sim_time=True, command_topic="/tracking/flight_command", require_vehicle_status=True,
         vehicle_status_topic="/fmu/out/vehicle_status_v1")
+    apply_px4_adapter_publish_rate(parameters, args.px4_adapter_publish_rate_hz)
     parameters["uav_tracking_controller"]["ros__parameters"]["command_mode"] = args.command_mode
     parameters["uav_tracking_detection"]["ros__parameters"].update(
         activation_phase_topic="/tracking/flight_phase", image_reliability="reliable")

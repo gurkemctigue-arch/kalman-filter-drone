@@ -118,6 +118,14 @@ SIMULATION_PACING_V1 = {
     "scope": "simulation_cpu_wall_resource_only",
     "safety_source_time_gates": "unchanged",
 }
+PX4_ADAPTER_PUBLISH_RATE_FIELD = "px4_adapter_publish_rate_hz"
+PX4_ADAPTER_PUBLISH_RATE_FLAG = "--px4-adapter-publish-rate-hz"
+SIMULATION_PACING_V2 = {
+    **SIMULATION_PACING_V1,
+    "revision": "simulation_rtf0125_wall1000_adapter50_v2",
+    PX4_ADAPTER_PUBLISH_RATE_FIELD: 50.,
+    "scope": "simulation_cpu_wall_resource_and_adapter_heartbeat_only",
+}
 CAR_ADAPTED_MODEL = "models/yolo11m_car_sim_train20_01.pt"
 CAR_MODEL_ADAPTATION = {
     "target_class": "car", "model": CAR_ADAPTED_MODEL,
@@ -208,18 +216,79 @@ def _fixed_registration_value_matches(actual, expected):
 
 
 def simulation_pacing_summary(protocol):
-    """Validate the sole optional CPU pacing revision without adding defaults."""
+    """Validate fixed revisions without changing legacy/v1 policy bytes."""
     if not isinstance(protocol, dict):
         raise ValueError("Invalid " + SIMULATION_PACING_FIELD + " protocol")
     explicit = SIMULATION_PACING_FIELD in protocol
-    if explicit and not _fixed_registration_value_matches(protocol[SIMULATION_PACING_FIELD], SIMULATION_PACING_V1):
-        raise ValueError(SIMULATION_PACING_FIELD + " must match the complete fixed v1 contract")
-    expected = ({key: SIMULATION_PACING_V1[key] for key in ("real_time_factor", "flight_wall_timeout_s")}
+    declaration = protocol.get(SIMULATION_PACING_FIELD)
+    if explicit and not any(_fixed_registration_value_matches(declaration, registered)
+                            for registered in (SIMULATION_PACING_V1, SIMULATION_PACING_V2)):
+        raise ValueError(SIMULATION_PACING_FIELD + " must match the complete fixed v1 or v2 contract")
+    expected = ({key: declaration[key] for key in ("real_time_factor", "flight_wall_timeout_s")}
                 if explicit else {"real_time_factor": .25, "flight_wall_timeout_s": 600.})
     for key, value in expected.items():
         if not _fixed_registration_value_matches(protocol.get(key), value):
             raise ValueError("Simulation pacing " + key + " differs from " + SIMULATION_PACING_FIELD)
     return deepcopy(protocol[SIMULATION_PACING_FIELD]) if explicit else expected
+
+
+def simulation_pacing_adapter_publish_rate_hz(protocol):
+    """Only v2 changes the adapter's source-time publication cadence."""
+    return simulation_pacing_summary(protocol).get(PX4_ADAPTER_PUBLISH_RATE_FIELD, 20.)
+
+
+def _simulation_pacing_adapter_command_matches(protocol, command):
+    rate = simulation_pacing_adapter_publish_rate_hz(protocol)
+    explicit = rate == 50.
+    if (not isinstance(command, list) or not all(isinstance(value, str) for value in command)
+            or command.count(PX4_ADAPTER_PUBLISH_RATE_FLAG) != int(explicit)
+            or any(value.startswith(PX4_ADAPTER_PUBLISH_RATE_FLAG + "=") for value in command)):
+        return False
+    if not explicit:
+        return True
+    try:
+        value = float(command[command.index(PX4_ADAPTER_PUBLISH_RATE_FLAG) + 1])
+    except (IndexError, ValueError, TypeError):
+        return False
+    return math.isfinite(value) and value == rate
+
+
+def simulation_pacing_runtime_evidence(protocol, configuration, parameters, command):
+    """Check actual adapter cadence without relaxing historical safety rates.
+
+    Historical archives may omit original node defaults. A present value must
+    retain the original safety value; v2 requires explicit complete archives.
+    """
+    rate = simulation_pacing_adapter_publish_rate_hz(protocol)
+    explicit = rate == 50.
+    errors = []
+    if not _simulation_pacing_adapter_command_matches(protocol, command):
+        errors.append("flight_command:" + PX4_ADAPTER_PUBLISH_RATE_FLAG)
+    if not isinstance(configuration, dict) or not isinstance(parameters, dict):
+        return {"errors": [*errors, "simulation_pacing:runtime_archives_malformed"],
+                "px4_adapter_publish_rate_hz": rate, "adapter_rate_explicit": explicit}
+
+    def check(values, key, expected, label):
+        if not isinstance(values, dict):
+            errors.append(label)
+        elif key not in values:
+            if explicit:
+                errors.append(label)
+        elif not _fixed_registration_value_matches(values[key], expected):
+            errors.append(label)
+
+    check(configuration, PX4_ADAPTER_PUBLISH_RATE_FIELD, rate,
+          "run_config:" + PX4_ADAPTER_PUBLISH_RATE_FIELD)
+    for node, key, expected in (("uav_tracking_px4_adapter", "publish_rate_hz", rate),
+        ("uav_tracking_controller", "control_rate_hz", 20.),
+        ("uav_tracking_flight_supervisor", "publish_rate_hz", 20.),
+        ("uav_tracking_flight_supervisor", "heartbeat_prestream_s", 1.2),
+        ("uav_tracking_flight_supervisor", "native_takeoff_timeout_sim_s", 40.),
+        ("uav_tracking_flight_supervisor", "native_wall_timeout_s", 180.)):
+        values = parameters.get(node, {})
+        values = values.get("ros__parameters", {}) if isinstance(values, dict) else None
+        check(values, key, expected, "runtime_parameters:" + node + ":" + key)
+    return {"errors": errors, "px4_adapter_publish_rate_hz": rate, "adapter_rate_explicit": explicit}
 
 
 def simulation_pacing_declared(protocol):
@@ -232,6 +301,12 @@ def simulation_pacing_trial_binding(plan, trial):
     protocol = plan["protocol"]
     pacing = simulation_pacing_summary(protocol)
     explicit = SIMULATION_PACING_FIELD in protocol
+    adapter_explicit = PX4_ADAPTER_PUBLISH_RATE_FIELD in pacing
+    if ((PX4_ADAPTER_PUBLISH_RATE_FIELD in trial) != adapter_explicit
+            or adapter_explicit and not _fixed_registration_value_matches(
+                trial[PX4_ADAPTER_PUBLISH_RATE_FIELD], pacing[PX4_ADAPTER_PUBLISH_RATE_FIELD])
+            or not _simulation_pacing_adapter_command_matches(protocol, trial.get("flight_command"))):
+        raise ValueError("Trial adapter publication cadence differs from " + SIMULATION_PACING_FIELD)
     if (SIMULATION_PACING_FIELD in trial) != explicit:
         raise ValueError("Trial " + SIMULATION_PACING_FIELD + " differs from protocol registration")
     if explicit:
@@ -593,6 +668,8 @@ def trial_spec(root, protocol, prefix, cls, group, seed, wall_timeout):
             **deepcopy(setting)}
     if SIMULATION_PACING_FIELD in protocol:
         spec[SIMULATION_PACING_FIELD] = deepcopy(protocol[SIMULATION_PACING_FIELD])
+    if PX4_ADAPTER_PUBLISH_RATE_FIELD in pacing:
+        spec[PX4_ADAPTER_PUBLISH_RATE_FIELD] = pacing[PX4_ADAPTER_PUBLISH_RATE_FIELD]
     command = wrapper_command(root, "run_stage1_trial.py", "--name", spec["name"], "--class", cls,
         "--stage", stage, "--seed", seed, "--speed-mps", repr(spec["speed_mps"]),
         "--duration", "75.0", "--condition", "clean", "--estimator-method", "adaptive_kf",
@@ -612,6 +689,8 @@ def trial_spec(root, protocol, prefix, cls, group, seed, wall_timeout):
         "--occlusions", "--short-occlusion-s", "0.2", "--reselect-after-loss")
     if spec["multi_target"]:
         command.append("--multi-target")
+    if PX4_ADAPTER_PUBLISH_RATE_FIELD in pacing:
+        command.extend([PX4_ADAPTER_PUBLISH_RATE_FLAG, str(pacing[PX4_ADAPTER_PUBLISH_RATE_FIELD])])
     if correlated_bound:
         command.append(CORRELATED_BOUND_FLAG)
     if surface_recovery["enabled"]:
@@ -1224,6 +1303,8 @@ def runtime_configuration(plan, trial):
             plan["protocol"]["resources"][trial["target_class"]], trial["target_class"],
             config, parameters, trial["flight_command"])
         errors.extend(surface_evidence["errors"])
+        pacing_evidence = simulation_pacing_runtime_evidence(plan["protocol"], config, parameters, trial["flight_command"])
+        errors.extend(pacing_evidence["errors"])
         if explicit_surface_recovery:
             expected.update(car_surface_recovery=surface_recovery,
                             car_surface_recovery_method=CAR_SURFACE_RECOVERY_V1["method"])
@@ -1260,7 +1341,7 @@ def runtime_configuration(plan, trial):
         errors.extend(rendering["errors"])
         magnetic = magnetic_environment_evidence(plan, trial)
         errors.extend(magnetic["errors"])
-        return {"errors": errors, "arguments": expected, "magnetic_environment": magnetic,
+        return {"errors": errors, "arguments": expected, "simulation_pacing": pacing_evidence, "magnetic_environment": magnetic,
                 "gazebo_rendering": rendering,
                 "run_config_sha256": sha(directory / "run_config.json"), "runtime_parameters_sha256": sha(path)}
     except (OSError, ValueError, KeyError, TypeError, AttributeError, ImportError) as error:

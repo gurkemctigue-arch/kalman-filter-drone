@@ -220,6 +220,8 @@ class FakeCommands:
                           supervisor_status_timestamp_mode="source_sim", supervisor_status_source_max_age_s=1.,
                           supervisor_status_source_max_future_s=.05, supervisor_status_timeout_wall_s=10.,
                           vehicle_control_point_offset_flu_m=[0., 0., .24])
+            if v4.PX4_ADAPTER_PUBLISH_RATE_FLAG in command:
+                config[v4.PX4_ADAPTER_PUBLISH_RATE_FIELD] = float(option(v4.PX4_ADAPTER_PUBLISH_RATE_FIELD))
             write(directory / "run_config.json", config)
             parameters = {
                 "uav_tracking_detection": {"navigation_enabled": True, "depth_max_age_s": .02,
@@ -230,12 +232,15 @@ class FakeCommands:
                     "max_prediction_duration_s": .75, "mahalanobis_gate": 9.21,
                     **{key: config[key] for key in ["target_mode", "association_mode", "estimator_method"]}},
                 "uav_tracking_controller": {"state_topic": "/tracking/navigation_state", "desired_height_m": 2.,
-                    "prediction_timeout_s": .75, **{key: config[key] for key in ["command_mode", "desired_distance_m"]}},
+                    "control_rate_hz": 20., "prediction_timeout_s": .75,
+                    **{key: config[key] for key in ["command_mode", "desired_distance_m"]}},
                 "uav_tracking_px4_adapter": {"use_sim_time":True, "odometry_timestamp_mode":"source_sim",
+                    "publish_rate_hz": config.get(v4.PX4_ADAPTER_PUBLISH_RATE_FIELD, 20.),
                     "odometry_source_max_age_s":.50, "odometry_source_max_future_s":.05,
                     "vehicle_odometry_topic":"/fmu/out/vehicle_odometry", "vehicle_odom_topic":"/vehicle/odometry",
                     "odometry_timing_topic":"/vehicle/odometry_timing"},
                 "uav_tracking_flight_supervisor":{"takeoff_mode":"px4_native","takeoff_height_m":3.,
+                    "publish_rate_hz":20., "heartbeat_prestream_s":1.2,
                     "native_takeoff_timeout_sim_s":40., "native_wall_timeout_s":180.,
                     "status_timestamp_mode":"source_sim", "status_source_max_age_s":1.,
                     "status_source_max_future_s":.05, "status_timeout_s":10.,

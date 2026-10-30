@@ -37,7 +37,7 @@
   "explicit_reselection": true,
   "real_time_factor": 0.125,
   "flight_wall_timeout_s": 1000.0,
-  "simulation_resource_policy": "Prospective simulation CPU wall resource revision simulation_rtf0125_wall1000_v1: request RTF 0.125 for both classes and every new core, safety and extension cell, with a fixed 1000 s flight wall budget. The explicit simulation_pacing_registration and matching top-level values are authoritative. Historical RTF 0.25/600 s evidence, including Humble35 and its original stopped driver/unhealthy observer outcome, remains unchanged and cannot qualify a different pacing revision; historical RTF 0.50 evidence also remains separate. Keep the 75 s source-time task, target physical motion, 10 Hz inference ceiling, fixed 10 Hz physical-identity evaluation grid, source-time freshness/prediction gates, numeric acceptance gates and native 180 s startup budget unchanged; post-flight processing and evaluation budgets remain 1800 s each. New same-source development validation, calibration, sealing and actual capacity admission remain required before formal held-out seeds can be used. Record actual wall processing latency and achieved RTF. This is a simulation CPU resource configuration, not a navigation fix or a claim of real-hardware real-time performance.",
+  "simulation_resource_policy": "Prospective simulation resource revision simulation_rtf0125_wall1000_adapter50_v2: request RTF 0.125 for both classes and every new core, safety and extension cell, with a fixed 1000 s flight wall budget and explicit 50 Hz source-time PX4 adapter publication. Controller and supervisor loops retain their original 20 Hz source-time cadence; the supervisor heartbeat freshness/prestream gap remains 0.4 s wall time, and native startup remains 180 s wall time. The explicit simulation_pacing_registration and matching top-level values are authoritative. Historical v1 RTF 0.125/1000 s with implicit 20 Hz adapter, legacy RTF 0.25/600 s and RTF 0.50 evidence remain unchanged and cannot qualify this adapter cadence revision. Keep the 75 s source-time task, target physical motion, 10 Hz inference ceiling, fixed 10 Hz physical-identity evaluation grid, source-time freshness/prediction gates and numeric acceptance gates unchanged; post-flight processing and evaluation budgets remain 1800 s each. New same-source development validation, calibration, sealing and actual capacity admission remain required before formal held-out seeds can be used. Record actual wall processing latency, achieved RTF and observed heartbeat wall gaps. This resource change does not establish navigation reliability or real-hardware real-time performance.",
   "gazebo_render_driver": "llvmpipe",
   "gazebo_render_policy": "Prospective Gazebo-process-only Mesa llvmpipe selection; record actual owned-process rendering libraries/environment. Historical auto/D3D12 trials retain their original renderer and exit failures. No silent auto override or cross-renderer performance pooling.",
   "max_inference_rate_hz": 10.0,
@@ -185,13 +185,14 @@
     "scope": "DEVELOPMENT_ADAPTATION_ONLY"
   },
   "simulation_pacing_registration": {
-    "revision": "simulation_rtf0125_wall1000_v1",
+    "revision": "simulation_rtf0125_wall1000_adapter50_v2",
     "real_time_factor": 0.125,
     "flight_wall_timeout_s": 1000.0,
     "follow_duration_s": 75.0,
     "max_inference_rate_hz": 10.0,
     "physical_identity_sample_period_s": 0.1,
-    "scope": "simulation_cpu_wall_resource_only",
+    "scope": "simulation_cpu_wall_resource_and_adapter_heartbeat_only",
+    "px4_adapter_publish_rate_hz": 50.0,
     "safety_source_time_gates": "unchanged"
   }
 }

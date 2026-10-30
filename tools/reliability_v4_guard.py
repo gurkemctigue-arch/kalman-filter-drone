@@ -122,6 +122,49 @@ def car_surface_recovery_evidence(runtime, resource, cls, configuration, paramet
     return False
 
 
+def simulation_pacing_evidence(runtime, protocol, configuration, parameters, flight_argv):
+    """Bind safety records to adapter cadence; historical absent fields imply20."""
+    validator = getattr(runtime.v4, "simulation_pacing_runtime_evidence", None)
+    if callable(validator):
+        try:
+            evidence = validator(protocol, configuration, parameters, flight_argv)
+        except (TypeError, ValueError) as error:
+            raise Refusal("Safety simulation pacing registration is invalid") from error
+        require(isinstance(evidence, dict) and isinstance(evidence.get("errors"), list) and not evidence["errors"],
+                "Safety simulation pacing adapter cadence/CLI/runtime archives differ")
+        return evidence["px4_adapter_publish_rate_hz"]
+    # Frozen v1 runners have a pacing-summary validator, but no adapter option.
+    # They can qualify only their original20 Hz cadence, never a v2 declaration.
+    if "simulation_pacing_registration" in protocol:
+        summary = getattr(runtime.v4, "simulation_pacing_summary", None)
+        require(callable(summary), "Safety registered pacing requires its frozen validator")
+        try:
+            policy = summary(protocol)
+        except (TypeError, ValueError) as error:
+            raise Refusal("Safety historical simulation pacing registration is invalid") from error
+        require(isinstance(policy, dict) and policy.get("revision") == "simulation_rtf0125_wall1000_v1"
+                and "px4_adapter_publish_rate_hz" not in policy,
+                "Safety adapter cadence revision requires its frozen shared validator")
+    require(isinstance(configuration, dict) and isinstance(parameters, dict), "Safety pacing runtime archives are malformed")
+    checks = [(configuration, "px4_adapter_publish_rate_hz", 20.)]
+    for node, key, expected in (("uav_tracking_px4_adapter", "publish_rate_hz", 20.),
+        ("uav_tracking_controller", "control_rate_hz", 20.),
+        ("uav_tracking_flight_supervisor", "publish_rate_hz", 20.),
+        ("uav_tracking_flight_supervisor", "heartbeat_prestream_s", 1.2),
+        ("uav_tracking_flight_supervisor", "native_takeoff_timeout_sim_s", 40.),
+        ("uav_tracking_flight_supervisor", "native_wall_timeout_s", 180.)):
+        values = parameters.get(node, {})
+        require(isinstance(values, dict), "Safety pacing node YAML is malformed")
+        checks.append((values.get("ros__parameters", {}), key, expected))
+    for values, key, expected in checks:
+        require(isinstance(values, dict) and (key not in values or type(values[key]) in (int, float)
+                and math.isfinite(values[key]) and values[key] == expected), "Safety historical adapter/loop cadence differs")
+    require(isinstance(flight_argv, list) and all(isinstance(value, str) for value in flight_argv)
+            and not any(value == "--px4-adapter-publish-rate-hz" or value.startswith("--px4-adapter-publish-rate-hz=")
+                        for value in flight_argv), "Safety historical flight cannot contain the new adapter cadence flag")
+    return 20.
+
+
 def canonical(value):
     return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()).hexdigest()
 
@@ -543,6 +586,7 @@ def validate_safety(manifest, context, runtime):
                 and "--occlusions" not in flight_argv and "--reselect-after-loss" not in flight_argv, "Safety flight invocation does not name original frozen trial/mode")
         geometry_bound_evidence(resource, cls, configuration, parameters, flight_argv)
         car_surface_recovery_evidence(runtime, resource, cls, configuration, parameters, flight_argv)
+        simulation_pacing_evidence(runtime, context.core["protocol"], configuration, parameters, flight_argv)
         for kind in ("source_clock", "native_startup", "specialized", "terminal_speed"):
             _, finished = validate_execution(executions[kind], after=flight_end)
             require(finished <= utc(facts["created_utc"]) <= utc(summary["created_utc"]), "Safety facts/summary predates actual evaluation")
