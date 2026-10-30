@@ -164,6 +164,7 @@ def safety_fixture(root, *, linked=False):
     for resource in resources.values():
         resource.pop(guard.CORRELATED_BOUND_FIELD, None)
         resource.pop('car_surface_recovery', None)
+        resource.pop(guard.EXCLUSIVE_NAVIGATION_FIELD, None)
     source_hashes={name:guard.sha(dev/name) for name in ('scripts/run_stage1_trial.py','uav_tracking/research_failures.py')}
     for cls in guard.CLASSES:
         model=dev/resources[cls]['model'];model.parent.mkdir(exist_ok=True);model.write_bytes(b'fixture model')

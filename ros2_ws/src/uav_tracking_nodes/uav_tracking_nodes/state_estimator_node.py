@@ -32,6 +32,9 @@ from uav_tracking.core import Detection, TargetManager, TargetMode, TargetStatus
 from uav_tracking.core.models import TrackState
 from uav_tracking.core.uncertainty import pose_point_covariance
 from uav_tracking.core.navigation import NavigationEstimate, NavigationPrior, fit_ground_plane, estimate_footprint_from_points
+from uav_tracking.core.exclusive_navigation import (
+    METHOD as EXCLUSIVE_NAVIGATION_METHOD, MAX_EXCLUSIVE_PIXELS, estimate_exclusive_reference,
+)
 from uav_tracking.core.visibility import (
     MAX_OVERLAP_PIXELS, assess_overlap_visibility, fit_unique_visibility_model, nested_boxes,
 )
@@ -68,6 +71,7 @@ class StateEstimatorNode(Node):
         self.declare_parameter("max_coast_frames", 8)
         self.declare_parameter("max_lost_frames", 30)
         self.declare_parameter("navigation_enabled", False)
+        self.declare_parameter("navigation_exclusive_enabled", False)
         self.declare_parameter("navigation_correlated_two_face_bound", False)
         self.declare_parameter("navigation_state_topic", "/tracking/navigation_state")
         self.declare_parameter("navigation_diagnostics_topic", "/tracking/navigation_diagnostics")
@@ -83,6 +87,10 @@ class StateEstimatorNode(Node):
         if self._propagate_vehicle_uncertainty:
             self.create_subscription(Odometry, str(self.get_parameter("vehicle_odom_topic").value), self._on_pose_uncertainty, 20)
         self._navigation_enabled = bool(self.get_parameter("navigation_enabled").value)
+        self._navigation_exclusive_enabled = bool(self.get_parameter("navigation_exclusive_enabled").value)
+        if self._navigation_exclusive_enabled and (
+                not self._navigation_enabled or str(self.get_parameter("target_class").value) != "car"):
+            raise ValueError("exclusive navigation requires navigation_enabled and car")
         self._navigation_correlated_two_face_bound = bool(
             self.get_parameter("navigation_correlated_two_face_bound").value)
         if self._navigation_enabled:
@@ -489,6 +497,103 @@ class StateEstimatorNode(Node):
                 return False, {**evidence, "reason": verdict["reason"]}
         return True, {**evidence, "reason": "directed_front_visible"}
 
+    def _navigation_exclusive_evidence(self, observation: Any, observations: list[Any],
+                                       source: Any, timestamp: float) -> tuple[bool, dict[str, Any]]:
+        """Authorize E-only geometry without granting identity or reading shared depth."""
+        evidence: dict[str, Any] = {
+            "method": EXCLUSIVE_NAVIGATION_METHOD,
+            "scope": "CONDITIONAL_NOMINAL_SINGLE_FACE_ENGINEERING_MODEL_NOT_PHYSICAL_IDENTITY",
+            "reason": "exclusive_missing_native_evidence", "pairs": [],
+        }
+        required = ("navigation_exclusive_depth_complete", "navigation_exclusive_expected_pixel_count",
+                    "navigation_exclusive_valid_pixel_count", "navigation_exclusive_reason",
+                    "navigation_exclusive_points_camera_m")
+        if not all(hasattr(observation, name) for name in required):
+            return False, evidence
+        expected, valid = (getattr(observation, name) for name in required[1:3])
+        evidence.update(expected_pixels=expected, valid_pixels=valid,
+                        native_reason=str(observation.navigation_exclusive_reason))
+        if (observation.navigation_exclusive_depth_complete is not True
+                or type(expected) is not int or type(valid) is not int
+                or not 0 < expected <= MAX_EXCLUSIVE_PIXELS or valid != expected):
+            return False, {**evidence, "reason": "exclusive_native_depth_incomplete_or_budget"}
+        raw = np.asarray(observation.navigation_exclusive_points_camera_m, dtype=float)
+        if (raw.ndim != 1 or raw.size != expected * 3 or not np.isfinite(raw).all()
+                or np.any(raw.reshape(-1, 3)[:, 2] <= 0)):
+            return False, {**evidence, "reason": "exclusive_native_point_count_mismatch"}
+        source_key = self._stamp_key(source.header.stamp)
+        if (observation.class_name != "car" or not observation.navigation_bbox_inside_image
+                or observation.navigation_bbox_complete
+                or self._stamp_key(observation.header.stamp) != source_key
+                or (observation.camera_frame or observation.header.frame_id) != source.header.frame_id):
+            return False, {**evidence, "reason": "exclusive_cross_class_edge_or_stamp"}
+        selected_id = int(observation.candidate_id)
+        count = getattr(observation, "navigation_overlap_count", None)
+        pairs = [pair for pair in getattr(source, "navigation_overlaps", [])
+                 if selected_id in (int(pair.candidate_a_id), int(pair.candidate_b_id))]
+        if type(count) is not int or count <= 0 or len(pairs) != count:
+            return False, {**evidence, "reason": "exclusive_missing_overlap_metadata"}
+        accepted: dict[int, list[Any]] = defaultdict(list)
+        for track in self._manager.tracks:
+            if (track._matched_this_frame and track.last_measurement_timestamp == timestamp
+                    and track.last_detection is not None and track.position_3d is not None):
+                candidate = track.last_detection.metadata.get("candidate_id")
+                if candidate is not None:
+                    accepted[int(candidate)].append(track)
+        by_id: dict[int, list[Any]] = defaultdict(list)
+        for item in observations:
+            by_id[int(item.candidate_id)].append(item)
+
+        def original_box(item):
+            box = np.asarray([getattr(item, field) for field in
+                ("bbox_x_min_px", "bbox_y_min_px", "bbox_x_max_px", "bbox_y_max_px")], dtype=float)
+            if not np.isfinite(box).all() or np.any(box[2:] <= box[:2]):
+                raise ValueError("invalid_exclusive_bbox")
+            return box
+
+        selected_box = original_box(observation)
+        required_other_ids = {candidate for candidate, items in by_id.items() if candidate != selected_id
+            and any(np.all(np.minimum(selected_box[2:], original_box(item)[2:])
+                           > np.maximum(selected_box[:2], original_box(item)[:2])) for item in items)}
+        seen, seen_others = set(), set()
+        for pair in pairs:
+            a, b = int(pair.candidate_a_id), int(pair.candidate_b_id)
+            key = tuple(sorted((a, b)))
+            if a == b or key in seen:
+                return False, {**evidence, "reason": "exclusive_duplicate_overlap_pair"}
+            seen.add(key)
+            other_id = b if a == selected_id else a
+            seen_others.add(other_id)
+            if (len(by_id[selected_id]) != 1 or len(by_id[other_id]) != 1
+                    or len(accepted[selected_id]) != 1 or len(accepted[other_id]) != 1
+                    or accepted[selected_id][0].track_id == accepted[other_id][0].track_id):
+                return False, {**evidence, "reason": "exclusive_pair_not_uniquely_accepted"}
+            other = by_id[other_id][0]
+            if (other.class_name != "car" or not other.navigation_bbox_inside_image
+                    or self._stamp_key(other.header.stamp) != source_key
+                    or (other.camera_frame or other.header.frame_id) != source.header.frame_id
+                    or int(pair.class_a_id) != int(by_id[a][0].class_id)
+                    or int(pair.class_b_id) != int(by_id[b][0].class_id)):
+                return False, {**evidence, "reason": "exclusive_cross_class_edge_or_stamp"}
+            box_a, box_b = original_box(by_id[a][0]), original_box(by_id[b][0])
+            if (not np.array_equal(np.asarray(pair.bbox_a_px), box_a)
+                    or not np.array_equal(np.asarray(pair.bbox_b_px), box_b)
+                    or nested_boxes(box_a, box_b)):
+                return False, {**evidence, "reason": "exclusive_nested_or_bbox_mismatch"}
+            lower, upper = np.maximum(box_a[:2], box_b[:2]), np.minimum(box_a[2:], box_b[2:])
+            start, end = np.floor(lower).astype(int), np.ceil(upper).astype(int)
+            rectangle = (int(start[0]), int(start[1]), int(end[0]-start[0]), int(end[1]-start[1]))
+            if (not getattr(pair, "rectangle_representable", True) or np.any(upper <= lower)
+                    or (pair.u0, pair.v0, pair.width, pair.height) != rectangle
+                    or int(pair.expected_pixel_count) != rectangle[2] * rectangle[3]):
+                return False, {**evidence, "reason": "exclusive_overlap_rectangle_mismatch"}
+            # Shared pixels, other-body geometry and global depth ordering are
+            # intentionally not inputs to this separate E-only reference.
+            evidence["pairs"].append({"other_candidate_id": other_id, "unique_accepted": True})
+        if seen_others != required_other_ids:
+            return False, {**evidence, "reason": "exclusive_missing_overlap_competitor"}
+        return True, {**evidence, "reason": "exclusive_identity_and_structure_accepted"}
+
     def _navigation_reference(self, result: Any, observations: list[Any], source: Any, timestamp: float) -> tuple[Any, dict[str, Any]]:
         """Use only the accepted selected candidate; preserve surface identity."""
         target = result.target
@@ -523,38 +628,55 @@ class StateEstimatorNode(Node):
                     details[name] = value
                 details.update(missing_quality_fields=missing_quality, invalid_quality_fields=invalid_quality)
                 key = (self._stamp_key(source.header.stamp), observation.camera_frame or observation.header.frame_id)
+                use_exclusive = (getattr(self, "_navigation_exclusive_enabled", False)
+                    and observation.class_name == "car"
+                    and (not getattr(observation, "navigation_bbox_complete", False)
+                         or getattr(observation, "navigation_overlap_count", 0) != 0))
+                details["navigation_reference_path"] = (EXCLUSIVE_NAVIGATION_METHOD if use_exclusive
+                                                        else "legacy_full_support")
                 ground = np.asarray(getattr(source, "navigation_ground_points_camera_m", []), dtype=float)
-                points = np.asarray(getattr(observation, "navigation_points_camera_m", []), dtype=float)
+                points = np.asarray(getattr(observation, "navigation_exclusive_points_camera_m" if use_exclusive
+                                           else "navigation_points_camera_m", []), dtype=float)
                 matrix = self._navigation_transform
                 if source.header.frame_id != (observation.camera_frame or observation.header.frame_id):
                     reference = NavigationEstimate(reason="mixed_navigation_camera_frames")
                 elif key != self._navigation_transform_key or matrix is None:
                     reference = NavigationEstimate(reason="missing_same_stamp_camera_transform")
-                elif ground.size < 120 or ground.size % 3 or points.size < 36 or points.size % 3:
+                elif ground.size < 120 or ground.size % 3 or (not use_exclusive and (points.size < 36 or points.size % 3)):
                     reference = NavigationEstimate(reason="insufficient_same_stamp_depth_support")
                 else:
                     rotation, camera = matrix[:3, :3], matrix[:3, 3]
                     details.update(camera_frame=str(key[1]), camera_transform_source_s=timestamp,
                                    camera_to_world_matrix=matrix.tolist())
                     ground_world = ground.reshape(-1, 3) @ rotation.T + camera
-                    object_world = points.reshape(-1, 3) @ rotation.T + camera
                     plane = fit_ground_plane(ground_world)
                     details.update(ground_valid=plane.valid, ground_reason=plane.reason,
                                    ground_inliers=plane.inlier_count, ground_samples=plane.sample_count,
                                    ground_residual_std_m=plane.residual_std_m)
                     if plane.valid:
-                        allowed, visibility = self._navigation_visibility(
-                            observation, observations, source, timestamp, plane, matrix)
-                        details["visibility"] = visibility
+                        if use_exclusive:
+                            allowed, visibility = self._navigation_exclusive_evidence(
+                                observation, observations, source, timestamp)
+                            details["exclusive_navigation"] = visibility
+                        else:
+                            allowed, visibility = self._navigation_visibility(
+                                observation, observations, source, timestamp, plane, matrix)
+                            details["visibility"] = visibility
                         if not allowed:
                             return NavigationEstimate(reason=visibility["reason"]), details
-                        ray = observation.navigation_bottom_ray_camera
-                        reference = estimate_footprint_from_points(
-                            object_world, ground_plane=plane, camera_position_world=camera,
-                            prior=self._navigation_prior,
-                            bottom_ray_world=rotation @ np.array([ray.x, ray.y, ray.z]),
-                            velocity_world=target.velocity_3d,
-                        )
+                        object_world = points.reshape(-1, 3) @ rotation.T + camera
+                        if use_exclusive:
+                            reference = estimate_exclusive_reference(
+                                object_world, ground_plane=plane, camera_position_world=camera,
+                                camera_forward_world=rotation[:, 2], prior=self._navigation_prior)
+                        else:
+                            ray = observation.navigation_bottom_ray_camera
+                            reference = estimate_footprint_from_points(
+                                object_world, ground_plane=plane, camera_position_world=camera,
+                                prior=self._navigation_prior,
+                                bottom_ray_world=rotation @ np.array([ray.x, ray.y, ray.z]),
+                                velocity_world=target.velocity_3d,
+                            )
                         if reference.valid:
                             # Reject extrapolation from a distant ground patch.
                             inliers = ground_world[np.abs(ground_world @ plane.normal + plane.offset) <= .08]

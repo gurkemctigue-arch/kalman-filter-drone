@@ -337,6 +337,8 @@ def main() -> None:
                         help="Opt in to car-only measured-component centroid recovery; unsupported cases retain the original measurement")
     parser.add_argument("--correlated-two-face-bound", action="store_true",
                         help="Use the declared fixed-normal 3-sigma two-face car bound; requires ground_footprint")
+    parser.add_argument("--exclusive-navigation-reference", action="store_true",
+                        help="Car-only native exclusive depth reference with explicit truncation uncertainty; requires ground_footprint")
     parser.add_argument("--magnetic-environment", choices=["archived_source", "coherent_wmm", "gazebo_enu"], default="archived_source")
     parser.add_argument("--magnetic-runtime-manifest", default=None,
                         help="Verified separate PX4 ELF/source manifest required for the opt-in Gazebo ENU magnetic contract")
@@ -385,6 +387,8 @@ def main() -> None:
         parser.error("simulation real-time factor must be in (0,1]")
     if args.correlated_two_face_bound and (args.control_reference != "ground_footprint" or args.target_class != "car"):
         parser.error("correlated two-face bound requires car ground_footprint navigation")
+    if args.exclusive_navigation_reference and (args.control_reference != "ground_footprint" or args.target_class != "car"):
+        parser.error("exclusive navigation reference requires car ground_footprint navigation")
     status_timing = supervisor_status_timing(args.px4_time_mode, args.real_time_factor)
     args.supervisor_status_timestamp_mode = status_timing["status_timestamp_mode"]
     args.supervisor_status_source_max_age_s = status_timing["status_source_max_age_s"]
@@ -540,6 +544,8 @@ def main() -> None:
         estimator["navigation_dimension_std_m"] = [.45, .18, .15] if args.target_class == "car" else [.1, .1, .2]
         parameters["uav_tracking_controller"]["ros__parameters"]["state_topic"] = "/tracking/navigation_state"
     parameters["uav_tracking_state_estimator"]["ros__parameters"]["navigation_correlated_two_face_bound"] = args.correlated_two_face_bound
+    for name in ("uav_tracking_detection", "uav_tracking_state_estimator"):
+        parameters[name]["ros__parameters"]["navigation_exclusive_enabled"] = args.exclusive_navigation_reference
     parameters["uav_tracking_state_estimator"]["ros__parameters"]["estimator_method"] = args.estimator_method
     parameters["uav_tracking_state_estimator"]["ros__parameters"]["propagate_vehicle_uncertainty"] = args.propagate_vehicle_uncertainty
     parameters["uav_tracking_px4_adapter"]["ros__parameters"]["odometry_timestamp_mode"] = args.px4_time_mode

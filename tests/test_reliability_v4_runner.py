@@ -79,6 +79,7 @@ def fixture(root, *, navigation=True, gates=False, ros_distro="jazzy"):
     for setting in protocol["resources"].values():
         setting.pop(v4.CORRELATED_BOUND_FIELD, None)
         setting.pop("car_surface_recovery", None)
+        setting.pop(v4.EXCLUSIVE_NAVIGATION_FIELD, None)
     # Test repositories have an explicit synthetic environment independent of
     # the production protocol selected by the workspace running this suite.
     # In particular a Humble freeze must not make this Jazzy fixture claim to

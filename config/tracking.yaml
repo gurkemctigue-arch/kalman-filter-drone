@@ -17,6 +17,7 @@ uav_tracking_detection:
     camera_info_topic: /camera/color/camera_info
     observation_topic: /tracking/observations
     depth_max_age_s: 0.20
+    navigation_exclusive_enabled: false
 
 uav_tracking_state_estimator:
   ros__parameters:
@@ -36,6 +37,7 @@ uav_tracking_state_estimator:
     max_observation_age_s: 0.60
     target_mode: auto_unique
     target_class: person
+    navigation_exclusive_enabled: false
 
 uav_tracking_controller:
   ros__parameters:

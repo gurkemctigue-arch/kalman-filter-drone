@@ -36,3 +36,10 @@ uint32 navigation_overlap_count
 # Additional same-stamp support outside every OTHER visible detection box.
 # Used only for visibility models; never replaces the original navigation cloud.
 float32[] navigation_visibility_support_camera_m
+# Opt-in complete native-pixel support outside EVERY other visible box.
+# Separate from both legacy sampled clouds. Missing/default fields are UNKNOWN.
+bool navigation_exclusive_depth_complete
+uint32 navigation_exclusive_expected_pixel_count
+uint32 navigation_exclusive_valid_pixel_count
+string navigation_exclusive_reason
+float32[] navigation_exclusive_points_camera_m

@@ -30,6 +30,8 @@ CONDITIONS = ("depth_noise", "depth_holes", "dropout", "latency", "combined", "s
 SAFETY_CASES = ("auto_unique_multi", "locked_ambiguity")
 CORRELATED_BOUND_FIELD = "navigation_correlated_two_face_bound"
 CORRELATED_BOUND_FLAG = "--correlated-two-face-bound"
+EXCLUSIVE_NAVIGATION_FIELD = "navigation_exclusive_reference"
+EXCLUSIVE_NAVIGATION_FLAG = "--exclusive-navigation-reference"
 CAR_SURFACE_RECOVERY_FIELD = "car_surface_recovery"
 CAR_SURFACE_RECOVERY_FLAG = "--car-surface-recovery"
 DELIVERIES = ("offline_replay20", "videos12", "detection_audit", "figures_documents", "runtime_logs")
@@ -119,6 +121,33 @@ def car_surface_recovery_evidence(runtime, resource, cls, configuration, paramet
     require(isinstance(flight_argv, list) and all(isinstance(value, str) for value in flight_argv)
             and not any(value == CAR_SURFACE_RECOVERY_FLAG or value.startswith(CAR_SURFACE_RECOVERY_FLAG + "=")
                         for value in flight_argv), "Safety car surface recovery historical CLI must remain off")
+    return False
+
+
+def exclusive_navigation_evidence(runtime, resource, cls, configuration, parameters, flight_argv):
+    validator = getattr(runtime.v4, "exclusive_navigation_runtime_evidence", None)
+    if callable(validator):
+        try:
+            evidence = validator(resource, cls, configuration, parameters, flight_argv)
+        except (TypeError, ValueError) as error:
+            raise Refusal("Safety exclusive navigation registration is invalid") from error
+        require(isinstance(evidence, dict) and isinstance(evidence.get("errors"), list) and not evidence["errors"],
+                "Safety exclusive navigation declaration/CLI/runtime archives differ")
+        return evidence["enabled"]
+    require(isinstance(resource, dict) and cls in CLASSES and EXCLUSIVE_NAVIGATION_FIELD not in resource,
+            "Safety exclusive navigation declaration requires its frozen shared validator")
+    require(isinstance(configuration, dict) and isinstance(parameters, dict), "Safety exclusive navigation archives malformed")
+    fields = [(configuration, "exclusive_navigation_reference")]
+    for name in ("uav_tracking_detection", "uav_tracking_state_estimator"):
+        node = parameters.get(name, {})
+        require(isinstance(node, dict), "Safety historical exclusive navigation node archive malformed")
+        fields.append((node.get("ros__parameters", {}), "navigation_exclusive_enabled"))
+    for values, key in fields:
+        require(isinstance(values, dict) and (key not in values or type(values[key]) is bool and values[key] is False),
+                "Safety historical exclusive navigation archive must remain off")
+    require(isinstance(flight_argv, list) and all(isinstance(value, str) for value in flight_argv)
+            and not any(value == EXCLUSIVE_NAVIGATION_FLAG or value.startswith(EXCLUSIVE_NAVIGATION_FLAG+"=") for value in flight_argv),
+            "Safety historical exclusive navigation CLI must remain off")
     return False
 
 
@@ -586,6 +615,7 @@ def validate_safety(manifest, context, runtime):
                 and "--occlusions" not in flight_argv and "--reselect-after-loss" not in flight_argv, "Safety flight invocation does not name original frozen trial/mode")
         geometry_bound_evidence(resource, cls, configuration, parameters, flight_argv)
         car_surface_recovery_evidence(runtime, resource, cls, configuration, parameters, flight_argv)
+        exclusive_navigation_evidence(runtime, resource, cls, configuration, parameters, flight_argv)
         simulation_pacing_evidence(runtime, context.core["protocol"], configuration, parameters, flight_argv)
         for kind in ("source_clock", "native_startup", "specialized", "terminal_speed"):
             _, finished = validate_execution(executions[kind], after=flight_end)

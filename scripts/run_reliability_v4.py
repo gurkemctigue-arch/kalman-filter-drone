@@ -77,6 +77,10 @@ REPORT_PROVENANCE_HELPERS = {
 GIMBAL_REEVALUATION_FILENAME = "gimbal_terminal_audit_rev2.json"
 CORRELATED_BOUND_FIELD = "navigation_correlated_two_face_bound"
 CORRELATED_BOUND_FLAG = "--correlated-two-face-bound"
+EXCLUSIVE_NAVIGATION_FIELD = "navigation_exclusive_reference"
+EXCLUSIVE_NAVIGATION_FLAG = "--exclusive-navigation-reference"
+EXCLUSIVE_NAVIGATION_METHOD = "native_exclusive_single_face_center_v1"
+EXCLUSIVE_NAVIGATION_MAX_PIXELS = 16384
 CAR_SURFACE_RECOVERY_FIELD = "car_surface_recovery"
 CAR_SURFACE_RECOVERY_FLAG = "--car-surface-recovery"
 # A declaration binds this fixed implementation; it does not configure new
@@ -396,6 +400,69 @@ def correlated_two_face_setting(setting, cls):
     return enabled
 
 
+def exclusive_navigation_setting(setting, cls):
+    """Historical registrations are off; the new measurement path is car-only."""
+    if not isinstance(setting, dict) or cls not in CLASSES:
+        raise ValueError("Invalid class resources for " + EXCLUSIVE_NAVIGATION_FIELD)
+    enabled = setting.get(EXCLUSIVE_NAVIGATION_FIELD, False)
+    if type(enabled) is not bool or enabled and cls != "car":
+        raise ValueError(EXCLUSIVE_NAVIGATION_FIELD + " must be a strict boolean; only car may enable it")
+    return enabled
+
+
+def exclusive_navigation_summary(protocol):
+    if not isinstance(protocol, dict) or not isinstance(protocol.get("resources"), dict):
+        raise ValueError("Invalid " + EXCLUSIVE_NAVIGATION_FIELD + " protocol resources")
+    return {cls: exclusive_navigation_setting(protocol["resources"].get(cls), cls) for cls in CLASSES}
+
+
+def exclusive_navigation_declared(protocol):
+    exclusive_navigation_summary(protocol)
+    return any(EXCLUSIVE_NAVIGATION_FIELD in protocol["resources"][cls] for cls in CLASSES)
+
+
+def _exclusive_navigation_command_matches(command, enabled):
+    return (isinstance(command, list) and all(isinstance(value, str) for value in command)
+            and command.count(EXCLUSIVE_NAVIGATION_FLAG) == int(enabled)
+            and not any(value.startswith(EXCLUSIVE_NAVIGATION_FLAG + "=") for value in command))
+
+
+def exclusive_navigation_trial_binding(plan, trial):
+    cls = trial["target_class"]
+    resource = plan["protocol"]["resources"][cls]
+    enabled = exclusive_navigation_setting(resource, cls)
+    explicit = EXCLUSIVE_NAVIGATION_FIELD in resource
+    if ((EXCLUSIVE_NAVIGATION_FIELD in trial) != explicit
+            or exclusive_navigation_setting(trial, cls) is not enabled
+            or not _exclusive_navigation_command_matches(trial.get("flight_command"), enabled)):
+        raise ValueError("Trial " + EXCLUSIVE_NAVIGATION_FIELD + " differs from class registration")
+    return enabled, explicit
+
+
+def exclusive_navigation_runtime_evidence(resource, cls, configuration, parameters, flight_argv):
+    """Bind the actual measurement-domain opt-in at both ends of the ROS link."""
+    enabled = exclusive_navigation_setting(resource, cls)
+    explicit = EXCLUSIVE_NAVIGATION_FIELD in resource
+    errors = []
+    if not _exclusive_navigation_command_matches(flight_argv, enabled):
+        errors.append("flight_command:" + EXCLUSIVE_NAVIGATION_FIELD)
+    if not isinstance(configuration, dict) or not isinstance(parameters, dict):
+        return {"enabled": enabled, "explicit": explicit, "errors": [*errors, "exclusive_navigation:malformed_runtime_archives"]}
+    _bound_boolean_evidence(configuration, "exclusive_navigation_reference", enabled, explicit,
+                            errors, "run_config:exclusive_navigation_reference")
+    for name in ("uav_tracking_detection", "uav_tracking_state_estimator"):
+        node = parameters.get(name, {})
+        values = node.get("ros__parameters", {}) if isinstance(node, dict) else None
+        if not isinstance(values, dict):
+            errors.append("runtime_parameters:" + name + ":malformed")
+        else:
+            _bound_boolean_evidence(values, "navigation_exclusive_enabled", enabled, explicit,
+                                    errors, "runtime_parameters:" + name + ":navigation_exclusive_enabled")
+    return {"enabled": enabled, "explicit": explicit, "errors": errors,
+            "method": EXCLUSIVE_NAVIGATION_METHOD, "max_native_exclusive_pixels": EXCLUSIVE_NAVIGATION_MAX_PIXELS,
+            "scope": "CONDITIONAL_ON_ORIGINAL_NOMINAL_FACE_ASSIGNMENT_NOT_PHYSICAL_IDENTITY_CERTIFICATE"}
+
+
 def correlated_two_face_trial_binding(plan, trial):
     """Bind registration, immutable trial spec and its exact CLI opt-in."""
     cls = trial["target_class"]
@@ -616,8 +683,9 @@ def validate_protocol(protocol):
         setting = resources.get(cls)
         correlated_two_face_setting(setting, cls)
         car_surface_recovery_setting(setting, cls)
+        exclusive_navigation_setting(setting, cls)
         legacy_setting = {key: value for key, value in setting.items()
-                          if key not in {CORRELATED_BOUND_FIELD, CAR_SURFACE_RECOVERY_FIELD}}
+                          if key not in {CORRELATED_BOUND_FIELD, CAR_SURFACE_RECOVERY_FIELD, EXCLUSIVE_NAVIGATION_FIELD}}
         expected_model = car_model if cls == "car" and registration is not None else "models/" + model
         if legacy_setting != {"model": expected_model, "inference_image_size": size,
                                   "inference_threads": threads, "desired_distance_m": distance}:
@@ -695,6 +763,8 @@ def trial_spec(root, protocol, prefix, cls, group, seed, wall_timeout):
         command.append(CORRELATED_BOUND_FLAG)
     if surface_recovery["enabled"]:
         command.append(CAR_SURFACE_RECOVERY_FLAG)
+    if exclusive_navigation_setting(setting, cls):
+        command.append(EXCLUSIVE_NAVIGATION_FLAG)
     spec["flight_command"] = command
     world_name = f"stage3_multi_{cls}.sdf" if spec["multi_target"] else f"stage{stage}_flight_{cls}.sdf"
     spec["world_source"] = "ros2_ws/src/uav_tracking_bringup/worlds/" + world_name
@@ -1113,6 +1183,7 @@ def validate_plan(plan, path=None):
         simulation_pacing_trial_binding(plan, original)
         correlated_two_face_trial_binding(plan, original)
         car_surface_recovery_trial_binding(plan, original)
+        exclusive_navigation_trial_binding(plan, original)
         for previous, current in zip(original["evaluations"], regenerated["evaluations"]):
             current["available_at_freeze"] = previous["available_at_freeze"]
             # Historical development commands are immutable evidence. The
@@ -1272,6 +1343,7 @@ def runtime_configuration(plan, trial):
         simulation_pacing_trial_binding(plan, trial)
         correlated_bound, explicit_bound = correlated_two_face_trial_binding(plan, trial)
         surface_recovery, explicit_surface_recovery = car_surface_recovery_trial_binding(plan, trial)
+        exclusive_navigation_trial_binding(plan, trial)
         config = load(directory / "run_config.json")
         expected = {key: trial[key] for key in ("name", "target_class", "stage", "seed", "speed_mps", "command_mode", "takeoff_mode",
             "gimbal_mode", "target_mode", "association_mode", "initial_select", "initial_min_candidates", "scenario_kind",
@@ -1303,6 +1375,10 @@ def runtime_configuration(plan, trial):
             plan["protocol"]["resources"][trial["target_class"]], trial["target_class"],
             config, parameters, trial["flight_command"])
         errors.extend(surface_evidence["errors"])
+        exclusive_evidence = exclusive_navigation_runtime_evidence(
+            plan["protocol"]["resources"][trial["target_class"]], trial["target_class"],
+            config, parameters, trial["flight_command"])
+        errors.extend(exclusive_evidence["errors"])
         pacing_evidence = simulation_pacing_runtime_evidence(plan["protocol"], config, parameters, trial["flight_command"])
         errors.extend(pacing_evidence["errors"])
         if explicit_surface_recovery:
@@ -1341,7 +1417,8 @@ def runtime_configuration(plan, trial):
         errors.extend(rendering["errors"])
         magnetic = magnetic_environment_evidence(plan, trial)
         errors.extend(magnetic["errors"])
-        return {"errors": errors, "arguments": expected, "simulation_pacing": pacing_evidence, "magnetic_environment": magnetic,
+        return {"errors": errors, "arguments": expected, "simulation_pacing": pacing_evidence,
+                "exclusive_navigation": exclusive_evidence, "magnetic_environment": magnetic,
                 "gazebo_rendering": rendering,
                 "run_config_sha256": sha(directory / "run_config.json"), "runtime_parameters_sha256": sha(path)}
     except (OSError, ValueError, KeyError, TypeError, AttributeError, ImportError) as error:
@@ -1955,6 +2032,8 @@ def validate_probe_gate(plan, *, extensions=False):
     }
     if car_surface_recovery_declared(plan["protocol"]):
         expected_binding["car_surface_recovery_sha256"] = digest(car_surface_recovery_summary(plan["protocol"]))
+    if exclusive_navigation_declared(plan["protocol"]):
+        expected_binding["exclusive_navigation_sha256"] = digest(exclusive_navigation_summary(plan["protocol"]))
     if simulation_pacing_declared(plan["protocol"]):
         expected_binding["simulation_pacing_sha256"] = digest(simulation_pacing_summary(plan["protocol"]))
     if gate.get("bindings") != expected_binding:
@@ -2004,6 +2083,8 @@ def validate_probe_gate(plan, *, extensions=False):
                 raise ValueError("Development probe geometry mode differs from final class registration")
             if car_surface_recovery_summary(previous["protocol"]) != car_surface_recovery_summary(plan["protocol"]):
                 raise ValueError("Development probe car surface recovery policy differs from final class registration")
+            if exclusive_navigation_summary(previous["protocol"]) != exclusive_navigation_summary(plan["protocol"]):
+                raise ValueError("Development probe exclusive navigation policy differs from final class registration")
             if simulation_pacing_summary(previous["protocol"]) != simulation_pacing_summary(plan["protocol"]):
                 raise ValueError("Development probe simulation pacing differs from final registration")
             if (any(previous["protocol"]["resources"][cls]["model"] != plan["protocol"]["resources"][cls]["model"]

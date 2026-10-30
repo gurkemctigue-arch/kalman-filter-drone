@@ -63,6 +63,8 @@ def bindings(plan):
     }
     if v4.car_surface_recovery_declared(plan["protocol"]):
         result["car_surface_recovery_sha256"] = v4.digest(v4.car_surface_recovery_summary(plan["protocol"]))
+    if v4.exclusive_navigation_declared(plan["protocol"]):
+        result["exclusive_navigation_sha256"] = v4.digest(v4.exclusive_navigation_summary(plan["protocol"]))
     if v4.simulation_pacing_declared(plan["protocol"]):
         result["simulation_pacing_sha256"] = v4.digest(v4.simulation_pacing_summary(plan["protocol"]))
     return result
@@ -72,6 +74,8 @@ def matching_recovery_policy(target, previous):
     """A matching source tree cannot qualify a different flight policy."""
     if v4.car_surface_recovery_summary(previous["protocol"]) != v4.car_surface_recovery_summary(target["protocol"]):
         raise ValueError("Probe car_surface_recovery policy differs from the target registration")
+    if v4.exclusive_navigation_summary(previous["protocol"]) != v4.exclusive_navigation_summary(target["protocol"]):
+        raise ValueError("Probe exclusive navigation policy differs from the target registration")
 
 
 def matching_pacing_policy(target, previous):

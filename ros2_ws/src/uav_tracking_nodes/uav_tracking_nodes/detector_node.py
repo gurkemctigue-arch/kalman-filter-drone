@@ -42,6 +42,9 @@ except ImportError:  # pragma: no cover - exercised only without ROS 2.
 from uav_tracking.ros_lifecycle import shutdown_requests
 from uav_tracking.core import CameraIntrinsics, depth_roi_stats, pinhole_backproject
 from uav_tracking.core.navigation import sample_depth_points
+from uav_tracking.core.exclusive_navigation import (
+    METHOD as EXCLUSIVE_NAVIGATION_METHOD, MAX_EXCLUSIVE_PIXELS, extract_native_exclusive,
+)
 from uav_tracking.control.gimbal_geometry import quaternion_rotation
 from uav_tracking_nodes.inference_worker import NonQueuingWorker
 from uav_tracking_nodes.inference_timing import InferenceTiming
@@ -94,6 +97,38 @@ def navigation_overlap_evidence(visible_boxes, depth, intrinsics, *, depth_scale
     return pairs
 
 
+def navigation_exclusive_evidence(depth, intrinsics, bbox, visible_boxes, candidate_id, *,
+                                 enabled, class_name, inside, overlap_count, depth_scale,
+                                 min_depth_m, max_depth_m):
+    """Transport complete native E, independently of legacy sampled support."""
+    evidence = dict(valid=False, reason="exclusive_navigation_disabled", expected_pixels=0,
+                    valid_pixels=0, points_camera_m=[], method=EXCLUSIVE_NAVIGATION_METHOD)
+    if not enabled:
+        return evidence
+    if class_name != "car" or not inside or overlap_count <= 0:
+        return {**evidence, "reason": "exclusive_navigation_not_eligible"}
+    try:
+        result = extract_native_exclusive(
+            depth, intrinsics, bbox,
+            [box for other_id, _, _, box in visible_boxes if other_id != candidate_id],
+            depth_scale=depth_scale, min_depth_m=min_depth_m, max_depth_m=max_depth_m)
+        expected, valid = result["expected_pixels"], result["valid_pixels"]
+        if (type(expected) is not int or type(valid) is not int
+                or not 0 <= valid <= expected < 2**32):
+            raise ValueError("unrepresentable_exclusive_counts")
+        evidence.update(reason=str(result["reason"]), expected_pixels=expected, valid_pixels=valid)
+        if result["valid"]:
+            points = np.asarray(result.get("points_camera_m", []), dtype=float)
+            if (not 0 < expected <= MAX_EXCLUSIVE_PIXELS or valid != expected
+                    or points.shape != (expected, 3) or not np.isfinite(points).all()
+                    or np.any(points[:, 2] <= 0)):
+                raise ValueError("exclusive_native_count_or_points_mismatch")
+            evidence.update(valid=True, points_camera_m=points.reshape(-1).tolist())
+    except (TypeError, ValueError, OverflowError, KeyError) as error:
+        evidence.update(valid=False, reason="exclusive_extraction_invalid:" + str(error), points_camera_m=[])
+    return evidence
+
+
 @dataclass(frozen=True)
 class InferenceSnapshot:
     rgb: Any
@@ -141,6 +176,11 @@ class DetectorNode(Node):
         self.declare_parameter("image_reliability", "best_effort")
         self.declare_parameter("navigation_enabled", False)
         self._navigation_enabled = bool(self.get_parameter("navigation_enabled").value)
+        self.declare_parameter("navigation_exclusive_enabled", False)
+        self._navigation_exclusive_enabled = bool(self.get_parameter("navigation_exclusive_enabled").value)
+        if self._navigation_exclusive_enabled and (
+                not self._navigation_enabled or str(self.get_parameter("class_name").value) != "car"):
+            raise ValueError("exclusive navigation requires navigation_enabled and car")
         # This optional correction preserves the baseline ROI statistics,
         # association gates, identity rules and navigation geometry.
         surface_defaults = {
@@ -699,6 +739,17 @@ class DetectorNode(Node):
                     min_depth_m=float(parameters["min_depth_m"]), max_depth_m=float(parameters["max_depth_m"]),
                 ) if inside and touching else np.empty((0, 3))
                 observation.navigation_visibility_support_camera_m = exclusive.reshape(-1).astype(float).tolist()
+                native_exclusive = navigation_exclusive_evidence(
+                    depth, snapshot.intrinsics, (x1, y1, x2, y2), visible_boxes, candidate_id,
+                    enabled=getattr(self, "_navigation_exclusive_enabled", False),
+                    class_name=class_name, inside=inside, overlap_count=len(touching),
+                    depth_scale=float(parameters["depth_scale"]),
+                    min_depth_m=float(parameters["min_depth_m"]), max_depth_m=float(parameters["max_depth_m"]))
+                observation.navigation_exclusive_depth_complete = native_exclusive["valid"]
+                observation.navigation_exclusive_expected_pixel_count = native_exclusive["expected_pixels"]
+                observation.navigation_exclusive_valid_pixel_count = native_exclusive["valid_pixels"]
+                observation.navigation_exclusive_reason = native_exclusive["reason"]
+                observation.navigation_exclusive_points_camera_m = native_exclusive["points_camera_m"]
                 ray = pinhole_backproject(((x1 + x2) / 2, y2), 1.0, snapshot.intrinsics)
                 observation.navigation_bottom_ray_camera.x = float(ray[0])
                 observation.navigation_bottom_ray_camera.y = float(ray[1])
@@ -719,6 +770,14 @@ class DetectorNode(Node):
                 "navigation_bbox_complete": bool(getattr(observation, "navigation_bbox_complete", False)),
                 "navigation_bbox_inside_image": bool(getattr(observation, "navigation_bbox_inside_image", False)),
                 "navigation_overlap_count": int(getattr(observation, "navigation_overlap_count", 0)),
+                "navigation_exclusive": {
+                    "enabled": bool(getattr(self, "_navigation_exclusive_enabled", False)),
+                    "method": EXCLUSIVE_NAVIGATION_METHOD,
+                    "depth_complete": bool(getattr(observation, "navigation_exclusive_depth_complete", False)),
+                    "expected_pixels": int(getattr(observation, "navigation_exclusive_expected_pixel_count", 0)),
+                    "valid_pixels": int(getattr(observation, "navigation_exclusive_valid_pixel_count", 0)),
+                    "reason": str(getattr(observation, "navigation_exclusive_reason", "not_generated")),
+                },
             })
         if surface_context is not None:
             surface_diagnostics["geometry"] = surface_context.diagnostics
