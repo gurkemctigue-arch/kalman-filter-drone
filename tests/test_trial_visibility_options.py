@@ -9,6 +9,22 @@ from scripts import run_stage1_trial as trial
 
 
 class TrialVisibilityOptionTests(unittest.TestCase):
+    def test_car_surface_recovery_rejects_person_before_allocating_a_trial(self):
+        for class_options in ([], ["--class", "person"]):
+            with self.subTest(class_options=class_options):
+                args = ["run_stage1_trial.py", "--name", "must_not_be_created",
+                        "--car-surface-recovery", *class_options]
+                error = io.StringIO()
+                with patch.object(sys, "argv", args), contextlib.redirect_stderr(error), \
+                        patch.object(trial, "prepare_ros_gz_runtime") as runtime, \
+                        patch.object(trial.Path, "mkdir") as mkdir:
+                    with self.assertRaises(SystemExit) as raised:
+                        trial.main()
+                self.assertEqual(raised.exception.code, 2)
+                self.assertIn("--car-surface-recovery requires --class car", error.getvalue())
+                runtime.assert_not_called()
+                mkdir.assert_not_called()
+
     def test_invalid_class_or_reference_is_rejected_before_runtime_preparation(self):
         for cls, reference in (("person", "ground_footprint"), ("car", "visible_surface")):
             with self.subTest(cls=cls, reference=reference):

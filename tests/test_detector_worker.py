@@ -678,7 +678,8 @@ class DetectorSchedulingTests(unittest.TestCase):
             node._on_rgb(image(1.5))
             for timestamp in range(2, 30):
                 node._on_depth(image(timestamp))
-            node._on_camera_info(NS(k=[200, 0, 0, 0, 200, 0], width=4, height=4))
+            node._on_camera_info(NS(k=[200, 0, 0, 0, 200, 0], width=4, height=4,
+                                    header=image(1.1).header))
             clock["nanoseconds"] = 1_600_000_000
             release.set()
             self.assertTrue(node._worker.wait_idle(1))

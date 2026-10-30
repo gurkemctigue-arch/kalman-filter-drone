@@ -12,6 +12,8 @@ from types import SimpleNamespace
 import unittest
 from unittest.mock import Mock, patch
 
+import yaml
+
 
 ROOT=Path(__file__).resolve().parents[1]
 spec=importlib.util.spec_from_file_location("seed_trial_runner",ROOT/"scripts/run_stage1_trial.py")
@@ -20,6 +22,12 @@ spec.loader.exec_module(runner)
 
 
 class SeedRunnerTests(unittest.TestCase):
+    def test_car_surface_recovery_is_explicitly_archived_and_reaches_launched_graph(self):
+        self.run_registered_seed(0, 1, target_class="car", recovery=True)
+
+    def test_copied_yaml_cannot_enable_recovery_without_the_cli_opt_in(self):
+        self.run_registered_seed(0, 1, target_class="car", configured_recovery=True)
+
     def test_full_runner_records_seed_and_passes_it_to_the_gazebo_process_environment(self):
         self.run_registered_seed(73,74)
         self.run_registered_seed(0,1)
@@ -33,16 +41,22 @@ class SeedRunnerTests(unittest.TestCase):
     def test_observer_cleanup_reporting_fault_still_preserves_and_archives_failed_trial(self):
         self.run_registered_seed(0,1,with_bag=True,observer_close_fails=True)
 
-    def run_registered_seed(self,registered,actual,*,with_bag=False,closure_fails=False,observer_close_fails=False):
+    def run_registered_seed(self,registered,actual,*,with_bag=False,closure_fails=False,observer_close_fails=False,
+                            target_class="person",recovery=False,configured_recovery=None):
         with tempfile.TemporaryDirectory() as temporary:
             root=Path(temporary)
             bringup=root/"ros2_ws/src/uav_tracking_bringup"
-            for relative in ("config/stage1_tracking_person.yaml","config/stage1_flight_bridge.yaml",
-                             "worlds/stage1_flight_person.sdf","models/target_person/model.sdf",
+            for relative in (f"config/stage1_tracking_{target_class}.yaml","config/stage1_flight_bridge.yaml",
+                             f"worlds/stage1_flight_{target_class}.sdf",f"models/target_{target_class}/model.sdf",
                              "models/x500_stage1/model.sdf"):
                 destination=bringup/relative
                 destination.parent.mkdir(parents=True,exist_ok=True)
                 shutil.copy2(ROOT/"ros2_ws/src/uav_tracking_bringup"/relative,destination)
+            if configured_recovery is not None:
+                config_path=bringup/f"config/stage1_tracking_{target_class}.yaml"
+                configured=yaml.safe_load(config_path.read_text(encoding="utf-8"))
+                configured["uav_tracking_detection"]["ros__parameters"]["car_surface_recovery_enabled"]=configured_recovery
+                config_path.write_text(yaml.safe_dump(configured),encoding="utf-8")
             # Only the existence/hash is needed: every process is mocked.
             model=root/"models/yolo11n.pt"
             model.parent.mkdir(parents=True)
@@ -114,7 +128,8 @@ class SeedRunnerTests(unittest.TestCase):
                 lifecycle.append("archive")
                 return {"status":"PASS","evidence_scope":"ORCHESTRATION_FIXTURE_ONLY"}
             argv=["trial","--name","seed_trial","--seed",str(registered),
-                  "--model-path","models/yolo11n.pt"]
+                  "--model-path","models/yolo11n.pt","--class",target_class]
+            if recovery:argv.append("--car-surface-recovery")
             if not with_bag:argv.append("--no-bag")
             with patch.object(runner,"__file__",str(root/"scripts/run_stage1_trial.py")), \
                     patch("sys.argv",argv), \
@@ -133,7 +148,7 @@ class SeedRunnerTests(unittest.TestCase):
             if with_bag:
                 closing.RecordingClosureObserver.assert_called_once()
                 self.assertEqual(closing.RecordingClosureObserver.call_args.kwargs['expected_truth_frames'],
-                                 {'target':['target_person'],'vehicle':['stage1_uav']})
+                                 {'target':[f'target_{target_class}'],'vehicle':['stage1_uav']})
                 self.assertEqual(lifecycle.count("pause_and_drain"),1)
                 self.assertLess(lifecycle.index("observer_start"),lifecycle.index("unpause"))
                 self.assertLess(lifecycle.index("pause_and_drain"),lifecycle.index("stop_bag"))
@@ -151,8 +166,18 @@ class SeedRunnerTests(unittest.TestCase):
             self.assertEqual(config["seed"],registered)
             self.assertEqual(config["gazebo_seed"],actual)
             self.assertEqual(config["gazebo_seed_mapping"],"registered_seed_plus_one_zero_is_ignored_by_gazebo_cli")
+            self.assertEqual(config["car_surface_recovery"],recovery)
+            self.assertEqual(config["car_surface_recovery_method"],"component_centroid_v1")
             self.assertEqual(environments["gazebo"]["STAGE_SIM_SEED"],str(actual))
             snapshot=root/"results/seed_trial/configuration"
+            runtime_path=snapshot/"runtime_parameters.yaml"
+            self.assertEqual(Path(environments["ros"]["STAGE_PARAMS_FILE"]),runtime_path.resolve())
+            detector=yaml.safe_load(runtime_path.read_text(encoding="utf-8"))["uav_tracking_detection"]["ros__parameters"]
+            self.assertEqual(detector["car_surface_recovery_enabled"],recovery)
+            expected_recovery={"car_surface_recovery_method":"component_centroid_v1",
+                "surface_geometry_frame":"map","surface_tf_timeout_s":.02,
+                "surface_max_image_pixels":307200,"surface_max_roi_pixels":307200,"surface_max_visible_boxes":64}
+            self.assertEqual({key:detector[key] for key in expected_recovery},expected_recovery)
             rendering=json.loads((snapshot/"gazebo_rendering_libraries.json").read_text())
             self.assertEqual(rendering["evidence_scope"],"ORCHESTRATION_FIXTURE_ONLY_NO_PROCESS_LAUNCHED")
             manifest=json.loads((snapshot/"px4_parameters.json").read_text())

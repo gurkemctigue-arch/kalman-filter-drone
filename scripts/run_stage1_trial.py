@@ -21,6 +21,16 @@ import yaml
 from uav_tracking.recording_archive import archive_compression_profile, create_recording_spool, finalize_recording
 
 
+CAR_SURFACE_RECOVERY_PARAMETERS = {
+    "car_surface_recovery_method": "component_centroid_v1",
+    "surface_geometry_frame": "map",
+    "surface_tf_timeout_s": .02,
+    "surface_max_image_pixels": 307200,
+    "surface_max_roi_pixels": 307200,
+    "surface_max_visible_boxes": 64,
+}
+
+
 def simulation_status_watchdog_s(requested_real_time_factor: float) -> float:
     """Legacy receipt-mode wall budget; never infer source age from this RTF."""
     if not math.isfinite(requested_real_time_factor) or not 0 < requested_real_time_factor <= 1:
@@ -311,6 +321,8 @@ def main() -> None:
     parser.add_argument("--monitor-tick-s", type=float, default=0.10,
                         help="Shutter scheduler resolution; acknowledgement-based minimum dwell is unchanged")
     parser.add_argument("--control-reference", choices=["visible_surface", "ground_footprint"], default="visible_surface")
+    parser.add_argument("--car-surface-recovery", action="store_true",
+                        help="Opt in to car-only measured-component centroid recovery; unsupported cases retain the original measurement")
     parser.add_argument("--correlated-two-face-bound", action="store_true",
                         help="Use the declared fixed-normal 3-sigma two-face car bound; requires ground_footprint")
     parser.add_argument("--magnetic-environment", choices=["archived_source", "coherent_wmm", "gazebo_enu"], default="archived_source")
@@ -326,6 +338,9 @@ def main() -> None:
     parser.add_argument("--real-time-factor", type=float, default=1.0)
     parser.add_argument("--motion-profile-kind", choices=["standard", "speed_changes"], default="standard")
     args = parser.parse_args()
+    if args.car_surface_recovery and args.target_class != "car":
+        parser.error("--car-surface-recovery requires --class car")
+    args.car_surface_recovery_method = CAR_SURFACE_RECOVERY_PARAMETERS["car_surface_recovery_method"]
     if args.gazebo_render_driver == "llvmpipe" and args.render_backend != "egl":
         parser.error("--gazebo-render-driver llvmpipe requires --render-backend egl")
     if not math.isfinite(args.monitor_tick_s) or not .01 <= args.monitor_tick_s <= .10:
@@ -481,6 +496,12 @@ def main() -> None:
     env["STAGE_WORLD_FILE"] = str(runtime_world)
     if args.model_path:
         parameters["uav_tracking_detection"]["ros__parameters"]["model_path"] = args.model_path
+    # The CLI owns activation, including when a copied base YAML enables it.
+    # Archive the fixed method/budget contract without changing legacy gates.
+    parameters["uav_tracking_detection"]["ros__parameters"].update(
+        car_surface_recovery_enabled=args.car_surface_recovery,
+        **CAR_SURFACE_RECOVERY_PARAMETERS,
+    )
     if args.inference_threads is not None:
         if args.inference_threads < 1:
             parser.error("inference threads must be positive")

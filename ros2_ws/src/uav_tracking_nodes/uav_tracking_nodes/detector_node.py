@@ -29,6 +29,8 @@ try:  # ROS imports are intentionally kept inside the adapter package.
     from rclpy.executors import ExternalShutdownException, SingleThreadedExecutor
     from rclpy.qos import QoSProfile, ReliabilityPolicy
     from rclpy.signals import SignalHandlerOptions
+    from rclpy.duration import Duration
+    from rclpy.time import Time
     from sensor_msgs.msg import CameraInfo, Image
     from std_msgs.msg import String
     from uav_tracking_interfaces.msg import NavigationOverlap, TargetObservation, TargetObservationArray
@@ -40,6 +42,7 @@ except ImportError:  # pragma: no cover - exercised only without ROS 2.
 from uav_tracking.ros_lifecycle import shutdown_requests
 from uav_tracking.core import CameraIntrinsics, depth_roi_stats, pinhole_backproject
 from uav_tracking.core.navigation import sample_depth_points
+from uav_tracking.control.gimbal_geometry import quaternion_rotation
 from uav_tracking_nodes.inference_worker import NonQueuingWorker
 from uav_tracking_nodes.inference_timing import InferenceTiming
 
@@ -107,6 +110,7 @@ class InferenceSnapshot:
     previous_acquisition_s: float | None = None
     timer_input_lock_wait_wall_s: float | None = None
     timer_input_lock_snapshot_hold_wall_s: float | None = None
+    camera_info_source: dict[str, Any] | None = None
 
 
 
@@ -137,6 +141,39 @@ class DetectorNode(Node):
         self.declare_parameter("image_reliability", "best_effort")
         self.declare_parameter("navigation_enabled", False)
         self._navigation_enabled = bool(self.get_parameter("navigation_enabled").value)
+        # This optional correction preserves the baseline ROI statistics,
+        # association gates, identity rules and navigation geometry.
+        surface_defaults = {
+            "car_surface_recovery_enabled": False,
+            "car_surface_recovery_method": "component_centroid_v1",
+            "surface_geometry_frame": "map",
+            "surface_tf_timeout_s": 0.02,
+            "surface_max_image_pixels": 307200,
+            "surface_max_roi_pixels": 307200,
+            "surface_max_visible_boxes": 64,
+        }
+        for name, default in surface_defaults.items():
+            self.declare_parameter(name, default)
+        self._surface_settings = {name: self.get_parameter(name).value for name in surface_defaults}
+        self._surface_settings.update({name: self.get_parameter(name).value for name in (
+            "image_topic", "depth_topic", "camera_info_topic")})
+        self._surface_tf_buffer = None
+        self._surface_tf_listener = None
+        if self._surface_settings["car_surface_recovery_enabled"]:
+            if str(self.get_parameter("class_name").value) != "car" or int(self.get_parameter("class_id").value) != 2:
+                raise ValueError("car surface recovery requires the COCO car class (2)")
+            if self._surface_settings["car_surface_recovery_method"] != "component_centroid_v1":
+                raise ValueError("unsupported car surface recovery method")
+            timeout = float(self._surface_settings["surface_tf_timeout_s"])
+            if not math.isfinite(timeout) or not 0 <= timeout <= 0.02:
+                raise ValueError("surface TF timeout must be between 0 and 0.02 seconds")
+            if not str(self._surface_settings["surface_geometry_frame"]).strip():
+                raise ValueError("surface geometry frame is required")
+            from tf2_ros import Buffer, TransformListener
+            # Bind jump handling to this node's ROS clock, so simulation
+            # rollback cannot leave a previous epoch's geometry in the cache.
+            self._surface_tf_buffer = Buffer(node=self)
+            self._surface_tf_listener = TransformListener(self._surface_tf_buffer, self, spin_thread=False)
 
         self._bridge = CvBridge()
         self._input_lock = Lock()
@@ -147,6 +184,7 @@ class DetectorNode(Node):
         self._depth_received_ros_ns: dict[int, int] = {}
         self._intrinsics: CameraIntrinsics | None = None
         self._camera_size: tuple[int, int] | None = None
+        self._camera_info_source: dict[str, Any] | None = None
         self._model: Any = None
         self._effective_inference_threads: int | None = None
         self._last_inference_stamp: float | None = None
@@ -251,6 +289,11 @@ class DetectorNode(Node):
         with self._input_lock:
             self._intrinsics = CameraIntrinsics(message.k[0], message.k[4], message.k[2], message.k[5])
             self._camera_size = (int(message.width), int(message.height))
+            self._camera_info_source = {
+                "stamp_ns": self._stamp_nanoseconds(message.header.stamp),
+                "frame_id": str(message.header.frame_id),
+                "calibration_scope": "STATIC_CALIBRATION_CACHED_CAMERA_INFO",
+            }
 
     def _on_depth(self, message: Image) -> None:
         with self._input_lock:
@@ -346,6 +389,7 @@ class DetectorNode(Node):
                 "inference_image_size", "inference_device", "class_id", "class_name", "confidence_threshold",
                 "depth_scale", "min_depth_m", "max_depth_m", "min_depth_valid_ratio",
             )}
+            parameters.update(getattr(self, "_surface_settings", {}))
             snapshot = InferenceSnapshot(
                 message, depth_message, intrinsics, camera_size, sync_error, parameters,
                 self._clock_epoch, now_ns,
@@ -354,6 +398,7 @@ class DetectorNode(Node):
                 time.perf_counter(), self._last_inference_stamp,
                 timer_acquired_wall - timer_requested_wall,
                 time.perf_counter() - timer_acquired_wall,
+                None if getattr(self, "_camera_info_source", None) is None else dict(self._camera_info_source),
             )
             if self._worker.submit(snapshot):
                 self._last_inference_stamp = stamp_seconds
@@ -362,6 +407,117 @@ class DetectorNode(Node):
     def _on_inference_error(self, error: Exception) -> None:
         if not getattr(self, "_stopping", False):
             self.get_logger().warning(f"YOLO inference failed: {error}")
+
+    def _lookup_surface_up(self, snapshot: InferenceSnapshot) -> tuple[np.ndarray, dict[str, Any]]:
+        """World up in the optical frame at this acquisition, never latest TF."""
+        from tf2_ros import TransformException
+
+        camera_frame = str(snapshot.rgb.header.frame_id)
+        geometry_frame = str(snapshot.parameters.get("surface_geometry_frame", "map"))
+        try:
+            transform = self._surface_tf_buffer.lookup_transform(
+                camera_frame, geometry_frame, Time.from_msg(snapshot.rgb.header.stamp),
+                timeout=Duration(seconds=float(snapshot.parameters.get("surface_tf_timeout_s", 0.02))),
+            )
+        except TransformException as error:
+            raise ValueError("same-acquisition TF unavailable: " + str(error)) from error
+        q = transform.transform.rotation
+        rotation = quaternion_rotation((q.x, q.y, q.z, q.w))
+        up = rotation @ np.array([0., 0., 1.])
+        return up, {
+            "query_stamp_ns": self._stamp_nanoseconds(snapshot.rgb.header.stamp),
+            "target_frame": camera_frame, "source_frame": geometry_frame,
+            "returned_stamp_ns": self._stamp_nanoseconds(transform.header.stamp),
+            "rotation_camera_from_geometry": rotation.tolist(), "up_camera": up.tolist(),
+            "lookup_policy": "EXACT_ACQUISITION_NO_LATEST_FALLBACK",
+        }
+
+    def _prepare_surface_recovery(self, snapshot: InferenceSnapshot, depth: np.ndarray,
+                                  visible_boxes: list) -> tuple[Any, dict[str, Any]]:
+        """Prepare one shared geometry context; failure preserves all raw inputs."""
+        parameters = snapshot.parameters
+        enabled = bool(parameters.get("car_surface_recovery_enabled", False))
+        info = {
+            "enabled": enabled,
+            "method": str(parameters.get("car_surface_recovery_method", "component_centroid_v1")),
+            "status": "RAW_BASELINE", "reason": "DISABLED",
+            "source_key": [snapshot.clock_epoch, self._stamp_nanoseconds(snapshot.rgb.header.stamp)],
+            "rgb_topic": parameters.get("image_topic", "/camera/color/image_raw"),
+            "depth_topic": parameters.get("depth_topic", "/camera/aligned_depth_to_color/image_raw"),
+            "camera_info_topic": parameters.get("camera_info_topic", "/camera/color/camera_info"),
+            "rgb_stamp_ns": self._stamp_nanoseconds(snapshot.rgb.header.stamp),
+            "depth_stamp_ns": self._stamp_nanoseconds(snapshot.depth.header.stamp),
+            "camera_frame": str(snapshot.rgb.header.frame_id),
+            "depth_frame": str(snapshot.depth.header.frame_id),
+            "camera_info_source": snapshot.camera_info_source,
+            "intrinsics": {name: float(getattr(snapshot.intrinsics, name)) for name in ("fx", "fy", "cx", "cy")},
+            "camera_size": list(snapshot.camera_size), "depth_dtype": str(depth.dtype),
+            "depth_options": {name: parameters[name] for name in (
+                "depth_scale", "min_depth_m", "max_depth_m", "min_depth_valid_ratio")},
+            "roi_margin": 0.15, "covariance_status": "EXISTING_RAW_ROI_HEURISTIC_NOT_CENTROID_CALIBRATED",
+            "identity_assessed": False, "pending_implemented": False,
+        }
+        if not enabled:
+            return None, info
+        info["status"] = "RAW_FALLBACK"
+        if str(parameters["class_name"]) != "car" or int(parameters["class_id"]) != 2:
+            info["reason"] = "NOT_CAR_CLASS"
+            return None, info
+        if info["method"] != "component_centroid_v1":
+            info["reason"] = "UNSUPPORTED_METHOD"
+            return None, info
+        if info["rgb_stamp_ns"] != info["depth_stamp_ns"]:
+            info["reason"] = "RGB_DEPTH_INTEGER_STAMP_MISMATCH"
+            return None, info
+        if info["rgb_stamp_ns"] == 0:
+            # tf2 reserves zero for "latest", so exact acquisition recovery
+            # cannot be requested at simulation epoch zero.
+            info["reason"] = "ZERO_STAMP_WOULD_QUERY_LATEST_TF"
+            return None, info
+        if not info["camera_frame"] or info["depth_frame"] != info["camera_frame"]:
+            info["reason"] = "ALIGNED_DEPTH_FRAME_MISMATCH"
+            return None, info
+        if snapshot.camera_info_source is None:
+            info["reason"] = "CAMERA_INFO_SOURCE_UNAVAILABLE"
+            return None, info
+        if snapshot.camera_info_source["frame_id"] != info["camera_frame"]:
+            info["reason"] = "CAMERA_INFO_FRAME_MISMATCH"
+            return None, info
+        if not any(item[2] == 2 for item in visible_boxes):
+            info["reason"] = "NO_CAR_CANDIDATES"
+            return None, info
+        try:
+            from uav_tracking.core.car_surface_measurement import (
+                DepthOptions, WorkBudget, prepare_car_surface_frame,
+            )
+            from uav_tracking.core.navigation import NavigationPrior
+
+            up_camera, info["tf"] = self._lookup_surface_up(snapshot)
+            prior = NavigationPrior("car", 4.5, 1.8, 1.5,
+                                    dimension_std_m=(0.45, 0.18, 0.15),
+                                    prior_id="declared_family_dimensions_v4")
+            info["family_prior"] = {"class_name": "car", "dimensions_m": [4.5, 1.8, 1.5],
+                                    "dimension_std_m": [0.45, 0.18, 0.15]}
+            budget = WorkBudget(
+                max_image_pixels=int(parameters.get("surface_max_image_pixels", 307200)),
+                max_roi_pixels=int(parameters.get("surface_max_roi_pixels", 307200)),
+                max_visible_boxes=int(parameters.get("surface_max_visible_boxes", 64)),
+            )
+            info["resource_budget"] = dict(vars(budget))
+            context = prepare_car_surface_frame(
+                depth, snapshot.intrinsics, [item[3] for item in visible_boxes],
+                depth_options=DepthOptions(
+                    float(parameters["min_depth_m"]), float(parameters["max_depth_m"]),
+                    depth_scale=float(parameters["depth_scale"]),
+                    min_valid_fraction=float(parameters["min_depth_valid_ratio"])),
+                prior=prior, up_camera=up_camera, budget=budget,
+            )
+            info.update(status="GEOMETRY_PREPARED", reason="PER_CANDIDATE_ASSESSMENT",
+                        geometry=context.diagnostics)
+            return context, info
+        except (ValueError, RuntimeError, TypeError) as error:
+            info.update(reason="GEOMETRY_OR_TF_UNAVAILABLE", error=str(error))
+            return None, info
 
     def _infer_snapshot(self, snapshot: InferenceSnapshot) -> None:
         timing = InferenceTiming()
@@ -437,6 +593,11 @@ class DetectorNode(Node):
                     or bounds[2] <= bounds[0] or bounds[3] <= bounds[1]):
                 continue
             visible_boxes.append((candidate_id, score, detected_class, bounds))
+        surface_context, surface_diagnostics = self._prepare_surface_recovery(snapshot, depth, visible_boxes)
+        surface_diagnostics["visible_boxes"] = [
+            {"candidate_id": item[0], "confidence": item[1], "class_id": item[2], "bbox": list(item[3])}
+            for item in visible_boxes
+        ]
         overlaps = []
         if getattr(self, "_navigation_enabled", False):
             overlaps = navigation_overlap_evidence(
@@ -445,7 +606,7 @@ class DetectorNode(Node):
                 min_depth_m=float(parameters["min_depth_m"]),
                 max_depth_m=float(parameters["max_depth_m"]))
         detections, observations = [], []
-        for candidate_id, score, detected_class, (x1, y1, x2, y2) in visible_boxes:
+        for box_index, (candidate_id, score, detected_class, (x1, y1, x2, y2)) in enumerate(visible_boxes):
             if detected_class != class_id:
                 continue
             stats = depth_roi_stats(
@@ -482,6 +643,39 @@ class DetectorNode(Node):
                 observation.position_camera_m.x = float(point[0])
                 observation.position_camera_m.y = float(point[1])
                 observation.position_camera_m.z = float(point[2])
+            raw_position = ([float(observation.position_camera_m.x), float(observation.position_camera_m.y),
+                             float(observation.position_camera_m.z)] if observation.depth_valid else None)
+            surface_candidate = {
+                "box_index": box_index, "raw_position_camera_m": raw_position,
+                "output_position_camera_m": raw_position,
+                "action": "RAW_FALLBACK" if surface_diagnostics["enabled"] else "RAW_BASELINE",
+                "status": "UNKNOWN" if surface_diagnostics["enabled"] else "DISABLED",
+                "reason": surface_diagnostics["reason"],
+                "reference_kind": "bbox_center_ray_raw_roi_median_depth",
+            }
+            if surface_context is not None:
+                try:
+                    assessment = surface_context.assess(box_index, class_name=class_name)
+                except (ValueError, RuntimeError, np.linalg.LinAlgError) as error:
+                    assessment = {"status": "UNKNOWN", "reason": "GEOMETRY_ASSESSMENT_FAILED",
+                                  "evidence": {"error": str(error)}, "measurement": None}
+                surface_candidate.update(status=assessment["status"], reason=assessment["reason"],
+                                         evidence=assessment["evidence"])
+                replacement = assessment["measurement"]
+                # Keep raw depth validity/quality and its R heuristic; the
+                # estimator transforms this point and recomputes pose lever R.
+                if replacement is not None and observation.depth_valid:
+                    corrected = np.asarray(replacement["position_camera_m"], dtype=float)
+                    if corrected.shape != (3,) or not np.isfinite(corrected).all():
+                        raise ValueError("surface recovery returned an invalid component centroid")
+                    observation.position_camera_m.x = float(corrected[0])
+                    observation.position_camera_m.y = float(corrected[1])
+                    observation.position_camera_m.z = float(corrected[2])
+                    surface_candidate.update(action="USE_COMPONENT_CENTROID", measurement=replacement,
+                                             output_position_camera_m=corrected.tolist(),
+                                             reference_kind=replacement["reference_kind"])
+                elif replacement is not None:
+                    surface_candidate.update(status="UNKNOWN", reason="RAW_DEPTH_INVALID")
             if getattr(self, "_navigation_enabled", False):
                 touching = [pair for pair in overlaps
                             if candidate_id in (pair["candidate_a_id"], pair["candidate_b_id"])]
@@ -518,10 +712,21 @@ class DetectorNode(Node):
                 "depth_valid": bool(observation.depth_valid),
                 "depth_m": float(observation.depth_m),
                 "depth_valid_ratio": float(stats.valid_fraction),
+                "depth_std_m": float(observation.depth_std_m),
+                "depth_min_m": float(observation.depth_min_m),
+                "depth_max_m": float(observation.depth_max_m),
+                "surface_recovery": surface_candidate,
                 "navigation_bbox_complete": bool(getattr(observation, "navigation_bbox_complete", False)),
                 "navigation_bbox_inside_image": bool(getattr(observation, "navigation_bbox_inside_image", False)),
                 "navigation_overlap_count": int(getattr(observation, "navigation_overlap_count", 0)),
             })
+        if surface_context is not None:
+            surface_diagnostics["geometry"] = surface_context.diagnostics
+        surface_diagnostics["candidate_count"] = len(detections)
+        surface_diagnostics["corrected_count"] = sum(
+            item["surface_recovery"]["action"] == "USE_COMPONENT_CENTROID" for item in detections)
+        surface_diagnostics["raw_fallback_count"] = sum(
+            item["surface_recovery"]["action"] == "RAW_FALLBACK" for item in detections)
         ground_points = np.empty((0, 3))
         if getattr(self, "_navigation_enabled", False):
             ground_points = sample_depth_points(
@@ -568,6 +773,8 @@ class DetectorNode(Node):
             diagnostics = String()
             diagnostics.data = json.dumps({
                 "stamp_s": stamp_seconds,
+                "clock_epoch": snapshot.clock_epoch,
+                "acquisition_ns": self._stamp_nanoseconds(message.header.stamp),
                 "completed_s": now_ns * 1e-9,
                 "rgb_received_s": None if snapshot.rgb_received_ros_ns is None else snapshot.rgb_received_ros_ns * 1e-9,
                 "depth_stamp_s": self._stamp_seconds(depth_message.header.stamp),
@@ -588,6 +795,7 @@ class DetectorNode(Node):
                 "navigation_ground_sample_count": len(ground_points),
                 "navigation_overlap_pair_count": len(overlaps),
                 "navigation_incomplete_overlap_pair_count": sum(not pair["depth_complete"] for pair in overlaps),
+                "surface_recovery": surface_diagnostics,
                 "detections": detections,
                 "timing_before_diagnostics": timing.snapshot(),
             })
