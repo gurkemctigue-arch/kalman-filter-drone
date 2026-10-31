@@ -2,9 +2,11 @@
 
 `scripts/evaluate_detection_recordings.py`评价已提取RGB图像上的低置信度离线YOLO输出。它不运行仿真、不读取bag、不更改在线检测器。Precision、Recall和mAP只描述独立可见标签审核后的仿真子集；几何排除、缺图及漏检机会继续保留，不能改称整份正式研究的总体检测精度。
 
+2026-11-01边界：原 `extract_research_recording.py` 的单目标、固定挂载标签不能直接用于多同类或主动云台录制。相应的离线动态相机/多实例提取工具正在补齐，真实抽样、推理及审核仍待执行。旧工具默认的前45个抽样也不能称为75秒完整任务覆盖；后续须在正式数据使用前明确抽样规则及缺失分母。
+
 ## 配置来源
 
-默认 `--settings-source historical` 显式保留原语义：person用YOLO11n/320/2线程，car用YOLO11s/480/2线程，CPU、confidence floor0.001、NMS IoU0.7。报告会写出这组实际参数；默认不会因v4在线汽车使用640/4线程而自行变更。
+默认 `--settings-source historical` 显式保留原语义：person用YOLO11n/320/2线程，car用YOLO11s/480/2线程，CPU、confidence floor0.001、NMS IoU0.7。报告会写出这组实际参数；默认不会自动切换到当前候选的微调YOLO11m/512/4线程。
 
 新版录制应使用：
 
@@ -13,9 +15,9 @@ python scripts/evaluate_detection_recordings.py /path/to/extraction/recording.js
   --output /path/to/new_detection_evaluation --settings-source recorded
 ```
 
-recorded模式从 `recording.json` 的 `source_trial` 读取原槽的 `run_config.json`、`configuration/runtime_parameters.yaml` 和 `configuration/source_sha256.json`。有效YAML中的类别、分辨率、线程必须与非空run override一致，实际权重文件SHA必须匹配原飞行登记。当前v4应解析为person320/2和car640/4；脚本按保存值核验，不靠版本名称猜测。
+recorded模式从 `recording.json` 的 `source_trial` 读取原槽的 `run_config.json`、`configuration/runtime_parameters.yaml` 和 `configuration/source_sha256.json`。有效YAML中的类别、分辨率、线程必须与非空run override一致，实际权重文件SHA必须匹配原飞行登记。当前Humble42候选应解析为person320/2和微调car512/4；旧录制仍按其原保存值核验，不靠版本名称猜测。
 
-权重移到新位置时可用 `--car-model-path /new/path/yolo11s.pt` 或person对应项；recorded模式仍要求字节SHA相同。分辨率/线程CLI若与recorded值冲突则拒绝。缺配置、缺原模型hash、缺实际文件或CPU以外设备均拒绝，不触发YOLO自动下载。异机旧Linux绝对路径需要在可访问原配置的环境执行，或先按明确来源迁移工件；`explicit`不等于原飞行配置已经核验。
+权重移到新位置时可用 `--car-model-path /new/path/yolo11m_car_sim_train20_04.pt` 或person对应项；recorded模式仍要求字节SHA相同。分辨率/线程CLI若与recorded值冲突则拒绝。缺配置、缺原模型hash、缺实际文件或CPU以外设备均拒绝，不触发YOLO自动下载。异机旧Linux绝对路径需要在可访问原配置的环境执行，或先按明确来源迁移工件；`explicit`不等于原飞行配置已经核验。
 
 若有意做另一组离线推理，可逐类别声明完整参数：
 
@@ -23,7 +25,7 @@ recorded模式从 `recording.json` 的 `source_trial` 读取原槽的 `run_confi
 python scripts/evaluate_detection_recordings.py person_recording.json car_recording.json \
   --output /path/to/new_explicit_evaluation --settings-source explicit \
   --person-model-path models/yolo11n.pt --person-image-size 320 --person-threads 2 \
-  --car-model-path models/yolo11s.pt --car-image-size 640 --car-threads 4 \
+  --car-model-path models/yolo11m_car_sim_train20_04.pt --car-image-size 512 --car-threads 4 \
   --confidence-floor 0.001 --iou-nms 0.7
 ```
 
