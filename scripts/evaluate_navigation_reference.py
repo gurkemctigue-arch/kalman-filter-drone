@@ -609,7 +609,7 @@ def main(argv=None):
     physical = json.loads(args.physical_identity_report.read_text(encoding="utf-8")) if args.physical_identity_report else None
     previous_topics = bag_tools.TOPICS
     try:
-        bag_tools.TOPICS = tuple(dict.fromkeys(previous_topics + (STATE_TOPIC, DIAGNOSTIC_TOPIC)))
+        bag_tools.TOPICS = tuple(dict.fromkeys(previous_topics + (STATE_TOPIC, DIAGNOSTIC_TOPIC, "/tracking/tracks")))
         records, metadata = bag_tools.read_rosbag(args.trial / "rosbag", preserve_clock=True)
     finally:
         bag_tools.TOPICS = previous_topics

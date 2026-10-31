@@ -56,9 +56,10 @@ class TargetManager:
     LOCKED_TARGET = TargetMode.LOCKED_TARGET
     Mode = TargetMode
 
-    # At least 95% of the small box lies inside an established observation,
-    # and it covers at most 80% of the outer box. This identifies uncertain
-    # nested births, not duplicate detections or permission to fuse them.
+    # At least 95% of the smaller box lies inside the larger one, and its
+    # area is at most 80% of that box. Either the unmatched candidate or the
+    # established observation can be the outer box. This marks uncertain
+    # births, not duplicate detections or permission to fuse them.
     SPAWN_CONTAINMENT_MIN = 0.95
     SPAWN_AREA_RATIO_MAX = 0.80
 
@@ -598,7 +599,7 @@ class TargetManager:
         self, detections: Sequence[Detection], assignment: Mapping[int, int],
         matched_detection_indices: set[int], timestamp: Optional[float],
     ) -> None:
-        """Reserve uncertain nested candidates without inventing identities.
+        """Reserve uncertain contained or enclosing births without inventing IDs.
 
         Real cars can also appear nested. Keep every observation and every
         existing association/ambiguity; only postpone a previously unmatched
@@ -635,22 +636,28 @@ class TargetManager:
                 # Explicit user selection is fresh task evidence. It must be
                 # allowed to initialize the requested box and a new UUID.
                 continue
-            small = candidate.bbox
-            small_area = (small[2] - small[0]) * (small[3] - small[1])
-            if small_area <= 0.0:
+            candidate_box = candidate.bbox
+            candidate_area = ((candidate_box[2] - candidate_box[0])
+                              * (candidate_box[3] - candidate_box[1]))
+            if candidate_area <= 0.0:
                 continue
             for anchor_index in sorted(anchors):
                 anchor = detections[anchor_index]
                 if candidate.class_id != anchor.class_id:
                     continue
-                outer = anchor.bbox
-                outer_area = (outer[2] - outer[0]) * (outer[3] - outer[1])
-                if outer_area <= 0.0 or small_area > self.SPAWN_AREA_RATIO_MAX * outer_area:
+                anchor_box = anchor.bbox
+                anchor_area = ((anchor_box[2] - anchor_box[0])
+                               * (anchor_box[3] - anchor_box[1]))
+                small_area, outer_area = sorted((candidate_area, anchor_area))
+                if small_area <= 0.0 or small_area > self.SPAWN_AREA_RATIO_MAX * outer_area:
                     continue
-                intersection = (max(0.0, min(small[2], outer[2]) - max(small[0], outer[0]))
-                                * max(0.0, min(small[3], outer[3]) - max(small[1], outer[1])))
+                intersection = (max(0.0, min(candidate_box[2], anchor_box[2])
+                                    - max(candidate_box[0], anchor_box[0]))
+                                * max(0.0, min(candidate_box[3], anchor_box[3])
+                                      - max(candidate_box[1], anchor_box[1])))
                 if intersection < self.SPAWN_CONTAINMENT_MIN * small_area:
                     continue
+                relation = "nested" if candidate_area < anchor_area else "enclosing"
                 candidate_position = self._position_of_detection(candidate)
                 anchor_position = self._position_of_detection(anchor)
                 if candidate_position is not None and anchor_position is not None:
@@ -659,11 +666,11 @@ class TargetManager:
                     # other. This bound is never used to accept a measurement.
                     if float(np.linalg.norm(candidate_position - anchor_position)) > self.association_max_distance:
                         continue
-                    reason = "nested_unmatched_within_existing_distance_domain"
+                    reason = relation + "_unmatched_within_existing_distance_domain"
                 else:
                     # Missing depth cannot prove an independent new object.
                     # No 3-D measurement/freshness is synthesized by deferral.
-                    reason = "nested_unmatched_without_depth_separation_evidence"
+                    reason = relation + "_unmatched_without_depth_separation_evidence"
                 self._spawn_deferred_reasons[index] = reason
                 break
 
