@@ -53,7 +53,7 @@ Gazebo原退出码为-9，进程清理校验正确判为失败。原外层flight
 
 实际llvmpipe验证通过；原41同场景曾正常退出，不足以证明输入尺寸变化导致退出异常。后续只读内核查询未发现OOM/Killed/Gazebo匹配记录，但有限内核环形日志不证明完整历史保留，也不能据此排除OOM。
 
-原owner健康验证未通过，另保留`Owner outcome differs from original immutable D copy candidate`错误。观察器进程自身正常退出、归档复制通过，不等于原Gazebo清理或owner闭合通过。失败路径的不可变owner副本发布顺序需另行核对。
+原owner健康验证未通过，并保留`Owner outcome differs from original immutable D copy candidate`错误。源码复核确认：driver异常使native健康状态为false，owner如实记录`NATIVE_FAILED_RAW_ARCHIVED`；不可变副本保持`COPY_VERIFIED_PENDING_OWNER_CLOSURE`，验证器只接受健康的`COMPLETE`结果，因此拒绝该失败owner。这是Gazebo清理失败后的派生拒绝，现有证据不支持另立副本发布损坏的根因，也无需据此修改owner源码。观察器进程正常退出、归档复制通过，不能升级原失败。
 
 ## 当前诊断与下一步
 
