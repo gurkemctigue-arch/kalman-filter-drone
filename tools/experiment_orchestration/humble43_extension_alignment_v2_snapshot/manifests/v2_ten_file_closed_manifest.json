@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "status": "TEN_NEW_NAMED_V2_FILES_CLOSED_FOR_ROOT_REVIEW_NOT_DEPLOYED_NOT_TESTED",
+  "created_utc": "2026-10-31T23:21:20+00:00",
+  "files": {
+    "development_calibration_v2.py": "16348aee4b7aad6ff2836fd5e4769e43ede5b5f1b43f34ddfebc2ce06e31205f",
+    "development_calibration_v2.sh": "6696d94435173f7702dfb94974778a71bab1ad9dbad0ff8f7a23665fef4ca401",
+    "test_development_calibration_v2.py": "9f4c07138c0b61e598b15c1366e76303af839a45b3dd4f7b57285f247ce34756",
+    "prepare_development_final_root_v2.py": "a937087cc589b55ceafd747af8a0744bf97998ab76b4901972331ae1deceb9a5",
+    "build_development_final_root_v2.py": "ad18c3fc2ea073871bcd0f2852602639b41c614514d0dbbe82a42cafecadda4a",
+    "build_development_final_root_v2.sh": "2460aada950445d4153838e8b0d43fac8bacc229f696365b8d795fd5548e0005",
+    "publish_development_final_protocols_v2.py": "9376a4eeb259de8a12dd6e1575b92031437a8b3afd1f5be4d7ac1d43bd53befa",
+    "test_development_final_root_v2.py": "4d70727c3b5fe068aeaf4f0322c01591312e824804fc220499d3719dfe6e795e",
+    "seal_development_final_source_v2.py": "dd5e668de3285f63d2106bcf4d89046946cd1eba6e283944deea68b128d0dac1",
+    "test_seal_development_final_source_v2.py": "c8528f013ad0f7103395a8132b327f915c67978293adc4a56f96f2de489c6b58"
+  },
+  "connection_v2_canonical_sha256": "4e4ea587ac7061814cab12042ff5fa07b7f4dadb9bd31a986fecf2a0860f8653",
+  "calibration_v2_canonical_sha256": "62697500468c3fa8167329793a6265cfc9525ebc5b8f51dfaa83339a90631626",
+  "seal_v2_manifest": {
+    "schema_version": 1,
+    "kind": "INDEPENDENT_FINAL_WHOLE_SOURCE_AND_PLANNING_MANIFEST_V2",
+    "files": {
+      "seal_development_final_source_v2.py": "dd5e668de3285f63d2106bcf4d89046946cd1eba6e283944deea68b128d0dac1",
+      "test_seal_development_final_source_v2.py": "c8528f013ad0f7103395a8132b327f915c67978293adc4a56f96f2de489c6b58"
+    },
+    "reviewed_connection_canonical_sha256": "4e4ea587ac7061814cab12042ff5fa07b7f4dadb9bd31a986fecf2a0860f8653",
+    "original_guard_consumes_whole_tree_manifest": false,
+    "default_root_or_request": null,
+    "automatic_next_action": false,
+    "formal_seed_use_authorized": false
+  },
+  "seal_v2_canonical_sha256": "eac2d4792f225c0db4debad82b3bd86924ca38421917230c22103020c303f51b",
+  "v1_reconstructed_canonicals_matched": {
+    "connection": "1187d22d974889ea3f9ce36b787bc882b32fb05b0c6a2dad5acc715db4b8b269",
+    "calibration": "cbbae0774b2fbac8711a94b8dd0a137929ad6a3ed976ea74ddcc9fc0f6692491",
+    "seal": "e2c87dd559e97970dbfbdfb87670ed7458a045b7162310a2c55d4072b55b542a"
+  },
+  "test_definitions_not_executed": {
+    "test_development_calibration_v2.py": 30,
+    "test_development_final_root_v2.py": 40,
+    "test_seal_development_final_source_v2.py": 15
+  },
+  "real_frozen_integration_test_definitions": 9,
+  "required_opt_in_environment": {
+    "UAV_REVIEW_FROZEN_SOURCE_ROOT": "root-supplied actual reviewed43 source UNC; fresh process"
+  },
+  "root_test_requirements": [
+    "Only new10 names may be copied to external, never overwrite",
+    "PYTHONDONTWRITEBYTECODE=1 or python -B",
+    "TEMP/TMP outside project and external base",
+    "Explicit actual frozen source root for9 real-authority tests",
+    "Fresh process to avoid cached tests package from another source root"
+  ],
+  "receipts": {
+    "v2_peer_review_closed_audit.md": "bdd86c796d848f101934fbef236e2f0ef74240d5575809001af795e0b70212e0",
+    "v2_connection_family_static_review.json": "932845619e16659e8d1ae1bf012a62b6e6a495eab77ea29e271076a45212e292",
+    "calibration_v2_static_review.json": "63a6c0375346861cc66e9d37832323fbbf602abd6ea9b307cae57dd2ee5887e8",
+    "NAMED_MANIFEST_ISOLATION.md": "2295abdfa5f8924e746459d9ac2be653c14355e6ac8848199b18f4411561cf17",
+    "v1_external_top_level_before_sha256.json": "8fc92239c20f536dda13dccc1db83be3797d6fcfc5bb80ca5700757669b65186",
+    "v1_external_top_level_after_v2_staging_sha256.json": "f4fe7b31c79dcff138cc2e2458e173b57cbc6285c9e6055a8ce487569c1bbb31",
+    "v2_static_connection_calibration_manifests.json": "96d7427ff37fb5b4dbfceeba035ef196a262fef55db1eec51c977836436d9904"
+  },
+  "production_imports": false,
+  "tests_run": false,
+  "wsl_invoked": false,
+  "admission_created": false,
+  "plan_created": false,
+  "flight_started": false
+}

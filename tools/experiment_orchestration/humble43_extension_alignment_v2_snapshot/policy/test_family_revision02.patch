@@ -1,0 +1,40 @@
+--- revision01/test_development_final_root_v2.py
++++ revision02/test_development_final_root_v2.py
+@@ -679,9 +679,20 @@
+             'expected_classified_source_hashes':target_core['source_hashes'],
+             'flight_source_hashes':real.flight_source_hashes(target_core['source_hashes'])}}
+         originals={name:(self.root/u.PATHS[name]).read_bytes() for name in ('core','extension')}
++        def synthetic_external_runtime(root,manifest_path):
++            # The fixture deliberately has no live PX4 ELF or installed Gazebo
++            # libraries. Adapt only this external-hardware leaf, with the same
++            # fixture verifier used by the original synthetic make/run helpers.
++            # All source bytes, plan bindings and gate/failure predicates remain
++            # checked by their unchanged production implementations.
++            self.assertEqual(Path(root).resolve(strict=True),self.root)
++            self.assertEqual(Path(manifest_path).resolve(strict=True),self.root/real.MAGNETIC_RUNTIME_PATH)
++            return f.fixtures.fixture_runtime_verifier(root,manifest_path)
+         with patch.object(u.builder,'source_check'), \
++                patch.object(real,'verify_external_runtime',side_effect=synthetic_external_runtime) as hardware_leaf, \
+                 patch.object(real,'validate_probe_gate',wraps=real.validate_probe_gate) as authority:
+             _,_,candidates=u.prepare_protocols(u.Inputs(),request,context,tool)
++        self.assertEqual(hardware_leaf.call_count,2)
+         authority.assert_called_once();self.assertTrue(authority.call_args.kwargs['extensions'])
+         self.assertEqual(json.loads(candidates['extension'])['development_readiness']['evidence'],extension_gate)
+         self.assertEqual(f.preserved_hashes(development),before)
+@@ -693,6 +704,7 @@
+         f.fixtures.write(extension_gate_path,hidden)
+         request['gates']['extension']=p.binding(extension_gate_path)
+         with patch.object(u.builder,'source_check'), \
++                patch.object(real,'verify_external_runtime',side_effect=synthetic_external_runtime), \
+                 patch.object(u,'require_original_development_records') as bindings:
+             self.assertRaisesRegex(ValueError,'known algorithm failures',u.prepare_protocols,
+                 u.Inputs(),request,context,tool)
+@@ -783,7 +795,7 @@
+                 with self.subTest(kind=kind,key=key,value=value):
+                     report=deepcopy(original);report['acceptance']['result']='FAIL'
+                     next(row for row in report['occlusions'] if row['kind']==kind)['checks'][key]=value
+-                    self.fixture_module.fixtures.write(spec['report'],report)
++                    self.fixture_module.fixtures.write(Path(spec['report']),report)
+                     entries=deepcopy(record['evaluations'])
+                     entry=next(item for item in entries if item['kind']=='surface_flight')
+                     entry.update(self.real.read_evaluation(spec,entry['execution'],plan))

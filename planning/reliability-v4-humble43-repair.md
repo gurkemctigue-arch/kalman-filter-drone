@@ -1,5 +1,7 @@
 # Humble42之后的支持门控修复与新验证
 
+更新入口：2026-11-01 07:45（北京时间），下述修复已进入Humble43隔离来源，完成Linux构建、测试和具名汽车交叉诊断；同源核心12正在执行，前两场原始PASS，正式仍0/280。最新证据与尚待工作见[本轮验证记录](reliability-v4-humble43-validation-20261101.md)。以下保留修复提出时的原始计划和当时边界。
+
 2026-11-01。本文件记录已进入工作区、尚未新冻结或飞行的修改。原Humble42保持8 PASS、1 FAIL、3 PENDING，正式0/280。
 
 原生录包导出及[因果分析](../tools/diagnostics/humble42_native_causal_snapshot01/humble42_core09_native_causal_analysis01.md)证实：30.7秒仅有的候选没有可靠表面支持，却初始化了track4；这条轨迹最后接受于31.3秒，随后与选定track3竞争同一候选。track3最后接受于31.6秒，32.36秒测量年龄0.76秒触发LOST。原记录不足以确定track4的物理身份，不能把它直接称为已证明的重复车辆。

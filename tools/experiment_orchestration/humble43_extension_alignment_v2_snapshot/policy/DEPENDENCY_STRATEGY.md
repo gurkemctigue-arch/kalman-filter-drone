@@ -1,0 +1,27 @@
+# Versioned coexistence; no live v1 overwrite
+
+The semantic patch is intentionally shown against the exact old baseline for review. Applying it to v1 is unsafe: `prepare_development_final_root.OWN` includes publisher/build/wrapper/tests, and existing proposal/copy/build/publication/seal artifacts bind that full connection identity. Downstream validators re-read those identities even after a flight matrix finishes. Core43 and all later v1 evidence must retain their original source/tool/admission identities. Waiting until core43 ends is not sufficient justification to overwrite them.
+
+## New named tools after static root review
+
+| Versioned family | New files | Required unchanged dependencies / required wiring |
+| --- | --- | --- |
+| Calibration | `development_calibration_v2.py`, `.sh`, `test_development_calibration_v2.py` | Reuse unchanged core/safety/extension/generic/stable/owner. Change OWN, shell import and execution targets, test import, exact admission/contract filename validation and fresh output names together. New scope/version descriptor must distinguish readiness from all16 PASS. New admission must bind actual unchanged candidate/core/safety/extension contracts. |
+| Source/build/publication connection | `prepare_development_final_root_v2.py`, `build_development_final_root_v2.py`, `build_development_final_root_v2.sh`, `publish_development_final_protocols_v2.py`, `test_development_final_root_v2.py` | prepare_v2.OWN lists precisely these five new files. build_v2 and publisher_v2 import prepare_v2; publisher_v2 imports build_v2; build WRAPPER and shell targets use v2. Preserve generic/strict512/assembler/core borrowed primitives. All module-origin guards, requests, proposal/copy/build outputs and reviewed tool bindings use v2, never a global module alias or rewritten v1 admission. |
+| Source admission seal | `seal_development_final_source_v2.py`, `test_seal_development_final_source_v2.py` | All three prepare/build/publisher imports and exact `tools()` origin checks use v2. Update OWN and fresh NAME/SEAL_ATTEMPT/ASSEMBLY output names. CONNECTION_SHA is calculated only after complete reviewed v2 connection files exist; the exact same actual digest is used by fixed_publication, request reviewed_tools and publication_context. Preserve original whole-source and formal-PENDING guards. |
+| Storage | None in this minimal proposal | Keep v1 original storage reads, receipts and truthful all28 diagnostic. Only create a separate own3 v2 if a located consumer really requires a contract-aligned metadata label. |
+
+All modules remain in the existing external tools directory only when root decides deployment is safe. Staging `*.py.txt` never enter PYTHONPATH, OWN or admissions. Borrowed unchanged external primitives retain exact bytes. No existing `.py/.sh/.json`, original frozen file, candidate43, starts/attempts/terminals, admission or contract is rewritten.
+
+## Concrete later sequence
+
+1. Review this semantic delta, the preserved original validator calls and the pre-result decision timestamp. Settle scope/naming and tests; root can proceed within existing user authorization.
+2. Make complete v2 sources/tests/wrappers with consistent filenames and origin checks; inspect the actual transitive tool manifest. Run tests only under root's later explicit scheduling after current no-test restriction is lifted. No invented v2 canonical/SHA placeholders may be treated as evidence.
+3. Verify all existing v1 files/hashes are unchanged. The v2 manifest is independently reviewed, then its actual canonical binds new calibration and connection admissions/requests. Do not reuse v1 admission or rebind an old imported module to v2.
+4. Core43/safety43/extension43 continue using their unchanged original tool families and original single-attempt evidence. v2 calibration consumes actual original complete core12/safety4/extension16 without rewriting verdicts. The two fixed person/car stage1_velocity seed004 core recordings remain PASS and the only calibration samples; R0 membership/no-truth-selection/export algorithms remain unchanged.
+5. For a final root, use entirely new v2 source-preparation proposal/copy/build/publication and seal evidence in fresh paths. Preserve actual source maps, target/formal PENDING evidence and all canonical protection checks. A valid prior v1 copy/build is not silently converted to v2; create and validate the full new chain.
+6. Recompute actual capacity from complete original receipts and current physical free space; obtain original registrar/guard's full actual readiness, safety, replay/calibration and source seal. No formal flight until every existing original guard passes.
+
+## Initial design versus implemented follow-up
+
+The original design below preceded implementation. Actual v2 source/admission-regex wiring and test fixtures now exist in `implementation_v2/`, with the actual-byte static calibration/connection/seal canonicals and all10 SHA values in `v2_ten_file_closed_manifest.json`. Real copy/build/publication/seal, test/describe execution and any capacity decision remain future root work. Earlier proposal text describes the initial design boundary. This staging is a minimal static semantic proposal plus complete dependency strategy; it is not a tested or deployable v2 implementation. If a dependency not listed here appears during implementation, extend the new-named chain and review its real manifest instead of weakening pinning or modifying a bound v1 file.

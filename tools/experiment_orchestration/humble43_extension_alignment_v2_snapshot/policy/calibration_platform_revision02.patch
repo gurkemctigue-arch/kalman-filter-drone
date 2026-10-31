@@ -1,0 +1,40 @@
+--- implementation_v2/test_development_calibration_v2.py
++++ revision02/test_development_calibration_v2.py
+@@ -7,6 +7,7 @@
+ from contextlib import ExitStack, nullcontext, redirect_stdout, redirect_stderr
+ from copy import deepcopy
+ import io
++import os
+ import json
+ from pathlib import Path
+ import tempfile
+@@ -215,6 +216,7 @@
+         path=self.temp/'arrays.json';path.write_text('{"value":NaN}\n',encoding='utf-8')
+         with self.assertRaises(ValueError):m.read_array(path)
+ 
++    @unittest.skipUnless(os.name == 'posix', 'Requires canonical POSIX storage paths; mandatory in Humble Linux validation')
+     def test_single_export_three_routes_and_original_bound(self):
+         source={'raw_sqlite_bytes':100,'compressed_sqlite_bytes':40}
+         with patch.object(m.shutil,'disk_usage',return_value=SimpleNamespace(free=100*1024**3)):
+@@ -440,7 +442,12 @@
+     def test_real_results_symlink_matches_frozen_plan_and_array_resolve_without_changing_argv(self):
+         lexical_results=self.root/'results';physical_results=self.temp/'physical_results'
+         lexical_results.rename(physical_results)
+-        lexical_results.symlink_to(physical_results,target_is_directory=True)
++        try:
++            lexical_results.symlink_to(physical_results,target_is_directory=True)
++        except OSError as error:
++            if os.name == 'nt' and getattr(error, 'winerror', None) == 1314:
++                self.skipTest('Windows account lacks symlink privilege (WinError1314); mandatory in Humble Linux validation')
++            raise
+         self.assertTrue(lexical_results.is_symlink())
+         lexical_plan=m.core.locations(self.candidate)['plan'];dump(lexical_plan,self.reference)
+         selected=deepcopy(self.facts['selected_recordings'])
+@@ -501,6 +508,7 @@
+         stack.enter_context(patch.object(m.extension,'load_admission',return_value=(ext,self.candidate,self.ext.review)))
+         return stack
+ 
++    @unittest.skipUnless(os.name == 'posix', 'Requires canonical POSIX storage paths; mandatory in Humble Linux validation')
+     def test_explicit_final_dynamic_all_three_dependencies_and_source_context(self):
+         value,ext=self.admission_fixture()
+         binding=dump(self.temp/'development_calibration_v2_admission_fixture01.json',value)

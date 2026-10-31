@@ -1,0 +1,125 @@
+--- a/development_calibration.py
++++ b/development_calibration.py
+@@ -2,8 +2,8 @@
+ 
+ Import/describe are inert. Plan writes a PENDING three-command contract only.
+ Run requires its independently reviewed final SHA and the actual same-source
+-core12, safety4 and extension16 original PASS/healthy owner evidence. Frozen
+-export/calibration algorithms, measurement membership and thresholds are reused.
++core12/safety4 PASS and extension16 original frozen-contract/healthy owner evidence.
++Frozen export/calibration algorithms, measurement membership and thresholds are reused.
+ """
+ from __future__ import annotations
+ 
+@@ -91,7 +91,9 @@
+         'safety_dependency_files': {name: file_binding(EXTERNAL/name)['sha256'] for name in safety.OWN},
+         'dependency_identity_policy': 'All actual final canonicals supplied by independent admission, no intermediate pin',
+         'classes': list(CLASSES), 'seed': 4, 'group': 'stage1_velocity', 'commands': 3,
+-        'frozen_algorithms': list(SCRIPTS), 'requires_actual_all12_all4_all16_PASS_and_healthy_owners': True,
++        'frozen_algorithms': list(SCRIPTS), 'requires_actual_all12_all4_PASS_and_healthy_owners': True,
++        'extension16_contract': 'UNCHANGED_ORIGINAL_FROZEN_VALIDATOR_WITH_EXACT_DISCLOSED_FAILURES',
++        'extension16_all_engineering_PASS_required': False,
+         'same_measurement_and_original_thresholds_unchanged': True,
+         'R0_membership': 'All unique valid pre-fusion R_geometry over FOLLOW through final Clock, including KF rejects',
+         'truth_used_to_select_R0_samples': False, 'additional_inference_or_flight': False,
+@@ -202,14 +204,14 @@
+     for number, (trial, item, attempt) in enumerate(zip(plan['trials'], terminal['slots'], terminal['attempts']), 1):
+         row = rows[trial['id']]
+         audit = core.original41.audit_record(ctx.runner, plan, trial, row, ext.review, checks, extension=True)
+-        require(row.get('status') == row.get('engineering_result') == 'PASS'
+-            and audit.get('known_algorithm_failures') == [], 'All16 original extension cells must PASS before calibration')
+-        require(item == {'slot': trial['id'], 'status': 'PASS', 'engineering_result': 'PASS', 'audit': audit}
++        require(item == {'slot': trial['id'], 'status': row['status'],
++                'engineering_result': row['engineering_result'], 'audit': audit}
+             and attempt.get('audit') == audit and attempt.get('error') is None
+             and type(attempt.get('number')) is int and attempt['number'] == number
+             and type(attempt.get('runner_result', {}).get('started_this_invocation')) is int
+             and attempt['runner_result']['started_this_invocation'] == 1
+-            and attempt.get('record') == {'status': 'PASS', 'engineering_result': 'PASS', 'record_binding': audit['record_binding']},
++            and attempt.get('record') == {'status': row['status'],
++                'engineering_result': row['engineering_result'], 'record_binding': audit['record_binding']},
+             'Original extension row/attempt/audit changed')
+         marker = selected['run_driver']/f'{number:02d}_{trial["id"]}.started.json'
+         require(stable.metadata_binding(marker, json_only=True) == attempt.get('started_marker')
+@@ -218,8 +220,10 @@
+             'Original extension started marker changed')
+         attempt_path = selected['run_driver']/f'{number:02d}_{trial["id"]}.attempt_terminal.json'
+         require(read_small(attempt_path) == attempt, 'Original extension per-attempt terminal changed')
+-        records.append({'slot': trial['id'], 'record_binding': audit['record_binding'],
+-                        'attempt_terminal': stable.metadata_binding(attempt_path, json_only=True)})
++        records.append({'slot': trial['id'], 'status': row['status'],
++            'engineering_result': row['engineering_result'], 'record_binding': audit['record_binding'],
++            'known_algorithm_failures': audit['known_algorithm_failures'],
++            'attempt_terminal': stable.metadata_binding(attempt_path, json_only=True)})
+     observed = owner.validate_observer_root(terminal.get('observer_owner_terminal'), selected['run_driver']/'observer_driver', ext.root)
+     actual_rows = {key: {'status': row.get('status'), 'record_sha256': row.get('record_sha256')} for key, row in rows.items()}
+     require(terminal.get('actual_slot_statuses') == actual_rows
+@@ -228,7 +232,13 @@
+         'Original extension aggregate/healthy owner or runtime residual changed')
+     ctx.runner.verify_sources(plan)
+     return {'core': prerequisites['core'], 'safety': prerequisites['safety'],
+-        'extension': {'result': 'PASS', 'completed_count': 16, 'all_original_cells_pass': True,
++        'extension': {'result': 'PASS',
++            'result_scope': 'ORIGINAL_FROZEN_EXTENSION_CONTRACT_NOT_ALL_ENGINEERING_PASS',
++            'completed_count': 16,
++            'all_original_cells_pass': all(item['status'] == item['engineering_result'] == 'PASS' for item in records),
++            'status_counts': dict(Counter(item['status'] for item in records)),
++            'engineering_result_counts': dict(Counter(item['engineering_result'] for item in records)),
++            'known_algorithm_failures_by_slot': {item['slot']: item['known_algorithm_failures'] for item in records},
+             'plan': stable.metadata_binding(selected['plan'], json_only=True), 'plan_sha256': plan['plan_sha256'],
+             'contract': binding, 'execution_terminal': stable.metadata_binding(path, json_only=True),
+             'original_terminals': records, 'observer': observed}, 'extension_prerequisites': prerequisites}, reference
+--- a/publish_development_final_protocols.py
++++ b/publish_development_final_protocols.py
+@@ -62,17 +62,16 @@
+             'Target/formal trial products already exist')
+ 
+ 
+-def require_all_original_pass(inputs,runtime,gate,context,*,extensions):
+-    """Add this batch's stricter 28-PASS rule after the normal gate validator.
+-
+-    The original gate legitimately permits disclosed extension algorithm failures.
+-    This connection cannot promote those or reevaluated original FAIL records.
++def require_original_development_records(inputs,runtime,gate,context,*,extensions):
++    """Check original source/record bindings after the unchanged frozen gate validator.
++
++    The caller must validate the full gate with the original frozen authority first.
++    Core12 still requires PASS. Extension16 retains exact original algorithm failures;
++    this binding helper neither classifies failures nor changes any original verdict.
+     """
+     slots=gate.get('probe_slots');count=16 if extensions else 12
+     require(isinstance(slots,list) and len(slots)==count and all(isinstance(item,dict) for item in slots),
+             'Actual complete original12/16 gate slots required')
+-    if extensions:
+-        require(gate.get('known_algorithm_failures')==[],'Original16 must have no disclosed algorithm failures')
+     paths={item.get('plan_path') for item in slots}
+     require(len(paths)==1 and None not in paths,'One original canonical12/16 source plan required')
+     path=next(iter(paths));digests={item.get('plan_file_sha256') for item in slots}
+@@ -98,10 +97,13 @@
+         trial=trials[item['slot_id']];record=rows[item['slot_id']]
+         actual=inputs.bound({'path':str(Path(runtime.v4.record_path(previous,trial)).resolve(strict=True)),
+             'sha256':item.get('record_file_sha256')})
+-        require(actual==record and record.get('status')==record.get('engineering_result')=='PASS'
+-                and record.get('execution_status')=='COMPLETED' and record.get('infrastructure_stop') is False
++        require(actual==record and record.get('execution_status')=='COMPLETED'
++                and record.get('infrastructure_stop') is False
+                 and type(record.get('flight_exit_code')) is int and record['flight_exit_code']==0,
+-                'Every original development record must itself be PASS: '+item['slot_id'])
++                'Every original development record must close healthily and retain its exact binding: '+item['slot_id'])
++        if not extensions:
++            require(record.get('status')==record.get('engineering_result')=='PASS',
++                    'Every original core development record must itself be PASS: '+item['slot_id'])
+         require(not item.get('evaluation_overrides'),'Unchanged-source gate must retain its original evaluations')
+ 
+ 
+@@ -131,8 +133,8 @@
+     test_plan=deepcopy(extension);test_plan['protocol']=changed_core
+     test_plan['extension_protocol_binding']['protocol']=changed_extension
+     runtime.v4.validate_probe_gate(test_plan,extensions=True)
+-    require_all_original_pass(inputs,runtime,core_gate,context,extensions=False)
+-    require_all_original_pass(inputs,runtime,extension_gate,context,extensions=True)
++    require_original_development_records(inputs,runtime,core_gate,context,extensions=False)
++    require_original_development_records(inputs,runtime,extension_gate,context,extensions=True)
+     summary_pin,summary,used=primitives.assembly(inputs,request['safety_assembly'],'safety-summary',tool)
+     require(used['target_plan']==request['target_plans']['core'] and used['core_gate']==request['gates']['core'],
+             'Actual safety assembly must bind these exact pre-registration target/gate inputs')

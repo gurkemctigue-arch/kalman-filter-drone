@@ -1,6 +1,6 @@
 # RGB-D UAV target tracking and following
 
-**2026-11-01 更新：Humble42 原核心批次已停止，8 PASS、1 FAIL、3 PENDING，主命令退出2；正式仍0/280。** 原生失锁窗口已提取并分析，已补上无重叠锚点时的表面支持出生门控，同时接入逐信号退出观测；修改已通过行为测试和独审，下一步建立新隔离版本验证。汽车交叉、完整飞行退出及后三个未执行汽车云台槽仍待通过。原失败、身份未知和未执行项保留，见[新修复与验证计划](planning/reliability-v4-humble43-repair.md)、[原批结果](planning/reliability-v4-humble42-results-20261101.md)及[进度入口](docs/LIVE_PROGRESS.md)。
+**2026-11-01 07:45（北京时间）快照：Humble43 已完成隔离构建和汽车交叉诊断，正在运行同源核心12场景；前两场原始终态均为 PASS，正式仍0/280。** 1763项Linux检查中1758通过、5项平台跳过。单场汽车交叉通过不代表汽车可靠性已完成验收；完整核心12、安全4、扩展16、容量与定标仍须依次完成。原Humble42的8 PASS、1 FAIL、3 PENDING及全部身份未知保留，见[当前验证与后续准入](planning/reliability-v4-humble43-validation-20261101.md)、[原批结果](planning/reliability-v4-humble42-results-20261101.md)及[实时进度入口](docs/LIVE_PROGRESS.md)。
 
 **当前分支是 v4 开发检查点，三阶段功能已实现，最终验收与正式重复研究尚未完成。** 本机当前批次和查看方法见[实时进度入口](docs/LIVE_PROGRESS.md)；旧 `results/project_progress/current/` 是历史Humble31任务，不能用于判断当前实验。来源和历史失败边界见[交接记录](planning/reliability-v4-current-state.md)，后续工作依[可靠性修复与交付方案](planning/reliability-v4-next-actions-20261030.md)推进。公开文档均为带时间的快照。
 
