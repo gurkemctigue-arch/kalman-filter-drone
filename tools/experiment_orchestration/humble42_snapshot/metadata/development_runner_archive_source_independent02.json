@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "status": "PASS_INDEPENDENT_ARCHIVED_SOURCE_LEAF_FIX_REVIEW",
+  "created_utc": "2026-10-31T16:20:32.917665+00:00",
+  "files": {
+    "development_runner.py": "967abde84ee676a70580355e4406dd732f3119c746c4cec56c41afd5ff473d37",
+    "development_runner.sh": "ecb59024dce5665767b8e9de7d2bbb79186832b450891bec29ac54f19df788a0",
+    "test_development_runner.py": "7aa4526ebf1f8bc0a7908df3226904759b477ed3ee39db058c5967e7bf7918a2",
+    "development_resource_guard.py": "36dcddc624df2c725856fdedc2e8e5dd5582e88fc97d8458df31f5fcbfba58e5",
+    "test_development_resource_guard.py": "4ce70019ce71d95487af8c21fe17b20245a8e114b39b896649bfa3ab65742750"
+  },
+  "core_tools_canonical_sha256": "4e5614388567b60ff5ab925390a37e254c8b8940f3092aa892579cf5cbd6359f",
+  "code_change_scope": "new checked_archived_source helper and only archived driver/guard call switched; old stable JSON/log metadata parser unchanged",
+  "actual_py_sh_json_end_to_end": true,
+  "metadata_helpers_mocked_in_real_archive_tests": false,
+  "checks": [
+    "healthy actual py and sh source leaves",
+    "missing and hash changed leaves",
+    "directory instead of regular source",
+    "symlink despite matching target bytes",
+    "oversized source with updated matching digest",
+    "non-py-sh source with matching digest",
+    "both actual build and validate preflight/closure JSON bindings"
+  ],
+  "humble_tests": {
+    "command": [
+      "wsl",
+      "-d",
+      "UAVHumble22",
+      "--cd",
+      "/mnt/d/WSL/UAVHumble22-validation",
+      "/root/uav_humble22/venv/bin/python",
+      "-B",
+      "-m",
+      "unittest",
+      "-v",
+      "test_development_runner"
+    ],
+    "returncode": 0,
+    "count": 25,
+    "skipped": 0,
+    "log": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\development_runner_archive_source_independent_humble25_02.log",
+      "sha256": "935e3824160f5bb9254d811238eaba08b225c86574d1bdc4b53998e1508edf70"
+    }
+  },
+  "windows_tests": {
+    "count": 25,
+    "passed": 24,
+    "skipped": 1,
+    "skip_reason": "Windows host denies file symlink creation; same symlink fixture passed under actual Humble Linux"
+  },
+  "new_candidate_or_plan_created": false,
+  "source_build_repeated": false,
+  "formal_seed_use_authorized": false,
+  "runtime_or_project_acceptance_claimed": false
+}

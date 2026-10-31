@@ -2,7 +2,7 @@
 
 **2026-11-01 00:44（北京时间）快照：Humble42 新核心12已开始，第1场行人速度跟随正在实际运行。** 新版本已完成独立四包冷构建、模块/ament 隔离和消息序列化检查；1748项Linux测试中1743通过、5项平台跳过。汽车采用04权重、512输入和CPU4线程，行人维持320输入和CPU2线程；0.60秒观测时效及0.75秒预测期限保持原值。当前还没有本批完整场景验收结果，正式仍为0/280。
 
-当前请打开[Humble42实时进度页](../results/project_progress/humble42_core01/index.html)。原始计划位于 `results/frozen_fullplan_v4_humble42/reliability_v4_humble42_probe01_seed004_matrix/plan.json`，槽位开始/终态在其 `slots/` 目录；原41进度页已是历史。新12场按行人、汽车顺序各运行速度、位置、交叉、中位、主动云台、多目标主动云台，均重新执行，不继承旧PASS。预计核心批次约4–5小时，以实际终态和观察器关闭结果为准。
+当前请打开[Humble42实时槽位进度页](../results/project_progress/humble42_core_slots01/index.html)，它只读取原始开始/终态记录；批命令心跳和真实退出码另见[原命令监控页](../results/project_progress/humble42_core01/index.html)。原始计划位于 `results/frozen_fullplan_v4_humble42/reliability_v4_humble42_probe01_seed004_matrix/plan.json`，槽位开始/终态在其 `slots/` 目录；原41进度页已是历史。新12场按行人、汽车顺序各运行速度、位置、交叉、中位、主动云台、多目标主动云台，均重新执行，不继承旧PASS。预计核心批次约4–5小时，以实际终态和观察器关闭结果为准。
 
 后续依次为安全4、扩展16、28条实际容量测量、两条指定开发录制导出和R0定标、独立最终根冷构建/登记/封存、280次正式实验及统计交付。所有准入都依赖前一步真实证据。按此前每项约20分钟粗估，正式280次本身约93小时，另计开发验证和分析交付；尚不能承诺固定完成时刻。以下较早记录均为历史快照。
 

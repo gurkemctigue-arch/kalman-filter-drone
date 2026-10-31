@@ -1,0 +1,191 @@
+{
+  "schema_version": 1,
+  "status": "PASS_INDEPENDENT_FINAL_CORE_PIN_SYNC_ADDENDUM_ONLY",
+  "scope": "LIMITED_SAFETY_CONSTANT_AND_EXTENSION_DYNAMIC_DEPENDENCY_REVIEW_NO_REAL_REGISTRATION_OR_RUNTIME",
+  "reviewer": "/root/core41_closed_audit",
+  "created_utc": "2026-10-31T16:32:40.454848+00:00",
+  "author_addendum": {
+    "path": "/mnt/d/WSL/UAVHumble22-validation/development_safety_final_core_sync_addendum01.json",
+    "sha256": "9fed61d2f9945ccf09d2944cf50d2f459739b7041460e41eed0e3e2881dd6485"
+  },
+  "previous_safety_independent_review": {
+    "path": "/mnt/d/WSL/UAVHumble22-validation/development_safety_independent_review01.json",
+    "sha256": "1adf799dda84a084c867e188dabb1d16fc740a6199d0b6896edbccf6d4ed337a"
+  },
+  "previous_extension_independent_review": {
+    "path": "/mnt/d/WSL/UAVHumble22-validation/development_extension_independent_review01.json",
+    "sha256": "7d5257e334d80dd64538ee04275b3b81c7038a4a91e718be05d524fcf44511ee"
+  },
+  "independent_core_archived_source_fix": {
+    "path": "/mnt/d/WSL/UAVHumble22-validation/development_runner_archive_source_independent02.json",
+    "sha256": "9b1de1764313d6dcc16cb420f57963f336f87db1660aac64d365bc73c383817f"
+  },
+  "delta": {
+    "file": "development_safety.py",
+    "old_core_pin": "757c36922fe6ea751d181d0f6b93af0ff97b2558dd1720794555b72c56fdc705",
+    "new_core_pin": "4e5614388567b60ff5ab925390a37e254c8b8940f3092aa892579cf5cbd6359f",
+    "exact_changed_occurrences": 1,
+    "restored_original_source_sha256": "f0255be7168f61676c3c8137b00907073998810321b358dc0a3a2035b4517413",
+    "restored_source_matches_original_reviewed_whole_file": true,
+    "safety_shell_and_tests_unchanged": true,
+    "extension_three_files_unchanged": true,
+    "other_safety_manifest_fields_unchanged": true,
+    "extension_manifest_only_dynamic_core_and_safety_file_binding_changed": true
+  },
+  "tools_manifest": {
+    "schema_version": 1,
+    "scope": "PARAMETERIZED_SAFETY4_ORIGINAL_DEVELOPMENT_ATTEMPTS_NOT_FORMAL_GATE",
+    "files": {
+      "development_safety.py": "64fed65c6a6a547b97c415f0e5b4a5c973b506c086c466f54f98d8d81877ff36",
+      "development_safety.sh": "9731461cf64136847c5c3fee08a799230abe8b900527010a3d003c02c57e37ee",
+      "test_development_safety.py": "60f35657bc7f8380afde9844a75b5aee1606cf9065f6e17041d00f628e470064"
+    },
+    "original_safety_tools_canonical_sha256": "4b2600def87b15d2c3bbc0fd2279aee55e14eaaef1c18e048f87b48cba3d09fd",
+    "development_core_tools_canonical_sha256": "4e5614388567b60ff5ab925390a37e254c8b8940f3092aa892579cf5cbd6359f",
+    "original_tail_script_sha256": "05d1d11b6357db83a9805fc96f013e01c1c7741d109d6c10501e497215c2b612",
+    "original_card_sha256": "4cfad726ba7349efdbc0bc20129e95aa8f2414e65adf7e31539ad887bbe46e2c",
+    "root_binding": "explicit reviewed candidate; dependency globals never modified",
+    "actions": [
+      "register",
+      "run"
+    ],
+    "requires_all12_actual_core_pass": true,
+    "explicit_actual_core_contract_required": true,
+    "separately_reviewed_registry_sha_required_to_run": true,
+    "all_four_flight_and_evaluation_argv_registered": true,
+    "direct_flight_single_outer_machine_lock": true,
+    "normal_run_plan_used_for_safety": false,
+    "executions_per_slot": 5,
+    "evidence_per_slot": 12,
+    "original_tail_unchanged": true,
+    "tail_interval_s": 5.2,
+    "observed_and_offline_gt_speed_limit_mps": 0.3,
+    "flight_outer_timeout_s": 3200.0,
+    "evaluation_outer_timeout_s": 1800.0,
+    "formal_seed_use_authorized": false,
+    "readiness_claimed": false,
+    "automatic_retry": false,
+    "automatic_next_action": false,
+    "resume_or_recovery_authorized": false
+  },
+  "tools_canonical_sha256": "fa7e2461320a299a7ca8cb224722ac7c34358efed127d79cdf07d0efae4af275",
+  "extension_tools_manifest": {
+    "schema_version": 1,
+    "scope": "PARAMETERIZED_EXTENSION16_NORMAL_RUNNER_DEVELOPMENT_ONLY",
+    "files": {
+      "development_extension.py": "731e1b5a525165ca518dc7f8c5b67a9c86ab42a69fe7092ba4adc6e74873bd96",
+      "development_extension.sh": "0ec9624b9ff8de64f626f20225c1ccdeac6bfb11bf7d0c4f90a66e5807c8f5dc",
+      "test_development_extension.py": "690d79a93770362f1dd8c531d6329ad65e6a77d3fc902a6589a073a1d6f7fa74"
+    },
+    "core_tools_canonical_sha256": "4e5614388567b60ff5ab925390a37e254c8b8940f3092aa892579cf5cbd6359f",
+    "safety_dependency_files": {
+      "development_safety.py": "64fed65c6a6a547b97c415f0e5b4a5c973b506c086c466f54f98d8d81877ff36",
+      "development_safety.sh": "9731461cf64136847c5c3fee08a799230abe8b900527010a3d003c02c57e37ee",
+      "test_development_safety.py": "60f35657bc7f8380afde9844a75b5aee1606cf9065f6e17041d00f628e470064"
+    },
+    "safety_canonical_policy": "explicit final admission; checked against actual safety.tool_manifest for every action",
+    "normal_runner_apis": [
+      "make_extension_plan",
+      "persist_plan",
+      "run_plan"
+    ],
+    "classes": [
+      "person",
+      "car"
+    ],
+    "conditions": [
+      "depth_noise",
+      "depth_holes",
+      "dropout",
+      "latency",
+      "combined",
+      "speed_changes_velocity",
+      "speed_changes_position",
+      "far_distance"
+    ],
+    "flight_count": 16,
+    "seed": 4,
+    "fresh_actual_core12_all_PASS_required": true,
+    "fresh_actual_safety4_all_PASS_required": true,
+    "same_candidate_source_build_protocol_required": true,
+    "maximum_new_trials_per_call": 1,
+    "driver_acquires_machine_sitl_lock": false,
+    "normal_runner_owns_sitl_lock": true,
+    "flight_or_evaluator_argv_modified": false,
+    "algorithm_FAIL_preserved": true,
+    "infrastructure_failure_stops": true,
+    "observer_original_post_wait_outcome_required": true,
+    "observer_archive_wall_budget_s": 1800.0,
+    "default_admission": null,
+    "default_runtime_contract": null,
+    "formal_seed_use_authorized": false,
+    "readiness_claimed": false,
+    "automatic_retry": false,
+    "automatic_next_action": false,
+    "resume_or_recovery_authorized": false
+  },
+  "extension_tools_canonical_sha256": "c232d556d11b7c141b6d9aa443ee0822792e72663dd5646dd6096636afeeb936",
+  "core_tools_canonical_sha256": "4e5614388567b60ff5ab925390a37e254c8b8940f3092aa892579cf5cbd6359f",
+  "existing_limited_test_logs_verified": [
+    {
+      "binding": {
+        "path": "/mnt/d/WSL/UAVHumble22-validation/development_safety_core_final_sync01.log",
+        "sha256": "defb31956471194ac1cba61ca078ab6a1f5a2f195a9aafe4cce9ef082a0e7a8c"
+      },
+      "unique_PASS_tests": 13,
+      "test_names": [
+        "test_core_rechecks_all_twelve_original_attempts_and_actual_owner (test_development_safety.AdmissionTests)",
+        "test_describe_and_missing_admission_are_inert_and_globals_unchanged (test_development_safety.AdmissionTests)",
+        "test_explicit_candidate_and_core_contract_and_separate_registry_are_required (test_development_safety.AdmissionTests)",
+        "test_main_caches_actual_runtime_resource_before_either_action_and_rejects_missing_resource (test_development_safety.AdmissionTests)",
+        "test_mutated_attempt_or_marker_and_residual_refuse (test_development_safety.AdmissionTests)",
+        "test_old_eleven_pass_one_fail_is_never_admitted (test_development_safety.AdmissionTests)",
+        "test_partial_manual_old_scope_source_contract_and_owner_defects_refuse (test_development_safety.AdmissionTests)",
+        "test_complete_algorithm_fail_retains_four_five_execution_twelve_evidence (test_development_safety.RegistryAndExecutionTests)",
+        "test_four_original_modes_and_all_five_argv_hashes_are_registered (test_development_safety.RegistryAndExecutionTests)",
+        "test_infrastructure_exit_stops_after_one_retaining_pending_three (test_development_safety.RegistryAndExecutionTests)",
+        "test_original_algorithm_exit_two_is_allowed_only_for_algorithm_evaluation (test_development_safety.RegistryAndExecutionTests)",
+        "test_original_tail_bytes_and_explicit_candidate_root_are_used (test_development_safety.RegistryAndExecutionTests)",
+        "test_register_and_run_both_gate_actual_core_and_registry_is_independently_reviewed (test_development_safety.RegistryAndExecutionTests)"
+      ],
+      "unittest_summary": "OK",
+      "native_returncode_bound_from_author_receipt": 0,
+      "wrapper_decoration": "Original WSL proxy banner, NUL prefix before first test, and PowerShell RemoteException rendering retained; bounded test names, individual ok markers and terminal unittest OK verified."
+    },
+    {
+      "binding": {
+        "path": "/mnt/d/WSL/UAVHumble22-validation/development_extension_final_dependency_binding01.log",
+        "sha256": "bef05f85614167df0544bcfaa1daae7eb7e06b2838f7bc78e29bafa74a45aa87"
+      },
+      "unique_PASS_tests": 4,
+      "test_names": [
+        "test_full_explicit_admission_and_candidate_order_are_retained (test_development_extension.AdmissionTests)",
+        "test_actual_final_core_and_safety_tool_identities_required (test_development_extension.AdmissionTests)",
+        "test_main_runs_actual_resource_preflight_and_caches_before_actions (test_development_extension.AdmissionTests)",
+        "test_actual_same_candidate_core12_and_safety4_apis_are_both_called (test_development_extension.AdmissionTests)"
+      ],
+      "unittest_summary": "OK",
+      "native_returncode_bound_from_author_receipt": 0,
+      "wrapper_decoration": "Original WSL proxy banner, NUL prefix before first test, and PowerShell RemoteException rendering retained; bounded test names, individual ok markers and terminal unittest OK verified."
+    }
+  ],
+  "new_test_invocations_by_this_review": 0,
+  "initial_nonpublication_parser_rejection": "First reviewer parser required a test name at line start and rejected the retained WSL NUL prefix before the first test. No review was published and no source or evidence changed. The corrected parser extracts bounded complete unittest test names and verifies all13/all4 unique ok markers plus terminal counts/OK.",
+  "unchanged_reviewed_paths": [
+    "actual_core: all12 original attempts/starts/reports/owner all PASS; original41 11PASS1FAIL still refused",
+    "entry_binding and source/runtime/build prerequisites",
+    "frozen_guard resolves actual candidate root tools/reliability_v4_guard.py",
+    "original full5.2s and observed/GT0.30m/s hover-tail criteria",
+    "register/run exact prospective registry and all20 argv/evidence gates",
+    "require_completed_safety reruns complete actual frozen guard and preserves original guard outcome",
+    "normal lock/owner/cleanup and no retry/formal boundaries"
+  ],
+  "actual_safety_registration_executed": false,
+  "actual_safety_run_executed": false,
+  "actual_extension_plan_or_run_executed": false,
+  "simulation_started": false,
+  "formal_seed_use_authorized": false,
+  "readiness_claimed": false,
+  "reviewer_modified_author_files": false,
+  "remaining_gate": "Actual candidate core12 allPASS with healthy original owner, then actual registry SHA review and original safety4/full frozen guard PASS remain necessary. Tool review only."
+}

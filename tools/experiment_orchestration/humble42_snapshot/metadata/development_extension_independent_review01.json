@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "scope": "INDEPENDENT_PARAMETERIZED_EXTENSION16_SOURCE_AND_FIXTURE_REVIEW_ONLY",
+  "reviewer": "/root/exclusive_navigation_prototype",
+  "created_utc": "2026-10-31T15:59:26.366390+00:00",
+  "status": "INDEPENDENT_TOOL_REVIEW_PASS_NOT_RUNTIME_OR_FORMAL_ACCEPTANCE",
+  "blocking_findings": [],
+  "author_files": {
+    "development_extension.py": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\development_extension.py",
+      "sha256": "731e1b5a525165ca518dc7f8c5b67a9c86ab42a69fe7092ba4adc6e74873bd96",
+      "bytes": 29606
+    },
+    "development_extension.sh": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\development_extension.sh",
+      "sha256": "0ec9624b9ff8de64f626f20225c1ccdeac6bfb11bf7d0c4f90a66e5807c8f5dc",
+      "bytes": 2324
+    },
+    "test_development_extension.py": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\test_development_extension.py",
+      "sha256": "690d79a93770362f1dd8c531d6329ad65e6a77d3fc902a6589a073a1d6f7fa74",
+      "bytes": 28455
+    }
+  },
+  "author_file_hashes_unchanged_through_independent_review": true,
+  "tools_manifest": {
+    "schema_version": 1,
+    "scope": "PARAMETERIZED_EXTENSION16_NORMAL_RUNNER_DEVELOPMENT_ONLY",
+    "files": {
+      "development_extension.py": "731e1b5a525165ca518dc7f8c5b67a9c86ab42a69fe7092ba4adc6e74873bd96",
+      "development_extension.sh": "0ec9624b9ff8de64f626f20225c1ccdeac6bfb11bf7d0c4f90a66e5807c8f5dc",
+      "test_development_extension.py": "690d79a93770362f1dd8c531d6329ad65e6a77d3fc902a6589a073a1d6f7fa74"
+    },
+    "core_tools_canonical_sha256": "757c36922fe6ea751d181d0f6b93af0ff97b2558dd1720794555b72c56fdc705",
+    "safety_dependency_files": {
+      "development_safety.py": "f0255be7168f61676c3c8137b00907073998810321b358dc0a3a2035b4517413",
+      "development_safety.sh": "9731461cf64136847c5c3fee08a799230abe8b900527010a3d003c02c57e37ee",
+      "test_development_safety.py": "60f35657bc7f8380afde9844a75b5aee1606cf9065f6e17041d00f628e470064"
+    },
+    "safety_canonical_policy": "explicit final admission; checked against actual safety.tool_manifest for every action",
+    "normal_runner_apis": [
+      "make_extension_plan",
+      "persist_plan",
+      "run_plan"
+    ],
+    "classes": [
+      "person",
+      "car"
+    ],
+    "conditions": [
+      "depth_noise",
+      "depth_holes",
+      "dropout",
+      "latency",
+      "combined",
+      "speed_changes_velocity",
+      "speed_changes_position",
+      "far_distance"
+    ],
+    "flight_count": 16,
+    "seed": 4,
+    "fresh_actual_core12_all_PASS_required": true,
+    "fresh_actual_safety4_all_PASS_required": true,
+    "same_candidate_source_build_protocol_required": true,
+    "maximum_new_trials_per_call": 1,
+    "driver_acquires_machine_sitl_lock": false,
+    "normal_runner_owns_sitl_lock": true,
+    "flight_or_evaluator_argv_modified": false,
+    "algorithm_FAIL_preserved": true,
+    "infrastructure_failure_stops": true,
+    "observer_original_post_wait_outcome_required": true,
+    "observer_archive_wall_budget_s": 1800.0,
+    "default_admission": null,
+    "default_runtime_contract": null,
+    "formal_seed_use_authorized": false,
+    "readiness_claimed": false,
+    "automatic_retry": false,
+    "automatic_next_action": false,
+    "resume_or_recovery_authorized": false
+  },
+  "tools_canonical_sha256": "0a15840abe521b8dcd32757d3a55cfe2bf61d7822fa2106d87effe46708eb1da",
+  "actual_dependency_tools_canonical_sha256": {
+    "core": "757c36922fe6ea751d181d0f6b93af0ff97b2558dd1720794555b72c56fdc705",
+    "safety": "17419b6f5f5fe94f009383192390f52ffbd616d0e3ebb6acb75204f91e131164"
+  },
+  "reviewed_paths": {
+    "load_admission": "Explicit independently reviewed external admission SHA; same candidate/root/source protocol and actual dependency tools; no formal seed, retry, recovery or old registry.",
+    "require_prerequisites": "Calls actual safety.actual_core then safety.require_completed_safety with explicit safety.Context, same candidate, core contract and reviewed actual registry SHA. Requires real12 allPASS and real4 guard-validated PASS.",
+    "validate_matrix": "Frozen runner validates full original plan/argv; exact2 classes in candidate order,8 original conditions,seed4,75s duration,class resources and far distance,full original budgets/pacing/car-only policies; source/model/config/runtime match actual complete core.",
+    "plan_extension": "Only normal make_extension_plan/persist_plan, untouchedPENDING16, healthy original plan owner; emits PENDING contract only.",
+    "load_contract": "Independent actual final contract SHA, final admission/source/tools/experiment bindings, actual complete core+safety equality, actual persisted plan and original planning terminal/owner re-read. PENDING, failure and recovery cannot execute.",
+    "run_extension": "Only core.observed_run_plan max_new_trials1; normal runner owns SITL lock; no outer/nested run_lock. Rechecks immutable source/plan/contract/prerequisites/prior terminals each slot. Original audit_record(extension=True) re-reads original reports/runtime/cleanup and recomputes verdict.",
+    "finish_action": "Preserves actual original post-wait native owner and core cleanup; source/tool binding drift cannot upgrade result.",
+    "main": "Actual independent build plus two-class runtime preflight then actual resource cache before Context and either action."
+  },
+  "verification": {
+    "command": [
+      "wsl.exe",
+      "-d",
+      "UAVHumble22",
+      "--cd",
+      "/mnt/d/WSL/UAVHumble22-validation",
+      "--",
+      "/usr/bin/python3",
+      "-B",
+      "-m",
+      "unittest",
+      "-v",
+      "test_development_extension"
+    ],
+    "returncode": 0,
+    "test_count": 19,
+    "passed": 19,
+    "failed": 0,
+    "elapsed_s": 0.758,
+    "captured_log": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\development_extension_independent_humble19_01.log",
+      "sha256": "75e23733348b0ddf9d1adbbfaa3b1129b9a7514f3e27ea38c6bb533d3c9e76ae",
+      "bytes": 2711
+    },
+    "bash_n": {
+      "path": "/mnt/d/WSL/UAVHumble22-validation/development_extension.sh",
+      "returncode": 0
+    },
+    "execution_scope": "Small temporary JSON and scoped dependency mocks only; no real final admission, plan, contract, model inference, ROS graph or flight.",
+    "WSL_proxy_startup_banner": "Existing localhost proxy warning occurred; the actual unittest result and native returncode0 are separately recorded."
+  },
+  "reviewer_modified_author_files": false,
+  "reviewer_modified_dependencies_or_results": false,
+  "real_admission_published": false,
+  "real_plan_or_run_executed": false,
+  "simulation_started": false,
+  "formal_seed_use_authorized": false,
+  "readiness_claimed": false,
+  "automatic_retry": false,
+  "automatic_next_action": false,
+  "remaining_gate": "Actual same-candidate source/build/core12/safety4 must complete with original PASS evidence, then root must independently review exact extension admission and actual PENDING-to-final runtime contract before any real extension run. This receipt is tool review only."
+}

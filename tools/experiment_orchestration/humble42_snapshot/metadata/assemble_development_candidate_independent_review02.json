@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "status": "PASS_INDEPENDENT_PENDING_ASSEMBLER_METADATA_FIXTURES_ONLY",
+  "created_utc": "2026-10-31T16:13:08.250634+00:00",
+  "reviewed_files": {
+    "assemble_development_candidate.py": "cb011d9bd35aae9b68d4d175dc8b1afecdc13cf089595aa93903f0c51a8561c1",
+    "test_assemble_development_candidate.py": "3c14ef191697c83c6f0edab57fc575c6079ed1362c77e5dc2194d026badaf411",
+    "humble42_core_execution_order_decision01.json": "185f3d74cb24955e8c31d3ebe0e82ecc8294b3b55087dfe1ba360f8c78476d6e"
+  },
+  "command": [
+    "wsl",
+    "-d",
+    "UAVHumble22",
+    "--cd",
+    "/mnt/d/WSL/UAVHumble22-validation",
+    "/root/uav_humble22/venv/bin/python",
+    "-B",
+    "-m",
+    "unittest",
+    "-v",
+    "test_assemble_development_candidate"
+  ],
+  "returncode": 0,
+  "test_count": 5,
+  "log": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\assemble_development_candidate_independent_humble5_02.log",
+    "sha256": "5ea037c38412ea4306563cbfe70351c56f9bcf29e2e62af3f5f8e71f54a5d506"
+  },
+  "canonical_classes": [
+    "person",
+    "car"
+  ],
+  "canonical_groups": [
+    "stage1_velocity",
+    "stage1_position",
+    "stage2_crossing",
+    "stage3_midpoint",
+    "stage3_active",
+    "stage3_multi_active"
+  ],
+  "actual_candidate_created": false,
+  "plan_or_flight_started": false,
+  "core_driver_safety_extension_modified": false,
+  "final_candidate_or_runtime_authorized": false,
+  "formal_seed_use_authorized": false,
+  "claim_boundary": "Only externally assembled PENDING candidate metadata and error gates were tested; actual new build/validate receipts and independent final candidate/runtime review remain required."
+}

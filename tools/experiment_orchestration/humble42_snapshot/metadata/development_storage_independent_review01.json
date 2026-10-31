@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "status": "PASS_INDEPENDENT_METADATA_STORAGE_TOOL_REVIEW_ONLY",
+  "created_utc": "2026-10-31T16:32:25.731496+00:00",
+  "author_preparation": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\development_storage_author_preparation01.json",
+    "sha256": "f4656d63388c17822a72d2a484fc39b84dff9400855fab9184b2e185413d46b0"
+  },
+  "files": {
+    "measure_development_completed_storage.py": "2b90fbd27d0c41059cf4dc637ec0cdfe426bf91146967868f04dd7309d9747cf",
+    "measure_development_completed_storage.sh": "9ee6ffc405031411c23cf62bb88205447a15ca6e3cd49db7c968014f227ae99b",
+    "test_measure_development_completed_storage.py": "0b24a06a2f2081b3864df78631c6d9a94cc9b4537de21029ba1c3c85103c255b"
+  },
+  "helper_manifest": {
+    "schema_version": 1,
+    "scope": "PARAMETERIZED_COMPLETE28_STAT_ONLY_NOT_CAPACITY_ADMISSION",
+    "files": {
+      "measure_development_completed_storage.py": "2b90fbd27d0c41059cf4dc637ec0cdfe426bf91146967868f04dd7309d9747cf",
+      "measure_development_completed_storage.sh": "9ee6ffc405031411c23cf62bb88205447a15ca6e3cd49db7c968014f227ae99b",
+      "test_measure_development_completed_storage.py": "0b24a06a2f2081b3864df78631c6d9a94cc9b4537de21029ba1c3c85103c255b"
+    },
+    "extension_tools_canonical_sha256": "c232d556d11b7c141b6d9aa443ee0822792e72663dd5646dd6096636afeeb936",
+    "core_tools_canonical_sha256": "4e5614388567b60ff5ab925390a37e254c8b8940f3092aa892579cf5cbd6359f",
+    "safety_tools_canonical_sha256": "fa7e2461320a299a7ca8cb224722ac7c34358efed127d79cdf07d0efae4af275",
+    "source_review_and_build_binding": "actual extension admission -> reviewed candidate/source and actual strict512 cold build",
+    "runtime_prerequisites": [
+      "same-candidate original core12 all PASS",
+      "same-candidate original safety4 all PASS with actual frozen guard",
+      "all16 original extension attempts completed healthily"
+    ],
+    "matrix_order": "existing canonical person/car and original groups/conditions",
+    "development_cells": {
+      "core": 12,
+      "extension": 16
+    },
+    "formal_mapping": {
+      "core": 120,
+      "extension": 160,
+      "repeats_per_cell": 10
+    },
+    "capacity_admission_performed": false,
+    "formal_seed_use_authorized": false,
+    "bag_payload_reads": false,
+    "archive_operations": false,
+    "automatic_next_action": false,
+    "observed_temporary_peak_claimed": false,
+    "observer_original_post_wait_terminal_required": true
+  },
+  "helpers_canonical_sha256": "e81621f3ed020deb0656d1465ab39b71c350df2ddfe1a1f30d2600d13ecebab7",
+  "validation": {
+    "windows": {
+      "command": [
+        "python",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "test_measure_development_completed_storage"
+      ],
+      "returncode": 0,
+      "test_count": 25,
+      "log": {
+        "path": "D:\\WSL\\UAVHumble22-validation\\development_storage_independent_windows01.log",
+        "sha256": "a25135c2b52fc6dcf1d9f10702b03266d023384b5de5e4a65b626d9bbbf3fa18"
+      }
+    },
+    "humble": {
+      "command": [
+        "wsl",
+        "-d",
+        "UAVHumble22",
+        "--cd",
+        "/mnt/d/WSL/UAVHumble22-validation",
+        "/root/uav_humble22/venv/bin/python",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "test_measure_development_completed_storage"
+      ],
+      "returncode": 0,
+      "test_count": 25,
+      "log": {
+        "path": "D:\\WSL\\UAVHumble22-validation\\development_storage_independent_humble01.log",
+        "sha256": "8cfe78d221a5043f254b8b57f655640d770a5201dd1284c4e692ae41be8990b1"
+      }
+    },
+    "shell_syntax": {
+      "command": [
+        "wsl",
+        "-d",
+        "UAVHumble22",
+        "--",
+        "bash",
+        "-n",
+        "/mnt/d/WSL/UAVHumble22-validation/measure_development_completed_storage.sh"
+      ],
+      "returncode": 0,
+      "test_count": null,
+      "log": {
+        "path": "D:\\WSL\\UAVHumble22-validation\\development_storage_independent_shell_syntax01.log",
+        "sha256": "3351be2068a03a869fb51f773b291e0f674fa7b73715251af04da103fe24eb22"
+      }
+    }
+  },
+  "static_review": {
+    "actual_candidate_source_strict512_build_and_runtime_cached": true,
+    "actual_core12_and_safety4_original_completion_apis_reused": true,
+    "all16_original_extension_attempts_markers_audits_and_real_post_wait_owner_required": true,
+    "all28_original_same_source75s_cells_preserved": true,
+    "FAIL_and_unknown_statuses_preserved": true,
+    "all28_PASS_is_only_eligible_budget_input": true,
+    "existing_budget_read_sample_compatible_fixture_passed": true,
+    "inventory_and_budget_accounting_use_stat_without_bag_video_model_content_reads": true,
+    "inherited_source_runtime_preflight_may_verify_registered_model_SHA": true,
+    "temporary_archive_bound_not_claimed_observed_peak": true,
+    "canonical_person_car_original_groups_and_conditions_required": true
+  },
+  "actual_measure_executed": false,
+  "actual_bag_payload_reads": false,
+  "actual_archive_operations": false,
+  "simulations_executed": 0,
+  "capacity_admission_performed": false,
+  "formal_seed_use_authorized": false,
+  "actual_admission_registered": false,
+  "claim_boundary": "Tool and pure synthetic fixtures only; future actual core12/safety4/extension16 evidence and a separate existing physical-volume capacity decision remain required."
+}

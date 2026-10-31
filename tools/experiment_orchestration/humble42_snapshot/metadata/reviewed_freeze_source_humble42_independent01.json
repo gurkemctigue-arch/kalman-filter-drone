@@ -1,0 +1,503 @@
+{
+  "schema_version": 1,
+  "status": "PASS_FINAL_COMMITTED_SOURCE_AND_BUILD_TOOLS_ONLY",
+  "scope": "HUMBLE42_EXPLICIT512_SOURCE_REVIEW_NO_FLIGHT_OR_FORMAL_ADMISSION",
+  "reviewer": "/root/core41_closed_audit",
+  "created_utc": "2026-10-31T15:57:08.826234+00:00",
+  "pending_review": {
+    "path": "/mnt/d/WSL/UAVHumble22-validation/reviewed_freeze_review_v4_humble42_pending01.json",
+    "sha256": "8b41f9d7cf7a620a445dfefad0b1b4b1c9fb90032973afa4d9718cb014e961af"
+  },
+  "final_review": {
+    "path": "/mnt/d/WSL/UAVHumble22-validation/reviewed_freeze_review_v4_humble42_01.json",
+    "sha256": "e7f9708ad681b51790fb7f126b97aea16b8297d03293fd8f6b2818e3745f3ad0"
+  },
+  "authorized_actions": [
+    "prepare",
+    "copy",
+    "build",
+    "validate"
+  ],
+  "source": {
+    "root": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2",
+    "commit": "9c90e6f42d9bb62d5f34983f2703ac3bcaa2e014",
+    "files_canonical_sha256": "c53790e86c3c1eb6367d2355ff1e99087c79e31d83ac451269ccd142350686a7",
+    "physical_source_file_count_verified": 698,
+    "classified_source_count_verified": 293,
+    "git_changed_and_added_blob_pairs_verified": 73,
+    "source_clean_and_head_rechecked_before_publication": true,
+    "all_source_and_git_verification_completed_in_prior_nonpublishing_review_attempts": true
+  },
+  "allowed_delta": {
+    "changed": [
+      "README.md",
+      "docs/ACCEPTANCE_DASHBOARD.md",
+      "docs/STAGE2_IMPLEMENTATION.md",
+      "docs/V4_WORK_STATUS.md",
+      "planning/reliability-v4-preregistration.json",
+      "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/detector_node.py",
+      "scripts/run_reliability_v4.py",
+      "tests/test_inference_timing.py",
+      "tests/test_reliability_v4_car_scale.py"
+    ],
+    "added": [
+      "config/car_sim_train20_04_m512_resource_receipt.json",
+      "docs/LIVE_PROGRESS.md",
+      "planning/reliability-v4-humble41-grace-review-20261031.md",
+      "planning/reliability-v4-humble42-resource-decision-20261031.md",
+      "scripts/benchmark_inference_tail.py",
+      "scripts/export_inference_tail_inputs.py",
+      "tests/test_benchmark_inference_tail.py",
+      "tools/experiment_orchestration/humble41_snapshot/.gitattributes",
+      "tools/experiment_orchestration/humble41_snapshot/README.md",
+      "tools/experiment_orchestration/humble41_snapshot/delivery_manifest41_draft02.json",
+      "tools/experiment_orchestration/humble41_snapshot/delivery_manifest41_draft02.md",
+      "tools/experiment_orchestration/humble41_snapshot/extension_progress_manifest01.json",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/analyze_humble33_inference_timing01.py",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/assemble_humble41_source01.py",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/bounded_humble33_action.py",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/bridge_formal280_events01.py",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/bridge_formal280_events01_usage.md",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/bridge_humble41_events01.py",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/bridge_humble41_events01_usage.md",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/bridge_humble41_extension_events01.py",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/evaluate_humble41_safety_tail01.py",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/extension_runner41.py",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/extension_runner41.sh",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/formal280_serial_guard01.py",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/formal280_serial_guard01_usage.md",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/formal41_guard_adapter01.py",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/formal41_guard_adapter01.sh",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/humble33_development_observer01.py",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/humble33_diagnostic_checks01.py",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/humble33_original32_retention01.py",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/humble33_review_guard.py",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/humble33_skip_contract.py",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/humble41_core_followups_commands01.md",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/humble41_followup_progress_connection01.md",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/humble41_safety_execution01.md",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/local_runtime_observer41.py",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/matrix_runner41.py",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/matrix_runner41.sh",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/measure_humble41_completed_storage01.py",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/reviewed_freeze_build.py",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/reviewed_freeze_build.sh",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/reviewed_timing_diagnostic.py",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/reviewed_timing_diagnostic.sh",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/root_archive_observer41_pressure01.py",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/root_archive_observer41_pressure01.sh",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/run_humble41_storage_measure01.sh",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/safety_runner41.py",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/safety_runner41.sh",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/source_runtime41.py",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/test_assemble_humble41_source01.py",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/test_bridge_formal280_events01.py",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/test_bridge_humble41_events01.py",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/test_bridge_humble41_extension_events01.py",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/test_extension_runner41.py",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/test_formal280_serial_guard01.py",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/test_formal41_guard_adapter01.py",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/test_humble41_completed_storage01.py",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/test_local_runtime_observer41.py",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/test_matrix_runner41.py",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/test_reviewed_freeze_build.py",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/test_reviewed_timing_diagnostic.py",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/test_safety_runner41.py",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/test_source_runtime41.py",
+      "tools/experiment_orchestration/humble41_snapshot/external_tools/verify_humble33_imports.py"
+    ],
+    "removed": []
+  },
+  "closed_capsule": {
+    "capsule_sha256": "942b02b994bec571d01292a0bec5b9ccf0393c2026214077db357ec283bedd4e",
+    "files": 56,
+    "metadata_bytes": 5251344,
+    "file_map_sha256": "01b7120fe83a782c7c7fe6c6ecf59b524d3d10884d5ada4aafeb541dc78b53ab",
+    "retained_fields_sha256": "889d00e83796d9624b5a9f217e247b1ae312c7ca779965f23a6d059710765671",
+    "payloads_reverified": false
+  },
+  "original41": {
+    "status_counts": {
+      "PASS": 11,
+      "FAIL": 1
+    },
+    "all_core_pass": false,
+    "original_closure_binding_completed_under_production_interpreter": true,
+    "all_original_evaluator_reports_argv_attempts_and_owner_verified": true,
+    "all_actual41_records_starts_attempts_and_plan_directly_retained": true,
+    "samefile_path_aliases": [
+      {
+        "logical": "/root/uav_tracking_fullplan_v4_humble41/results/reliability_v4_humble41_probe01_seed004_matrix/observed_driver01/execution_terminal.json",
+        "physical": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble41/reliability_v4_humble41_probe01_seed004_matrix/observed_driver01/execution_terminal.json",
+        "samefile": true,
+        "sha256": "8b742f5310e7c926785b6abac02bc495afec0331f4d223643463a4cf36c9687e"
+      }
+    ],
+    "historical_evidence_only_not_candidate_acceptance": true
+  },
+  "source_snapshot": {
+    "original_files_sha_verified": 49,
+    "supplement_files_sha_verified": 3,
+    "tool_manifest_canonicals_verified": 11,
+    "python_ast_parsed_only_no_import_execution": true,
+    "scope": "HISTORICAL_SOURCE_ONLY_NOT_RUNTIME_ADMISSION"
+  },
+  "detector_algorithm_ast_equal_after_removing_only_predict_details_metadata": true,
+  "protocol_equal_to41_except_car512_named_resource_registration": true,
+  "independent_receipts": {
+    "car_train04_m512_registration_source_independent01.json": {
+      "path": "/mnt/d/WSL/UAVHumble22-validation/car_train04_m512_registration_source_independent01.json",
+      "sha256": "203b062425fd4ff1cfce6af42e64aaf50c97958d0b4e8a78734b131b6e81677a"
+    },
+    "humble41_worker640_512_tail_independent01.json": {
+      "path": "/mnt/d/WSL/UAVHumble22-validation/humble41_worker640_512_tail_independent01.json",
+      "sha256": "271cd6c583b18404139330d748d37b5d43bb91e226d35890271199c1f67b54c2"
+    },
+    "development512_guard_core_assembler_independent01.json": {
+      "path": "/mnt/d/WSL/UAVHumble22-validation/development512_guard_core_assembler_independent01.json",
+      "sha256": "c4ed90738b0dbf36ae8db45a97424ddad6dbc12229c59914a9521cbcba36aa73"
+    },
+    "development_freeze_build_independent_review01.json": {
+      "path": "/mnt/d/WSL/UAVHumble22-validation/development_freeze_build_independent_review01.json",
+      "sha256": "f573e806a5959d8dea44d826a1bed1341d045e8e90bc2b0542a248a0799e5f45"
+    }
+  },
+  "resource_binding": {
+    "model": "models/yolo11m_car_sim_train20_04.pt",
+    "model_sha256": "bf7a56de4ae1658f8101fc6089247e8b984c2965b58d6b4963b4b5977e9ca00c",
+    "inference_image_size": 512,
+    "inference_threads": 4,
+    "registration": {
+      "revision": "car_train20_04_m512_cpu4_v1",
+      "receipt": {
+        "path": "config/car_sim_train20_04_m512_resource_receipt.json",
+        "sha256": "9abeaca3a892e61761564bc7116bb8aed34d9864f4f7406bd9f3a4bc59f3c26c"
+      },
+      "scope": "DEVELOPMENT_IMAGE_REGRESSION_AND_OFFLINE_WORKER_TIMING_ONLY_NOT_FLIGHT_ACCEPTANCE"
+    },
+    "receipt": {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/config/car_sim_train20_04_m512_resource_receipt.json",
+      "sha256": "9abeaca3a892e61761564bc7116bb8aed34d9864f4f7406bd9f3a4bc59f3c26c"
+    },
+    "quality": {
+      "candidate_id": "train20_04_best_m512",
+      "opportunities": 260,
+      "unknown": 0,
+      "summary": {
+        "path": "/mnt/d/WSL/UAVHumble22-validation/humble31_car04_scale_regression01/score01/summary.json",
+        "sha256": "570775127105dab3138ecc001b1815b05994763306546504fee1cfe6e9cca0e4"
+      },
+      "scope": "CONSUMED_IMAGE_REGRESSION_ONLY_NOT_RUNTIME_ACCEPTANCE"
+    },
+    "timing": [
+      {
+        "inference_image_size": 640,
+        "source_process": {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/worker640_t4_01/started.json",
+          "sha256": "b65e81e5cf253f1abaf551f535a0f48031ca5661c2ed956cad63335957d2d590"
+        },
+        "actual_input_shape": [
+          1,
+          3,
+          480,
+          640
+        ],
+        "predict_wall_s": {
+          "denominator": 1008,
+          "known": 1008,
+          "unknown": 0,
+          "minimum": 0.28928922000000057,
+          "median": 0.39713369899999407,
+          "p95": 0.5355440255999979,
+          "p99": 0.6222781842499925,
+          "maximum": 1.2607088899999965
+        },
+        "started_utc": "2026-10-31T15:09:18.964975+00:00",
+        "finished_utc": "2026-10-31T15:16:21.010767+00:00"
+      },
+      {
+        "inference_image_size": 512,
+        "source_process": {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/worker512_t4_01/started.json",
+          "sha256": "210095ca614e7a246983472dcef3b6ab42072adfb0ef872f94a5ecf7ff3328a4"
+        },
+        "actual_input_shape": [
+          1,
+          3,
+          384,
+          512
+        ],
+        "predict_wall_s": {
+          "denominator": 1008,
+          "known": 1008,
+          "unknown": 0,
+          "minimum": 0.1969928109999728,
+          "median": 0.2565439789999857,
+          "p95": 0.352865799149967,
+          "p99": 0.4354362921800505,
+          "maximum": 1.303711900000053
+        },
+        "started_utc": "2026-10-31T15:16:21.799329+00:00",
+        "finished_utc": "2026-10-31T15:20:57.784217+00:00"
+      }
+    ],
+    "scope": "DEVELOPMENT_IMAGE_REGRESSION_AND_OFFLINE_WORKER_TIMING_ONLY_NOT_FLIGHT_ACCEPTANCE",
+    "closed_loop_validated": false,
+    "formal_seed_use_authorized": false,
+    "evidence_bindings": [
+      {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/models/yolo11m_car_sim_train20_04.pt",
+        "sha256": "bf7a56de4ae1658f8101fc6089247e8b984c2965b58d6b4963b4b5977e9ca00c",
+        "limit": 536870912
+      },
+      {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/config/car_sim_train20_04_m512_resource_receipt.json",
+        "sha256": "9abeaca3a892e61761564bc7116bb8aed34d9864f4f7406bd9f3a4bc59f3c26c",
+        "limit": 16777216
+      },
+      {
+        "path": "/mnt/d/WSL/UAVHumble22-validation/humble31_car04_scale_regression01/score01/summary.json",
+        "sha256": "570775127105dab3138ecc001b1815b05994763306546504fee1cfe6e9cca0e4",
+        "limit": 16777216
+      },
+      {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/benchmark_inference_tail.worker.executed.py",
+        "sha256": "127756a06e5fe7370c645d79ba41edd095094bdee6a951e63edadce7a3ad5508",
+        "limit": 16777216
+      },
+      {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/inputs/inputs.json",
+        "sha256": "242673ed336343d1148d607d48aaa2522b5bf7583229a70436bfea33837b4047",
+        "limit": 16777216
+      },
+      {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/inputs/rgb_28000000000.png",
+        "sha256": "457087f4a947937df13ebb9a0f025c884d923c326e840b347d76bd3cd0b43245",
+        "limit": 16777216
+      },
+      {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/inputs/rgb_28500000000.png",
+        "sha256": "03496cb56cc3ec080fadba00df845e7c8f68427155a5d7b9bfd4523b9344e6b5",
+        "limit": 16777216
+      },
+      {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/inputs/rgb_29000000000.png",
+        "sha256": "aadae888615b1451b1be7f4e79095883a1de948fc4a8ad9ec6128270f71eb80c",
+        "limit": 16777216
+      },
+      {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/inputs/rgb_29500000000.png",
+        "sha256": "8846763691a8a5a4d7f7a632982008570c723c5308c3dc47358e617599cd0d9b",
+        "limit": 16777216
+      },
+      {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/inputs/rgb_29800000000.png",
+        "sha256": "033dd85238bc277a52a00d8d9838283f0ab3db1004ee107b8bc04b5e81109a09",
+        "limit": 16777216
+      },
+      {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/inputs/rgb_29900000000.png",
+        "sha256": "a825f4b4ba02eb9cee5bb7d13c9c7e8c5e2204acf0b9122c8085585a008ba916",
+        "limit": 16777216
+      },
+      {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/inputs/rgb_30000000000.png",
+        "sha256": "12ceffa15c14ed4cdfb51befb14537eaa21a2bd2f7d4bc89e88573d0bdbdb322",
+        "limit": 16777216
+      },
+      {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/inputs/rgb_30500000000.png",
+        "sha256": "584841b464ddd8326bf14eb2e0c7357b03c119b2316205733ee64b40c633d576",
+        "limit": 16777216
+      },
+      {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/inputs/rgb_31000000000.png",
+        "sha256": "70ca2617db1073b2cf260866b4f5eee618ed1f79a1e2eca7e209564212e12f60",
+        "limit": 16777216
+      },
+      {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/inputs/rgb_32000000000.png",
+        "sha256": "b851a1c562cda2796dc37fc2cfad89920dc2cb89ca4bdcf13799012b0151a117",
+        "limit": 16777216
+      },
+      {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/inputs/rgb_35000000000.png",
+        "sha256": "f04e0ac82aae741a3c65c98541584cf422faf399d25a9c1152fb2675cc84733b",
+        "limit": 16777216
+      },
+      {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/inputs/rgb_40000000000.png",
+        "sha256": "38327008b5c65931a528046edd79dd47ea16649089dc57a0e4cf61e68e322a2a",
+        "limit": 16777216
+      },
+      {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/worker640_t4_01/started.json",
+        "sha256": "b65e81e5cf253f1abaf551f535a0f48031ca5661c2ed956cad63335957d2d590",
+        "limit": 16777216
+      },
+      {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/worker640_t4_01/inputs.json",
+        "sha256": "305e1c1928b4623f82580f5e27d0181bffc128d2ef827a26bfbb62c7f5bacaa7",
+        "limit": 16777216
+      },
+      {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/worker640_t4_01/environment.json",
+        "sha256": "d18c55405a850c9d2125b7e235f93aa5c1ac7acb750929d41d6390dc928ffdc3",
+        "limit": 16777216
+      },
+      {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/worker640_t4_01/summary.json",
+        "sha256": "750d91d847bec06ab2004d66c89fe4304d6b60aa137009cd36da2792f9911b20",
+        "limit": 16777216
+      },
+      {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/worker640_t4_01/samples.jsonl",
+        "sha256": "68d1e3094b1920e5b088bf8cdfcb736ccd32c66ef7b8940f04f35246f489b42f",
+        "limit": 16777216
+      },
+      {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/worker512_t4_01/started.json",
+        "sha256": "210095ca614e7a246983472dcef3b6ab42072adfb0ef872f94a5ecf7ff3328a4",
+        "limit": 16777216
+      },
+      {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/worker512_t4_01/inputs.json",
+        "sha256": "305e1c1928b4623f82580f5e27d0181bffc128d2ef827a26bfbb62c7f5bacaa7",
+        "limit": 16777216
+      },
+      {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/worker512_t4_01/environment.json",
+        "sha256": "d18c55405a850c9d2125b7e235f93aa5c1ac7acb750929d41d6390dc928ffdc3",
+        "limit": 16777216
+      },
+      {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/worker512_t4_01/summary.json",
+        "sha256": "92f23374b8e40134430783ff5340030919239c8ce5ccf4bd82e09ea94708b100",
+        "limit": 16777216
+      },
+      {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/worker512_t4_01/samples.jsonl",
+        "sha256": "57c020e69af79451b712abe6d55ad31ff1ba5da8a5852d03814fe08312019ea7",
+        "limit": 16777216
+      }
+    ]
+  },
+  "build_resource_supplement": {
+    "override": {
+      "schema_version": 1,
+      "status": "FINAL_DEVELOPMENT_BUILD_RESOURCE_OVERRIDE_INDEPENDENTLY_REVIEWED",
+      "scope": "EXPLICIT512_RESOURCE_SUPPLEMENT_WITH_UNCHANGED_GENERIC_BUILD_IMPLEMENTATIONS",
+      "tools_canonical_sha256": "517b2b2dfb989b8ca32f4f12ee4bd18b54bafd906c5d251a21d58407845ea503",
+      "resource_revision": "car_train20_04_m512_cpu4_v1",
+      "receipt": {
+        "path": "config/car_sim_train20_04_m512_resource_receipt.json",
+        "sha256": "9abeaca3a892e61761564bc7116bb8aed34d9864f4f7406bd9f3a4bc59f3c26c"
+      },
+      "supersedes_legacy_resource_choice_only": true,
+      "legacy_runtime_invariant_field_is_schema_compatibility_only": true,
+      "unchanged_contracts": [
+        "safety",
+        "bridge",
+        "magnetic",
+        "environment",
+        "source_binding",
+        "bounded_owner",
+        "build",
+        "suite"
+      ],
+      "legacy640_runtime_acceptance_claimed": false,
+      "runtime_acceptance_claimed": false,
+      "formal_seed_use_authorized": false
+    },
+    "tools_manifest": {
+      "schema_version": 1,
+      "scope": "EXPLICIT512_RESOURCE_SUPPLEMENT_WITH_UNCHANGED_GENERIC_BUILD_IMPLEMENTATIONS",
+      "files": {
+        "development_freeze_build.py": "cf54a57bffdb8944aa0e2cdd724e6de70028f4d8511acf89d3becb58c8b2c129",
+        "development_freeze_build.sh": "3a6ddd86749c944989b8618ae70457631114490cb3cc63ca6835085937975bd8",
+        "test_development_freeze_build.py": "751a9f8ce6f46129a6401f235e50844b67d2274c110b8720b6180f8a59f09ad3"
+      },
+      "reused_generic_canonical_sha256": "e57017201f1033847e49bb7843b1ef61bad28c21ac9f16e876736498980219cf",
+      "resource_guard": {
+        "schema_version": 1,
+        "scope": "DEVELOPMENT_IMAGE_REGRESSION_AND_OFFLINE_WORKER_TIMING_ONLY_NOT_FLIGHT_ACCEPTANCE",
+        "files": {
+          "development_resource_guard.py": "36dcddc624df2c725856fdedc2e8e5dd5582e88fc97d8458df31f5fcbfba58e5",
+          "test_development_resource_guard.py": "4ce70019ce71d95487af8c21fe17b20245a8e114b39b896649bfa3ab65742750"
+        },
+        "revision": "car_train20_04_m512_cpu4_v1",
+        "receipt": {
+          "path": "config/car_sim_train20_04_m512_resource_receipt.json",
+          "sha256": "9abeaca3a892e61761564bc7116bb8aed34d9864f4f7406bd9f3a4bc59f3c26c"
+        },
+        "generic_tools_canonical_sha256": "e57017201f1033847e49bb7843b1ef61bad28c21ac9f16e876736498980219cf",
+        "legacy_guard_modified": false,
+        "dependency_globals_modified": false,
+        "closed_loop_or_formal_acceptance_awarded": false
+      },
+      "actual_build_and_suite_functions": [
+        "reviewed_freeze_build.build",
+        "reviewed_freeze_build.installed_checks",
+        "reviewed_freeze_build.validate_build"
+      ],
+      "legacy_runtime_contracts_called": false,
+      "dependency_globals_modified": false,
+      "flight_actions_authorized": false,
+      "formal_seed_use_authorized": false
+    },
+    "reviewed_protocol_sha256": "66dda6a6c48e9c2613bf77ada018573e13487caf80f0c9db0be7651008c09dc7"
+  },
+  "direct_source_tests": {
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "-m",
+      "unittest",
+      "-q",
+      "tests.test_inference_timing",
+      "tests.test_benchmark_inference_tail"
+    ],
+    "environment": "UAVHumble22",
+    "passed": 20,
+    "failed": 0,
+    "elapsed_s": 0.094,
+    "returncode": 0,
+    "model_imported": false,
+    "simulation_started": false
+  },
+  "build_driver_review_tests": {
+    "final_unique_passed": 20,
+    "final_unique_unresolved": 0,
+    "original19pass_plus_fixture1error_log_retained": true,
+    "failed_only_corrected_fixture_pass_log_retained": true
+  },
+  "nonpublishing_review_attempts": [
+    {
+      "reason": "System interpreter rejected by original owner exact sys.executable binding",
+      "correction": "Used /root/uav_humble22/venv/bin/python; original full closure verification passed",
+      "source_or_tools_changed": false
+    },
+    {
+      "reason": "Additional reviewer string-only capsule membership check rejected a real frozen-results symlink alias",
+      "correction": "Independently required samefile plus exact SHA for every original record/start/attempt/plan; exactly one legitimate terminal alias",
+      "source_or_capsule_changed": false
+    }
+  ],
+  "final_review_only_mutated_fields": [
+    "status",
+    "development_resource_override"
+  ],
+  "remaining_requirements": [
+    "Actual bounded prepare/copy/cold build/installed isolation/CDR/full suite",
+    "Separate reviewed new-source core12 admission and original execution",
+    "All12 PASS before independent safety4; then extension16; final formal admission remains separate"
+  ],
+  "old_640_guard_or_generic_files_modified": false,
+  "frozen_source_created": false,
+  "build_executed": false,
+  "flight_actions_authorized": false,
+  "formal_seed_use_authorized": false,
+  "automatic_next_action": false,
+  "readiness_claimed": false,
+  "closed_loop_acceptance_awarded": false
+}

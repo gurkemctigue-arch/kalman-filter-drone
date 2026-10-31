@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "status": "PASS_PARAMETERIZED_SAFETY4_TOOL_REVIEW_ONLY",
+  "scope": "INDEPENDENT_SOURCE_AND_PRIVATE_FIXTURE_AUDIT_NO_REAL_REGISTRY_OR_FLIGHT",
+  "reviewer": "/root/core41_closed_audit",
+  "created_utc": "2026-10-31T16:04:25.817997+00:00",
+  "author_receipt": {
+    "path": "/mnt/d/WSL/UAVHumble22-validation/development_safety_author02.json",
+    "sha256": "398687e070fea78dd00ded88fa29c7f468f32a5297c9aba33b2f3fb085eb99a1"
+  },
+  "tools_manifest": {
+    "schema_version": 1,
+    "scope": "PARAMETERIZED_SAFETY4_ORIGINAL_DEVELOPMENT_ATTEMPTS_NOT_FORMAL_GATE",
+    "files": {
+      "development_safety.py": "f0255be7168f61676c3c8137b00907073998810321b358dc0a3a2035b4517413",
+      "development_safety.sh": "9731461cf64136847c5c3fee08a799230abe8b900527010a3d003c02c57e37ee",
+      "test_development_safety.py": "60f35657bc7f8380afde9844a75b5aee1606cf9065f6e17041d00f628e470064"
+    },
+    "original_safety_tools_canonical_sha256": "4b2600def87b15d2c3bbc0fd2279aee55e14eaaef1c18e048f87b48cba3d09fd",
+    "development_core_tools_canonical_sha256": "757c36922fe6ea751d181d0f6b93af0ff97b2558dd1720794555b72c56fdc705",
+    "original_tail_script_sha256": "05d1d11b6357db83a9805fc96f013e01c1c7741d109d6c10501e497215c2b612",
+    "original_card_sha256": "4cfad726ba7349efdbc0bc20129e95aa8f2414e65adf7e31539ad887bbe46e2c",
+    "root_binding": "explicit reviewed candidate; dependency globals never modified",
+    "actions": [
+      "register",
+      "run"
+    ],
+    "requires_all12_actual_core_pass": true,
+    "explicit_actual_core_contract_required": true,
+    "separately_reviewed_registry_sha_required_to_run": true,
+    "all_four_flight_and_evaluation_argv_registered": true,
+    "direct_flight_single_outer_machine_lock": true,
+    "normal_run_plan_used_for_safety": false,
+    "executions_per_slot": 5,
+    "evidence_per_slot": 12,
+    "original_tail_unchanged": true,
+    "tail_interval_s": 5.2,
+    "observed_and_offline_gt_speed_limit_mps": 0.3,
+    "flight_outer_timeout_s": 3200.0,
+    "evaluation_outer_timeout_s": 1800.0,
+    "formal_seed_use_authorized": false,
+    "readiness_claimed": false,
+    "automatic_retry": false,
+    "automatic_next_action": false,
+    "resume_or_recovery_authorized": false
+  },
+  "tools_canonical_sha256": "17419b6f5f5fe94f009383192390f52ffbd616d0e3ebb6acb75204f91e131164",
+  "reviewed_files": {
+    "development_safety.py": {
+      "path": "/mnt/d/WSL/UAVHumble22-validation/development_safety.py",
+      "sha256": "f0255be7168f61676c3c8137b00907073998810321b358dc0a3a2035b4517413"
+    },
+    "development_safety.sh": {
+      "path": "/mnt/d/WSL/UAVHumble22-validation/development_safety.sh",
+      "sha256": "9731461cf64136847c5c3fee08a799230abe8b900527010a3d003c02c57e37ee"
+    },
+    "test_development_safety.py": {
+      "path": "/mnt/d/WSL/UAVHumble22-validation/test_development_safety.py",
+      "sha256": "60f35657bc7f8380afde9844a75b5aee1606cf9065f6e17041d00f628e470064"
+    }
+  },
+  "independent_test_source": {
+    "path": "/mnt/d/WSL/UAVHumble22-validation/test_development_safety_independent01.py",
+    "sha256": "1760b356cb4a4713d36f7646e472efacb7aed8b1541297e0714f350fd96b7916"
+  },
+  "tests": [
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "test_development_safety"
+      ],
+      "environment": "UAVHumble22",
+      "passed": 13,
+      "failed": 0,
+      "returncode": 0,
+      "elapsed_s": 6.564
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "test_development_safety_independent01.py"
+      ],
+      "environment": "UAVHumble22",
+      "passed": 2,
+      "failed": 0,
+      "returncode": 0,
+      "elapsed_s": 0.401
+    },
+    {
+      "command": [
+        "/bin/bash",
+        "-n",
+        "development_safety.sh"
+      ],
+      "returncode": 0
+    }
+  ],
+  "actual_protocol_prospective_argv_check": {
+    "status": "PASS_NO_PLAN_REGISTERED",
+    "source_commit": "9c90e6f42d9bb62d5f34983f2703ac3bcaa2e014",
+    "classes": [
+      "person",
+      "car"
+    ],
+    "cases": [
+      "auto_unique_multi",
+      "locked_ambiguity"
+    ],
+    "trials": 4,
+    "execution_argv_per_trial": 5,
+    "all20_argv_canonical_sha_recomputed": true,
+    "person": {
+      "inference_image_size": 320,
+      "inference_threads": 2,
+      "desired_distance_m": 5.0
+    },
+    "car": {
+      "inference_image_size": 512,
+      "inference_threads": 4,
+      "desired_distance_m": 9.0
+    },
+    "adapter_publish_rate_hz": 50.0,
+    "actual_matrix_path_check_mocked": true,
+    "model_or_bag_loaded": false
+  },
+  "verified_gates": [
+    "Explicit independently reviewed candidate, actual cold-build metadata, current512 runtime evidence and exact core contract required",
+    "Both register and run reread all12 original core slots, original attempts and starts, actual report argv/hash/verdicts and healthy original observer owner",
+    "Original41 11PASS1FAIL and manual summary cannot admit new-source safety",
+    "Fresh separately reviewed prospective registry SHA required to run; exact all4 flight+4evaluation argv and hashes are bound",
+    "One original attempt per safety slot; direct flight has one outer normal runner machine lock; no normal run_plan nesting",
+    "Complete algorithm FAIL is retained while infrastructure/native/source/observer fault stops remaining slots without retry",
+    "Both observed and offline GT tail speed criteria remain0.30m/s across original full5.2s final recorded Clock interval",
+    "Runtime .60 observation and .75 prediction limits,9.21 Mahalanobis,explicit same-source geometry/bridge/native/pacing preserved",
+    "Actual original post-wait owner terminal required; archived candidate copy insufficient",
+    "Successful facts require independent full frozen guard validation; subsequent require_completed_safety reruns full guard and compares original actual evidence bindings",
+    "Independent connection fixture confirms original frozen guard FAIL cannot be promoted and no failed validation file overwritten",
+    "Dependency roots/globals and old safety/card/tail source bytes remain unchanged"
+  ],
+  "independent_connection_tests_scope": "Synthetic private records and mocked flight/runtime/guard semantics only; verifies mandatory call, chronology of validation and refusal propagation; does not validate real flight or bag contents",
+  "real_safety_registration_executed_by_review": false,
+  "real_safety_flight_executed_by_review": false,
+  "flight_actions_authorized": false,
+  "formal_seed_use_authorized": false,
+  "readiness_claimed": false,
+  "automatic_retry": false,
+  "automatic_next_action": false,
+  "remaining_requirements": [
+    "New-source actual core12 original terminals allPASS and healthy owner closure",
+    "Register actual four-safety prospective registry; independent exact registrySHA review",
+    "Run actual original four safety flights and all20 commands; no retry or originalFAIL promotion",
+    "All4 originalPASS plus successful original full frozen guard result before extension16 admission"
+  ]
+}
