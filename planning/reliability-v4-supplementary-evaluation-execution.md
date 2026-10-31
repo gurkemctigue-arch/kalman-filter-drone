@@ -10,6 +10,8 @@
 4. 将[补充选源清单](reliability-v4-supplementary-detection-selections.json)的实际SHA和新协议SHA保存到独立执行记录中。协议输出须使用`D:/WSL/UAVHumble22-validation`下的全新外部文件，不能放进最终源根或其`results`实际目标。该清单不是协议本身，不授予飞行准入。
 5. 完成原最终来源封存和完整280槽容量准入，再核验补充协议、选源与真实正式计划的绑定，才可正式串行执行。原guard不消费补充检测协议；不能用原guard通过代替这项额外事前核验。
 
+额外检查由[补充协议前置校验工具](../tools/experiment_orchestration/humble42_supplementary_preflight_snapshot/README.md)连接原串行器；它的显式绑定合同必须等实际sealed admission生成后才创建并独立核对。该工具作者34项、独审40项Windows合成测试通过，实际Humble Python3.10组件验证、Linux exec及原适配器串行接线仍待资源独占窗口完成；目前没有真实绑定合同或正式执行结果。
+
 协议命令形态如下。大写参数须替换为真实物理路径和SHA；此卡没有执行命令：
 
 ```bash
