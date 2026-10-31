@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "kind": "PROSPECTIVE_SUPPLEMENTARY_DETECTION_SOURCE_SELECTIONS",
+  "status": "SOURCE_SELECTION_ONLY_NOT_EXPERIMENT_RESULT_OR_FORMAL_ADMISSION",
+  "created_utc": "2026-10-31T18:47:43.622038+00:00",
+  "selection_basis": {
+    "repository_path": "planning/reliability-v4-delivery-selections.json",
+    "sha256": "5ff909b11eeaebcfc21a9268714dece7f1da13741713d374731618124d63d628",
+    "field": "video_selection"
+  },
+  "classes": [
+    "person",
+    "car"
+  ],
+  "groups": [
+    "stage1_velocity",
+    "stage1_position",
+    "stage2_crossing",
+    "stage3_midpoint",
+    "stage3_active",
+    "stage3_multi_active"
+  ],
+  "seed": 1000,
+  "selected_slot_ids": [
+    "person_stage1_velocity_seed1000",
+    "person_stage1_position_seed1000",
+    "person_stage2_crossing_seed1000",
+    "person_stage3_midpoint_seed1000",
+    "person_stage3_active_seed1000",
+    "person_stage3_multi_active_seed1000",
+    "car_stage1_velocity_seed1000",
+    "car_stage1_position_seed1000",
+    "car_stage2_crossing_seed1000",
+    "car_stage3_midpoint_seed1000",
+    "car_stage3_active_seed1000",
+    "car_stage3_multi_active_seed1000"
+  ],
+  "scheduled_recordings": 12,
+  "complete_formal_ledger_denominator": 280,
+  "actual_protocol_must_be_created_after_both_formal_plans_and_before_any_formal_start": true,
+  "producer_tools_canonical_sha256": "0581776c0ad6bd3c36e895d9f0795174b22bfd44eef0d1c323f9949b31432fa3",
+  "sampling_rule": {
+    "first_follow_offset_s": 1.0,
+    "period_s": 2.0,
+    "end": "FINAL_RECORDED_CLOCK",
+    "maximum_source_rgb_distance_s": 0.1,
+    "exact_tie": "EARLIER_ACQUISITION",
+    "duplicate_acquisition": "UNKNOWN_NO_SELECTION",
+    "image_cap": null
+  },
+  "missing_policy": "Keep every named source irrespective of engineering outcome. Do not replace failed, interrupted or unavailable seed1000 sources. All other original formal slots remain explicitly not supplied to this supplementary subset, not zero-error recordings.",
+  "geometry_policy": "Project every declared same-class actor. All stage3 sources require independent physical dynamic camera geometry corroborated by recorded feedback TF; no fixed-mount or commanded-angle fallback. Missing or ambiguous evidence stays unknown.",
+  "label_review_policy": "An independent agent or human examines original RGB and all-actor prediction-free overlays. No automatic approval; keep approve, reject, unknown and unreviewed counts.",
+  "legacy_two_detection_sources_unchanged": true,
+  "report_destination": "SEPARATE_SUPPLEMENTARY_ATTACHMENT_WITH_OWN_SEMANTIC_VERIFIER",
+  "claim_boundary": "PR/AP describes the independently approved visible synthetic subset. Twelve sampled recordings do not establish whole280, occluded, cross-vehicle, real-scene, online FPS or causal end-to-end performance.",
+  "new_formal_flight_slots": 0,
+  "formal_seed_use_authorized": false,
+  "actual_protocol_created_by_this_action": false,
+  "actual_extraction_performed": false,
+  "actual_inference_performed": false
+}
