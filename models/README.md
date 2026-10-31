@@ -19,6 +19,10 @@ The trained checkpoint must be supplied from the local model artifact; an
 upstream download of `yolo11s.pt` cannot replace it. Earlier YOLO11s/640 and
 YOLO11s/480 configurations belong to their recorded historical experiments.
 
+The [trained car model card](CAR_TRAIN20_04.md) records its local artifact
+location, training data and settings, checksum, current inference settings,
+and the source artifacts still required when reproducing the model.
+
 The upstream download URLs and licensing notes are documented in
 [`docs/CAR_DETECTOR_COMPARISON.md`](../docs/CAR_DETECTOR_COMPARISON.md) and
 [`docs/OPENVINO_CPU_COMPARISON.md`](../docs/OPENVINO_CPU_COMPARISON.md).

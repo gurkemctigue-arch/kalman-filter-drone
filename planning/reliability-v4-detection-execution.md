@@ -72,7 +72,7 @@ bash scripts/research_env.sh scripts/evaluate_detection_recordings.py \
   --confidence-floor 0.001 --iou-nms 0.7
 ```
 
-`recorded`从实际YAML/override取值并核原模型SHA；预计person320/2线程、car640/4线程，**最终以保存值为准**。历史默认car480/2不适用于本次。实际模型已迁移时，可加对应`--person-model-path`/`--car-model-path`指向同SHA文件；不会自动下载权重。不得用`explicit`掩盖原配置缺失。
+`recorded`从实际YAML/override取值并核原模型SHA；当前Humble42候选为person320/2线程、微调car512/4线程，**最终以原槽保存值为准**。历史car640/4或默认car480/2不能直接替代新录制配置。实际模型已迁移时，可加对应`--person-model-path`/`--car-model-path`指向同SHA文件；不会自动下载权重。不得用`explicit`掩盖原配置缺失。
 
 第一次会对**每张存在的抽样源图**推理，包括几何不合格图；低confidence输出用于AP，不是在线0.45工作点。子目录键为`Path(recording.source_trial).name`，未必等于上述逻辑槽ID。输出：
 
