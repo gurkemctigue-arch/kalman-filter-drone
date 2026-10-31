@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "created_utc": "2026-10-31 20:46:30 UTC",
+  "reviewer": "/root/review_repair_patch",
+  "status": "INDEPENDENT_SOURCE_AND_WINDOWS_FAKE_REVIEW_PASS",
+  "scope": "RENDERER_ONLY_OWNED_LIFECYCLE_DIAGNOSTIC_NOT_RUNTIME_OR_FORMAL_ADMISSION",
+  "files": {
+    "owned_rgbd_shutdown.py": "d088d1e93c5a86afd38de9ca2a3664f61b91cd7529a82d3006e21fd6a1983cb0",
+    "test_owned_rgbd_shutdown.py": "88595694f561df49684477bba21992c444e816004baa669e6a44c7e342545030",
+    "test_owned_rgbd_shutdown_independent01.py": "a45937bba6ef38ccc6efe77459f1ff688586eeaf409ac49b07489a4426baf12d",
+    "HANDOFF.md": "35e59875b3878b60b51fbb4faa3b7e818c734b27e763cd27e2276ff1cf983a7c"
+  },
+  "test_execution": {
+    "interpreter": "C:/Program Files/Python312/python.exe",
+    "command": [
+      "-B",
+      "-W",
+      "error::ResourceWarning",
+      "-m",
+      "unittest",
+      "-v",
+      "test_owned_rgbd_shutdown",
+      "test_owned_rgbd_shutdown_independent01"
+    ],
+    "working_directory": "D:/WSL/UAVHumble22-validation/humble42_shutdown_diagnostic01",
+    "native_returncode": 0,
+    "tests_run": 21,
+    "author_tests": 14,
+    "independent_tests": 7,
+    "skipped": 0,
+    "unittest_wall_s": 0.016,
+    "observed_stdout_summary": "Ran 21 tests in 0.016s; OK",
+    "real_subprocess_started": false,
+    "real_proc_read": false,
+    "native_modules_imported": false
+  },
+  "static_findings": [
+    "Only explicit Linux/UAVHumble22 action may launch participants. Module import uses standard library only.",
+    "Hash-bound original runner/launcher/probe/world plus fresh external output and original seed5/LP4/OMP2 are checked before child execution.",
+    "Private GZ partition, existing build-window/machine locks and owned PID/PGID/session/start identity constrain all participants and signal recipients.",
+    "Actual source protobuf Image fields and inherited subscribe signature are used. Unknown subscribe return values are recorded; two increasing nonempty RGB and depth source frames after acknowledged unpause remain required.",
+    "Start paused, acknowledged unpause, real RGB-D frame gate, acknowledged pause and callback quiescence are separately recorded. This is not rosbag stream closure.",
+    "Gazebo acceptance requires native zero exit inside unchanged initial SIGINT8s deadline with no TERM/KILL and no owned residuals. Cleanup cannot erase timeout/nonzero/escalation failures.",
+    "Subscriber is a normal Python subprocess with private passed connection FD; unsubscribe ACK alone is insufficient, and parent must observe natural exit0.",
+    "Required process identity, selected CPU environment and actual swrast/LLVM mappings remain required. Inaccessible stack/wchan stays explicit optional NOT_OBSERVED.",
+    "Original8/5/3 shutdown ladder is not extended. Finite dmesg errors/warnings are evidence of current ring contents only.",
+    "Original core09 behavior/owner failures, 8PASS/1FAIL/3PENDING and formal0/280 are untouched."
+  ],
+  "independent_test_coverage": [
+    "Actual fake signal request records original8s deadline and clean0 result",
+    "PID creation identity change refuses signal before any kill request",
+    "Timeout then TERM followed by0 remains rejected",
+    "Optional proc stack/wchan PermissionError remains NOT_OBSERVED while required mappings remain validated",
+    "Missing actual renderer mappings remains required failure evidence",
+    "Fake native subscriber supports None/False/True returns while preserving real callback counters",
+    "Tool and fixtures parse using Python3.10 grammar"
+  ],
+  "corrected_before_final_review": [
+    "Initial subscribe truthy assumption removed because existing source established signature, not return type.",
+    "Kernel stack/wchan permission gaps made optional per root clarification; timeout/TERM/KILL gates unchanged.",
+    "Subscriber fork/os._exit path replaced by ordinary Python subprocess/native teardown."
+  ],
+  "actual_actions": {
+    "WSL": false,
+    "real_Gazebo": false,
+    "real_native_API_test": false,
+    "real_shutdown": false,
+    "rosbag_read": false,
+    "source_freeze_modification": false,
+    "formal_admission": false
+  },
+  "ready_for_root_serial_diagnostic_with_bound_command": true,
+  "limitations": [
+    "Windows synthetic tests do not establish installed Ubuntu native API compatibility or actual renderer shutdown.",
+    "Root must schedule one fresh owned diagnostic in an idle window and check original source/resource/plugin paths.",
+    "A passing renderer-only probe narrows the next diagnostic; it does not repair original09, validate full PX4/ROS integration, or admit any core/safety/formal batch.",
+    "Optional missing stacks do not support a blocked-thread root-cause claim."
+  ]
+}

@@ -1,5 +1,7 @@
 # 查看当前实验
 
+**2026-11-01 04:47（北京时间）诊断快照：一次真实RGB-D最小退出流程通过。** 原汽车交叉世界在暂停启动、实际出帧、暂停排空后，仅收到SIGINT，Gazebo约0.117秒后正常退出，全部自有进程退出0且无残留。此探针没有PX4、ROS桥接、检测器和完整飞行，原汽车交叉故障仍未解决。正在准备原录包因果窗口提取；完整证据边界见[诊断归档](../tools/diagnostics/humble42_shutdown_snapshot01/README.md)。原批次8/1/3与正式0/280保持。
+
 **2026-11-01更新：Humble42原核心批次已结束并停止，8 PASS、1 FAIL、3 PENDING，主命令退出2。当前没有飞行仿真运行，正在诊断。** 第9项汽车交叉提前失锁，且Gazebo退出-9、owner闭合未通过；后三个汽车云台槽没有执行，正式仍0/280。完整误差、身份分母、退出边界及后续步骤见[本批结果](../planning/reliability-v4-humble42-results-20261101.md)。下面03:08及更早的运行中描述均为历史快照。
 
 原[命令监控页](../results/project_progress/humble42_core01/index.html)现在为STOPPED_FAULT；原[槽位页](../results/project_progress/humble42_core_slots01/index.html)记录9个原槽终态。它们不代表新的诊断任务正在运行。原42不会通过重写终态或补跑同名槽继续准入；先定位关联与退出故障，再决定修复和新同源验证。

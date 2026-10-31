@@ -1,5 +1,7 @@
 # 当前工作交接（持续开发，非验收报告）
 
+2026-11-01 04:47 CST新增真实renderer-only诊断：原世界seed5/LP4/OMP2、两流各2个递增非空帧、unpause/pause ACK及quiet排空均通过，Gazebo唯一SIGINT后0.117370396s exit0，6自有进程全部exit0、无TERM/KILL/残留。独立真实receipt SHA`6a3bcf541aba5393ffc6cab99f0dbb15da9f6e59c49690b7f010067578d73bbe`；[受审工具与范围](../tools/diagnostics/humble42_shutdown_snapshot01/README.md)。不含PX4/桥接/检测器/75秒飞行，原09未复现且未修复；原8/1/3与正式0/280不变。原生因果窗口工具正在最终独审，尚未实际读取原包。
+
 **2026-11-01接续：原Humble42核心批次于20:22:15 UTC结束，退出2，8 PASS/1 FAIL/3 PENDING，9次attempt中只有前8次完成完整审计。当前无飞行仿真运行。** 原09汽车交叉在32.36秒提前LOST，长遮挡预测FAIL；距离/高度RMSE3.507331/0.162663m，导航564/752、truth752/752，完整10Hz身份753格542正确/0错误/211未知。Gazebo原-9、owner unhealthy及immutable-copy差异均保留。详见[完整本批结果与诊断计划](reliability-v4-humble42-results-20261101.md)。禁止重启原run-core或补跑其同名槽；先完成原始窄窗提取、Gazebo退出诊断和失败路径owner核对，再按证据修复和新来源验证。旧“等42全PASS后安全4”的条件没有成立。
 
 原09独审外部`humble42_core09_car_crossing_closed_independent01.json` SHA`ba7c9d6bc1e896f397365ac8a942542d1e592682ad64b3c57059437ce554a34e`；退出只读备忘SHA`5156878e1743f78db7380b65a765ae09f1913a1f41a5ac75ebea036aef8e4270`。原owner终态在`observed_driver01/execution_terminal.json`，Win命令监控`humble42_core01`为STOPPED_FAULT。root实际只读WSL进程核验无runtime残留；当前内核12条warn/error无OOM/Killed/Gazebo匹配，但不能排除有限ring以外事件。内核probe SHA`cdea461a9252e456e2602db966c7bd9cf54802d24e64c16fe6a787efef9af883`。

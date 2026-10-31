@@ -1,0 +1,303 @@
+{
+  "schema_version": 1,
+  "kind": "INDEPENDENT_READ_ONLY_ACTUAL_RENDERER_SHUTDOWN_REVIEW",
+  "reviewer": "/root/core41_closed_audit",
+  "created_utc": "2026-10-31T20:49:25.835627+00:00",
+  "status": "PASS_WITH_SCOPE_LIMITS",
+  "inputs": [
+    {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble42_shutdown_diag_01\\report.json",
+      "bytes": 538467,
+      "sha256": "995cca80f09adca16b0eab65eff731efa26855b33133b82c9cd63a928fdd893f"
+    },
+    {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble42_shutdown_diag_01\\registration.json",
+      "bytes": 4108,
+      "sha256": "a584e117d33fd2dbe237affc9d637e615142b4fa20e35d97bfe5a06126ad20df"
+    },
+    {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble42_shutdown_diag_01\\events.jsonl",
+      "bytes": 2861,
+      "sha256": "2ec238a7a879f231366d2d12f43cde9b9eb886f4a9c273ec9f42e86bd659454c"
+    },
+    {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble42_shutdown_diag_01\\gazebo.log",
+      "bytes": 1377,
+      "sha256": "39c707761677fec0bf0d300b48d7ec79145d66e8bdc3e8a61a476278c9a5cec1"
+    },
+    {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble42_shutdown_diag_01\\unpause.log",
+      "bytes": 12,
+      "sha256": "46eeeedc969f106320d874ff0cb0c5c1ea169952665865f64b8f5318d626c8a3"
+    },
+    {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble42_shutdown_diag_01\\pause.log",
+      "bytes": 12,
+      "sha256": "46eeeedc969f106320d874ff0cb0c5c1ea169952665865f64b8f5318d626c8a3"
+    },
+    {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble42_shutdown_diag_01\\native_subscriber.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble42_shutdown_diag_01\\kernel_before.log",
+      "bytes": 1975,
+      "sha256": "85dfb2af64c69a8c87bd5b28789dab2558a33c591e61fbc3b1fff28e70c0acfb"
+    },
+    {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble42_shutdown_diag_01\\kernel_after.log",
+      "bytes": 1975,
+      "sha256": "85dfb2af64c69a8c87bd5b28789dab2558a33c591e61fbc3b1fff28e70c0acfb"
+    }
+  ],
+  "closed_small_file_pins": {
+    "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\scripts\\run_stage1_trial.py": "c49db44aba88249cbbafb27ab0d7de13be38419560466636a468a913071f2097",
+    "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\scripts\\run_stage1_flight.sh": "9b9f485f294110f74186abcf2cf48d1b09297927104a2fed42f1d1818ee6c319",
+    "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\scripts\\probe_gazebo_shutdown.py": "cb9e6d946cb31a6aa8b0af09ef283d07060bf3d2650f5b8915936491e805f61c",
+    "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble42\\reliability_v4_humble42_probe01_car_stage2_crossing_seed004\\configuration\\runtime_world.sdf": "587adf76dd76cfd538454103181969330cb3372458b895571058c76f76966d74",
+    "D:\\WSL\\UAVHumble22-validation\\humble42_shutdown_diagnostic01\\owned_rgbd_shutdown.py": "d088d1e93c5a86afd38de9ca2a3664f61b91cd7529a82d3006e21fd6a1983cb0"
+  },
+  "original_registration_status_semantics": "Initial FAIL sentinel before execution, not a failed trial result",
+  "signal": {
+    "requested_utc": "2026-10-31T20:47:07.171847+00:00",
+    "observed_exit_utc": "2026-10-31T20:47:07.289192+00:00",
+    "requested_monotonic_s": 91.935251692,
+    "observed_exit_monotonic_s": 92.052622088,
+    "observed_elapsed_wall_s": 0.11737039600001253,
+    "deadline_monotonic_s": 99.935251692,
+    "grace_s": 8.0,
+    "exit_code": 0,
+    "escalations": [],
+    "recipient": {
+      "pid": 422,
+      "ppid": 297,
+      "pgid": 422,
+      "session": 422,
+      "state": "S",
+      "start_ticks": 8684,
+      "boot_id": "37e91920-2915-46dd-9147-233a25ed53de",
+      "clock_ticks_per_s": 100,
+      "observed_utc": "2026-10-31T20:47:07.168510+00:00"
+    }
+  },
+  "streams": [
+    {
+      "topic": "/camera/rgbd/image",
+      "paused_frames": 0,
+      "increasing_frames": 2,
+      "first_source_ns": 0,
+      "last_source_ns": 100000000,
+      "width": 640,
+      "height": 480,
+      "data_size": 921600,
+      "invalid": 0,
+      "drain_quiet_wall_s": 0.5342138989999938
+    },
+    {
+      "topic": "/camera/rgbd/depth_image",
+      "paused_frames": 0,
+      "increasing_frames": 2,
+      "first_source_ns": 0,
+      "last_source_ns": 100000000,
+      "width": 640,
+      "height": 480,
+      "data_size": 1228800,
+      "invalid": 0,
+      "drain_quiet_wall_s": 0.5347741060000004
+    }
+  ],
+  "acknowledged_controls": [
+    "unpause",
+    "pause"
+  ],
+  "captures": [
+    {
+      "utc": "2026-10-31T20:47:06.636191+00:00",
+      "identity": {
+        "pid": 422,
+        "ppid": 297,
+        "pgid": 422,
+        "session": 422,
+        "state": "S",
+        "start_ticks": 8684,
+        "boot_id": "37e91920-2915-46dd-9147-233a25ed53de",
+        "clock_ticks_per_s": 100,
+        "observed_utc": "2026-10-31T20:47:06.637134+00:00"
+      },
+      "task_count": 32,
+      "required_errors": [],
+      "optional_errors": []
+    },
+    {
+      "utc": "2026-10-31T20:47:07.168584+00:00",
+      "identity": {
+        "pid": 422,
+        "ppid": 297,
+        "pgid": 422,
+        "session": 422,
+        "state": "S",
+        "start_ticks": 8684,
+        "boot_id": "37e91920-2915-46dd-9147-233a25ed53de",
+        "clock_ticks_per_s": 100,
+        "observed_utc": "2026-10-31T20:47:07.169376+00:00"
+      },
+      "task_count": 32,
+      "required_errors": [],
+      "optional_errors": []
+    }
+  ],
+  "participants": [
+    {
+      "name": "kernel_before",
+      "creation": {
+        "pid": 414,
+        "ppid": 297,
+        "pgid": 414,
+        "session": 414,
+        "state": "D",
+        "start_ticks": 8646,
+        "boot_id": "37e91920-2915-46dd-9147-233a25ed53de",
+        "clock_ticks_per_s": 100,
+        "observed_utc": "2026-10-31T20:47:01.706023+00:00"
+      },
+      "exit_code": 0,
+      "signals": []
+    },
+    {
+      "name": "native_rgbd_subscriber",
+      "creation": {
+        "pid": 415,
+        "ppid": 297,
+        "pgid": 415,
+        "session": 415,
+        "state": "R",
+        "start_ticks": 8648,
+        "boot_id": "37e91920-2915-46dd-9147-233a25ed53de",
+        "clock_ticks_per_s": 100,
+        "observed_utc": "2026-10-31T20:47:01.724739+00:00"
+      },
+      "exit_code": 0,
+      "signals": []
+    },
+    {
+      "name": "gazebo",
+      "creation": {
+        "pid": 422,
+        "ppid": 297,
+        "pgid": 422,
+        "session": 422,
+        "state": "R",
+        "start_ticks": 8684,
+        "boot_id": "37e91920-2915-46dd-9147-233a25ed53de",
+        "clock_ticks_per_s": 100,
+        "observed_utc": "2026-10-31T20:47:02.081132+00:00"
+      },
+      "exit_code": 0,
+      "signals": [
+        "SIGINT"
+      ]
+    },
+    {
+      "name": "unpause",
+      "creation": {
+        "pid": 444,
+        "ppid": 297,
+        "pgid": 444,
+        "session": 444,
+        "state": "R",
+        "start_ticks": 8935,
+        "boot_id": "37e91920-2915-46dd-9147-233a25ed53de",
+        "clock_ticks_per_s": 100,
+        "observed_utc": "2026-10-31T20:47:04.589886+00:00"
+      },
+      "exit_code": 0,
+      "signals": []
+    },
+    {
+      "name": "pause",
+      "creation": {
+        "pid": 473,
+        "ppid": 297,
+        "pgid": 473,
+        "session": 473,
+        "state": "R",
+        "start_ticks": 9140,
+        "boot_id": "37e91920-2915-46dd-9147-233a25ed53de",
+        "clock_ticks_per_s": 100,
+        "observed_utc": "2026-10-31T20:47:06.643135+00:00"
+      },
+      "exit_code": 0,
+      "signals": []
+    },
+    {
+      "name": "kernel_after",
+      "creation": {
+        "pid": 481,
+        "ppid": 297,
+        "pgid": 481,
+        "session": 481,
+        "state": "R",
+        "start_ticks": 9208,
+        "boot_id": "37e91920-2915-46dd-9147-233a25ed53de",
+        "clock_ticks_per_s": 100,
+        "observed_utc": "2026-10-31T20:47:07.317603+00:00"
+      },
+      "exit_code": 0,
+      "signals": []
+    }
+  ],
+  "recorded_cleanup": [
+    {
+      "name": "gazebo",
+      "creation": {
+        "pid": 422,
+        "ppid": 297,
+        "pgid": 422,
+        "session": 422,
+        "state": "R",
+        "start_ticks": 8684,
+        "boot_id": "37e91920-2915-46dd-9147-233a25ed53de",
+        "clock_ticks_per_s": 100,
+        "observed_utc": "2026-10-31T20:47:02.081132+00:00"
+      },
+      "exit_code": 0,
+      "signals": [
+        "SIGINT"
+      ],
+      "residual": []
+    },
+    {
+      "name": "native_rgbd_subscriber",
+      "creation": {
+        "pid": 415,
+        "ppid": 297,
+        "pgid": 415,
+        "session": 415,
+        "state": "R",
+        "start_ticks": 8648,
+        "boot_id": "37e91920-2915-46dd-9147-233a25ed53de",
+        "clock_ticks_per_s": 100,
+        "observed_utc": "2026-10-31T20:47:01.724739+00:00"
+      },
+      "exit_code": 0,
+      "signals": [],
+      "residual": []
+    }
+  ],
+  "overall_elapsed_wall_from_utc_s": 5.648849,
+  "kernel": {
+    "before_lines": 22,
+    "after_lines": 22,
+    "matching_lines": [],
+    "logs_equal": true,
+    "limitation": "Finite current ring cannot exclude historical OOM, particularly across WSL boots"
+  },
+  "conclusion": "One renderer-only paused/resumed/real-RGBD/paused/drained lifecycle naturally exited0 within original8s; original09 forced exit did not reproduce.",
+  "limits": [
+    "No full75s detector/bridge/PX4/ROS participants or original shutdown-order integration.",
+    "Original09 -9 and independent association/occlusion FAIL unchanged; root cause and repair unproved.",
+    "Recorded group cleanup reviewed offline; this agent did not start WSL or independently scan current processes.",
+    "Source pins closed against reviewed workspace copies and actual bindings, without a new WSL hash command."
+  ]
+}
