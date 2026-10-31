@@ -1,6 +1,6 @@
 # RGB-D UAV target tracking and following
 
-**2026-11-01 03:36（北京时间）快照：Humble42 核心12已有7项原始PASS，行人六场景及汽车速度控制通过，汽车位置控制正在运行。** 汽车速度场原attempt已健康闭合，距离/高度RMSE为0.726446/0.164642m，末端均持续稳定；整批观察器尚未收尾，正式仍0/280。新来源独立四包冷构建、隔离/CDR检查及1748项Linux测试已完成（1743通过、5项平台跳过）。汽车使用04微调YOLO11m、512/CPU4，请求仿真速度0.125倍，原0.60/0.75秒安全时限保留；安全4、扩展16、容量/定标及最终准入仍待完成。当前运行状态见[实时进度入口](docs/LIVE_PROGRESS.md)。
+**2026-11-01 更新：Humble42 原核心批次已停止，8 PASS、1 FAIL、3 PENDING，主命令退出2；正式仍0/280。** 行人六场景及汽车速度、位置模式通过；汽车交叉在计划长遮挡之前提前失锁，另有Gazebo退出-9和owner闭合错误，后三个汽车云台槽未执行。正在核对失效窗口与退出原因。原失败、身份未知和未执行项保留，完整结果见[本批结果及诊断计划](planning/reliability-v4-humble42-results-20261101.md)；最新任务状态见[进度入口](docs/LIVE_PROGRESS.md)。
 
 **当前分支是 v4 开发检查点，三阶段功能已实现，最终验收与正式重复研究尚未完成。** 本机当前批次和查看方法见[实时进度入口](docs/LIVE_PROGRESS.md)；旧 `results/project_progress/current/` 是历史Humble31任务，不能用于判断当前实验。来源和历史失败边界见[交接记录](planning/reliability-v4-current-state.md)，后续工作依[可靠性修复与交付方案](planning/reliability-v4-next-actions-20261030.md)推进。公开文档均为带时间的快照。
 

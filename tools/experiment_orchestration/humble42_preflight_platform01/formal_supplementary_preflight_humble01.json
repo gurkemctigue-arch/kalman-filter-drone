@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "kind": "SUPPLEMENTARY_PREFLIGHT_HUMBLE_SYSTEM_PYTHON_SYNTHETIC_COMPONENT_VALIDATION",
+  "started_utc": "2026-10-31T20:28:55.418715+00:00",
+  "finished_utc": "2026-10-31T20:29:19.178512+00:00",
+  "elapsed_wall_s": 23.759785486000002,
+  "python_executable": "/usr/bin/python3",
+  "python_version": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
+  "command": [
+    "/usr/bin/python3",
+    "-I",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "/mnt/d/WSL/UAVHumble22-validation",
+    "-p",
+    "test_formal_supplementary_preflight*.py",
+    "-v"
+  ],
+  "environment": {
+    "PATH": "/usr/bin:/bin",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8"
+  },
+  "native_returncode": 0,
+  "error": null,
+  "expected_test_count": 40,
+  "observed_test_counts": [
+    "40"
+  ],
+  "all_expected_tests_pass": true,
+  "sources_before": {
+    "formal_supplementary_preflight.py": "5884e3739d496bf21905d6e0f9b0235aa32441791f78dd17a589176e326bc715",
+    "formal_supplementary_preflight.sh": "91145e9524e9f6f7ab2114ed39c611fd02d024f9b5ca06521fa43150d896e6c2",
+    "test_formal_supplementary_preflight.py": "1ab0ebcf0cfb7751e218174f5d555e788a028b058e0a84e4f39a42f5b84738d9",
+    "test_formal_supplementary_preflight_independent01.py": "3cca9d37f618212e0c515bee9a0733803952fa07e5ef9e82316394e8817b1fb0"
+  },
+  "sources_after": {
+    "formal_supplementary_preflight.py": "5884e3739d496bf21905d6e0f9b0235aa32441791f78dd17a589176e326bc715",
+    "formal_supplementary_preflight.sh": "91145e9524e9f6f7ab2114ed39c611fd02d024f9b5ca06521fa43150d896e6c2",
+    "test_formal_supplementary_preflight.py": "1ab0ebcf0cfb7751e218174f5d555e788a028b058e0a84e4f39a42f5b84738d9",
+    "test_formal_supplementary_preflight_independent01.py": "3cca9d37f618212e0c515bee9a0733803952fa07e5ef9e82316394e8817b1fb0"
+  },
+  "log": {
+    "path": "/mnt/d/WSL/UAVHumble22-validation/formal_supplementary_preflight_humble01_tests.log",
+    "bytes": 5277,
+    "sha256": "8f2ead43105817b3a109faa81a17278978e51051fa9625fcd855436efecb1cae"
+  },
+  "tool_canonical_sha256": "53f96e7a92cf8c839d8ff245e8db45b06cfb65371614a012536c417146d609d1",
+  "scope": "SYNTHETIC_COMPONENT_TESTS_ONLY_NO_REAL_GUARD_ADAPTER_SERIAL_FLIGHT_OR_DATA",
+  "actual_formal_integration_verified": false,
+  "formal_admission_granted": false
+}

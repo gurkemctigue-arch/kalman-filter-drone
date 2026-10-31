@@ -1,5 +1,9 @@
 # 查看当前实验
 
+**2026-11-01更新：Humble42原核心批次已结束并停止，8 PASS、1 FAIL、3 PENDING，主命令退出2。当前没有飞行仿真运行，正在诊断。** 第9项汽车交叉提前失锁，且Gazebo退出-9、owner闭合未通过；后三个汽车云台槽没有执行，正式仍0/280。完整误差、身份分母、退出边界及后续步骤见[本批结果](../planning/reliability-v4-humble42-results-20261101.md)。下面03:08及更早的运行中描述均为历史快照。
+
+原[命令监控页](../results/project_progress/humble42_core01/index.html)现在为STOPPED_FAULT；原[槽位页](../results/project_progress/humble42_core_slots01/index.html)记录9个原槽终态。它们不代表新的诊断任务正在运行。原42不会通过重写终态或补跑同名槽继续准入；先定位关联与退出故障，再决定修复和新同源验证。
+
 **2026-11-01 03:08（北京时间）快照：Humble42 核心12已有6项原始PASS，行人六场景全部通过，接下来为汽车六场景，正式仍为0/280。** 本批汽车结果尚未产生，不能据行人结果宣称汽车可靠性已解决。新版本已完成独立四包冷构建、模块/ament隔离和消息序列化检查；1748项Linux测试中1743通过、5项平台跳过。汽车采用04微调YOLO11m、512输入和CPU4线程，行人维持320输入和CPU2线程；请求仿真速度0.125倍，0.60秒观测时效及0.75秒预测期限保持原值。整批观察器收尾及后续安全/扩展仍待实际完成。
 
 当前请打开[Humble42实时槽位进度页](../results/project_progress/humble42_core_slots01/index.html)，它只读取原始开始/终态记录；批命令心跳和真实退出码另见[原命令监控页](../results/project_progress/humble42_core01/index.html)。原始计划位于 `results/frozen_fullplan_v4_humble42/reliability_v4_humble42_probe01_seed004_matrix/plan.json`，槽位开始/终态在其 `slots/` 目录；原41进度页已是历史。新12场按行人、汽车顺序各运行速度、位置、交叉、中位、主动云台、多目标主动云台，均重新执行，不继承旧PASS。预计核心批次约4–5小时，以实际终态和观察器关闭结果为准。

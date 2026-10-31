@@ -1,5 +1,13 @@
 # 当前工作交接（持续开发，非验收报告）
 
+**2026-11-01接续：原Humble42核心批次于20:22:15 UTC结束，退出2，8 PASS/1 FAIL/3 PENDING，9次attempt中只有前8次完成完整审计。当前无飞行仿真运行。** 原09汽车交叉在32.36秒提前LOST，长遮挡预测FAIL；距离/高度RMSE3.507331/0.162663m，导航564/752、truth752/752，完整10Hz身份753格542正确/0错误/211未知。Gazebo原-9、owner unhealthy及immutable-copy差异均保留。详见[完整本批结果与诊断计划](reliability-v4-humble42-results-20261101.md)。禁止重启原run-core或补跑其同名槽；先完成原始窄窗提取、Gazebo退出诊断和失败路径owner核对，再按证据修复和新来源验证。旧“等42全PASS后安全4”的条件没有成立。
+
+原09独审外部`humble42_core09_car_crossing_closed_independent01.json` SHA`ba7c9d6bc1e896f397365ac8a942542d1e592682ad64b3c57059437ce554a34e`；退出只读备忘SHA`5156878e1743f78db7380b65a765ae09f1913a1f41a5ac75ebea036aef8e4270`。原owner终态在`observed_driver01/execution_terminal.json`，Win命令监控`humble42_core01`为STOPPED_FAULT。root实际只读WSL进程核验无runtime残留；当前内核12条warn/error无OOM/Killed/Gazebo匹配，但不能排除有限ring以外事件。内核probe SHA`cdea461a9252e456e2602db966c7bd9cf54802d24e64c16fe6a787efef9af883`。
+
+新增补充协议前置工具已独审40/40 Windows并归档Git，canonical`53f96e7a92cf8c839d8ff245e8db45b06cfb65371614a012536c417146d609d1`，snapshot manifest`e42f1ab1bf8a04457725788efcf51e79ef05d239e9bf415612fcd42f09cd0681`。root随后已在`/usr/bin/python3 -I -B` 3.10.12、最小PATH环境实际运行同40项，23.760s全通过，receipt`formal_supplementary_preflight_humble01.json` SHA`9b716e9c409560eb0843c753998e3c2788b1dd4f8a9fa933ecb2a857afa405aa`。它不验证真实adapter/serial/飞行；实际补充协议与contract仍未创建。当前作者在准备新参数化41/42窄窗native提取器，core审查者在准备新Gazebo生命周期诊断工具，均须独审后由root串行安排真实运行。
+
+Windows任务防休眠PID28584已核实际命令归属，lease已原子续至2026-11-02 07:15:42 UTC；后续仍需按任务时长续期，结束后释放。以下03:08及更早快照均为历史，不能用于判断当前运行状态。
+
 **2026-11-01 03:08（北京时间）执行交接快照：Humble42核心12为6项原始PASS，行人六项全部闭合，汽车六项接续验证；正式仍0/280。** 多目标主动云台的固定10Hz完整身份754格为649正确/0已知错误/105未知，距离/高度RMSE0.811182/0.151243m，导航覆盖0.890957、真值覆盖1.0；整批owner尚待最终收尾。原`observed_driver01/`前六条完整attempt（含来源检查及owner收尾）平均24.017分钟，正式280条线性外推112.081小时，另计剩余开发和交付，旧93小时为历史估计。下方37及更早的“最新”段落均为历史。实时状态查`results/project_progress/humble42_core_slots01/index.html`，命令owner和退出码查`humble42_core01/index.html`，不能用本文的快照判断进程是否仍运行。
 
 当前唯一重任务是原`development_runner.sh run-core`，冻结根`/root/uav_tracking_fullplan_v4_humble42`、结果`results/frozen_fullplan_v4_humble42/`、核心计划`reliability_v4_humble42_probe01_seed004_matrix/plan.json`。候选是外部`development_candidate_humble42_01.json`（SHA`2248074dcd477a50e73c8f5b5cc523390c01c08d14636742729d7474a7768ce2`），最终核心合同是`development_contract_core_reliability_v4_humble42_probe01_01.json`。外部文件根为`D:/WSL/UAVHumble22-validation`（WSL中`/mnt/d/WSL/UAVHumble22-validation`）。不要重复启动核心、改冻结源或在当前任务中并行读bag/推理/大哈希。
