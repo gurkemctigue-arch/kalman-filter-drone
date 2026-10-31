@@ -50,6 +50,32 @@ from uav_tracking_nodes.inference_worker import NonQueuingWorker
 from uav_tracking_nodes.inference_timing import InferenceTiming
 
 
+def predict_timing_details(result=None, *, image_shape=None, requested_imgsz=None, effective_threads=None):
+    """Read bounded predict metadata only; absent/invalid stages stay unknown."""
+    speed = getattr(result, "speed", None)
+    speed_ms = {}
+    for name in ("preprocess", "inference", "postprocess"):
+        raw = speed.get(name) if isinstance(speed, dict) else None
+        try:
+            value = float(raw) if raw is not None and not isinstance(raw, (bool, str)) else None
+        except (TypeError, ValueError, OverflowError):
+            value = None
+        speed_ms[name] = value if value is not None and math.isfinite(value) and value >= 0 else None
+    boxes = getattr(result, "boxes", None)
+    try:
+        count = len(boxes) if boxes is not None else None
+    except (TypeError, ValueError):
+        count = None
+    return {"ultralytics_speed_ms": speed_ms,
+            "decoded_input_shape": list(image_shape) if image_shape is not None else None,
+            "requested_imgsz": requested_imgsz,
+            "actual_model_input_shape": None,
+            "actual_model_input_shape_status": "NOT_OBSERVED",
+            "post_nms_count_all_classes": count,
+            "effective_inference_threads": effective_threads,
+            "scope": "PREDICT_METADATA_ONLY_NOT_DEPTH_NAVIGATION_OR_END_TO_END_DELIVERY"}
+
+
 def navigation_overlap_evidence(visible_boxes, depth, intrinsics, *, depth_scale,
                                 min_depth_m, max_depth_m):
     """Collect every touched intersection pixel; do not decide visibility.
@@ -561,7 +587,8 @@ class DetectorNode(Node):
 
     def _infer_snapshot(self, snapshot: InferenceSnapshot) -> None:
         timing = InferenceTiming()
-        outcome = {"status": "early_return", "reason": "not_completed"}
+        outcome = {"status": "early_return", "reason": "not_completed",
+                   "predict_details": predict_timing_details()}
         try:
             self._infer_timed_snapshot(snapshot, timing, outcome)
         except BaseException as error:
@@ -585,7 +612,7 @@ class DetectorNode(Node):
                     raise
 
     def _infer_timed_snapshot(self, snapshot: InferenceSnapshot, timing: InferenceTiming,
-                              outcome: dict[str, str]) -> None:
+                              outcome: dict[str, Any]) -> None:
         with timing.input_lock(self._input_lock, "entry"):
             if getattr(self, "_stopping", False):
                 outcome["reason"] = "stopping_at_entry"
@@ -603,11 +630,17 @@ class DetectorNode(Node):
             depth = np.asarray(self._bridge.imgmsg_to_cv2(depth_message, desired_encoding="passthrough"))
         if image.shape[:2] != depth.shape[:2] or snapshot.camera_size != (message.width, message.height):
             raise ValueError("RGB, aligned depth and CameraInfo dimensions must match")
+        outcome["predict_details"] = predict_timing_details(image_shape=image.shape,
+            requested_imgsz=int(parameters["inference_image_size"]),
+            effective_threads=getattr(self, "_effective_inference_threads", None))
         with timing.stage("yolo_predict"):
             result = self._model.predict(
                 image, imgsz=int(parameters["inference_image_size"]),
                 device=str(parameters["inference_device"]), verbose=False,
             )[0]
+        outcome["predict_details"] = predict_timing_details(result, image_shape=image.shape,
+            requested_imgsz=int(parameters["inference_image_size"]),
+            effective_threads=getattr(self, "_effective_inference_threads", None))
         class_id = int(parameters["class_id"])
         class_name = str(parameters["class_name"])
         threshold = float(parameters["confidence_threshold"])

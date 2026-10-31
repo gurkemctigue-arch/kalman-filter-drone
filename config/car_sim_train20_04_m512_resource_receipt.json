@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "revision": "car_train20_04_m512_cpu4_v1",
+  "created_utc": "2026-10-31T15:22:48.820201+00:00",
+  "scope": "DEVELOPMENT_IMAGE_REGRESSION_AND_OFFLINE_WORKER_TIMING_ONLY_NOT_FLIGHT_ACCEPTANCE",
+  "resource": {
+    "model": "models/yolo11m_car_sim_train20_04.pt",
+    "model_sha256": "bf7a56de4ae1658f8101fc6089247e8b984c2965b58d6b4963b4b5977e9ca00c",
+    "inference_image_size": 512,
+    "actual_input_shape": [
+      1,
+      3,
+      384,
+      512
+    ],
+    "inference_threads": 4,
+    "device": "cpu",
+    "precision": "CPU native PT FP32"
+  },
+  "quality": {
+    "summary_path": "/mnt/d/WSL/UAVHumble22-validation/humble31_car04_scale_regression01/score01/summary.json",
+    "summary_sha256": "570775127105dab3138ecc001b1815b05994763306546504fee1cfe6e9cca0e4",
+    "candidate_id": "train20_04_best_m512",
+    "candidate_opportunities": 260,
+    "unknown_predictions": 0,
+    "gate": "PASS_PAIRED_DEVELOPMENT_REGRESSION_ONLY",
+    "baseline": "Existing immutable train20_04_best_m960 predictions; view038 FP retained in baseline evidence"
+  },
+  "timing": {
+    "scope": "ISOLATED_PRELOADED_PNG_CPU_PREDICT_ONLY_NO_ROS_NO_GT_NO_FLIGHT_ACCEPTANCE",
+    "order": [
+      640,
+      512
+    ],
+    "order_policy": "Separate sequential fixed-configuration processes; not randomized or concurrent",
+    "worker_mode": "production",
+    "threads": 4,
+    "cycles_per_configuration": 84,
+    "images_per_cycle": 12,
+    "script": {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/benchmark_inference_tail.worker.executed.py",
+      "sha256": "127756a06e5fe7370c645d79ba41edd095094bdee6a951e63edadce7a3ad5508"
+    },
+    "raw_input_export": {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/inputs/inputs.json",
+      "sha256": "242673ed336343d1148d607d48aaa2522b5bf7583229a70436bfea33837b4047"
+    },
+    "configurations": [
+      {
+        "inference_image_size": 640,
+        "evidence": {
+          "started.json": {
+            "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/worker640_t4_01/started.json",
+            "sha256": "b65e81e5cf253f1abaf551f535a0f48031ca5661c2ed956cad63335957d2d590"
+          },
+          "inputs.json": {
+            "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/worker640_t4_01/inputs.json",
+            "sha256": "305e1c1928b4623f82580f5e27d0181bffc128d2ef827a26bfbb62c7f5bacaa7"
+          },
+          "environment.json": {
+            "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/worker640_t4_01/environment.json",
+            "sha256": "d18c55405a850c9d2125b7e235f93aa5c1ac7acb750929d41d6390dc928ffdc3"
+          },
+          "samples.jsonl": {
+            "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/worker640_t4_01/samples.jsonl",
+            "sha256": "68d1e3094b1920e5b088bf8cdfcb736ccd32c66ef7b8940f04f35246f489b42f"
+          },
+          "summary.json": {
+            "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/worker640_t4_01/summary.json",
+            "sha256": "750d91d847bec06ab2004d66c89fe4304d6b60aa137009cd36da2792f9911b20"
+          }
+        },
+        "predict_wall_s": {
+          "denominator": 1008,
+          "known": 1008,
+          "unknown": 0,
+          "minimum": 0.28928922000000057,
+          "median": 0.39713369899999407,
+          "p95": 0.535544025599998,
+          "p99": 0.6222781842499925,
+          "maximum": 1.2607088899999965
+        }
+      },
+      {
+        "inference_image_size": 512,
+        "evidence": {
+          "started.json": {
+            "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/worker512_t4_01/started.json",
+            "sha256": "210095ca614e7a246983472dcef3b6ab42072adfb0ef872f94a5ecf7ff3328a4"
+          },
+          "inputs.json": {
+            "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/worker512_t4_01/inputs.json",
+            "sha256": "305e1c1928b4623f82580f5e27d0181bffc128d2ef827a26bfbb62c7f5bacaa7"
+          },
+          "environment.json": {
+            "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/worker512_t4_01/environment.json",
+            "sha256": "d18c55405a850c9d2125b7e235f93aa5c1ac7acb750929d41d6390dc928ffdc3"
+          },
+          "samples.jsonl": {
+            "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/worker512_t4_01/samples.jsonl",
+            "sha256": "57c020e69af79451b712abe6d55ad31ff1ba5da8a5852d03814fe08312019ea7"
+          },
+          "summary.json": {
+            "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/worker512_t4_01/summary.json",
+            "sha256": "92f23374b8e40134430783ff5340030919239c8ce5ccf4bd82e09ea94708b100"
+          }
+        },
+        "predict_wall_s": {
+          "denominator": 1008,
+          "known": 1008,
+          "unknown": 0,
+          "minimum": 0.1969928109999728,
+          "median": 0.2565439789999857,
+          "p95": 0.352865799149967,
+          "p99": 0.4354362921800505,
+          "maximum": 1.303711900000053
+        }
+      }
+    ],
+    "maximum_latency_improved": false,
+    "claim_boundary": "512 reduced observed median/p95/p99 in these isolated runs; its maximum was slightly higher. No Gazebo/ROS contention, no guarantee against rare tails and no flight freshness or reliability acceptance."
+  },
+  "formal_seeds_used": [],
+  "complete_development_readiness": false,
+  "closed_loop_validated": false,
+  "claim_boundary": "Prospective512 candidate supported only by consumed260 image regression and isolated worker timing. Original core41 11 PASS/1 FAIL remains unchanged. Require new full-source core12, safety4, extension16, calibration, sealing and capacity before formal seeds. All source-time safety and numeric acceptance gates remain unchanged."
+}

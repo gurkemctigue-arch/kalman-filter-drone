@@ -1,6 +1,10 @@
 # RGB-D UAV target tracking and following
 
+2026-10-31 最新：原Humble41核心12已闭合，11 PASS、1 FAIL；后续640/512生产后台worker各1008次时延测量已完成。选512/CPU4作为下一轮待验证配置，尚无新闭环通过结论。正式仍0/280。见[配置决定与验证顺序](planning/reliability-v4-humble42-resource-decision-20261031.md)。下方较早快照保留为历史。
+
 **当前分支是 v4 开发检查点，三阶段功能已实现，最终验收与正式重复研究尚未完成。** 本机当前批次和查看方法见[实时进度入口](docs/LIVE_PROGRESS.md)；旧 `results/project_progress/current/` 是历史Humble31任务，不能用于判断当前实验。来源和历史失败边界见[交接记录](planning/reliability-v4-current-state.md)，后续工作依[可靠性修复与交付方案](planning/reliability-v4-next-actions-20261030.md)推进。公开文档均为带时间的快照。
+
+2026-10-31 23:15（北京时间）快照：Humble41原核心12已完整关闭，11 PASS、1 FAIL；失败集中在汽车多目标主动云台的一次推理长尾。临时宽限候选已撤销，原时效和丢失门限保留。当前正在执行原始RGB、固定配置、后台worker的长序列推理诊断；尚无新闭环通过结论，正式仍0/280。详见[复核与撤销](planning/reliability-v4-humble41-grace-review-20261031.md)和上述实时入口。下列快照属于历史。
 
 2026-10-31 17:13（北京时间）快照：Humble41已完成同源四包构建、来源隔离及1728项Linux检查（1723通过、5项平台跳过），正在串行运行完整75秒核心12场景开发验证。行人速度、位置控制两项完整评价均为PASS，第三项行人多目标交叉正在运行，余9项尚未尝试；整批runtime owner关闭结果尚待批次结束。该版本尚未完成安全4项、扩展16项、最终准入或正式280项实验。下列较早检查点保留为历史。
 

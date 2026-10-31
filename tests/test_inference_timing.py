@@ -195,5 +195,45 @@ class DetectorTimingTests(unittest.TestCase):
         self.assertIs(raised.exception,expected)
 
 
+class PredictTimingDetailsTests(unittest.TestCase):
+    def test_fake_result_without_speed_or_metadata_keeps_unknown_values(self):
+        record = detector.predict_timing_details(NS(boxes=[]))
+        self.assertEqual(record['ultralytics_speed_ms'], {'preprocess': None, 'inference': None, 'postprocess': None})
+        self.assertEqual(record['post_nms_count_all_classes'], 0)
+        self.assertIsNone(record['decoded_input_shape'])
+        self.assertIsNone(record['actual_model_input_shape'])
+        self.assertIsNone(record['effective_inference_threads'])
+        self.assertIsNone(detector.predict_timing_details()['post_nms_count_all_classes'])
+
+    def test_finite_stage_speed_and_all_class_count_are_preserved_with_explicit_input_scope(self):
+        result = NS(speed={'preprocess': .3, 'inference': np.float32(12.5), 'postprocess': 0.}, boxes=[object(), object()])
+        record = detector.predict_timing_details(result, image_shape=(480, 640, 3), requested_imgsz=640, effective_threads=4)
+        self.assertEqual(record['ultralytics_speed_ms'], {'preprocess': .3, 'inference': 12.5, 'postprocess': 0.})
+        self.assertEqual(record['decoded_input_shape'], [480, 640, 3])
+        self.assertEqual((record['requested_imgsz'], record['effective_inference_threads'], record['post_nms_count_all_classes']),
+                         (640, 4, 2))
+        self.assertIsNone(record['actual_model_input_shape'])
+        self.assertEqual(record['actual_model_input_shape_status'], 'NOT_OBSERVED')
+
+    def test_invalid_or_nonfinite_stage_values_never_break_json_timing_log(self):
+        for value in (float('nan'), float('inf'), -1., True, '1.2', object()):
+            with self.subTest(value=repr(value)):
+                record = detector.predict_timing_details(NS(speed={'inference': value}, boxes=[]))
+                self.assertIsNone(record['ultralytics_speed_ms']['inference'])
+                json.dumps(record, allow_nan=False)
+
+    def test_real_timing_wrapper_preserves_missing_fake_result_speed_and_publications(self):
+        fixture = DetectorTimingTests()
+        fixture.addCleanup = self.addCleanup
+        node, snapshot, _, outputs, _ = fixture.prepare()
+        node._effective_inference_threads = 4
+        node._infer_snapshot(snapshot)
+        record = fixture.report(node)['predict_details']
+        self.assertEqual(record['ultralytics_speed_ms'], {'preprocess': None, 'inference': None, 'postprocess': None})
+        self.assertEqual(record['decoded_input_shape'], [4, 4, 3])
+        self.assertEqual((record['post_nms_count_all_classes'], record['effective_inference_threads']), (1, 4))
+        self.assertEqual([len(outputs[key]) for key in ('frames', 'observations', 'diagnostics')], [1, 1, 1])
+
+
 if __name__ == '__main__':
     unittest.main()

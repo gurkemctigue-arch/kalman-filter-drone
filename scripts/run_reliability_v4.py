@@ -162,6 +162,12 @@ CAR_INPUT_SCALE_REGISTRATION_TRAIN04_640 = {
                 "sha256": "0bccbdc96ce8d09d8f396fc283c7b08eb5457ccc84065cb493e74c4b45771549"},
     "scope": "DEVELOPMENT_20S_ONLY_NOT_COMPLETE_READINESS",
 }
+CAR_INPUT_SCALE_REGISTRATION_TRAIN04_512 = {
+    "revision": "car_train20_04_m512_cpu4_v1",
+    "receipt": {"path": "config/car_sim_train20_04_m512_resource_receipt.json",
+                "sha256": "9abeaca3a892e61761564bc7116bb8aed34d9864f4f7406bd9f3a4bc59f3c26c"},
+    "scope": "DEVELOPMENT_IMAGE_REGRESSION_AND_OFFLINE_WORKER_TIMING_ONLY_NOT_FLIGHT_ACCEPTANCE",
+}
 _UNSPECIFIED_HASH_MAP = object()
 
 
@@ -673,12 +679,16 @@ def validate_protocol(protocol):
     registration = car_model_adaptation_registration(car_model)
     car_size = 960
     if "car_input_scale_registration" in protocol:
-        if (protocol["car_input_scale_registration"] != CAR_INPUT_SCALE_REGISTRATION_TRAIN04_640
-                or car_model != CAR_ADAPTED_MODEL_TRAIN04
+        declared = protocol["car_input_scale_registration"]
+        selected = next((size for size, named in (
+            (640, CAR_INPUT_SCALE_REGISTRATION_TRAIN04_640),
+            (512, CAR_INPUT_SCALE_REGISTRATION_TRAIN04_512))
+            if _fixed_registration_value_matches(declared, named)), None)
+        if (selected is None or car_model != CAR_ADAPTED_MODEL_TRAIN04
                 or type(resources["car"].get("inference_image_size")) is not int
                 or type(resources["car"].get("inference_threads")) is not int):
-            raise ValueError("The car input-scale resource revision requires its exact04/640/CPU4 registration")
-        car_size = 640
+            raise ValueError("The car input-scale resource revision requires its exact named04/640-or-512/CPU4 registration")
+        car_size = selected
     for cls, model, size, threads, distance in (("person", "yolo11n.pt", 320, 2, 5.), ("car", "yolo11m.pt", car_size, 4, 9.)):
         setting = resources.get(cls)
         correlated_two_face_setting(setting, cls)

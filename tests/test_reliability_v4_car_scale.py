@@ -1,4 +1,4 @@
-"""Exact prospective640 resources; inert plans only, never ROS/model execution."""
+"""Named prospective scales; inert plans only, never ROS/model execution."""
 from copy import deepcopy
 from pathlib import Path
 import tempfile
@@ -13,13 +13,22 @@ FIELD = "car_input_scale_registration"
 
 
 class CarInputScaleRegistrationTests(unittest.TestCase):
+    SIZE = 640
+    REGISTRATION = "CAR_INPUT_SCALE_REGISTRATION_TRAIN04_640"
+
+    def registration(self):
+        return deepcopy(getattr(v4, self.REGISTRATION))
+
     def setUp(self):
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
         self.root = Path(temporary.name)
 
     def current_protocol(self):
-        return v4.load(fixtures.ROOT / v4.PROTOCOL_PATH)
+        protocol = v4.load(fixtures.ROOT / v4.PROTOCOL_PATH)
+        protocol[FIELD] = self.registration()
+        protocol["resources"]["car"]["inference_image_size"] = self.SIZE
+        return protocol
 
     def enable_inert_plan(self):
         fixtures.fixture(self.root)
@@ -34,11 +43,11 @@ class CarInputScaleRegistrationTests(unittest.TestCase):
         replacement = patch.object(v4, "CAR_MODEL_ADAPTATION_TRAIN04", adaptation)
         replacement.start()
         self.addCleanup(replacement.stop)
-        registration = deepcopy(v4.CAR_INPUT_SCALE_REGISTRATION_TRAIN04_640)
+        registration = self.registration()
         receipt_path = registration["receipt"]["path"]
         (self.root / receipt_path).write_bytes((fixtures.ROOT / receipt_path).read_bytes())
         protocol = v4.load(self.root / v4.PROTOCOL_PATH)
-        protocol["resources"]["car"].update(model=adaptation["model"], inference_image_size=640)
+        protocol["resources"]["car"].update(model=adaptation["model"], inference_image_size=self.SIZE)
         protocol.update(model_adaptation=adaptation, **{FIELD: registration})
         fixtures.write(self.root / v4.PROTOCOL_PATH, protocol)
         return protocol, receipt_path
@@ -50,7 +59,7 @@ class CarInputScaleRegistrationTests(unittest.TestCase):
     def test_640_registration_and_all_previous960_histories_remain_distinct(self):
         protocol = self.current_protocol()
         v4.validate_protocol(protocol)
-        self.assertEqual(protocol[FIELD], v4.CAR_INPUT_SCALE_REGISTRATION_TRAIN04_640)
+        self.assertEqual(protocol[FIELD], self.registration())
         for adaptation in (None, v4.CAR_MODEL_ADAPTATION, v4.CAR_MODEL_ADAPTATION_TRAIN04):
             with self.subTest(model=adaptation and adaptation["model"]):
                 previous = deepcopy(protocol)
@@ -66,7 +75,7 @@ class CarInputScaleRegistrationTests(unittest.TestCase):
         receipt = protocol[FIELD]["receipt"]
         self.assertEqual(v4.sha(fixtures.ROOT / receipt["path"]), receipt["sha256"])
         evidence = v4.load(fixtures.ROOT / receipt["path"])
-        self.assertEqual(evidence["scope"], "DEVELOPMENT_20S_ONLY_NOT_COMPLETE_READINESS")
+        self.assertEqual(evidence["scope"], self.registration()["scope"])
         self.assertFalse(evidence["complete_development_readiness"])
         self.assertEqual(evidence["resource"]["precision"], "CPU native PT FP32")
         self.assertEqual(evidence["quality"]["summary_sha256"],
@@ -74,7 +83,7 @@ class CarInputScaleRegistrationTests(unittest.TestCase):
 
     def test_missing_or_changed_registration_and_unreviewed_resources_reject(self):
         defects = ("missing", "null", "revision", "receipt_path", "receipt_sha", "scope",
-                   "other_model", "train01", "size512", "size960", "threads2", "float_threads", "float_size")
+                   "other_model", "train01", "other_size", "size960", "threads2", "float_threads", "float_size")
         for defect in defects:
             with self.subTest(defect=defect):
                 protocol = self.current_protocol()
@@ -87,11 +96,11 @@ class CarInputScaleRegistrationTests(unittest.TestCase):
                 elif defect == "scope": protocol[FIELD]["scope"] = "COMPLETE_READINESS"
                 elif defect == "other_model": resource["model"] = "models/other.pt"
                 elif defect == "train01": resource["model"] = v4.CAR_ADAPTED_MODEL
-                elif defect == "size512": resource["inference_image_size"] = 512
+                elif defect == "other_size": resource["inference_image_size"] = 512 if self.SIZE == 640 else 640
                 elif defect == "size960": resource["inference_image_size"] = 960
                 elif defect == "threads2": resource["inference_threads"] = 2
                 elif defect == "float_threads": resource["inference_threads"] = 4.
-                elif defect == "float_size": resource["inference_image_size"] = 640.
+                elif defect == "float_size": resource["inference_image_size"] = float(self.SIZE)
                 with self.assertRaises(ValueError):
                     v4.validate_protocol(protocol)
 
@@ -104,7 +113,7 @@ class CarInputScaleRegistrationTests(unittest.TestCase):
             self.make("missing_scale_receipt")
         receipt.write_bytes(original)
         frozen = self.make("scale")
-        expected = v4.CAR_INPUT_SCALE_REGISTRATION_TRAIN04_640["receipt"]["sha256"]
+        expected = self.registration()["receipt"]["sha256"]
         self.assertEqual(frozen["source_hashes"][relative], expected)
         self.assertEqual(frozen["config_hashes"][relative], expected)
         for mapping in ("source_hashes", "config_hashes"):
@@ -132,13 +141,13 @@ class CarInputScaleRegistrationTests(unittest.TestCase):
         for trial in frozen["trials"]:
             command = trial["flight_command"]
             self.assertEqual(trial["model"], v4.CAR_ADAPTED_MODEL_TRAIN04)
-            self.assertEqual(trial["inference_image_size"], 640)
+            self.assertEqual(trial["inference_image_size"], self.SIZE)
             self.assertEqual(trial["inference_threads"], 4)
-            self.assertEqual(command[command.index("--inference-image-size") + 1], "640")
+            self.assertEqual(command[command.index("--inference-image-size") + 1], str(self.SIZE))
         trial = frozen["trials"][0]
-        trial["inference_image_size"] = 512
+        trial["inference_image_size"] = 512 if self.SIZE == 640 else 640
         command = trial["flight_command"]
-        command[command.index("--inference-image-size") + 1] = "512"
+        command[command.index("--inference-image-size") + 1] = str(trial["inference_image_size"])
         frozen["plan_sha256"] = v4.digest(frozen, ("plan_sha256",))
         with self.assertRaisesRegex(ValueError, "trial commands"):
             v4.validate_plan(frozen)
@@ -171,6 +180,22 @@ class CarInputScaleRegistrationTests(unittest.TestCase):
         with patch.object(v4, "read_slots", side_effect=AssertionError("must reject before records")), \
                 self.assertRaisesRegex(ValueError, "selected model/adaptation/resource revision"):
             v4.validate_probe_gate(current)
+
+
+class Car512InputScaleRegistrationTests(CarInputScaleRegistrationTests):
+    SIZE = 512
+    REGISTRATION = "CAR_INPUT_SCALE_REGISTRATION_TRAIN04_512"
+
+    def test_640_registration_cannot_authorize512_or_share_its_evidence(self):
+        protocol = self.current_protocol()
+        protocol[FIELD] = deepcopy(v4.CAR_INPUT_SCALE_REGISTRATION_TRAIN04_640)
+        with self.assertRaisesRegex(ValueError, "Frozen resource"):
+            v4.validate_protocol(protocol)
+        receipt = v4.load(fixtures.ROOT / self.registration()["receipt"]["path"])
+        self.assertFalse(receipt["closed_loop_validated"])
+        self.assertFalse(receipt["timing"]["maximum_latency_improved"])
+        self.assertEqual(receipt["quality"]["candidate_id"], "train20_04_best_m512")
+        self.assertEqual([c["inference_image_size"] for c in receipt["timing"]["configurations"]], [640, 512])
 
 
 if __name__ == "__main__":

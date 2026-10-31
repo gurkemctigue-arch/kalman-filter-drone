@@ -99,7 +99,7 @@
     },
     "car": {
       "model": "models/yolo11m_car_sim_train20_04.pt",
-      "inference_image_size": 640,
+      "inference_image_size": 512,
       "inference_threads": 4,
       "desired_distance_m": 9.0,
       "navigation_correlated_two_face_bound": true,
@@ -161,12 +161,12 @@
   },
   "comparison_policy": "Report all 120 slots and all failures. Pair v4 classes/groups by the same held-out registered seed 1000..1009 where applicable. Active/midpoint visual improvements do not replace base_link physical following errors. Historical v3 uses paired seeds 0..9 for its separate four-baseline study; these v4 trials are not paired reruns of v3 and do not repeat that estimator comparison.",
   "car_input_scale_registration": {
-    "revision": "car_train20_04_m640_cpu4_v1",
+    "revision": "car_train20_04_m512_cpu4_v1",
     "receipt": {
-      "path": "config/car_sim_train20_04_m640_resource_receipt.json",
-      "sha256": "0bccbdc96ce8d09d8f396fc283c7b08eb5457ccc84065cb493e74c4b45771549"
+      "path": "config/car_sim_train20_04_m512_resource_receipt.json",
+      "sha256": "9abeaca3a892e61761564bc7116bb8aed34d9864f4f7406bd9f3a4bc59f3c26c"
     },
-    "scope": "DEVELOPMENT_20S_ONLY_NOT_COMPLETE_READINESS"
+    "scope": "DEVELOPMENT_IMAGE_REGRESSION_AND_OFFLINE_WORKER_TIMING_ONLY_NOT_FLIGHT_ACCEPTANCE"
   },
   "model_adaptation": {
     "target_class": "car",
