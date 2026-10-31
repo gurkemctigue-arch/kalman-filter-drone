@@ -391,8 +391,11 @@ def monitor(args, output, previous):
         while True:
             state["heartbeat_utc"] = utc_now()
             code = child.poll() if child else None
-            live = verify_process(target)["verified_alive"]
-            if (code is not None or not live) and not task["finished_utc"]:
+            # An owned child may exit between poll() and a kernel identity
+            # query. Only its process handle supplies the authoritative exit
+            # code; a missing identity must not finalize it with code=None.
+            finished = code is not None if child else not verify_process(target)["verified_alive"]
+            if finished and not task["finished_utc"]:
                 task.update(finished_utc=utc_now(), returncode=code)
                 if child is None:
                     task["outcome_note"] = "External process disappeared; its exit code is unavailable"

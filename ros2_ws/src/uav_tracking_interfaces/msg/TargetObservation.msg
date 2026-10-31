@@ -1,5 +1,7 @@
 # One detector result. This is a candidate observation, not a persistent track.
 std_msgs/Header header
+# Detector acquisition-clock epoch; pairs with the header's integer nanoseconds.
+uint64 acquisition_epoch
 uint64 candidate_id
 string class_name
 uint16 class_id
@@ -20,6 +22,13 @@ float32 depth_min_m
 float32 depth_max_m
 geometry_msgs/Point position_camera_m
 string camera_frame
+
+# Current-acquisition surface recovery evidence, never cached track identity.
+# Default false means the optional recovery path did not opt in / is unsupported.
+bool surface_recovery_enabled
+# True only for a supported component centroid with valid original depth.
+# RAW_FALLBACK and UNKNOWN must remain false even when recovery is enabled.
+bool surface_measurement_supported
 
 # Optional same-acquisition RGB-D support for an independent ground reference.
 # Flat xyz camera-optical coordinates; never simulator labels or model points.

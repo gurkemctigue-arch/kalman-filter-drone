@@ -56,6 +56,7 @@ class SeedRunnerTests(unittest.TestCase):
                 config_path=bringup/f"config/stage1_tracking_{target_class}.yaml"
                 configured=yaml.safe_load(config_path.read_text(encoding="utf-8"))
                 configured["uav_tracking_detection"]["ros__parameters"]["car_surface_recovery_enabled"]=configured_recovery
+                configured["uav_tracking_state_estimator"]["ros__parameters"]["supported_birth_confirmation_required"]=configured_recovery
                 config_path.write_text(yaml.safe_dump(configured),encoding="utf-8")
             # Only the existence/hash is needed: every process is mocked.
             model=root/"models/yolo11n.pt"
@@ -172,8 +173,10 @@ class SeedRunnerTests(unittest.TestCase):
             snapshot=root/"results/seed_trial/configuration"
             runtime_path=snapshot/"runtime_parameters.yaml"
             self.assertEqual(Path(environments["ros"]["STAGE_PARAMS_FILE"]),runtime_path.resolve())
-            detector=yaml.safe_load(runtime_path.read_text(encoding="utf-8"))["uav_tracking_detection"]["ros__parameters"]
+            runtime=yaml.safe_load(runtime_path.read_text(encoding="utf-8"))
+            detector=runtime["uav_tracking_detection"]["ros__parameters"]
             self.assertEqual(detector["car_surface_recovery_enabled"],recovery)
+            self.assertIs(runtime["uav_tracking_state_estimator"]["ros__parameters"]["supported_birth_confirmation_required"],recovery)
             expected_recovery={"car_surface_recovery_method":"component_centroid_v1",
                 "surface_geometry_frame":"map","surface_tf_timeout_s":.02,
                 "surface_max_image_pixels":307200,"surface_max_roi_pixels":307200,"surface_max_visible_boxes":64}

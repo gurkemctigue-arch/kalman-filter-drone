@@ -659,6 +659,7 @@ class DetectorNode(Node):
             )
             observation = TargetObservation()
             observation.header = message.header
+            observation.acquisition_epoch = snapshot.clock_epoch
             observation.candidate_id = candidate_id
             observation.class_name = class_name
             observation.class_id = detected_class
@@ -716,6 +717,14 @@ class DetectorNode(Node):
                                              reference_kind=replacement["reference_kind"])
                 elif replacement is not None:
                     surface_candidate.update(status="UNKNOWN", reason="RAW_DEPTH_INVALID")
+            # Publish only this acquisition's final assessment. A valid raw
+            # ROI fallback never inherits an earlier supported surface point.
+            observation.surface_recovery_enabled = bool(surface_diagnostics["enabled"])
+            observation.surface_measurement_supported = bool(
+                observation.surface_recovery_enabled and observation.depth_valid
+                and surface_candidate["status"] == "SUPPORTED_SURFACE_MEASUREMENT"
+                and surface_candidate["action"] == "USE_COMPONENT_CENTROID"
+            )
             if getattr(self, "_navigation_enabled", False):
                 touching = [pair for pair in overlaps
                             if candidate_id in (pair["candidate_a_id"], pair["candidate_b_id"])]

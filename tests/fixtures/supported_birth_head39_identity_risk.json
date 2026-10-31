@@ -1,0 +1,219 @@
+{
+  "provenance": {
+    "scope": "Entire scenario is synthetic; no flight, simulator truth, complete frozen-source replay or identity guarantee. Reference executes the exact historical manager source with current unchanged core dependencies.",
+    "reference_was_HEAD_when_captured": true,
+    "reference_commit": "08f8f83609e928201149ba37b60a26f8b237348c",
+    "reference_path": "uav_tracking/core/target_manager.py",
+    "reference_source_sha256": "2c74c2614915a1a720156bc76a3cf783ad9d3cbdae3831f66edc019ac9597829",
+    "reference_source_bytes": 51857,
+    "why_pinned_commit": "Pin historical HEAD39 commit so later commits do not silently turn this comparison into candidate-versus-itself.",
+    "meaning": "An unsupported one-frame ROI may be a real entrant. The same runtime measurements admit two physical histories. New TRACKING versus historical AMBIGUOUS is a measured policy tradeoff, not proof that the new decision is safe.",
+    "reference_fixture_file": "target_manager_head39_reference.py.txt",
+    "reference_usage": "Historical test data only; never imported by runtime tracking. Loaded only by the differential regression. Exact source bytes are self-contained so frozen copies do not need Git."
+  },
+  "manager_parameters": {
+    "min_hits": 1,
+    "association_mode": "hybrid_3d",
+    "reject_ambiguous_associations": true,
+    "association_max_distance": 1.5,
+    "gate_threshold": 9.21,
+    "max_coast_duration_s": 0.75,
+    "track_retention_duration_s": 3.0,
+    "kf_kwargs": {}
+  },
+  "frames": [
+    {
+      "timestamp": 0.0,
+      "detections": [
+        {
+          "bbox": [
+            0.0,
+            0.0,
+            20.0,
+            20.0
+          ],
+          "confidence": 0.9,
+          "timestamp": 0.0,
+          "position_3d": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "depth_stats": {
+            "valid_fraction": 1.0,
+            "std": 0.05
+          },
+          "metadata": {
+            "surface_recovery_enabled": true,
+            "surface_measurement_supported": true,
+            "acquisition_epoch": 0
+          }
+        }
+      ]
+    },
+    {
+      "timestamp": 0.1,
+      "detections": [
+        {
+          "bbox": [
+            0.0,
+            0.0,
+            20.0,
+            20.0
+          ],
+          "confidence": 0.9,
+          "timestamp": 0.1,
+          "position_3d": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "depth_stats": {
+            "valid_fraction": 1.0,
+            "std": 0.05
+          },
+          "metadata": {
+            "surface_recovery_enabled": true,
+            "surface_measurement_supported": true,
+            "acquisition_epoch": 0
+          }
+        },
+        {
+          "bbox": [
+            10.0,
+            0.0,
+            30.0,
+            20.0
+          ],
+          "confidence": 0.9,
+          "timestamp": 0.1,
+          "position_3d": [
+            1.6,
+            0.0,
+            1.0
+          ],
+          "depth_stats": {
+            "valid_fraction": 1.0,
+            "std": 0.05
+          },
+          "metadata": {
+            "surface_recovery_enabled": true,
+            "surface_measurement_supported": false,
+            "acquisition_epoch": 0
+          }
+        }
+      ]
+    },
+    {
+      "timestamp": 0.2,
+      "detections": [
+        {
+          "bbox": [
+            0.0,
+            0.0,
+            20.0,
+            20.0
+          ],
+          "confidence": 0.9,
+          "timestamp": 0.2,
+          "position_3d": [
+            0.11,
+            0.0,
+            1.0
+          ],
+          "depth_stats": {
+            "valid_fraction": 1.0,
+            "std": 0.05
+          },
+          "metadata": {
+            "surface_recovery_enabled": true,
+            "surface_measurement_supported": true,
+            "acquisition_epoch": 0
+          }
+        }
+      ]
+    }
+  ],
+  "expected_historical_manager_outputs": [
+    {
+      "timestamp": 0.0,
+      "status": "tracking",
+      "track_count": 1,
+      "associations": [],
+      "ambiguous_track_ids": [],
+      "target_last_measurement_s": 0.0,
+      "target_uuid": "synthetic-head39-differential-task",
+      "selected_measurement_current": true
+    },
+    {
+      "timestamp": 0.1,
+      "status": "tracking",
+      "track_count": 2,
+      "associations": [
+        [
+          1,
+          0
+        ]
+      ],
+      "ambiguous_track_ids": [],
+      "target_last_measurement_s": 0.1,
+      "target_uuid": "synthetic-head39-differential-task",
+      "selected_measurement_current": true
+    },
+    {
+      "timestamp": 0.2,
+      "status": "ambiguous",
+      "track_count": 2,
+      "associations": [],
+      "ambiguous_track_ids": [
+        1,
+        2
+      ],
+      "target_last_measurement_s": 0.1,
+      "target_uuid": "synthetic-head39-differential-task",
+      "selected_measurement_current": false
+    }
+  ],
+  "expected_candidate_outputs": [
+    {
+      "timestamp": 0.0,
+      "status": "tracking",
+      "track_count": 1,
+      "associations": [],
+      "ambiguous_track_ids": [],
+      "target_last_measurement_s": 0.0,
+      "target_uuid": "synthetic-head39-differential-task",
+      "selected_measurement_current": true
+    },
+    {
+      "timestamp": 0.1,
+      "status": "tracking",
+      "track_count": 1,
+      "associations": [
+        [
+          1,
+          0
+        ]
+      ],
+      "ambiguous_track_ids": [],
+      "target_last_measurement_s": 0.1,
+      "target_uuid": "synthetic-head39-differential-task",
+      "selected_measurement_current": true
+    },
+    {
+      "timestamp": 0.2,
+      "status": "tracking",
+      "track_count": 1,
+      "associations": [
+        [
+          1,
+          0
+        ]
+      ],
+      "ambiguous_track_ids": [],
+      "target_last_measurement_s": 0.2,
+      "target_uuid": "synthetic-head39-differential-task",
+      "selected_measurement_current": true
+    }
+  ]
+}

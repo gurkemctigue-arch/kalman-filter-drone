@@ -59,6 +59,7 @@ class StateEstimatorNode(Node):
         self.declare_parameter("association_iou_threshold", 0.01)
         self.declare_parameter("association_max_distance_m", 2.0)
         self.declare_parameter("reject_ambiguous_associations", False)
+        self.declare_parameter("supported_birth_confirmation_required", False)
         self.declare_parameter("buffer_delay_s", 0.02)
         self.declare_parameter("min_depth_valid_ratio", 0.35)
         self.declare_parameter("max_prediction_duration_s", 0.75)
@@ -132,6 +133,7 @@ class StateEstimatorNode(Node):
             association_iou_threshold=float(self.get_parameter("association_iou_threshold").value),
             association_max_distance=float(self.get_parameter("association_max_distance_m").value),
             reject_ambiguous_associations=bool(self.get_parameter("reject_ambiguous_associations").value),
+            supported_birth_confirmation_required=self.get_parameter("supported_birth_confirmation_required").value,
             kf_kwargs={
                 "process_acceleration_std": float(self.get_parameter("process_noise_accel_mps2").value),
                 "measurement_noise_std": self.get_parameter("measurement_noise_position_m").value,
@@ -169,6 +171,15 @@ class StateEstimatorNode(Node):
     @staticmethod
     def _stamp_seconds(stamp: Any) -> float:
         return float(stamp.sec) + float(stamp.nanosec) * 1e-9
+
+    @staticmethod
+    def _acquisition_epochs(observations: list[TargetObservation]) -> list[int]:
+        epochs = [getattr(observation, "acquisition_epoch", 0) for observation in observations]
+        if any(type(epoch) is not int or not 0 <= epoch < 2**64 for epoch in epochs):
+            raise ValueError("acquisition_epoch must be a nonnegative uint64 integer, never bool")
+        if len(set(epochs)) > 1:
+            raise ValueError("observation array has mixed acquisition epochs")
+        return epochs
 
     def _on_pose_uncertainty(self, message: Any) -> None:
         if (message.header.frame_id != str(self.get_parameter("state_frame").value)
@@ -220,6 +231,11 @@ class StateEstimatorNode(Node):
                or (item.camera_frame and item.camera_frame != message.header.frame_id)
                for item in message.observations):
             self.get_logger().warning("Dropping observation array with mixed camera frames")
+            return
+        try:
+            self._acquisition_epochs(message.observations)
+        except ValueError as error:
+            self.get_logger().warning(f"Dropping observation array: {error}")
             return
         self._commit_observations(list(message.observations), message)
 
@@ -357,6 +373,7 @@ class StateEstimatorNode(Node):
             observation for observation in observations
             if self._manager.target_class is None or observation.class_name == self._manager.target_class
         ]
+        acquisition_epochs = self._acquisition_epochs(observations)
         if self._pending_selection is not None:
             selection_index = self._selection_index(self._pending_selection, observations)
             if selection_index is not None:
@@ -366,9 +383,21 @@ class StateEstimatorNode(Node):
                 )
                 self._pending_selection = None
         detections: list[Detection] = []
-        for observation in observations:
+        for observation, acquisition_epoch in zip(observations, acquisition_epochs):
             position = self._transform(observation)
-            metadata = {"candidate_id": int(observation.candidate_id)}
+            surface_enabled = getattr(observation, "surface_recovery_enabled", False) is True
+            metadata = {
+                "candidate_id": int(observation.candidate_id),
+                "acquisition_epoch": acquisition_epoch,
+                # Older/default messages do not opt in. Carry the current
+                # candidate's evidence explicitly; never infer it from depth
+                # validity or a retained track's previous surface assessment.
+                "surface_recovery_enabled": surface_enabled,
+                "surface_measurement_supported": bool(
+                    surface_enabled and observation.depth_valid
+                    and getattr(observation, "surface_measurement_supported", False) is True
+                ),
+            }
             if position is not None and getattr(self, "_propagate_vehicle_uncertainty", False):
                 try:
                     metadata["additional_measurement_covariance"] = self._point_pose_covariance(position, timestamp).tolist()

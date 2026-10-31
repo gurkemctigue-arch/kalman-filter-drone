@@ -9,13 +9,14 @@ from __future__ import annotations
 from collections import deque
 from contextlib import ExitStack, contextmanager
 from copy import deepcopy
+import ast
 import json
 import math
 from pathlib import Path
 import sys
 from types import ModuleType, SimpleNamespace as NS
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 import numpy as np
 
@@ -190,6 +191,8 @@ class CarSurfaceAdapterTests(unittest.TestCase):
         self.assertEqual(report["reason"], "RGB_DEPTH_INTEGER_STAMP_MISMATCH")
         self.assertEqual(report["depth_stamp_ns"] - report["rgb_stamp_ns"], 1)
         self.assertEqual(diagnostics[0]["detections"][0]["surface_recovery"]["action"], "RAW_FALLBACK")
+        self.assertTrue(observations[0].surface_recovery_enabled)
+        self.assertFalse(observations[0].surface_measurement_supported)
 
     def test_mixed_candidates_keep_raw_fields_ids_order_and_all_class_geometry_inputs(self):
         boxes = [box(score=.1), box(bounds=(0., 0., 3., 4.)),
@@ -212,7 +215,14 @@ class CarSurfaceAdapterTests(unittest.TestCase):
             actual_fields, raw_fields = deepcopy(vars(actual)), deepcopy(vars(raw))
             actual_fields.pop("position_camera_m")
             raw_fields.pop("position_camera_m")
+            for name in ("surface_recovery_enabled", "surface_measurement_supported"):
+                actual_fields.pop(name)
+                raw_fields.pop(name)
             self.assertEqual(actual_fields, raw_fields)
+        self.assertEqual([(o.surface_recovery_enabled, o.surface_measurement_supported) for o in observations],
+                         [(True, True), (True, False)])
+        self.assertEqual([(o.surface_recovery_enabled, o.surface_measurement_supported) for o in raw_observations],
+                         [(False, False), (False, False)])
         self.assertEqual(vars(observations[0].position_camera_m), {"x": .5, "y": -.25, "z": 7.5})
         self.assertEqual(vars(observations[1].position_camera_m), vars(raw_observations[1].position_camera_m))
         self.assertEqual(observations[0].depth_m, 5., "raw scalar depth is not the centroid's optical Z")
@@ -271,6 +281,154 @@ class CarSurfaceAdapterTests(unittest.TestCase):
         detail = diagnostics[0]["detections"][0]["surface_recovery"]
         self.assertEqual((detail["status"], detail["reason"], detail["action"]),
                          ("UNKNOWN", "RAW_DEPTH_INVALID", "RAW_FALLBACK"))
+        self.assertTrue(observations[0].surface_recovery_enabled)
+        self.assertFalse(observations[0].surface_measurement_supported)
+
+    def test_surface_support_crosses_ros_boundary_per_acquisition_without_cached_success(self):
+        node, warnings, _, observations, frames = self.car_node([box()])
+        self.historical_tf(node)
+        node._clock_epoch = 4
+        with self.ros_stubs(), patch.object(surface, "prepare_car_surface_frame", side_effect=[
+                FakeSurfaceFrame({0: supported(position=(0., 0., 5.))}),
+                FakeSurfaceFrame({0: unknown()}),
+        ]):
+            self.infer(node)
+            node._clock_epoch = 9
+            self.infer(node, rgb_ns=1_300_000_000)
+        self.assertEqual(warnings, [])
+        self.assertEqual(len(frames), 2)
+        self.assertEqual([(o.surface_recovery_enabled, o.surface_measurement_supported) for o in observations],
+                         [(True, True), (True, False)])
+        self.assertEqual([f.header.stamp.sec + f.header.stamp.nanosec * 1e-9 for f in frames], [1., 1.3])
+        self.assertEqual([o.acquisition_epoch for o in observations], [4, 9])
+
+        estimator_fixture.EstimatorAdapterTimingTests.setUp(self)
+        measured = self.node
+        measured._manager = TargetManager(target_class="car", min_hits=1)
+        measured._navigation_enabled = False
+        for frame, received, expected, epoch in zip(frames, (1.05, 1.35), (True, False), (4, 9)):
+            self.time = received
+            measured._on_observation_frame(frame)
+            current = measured._manager.target.last_detection
+            self.assertEqual(current.timestamp, received - .05)
+            self.assertIs(current.metadata["surface_recovery_enabled"], True)
+            self.assertIs(current.metadata["surface_measurement_supported"], expected)
+            self.assertEqual(current.metadata["acquisition_epoch"], epoch)
+            np.testing.assert_array_equal(current.position_3d, [0., 0., 5.])
+
+        # An old/default message cannot reuse the previous frame's opt-in.
+        legacy = deepcopy(frames[-1])
+        legacy.header = image_ns(1_600_000_000).header
+        for observation in legacy.observations:
+            observation.header = legacy.header
+            del observation.surface_recovery_enabled
+            del observation.surface_measurement_supported
+            del observation.acquisition_epoch
+        self.time = 1.65
+        measured._on_observation_frame(legacy)
+        current = measured._manager.target.last_detection
+        self.assertEqual(current.timestamp, 1.6)
+        self.assertIs(current.metadata["surface_recovery_enabled"], False)
+        self.assertIs(current.metadata["surface_measurement_supported"], False)
+        self.assertEqual(current.metadata["acquisition_epoch"], 0)
+        self.assertEqual(self.warnings, [])
+
+    def test_estimator_default_or_inconsistent_support_never_becomes_positive_evidence(self):
+        estimator_fixture.EstimatorAdapterTimingTests.setUp(self)
+        self.node._navigation_enabled = False
+        for index, (enabled, supported_flag, depth_valid) in enumerate([
+                (False, True, True), (True, True, False), (True, False, True),
+                ("true", True, True), (True, "true", True),
+        ], 1):
+            with self.subTest(enabled=enabled, support=supported_flag, depth=depth_valid):
+                item = estimator_fixture.observation(index * .1)
+                item.surface_recovery_enabled = enabled
+                item.surface_measurement_supported = supported_flag
+                item.depth_valid = depth_valid
+                # Capture the real adapter conversion without asking a
+                # tracker to retain a depth-invalid candidate as its target.
+                converted = []
+                self.node._manager.update_with_result = lambda detections, **_: converted.extend(detections)
+                self.node._publish = lambda *_args, **_kwargs: None
+                self.node._expire_elapsed_target = lambda: None
+                self.node._process_observations([item], index * .1)
+                self.assertEqual(len(converted), 1)
+                self.assertIs(converted[0].metadata["surface_measurement_supported"], False)
+                self.assertIs(converted[0].metadata["surface_recovery_enabled"], enabled is True)
+
+    def test_invalid_acquisition_epoch_cannot_reach_transform_selection_or_manager(self):
+        estimator_fixture.EstimatorAdapterTimingTests.setUp(self)
+        for epoch in (False, True, -1, 2**64, 1.0, "1", None):
+            with self.subTest(epoch=epoch):
+                item = estimator_fixture.observation(.1)
+                item.acquisition_epoch = epoch
+                self.node._pending_selection = NS()
+                with patch.object(self.node, "_transform") as transform, \
+                        patch.object(self.node._manager, "lock_detection") as select, \
+                        patch.object(self.node._manager, "update_with_result") as update:
+                    with self.assertRaisesRegex(ValueError, "acquisition_epoch"):
+                        self.node._process_observations([item], .1)
+                transform.assert_not_called()
+                select.assert_not_called()
+                update.assert_not_called()
+
+    def test_mixed_acquisition_epochs_drop_atomic_frame_before_advancing_state(self):
+        estimator_fixture.EstimatorAdapterTimingTests.setUp(self)
+        first = estimator_fixture.observation(.1)
+        second = estimator_fixture.observation(.1, x=20.)
+        first.acquisition_epoch, second.acquisition_epoch = 4, 9
+        message = NS(header=first.header, observations=[first, second])
+        self.time = .15
+        with patch.object(self.node, "_transform") as transform, \
+                patch.object(self.node._manager, "update_with_result") as update:
+            self.node._on_observation_frame(message)
+            with self.assertRaisesRegex(ValueError, "mixed acquisition epochs"):
+                self.node._process_observations(message.observations, .1)
+        transform.assert_not_called()
+        update.assert_not_called()
+        self.assertIsNone(self.node._last_source)
+        self.assertIsNone(self.node._last_observation_timestamp)
+        self.assertEqual(len(self.warnings), 1)
+        self.assertIn("mixed acquisition epochs", self.warnings[0])
+
+    def test_declared_birth_policy_default_and_override_reach_manager_constructor(self):
+        # Execute the production ROS class unchanged against a small parameter
+        # transport so the declaration and constructor wiring are both tested.
+        tree = ast.parse(Path(estimator.__file__).read_text(encoding="utf-8"))
+        production_class = next(item for item in tree.body
+                                if isinstance(item, ast.ClassDef) and item.name == "StateEstimatorNode")
+        for override in (None, True):
+            with self.subTest(override=override):
+                class ParameterNode:
+                    def __init__(self, _name):
+                        self.parameters = {} if override is None else {
+                            "supported_birth_confirmation_required": override}
+
+                    def declare_parameter(self, name, default):
+                        self.parameters.setdefault(name, default)
+
+                    def get_parameter(self, name):
+                        return NS(value=self.parameters[name])
+
+                    def create_publisher(self, *_args):
+                        return NS()
+
+                    def create_subscription(self, *_args):
+                        return NS()
+
+                    def create_timer(self, *_args):
+                        return NS()
+
+                manager = Mock(return_value=NS())
+                namespace = {**vars(estimator), "Node": ParameterNode, "TargetManager": manager,
+                             "Buffer": lambda: NS(), "TransformListener": lambda *_args: NS()}
+                namespace.update({name: NS for name in
+                                  ("TargetObservation", "TargetObservationArray", "TargetSelection", "TargetState", "String")})
+                exec(compile(ast.Module(body=[production_class], type_ignores=[]), estimator.__file__, "exec"), namespace)
+                node = namespace["StateEstimatorNode"]()
+                expected = False if override is None else override
+                self.assertIs(node.parameters["supported_birth_confirmation_required"], expected)
+                self.assertIs(manager.call_args.kwargs["supported_birth_confirmation_required"], expected)
 
     def test_detector_centroid_reaches_estimator_with_one_full_cross_term_pose_contribution(self):
         node, warnings, _, observations, frames = self.car_node([box()])

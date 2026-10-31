@@ -520,6 +520,9 @@ def main() -> None:
         car_surface_recovery_enabled=args.car_surface_recovery,
         **CAR_SURFACE_RECOVERY_PARAMETERS,
     )
+    # The same CLI opt-in owns the estimator policy even if an observation
+    # omits support flags. Persist it in the actual launched parameter YAML.
+    parameters["uav_tracking_state_estimator"]["ros__parameters"]["supported_birth_confirmation_required"] = args.car_surface_recovery
     if args.inference_threads is not None:
         if args.inference_threads < 1:
             parser.error("inference threads must be positive")

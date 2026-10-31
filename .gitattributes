@@ -1,5 +1,9 @@
 # Frozen source hashes must survive Windows/Linux checkouts.
+.gitattributes text eol=lf
 *.py text eol=lf
+tests/fixtures/*.py.txt text eol=lf
+# Preserve the pinned historical source bytes, including its original EOF.
+tests/fixtures/target_manager_head39_reference.py.txt whitespace=-blank-at-eof
 *.sh text eol=lf
 *.ps1 text eol=lf
 *.yaml text eol=lf

@@ -41,6 +41,16 @@ class TargetUpdate:
     spawn_deferred_reasons: Tuple[Tuple[int, str], ...] = ()
 
 
+@dataclass(frozen=True)
+class _BirthEvidence:
+    """One supported, unassigned acquisition; deliberately has no track ID."""
+
+    detection: Detection
+    timestamp_ns: int
+    epoch: int
+    frame_index: int
+
+
 class TargetManager:
     """Manage tracks and a non-switching task target.
 
@@ -62,6 +72,11 @@ class TargetManager:
     # births, not duplicate detections or permission to fuse them.
     SPAWN_CONTAINMENT_MIN = 0.95
     SPAWN_AREA_RATIO_MAX = 0.80
+    # The simulation camera supplies 10 Hz acquisitions. Allow timestamp
+    # jitter, but never join evidence across a missing camera frame. This
+    # qualifies an overlapping birth; it is not an identity certificate.
+    BIRTH_CONFIRMATION_MAX_GAP_S = 0.15
+    MAX_PENDING_BIRTHS = 64
 
     def __init__(
         self,
@@ -77,6 +92,7 @@ class TargetManager:
         association_max_distance: float = 2.0,
         association_mode: str = "legacy",
         reject_ambiguous_associations: bool = False,
+        supported_birth_confirmation_required: bool = False,
         gate_threshold: float = 11.344866730144373,
         kf_kwargs: Optional[dict[str, Any]] = None,
         estimator_method: Optional[str] = None,
@@ -95,6 +111,9 @@ class TargetManager:
         self.association_max_distance = float(association_max_distance)
         self.association_mode = str(association_mode).lower()
         self.reject_ambiguous_associations = bool(reject_ambiguous_associations)
+        if type(supported_birth_confirmation_required) is not bool:
+            raise ValueError("supported_birth_confirmation_required must be boolean")
+        self.supported_birth_confirmation_required = supported_birth_confirmation_required
         if self.association_mode not in {"legacy", "iou_2d", "hybrid_3d"}:
             raise ValueError("association_mode must be legacy, iou_2d, or hybrid_3d")
         self.gate_threshold = float(gate_threshold)
@@ -141,6 +160,7 @@ class TargetManager:
         self._merge_uncertainty_detection_indices: set[int] = set()
         self._ambiguous_detection_track_ids: dict[int, set[int]] = {}
         self._spawn_deferred_reasons: dict[int, str] = {}
+        self._birth_evidence: list[_BirthEvidence] = []
         self._pending_target_index: Optional[int] = None
         self._pending_target_track_id: Optional[int] = None
         self._frame_index = 0
@@ -190,6 +210,7 @@ class TargetManager:
         self._merge_uncertainty_detection_indices.clear()
         self._ambiguous_detection_track_ids.clear()
         self._spawn_deferred_reasons.clear()
+        self._birth_evidence.clear()
         self._pending_target_index = None
         self._pending_target_track_id = None
         self._frame_index = 0
@@ -199,6 +220,7 @@ class TargetManager:
 
     def set_mode(self, mode: TargetMode | str, *, clear_target: bool = True) -> None:
         self.mode = TargetMode(mode)
+        self._birth_evidence.clear()
         self._auto_unique_ambiguous = False
         self._locked_ambiguous = False
         if clear_target:
@@ -212,6 +234,7 @@ class TargetManager:
         """Lock an existing track ID; returns ``False`` if it is unavailable."""
 
         track_id = int(track_id)
+        self._birth_evidence.clear()
         normalized_uuid = None if target_uuid is None or not str(target_uuid).strip() else str(target_uuid).strip()
         self.mode = TargetMode.LOCKED_TARGET
         self._auto_unique_ambiguous = False
@@ -234,6 +257,7 @@ class TargetManager:
 
         if int(detection_index) < 0:
             raise ValueError("detection_index must be non-negative")
+        self._birth_evidence.clear()
         self.mode = TargetMode.LOCKED_TARGET
         self._auto_unique_ambiguous = False
         self._locked_ambiguous = False
@@ -260,6 +284,7 @@ class TargetManager:
             self.lock_detection(int(detection_index), target_uuid=target_uuid)
 
     def unlock_target(self) -> None:
+        self._birth_evidence.clear()
         self._target_track_id = None
         self._target_uuid = None
         self._pending_target_uuid = None
@@ -332,6 +357,9 @@ class TargetManager:
                                    else getattr(detection.depth_stats, "std", None)),
             attempted_candidate_id=detection.metadata.get("candidate_id"),
             additional_pose_covariance=detection.metadata.get("additional_measurement_covariance"),
+            surface_recovery_enabled=detection.metadata.get("surface_recovery_enabled") is True,
+            surface_measurement_supported=detection.metadata.get("surface_measurement_supported") is True,
+            acquisition_epoch=detection.metadata.get("acquisition_epoch", 0),
         )
         track.last_measurement_diagnostics = deepcopy(diagnostics)
 
@@ -595,6 +623,24 @@ class TargetManager:
             assignment[track_id] = detection_index
         return assignment, matched_tracks, matched_detections
 
+    def _birth_anchor_indices(
+        self, assignment: Mapping[int, int], timestamp: Optional[float],
+    ) -> set[int]:
+        def reliable(track: Track) -> bool:
+            if (track.state not in {TrackState.CONFIRMED, TrackState.COASTING}
+                    or track.hits < self.min_hits or track._filter is None
+                    or not track._filter.initialized or track.last_measurement_timestamp is None):
+                return False
+            if self.max_coast_duration_s is not None and timestamp is not None:
+                return 0.0 <= timestamp - track.last_measurement_timestamp <= self.max_coast_duration_s
+            return track.missed <= self.max_coast_frames
+
+        anchors = {index for track_id, index in assignment.items()
+                   if reliable(self._tracks[track_id]) and self._tracks[track_id]._matched_this_frame}
+        anchors.update(index for index, track_ids in self._ambiguous_detection_track_ids.items()
+                       if any(reliable(self._tracks[track_id]) for track_id in track_ids))
+        return anchors
+
     def _defer_nested_births(
         self, detections: Sequence[Detection], assignment: Mapping[int, int],
         matched_detection_indices: set[int], timestamp: Optional[float],
@@ -610,26 +656,10 @@ class TargetManager:
         if self.association_mode != "hybrid_3d" or not self.reject_ambiguous_associations:
             return
 
-        def reliable(track: Track) -> bool:
-            if (track.state not in {TrackState.CONFIRMED, TrackState.COASTING}
-                    or track.hits < self.min_hits or track._filter is None
-                    or not track._filter.initialized or track.last_measurement_timestamp is None):
-                return False
-            if self.max_coast_duration_s is not None and timestamp is not None:
-                return 0.0 <= timestamp - track.last_measurement_timestamp <= self.max_coast_duration_s
-            return track.missed <= self.max_coast_frames
-
         # Only this acquisition's actually accepted assignment or reserved
         # ambiguity edges can anchor deferral. A stale retained image box or
         # a newly invented track is never independent supporting evidence.
-        anchors: set[int] = set()
-        for track_id, index in assignment.items():
-            track = self._tracks[track_id]
-            if reliable(track) and track._matched_this_frame:
-                anchors.add(index)
-        for index, track_ids in self._ambiguous_detection_track_ids.items():
-            if any(reliable(self._tracks[track_id]) for track_id in track_ids):
-                anchors.add(index)
+        anchors = self._birth_anchor_indices(assignment, timestamp)
 
         for index, candidate in enumerate(detections):
             if index in matched_detection_indices or index == self._pending_target_index:
@@ -673,6 +703,91 @@ class TargetManager:
                     reason = relation + "_unmatched_without_depth_separation_evidence"
                 self._spawn_deferred_reasons[index] = reason
                 break
+
+    def _confirm_supported_births(
+        self, detections: Sequence[Detection], assignment: Mapping[int, int],
+        matched_detection_indices: set[int], timestamp: Optional[float],
+    ) -> None:
+        """Qualify new overlapping identities before they enter the track graph.
+
+        An unassigned ROI can contain several surfaces even with 100% valid
+        depth. Under the explicit surface policy, overlapping births need two
+        consecutive, independently supported acquisitions. A stored proposal
+        is never an existing identity, association edge, measurement update or
+        reason to clear genuine ambiguity. Discarding it asserts no physical
+        absence; one-frame entrants/merges remain a documented identity risk.
+        """
+        previous, self._birth_evidence = self._birth_evidence, []
+        if self.association_mode != "hybrid_3d" or not self.reject_ambiguous_associations:
+            return
+        anchors = self._birth_anchor_indices(assignment, timestamp)
+        candidates: dict[int, Detection] = {}
+        for index, candidate in enumerate(detections):
+            if (index in matched_detection_indices or index in self._spawn_deferred_reasons
+                    or index == self._pending_target_index):
+                continue
+            if (not self.supported_birth_confirmation_required
+                    and candidate.metadata.get("surface_recovery_enabled") is not True):
+                continue
+            if any(candidate.class_id == detections[anchor].class_id
+                   and bbox_iou(candidate.bbox, detections[anchor].bbox) > 0.0 for anchor in anchors):
+                candidates[index] = candidate
+
+        current_ns = None if timestamp is None else round(timestamp * 1_000_000_000)
+        max_gap_ns = round(self.BIRTH_CONFIRMATION_MAX_GAP_S * 1_000_000_000)
+        previous = [evidence for evidence in previous
+                    if current_ns is not None and evidence.frame_index == self._frame_index - 1
+                    and 0 < current_ns - evidence.timestamp_ns <= max_gap_ns]
+        by_previous: dict[int, set[int]] = {}
+        by_current: dict[int, set[int]] = {}
+        for prior_index, evidence in enumerate(previous):
+            for index, candidate in candidates.items():
+                epoch = candidate.metadata.get("acquisition_epoch", 0)
+                image_overlap = bbox_iou(candidate.bbox, evidence.detection.bbox)
+                if (type(epoch) is not int or not 0 <= epoch < 2**64 or epoch != evidence.epoch
+                        or candidate.class_id != evidence.detection.class_id
+                        or image_overlap <= 0.0 or image_overlap < self.association_iou_threshold):
+                    continue
+                old_position = self._position_of_detection(evidence.detection)
+                position = self._position_of_detection(candidate)
+                if (old_position is not None and position is not None
+                        and float(np.linalg.norm(position - old_position)) > self.association_max_distance):
+                    continue
+                by_previous.setdefault(prior_index, set()).add(index)
+                by_current.setdefault(index, set()).add(prior_index)
+
+        for index, candidate in candidates.items():
+            epoch = candidate.metadata.get("acquisition_epoch", 0)
+            try:
+                valid_fraction = candidate.depth_valid_fraction
+                depth_quality_present = (valid_fraction is not None and isfinite(valid_fraction)
+                                         and 0.0 < valid_fraction <= 1.0)
+            except (TypeError, ValueError):
+                depth_quality_present = False
+            reason = None
+            if (candidate.metadata.get("surface_recovery_enabled") is not True
+                    or candidate.metadata.get("surface_measurement_supported") is not True):
+                reason = "overlap_birth_surface_support_unknown"
+            elif self._position_of_detection(candidate) is None or not depth_quality_present:
+                reason = "overlap_birth_world_depth_missing"
+            elif (current_ns is None or round(candidate.timestamp * 1_000_000_000) != current_ns
+                  or type(epoch) is not int or not 0 <= epoch < 2**64):
+                reason = "overlap_birth_acquisition_identity_missing"
+            else:
+                old_indices = by_current.get(index, set())
+                if (len(old_indices) > 1
+                        or any(len(by_previous[old_index]) > 1 for old_index in old_indices)):
+                    reason = "overlap_birth_confirmation_ambiguous"
+                elif len(old_indices) == 1:
+                    # Only a complete 1:1 relation between independently
+                    # supported UNMATCHED acquisitions permits promotion.
+                    continue
+                elif len(self._birth_evidence) < self.MAX_PENDING_BIRTHS:
+                    self._birth_evidence.append(_BirthEvidence(candidate, current_ns, epoch, self._frame_index))
+                    reason = "overlap_birth_requires_second_supported_acquisition"
+                else:
+                    reason = "overlap_birth_confirmation_capacity"
+            self._spawn_deferred_reasons[index] = reason
 
     def _update_track(self, track: Track, detection: Detection, *, timestamp: Optional[float] = None) -> bool:
         accepted = True
@@ -934,6 +1049,7 @@ class TargetManager:
             if track.track_id not in matched_track_ids and track.state != TrackState.REMOVED:
                 self._coast_track(track, frame_timestamp)
         self._defer_nested_births(filtered, assignment, matched_detection_indices, frame_timestamp)
+        self._confirm_supported_births(filtered, assignment, matched_detection_indices, frame_timestamp)
         new_track_by_detection: dict[int, int] = {}
         for index, detection in enumerate(filtered):
             if index not in matched_detection_indices and index not in self._spawn_deferred_reasons:

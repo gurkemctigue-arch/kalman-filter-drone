@@ -1,6 +1,7 @@
 """Real short processes and evidence boundaries; no WSL, ROS or simulation."""
 import importlib.util
-from contextlib import contextmanager
+from contextlib import contextmanager, redirect_stdout
+import io
 import json
 import os
 from pathlib import Path
@@ -171,6 +172,49 @@ class ProjectProgressTests(unittest.TestCase):
         self.assertEqual(report["status"], "STOPPED_FAULT")
         self.assertEqual(report["task"]["returncode"], 7)
         self.assertEqual(report["phase"], "evaluation")
+
+    def test_owned_nonzero_exit_waits_for_handle_after_lost_identity_query(self):
+        # Reproduce the poll/identity race without relying on Windows timing:
+        # the owned child is alive when one identity query says otherwise,
+        # then exits with a concrete code as soon as that query releases it.
+        release = self.directory / "release_child"
+        code = ("import time\nfrom pathlib import Path\n"
+                f"release = Path({str(release)!r})\n"
+                "deadline = time.monotonic() + 3\n"
+                "while not release.exists() and time.monotonic() < deadline:\n"
+                "    time.sleep(.005)\n"
+                "raise SystemExit(7 if release.exists() else 9)\n")
+        real_verify = monitor.verify_process
+        injected = []
+        children = []
+        real_popen = subprocess.Popen
+
+        def spawn(*args, **kwargs):
+            child = real_popen(*args, **kwargs)
+            children.append(child)
+            return child
+
+        def lost_query(expected):
+            observed = real_verify(expected)
+            if expected["pid"] != os.getpid() and not injected and observed["verified_alive"]:
+                injected.append(expected["pid"])
+                release.write_text("exit now", encoding="utf-8")
+                return {**observed, "verified_alive": False}
+            return observed
+
+        try:
+            with mock.patch.object(monitor, "verify_process", side_effect=lost_query), \
+                    mock.patch.object(monitor.subprocess, "Popen", side_effect=spawn), redirect_stdout(io.StringIO()):
+                result = monitor.main(["run", "--output", str(self.output), "--phase", "evaluation",
+                                       "--interval", ".03", "--stale-after", "1", "--", sys.executable, "-c", code])
+        finally:
+            for child in children:
+                child.wait(timeout=4)
+        self.assertEqual(len(injected), 1)
+        self.assertEqual(result, 7)
+        report = self.read_report()
+        self.assertEqual(report["status"], "STOPPED_FAULT")
+        self.assertEqual(report["task"]["returncode"], 7)
 
     def test_real_immediate_exit_is_still_recorded(self):
         result = self.run_child("pass")
