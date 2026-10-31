@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "kind": "INDEPENDENT_OFFLINE_TIMING_SOURCE_AND_FIXTURE_REVIEW",
+  "created_utc": "2026-10-31T18:36:36.325916+00:00",
+  "reviewer": "/root/review_repair_patch",
+  "status": "PASS_SOURCE_AND_SYNTHETIC_FIXTURES_ONLY",
+  "accepted_manifest_canonical_sha256": "5050ed369c680fd6b7c746fc7481b0635fd6aaebf2159e4ffc6d1b6bef4faeee",
+  "accepted_files": {
+    "offline_pipeline_timing.py": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\offline_pipeline_timing.py",
+      "sha256": "35b53d5a1eebbac41ce51253765336928cb6873690d7870238927492c7e30e1a"
+    },
+    "test_offline_pipeline_timing.py": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\test_offline_pipeline_timing.py",
+      "sha256": "a6a3a3e3dc72ca20da90449a546fe7f30a8ccd8b2cbeb201557e6addd5a33f5f"
+    }
+  },
+  "independent_tests": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\offline_pipeline_timing_independent_review01_tests.json",
+    "sha256": "17eb01570a02139a4b24af92f7a4f18fcf1b6e109e051db5ddc2933c24d36dd4"
+  },
+  "independent_adversarial_tests": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\test_offline_pipeline_timing_independent01.py",
+    "sha256": "71672ebc6862fee7fd3820e19b608f7eaeed88af337fff9921a1f73810418118"
+  },
+  "author_windows_tests": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\offline_pipeline_timing_author_windows04.json",
+    "sha256": "5eb83c2d046cb107495d446b46a273d18ec74c0de5ac2a3b137009c3e8c7e69a"
+  },
+  "author_humble_tests": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\offline_pipeline_timing_author_humble04.json",
+    "sha256": "988f2617c67eab44f3c107380ac88dfa5051366749bbbfed87dbe3e0a8592493"
+  },
+  "handoff": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\offline_pipeline_timing_handoff02.md",
+    "sha256": "6e58f2246dbb11eaaf97efc149e3d693b60dd1fad711024fe13ad8a9ffd2a6aa"
+  },
+  "findings_resolved": [
+    {
+      "id": "TIMING_LOG_SOURCE_BINDING",
+      "initial_candidate_sha256": "feb5f8cc5e1763b71ea1e9e85f04cf9b03c7388837885333218fee3efad0d27a",
+      "issue": "A normalized job event could yield a known wall duration despite no original bound job log.",
+      "resolution": "analyze_files reparses all exact pinned small logs and requires full ordered normalized job-event equality, including missing/extra/changed/decode-error records; unbound indexes are rejected.",
+      "independently_verified": true
+    },
+    {
+      "id": "TIMING_CONFLICTING_PHYSICAL_LOG_LINE",
+      "issue": "Different job keys sharing one physical log coordinate left the first occurrence known.",
+      "resolution": "Every duplicate log-index/line coordinate is pre-counted and all affected opportunities remain unknown.",
+      "independently_verified": true
+    }
+  ],
+  "source_review": [
+    "Recorder nanoseconds, ROS/source timestamps and existing local wall durations remain separate; no RTF conversion or cross-domain subtraction.",
+    "Causal capture-to-controller, capture-to-setpoint and physical capture-to-PX4-effect remain NOT_OBSERVED with null statistics and retained command/decode-error opportunities.",
+    "Duplicate acquisition/job keys, source/recorder regression, malformed events, partial/final timing scopes, failed jobs and missing logs are retained; inclusive lock durations are not added to exclusive stages.",
+    "Source/receipt/metadata pins require exact original named paths; output excludes original trial, frozen source, resolved results symlink target and mandatory explicit protected plan roots.",
+    "Import/describe are inert; native export is lazy and only mocked in fixtures. Failed export retains partial evidence and cannot create a completed context."
+  ],
+  "blocking_findings": [],
+  "actual_work_not_performed": [
+    "No actual bag or original job log read, inference, simulation, build, install, large bag/model hash, formal launch or acceptance-ledger mutation.",
+    "No independent actual-data export/analyze, native ROS message ABI validation or recording-health/tail acceptance.",
+    "No physical wall detector FPS, causal end-to-end latency or flight-reliability result established."
+  ],
+  "remaining_actions": [
+    "Root schedules actual immutable-source export after the resource window is released and selects the actual original plan/output protected roots.",
+    "Root independently verifies the printed source-bound context SHA, original source/message environment and input recording integrity before interpreting actual output.",
+    "Keep observed recorder/source/local-duration metrics and NOT_OBSERVED physical E2E separate in final attachments."
+  ]
+}
