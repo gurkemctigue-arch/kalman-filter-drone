@@ -1,5 +1,7 @@
 # RGB-D UAV target tracking and following
 
+**2026-11-01 00:44（北京时间）快照：Humble42 新核心12已实际启动，第1场行人速度跟随正在运行。** 新来源独立四包冷构建、隔离/CDR检查及1748项Linux测试已完成（1743通过、5项平台跳过）。汽车使用04权重、512/CPU4，原0.60/0.75秒安全时限保留；本批尚无完整场景验收结果，安全4、扩展16及正式280次仍待完成。当前运行状态见[实时进度入口](docs/LIVE_PROGRESS.md)，下方较早记录均为历史快照。
+
 2026-10-31 最新：原Humble41核心12已闭合，11 PASS、1 FAIL；后续640/512生产后台worker各1008次时延测量已完成。选512/CPU4作为下一轮待验证配置，尚无新闭环通过结论。正式仍0/280。见[配置决定与验证顺序](planning/reliability-v4-humble42-resource-decision-20261031.md)。下方较早快照保留为历史。
 
 **当前分支是 v4 开发检查点，三阶段功能已实现，最终验收与正式重复研究尚未完成。** 本机当前批次和查看方法见[实时进度入口](docs/LIVE_PROGRESS.md)；旧 `results/project_progress/current/` 是历史Humble31任务，不能用于判断当前实验。来源和历史失败边界见[交接记录](planning/reliability-v4-current-state.md)，后续工作依[可靠性修复与交付方案](planning/reliability-v4-next-actions-20261030.md)推进。公开文档均为带时间的快照。
