@@ -1,5 +1,17 @@
 # 当前工作交接（持续开发，非验收报告）
 
+**2026-11-01 03:08（北京时间）执行交接快照：Humble42核心12为6项原始PASS，行人六项全部闭合，汽车六项接续验证；正式仍0/280。** 多目标主动云台的固定10Hz完整身份754格为649正确/0已知错误/105未知，距离/高度RMSE0.811182/0.151243m，导航覆盖0.890957、真值覆盖1.0；整批owner尚待最终收尾。原`observed_driver01/`前六条完整attempt（含来源检查及owner收尾）平均24.017分钟，正式280条线性外推112.081小时，另计剩余开发和交付，旧93小时为历史估计。下方37及更早的“最新”段落均为历史。实时状态查`results/project_progress/humble42_core_slots01/index.html`，命令owner和退出码查`humble42_core01/index.html`，不能用本文的快照判断进程是否仍运行。
+
+当前唯一重任务是原`development_runner.sh run-core`，冻结根`/root/uav_tracking_fullplan_v4_humble42`、结果`results/frozen_fullplan_v4_humble42/`、核心计划`reliability_v4_humble42_probe01_seed004_matrix/plan.json`。候选是外部`development_candidate_humble42_01.json`（SHA`2248074dcd477a50e73c8f5b5cc523390c01c08d14636742729d7474a7768ce2`），最终核心合同是`development_contract_core_reliability_v4_humble42_probe01_01.json`。外部文件根为`D:/WSL/UAVHumble22-validation`（WSL中`/mnt/d/WSL/UAVHumble22-validation`）。不要重复启动核心、改冻结源或在当前任务中并行读bag/推理/大哈希。
+
+已完成新来源四包冷构建、FastCDR/模块/ament/消息CDR隔离，Linux1748项中1743通过、5项原平台跳过；汽车04微调m512/CPU4、行人320/CPU2，请求RTF0.125，原0.60/0.75秒门不改。行人中位与主动两项都PASS，画面中心RMSE57.358889/17.539419像素，观测均716/750；距离RMSE0.770985/0.771767m，高度0.147304/0.151624m，仅为开发seed004配对。
+
+**下一步执行链：** 等本核心12原始全PASS且原owner健康闭合后，用已审`development_safety.sh register/run`完成实际4安全。最终安全工具canonical为`fa7e2461320a299a7ca8cb224722ac7c34358efed127d79cdf07d0efae4af275`，见`development_safety_final_core_sync_independent_addendum01.json`；旧17419摘要不是最终版本。然后按显式实际admission/独审合同执行`development_extension.sh`的16格，最终扩展canonical为`c232d556d11b7c141b6d9aa443ee0822792e72663dd5646dd6096636afeeb936`。实际全28容量统计和两个具名velocity开发导出/R0定标之后，按已审final-root准备/冷构建/协议发布/whole-source封存工具以及原registrar/guard完成正式准入，才开始280次。全部旧失败保留，不拼接旧PASS，不重试同名槽。
+
+两项外部离线补充工具已独审并归档Git：timing作者两平台45项、独审48项；新检测作者两平台47项、独审52项。它们都尚无实际数据输出。源码见`tools/offline_evaluation/timing_v1/`和`prospective_detection_v1/`。**新检测实际protocol必须等真实FORMAL120/EXTENSION_FORMAL160生成后、首formal前显式创建**；固定复用原视频12来源，不新增飞行，原两条静态检测子集保留。具体顺序与选源见[补充执行卡](reliability-v4-supplementary-evaluation-execution.md)。不能把代码测试算作真实检测/时延结论，完整因果物理端到端时延仍NOT_OBSERVED。
+
+工作区已更正`FINAL_PLAN_V4.md`和模型说明，新增`models/CAR_TRAIN20_04.md`；未改冻结42。最终计划正文须用报告器`--plan-content`显式指向已复核正确正文并绑定SHA，避免读到冻结副本旧640说明。GitHub仍为原仓库；本机直连曾失败，显式使用现有代理`git -c http.proxy=http://127.0.0.1:17890 push origin main`已实际成功。不要输出凭据。源码归档和文案更正不授予正式准入；用户已授权整个项目持续执行和GitHub同步，无需再次询问。
+
 开发更新（2026-10-31，北京时间06:10附近，非实时状态）：汽车独立原生深度区域E导航已作为显式候选接入，默认关闭；开发协议仅对car登记启用。原fullbbox路径保留，新路径继承任务身份/歧义/长失锁保护，并显式传播单面裁切不确定性，不能视为物理身份证书。37新提取7帧反事实5帧有条件参考、2帧拒绝，其中31.9无重叠仍走旧路径；未产生新闭环结果。纯核心23项、ROS授权11项及注册检查通过独立审查，root补充了实际四安全槽的配置绑定回归；真实16384点CDR检查待新Humble构建执行。下一步冻结Humble38并进行完整75秒汽车交叉探针。37原FAIL、未知和正式0/280保持；见[候选设计与边界](reliability-v4-humble38-candidate-20261031.md)。
 
 最新执行快照（2026-10-31，北京时间05:34附近，非实时状态）：Humble37从56c8dd2完成616文件冻结、四包冷构建、Linux1612项检查（1607通过、原5跳过）和完整75秒汽车crossing。50Hz adapter已实际归档，20Hz controller/supervisor及0.4wall/prestream1.2/native40/180原门保持；12秒只读观察57个心跳间隔均未超0.4wall，实际native起飞并进入FOLLOW。原driver正常返回0、观察器健康、归档及清理通过、来源前后不变，但原工程FAIL：距离RMSE1.582841m超过原1.0m、导航覆盖.7936085低于.8；高度.163344m、真值覆盖1和末端两轴稳定PASS。固定10Hz身份753格=644正确/0错误/109未知，.85524568，原分母未知均保留；阶段二18项安全检查PASS。短遮挡导航预测仍0/2有效，不能宣称精度通过。原10Hz评价网格中，前四段无效时长为5.0、0.1、0.1、3.9秒，中断后观察到明显追赶误差；真实20Hz控制边界见分段审计，两种口径不能混用。574有效raw均KF接受，未发现新有效几何持续被旧后验拒绝。下一步研究独立表面充分条件及负控，不启动正式280。核心12/扩展16、四安全新外部工具纯测试已通过，真实开发矩阵未执行。详见[37完整结果与边界](reliability-v4-humble37-results-20261031.md)。以下均为历史快照。
