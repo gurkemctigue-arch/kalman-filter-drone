@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "kind": "FINAL_WHOLE_SOURCE_SIDECAR_AUTHOR_SYNTHETIC_CHECKS_ONLY",
+  "status": "PASS_AUTHOR_CHECKS_PENDING_FINAL_INDEPENDENT_ADDENDUM",
+  "created_utc": "2026-10-31T17:32:34.386527+00:00",
+  "tools_manifest": {
+    "schema_version": 1,
+    "kind": "INDEPENDENT_FINAL_WHOLE_SOURCE_AND_PLANNING_MANIFEST",
+    "files": {
+      "seal_development_final_source.py": "3ec359860f9f35617f99808354d52b5b0d622e89e03fead99631787651aeab4b",
+      "test_seal_development_final_source.py": "e66799e255098678af7aab32837f46be05bed6e2f1821b9ebc5dd85614946c99"
+    },
+    "reviewed_connection_canonical_sha256": "1187d22d974889ea3f9ce36b787bc882b32fb05b0c6a2dad5acc715db4b8b269",
+    "original_guard_consumes_whole_tree_manifest": false,
+    "default_root_or_request": null,
+    "automatic_next_action": false,
+    "formal_seed_use_authorized": false
+  },
+  "tools_canonical_sha256": "e2c87dd559e97970dbfbdfb87670ed7458a045b7162310a2c55d4072b55b542a",
+  "checks": [
+    {
+      "name": "windows",
+      "argv": [
+        "C:\\Program Files\\Python312\\python.exe",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "test_seal_development_final_source"
+      ],
+      "returncode": 0,
+      "test_count": 12,
+      "passed": 12,
+      "skipped": 0,
+      "log": {
+        "path": "D:\\WSL\\UAVHumble22-validation\\development_final_source_author_windows02.log",
+        "sha256": "1cf9def296d86aa53113ff6102912e89e3e7742c6a7c8343841c9f6a4f07488e"
+      }
+    },
+    {
+      "name": "humble",
+      "argv": [
+        "wsl.exe",
+        "--distribution",
+        "UAVHumble22",
+        "--cd",
+        "/mnt/d/WSL/UAVHumble22-validation",
+        "--exec",
+        "/root/uav_humble22/venv/bin/python",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "test_seal_development_final_source"
+      ],
+      "returncode": 0,
+      "test_count": 12,
+      "passed": 12,
+      "skipped": 0,
+      "log": {
+        "path": "D:\\WSL\\UAVHumble22-validation\\development_final_source_author_humble02.log",
+        "sha256": "aebc254e9f4d0ace29807a100b2d196d23eefcdef42ed257f0fd75d86513ed05"
+      }
+    }
+  ],
+  "handoff": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\development_final_source_seal_handoff01.md",
+    "sha256": "323897b98d8243bdb9ad713866d54dfa4749bc1833dd6165c4fa5838e077d9ef"
+  },
+  "original_independent_12_tests": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\development_final_source_seal_independent_tests01.json",
+    "sha256": "b271f9c12f99c57a0410a4d9857f117ba92cbb818b0e01f1be64b8f87ba0afbe"
+  },
+  "pre_windows_fixture_fix_test_snapshot": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\test_seal_development_final_source_before_windows_crlf_fix01.py.txt",
+    "sha256": "b7fbed36a194f0f1ae6370a3cd0037dca1b289332afc16b85e762d9843a12ab0"
+  },
+  "fixture_only_delta": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\development_final_source_windows_crlf_fixture_delta01.patch",
+    "sha256": "b1137fe35408c9ea074bbae939de570d004353b6d1961d2755f070d990605ef3"
+  },
+  "earlier_windows_fixture_failure_log_retained": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\development_final_source_author_windows01.log",
+    "sha256": "295367aa8d43db1813bbae976f784a8231acc4a3565c329011ce1b55a9fc26e3"
+  },
+  "fixture_delta_reason": "Use the actual written artifact SHA instead of guessing LF bytes when Windows writes CRLF; production tool source unchanged.",
+  "production_tool_unchanged_from_original_independent_12_tests": true,
+  "reviewed_five_file_connection_unchanged": true,
+  "actual_final_tree_or_big_hash_performed": false,
+  "actual_manifest_create_verify_or_seal_admission": false,
+  "actual_prerequisite_or_build_or_registration": false,
+  "actual_flight_or_inference_or_archive": false,
+  "formal_seed_use_authorized": false,
+  "frozen_sources_or_original_guard_adapter_serial_modified": false
+}

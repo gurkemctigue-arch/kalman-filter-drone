@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "utc": "2026-10-31T17:13:17.710378+00:00",
+  "scope": "ACTUAL_FROZEN_SMALL_SOURCE_AND_METADATA_READONLY_NOT_RUNTIME_CHECK",
+  "root": "/root/uav_tracking_fullplan_v4_humble42",
+  "actual_freeze_metadata": {
+    "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble42/freeze_validation/source_freeze_manifest.json",
+    "sha256": "23ba2b990a86ce1b6c5b66d5295807cc3b50c46ede9ef092371c1fd3f082562b",
+    "bytes": 158441
+  },
+  "protected_whole_tree_count": 698,
+  "classified_runner_count": 293,
+  "small_source_bindings": {
+    "tools/reliability_v4_guard.py": {
+      "path": "/root/uav_tracking_fullplan_v4_humble42/tools/reliability_v4_guard.py",
+      "sha256": "890ae232ced07e1efcc58a56beb078113c1f7d3c46f25173a57d2640e8f5c60d",
+      "bytes": 75274
+    },
+    "tools/reliability_v4_register.py": {
+      "path": "/root/uav_tracking_fullplan_v4_humble42/tools/reliability_v4_register.py",
+      "sha256": "fe2b37738ba07016dc1551abe273e5309e702b14df6e3d707b2788d3f3ef992c",
+      "bytes": 28714
+    },
+    "scripts/run_reliability_v4.py": {
+      "path": "/root/uav_tracking_fullplan_v4_humble42/scripts/run_reliability_v4.py",
+      "sha256": "af5b29e80473737dd76dcd7e878a8d52a192361a4020f49a335c5822feca3df9",
+      "bytes": 159651
+    },
+    "scripts/run_estimator_replay_v4.py": {
+      "path": "/root/uav_tracking_fullplan_v4_humble42/scripts/run_estimator_replay_v4.py",
+      "sha256": "f96f2d3f2453b72d044ed756f4162b9357ecb982dd80da1f55d93008f22e90f1",
+      "bytes": 26856
+    },
+    "scripts/calibrate_estimator_replay_v4.py": {
+      "path": "/root/uav_tracking_fullplan_v4_humble42/scripts/calibrate_estimator_replay_v4.py",
+      "sha256": "0a6f3982e395024d7abf3da43e2e685dc0d88157686496dd2cd3e0296f462fe9",
+      "bytes": 10466
+    },
+    "formal41_guard_adapter01.py": {
+      "path": "/mnt/d/WSL/UAVHumble22-validation/formal41_guard_adapter01.py",
+      "sha256": "139ac592e4ead129fc14b93019b4b5b0d7deba700babcb95f58d64dac3278435",
+      "bytes": 21981
+    },
+    "formal280_serial_guard01.py": {
+      "path": "/mnt/d/WSL/UAVHumble22-validation/formal280_serial_guard01.py",
+      "sha256": "6c8d2cd68b2f5d3a8acfea791ca1c82d49d595d664745073dea851802ac7971a",
+      "bytes": 14920
+    }
+  },
+  "runner_HASH_FOLDERS": [
+    "scripts",
+    "uav_tracking",
+    "ros2_ws/src",
+    "config",
+    "launch",
+    "models",
+    "patches"
+  ],
+  "old_preparation_or_build_called_by_formal_chain": false,
+  "formal_guard_checks": "actual canonical REGISTERED protocol/replay files, immutable formal plan classified sources/models/runtime, development/safety/calibration and physical capacity",
+  "simultaneously_consistent_facts": [
+    "Original successful cold build and original source_sha256.txt describe three original DRAFT files and remain unchanged.",
+    "Separate final whole-tree/planning manifest must describe three explicitly published REGISTERED files plus original unchanged whole-tree inputs.",
+    "Runner classified293 and flight maps remain identical because planning/tools are outside HASH_FOLDERS.",
+    "Normal guard/adapter/serial sources contain no old preparation/build/source_sha256.txt/source_freeze_manifest calls; they do not rerun original whole-map verification."
+  ],
+  "explicit_remaining_gap": "The three new helpers stop at publication. A separate immutable final whole-source/planning manifest producer and independent pre-admission enforcement connection remain future work. The unchanged formal guard does not consume that separate whole-tree seal or the old build-chain receipt as admission fields; passing the current helpers cannot be described as complete formal admission.",
+  "actual_actions_not_executed": [
+    "source_tree_hash",
+    "actual_final_root_creation",
+    "copy",
+    "build",
+    "prerequisite",
+    "plan_creation",
+    "publication",
+    "final_whole_source_seal",
+    "admission_seal",
+    "formal_flight"
+  ],
+  "guard_or_admission_executed": false
+}

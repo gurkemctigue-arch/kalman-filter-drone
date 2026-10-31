@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "utc": "2026-10-31T17:34:08.211752+00:00",
+  "reviewer": "/root/core41_closed_audit",
+  "scope": "INDEPENDENT_NEW_THIN_FINAL_SOURCE_AND_ADMISSION_CONNECTION_TOOL_REVIEW_ONLY",
+  "result": "PASS",
+  "blocking_findings": 0,
+  "tools_manifest": {
+    "schema_version": 1,
+    "kind": "INDEPENDENT_FINAL_WHOLE_SOURCE_AND_PLANNING_MANIFEST",
+    "files": {
+      "seal_development_final_source.py": "3ec359860f9f35617f99808354d52b5b0d622e89e03fead99631787651aeab4b",
+      "test_seal_development_final_source.py": "e66799e255098678af7aab32837f46be05bed6e2f1821b9ebc5dd85614946c99"
+    },
+    "reviewed_connection_canonical_sha256": "1187d22d974889ea3f9ce36b787bc882b32fb05b0c6a2dad5acc715db4b8b269",
+    "original_guard_consumes_whole_tree_manifest": false,
+    "default_root_or_request": null,
+    "automatic_next_action": false,
+    "formal_seed_use_authorized": false
+  },
+  "tools_canonical_sha256": "e2c87dd559e97970dbfbdfb87670ed7458a045b7162310a2c55d4072b55b542a",
+  "reviewed_five_file_connection_canonical_sha256": "1187d22d974889ea3f9ce36b787bc882b32fb05b0c6a2dad5acc715db4b8b269",
+  "prior_connection_independent_review": {
+    "path": "/mnt/d/WSL/UAVHumble22-validation/development_final_root_independent_review01.json",
+    "sha256": "14daff2f0ce0fad6b0d8eec22640cc1b6f1528a8e093be5d26e61e3365099b16",
+    "bytes": 7213
+  },
+  "actual_formal_small_source_readonly_audit": {
+    "path": "/mnt/d/WSL/UAVHumble22-validation/development_final_root_formal_source_connection_readonly01.json",
+    "sha256": "0ca10f80b1be687c8f8261fa4ccd935ccabb8cb3f6fb39c7677cc432aede4801",
+    "bytes": 4000
+  },
+  "author_final_checks": {
+    "path": "/mnt/d/WSL/UAVHumble22-validation/development_final_source_author_checks01.json",
+    "sha256": "5c51b2bf261f1e9fcc1ec0b6f9ee34809cf48dbdcb579d56a28c9af50583fe1d",
+    "bytes": 3965
+  },
+  "author_final_logs_reverified": [
+    {
+      "name": "windows",
+      "actual_log": {
+        "path": "/mnt/d/WSL/UAVHumble22-validation/development_final_source_author_windows02.log",
+        "sha256": "1cf9def296d86aa53113ff6102912e89e3e7742c6a7c8343841c9f6a4f07488e",
+        "bytes": 2718
+      },
+      "passed_test_names": [
+        "test_default_describe_and_missing_inputs_never_scan_source_or_seal (test_seal_development_final_source.InertCliTests.test_default_describe_and_missing_inputs_never_scan_source_or_seal)",
+        "test_actual_whole_source_or_preparation_tamper_invalidates_existing_manifest (test_seal_development_final_source.WholeSourceFixture.test_actual_whole_source_or_preparation_tamper_invalidates_existing_manifest)",
+        "test_arbitrary_outcome_path_or_changed_original_backup_refuses_before_manifest (test_seal_development_final_source.WholeSourceFixture.test_arbitrary_outcome_path_or_changed_original_backup_refuses_before_manifest)",
+        "test_manifest_binds_exact_final_maps_and_three_publications_keeps_original_preparation (test_seal_development_final_source.WholeSourceFixture.test_manifest_binds_exact_final_maps_and_three_publications_keeps_original_preparation)",
+        "test_manifest_content_or_wrong_location_cannot_be_rebound_as_original (test_seal_development_final_source.WholeSourceFixture.test_manifest_content_or_wrong_location_cannot_be_rebound_as_original)",
+        "test_missing_budget_or_wrong_request_registration_refuses_without_subprocess (test_seal_development_final_source.WholeSourceFixture.test_missing_budget_or_wrong_request_registration_refuses_without_subprocess)",
+        "test_original_registrar_refusal_or_wrong_full_denominator_retains_failure_no_outer_pass (test_seal_development_final_source.WholeSourceFixture.test_original_registrar_refusal_or_wrong_full_denominator_retains_failure_no_outer_pass)",
+        "test_outer_seal_calls_exact_original_cli_request_with_whole_verification_before_and_after (test_seal_development_final_source.WholeSourceFixture.test_outer_seal_calls_exact_original_cli_request_with_whole_verification_before_and_after)",
+        "test_posthoc_started_terminal_or_trial_products_refuse_prestart_sidecar (test_seal_development_final_source.WholeSourceFixture.test_posthoc_started_terminal_or_trial_products_refuse_prestart_sidecar)",
+        "test_rebound_arbitrary_protocol_delta_cannot_become_allowed_by_rewriting_pass_receipts (test_seal_development_final_source.WholeSourceFixture.test_rebound_arbitrary_protocol_delta_cannot_become_allowed_by_rewriting_pass_receipts)",
+        "test_rebound_replay_bytes_must_equal_actual_registrar_candidate (test_seal_development_final_source.WholeSourceFixture.test_rebound_replay_bytes_must_equal_actual_registrar_candidate)",
+        "test_runtime_activity_prevents_seal_without_creating_outer_attempt (test_seal_development_final_source.WholeSourceFixture.test_runtime_activity_prevents_seal_without_creating_outer_attempt)"
+      ],
+      "native_returncode_recorded": 0,
+      "passed": 12,
+      "skipped": 0
+    },
+    {
+      "name": "humble",
+      "actual_log": {
+        "path": "/mnt/d/WSL/UAVHumble22-validation/development_final_source_author_humble02.log",
+        "sha256": "aebc254e9f4d0ace29807a100b2d196d23eefcdef42ed257f0fd75d86513ed05",
+        "bytes": 1908
+      },
+      "passed_test_names": [
+        "test_default_describe_and_missing_inputs_never_scan_source_or_seal (test_seal_development_final_source.InertCliTests)",
+        "test_actual_whole_source_or_preparation_tamper_invalidates_existing_manifest (test_seal_development_final_source.WholeSourceFixture)",
+        "test_arbitrary_outcome_path_or_changed_original_backup_refuses_before_manifest (test_seal_development_final_source.WholeSourceFixture)",
+        "test_manifest_binds_exact_final_maps_and_three_publications_keeps_original_preparation (test_seal_development_final_source.WholeSourceFixture)",
+        "test_manifest_content_or_wrong_location_cannot_be_rebound_as_original (test_seal_development_final_source.WholeSourceFixture)",
+        "test_missing_budget_or_wrong_request_registration_refuses_without_subprocess (test_seal_development_final_source.WholeSourceFixture)",
+        "test_original_registrar_refusal_or_wrong_full_denominator_retains_failure_no_outer_pass (test_seal_development_final_source.WholeSourceFixture)",
+        "test_outer_seal_calls_exact_original_cli_request_with_whole_verification_before_and_after (test_seal_development_final_source.WholeSourceFixture)",
+        "test_posthoc_started_terminal_or_trial_products_refuse_prestart_sidecar (test_seal_development_final_source.WholeSourceFixture)",
+        "test_rebound_arbitrary_protocol_delta_cannot_become_allowed_by_rewriting_pass_receipts (test_seal_development_final_source.WholeSourceFixture)",
+        "test_rebound_replay_bytes_must_equal_actual_registrar_candidate (test_seal_development_final_source.WholeSourceFixture)",
+        "test_runtime_activity_prevents_seal_without_creating_outer_attempt (test_seal_development_final_source.WholeSourceFixture)"
+      ],
+      "native_returncode_recorded": 0,
+      "passed": 12,
+      "skipped": 0
+    }
+  ],
+  "independent_original_full12": {
+    "path": "/mnt/d/WSL/UAVHumble22-validation/development_final_source_seal_independent_tests01.json",
+    "sha256": "b271f9c12f99c57a0410a4d9857f117ba92cbb818b0e01f1be64b8f87ba0afbe",
+    "bytes": 3824
+  },
+  "independent_original_native12_log": {
+    "path": "/mnt/d/WSL/UAVHumble22-validation/development_final_source_seal_independent_humble12_01.log",
+    "sha256": "c4e6b7058f97a3c8d8a904e95d99d6d9de360b2741a2a77670fb9710320359a2",
+    "bytes": 1776
+  },
+  "independent_test_only_crlf_delta_and_affected1": {
+    "path": "/mnt/d/WSL/UAVHumble22-validation/development_final_source_seal_independent_test_crlf_addendum02.json",
+    "sha256": "8f36667bd6fd462357bc1f9ea5e4db838fcd6e21abc18972249f6d2e366e921c",
+    "bytes": 2359
+  },
+  "independent_affected1_native_log": {
+    "path": "/mnt/d/WSL/UAVHumble22-validation/development_final_source_seal_independent_humble1_crlf_02.log",
+    "sha256": "754cdd8ab3880a6b0f1f5b34169579f8f6526e1daf81b0a42c779645e8dcd106",
+    "bytes": 251
+  },
+  "usage_actual_cli_and_manual_boundary": {
+    "path": "/mnt/d/WSL/UAVHumble22-validation/development_final_source_seal_handoff01.md",
+    "sha256": "323897b98d8243bdb9ad713866d54dfa4749bc1833dd6165c4fa5838e077d9ef",
+    "bytes": 7628
+  },
+  "test_evidence_scope": {
+    "production_source_independent_full_suite": "12_OF_12_PASS_BEFORE_TEST_ONLY_NEWLINE_DELTA",
+    "final_test_only_delta": "Exact patch independently verified; AST outside WholeSourceFixture.fake_registrar_execution unchanged; production py unchanged; affected one fixture rerun PASS.",
+    "author_final_version": "Windows12/12 and Humble12/12, zero skips; final log SHA and all complete names/summary reverified.",
+    "mocked_real_boundaries": "Synthetic fixtures mock actual build/source authority and original registrar execution. They exercise real tiny ordinary-file bytes, original publication/assembly metadata bindings and failure refusal without any actual final tree/admission."
+  },
+  "closed_source_connection_findings": [
+    "Final whole-source/planning sidecar is now implemented as a separate nonoverwriting file; it never rewrites original DRAFT preparation/source manifest or candidate42 freeze.",
+    "All allowed planning changes derive from exact fixed protocol/replay publication outcome/request/start/original backup/intent/published records; no caller-provided allowlist.",
+    "Core and extension bytes reproduce original patch_fields-only registration changes; replay bytes equal actual existing registrar assembly artifact.",
+    "Actual original build metadata, whole inventory and protected map, three planning pins, unchanged classified/flight maps, .pt model map, strict512 runtime and original formal/safety/calibration pins are bound.",
+    "Original full280 trial directory/terminal/started products must be absent in both create and verify. This fixes the initial false-zero prestart evidence gap; it deliberately refuses retroactive sealing.",
+    "Exact original admission request is preserved with same final root/plans/three registrations/safety/calibration; all eight physical-storage fields,28 cells and five delivery reservations mandatory with no generated defaults.",
+    "Original registrar seal runs via exact existing CLI under existing bounded owner600s/30s/5s; whole/request bindings reverified before and after.",
+    "Outer success requires real fixed final_admission.json, original assembly start/outcome/artifact SHA, original guard sealed digest/tool, full280 pending check and original no-initial-admission/no-flight claim.",
+    "No frozen guard, adapter, serial runner, five-file connection or source protocol was changed."
+  ],
+  "additional_independent_static_reviewer": {
+    "agent": "/root/exclusive_navigation_prototype",
+    "result": "NO_ADDITIONAL_BLOCKING_FINDING",
+    "scope": "Read-only actual old registrar seal CLI/assembly/detail schema, eight storage fields, .pt projection, physical pins, allowed3 and original DRAFT build separation. No execution."
+  },
+  "historical_gap_disposition": {
+    "earlier_report": {
+      "path": "/mnt/d/WSL/UAVHumble22-validation/development_final_root_formal_source_connection_readonly01.json",
+      "sha256": "0ca10f80b1be687c8f8261fa4ccd935ccabb8cb3f6fb39c7677cc432aede4801",
+      "bytes": 4000
+    },
+    "implementation_gap_closed_by_this_new_tool": true,
+    "actual_new_final_source_seal_or_admission_still_not_created": true
+  },
+  "mandatory_execution_boundary": {
+    "original_guard_consumes_whole_tree_manifest": false,
+    "new_per_slot_wrapper_introduced": false,
+    "root_must_reverify_actual_whole_manifest_immediately_before_original_formal_serial_start": true,
+    "original_guard_retains_each_slot_classified_runtime_canonical_capacity_checks": true,
+    "sidecar_verification_prestart_only": true
+  },
+  "actual_actions_not_executed": [
+    "Actual final source tree hash",
+    "Actual source manifest create or verify",
+    "Actual prerequisite/core/safety/extension validation",
+    "Actual copy/cold build",
+    "Actual canonical publication",
+    "Actual calibration or export",
+    "Actual physical budget check",
+    "Actual registrar seal-admission",
+    "Actual initial-admission state",
+    "Any held-out formal seed",
+    "Any simulation/inference/archive"
+  ],
+  "actual_final_manifest_created": false,
+  "actual_admission_seal_created": false,
+  "formal_seed_use_authorized": false,
+  "project_acceptance_granted": false
+}

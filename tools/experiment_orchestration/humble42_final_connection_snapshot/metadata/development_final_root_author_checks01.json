@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "kind": "PARAMETERIZED_FINAL_ROOT_AUTHOR_SYNTHETIC_CHECKS_ONLY",
+  "status": "PASS_AUTHOR_CHECKS_PENDING_INDEPENDENT_REVIEW",
+  "created_utc": "2026-10-31T17:10:38.199695+00:00",
+  "tools_manifest": {
+    "schema_version": 1,
+    "scope": "PARAMETERIZED_FINAL_ROOT_SOURCE_PREPARATION_ONLY",
+    "files": {
+      "prepare_development_final_root.py": "d231a8565c0c8ea23fd971b80851a87c8b5f6026521b9071ba23ed1a1d8db08c",
+      "build_development_final_root.py": "5bd79984c672681954d28f93697c17e119d1039f23937fe23bb9e9ce70d5fb5b",
+      "build_development_final_root.sh": "d54353c3de05b27aa06e88f9f3f22b2ead5a8d21d7479d4ff1b701f31eb31517",
+      "publish_development_final_protocols.py": "ba64e32f226d5ba7a2c5387f05a3a64a677c164fff31e1d816bacb6d9168e97a",
+      "test_development_final_root.py": "1553025df9af80d4e84b90439b2aad078aec25b053734a9c5f21398c6ca3d877"
+    },
+    "unchanged_reused_primitives": {
+      "prepare_humble41_final_root01.py": "4e97c4a0bd621069630d2afaa2664c11f139dfbc623c4efa9f59938fd240c0d7",
+      "build_humble41_final_root01.py": "d79aa4138c1488d037bb0459bd199ba0094e83040835c45878b1838323209eff",
+      "publish_humble28_final02_protocols01.py": "eaf2141f7e343dd6c74bcef80d7480f9b4282e947effed92110f428cc43d4664",
+      "humble33_skip_contract.py": "9a4f9d8584077d5c6ebbc099cb35b0c56746bbd725b0893882814bdc87b92406",
+      "assemble_development_candidate.py": "cb011d9bd35aae9b68d4d175dc8b1afecdc13cf089595aa93903f0c51a8561c1"
+    },
+    "core_tools_canonical_sha256": "4e5614388567b60ff5ab925390a37e254c8b8940f3092aa892579cf5cbd6359f",
+    "strict512_build_tools_canonical_sha256": "517b2b2dfb989b8ca32f4f12ee4bd18b54bafd906c5d251a21d58407845ea503",
+    "whole_tree_and_classified_maps_separate": true,
+    "overlay_files": {},
+    "three_original_DRAFT_files_required": true,
+    "source_preparation_manifest_preserved_after_publication": true,
+    "default_source_or_final_root": null,
+    "source_or_dependency_globals_modified": false,
+    "capacity_admission_performed": false,
+    "formal_seed_use_authorized": false,
+    "automatic_next_action": false
+  },
+  "tools_canonical_sha256": "1187d22d974889ea3f9ce36b787bc882b32fb05b0c6a2dad5acc715db4b8b269",
+  "checks": [
+    {
+      "name": "windows",
+      "argv": [
+        "C:\\Program Files\\Python312\\python.exe",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "test_development_final_root"
+      ],
+      "returncode": 0,
+      "test_count": 29,
+      "skipped": 4,
+      "log": {
+        "path": "D:\\WSL\\UAVHumble22-validation\\development_final_root_author_windows01.log",
+        "sha256": "c833d8c808da77bc56d188ddb6a2f7ece815d58e3f131d3bc73a925829cec145"
+      }
+    },
+    {
+      "name": "humble",
+      "argv": [
+        "wsl.exe",
+        "--distribution",
+        "UAVHumble22",
+        "--cd",
+        "/mnt/d/WSL/UAVHumble22-validation",
+        "--exec",
+        "/root/uav_humble22/venv/bin/python",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "test_development_final_root"
+      ],
+      "returncode": 0,
+      "test_count": 29,
+      "skipped": 0,
+      "log": {
+        "path": "D:\\WSL\\UAVHumble22-validation\\development_final_root_author_humble01.log",
+        "sha256": "00d500921d7699b062259d914e6ae51f90488e9ceaeb1222d5d830e93c4ee01a"
+      }
+    },
+    {
+      "name": "shell",
+      "argv": [
+        "wsl.exe",
+        "--distribution",
+        "UAVHumble22",
+        "--cd",
+        "/mnt/d/WSL/UAVHumble22-validation",
+        "--exec",
+        "/bin/bash",
+        "-n",
+        "build_development_final_root.sh"
+      ],
+      "returncode": 0,
+      "test_count": null,
+      "skipped": null,
+      "log": {
+        "path": "D:\\WSL\\UAVHumble22-validation\\development_final_root_author_shell01.log",
+        "sha256": "b280c454d6f559e56eb3f5ed39f3ba084b8d1744a3ff7fe016b21ff86dea1aca"
+      }
+    }
+  ],
+  "handoff": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\development_final_root_handoff01.md",
+    "sha256": "75d034676bb430e47b61fbf516fef398e6d8bdc04a32c0a960e1fcf2fd767311"
+  },
+  "actual_source_scan_or_big_hash": false,
+  "actual_copy_or_build": false,
+  "actual_prerequisites": false,
+  "actual_registration_or_final_seal": false,
+  "actual_flight_or_inference_or_archive": false,
+  "formal_seed_use_authorized": false,
+  "dependency_globals_modified": false
+}

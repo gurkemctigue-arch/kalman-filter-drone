@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "utc": "2026-10-31T17:31:57.820762+00:00",
+  "scope": "INDEPENDENT_TEST_ONLY_WINDOWS_NEWLINE_DELTA_ADDENDUM",
+  "old_full12_pass_evidence": {
+    "path": "/mnt/d/WSL/UAVHumble22-validation/development_final_source_seal_independent_tests01.json",
+    "sha256": "b271f9c12f99c57a0410a4d9857f117ba92cbb818b0e01f1be64b8f87ba0afbe",
+    "bytes": 3824
+  },
+  "old_test_snapshot": {
+    "path": "/mnt/d/WSL/UAVHumble22-validation/test_seal_development_final_source_before_windows_crlf_fix01.py.txt",
+    "sha256": "b7fbed36a194f0f1ae6370a3cd0037dca1b289332afc16b85e762d9843a12ab0",
+    "bytes": 24194
+  },
+  "actual_exact_patch": {
+    "path": "/mnt/d/WSL/UAVHumble22-validation/development_final_source_windows_crlf_fixture_delta01.patch",
+    "sha256": "b1137fe35408c9ea074bbae939de570d004353b6d1961d2755f070d990605ef3",
+    "bytes": 1705
+  },
+  "only_changed_ast_function": "WholeSourceFixture.fake_registrar_execution",
+  "production_source_unchanged": true,
+  "reviewed_five_file_connection_unchanged": true,
+  "new_tools_manifest": {
+    "schema_version": 1,
+    "kind": "INDEPENDENT_FINAL_WHOLE_SOURCE_AND_PLANNING_MANIFEST",
+    "files": {
+      "seal_development_final_source.py": "3ec359860f9f35617f99808354d52b5b0d622e89e03fead99631787651aeab4b",
+      "test_seal_development_final_source.py": "e66799e255098678af7aab32837f46be05bed6e2f1821b9ebc5dd85614946c99"
+    },
+    "reviewed_connection_canonical_sha256": "1187d22d974889ea3f9ce36b787bc882b32fb05b0c6a2dad5acc715db4b8b269",
+    "original_guard_consumes_whole_tree_manifest": false,
+    "default_root_or_request": null,
+    "automatic_next_action": false,
+    "formal_seed_use_authorized": false
+  },
+  "new_tools_canonical_sha256": "e2c87dd559e97970dbfbdfb87670ed7458a045b7162310a2c55d4072b55b542a",
+  "before_after_sources_unchanged": true,
+  "affected_test": "test_seal_development_final_source.WholeSourceFixture.test_outer_seal_calls_exact_original_cli_request_with_whole_verification_before_and_after",
+  "native_returncode": 0,
+  "native_log": {
+    "path": "/mnt/d/WSL/UAVHumble22-validation/development_final_source_seal_independent_humble1_crlf_02.log",
+    "sha256": "754cdd8ab3880a6b0f1f5b34169579f8f6526e1daf81b0a42c779645e8dcd106",
+    "bytes": 251
+  },
+  "native_summary": [],
+  "result": "PASS",
+  "actual_create_verify_or_seal_admission_executed": false
+}
