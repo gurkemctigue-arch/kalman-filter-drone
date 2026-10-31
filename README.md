@@ -1,6 +1,8 @@
 # RGB-D UAV target tracking and following
 
-**当前分支是 v4 开发检查点，三阶段功能已实现，最终验收与正式重复研究尚未完成。** 最新执行快照、来源和失败边界见[当前交接记录](planning/reliability-v4-current-state.md)，后续工作依[可靠性修复与交付方案](planning/reliability-v4-next-actions-20261030.md)推进。公开文档是带时间的快照；本机[进度入口](results/project_progress/current/index.html)读取受监任务的最新状态。
+**当前分支是 v4 开发检查点，三阶段功能已实现，最终验收与正式重复研究尚未完成。** 本机当前批次和查看方法见[实时进度入口](docs/LIVE_PROGRESS.md)；旧 `results/project_progress/current/` 是历史Humble31任务，不能用于判断当前实验。来源和历史失败边界见[交接记录](planning/reliability-v4-current-state.md)，后续工作依[可靠性修复与交付方案](planning/reliability-v4-next-actions-20261030.md)推进。公开文档均为带时间的快照。
+
+2026-10-31 17:13（北京时间）快照：Humble41已完成同源四包构建、来源隔离及1728项Linux检查（1723通过、5项平台跳过），正在串行运行完整75秒核心12场景开发验证。行人速度、位置控制两项完整评价均为PASS，第三项行人多目标交叉正在运行，余9项尚未尝试；整批runtime owner关闭结果尚待批次结束。该版本尚未完成安全4项、扩展16项、最终准入或正式280项实验。下列较早检查点保留为历史。
 
 2026-10-31 05:34（北京时间）检查点：Humble37完成原生起飞及完整75秒汽车交叉跟随，编排、观察器、归档和清理正常；原工程FAIL保留。固定10Hz身份753格为644正确、0错误、109未知，覆盖85.52%；阶段二18项安全检查通过。导航距离RMSE1.583m超过原1.0m门，有效导航覆盖79.36%低于80%，因此继续修复连续几何拒绝，不进入正式批次。Linux1612项检查中1607通过、原5跳过。正式仍0/280；见[37完整结果与导航中断](planning/reliability-v4-humble37-results-20261031.md)。下列检查点为历史记录。
 
