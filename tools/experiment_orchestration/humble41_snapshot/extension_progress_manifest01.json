@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "kind": "HUMBLE41_READONLY_EXTENSION_PROGRESS_SOURCE_ADDENDUM",
+  "created_utc": "2026-10-31T11:56:24.368107+00:00",
+  "base_manifest": {
+    "path": "delivery_manifest41_draft02.json",
+    "sha256": "419e60fca1a4cf13015637674190b2e0bd2e3c0fbd7b4ff7c5956551596000f9"
+  },
+  "base_source_files_changed": false,
+  "files": [
+    {
+      "path": "external_tools/bridge_humble41_extension_events01.py",
+      "bytes": 6433,
+      "sha256": "6cc49c0cfd6bc0df3d42840fa095fc9599abc7df41be1c140afebedeed354c47"
+    },
+    {
+      "path": "external_tools/test_bridge_humble41_extension_events01.py",
+      "bytes": 10864,
+      "sha256": "dcd82b3c1b6c0846be9ef796996c7f5d4dda71cb2e867f6f94ec8b94f75a1c43"
+    },
+    {
+      "path": "external_tools/humble41_followup_progress_connection01.md",
+      "bytes": 14778,
+      "sha256": "aa92decedc57c6b392604f5cd6a5b76fd4dc93f4199c942e03fb5ed91e40680e"
+    }
+  ],
+  "tool_manifest": {
+    "schema_version": 1,
+    "scope": "HUMBLE41_EXTENSION16_READONLY_PROGRESS_NOT_ADMISSION_OR_ACCEPTANCE",
+    "files": {
+      "bridge_humble41_extension_events01.py": "6cc49c0cfd6bc0df3d42840fa095fc9599abc7df41be1c140afebedeed354c47",
+      "test_bridge_humble41_extension_events01.py": "dcd82b3c1b6c0846be9ef796996c7f5d4dda71cb2e867f6f94ec8b94f75a1c43"
+    },
+    "reused_core_loop_sha256": "94568d694a4379cd744343b13643d442abe67749bf3a7e34bf08cbef25d064aa",
+    "reused_reader_sha256": "0229bf564ec3609ee226b388e9024276516f76d05f8f9bdc110235c8ed18e270",
+    "monitor_helper_sha256": "759136d0eda40bb3a61c9e30e0272e1f6b8810b351dbe4c75dc17db5951bfd98",
+    "kind_counts": {
+      "extension": 16
+    },
+    "terminal_scope": "HUMBLE41_READONLY_DEVELOPMENT_PROGRESS_EVENTS_ONLY",
+    "default_plan": null,
+    "default_pid": null,
+    "scanner_and_loop_modified": false,
+    "engineering_verdict_computed": false,
+    "consumes_prerequisite_results": false,
+    "runtime_or_formal_action": false
+  },
+  "tools_canonical_sha256": "6cc8c7c7a536767c615f9904103b6f376ddba8fb0558b492173157fe98c27429",
+  "validation": {
+    "scope": "Private JSON fixtures and independent static review only",
+    "tests": 9,
+    "passed": 9,
+    "skipped": 0,
+    "original_log_sha256": "19e2affe7172170e7cd71bd64815e43ed20837435cdb892d48aefbabd861265c",
+    "independent_receipt_sha256": "9f7e96021b10b0fe0d6f3af330ac1a4d4fcf78e750c2eb3268ee09e64206eb8e",
+    "real_extension_plan_read": false,
+    "real_extension_bridge_started": false,
+    "simulation_or_admission_executed": false
+  },
+  "future_actual_plan_binding": null,
+  "future_actual_producer_identity": null,
+  "claim_boundary": "Source-only read-only progress supplement; no safety, extension or formal admission or experiment outcome is established. The original draft02 manifest and its 49 source files remain unchanged.",
+  "manifest_sha256": "bf3ff7823f7a63824ecb0a43c4c883540f09d6557c1fe12f373a024573aadcc5"
+}
