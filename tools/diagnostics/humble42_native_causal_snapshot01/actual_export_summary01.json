@@ -1,0 +1,213 @@
+{
+  "scope": "COMPLETE_RAW_EXPORT_ONLY_NOT_ALGORITHM_ACCEPTANCE",
+  "source_manifest": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\humble42_native_causal_window01\\manifest.json",
+    "bytes": 1002482,
+    "sha256": "085ac699eafd5fb750328a00626d0bd144cd002b10a1d433fb5e5adaf8d78dfb"
+  },
+  "archive_file_pins": {
+    "extract_native_causal_window.py": {
+      "bytes": 41020,
+      "sha256": "9893f7d821e7f1ae6de9b6f966db3860dfac0aea7a14d58057a55282a45e9542"
+    },
+    "test_extract_native_causal_window.py": {
+      "bytes": 32914,
+      "sha256": "0ac6c4eeb7c2e4327176206e728e60ce2b8cbfd5d280f295b6fa39dc4e1e60d7"
+    },
+    "test_extract_native_causal_window_independent01.py": {
+      "bytes": 6656,
+      "sha256": "0e22a51f73c4fbc522b4f3d06d2b17f5ea9154b2bf1fcc1c90ec5e436fb70337"
+    },
+    "extract_native_causal_window_author02.json": {
+      "bytes": 6079,
+      "sha256": "7cb275f12ac9cbf3e8e7e400deb4890057c86cdd5484b10e33c83a6d4423f67d"
+    },
+    "extract_native_causal_window_independent01.json": {
+      "bytes": 8126,
+      "sha256": "a0402f9c7435ec248e67a1defce9edc0772c119f94c0745667b14b236293a964"
+    },
+    "extract_native_causal_window_handoff01.md": {
+      "bytes": 9600,
+      "sha256": "e68060f2d4a5861a83bde62b7c19853d25aa01580405d2aae07a6a8b74821b75"
+    },
+    "extract_native_causal_window42_invocation01.json": {
+      "bytes": 9589,
+      "sha256": "d53164c9a5ba5e8f657d60d0970ad0cf66c2be6fb47949f61b086cd593b3787c"
+    },
+    "humble42_native_causal_metadata_root01.json": {
+      "bytes": 4488,
+      "sha256": "4ac58e751e0d547b8373e8e86c9d2bf9805d191b27d4856da483873226b7ecdf"
+    },
+    "humble42_native_causal_export_root01.json": {
+      "bytes": 3684,
+      "sha256": "a5952b45a6a01c0359a8c6b5bd72821ed0b8875742bbbb2291048bc473fb9394"
+    },
+    "humble42_native_import_probe01.json": {
+      "bytes": 1196,
+      "sha256": "1e33908948015ab59721dba29708b9e2a21ae6612b75f2aca5f91865f51ec148"
+    }
+  },
+  "status": "COMPLETE_RAW_EXPORT_ONLY_NOT_ALGORITHM_ACCEPTANCE",
+  "started_utc": "2026-10-31T20:54:16.741836+00:00",
+  "finished_utc": "2026-10-31T20:57:13.390556+00:00",
+  "original_slot_status": "FAIL",
+  "original_core_counts": {
+    "PASS": 8,
+    "FAIL": 1,
+    "PENDING": 3
+  },
+  "source_root": "/root/uav_tracking_fullplan_v4_humble42",
+  "trial": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble42/reliability_v4_humble42_probe01_car_stage2_crossing_seed004",
+  "follow_source_ns": 18100000000,
+  "source_window_ns": [
+    29500000000,
+    33000000000
+  ],
+  "native_traversals": 1,
+  "compressed_hash_passes": 2,
+  "original_pins_and_compressed_payloads_unchanged": true,
+  "error": null,
+  "export": {
+    "native_counts": {
+      "/tf_static": 1,
+      "/clock": 25448,
+      "/tracking/supervisor_diagnostics": 751,
+      "/ground_truth/poses": 69932,
+      "/ground_truth/vehicle_poses": 23311,
+      "/fmu/out/vehicle_command_ack": 6,
+      "/fmu/in/offboard_control_mode": 4662,
+      "/fmu/in/trajectory_setpoint": 4662,
+      "/tracking/flight_phase": 1864,
+      "/tracking/flight_command": 1864,
+      "/scenario/stage2_profile": 1864,
+      "/tracking/command": 1864,
+      "/tracking/status": 1864,
+      "/camera/color/camera_info": 932,
+      "/camera/aligned_depth_to_color/image_raw": 932,
+      "/camera/color/image_raw": 932,
+      "/fmu/out/vehicle_status_v1": 202,
+      "/tracking/detection_diagnostics": 931,
+      "/fmu/out/estimator_status_flags": 103,
+      "/fmu/out/vehicle_local_position_v1": 4635,
+      "/fmu/out/vehicle_odometry": 9269,
+      "/vehicle/odometry_timing": 9269,
+      "/vehicle/odometry": 9269,
+      "/tf": 9269,
+      "/fmu/in/vehicle_command": 4,
+      "/tracking/selection": 2,
+      "/tracking/observations": 2141,
+      "/tracking/observation_frames": 753,
+      "/tracking/state": 4513,
+      "/tracking/navigation_state": 4513,
+      "/tracking/navigation_diagnostics": 4513,
+      "/tracking/tracks": 4513
+    },
+    "selected_counts": {
+      "/tf_static": 1,
+      "/tracking/flight_phase": 1864,
+      "/scenario/stage2_profile": 1864,
+      "/tracking/selection": 2,
+      "/clock": 876,
+      "/tracking/flight_command": 73,
+      "/tracking/state": 213,
+      "/camera/color/camera_info": 36,
+      "/fmu/in/offboard_control_mode": 178,
+      "/fmu/in/trajectory_setpoint": 178,
+      "/tracking/command": 73,
+      "/tracking/status": 73,
+      "/tracking/navigation_state": 213,
+      "/tracking/tracks": 211,
+      "/tracking/navigation_diagnostics": 213,
+      "/vehicle/odometry": 350,
+      "/tf": 350,
+      "/tracking/supervisor_diagnostics": 28,
+      "/tracking/observation_frames": 37,
+      "/tracking/observations": 82,
+      "/tracking/detection_diagnostics": 37
+    },
+    "native_records": 204788,
+    "image_requests": [
+      {
+        "requested_source_ns": 31400000000,
+        "follow_offset_ns": 13300000000,
+        "status": "EXACT_COMPONENTS_EXPORTED"
+      },
+      {
+        "requested_source_ns": 31500000000,
+        "follow_offset_ns": 13400000000,
+        "status": "EXACT_COMPONENTS_EXPORTED"
+      },
+      {
+        "requested_source_ns": 31600000000,
+        "follow_offset_ns": 13500000000,
+        "status": "EXACT_COMPONENTS_EXPORTED"
+      },
+      {
+        "requested_source_ns": 31700000000,
+        "follow_offset_ns": 13600000000,
+        "status": "EXACT_COMPONENTS_EXPORTED"
+      },
+      {
+        "requested_source_ns": 32200000000,
+        "follow_offset_ns": 14100000000,
+        "status": "EXACT_COMPONENTS_EXPORTED"
+      }
+    ],
+    "topic_types": {
+      "/tracking/observation_frames": "uav_tracking_interfaces/msg/TargetObservationArray",
+      "/tracking/detection_diagnostics": "std_msgs/msg/String",
+      "/fmu/in/offboard_control_mode": "px4_msgs/msg/OffboardControlMode",
+      "/tracking/tracks": "std_msgs/msg/String",
+      "/tf_static": "tf2_msgs/msg/TFMessage",
+      "/tracking/flight_command": "uav_tracking_interfaces/msg/TrackingCommand",
+      "/vehicle/odometry": "nav_msgs/msg/Odometry",
+      "/fmu/in/trajectory_setpoint": "px4_msgs/msg/TrajectorySetpoint",
+      "/fmu/out/vehicle_command_ack": "px4_msgs/msg/VehicleCommandAck",
+      "/tracking/status": "uav_tracking_interfaces/msg/TrackingStatus",
+      "/scenario/stage2_profile": "std_msgs/msg/String",
+      "/tracking/selection": "uav_tracking_interfaces/msg/TargetSelection",
+      "/tracking/navigation_state": "uav_tracking_interfaces/msg/TargetState",
+      "/fmu/out/vehicle_odometry": "px4_msgs/msg/VehicleOdometry",
+      "/camera/color/camera_info": "sensor_msgs/msg/CameraInfo",
+      "/camera/aligned_depth_to_color/image_raw": "sensor_msgs/msg/Image",
+      "/fmu/out/vehicle_local_position_v1": "px4_msgs/msg/VehicleLocalPosition",
+      "/tf": "tf2_msgs/msg/TFMessage",
+      "/camera/color/image_raw": "sensor_msgs/msg/Image",
+      "/fmu/out/estimator_status_flags": "px4_msgs/msg/EstimatorStatusFlags",
+      "/fmu/in/vehicle_command": "px4_msgs/msg/VehicleCommand",
+      "/tracking/supervisor_diagnostics": "std_msgs/msg/String",
+      "/fmu/out/vehicle_status_v1": "px4_msgs/msg/VehicleStatus",
+      "/tracking/flight_phase": "std_msgs/msg/String",
+      "/tracking/navigation_diagnostics": "std_msgs/msg/String",
+      "/tracking/observations": "uav_tracking_interfaces/msg/TargetObservation",
+      "/tracking/state": "uav_tracking_interfaces/msg/TargetState",
+      "/vehicle/odometry_timing": "std_msgs/msg/String",
+      "/ground_truth/poses": "tf2_msgs/msg/TFMessage",
+      "/clock": "rosgraph_msgs/msg/Clock",
+      "/tracking/command": "uav_tracking_interfaces/msg/TrackingCommand",
+      "/ground_truth/vehicle_poses": "tf2_msgs/msg/TFMessage"
+    },
+    "all_candidates_retained": true,
+    "single_track_filter": false,
+    "private_association_predictor_state": "NOT_OBSERVED",
+    "exact_association_replay": "NOT_PERFORMED",
+    "pairwise_rejected_association_scores": "NOT_OBSERVED_UNLESS_RECORDED",
+    "gt_scope": "NOT_DESERIALIZED"
+  },
+  "native_cache": [
+    {
+      "owned_path": "/root/uav_humble22/native_causal_cache/native_causal_owned_d6xh543y",
+      "removed": true,
+      "tempfile_tempdir_restored": true,
+      "reader_close_api": "NOT_AVAILABLE_REFERENCE_RELEASE_ONLY",
+      "reader_close_result": "NOT_ATTEMPTED"
+    }
+  ],
+  "limitations": [
+    "Original failure and 3 pending slots remain unchanged.",
+    "No inference, filter/association replay, identity certification, simulation or formal admission.",
+    "Recording /clock proxy is not exact callback receive time.",
+    "Native close API unavailable; references were released and owned cache removed.",
+    "Full raw CDR, pixels and 65MB derivative events remain in local external archive."
+  ]
+}

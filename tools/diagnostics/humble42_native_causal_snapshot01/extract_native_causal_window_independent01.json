@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "created_utc": "2026-10-31 20:53:50 UTC",
+  "reviewer": "/root/review_repair_patch",
+  "status": "INDEPENDENT_SOURCE_AND_WINDOWS_SYNTHETIC_REVIEW_PASS",
+  "scope": "PARAMETERIZED_CLOSED_NATIVE_BAG_RAW_EXPORT_NOT_ASSOCIATION_REPLAY_OR_ADMISSION",
+  "accepted_tool_canonical_sha256": "eff7665491f0a63db4bd75a0ccd70ac009b5ff058589e296b35c1008d860d3a7",
+  "files": {
+    "extract_native_causal_window.py": "9893f7d821e7f1ae6de9b6f966db3860dfac0aea7a14d58057a55282a45e9542",
+    "test_extract_native_causal_window.py": "0ac6c4eeb7c2e4327176206e728e60ce2b8cbfd5d280f295b6fa39dc4e1e60d7",
+    "test_extract_native_causal_window_independent01.py": "0e22a51f73c4fbc522b4f3d06d2b17f5ea9154b2bf1fcc1c90ec5e436fb70337",
+    "extract_native_causal_window_independent01_tests.log": "c5b53e034498f252a923e8b5cbca51c9c26d1563e7909bc7294b819c2ee1207b"
+  },
+  "test_execution": {
+    "interpreter": "C:/Program Files/Python312/python.exe",
+    "command": [
+      "-B",
+      "-W",
+      "error::ResourceWarning",
+      "-m",
+      "unittest",
+      "-v",
+      "test_extract_native_causal_window",
+      "test_extract_native_causal_window_independent01"
+    ],
+    "working_directory": "D:/WSL/UAVHumble22-validation",
+    "native_returncode": 0,
+    "tests_run": 42,
+    "author_tests": 34,
+    "independent_tests": 8,
+    "skipped": 0,
+    "unittest_wall_s": 9.092,
+    "tool_elapsed_wall_s": 9.3114288,
+    "log_encoding": "Tool output copied with CRLF normalized to LF; not a claim of byte-identical native capture."
+  },
+  "describe": {
+    "native_returncode": 0,
+    "result": {
+      "manifest": {
+        "kind": "RAW_NATIVE_CAUSAL_EXPORT_NOT_REPLAY_OR_ADMISSION",
+        "schema_version": 1,
+        "files": {
+          "extract_native_causal_window.py": "9893f7d821e7f1ae6de9b6f966db3860dfac0aea7a14d58057a55282a45e9542",
+          "test_extract_native_causal_window.py": "0ac6c4eeb7c2e4327176206e728e60ce2b8cbfd5d280f295b6fa39dc4e1e60d7"
+        },
+        "default": "describe",
+        "native_traversals": 1,
+        "compressed_payload_hash_passes": 2
+      },
+      "canonical_sha256": "eff7665491f0a63db4bd75a0ccd70ac009b5ff058589e296b35c1008d860d3a7",
+      "experimental_inputs_opened": false
+    }
+  },
+  "static_findings": [
+    "Import/default/describe use only stdlib and self/test source hashes; real inputs require explicit idle scheduling and exact canonical helper identity.",
+    "Seven explicit bounded original physical-path/raw-SHA input pins bind source review+manifest, internal plan digest, named original slot, original started markers, selected attempt, stopped core and source contract. FAIL and owner error/PENDING facts remain original.",
+    "Named small sources/artifacts are checked before any native open. Output/cache are fresh external paths. Bounded cache free-space/size admission occurs before output creation.",
+    "Only the pinned original evaluate_stage1_flight.open_bag_reader function AST is borrowed; no unrelated original module top-level code executes.",
+    "One native full-stream traversal, no topic filter, full original topic-count closure; compressed storage SHA streams occur separately before and after native read. This is not a single total I/O pass or partial archive decompression.",
+    "Source/acquisition, recorder_ns and last-prior recorded Clock proxy remain distinct. Same source cached/header/projected messages do not become new late acquisitions; bounded boundary/global context remains explicitly labelled.",
+    "All original candidates/tracks and state payloads in the chosen window remain, plus original first-observed/last-before track anchors. No best candidate or ground-truth identity selection is performed.",
+    "RGB+Depth+CameraInfo are requested by exact integer source stamp. Full original pixels, row stride, endianness, metadata and CDR remain. Missing/duplicate components are explicit with no nearest substitution.",
+    "Generated custom/px4 modules must originate in actual declared frozen overlay/prefix; custom fields and wire types are checked against bound .msg source. Generated module pins are checked after export.",
+    "Owned native temporary subtree records path, optional close API, deletion and tempfile.tempdir restoration on success or error. Exceptions/resource exhaustion/source drift retain a partial manifest and original records.",
+    "Private tracker prediction state and rejected pair scores not recorded remain NOT_OBSERVED; exact association replay explicitly NOT_PERFORMED.",
+    "Default GT is counted only and not deserialized. Explicit offline GT mode has no runtime feedback. Nonfinite original ROS values retain CDR and explicit JSON tags, not invented finite replacements."
+  ],
+  "independent_test_coverage": [
+    "All tiny original fake bytes identical before/after; exactly two compressed digest calls and one complete native traversal",
+    "Generated message module drift after export invalidates completion",
+    "No close API and borrowed teardown exception still remove owned subtree and restore tempfile.tempdir",
+    "Insufficient cache prevents any output or runtime factory construction",
+    "Changed compressed bytes refused before native open, retaining partial failure evidence",
+    "Duplicate exact CameraInfo preserves both occurrences and explicit unknown component status",
+    "Wire schema aliases preserve bounds and signedness",
+    "All helper/fixture sources parse under Python3.10 grammar"
+  ],
+  "corrected_before_final_review": [
+    "Cached source headers no longer expand the late export window.",
+    "Added actual generated module origin and full normalized wire-type checks, preserving strict PX4 prefix after root import probe showed current module within it.",
+    "Added owned cache cleanup/restoration evidence and source module drift checks.",
+    "Non-object diagnostic JSON fails partial; missing/duplicate exact data remain explicit."
+  ],
+  "prepared_actual42_invocation_review": {
+    "status": "STATIC_ARGUMENT_REVIEW_ONLY_NOT_EXECUTED",
+    "file": "extract_native_causal_window42_invocation01.json",
+    "source_root": "/root/uav_tracking_fullplan_v4_humble42",
+    "follow_ns": 18100000000,
+    "source_window_ns": [
+      29500000000,
+      33000000000
+    ],
+    "exact_source_frame_ns": [
+      31400000000,
+      31500000000,
+      31600000000,
+      31700000000,
+      32200000000
+    ],
+    "offline_GT_requested": false,
+    "actual_seven_input_bindings_validated": false,
+    "native_runtime_constructed": false,
+    "recommendation": "Root first executes prepared bounded validate(args) metadata preflight. Actual original shape/pin checks must pass before scheduling native export."
+  },
+  "observed_root_import_probe": {
+    "file": "humble42_native_import_probe01.json",
+    "scope": "Read root-produced small receipt only, not new import execution by reviewer.",
+    "px4_example": "VehicleOdometry resolved inside actual /root/uav_humble22/px4_msgs_ws/install/px4_msgs",
+    "custom_example": "TargetObservationArray resolved inside frozen42/ros2_ws/install",
+    "all_native_class_schemas_validated": false
+  },
+  "actual_actions": {
+    "WSL": false,
+    "real_bag_payload_read": false,
+    "real_compressed_storage_hash": false,
+    "real_native_reader_open": false,
+    "real_ROS_runtime_import": false,
+    "simulation": false,
+    "inference": false,
+    "old_source_or_results_modified": false,
+    "formal_admission": false
+  },
+  "ready_for_root_bounded_metadata_preflight": true,
+  "ready_for_root_serial_native_export_after_actual_preflight_and_idle": true,
+  "limitations": [
+    "Actual original seven-JSON contract/schema validation and actual native message decoding remain root's next verification; synthetic receipt does not certify them.",
+    "A complete raw export may contain explicit missing/duplicate images; it is not algorithm acceptance, complete identity coverage, or exact tracker replay.",
+    "Root controls actual heavy scheduling, storage budget and clean native closure. No original named slot retry, verdict rewrite, threshold change, or formal seed is authorized by this receipt."
+  ]
+}

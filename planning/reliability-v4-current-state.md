@@ -1,5 +1,7 @@
 # 当前工作交接（持续开发，非验收报告）
 
+2026-11-01 04:57 CST原生导出已真实完成：canonical `eff7665491f0a63db4bd75a0ccd70ac009b5ff058589e296b35c1008d860d3a7`，actual manifest SHA`085ac699eafd5fb750328a00626d0bd144cd002b10a1d433fb5e5adaf8d78dfb`，1 native/2压缩hash，204788消息，177.974s、rc0、原件不变、独占cache移除且tempdir恢复。源窗29.5–33.0，31.4/31.5/31.6/31.7/32.2五组RGB-D/Info均exact单份；未推理/重放/改判。源包与65MB派生events保持external，见[Git工具/回执快照](../tools/diagnostics/humble42_native_causal_snapshot01/README.md)。causal代理只读派生事件分析；root已校验像素SHA渲染5原RGB，外部`humble42_native_causal_rgb_visual01/`。原FAIL和3PENDING不变，正式0/280。
+
 2026-11-01 04:47 CST新增真实renderer-only诊断：原世界seed5/LP4/OMP2、两流各2个递增非空帧、unpause/pause ACK及quiet排空均通过，Gazebo唯一SIGINT后0.117370396s exit0，6自有进程全部exit0、无TERM/KILL/残留。独立真实receipt SHA`6a3bcf541aba5393ffc6cab99f0dbb15da9f6e59c49690b7f010067578d73bbe`；[受审工具与范围](../tools/diagnostics/humble42_shutdown_snapshot01/README.md)。不含PX4/桥接/检测器/75秒飞行，原09未复现且未修复；原8/1/3与正式0/280不变。原生因果窗口工具正在最终独审，尚未实际读取原包。
 
 **2026-11-01接续：原Humble42核心批次于20:22:15 UTC结束，退出2，8 PASS/1 FAIL/3 PENDING，9次attempt中只有前8次完成完整审计。当前无飞行仿真运行。** 原09汽车交叉在32.36秒提前LOST，长遮挡预测FAIL；距离/高度RMSE3.507331/0.162663m，导航564/752、truth752/752，完整10Hz身份753格542正确/0错误/211未知。Gazebo原-9、owner unhealthy及immutable-copy差异均保留。详见[完整本批结果与诊断计划](reliability-v4-humble42-results-20261101.md)。禁止重启原run-core或补跑其同名槽；先完成原始窄窗提取、Gazebo退出诊断和失败路径owner核对，再按证据修复和新来源验证。旧“等42全PASS后安全4”的条件没有成立。

@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "kind": "AUTHOR_SYNTHETIC_ONLY_NOT_NATIVE_EXECUTION",
+  "status": "PASS",
+  "started_utc": "2026-10-31T20:50:37.588197+00:00",
+  "finished_utc": "2026-10-31T20:50:44.715572+00:00",
+  "command": [
+    "C:\\Program Files\\Python312\\python.exe",
+    "-B",
+    "-m",
+    "unittest",
+    "-v",
+    "test_extract_native_causal_window"
+  ],
+  "native_exit_code": 0,
+  "python_version": "3.12.3 (tags/v3.12.3:f6650f9, Apr  9 2024, 14:05:25) [MSC v.1938 64 bit (AMD64)]",
+  "tool_manifest_before": {
+    "kind": "RAW_NATIVE_CAUSAL_EXPORT_NOT_REPLAY_OR_ADMISSION",
+    "schema_version": 1,
+    "files": {
+      "extract_native_causal_window.py": "9893f7d821e7f1ae6de9b6f966db3860dfac0aea7a14d58057a55282a45e9542",
+      "test_extract_native_causal_window.py": "0ac6c4eeb7c2e4327176206e728e60ce2b8cbfd5d280f295b6fa39dc4e1e60d7"
+    },
+    "default": "describe",
+    "native_traversals": 1,
+    "compressed_payload_hash_passes": 2
+  },
+  "tool_manifest_after": {
+    "kind": "RAW_NATIVE_CAUSAL_EXPORT_NOT_REPLAY_OR_ADMISSION",
+    "schema_version": 1,
+    "files": {
+      "extract_native_causal_window.py": "9893f7d821e7f1ae6de9b6f966db3860dfac0aea7a14d58057a55282a45e9542",
+      "test_extract_native_causal_window.py": "0ac6c4eeb7c2e4327176206e728e60ce2b8cbfd5d280f295b6fa39dc4e1e60d7"
+    },
+    "default": "describe",
+    "native_traversals": 1,
+    "compressed_payload_hash_passes": 2
+  },
+  "source_unchanged": true,
+  "tool_canonical_sha256": "eff7665491f0a63db4bd75a0ccd70ac009b5ff058589e296b35c1008d860d3a7",
+  "test_ids": [
+    "test_extract_native_causal_window.ExportTests.test_all_candidates_and_tracks_and_original_measurement_age_remain",
+    "test_extract_native_causal_window.ExportTests.test_borrowed_reader_selects_only_pinned_function_not_top_level_actions",
+    "test_extract_native_causal_window.ExportTests.test_boundary_control_records_are_retained",
+    "test_extract_native_causal_window.ExportTests.test_cached_late_navigation_is_not_new_window_acquisition",
+    "test_extract_native_causal_window.ExportTests.test_cached_old_headers_do_not_expand_surface_or_navigation_window",
+    "test_extract_native_causal_window.ExportTests.test_changed_original_closed_metadata_is_refused_before_runtime",
+    "test_extract_native_causal_window.ExportTests.test_closed_fail_stopped_owner_and_three_pending_are_preserved",
+    "test_extract_native_causal_window.ExportTests.test_count_mismatch_preserves_partial_and_closes_reader",
+    "test_extract_native_causal_window.ExportTests.test_default_and_describe_open_no_experiment_or_ros",
+    "test_extract_native_causal_window.ExportTests.test_duplicate_exact_rgb_is_retained_as_unknown",
+    "test_extract_native_causal_window.ExportTests.test_exact_stride_endian_full_pixels_and_cdr_are_preserved",
+    "test_extract_native_causal_window.ExportTests.test_existing_output_and_metadata_tampering_are_refused",
+    "test_extract_native_causal_window.ExportTests.test_follow_offsets_use_original_follow_not_assumed_absolute_scene_time",
+    "test_extract_native_causal_window.ExportTests.test_full_image_missing_bytes_is_not_declared_exported",
+    "test_extract_native_causal_window.ExportTests.test_generated_class_module_must_be_inside_actual_overlay",
+    "test_extract_native_causal_window.ExportTests.test_generated_schema_compares_types_and_rejects_same_names_wrong_wire_type",
+    "test_extract_native_causal_window.ExportTests.test_hard_resource_ceilings_cannot_silently_expand",
+    "test_extract_native_causal_window.ExportTests.test_identical_plan_copy_cannot_replace_named_original",
+    "test_extract_native_causal_window.ExportTests.test_late_acquisition_is_included_without_equating_clock_domains",
+    "test_extract_native_causal_window.ExportTests.test_missing_exact_frames_are_kept_without_nearest_replacement",
+    "test_extract_native_causal_window.ExportTests.test_native_counts_every_topic_once_without_filter_or_default_gt_decode",
+    "test_extract_native_causal_window.ExportTests.test_no_actual_execute_without_idle_schedule_and_reviewed_tool_identity",
+    "test_extract_native_causal_window.ExportTests.test_nonfinite_ros_fields_are_explicitly_encoded",
+    "test_extract_native_causal_window.ExportTests.test_nonobject_diagnostic_json_is_partial_and_not_false_success",
+    "test_extract_native_causal_window.ExportTests.test_offline_gt_requires_explicit_option_and_has_no_runtime_feedback",
+    "test_extract_native_causal_window.ExportTests.test_original_static_selection_and_profile_context_and_late_tf_are_retained",
+    "test_extract_native_causal_window.ExportTests.test_output_and_cache_inside_original_tree_are_refused",
+    "test_extract_native_causal_window.ExportTests.test_owned_native_cache_cleanup_and_tempdir_restoration_on_success_and_error",
+    "test_extract_native_causal_window.ExportTests.test_partial_output_budget_retains_error_manifest_and_originals",
+    "test_extract_native_causal_window.ExportTests.test_payload_drift_after_native_read_is_refused",
+    "test_extract_native_causal_window.ExportTests.test_private_state_is_not_fabricated_as_exact_replay",
+    "test_extract_native_causal_window.ExportTests.test_reader_close_error_still_restores_tempdir_and_removes_cache",
+    "test_extract_native_causal_window.ExportTests.test_source_change_and_oversized_small_input_are_refused",
+    "test_extract_native_causal_window.ExportTests.test_source_header_identity_keeps_distinct_candidates_and_new_epoch"
+  ],
+  "test_count": 34,
+  "log": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\extract_native_causal_window_author02.log",
+    "bytes": 6186,
+    "sha256": "4170a1684b93563f20f71eda25b6cc3a77146dd0605fa6f75c9273f80ec657c6"
+  },
+  "actual_experiment_inputs_opened": false,
+  "actual_bag_opened": false,
+  "ROS_imported": false,
+  "WSL_invoked": false,
+  "inference_run": false,
+  "simulation_run": false,
+  "scope": "Fabricated records in temporary Windows directories. Not source admission, native runtime validation or algorithm acceptance."
+}
