@@ -1,9 +1,11 @@
 """Independent Linux resource and optional ROS receipt observer, sampled at 1 Hz.
 
 Run as its own process, never inside a flight supervisor executor. Host samples
-use monotonic time even when ROS simulation time pauses. Output must be a new
-directory under /mnt/d; bounded asynchronous writes expose slow disk I/O and
-dropped aggregates. This observer publishes no ROS messages and changes no
+use monotonic time even when ROS simulation time pauses. The final destination
+is a new directory under /mnt/d. Explicit live output may use a private tmpfs
+directory; its external owner must archive the complete closed evidence.
+Bounded asynchronous writes expose slow I/O and dropped aggregates.
+This observer publishes no ROS messages and changes no
 process, simulator setting, control parameter or guard threshold.
 """
 from __future__ import annotations
@@ -18,6 +20,7 @@ from pathlib import Path
 import re
 import shutil
 import signal
+import stat
 import sys
 import threading
 import time
@@ -35,6 +38,7 @@ host_observer = _sibling("watch_sim_resources")
 link_observer = _sibling("observe_ros_link")
 GROUPS = ("gazebo", "px4", "python", "recorder")
 GAZEBO_SIM_LIBRARY = re.compile(rb"libgz-sim[0-9]+(?:-gz)?\.so(?:\.[0-9]+)*")
+LIVE_OUTPUT_ROOT = Path("/dev/shm/uav_tracking_runtime_health")
 
 
 def process_group(comm, argv):
@@ -270,7 +274,9 @@ class RosReceiver:
 
     def finish(self):
         self.stopping.set()
-        self.thread.join(timeout=2.)
+        # Setup/start failures still own a context and executor to release.
+        if self.thread.ident is not None:
+            self.thread.join(timeout=2.)
         if self.thread.is_alive():
             return {"thread_alive": True, "error": self.error}
         self.executor.shutdown(timeout_sec=1.)
@@ -290,6 +296,52 @@ def new_output_directory(path):
     return path, mount
 
 
+def new_live_output_directory(path):
+    """Create one new owned/private directory on the actual /dev/shm tmpfs.
+
+    The explicit live option has its own storage contract. It never resolves
+    a /mnt/d alias into tmpfs or changes the legacy final-output restriction.
+    Existing private parents may be shared by a rotating external owner.
+    """
+    path, root = Path(path), LIVE_OUTPUT_ROOT
+    if (not path.is_absolute() or ".." in path.parts or path == root
+            or not path.is_relative_to(root) or path.resolve() != path
+            or path.exists() or path.is_symlink()):
+        raise ValueError("Live output must be a new path strictly below the private runtime-health tmpfs root, without aliases")
+    mount = link_observer.mount_information(path)
+    if mount.get("filesystem") != "tmpfs" or mount.get("mountpoint") != str(root.parent):
+        raise ValueError("Live output requires the actual /dev/shm tmpfs, without nested mounts")
+    uid = os.getuid()
+    current = root
+    for name in (None, *path.relative_to(root).parts):
+        if name is not None:
+            current = current / name
+        if current == path:
+            current.mkdir(mode=0o700, exist_ok=False)
+        else:
+            current.mkdir(mode=0o700, exist_ok=True)
+        actual = current.lstat()
+        if (not stat.S_ISDIR(actual.st_mode) or actual.st_uid != uid
+                or stat.S_IMODE(actual.st_mode) != 0o700 or current.resolve() != current):
+            raise ValueError("Live output and its private parents must be real directories owned by this uid with mode 0700")
+    # A raced replacement or a nested mount must not redirect the writer.
+    if path.resolve() != path or link_observer.mount_information(path) != mount:
+        raise ValueError("Live output filesystem changed during creation")
+    return path, mount
+
+
+def new_storage(output_path, live_output_path=None):
+    """Allocate explicit destinations; no copying, linking or mounting occurs."""
+    archive, archive_mount = new_output_directory(output_path)
+    if live_output_path is None:
+        live, live_mount, mode = archive, archive_mount, "legacy_direct_d"
+    else:
+        live, live_mount = new_live_output_directory(live_output_path)
+        mode = "private_tmpfs_external_archive"
+    return {"archive_directory": archive, "archive_mount": archive_mount,
+            "live_directory": live, "live_mount": live_mount, "mode": mode}
+
+
 def disk_snapshot(paths):
     output = {}
     for name, path in paths.items():
@@ -301,14 +353,26 @@ def disk_snapshot(paths):
     return output
 
 
-def main():
+def sample_disks(storage):
+    """The live freshness path never calls statvfs on the archive volume."""
+    if storage["mode"] == "legacy_direct_d":
+        return disk_snapshot({"linux_root": Path("/"), "output_d_mount": storage["archive_directory"]})
+    result = disk_snapshot({"linux_root": Path("/"), "live_output_tmpfs": storage["live_directory"]})
+    result["output_d_mount"] = {"path": str(storage["archive_directory"]),
+                                "status": "deferred_to_archive_owner"}
+    return result
+
+
+def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument("--live-output-dir", type=Path,
+                        help="New private /dev/shm/uav_tracking_runtime_health/... directory; external owner must archive and retain the closed log")
     parser.add_argument("--duration-wall-s", type=float, default=600.)
     parser.add_argument("--max-log-mib", type=int, default=16)
     parser.add_argument("--ros", action="store_true", help="Subscribe read-only to /clock and VehicleStatus in this observer's own executor thread")
     parser.add_argument("--status-topic", default="/fmu/out/vehicle_status_v1", help="Use /fmu/out/vehicle_status if the installed firmware exports the unversioned name")
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
     if sys.platform != "linux" or not Path("/proc/meminfo").is_file():
         parser.error("Run this observer as a separate Linux process")
     if not math.isfinite(args.duration_wall_s) or not 1 <= args.duration_wall_s <= 7200:
@@ -322,12 +386,15 @@ def main():
     try:
         # Resolve optional message imports before creating output evidence.
         receiver = RosReceiver(state, args.status_topic) if args.ros else None
-        directory, mount = new_output_directory(args.output_dir)
+        storage = new_storage(args.output_dir, args.live_output_dir)
+        sampler = ProcessSampler()
+        source_sha256 = {name: hashlib.sha256(Path(__file__).with_name(name).read_bytes()).hexdigest()
+                         for name in (Path(__file__).name, "watch_sim_resources.py", "observe_ros_link.py")}
     except (OSError, ValueError, ImportError) as error:
         if receiver is not None:
-            receiver.node.destroy_node()
-            receiver.rclpy.shutdown(context=receiver.context)
+            receiver.finish()
         parser.error(f"Observer setup failed: {type(error).__name__}: {error}")
+    directory, mount = storage["live_directory"], storage["live_mount"]
     writer = link_observer.BoundedWriter(directory / "health.jsonl", args.max_log_mib * 1024**2)
     stopped = threading.Event()
     signal_names = []
@@ -342,19 +409,23 @@ def main():
     started = time.monotonic()
     reason, receiver_end = "duration_reached", None
     samples, collected, previous, next_sample = 0, 0, None, started
-    sampler = ProcessSampler()
     started_row = {"schema_version": 1, "event": "RUNTIME_HEALTH_OBSERVER_STARTED", "utc": link_observer.utc_now(),
         "wall_time_ns": time.time_ns(), "monotonic_s": started, "duration_wall_s": args.duration_wall_s, "period_wall_s": 1.,
         "own_pid": os.getpid(), "output_mount": mount, "ros_enabled": args.ros,
         "ros_topics": ["/clock", args.status_topic] if args.ros else [], "ros_qos": "sensor_data: best_effort, volatile, keep_last depth 5" if args.ros else None,
-        "source_sha256": {name: hashlib.sha256(Path(__file__).with_name(name).read_bytes()).hexdigest()
-                          for name in (Path(__file__).name, "watch_sim_resources.py", "observe_ros_link.py")},
+        "source_sha256": source_sha256,
         "privacy": "No process command lines, environment variables or command arguments are serialized.",
         "claim_boundary": "Independent observer callback timing is not flight-supervisor callback timing. No simulator/control/guard change or flight-acceptance claim."}
-    writer.submit(started_row)
-    if receiver is not None:
-        receiver.start()
     try:
+        if storage["mode"] == "private_tmpfs_external_archive":
+            started_row.update(storage_mode=storage["mode"], live_output=str(directory),
+                               archive_output=str(storage["archive_directory"]),
+                               archive_output_mount=storage["archive_mount"],
+                               archive_status="pending_external_owner",
+                               archive_policy="External owner validates the complete closed local evidence before copying; observer never archives or removes it")
+        writer.submit(started_row)
+        if receiver is not None:
+            receiver.start()
         while not stopped.is_set() and time.monotonic() - started < args.duration_wall_s:
             now = time.monotonic()
             if now < next_sample:
@@ -365,7 +436,7 @@ def main():
                    "monotonic_s": previous, "elapsed_wall_s": previous - started,
                    "utc": raw_host.pop("utc"), "sample_gap_wall_s": raw_host.pop("sample_gap_wall_s"),
                    "host_proc": raw_host, "processes": sampler.sample(previous),
-                   "disk": disk_snapshot({"linux_root": Path("/"), "output_d_mount": directory}),
+                   "disk": sample_disks(storage),
                    "ros": state.snapshot() if state is not None else {"enabled": False},
                    "ros_receiver": {"thread_alive": receiver.thread.is_alive(), "error": receiver.error} if receiver is not None else None,
                    "writer": writer.status()}
@@ -403,12 +474,27 @@ def main():
         writer_end = writer.finish()
         for signum, handler in previous_handlers.items():
             signal.signal(signum, handler)
-        result = {"output": str(directory), "reason": reason, "samples_collected": collected, "samples_submitted": samples,
+        result = {"output": str(storage["archive_directory"]), "reason": reason, "samples_collected": collected, "samples_submitted": samples,
                   "ros_receiver_final": receiver_end, "writer_final": writer_end}
         # If D: I/O cannot drain within the bound, report this explicitly instead
         # of claiming a complete flushed log. The writer flushes every record.
         result["flushed_cleanly"] = not (writer_end["writer_alive"] or writer_end["error"] or writer_end["limit_reached"]
                                          or writer_end["dropped_aggregates"] or receiver_end and (receiver_end["thread_alive"] or receiver_end["error"]))
+        if storage["mode"] == "private_tmpfs_external_archive":
+            health_path = directory / "health.jsonl"
+            try:
+                size, size_error = health_path.stat().st_size, None
+            except OSError as error:
+                size, size_error = None, type(error).__name__
+            result.update(storage_mode=storage["mode"], live_output=str(directory),
+                          live_output_mount=mount, health_log=str(health_path),
+                          health_log_size_bytes=size, health_log_stat_error=size_error,
+                          archive_status="pending_external_owner",
+                          cleanup={"live_directory_removed": False, "archive_performed": False,
+                                   "responsible_owner": "external_archive_owner",
+                                   "local_evidence_retained": size is not None})
+            if size_error is not None or size != writer_end["bytes_written"]:
+                result["flushed_cleanly"] = False
         print(json.dumps(result, allow_nan=False), flush=True)
     return 0 if result["flushed_cleanly"] and reason in {"duration_reached", "signal"} else 2
 
