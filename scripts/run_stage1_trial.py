@@ -18,6 +18,8 @@ import xml.etree.ElementTree as ET
 
 import yaml
 
+from uav_tracking.stop_observer import StopObserver
+
 from uav_tracking.recording_archive import archive_compression_profile, create_recording_spool, finalize_recording
 
 
@@ -612,6 +614,7 @@ def main() -> None:
     recording_spool = None
     simulation_resumed = False
     recording_observer = None
+    stop_observer = StopObserver(output / "owned_stop_events.jsonl", output / "owned_stop_observer.json")
 
     def start(name, command):
         log = (output / f"{name}.log").open("w", encoding="utf-8")
@@ -622,27 +625,12 @@ def main() -> None:
                                 stdin=subprocess.DEVNULL if name == "ros" else None,
                                 start_new_session=True)
         processes[name] = proc
+        stop_observer.started(name, proc)
         print(f"started {name} pid={proc.pid}", flush=True)
         return proc
 
     def stop(name, timeout=10):
-        proc = processes.get(name)
-        if proc and proc.poll() is None:
-            if name == "ros":
-                # The shell wrapper execs ros2 launch. Let launch signal its
-                # children once; group SIGINT would also hit them directly.
-                proc.send_signal(signal.SIGINT)
-            else:
-                os.killpg(proc.pid, signal.SIGINT)
-            try:
-                proc.wait(timeout=timeout)
-            except subprocess.TimeoutExpired:
-                os.killpg(proc.pid, signal.SIGTERM)
-                try:
-                    proc.wait(timeout=5)
-                except subprocess.TimeoutExpired:
-                    os.killpg(proc.pid, signal.SIGKILL)
-                    proc.wait(timeout=3)
+        stop_observer.stop(name, processes.get(name), timeout=timeout)
 
     try:
         start("gazebo", ["bash", str(runner), "gazebo", args.target_class])
@@ -806,6 +794,7 @@ def main() -> None:
         # processes stop; recorder exit zero alone is not recording acceptance.
         for name in ["monitor", "bag", "ros", "sensor_faults", "px4", "gazebo", "agent"]:
             stop(name, timeout=180 if name == "bag" else 8)
+        stop_observer.close()
         # Even a failed pause must not destroy a DDS participant until the
         # recorder and physics producers have completed their owned cleanup.
         if recording_observer is not None:

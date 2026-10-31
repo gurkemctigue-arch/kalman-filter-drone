@@ -708,10 +708,13 @@ class TargetManager:
         self, detections: Sequence[Detection], assignment: Mapping[int, int],
         matched_detection_indices: set[int], timestamp: Optional[float],
     ) -> None:
-        """Qualify new overlapping identities before they enter the track graph.
+        """Qualify new identities before they enter the track graph.
 
         An unassigned ROI can contain several surfaces even with 100% valid
-        depth. Under the explicit surface policy, overlapping births need two
+        depth. Under the explicit surface policy, unsupported unmatched ROIs
+        cannot create a new identity even without a current overlap anchor.
+        A mixed-depth ROI can appear alone while existing tracks are coasting.
+        Supported overlapping births still need two
         consecutive, independently supported acquisitions. A stored proposal
         is never an existing identity, association edge, measurement update or
         reason to clear genuine ambiguity. Discarding it asserts no physical
@@ -729,9 +732,16 @@ class TargetManager:
             if (not self.supported_birth_confirmation_required
                     and candidate.metadata.get("surface_recovery_enabled") is not True):
                 continue
-            if any(candidate.class_id == detections[anchor].class_id
-                   and bbox_iou(candidate.bbox, detections[anchor].bbox) > 0.0 for anchor in anchors):
+            overlaps_anchor = any(candidate.class_id == detections[anchor].class_id
+                   and bbox_iou(candidate.bbox, detections[anchor].bbox) > 0.0 for anchor in anchors)
+            if overlaps_anchor:
                 candidates[index] = candidate
+            elif (candidate.metadata.get("surface_recovery_enabled") is True
+                    and candidate.metadata.get("surface_measurement_supported") is not True):
+                # This is a birth decision only. Existing feasible association
+                # edges, their ambiguity and explicit image selection have
+                # already been preserved above; no state is measured here.
+                self._spawn_deferred_reasons[index] = "birth_surface_support_unknown"
 
         current_ns = None if timestamp is None else round(timestamp * 1_000_000_000)
         max_gap_ns = round(self.BIRTH_CONFIRMATION_MAX_GAP_S * 1_000_000_000)

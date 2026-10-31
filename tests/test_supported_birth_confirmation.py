@@ -382,18 +382,18 @@ class SupportedBirthConfirmationTests(unittest.TestCase):
         self.assertEqual(result.target.last_measurement_timestamp, .1)
         self.assertTrue(tracking._requires_reselection)
 
-    def test_synthetic_initial_unanchored_frame_preserves_original_births(self):
+    def test_synthetic_initial_unanchored_frame_defers_unsupported_but_keeps_ambiguity(self):
         tracking = manager(mode=TargetMode.AUTO_UNIQUE)
         result = tracking.update_with_result(
             [synthetic(0.), synthetic(0., entrant=True, supported=False)], timestamp=0.,
         )
-        self.assertEqual(len(result.tracks), 2)
-        self.assertEqual(result.spawn_deferred_detection_indices, ())
+        self.assertEqual(len(result.tracks), 1)
+        self.assertEqual(dict(result.spawn_deferred_reasons), {1: "birth_surface_support_unknown"})
         self.assertEqual(result.status, TargetStatus.AMBIGUOUS)
 
-    def test_synthetic_image_separation_preserves_immediate_birth(self):
+    def test_synthetic_supported_image_separation_preserves_immediate_birth(self):
         tracking = selected_manager()
-        result = frame(tracking, .1, synthetic(.1, entrant=True, bbox=(40., 0., 60., 20.), supported=False))
+        result = frame(tracking, .1, synthetic(.1, entrant=True, bbox=(40., 0., 60., 20.), supported=True))
         self.assertEqual(len(result.tracks), 2)
         self.assertEqual(result.spawn_deferred_detection_indices, ())
 

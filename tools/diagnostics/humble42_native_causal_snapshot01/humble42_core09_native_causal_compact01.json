@@ -1,0 +1,3173 @@
+{
+  "schema_version": 1,
+  "kind": "READ_ONLY_CAUSAL_TRANSCRIPTION_OF_EXPORTED_RECORDS_NOT_EXACT_REPLAY",
+  "original_trial": "reliability_v4_humble42_probe01_car_stage2_crossing_seed004",
+  "source_export_directory": "D:/WSL/UAVHumble22-validation/humble42_native_causal_window01",
+  "source_export_manifest_file_map": {
+    "events.jsonl": {
+      "bytes": 65208681,
+      "sha256": "74fee34ae6c442651f697c41a8baa81dff89bc2a9c957c2ec41af9eab43d4a14"
+    },
+    "track_anchors.json": {
+      "bytes": 136534,
+      "sha256": "19d1801d830feb847f972a01ec5ba35da68293fc3da530adeded078e9cc1b2ba"
+    },
+    "image_requests.json": {
+      "bytes": 11107,
+      "sha256": "230ee9e2d6772de9b03a63be06e8a94d55f6fb9c0bf9d053763235164fff64f4"
+    }
+  },
+  "original_status": {
+    "slot": "FAIL",
+    "core_counts": {
+      "PASS": 8,
+      "FAIL": 1,
+      "PENDING": 3
+    },
+    "owner": "STOPPED_FAULT",
+    "gazebo_exit_code": -9,
+    "changed_by_this_analysis": false
+  },
+  "export_status": {
+    "status": "COMPLETE_RAW_EXPORT_ONLY_NOT_ALGORITHM_ACCEPTANCE",
+    "native_records": 204788,
+    "native_traversals": 1,
+    "compressed_hash_passes": 2,
+    "original_pins_and_compressed_payloads_unchanged": true,
+    "owned_cache_removed": true,
+    "tempfile_tempdir_restored": true,
+    "gt_deserialized": false
+  },
+  "time_domains": {
+    "source_header": "Original integer header stamp, acquisition domain for ObservationArray",
+    "snapshot_acquisition_s": "Original detector acquisition float in track telemetry",
+    "snapshot_output_s": "Original estimator output float; projected timer snapshots are separately tagged",
+    "clock_ns": "Last previously recorded /clock proxy, not producer receive timestamp",
+    "record_index": "Original full native stream index, not selected-output line number",
+    "candidate_id": "Acquisition-local candidate ID; not persistent physical identity"
+  },
+  "selected_target": {
+    "initial_selection": {
+      "idx": 36667,
+      "clock_ns": 17960000000,
+      "timing": {
+        "source_stamp_ns": 17960000000
+      },
+      "selection": [
+        "original_global_context"
+      ],
+      "payload": {
+        "header": {
+          "stamp": {
+            "sec": 17,
+            "nanosec": 960000000
+          },
+          "frame_id": "camera_link"
+        },
+        "action": 0,
+        "track_id": 0,
+        "target_uuid": "4b8c0fa7-ab71-44f3-8cc6-a5c00e7db037",
+        "class_name": "car",
+        "center_u_px": 316.1142578125,
+        "center_v_px": 198.05096435546875,
+        "width_px": 93.97933959960938,
+        "height_px": 81.75169372558594,
+        "source": "TEST_SCRIPT_INITIAL_SELECTION"
+      }
+    },
+    "later_global_context_reselection": {
+      "idx": 108226,
+      "clock_ns": 50100000000,
+      "timing": {
+        "source_stamp_ns": 50100000000
+      },
+      "selection": [
+        "original_global_context"
+      ],
+      "payload": {
+        "header": {
+          "stamp": {
+            "sec": 50,
+            "nanosec": 100000000
+          },
+          "frame_id": "camera_link"
+        },
+        "action": 0,
+        "track_id": 0,
+        "target_uuid": "ceaf418b-296b-48ca-a43f-7cfacc774cfe",
+        "class_name": "car",
+        "center_u_px": 315.22900390625,
+        "center_v_px": 114.65970611572266,
+        "width_px": 56.163818359375,
+        "height_px": 46.61982727050781,
+        "source": "TEST_SCRIPT_EXPLICIT_RESELECTION"
+      }
+    },
+    "window_track_id": 3,
+    "window_identity_change_observed": false
+  },
+  "track4_first_observed": {
+    "track_id": "4",
+    "first_observed_idx": 65362,
+    "clock_ns": 30832000000,
+    "snapshot_acquisition_s": 30.7,
+    "snapshot_output_s": 30.7,
+    "projected": false,
+    "bbox": [
+      256.8202819824219,
+      89.57951354980469,
+      405.6737365722656,
+      139.4745330810547
+    ],
+    "position_world_m": [
+      17.357419716386836,
+      -0.10238539905447841,
+      1.0232155617548515
+    ],
+    "last_detection_s": 30.7,
+    "last_measurement_s": 30.7,
+    "candidate_id": 0,
+    "state": "confirmed",
+    "associations": [],
+    "spawn_deferred": []
+  },
+  "birth_context_snapshots": [
+    {
+      "idx": 65181,
+      "clock_ns": 30752000000,
+      "acquisition_s": 30.6,
+      "output_s": 30.6,
+      "projected": false,
+      "all_track_ids": [
+        1,
+        2,
+        3
+      ],
+      "associations": [
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          1
+        ]
+      ],
+      "spawn_deferred_reasons": [],
+      "tracks": [
+        {
+          "track_id": 2,
+          "matched": true,
+          "state": "confirmed",
+          "position_world_m": [
+            20.696324086770257,
+            -0.38300803595986266,
+            0.6779739787679461
+          ],
+          "velocity_world_mps": [
+            0.3805506100064279,
+            0.9115123494831194,
+            0.08894858293522331
+          ],
+          "last_detection_s": 30.6,
+          "last_measurement_s": 30.6,
+          "candidate_id": 0,
+          "measurement_diagnostics_current_frame": true,
+          "measurement_diagnostics": {
+            "measurement_timestamp_s": 30.6,
+            "accepted": true,
+            "reason": "ACCEPTED",
+            "raw_measurement_m": [
+              20.74102331110568,
+              -0.3409661180763091,
+              0.6924748517143491
+            ],
+            "mahalanobis_squared": 0.17695295104243447,
+            "gate_threshold": 9.21,
+            "surface_recovery_enabled": true,
+            "surface_measurement_supported": false
+          }
+        },
+        {
+          "track_id": 3,
+          "matched": true,
+          "state": "confirmed",
+          "position_world_m": [
+            14.215168698847553,
+            0.13124553478069312,
+            0.6127377835104738
+          ],
+          "velocity_world_mps": [
+            0.45292888390230407,
+            0.017819880079230053,
+            -0.08082159244604738
+          ],
+          "last_detection_s": 30.6,
+          "last_measurement_s": 30.6,
+          "candidate_id": 1,
+          "measurement_diagnostics_current_frame": true,
+          "measurement_diagnostics": {
+            "measurement_timestamp_s": 30.6,
+            "accepted": true,
+            "reason": "ACCEPTED",
+            "raw_measurement_m": [
+              14.219083315073267,
+              0.1287816942616524,
+              0.5960223897106669
+            ],
+            "mahalanobis_squared": 0.010548998221248154,
+            "gate_threshold": 9.21,
+            "surface_recovery_enabled": true,
+            "surface_measurement_supported": true
+          }
+        }
+      ]
+    },
+    {
+      "idx": 65362,
+      "clock_ns": 30832000000,
+      "acquisition_s": 30.7,
+      "output_s": 30.7,
+      "projected": false,
+      "all_track_ids": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "associations": [],
+      "spawn_deferred_reasons": [],
+      "tracks": [
+        {
+          "track_id": 2,
+          "matched": false,
+          "state": "coasting",
+          "position_world_m": [
+            20.7343791477709,
+            -0.29185680101155265,
+            0.6868688370614682
+          ],
+          "velocity_world_mps": [
+            0.3805506100064279,
+            0.9115123494831194,
+            0.08894858293522331
+          ],
+          "last_detection_s": 30.6,
+          "last_measurement_s": 30.6,
+          "candidate_id": 0,
+          "measurement_diagnostics_current_frame": false,
+          "measurement_diagnostics": {
+            "measurement_timestamp_s": 30.6,
+            "accepted": true,
+            "reason": "ACCEPTED",
+            "raw_measurement_m": [
+              20.74102331110568,
+              -0.3409661180763091,
+              0.6924748517143491
+            ],
+            "mahalanobis_squared": 0.17695295104243447,
+            "gate_threshold": 9.21,
+            "surface_recovery_enabled": true,
+            "surface_measurement_supported": false
+          }
+        },
+        {
+          "track_id": 3,
+          "matched": false,
+          "state": "coasting",
+          "position_world_m": [
+            14.260461587237781,
+            0.1330275227886161,
+            0.6046556242658693
+          ],
+          "velocity_world_mps": [
+            0.45292888390230407,
+            0.017819880079230053,
+            -0.08082159244604738
+          ],
+          "last_detection_s": 30.6,
+          "last_measurement_s": 30.6,
+          "candidate_id": 1,
+          "measurement_diagnostics_current_frame": false,
+          "measurement_diagnostics": {
+            "measurement_timestamp_s": 30.6,
+            "accepted": true,
+            "reason": "ACCEPTED",
+            "raw_measurement_m": [
+              14.219083315073267,
+              0.1287816942616524,
+              0.5960223897106669
+            ],
+            "mahalanobis_squared": 0.010548998221248154,
+            "gate_threshold": 9.21,
+            "surface_recovery_enabled": true,
+            "surface_measurement_supported": true
+          }
+        },
+        {
+          "track_id": 4,
+          "matched": true,
+          "state": "confirmed",
+          "position_world_m": [
+            17.357419716386836,
+            -0.10238539905447841,
+            1.0232155617548515
+          ],
+          "velocity_world_mps": [
+            0,
+            0,
+            0
+          ],
+          "last_detection_s": 30.7,
+          "last_measurement_s": 30.7,
+          "candidate_id": 0,
+          "measurement_diagnostics_current_frame": true,
+          "measurement_diagnostics": {
+            "measurement_timestamp_s": 30.7,
+            "accepted": true,
+            "reason": "INITIALIZED",
+            "raw_measurement_m": [
+              17.357419716386836,
+              -0.10238539905447841,
+              1.0232155617548515
+            ],
+            "mahalanobis_squared": null,
+            "gate_threshold": 9.21,
+            "surface_recovery_enabled": true,
+            "surface_measurement_supported": false
+          }
+        }
+      ]
+    },
+    {
+      "idx": 65625,
+      "clock_ns": 30952000000,
+      "acquisition_s": 30.8,
+      "output_s": 30.8,
+      "projected": false,
+      "all_track_ids": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "associations": [
+        [
+          2,
+          1
+        ],
+        [
+          3,
+          0
+        ]
+      ],
+      "spawn_deferred_reasons": [],
+      "tracks": [
+        {
+          "track_id": 2,
+          "matched": true,
+          "state": "confirmed",
+          "position_world_m": [
+            20.78648965047501,
+            -0.1876303474003682,
+            0.694530210045958
+          ],
+          "velocity_world_mps": [
+            0.4037248314738535,
+            0.9203227078909056,
+            0.08736126015458205
+          ],
+          "last_detection_s": 30.8,
+          "last_measurement_s": 30.8,
+          "candidate_id": 1,
+          "measurement_diagnostics_current_frame": true,
+          "measurement_diagnostics": {
+            "measurement_timestamp_s": 30.8,
+            "accepted": true,
+            "reason": "ACCEPTED",
+            "raw_measurement_m": [
+              20.808030809822963,
+              -0.14489308649000932,
+              0.6918230179217575
+            ],
+            "mahalanobis_squared": 0.03854674111609194,
+            "gate_threshold": 9.21,
+            "surface_recovery_enabled": true,
+            "surface_measurement_supported": false
+          }
+        },
+        {
+          "track_id": 3,
+          "matched": true,
+          "state": "confirmed",
+          "position_world_m": [
+            14.321722168826645,
+            0.13089113496213703,
+            0.6041809941845632
+          ],
+          "velocity_world_mps": [
+            0.4816090650694443,
+            0.013864135423450026,
+            -0.07035827409817622
+          ],
+          "last_detection_s": 30.8,
+          "last_measurement_s": 30.8,
+          "candidate_id": 0,
+          "measurement_diagnostics_current_frame": true,
+          "measurement_diagnostics": {
+            "measurement_timestamp_s": 30.8,
+            "accepted": true,
+            "reason": "ACCEPTED",
+            "raw_measurement_m": [
+              14.3423028288456,
+              0.1201233955427495,
+              0.6182450373510766
+            ],
+            "mahalanobis_squared": 0.057548054787269126,
+            "gate_threshold": 9.21,
+            "surface_recovery_enabled": true,
+            "surface_measurement_supported": true
+          }
+        },
+        {
+          "track_id": 4,
+          "matched": false,
+          "state": "coasting",
+          "position_world_m": [
+            17.357419716386836,
+            -0.10238539905447841,
+            1.0232155617548515
+          ],
+          "velocity_world_mps": [
+            0,
+            0,
+            0
+          ],
+          "last_detection_s": 30.7,
+          "last_measurement_s": 30.7,
+          "candidate_id": 0,
+          "measurement_diagnostics_current_frame": false,
+          "measurement_diagnostics": {
+            "measurement_timestamp_s": 30.7,
+            "accepted": true,
+            "reason": "INITIALIZED",
+            "raw_measurement_m": [
+              17.357419716386836,
+              -0.10238539905447841,
+              1.0232155617548515
+            ],
+            "mahalanobis_squared": null,
+            "gate_threshold": 9.21,
+            "surface_recovery_enabled": true,
+            "surface_measurement_supported": false
+          }
+        }
+      ]
+    },
+    {
+      "idx": 66499,
+      "clock_ns": 31348000000,
+      "acquisition_s": 31.2,
+      "output_s": 31.2,
+      "projected": false,
+      "all_track_ids": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "associations": [
+        [
+          3,
+          0
+        ],
+        [
+          4,
+          1
+        ]
+      ],
+      "spawn_deferred_reasons": [],
+      "tracks": [
+        {
+          "track_id": 2,
+          "matched": false,
+          "state": "coasting",
+          "position_world_m": [
+            20.947979583064548,
+            0.18049873575599273,
+            0.7294747141077909
+          ],
+          "velocity_world_mps": [
+            0.4037248314738535,
+            0.9203227078909056,
+            0.08736126015458205
+          ],
+          "last_detection_s": 30.8,
+          "last_measurement_s": 30.8,
+          "candidate_id": 1,
+          "measurement_diagnostics_current_frame": false,
+          "measurement_diagnostics": {
+            "measurement_timestamp_s": 30.8,
+            "accepted": true,
+            "reason": "ACCEPTED",
+            "raw_measurement_m": [
+              20.808030809822963,
+              -0.14489308649000932,
+              0.6918230179217575
+            ],
+            "mahalanobis_squared": 0.03854674111609194,
+            "gate_threshold": 9.21,
+            "surface_recovery_enabled": true,
+            "surface_measurement_supported": false
+          }
+        },
+        {
+          "track_id": 3,
+          "matched": true,
+          "state": "confirmed",
+          "position_world_m": [
+            14.509337079892415,
+            0.12311369379756909,
+            0.5244311129282914
+          ],
+          "velocity_world_mps": [
+            0.47312799644285014,
+            0.0031495508526036007,
+            -0.13046255338236518
+          ],
+          "last_detection_s": 31.2,
+          "last_measurement_s": 31.2,
+          "candidate_id": 0,
+          "measurement_diagnostics_current_frame": true,
+          "measurement_diagnostics": {
+            "measurement_timestamp_s": 31.2,
+            "accepted": true,
+            "reason": "ACCEPTED",
+            "raw_measurement_m": [
+              14.506715077166945,
+              0.11986580842940414,
+              0.5033793187140752
+            ],
+            "mahalanobis_squared": 0.014876446789694206,
+            "gate_threshold": 9.21,
+            "surface_recovery_enabled": true,
+            "surface_measurement_supported": true
+          }
+        },
+        {
+          "track_id": 4,
+          "matched": true,
+          "state": "confirmed",
+          "position_world_m": [
+            16.129527768500743,
+            0.23290033885000527,
+            1.1608822857328218
+          ],
+          "velocity_world_mps": [
+            -2.4235372288105888,
+            0.49716923593416507,
+            0.2618870441175071
+          ],
+          "last_detection_s": 31.2,
+          "last_measurement_s": 31.2,
+          "candidate_id": 1,
+          "measurement_diagnostics_current_frame": true,
+          "measurement_diagnostics": {
+            "measurement_timestamp_s": 31.2,
+            "accepted": true,
+            "reason": "ACCEPTED",
+            "raw_measurement_m": [
+              16.107048986188367,
+              0.30981729919399714,
+              1.1681617531920763
+            ],
+            "mahalanobis_squared": 1.626441761302286,
+            "gate_threshold": 9.21,
+            "surface_recovery_enabled": true,
+            "surface_measurement_supported": false
+          }
+        }
+      ]
+    },
+    {
+      "idx": 66708,
+      "clock_ns": 31440000000,
+      "acquisition_s": 31.3,
+      "output_s": 31.3,
+      "projected": false,
+      "all_track_ids": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "associations": [
+        [
+          3,
+          1
+        ],
+        [
+          4,
+          0
+        ]
+      ],
+      "spawn_deferred_reasons": [],
+      "tracks": [
+        {
+          "track_id": 2,
+          "matched": false,
+          "state": "coasting",
+          "position_world_m": [
+            20.988352066211934,
+            0.2725310065450846,
+            0.7382108401232492
+          ],
+          "velocity_world_mps": [
+            0.4037248314738535,
+            0.9203227078909056,
+            0.08736126015458205
+          ],
+          "last_detection_s": 30.8,
+          "last_measurement_s": 30.8,
+          "candidate_id": 1,
+          "measurement_diagnostics_current_frame": false,
+          "measurement_diagnostics": {
+            "measurement_timestamp_s": 30.8,
+            "accepted": true,
+            "reason": "ACCEPTED",
+            "raw_measurement_m": [
+              20.808030809822963,
+              -0.14489308649000932,
+              0.6918230179217575
+            ],
+            "mahalanobis_squared": 0.03854674111609194,
+            "gate_threshold": 9.21,
+            "surface_recovery_enabled": true,
+            "surface_measurement_supported": false
+          }
+        },
+        {
+          "track_id": 3,
+          "matched": true,
+          "state": "confirmed",
+          "position_world_m": [
+            14.557944624139527,
+            0.12226767262958452,
+            0.517779614789669
+          ],
+          "velocity_world_mps": [
+            0.47570840276010207,
+            0.0019786297390106252,
+            -0.12088130389340046
+          ],
+          "last_detection_s": 31.3,
+          "last_measurement_s": 31.3,
+          "candidate_id": 1,
+          "measurement_diagnostics_current_frame": true,
+          "measurement_diagnostics": {
+            "measurement_timestamp_s": 31.3,
+            "accepted": true,
+            "reason": "ACCEPTED",
+            "raw_measurement_m": [
+              14.560515661681801,
+              0.11775851678444921,
+              0.5350536568368947
+            ],
+            "mahalanobis_squared": 0.010128257549628409,
+            "gate_threshold": 9.21,
+            "surface_recovery_enabled": true,
+            "surface_measurement_supported": false
+          }
+        },
+        {
+          "track_id": 4,
+          "matched": true,
+          "state": "confirmed",
+          "position_world_m": [
+            16.092096345999824,
+            0.27678482985616165,
+            1.170739296914448
+          ],
+          "velocity_world_mps": [
+            -2.0259571691856904,
+            0.5165027953697354,
+            0.23175827282298544
+          ],
+          "last_detection_s": 31.3,
+          "last_measurement_s": 31.3,
+          "candidate_id": 0,
+          "measurement_diagnostics_current_frame": true,
+          "measurement_diagnostics": {
+            "measurement_timestamp_s": 31.3,
+            "accepted": true,
+            "reason": "ACCEPTED",
+            "raw_measurement_m": [
+              16.231492753726535,
+              0.2806473287196236,
+              1.1590791375203002
+            ],
+            "mahalanobis_squared": 2.6417080964687756,
+            "gate_threshold": 9.21,
+            "surface_recovery_enabled": true,
+            "surface_measurement_supported": false
+          }
+        }
+      ]
+    }
+  ],
+  "focused_observation_frames": [
+    {
+      "idx": 65142,
+      "clock_ns": 30736000000,
+      "timing": {
+        "source_stamp_ns": 30600000000
+      },
+      "selection": [
+        "recorded_clock_proxy",
+        "source_stamp_ns"
+      ],
+      "observations": [
+        {
+          "candidate_id": 0,
+          "acquisition_epoch": 0,
+          "class_name": "car",
+          "confidence": 0.7505670189857483,
+          "bbox_x_min_px": 261.99432373046875,
+          "bbox_y_min_px": 87.4004898071289,
+          "bbox_x_max_px": 408.18670654296875,
+          "bbox_y_max_px": 137.36338806152344,
+          "depth_valid": true,
+          "depth_m": 13.052114486694336,
+          "depth_valid_ratio": 1,
+          "depth_std_m": 3.2758452892303467,
+          "position_camera_m": {
+            "x": 0.4229025528317232,
+            "y": -3.576418917654214,
+            "z": 13.052114009857178
+          },
+          "surface_recovery_enabled": true,
+          "surface_measurement_supported": false,
+          "navigation_bbox_complete": false,
+          "navigation_overlap_count": 1,
+          "navigation_exclusive_depth_complete": true,
+          "navigation_exclusive_expected_pixel_count": 5324,
+          "navigation_exclusive_valid_pixel_count": 5324,
+          "navigation_exclusive_reason": "complete_native_exclusive"
+        },
+        {
+          "candidate_id": 1,
+          "acquisition_epoch": 0,
+          "class_name": "car",
+          "confidence": 0.4764820635318756,
+          "bbox_x_min_px": 262.6601867675781,
+          "bbox_y_min_px": 122.74364471435547,
+          "bbox_x_max_px": 383.5520935058594,
+          "bbox_y_max_px": 203.3970184326172,
+          "depth_valid": true,
+          "depth_m": 6.992999076843262,
+          "depth_valid_ratio": 1,
+          "depth_std_m": 0.03980125114321709,
+          "position_camera_m": {
+            "x": 0.03792288172941364,
+            "y": -1.1617444350921522,
+            "z": 6.986901301915954
+          },
+          "surface_recovery_enabled": true,
+          "surface_measurement_supported": true,
+          "navigation_bbox_complete": false,
+          "navigation_overlap_count": 1,
+          "navigation_exclusive_depth_complete": true,
+          "navigation_exclusive_expected_pixel_count": 7800,
+          "navigation_exclusive_valid_pixel_count": 7800,
+          "navigation_exclusive_reason": "complete_native_exclusive"
+        }
+      ],
+      "navigation_overlaps": [
+        {
+          "candidate_a_id": 0,
+          "candidate_b_id": 1,
+          "bbox_a_px": [
+            261.99432373046875,
+            87.4004898071289,
+            408.18670654296875,
+            137.36338806152344
+          ],
+          "bbox_b_px": [
+            262.6601867675781,
+            122.74364471435547,
+            383.5520935058594,
+            203.3970184326172
+          ],
+          "u0": 262,
+          "v0": 122,
+          "width": 122,
+          "height": 16,
+          "expected_pixel_count": 1952,
+          "valid_pixel_count": 1952,
+          "rectangle_representable": true,
+          "depth_complete": true
+        }
+      ]
+    },
+    {
+      "idx": 65356,
+      "clock_ns": 30832000000,
+      "timing": {
+        "source_stamp_ns": 30700000000
+      },
+      "selection": [
+        "recorded_clock_proxy",
+        "source_stamp_ns"
+      ],
+      "observations": [
+        {
+          "candidate_id": 0,
+          "acquisition_epoch": 0,
+          "class_name": "car",
+          "confidence": 0.6459046602249146,
+          "bbox_x_min_px": 256.8202819824219,
+          "bbox_y_min_px": 89.57951354980469,
+          "bbox_x_max_px": 405.6737365722656,
+          "bbox_y_max_px": 139.4745330810547,
+          "depth_valid": true,
+          "depth_m": 9.724130630493164,
+          "depth_valid_ratio": 1,
+          "depth_std_m": 3.2843072414398193,
+          "position_camera_m": {
+            "x": 0.23482439955080905,
+            "y": -2.6197290037948244,
+            "z": 9.724130630493164
+          },
+          "surface_recovery_enabled": true,
+          "surface_measurement_supported": false,
+          "navigation_bbox_complete": true,
+          "navigation_overlap_count": 0,
+          "navigation_exclusive_depth_complete": false,
+          "navigation_exclusive_expected_pixel_count": 0,
+          "navigation_exclusive_valid_pixel_count": 0,
+          "navigation_exclusive_reason": "exclusive_navigation_not_eligible"
+        }
+      ],
+      "navigation_overlaps": []
+    },
+    {
+      "idx": 65586,
+      "clock_ns": 30936000000,
+      "timing": {
+        "source_stamp_ns": 30800000000
+      },
+      "selection": [
+        "recorded_clock_proxy",
+        "source_stamp_ns"
+      ],
+      "observations": [
+        {
+          "candidate_id": 0,
+          "acquisition_epoch": 0,
+          "class_name": "car",
+          "confidence": 0.5806142687797546,
+          "bbox_x_min_px": 263.0833435058594,
+          "bbox_y_min_px": 122.21028900146484,
+          "bbox_x_max_px": 384.1705322265625,
+          "bbox_y_max_px": 207.509521484375,
+          "depth_valid": true,
+          "depth_m": 6.989775657653809,
+          "depth_valid_ratio": 1,
+          "depth_std_m": 0.05201685428619385,
+          "position_camera_m": {
+            "x": 0.052932615271973425,
+            "y": -1.132897943970852,
+            "z": 6.990056027626169
+          },
+          "surface_recovery_enabled": true,
+          "surface_measurement_supported": true,
+          "navigation_bbox_complete": false,
+          "navigation_overlap_count": 1,
+          "navigation_exclusive_depth_complete": true,
+          "navigation_exclusive_expected_pixel_count": 7800,
+          "navigation_exclusive_valid_pixel_count": 7800,
+          "navigation_exclusive_reason": "complete_native_exclusive"
+        },
+        {
+          "candidate_id": 1,
+          "acquisition_epoch": 0,
+          "class_name": "car",
+          "confidence": 0.4590207040309906,
+          "bbox_x_min_px": 254.06768798828125,
+          "bbox_y_min_px": 91.3146743774414,
+          "bbox_x_max_px": 402.9308166503906,
+          "bbox_y_max_px": 141.27542114257812,
+          "depth_valid": true,
+          "depth_m": 13.025997161865234,
+          "depth_valid_ratio": 1,
+          "depth_std_m": 3.3430466651916504,
+          "position_camera_m": {
+            "x": 0.2377097900793163,
+            "y": -3.4598194198613306,
+            "z": 13.025996685028076
+          },
+          "surface_recovery_enabled": true,
+          "surface_measurement_supported": false,
+          "navigation_bbox_complete": false,
+          "navigation_overlap_count": 1,
+          "navigation_exclusive_depth_complete": true,
+          "navigation_exclusive_expected_pixel_count": 4885,
+          "navigation_exclusive_valid_pixel_count": 4885,
+          "navigation_exclusive_reason": "complete_native_exclusive"
+        }
+      ],
+      "navigation_overlaps": [
+        {
+          "candidate_a_id": 0,
+          "candidate_b_id": 1,
+          "bbox_a_px": [
+            263.0833435058594,
+            122.21028900146484,
+            384.1705322265625,
+            207.509521484375
+          ],
+          "bbox_b_px": [
+            254.06768798828125,
+            91.3146743774414,
+            402.9308166503906,
+            141.27542114257812
+          ],
+          "u0": 263,
+          "v0": 122,
+          "width": 122,
+          "height": 20,
+          "expected_pixel_count": 2440,
+          "valid_pixel_count": 2440,
+          "rectangle_representable": true,
+          "depth_complete": true
+        }
+      ]
+    },
+    {
+      "idx": 66471,
+      "clock_ns": 31336000000,
+      "timing": {
+        "source_stamp_ns": 31200000000
+      },
+      "selection": [
+        "recorded_clock_proxy",
+        "source_stamp_ns"
+      ],
+      "observations": [
+        {
+          "candidate_id": 0,
+          "acquisition_epoch": 0,
+          "class_name": "car",
+          "confidence": 0.6277542114257812,
+          "bbox_x_min_px": 264.7838134765625,
+          "bbox_y_min_px": 164.99842834472656,
+          "bbox_x_max_px": 385.07427978515625,
+          "bbox_y_max_px": 233.40396118164062,
+          "depth_valid": true,
+          "depth_m": 7.038146495819092,
+          "depth_valid_ratio": 1,
+          "depth_std_m": 0.0247250497341156,
+          "position_camera_m": {
+            "x": 0.06839918514279267,
+            "y": -0.619259833124015,
+            "z": 7.04036742817184
+          },
+          "surface_recovery_enabled": true,
+          "surface_measurement_supported": true,
+          "navigation_bbox_complete": false,
+          "navigation_overlap_count": 1,
+          "navigation_exclusive_depth_complete": true,
+          "navigation_exclusive_expected_pixel_count": 7720,
+          "navigation_exclusive_valid_pixel_count": 7720,
+          "navigation_exclusive_reason": "complete_native_exclusive"
+        },
+        {
+          "candidate_id": 1,
+          "acquisition_epoch": 0,
+          "class_name": "car",
+          "confidence": 0.6081850528717041,
+          "bbox_x_min_px": 249.61093139648438,
+          "bbox_y_min_px": 119.22216033935547,
+          "bbox_x_max_px": 374.8834533691406,
+          "bbox_y_max_px": 168.56614685058594,
+          "depth_valid": true,
+          "depth_m": 8.370187759399414,
+          "depth_valid_ratio": 1,
+          "depth_std_m": 3.5356531143188477,
+          "position_camera_m": {
+            "x": -0.13933158905163961,
+            "y": -1.7271910974650582,
+            "z": 8.370187759399414
+          },
+          "surface_recovery_enabled": true,
+          "surface_measurement_supported": false,
+          "navigation_bbox_complete": false,
+          "navigation_overlap_count": 1,
+          "navigation_exclusive_depth_complete": true,
+          "navigation_exclusive_expected_pixel_count": 5512,
+          "navigation_exclusive_valid_pixel_count": 5512,
+          "navigation_exclusive_reason": "complete_native_exclusive"
+        }
+      ],
+      "navigation_overlaps": [
+        {
+          "candidate_a_id": 0,
+          "candidate_b_id": 1,
+          "bbox_a_px": [
+            264.7838134765625,
+            164.99842834472656,
+            385.07427978515625,
+            233.40396118164062
+          ],
+          "bbox_b_px": [
+            249.61093139648438,
+            119.22216033935547,
+            374.8834533691406,
+            168.56614685058594
+          ],
+          "u0": 264,
+          "v0": 164,
+          "width": 111,
+          "height": 5,
+          "expected_pixel_count": 555,
+          "valid_pixel_count": 555,
+          "rectangle_representable": true,
+          "depth_complete": true
+        }
+      ]
+    },
+    {
+      "idx": 66694,
+      "clock_ns": 31436000000,
+      "timing": {
+        "source_stamp_ns": 31300000000
+      },
+      "selection": [
+        "recorded_clock_proxy",
+        "source_stamp_ns"
+      ],
+      "observations": [
+        {
+          "candidate_id": 0,
+          "acquisition_epoch": 0,
+          "class_name": "car",
+          "confidence": 0.6211159229278564,
+          "bbox_x_min_px": 247.0157928466797,
+          "bbox_y_min_px": 113.36292266845703,
+          "bbox_x_max_px": 381.5546875,
+          "bbox_y_max_px": 162.33596801757812,
+          "depth_valid": true,
+          "depth_m": 8.429359436035156,
+          "depth_valid_ratio": 1,
+          "depth_std_m": 3.4476778507232666,
+          "position_camera_m": {
+            "x": -0.10343033678655444,
+            "y": -1.8488032028600132,
+            "z": 8.429359436035156
+          },
+          "surface_recovery_enabled": true,
+          "surface_measurement_supported": false,
+          "navigation_bbox_complete": false,
+          "navigation_overlap_count": 1,
+          "navigation_exclusive_depth_complete": true,
+          "navigation_exclusive_expected_pixel_count": 5456,
+          "navigation_exclusive_valid_pixel_count": 5456,
+          "navigation_exclusive_reason": "complete_native_exclusive"
+        },
+        {
+          "candidate_id": 1,
+          "acquisition_epoch": 0,
+          "class_name": "car",
+          "confidence": 0.5716187953948975,
+          "bbox_x_min_px": 265.173095703125,
+          "bbox_y_min_px": 154.35885620117188,
+          "bbox_x_max_px": 385.0557556152344,
+          "bbox_y_max_px": 227.30899047851562,
+          "depth_valid": true,
+          "depth_m": 7.032467842102051,
+          "depth_valid_ratio": 1,
+          "depth_std_m": 0.027297521010041237,
+          "position_camera_m": {
+            "x": 0.07722537443463938,
+            "y": -0.742384176168031,
+            "z": 7.03246808052063
+          },
+          "surface_recovery_enabled": true,
+          "surface_measurement_supported": false,
+          "navigation_bbox_complete": false,
+          "navigation_overlap_count": 1,
+          "navigation_exclusive_depth_complete": true,
+          "navigation_exclusive_expected_pixel_count": 7640,
+          "navigation_exclusive_valid_pixel_count": 7640,
+          "navigation_exclusive_reason": "complete_native_exclusive"
+        }
+      ],
+      "navigation_overlaps": [
+        {
+          "candidate_a_id": 0,
+          "candidate_b_id": 1,
+          "bbox_a_px": [
+            247.0157928466797,
+            113.36292266845703,
+            381.5546875,
+            162.33596801757812
+          ],
+          "bbox_b_px": [
+            265.173095703125,
+            154.35885620117188,
+            385.0557556152344,
+            227.30899047851562
+          ],
+          "u0": 265,
+          "v0": 154,
+          "width": 117,
+          "height": 9,
+          "expected_pixel_count": 1053,
+          "valid_pixel_count": 1053,
+          "rectangle_representable": true,
+          "depth_complete": true
+        }
+      ]
+    },
+    {
+      "idx": 66917,
+      "clock_ns": 31536000000,
+      "timing": {
+        "source_stamp_ns": 31400000000
+      },
+      "selection": [
+        "recorded_clock_proxy",
+        "source_stamp_ns"
+      ],
+      "observations": [
+        {
+          "candidate_id": 0,
+          "acquisition_epoch": 0,
+          "class_name": "car",
+          "confidence": 0.5333027243614197,
+          "bbox_x_min_px": 265.3984680175781,
+          "bbox_y_min_px": 148.7821044921875,
+          "bbox_x_max_px": 385.246337890625,
+          "bbox_y_max_px": 219.92086791992188,
+          "depth_valid": true,
+          "depth_m": 7.028350830078125,
+          "depth_valid_ratio": 1,
+          "depth_std_m": 0.0301600843667984,
+          "position_camera_m": {
+            "x": 0.07580922876176881,
+            "y": -0.8442941367085336,
+            "z": 7.028142008583289
+          },
+          "surface_recovery_enabled": true,
+          "surface_measurement_supported": true,
+          "navigation_bbox_complete": false,
+          "navigation_overlap_count": 1,
+          "navigation_exclusive_depth_complete": true,
+          "navigation_exclusive_expected_pixel_count": 7616,
+          "navigation_exclusive_valid_pixel_count": 7616,
+          "navigation_exclusive_reason": "complete_native_exclusive"
+        },
+        {
+          "candidate_id": 1,
+          "acquisition_epoch": 0,
+          "class_name": "car",
+          "confidence": 0.5290704369544983,
+          "bbox_x_min_px": 243.91250610351562,
+          "bbox_y_min_px": 104.0494155883789,
+          "bbox_x_max_px": 387.24554443359375,
+          "bbox_y_max_px": 154.92434692382812,
+          "depth_valid": true,
+          "depth_m": 9.75540542602539,
+          "depth_valid_ratio": 1,
+          "depth_std_m": 3.5791361331939697,
+          "position_camera_m": {
+            "x": -0.09260165283634361,
+            "y": -2.31480568821037,
+            "z": 9.75540542602539
+          },
+          "surface_recovery_enabled": true,
+          "surface_measurement_supported": false,
+          "navigation_bbox_complete": false,
+          "navigation_overlap_count": 1,
+          "navigation_exclusive_depth_complete": true,
+          "navigation_exclusive_expected_pixel_count": 6281,
+          "navigation_exclusive_valid_pixel_count": 6281,
+          "navigation_exclusive_reason": "complete_native_exclusive"
+        }
+      ],
+      "navigation_overlaps": [
+        {
+          "candidate_a_id": 0,
+          "candidate_b_id": 1,
+          "bbox_a_px": [
+            265.3984680175781,
+            148.7821044921875,
+            385.246337890625,
+            219.92086791992188
+          ],
+          "bbox_b_px": [
+            243.91250610351562,
+            104.0494155883789,
+            387.24554443359375,
+            154.92434692382812
+          ],
+          "u0": 265,
+          "v0": 148,
+          "width": 121,
+          "height": 7,
+          "expected_pixel_count": 847,
+          "valid_pixel_count": 847,
+          "rectangle_representable": true,
+          "depth_complete": true
+        }
+      ]
+    },
+    {
+      "idx": 67138,
+      "clock_ns": 31636000000,
+      "timing": {
+        "source_stamp_ns": 31500000000
+      },
+      "selection": [
+        "recorded_clock_proxy",
+        "source_stamp_ns"
+      ],
+      "observations": [
+        {
+          "candidate_id": 0,
+          "acquisition_epoch": 0,
+          "class_name": "car",
+          "confidence": 0.9510816931724548,
+          "bbox_x_min_px": 258.8511657714844,
+          "bbox_y_min_px": 90.9908447265625,
+          "bbox_x_max_px": 386.64739990234375,
+          "bbox_y_max_px": 213.96441650390625,
+          "depth_valid": true,
+          "depth_m": 7.03317928314209,
+          "depth_valid_ratio": 1,
+          "depth_std_m": 1.9829754829406738,
+          "position_camera_m": {
+            "x": 0.0415170504544718,
+            "y": -1.3216794492198747,
+            "z": 7.03317928314209
+          },
+          "surface_recovery_enabled": true,
+          "surface_measurement_supported": false,
+          "navigation_bbox_complete": false,
+          "navigation_overlap_count": 2,
+          "navigation_exclusive_depth_complete": false,
+          "navigation_exclusive_expected_pixel_count": 893,
+          "navigation_exclusive_valid_pixel_count": 683,
+          "navigation_exclusive_reason": "exclusive_native_depth_incomplete"
+        },
+        {
+          "candidate_id": 1,
+          "acquisition_epoch": 0,
+          "class_name": "car",
+          "confidence": 0.6570864319801331,
+          "bbox_x_min_px": 241.50390625,
+          "bbox_y_min_px": 93.3975601196289,
+          "bbox_x_max_px": 381.00653076171875,
+          "bbox_y_max_px": 147.2239990234375,
+          "depth_valid": true,
+          "depth_m": 13.076409339904785,
+          "depth_valid_ratio": 1,
+          "depth_std_m": 4.483996391296387,
+          "position_camera_m": {
+            "x": -0.24552337884623035,
+            "y": -3.3604615313439945,
+            "z": 13.076409339904785
+          },
+          "surface_recovery_enabled": true,
+          "surface_measurement_supported": false,
+          "navigation_bbox_complete": false,
+          "navigation_overlap_count": 2,
+          "navigation_exclusive_depth_complete": false,
+          "navigation_exclusive_expected_pixel_count": 848,
+          "navigation_exclusive_valid_pixel_count": 800,
+          "navigation_exclusive_reason": "exclusive_native_depth_incomplete"
+        },
+        {
+          "candidate_id": 2,
+          "acquisition_epoch": 0,
+          "class_name": "car",
+          "confidence": 0.5592900514602661,
+          "bbox_x_min_px": 265.1060791015625,
+          "bbox_y_min_px": 125.09505462646484,
+          "bbox_x_max_px": 385.0503845214844,
+          "bbox_y_max_px": 211.03416442871094,
+          "depth_valid": true,
+          "depth_m": 7.023082733154297,
+          "depth_valid_ratio": 1,
+          "depth_std_m": 0.07237492501735687,
+          "position_camera_m": {
+            "x": 0.07657653109384659,
+            "y": -1.0847402934144765,
+            "z": 7.023082733154297
+          },
+          "surface_recovery_enabled": true,
+          "surface_measurement_supported": false,
+          "navigation_bbox_complete": false,
+          "navigation_overlap_count": 2,
+          "navigation_exclusive_depth_complete": false,
+          "navigation_exclusive_expected_pixel_count": 0,
+          "navigation_exclusive_valid_pixel_count": 0,
+          "navigation_exclusive_reason": "exclusive_native_support_missing"
+        }
+      ],
+      "navigation_overlaps": [
+        {
+          "candidate_a_id": 0,
+          "candidate_b_id": 1,
+          "bbox_a_px": [
+            258.8511657714844,
+            90.9908447265625,
+            386.64739990234375,
+            213.96441650390625
+          ],
+          "bbox_b_px": [
+            241.50390625,
+            93.3975601196289,
+            381.00653076171875,
+            147.2239990234375
+          ],
+          "u0": 258,
+          "v0": 93,
+          "width": 124,
+          "height": 55,
+          "expected_pixel_count": 6820,
+          "valid_pixel_count": 0,
+          "rectangle_representable": true,
+          "depth_complete": false
+        },
+        {
+          "candidate_a_id": 0,
+          "candidate_b_id": 2,
+          "bbox_a_px": [
+            258.8511657714844,
+            90.9908447265625,
+            386.64739990234375,
+            213.96441650390625
+          ],
+          "bbox_b_px": [
+            265.1060791015625,
+            125.09505462646484,
+            385.0503845214844,
+            211.03416442871094
+          ],
+          "u0": 265,
+          "v0": 125,
+          "width": 121,
+          "height": 87,
+          "expected_pixel_count": 10527,
+          "valid_pixel_count": 0,
+          "rectangle_representable": true,
+          "depth_complete": false
+        },
+        {
+          "candidate_a_id": 1,
+          "candidate_b_id": 2,
+          "bbox_a_px": [
+            241.50390625,
+            93.3975601196289,
+            381.00653076171875,
+            147.2239990234375
+          ],
+          "bbox_b_px": [
+            265.1060791015625,
+            125.09505462646484,
+            385.0503845214844,
+            211.03416442871094
+          ],
+          "u0": 265,
+          "v0": 125,
+          "width": 117,
+          "height": 23,
+          "expected_pixel_count": 2691,
+          "valid_pixel_count": 2691,
+          "rectangle_representable": true,
+          "depth_complete": true
+        }
+      ]
+    },
+    {
+      "idx": 67371,
+      "clock_ns": 31740000000,
+      "timing": {
+        "source_stamp_ns": 31600000000
+      },
+      "selection": [
+        "recorded_clock_proxy",
+        "source_stamp_ns"
+      ],
+      "observations": [
+        {
+          "candidate_id": 0,
+          "acquisition_epoch": 0,
+          "class_name": "car",
+          "confidence": 0.7840165495872498,
+          "bbox_x_min_px": 238.08322143554688,
+          "bbox_y_min_px": 88.51850128173828,
+          "bbox_x_max_px": 373.8780517578125,
+          "bbox_y_max_px": 139.59291076660156,
+          "depth_valid": true,
+          "depth_m": 9.710380554199219,
+          "depth_valid_ratio": 1,
+          "depth_std_m": 4.483735084533691,
+          "position_camera_m": {
+            "x": -0.2922940175703869,
+            "y": -2.625851304171387,
+            "z": 9.710380554199219
+          },
+          "surface_recovery_enabled": true,
+          "surface_measurement_supported": false,
+          "navigation_bbox_complete": false,
+          "navigation_overlap_count": 1,
+          "navigation_exclusive_depth_complete": true,
+          "navigation_exclusive_expected_pixel_count": 2885,
+          "navigation_exclusive_valid_pixel_count": 2885,
+          "navigation_exclusive_reason": "complete_native_exclusive"
+        },
+        {
+          "candidate_id": 1,
+          "acquisition_epoch": 0,
+          "class_name": "car",
+          "confidence": 0.6237496137619019,
+          "bbox_x_min_px": 264.7301330566406,
+          "bbox_y_min_px": 104.78875732421875,
+          "bbox_x_max_px": 385.0634765625,
+          "bbox_y_max_px": 204.28533935546875,
+          "depth_valid": true,
+          "depth_m": 7.021913528442383,
+          "depth_valid_ratio": 1,
+          "depth_std_m": 0.48332479596138,
+          "position_camera_m": {
+            "x": 0.07382843086328317,
+            "y": -1.2885127881108285,
+            "z": 7.021913290023804
+          },
+          "surface_recovery_enabled": true,
+          "surface_measurement_supported": false,
+          "navigation_bbox_complete": false,
+          "navigation_overlap_count": 1,
+          "navigation_exclusive_depth_complete": true,
+          "navigation_exclusive_expected_pixel_count": 8065,
+          "navigation_exclusive_valid_pixel_count": 8065,
+          "navigation_exclusive_reason": "complete_native_exclusive"
+        }
+      ],
+      "navigation_overlaps": [
+        {
+          "candidate_a_id": 0,
+          "candidate_b_id": 1,
+          "bbox_a_px": [
+            238.08322143554688,
+            88.51850128173828,
+            373.8780517578125,
+            139.59291076660156
+          ],
+          "bbox_b_px": [
+            264.7301330566406,
+            104.78875732421875,
+            385.0634765625,
+            204.28533935546875
+          ],
+          "u0": 264,
+          "v0": 104,
+          "width": 110,
+          "height": 36,
+          "expected_pixel_count": 3960,
+          "valid_pixel_count": 3960,
+          "rectangle_representable": true,
+          "depth_complete": true
+        }
+      ]
+    },
+    {
+      "idx": 67583,
+      "clock_ns": 31836000000,
+      "timing": {
+        "source_stamp_ns": 31700000000
+      },
+      "selection": [
+        "recorded_clock_proxy",
+        "source_stamp_ns"
+      ],
+      "observations": [
+        {
+          "candidate_id": 0,
+          "acquisition_epoch": 0,
+          "class_name": "car",
+          "confidence": 0.8849011659622192,
+          "bbox_x_min_px": 234.80926513671875,
+          "bbox_y_min_px": 75.42106628417969,
+          "bbox_x_max_px": 380.9428405761719,
+          "bbox_y_max_px": 132.33355712890625,
+          "depth_valid": true,
+          "depth_m": 13.410346984863281,
+          "depth_valid_ratio": 1,
+          "depth_std_m": 6.103765487670898,
+          "position_camera_m": {
+            "x": -0.34909163929816517,
+            "y": -3.9194572394105336,
+            "z": 13.41034746170044
+          },
+          "surface_recovery_enabled": true,
+          "surface_measurement_supported": false,
+          "navigation_bbox_complete": false,
+          "navigation_overlap_count": 1,
+          "navigation_exclusive_depth_complete": false,
+          "navigation_exclusive_expected_pixel_count": 5104,
+          "navigation_exclusive_valid_pixel_count": 4563,
+          "navigation_exclusive_reason": "exclusive_native_depth_incomplete"
+        },
+        {
+          "candidate_id": 1,
+          "acquisition_epoch": 0,
+          "class_name": "car",
+          "confidence": 0.4959130883216858,
+          "bbox_x_min_px": 264.65594482421875,
+          "bbox_y_min_px": 106.52637481689453,
+          "bbox_x_max_px": 385.00592041015625,
+          "bbox_y_max_px": 196.96383666992188,
+          "depth_valid": true,
+          "depth_m": 7.013513565063477,
+          "depth_valid_ratio": 1,
+          "depth_std_m": 0.08653401583433151,
+          "position_camera_m": {
+            "x": 0.06069427867896815,
+            "y": -1.3363078815483345,
+            "z": 7.027866230926484
+          },
+          "surface_recovery_enabled": true,
+          "surface_measurement_supported": true,
+          "navigation_bbox_complete": false,
+          "navigation_overlap_count": 1,
+          "navigation_exclusive_depth_complete": true,
+          "navigation_exclusive_expected_pixel_count": 7664,
+          "navigation_exclusive_valid_pixel_count": 7664,
+          "navigation_exclusive_reason": "complete_native_exclusive"
+        }
+      ],
+      "navigation_overlaps": [
+        {
+          "candidate_a_id": 0,
+          "candidate_b_id": 1,
+          "bbox_a_px": [
+            234.80926513671875,
+            75.42106628417969,
+            380.9428405761719,
+            132.33355712890625
+          ],
+          "bbox_b_px": [
+            264.65594482421875,
+            106.52637481689453,
+            385.00592041015625,
+            196.96383666992188
+          ],
+          "u0": 264,
+          "v0": 106,
+          "width": 117,
+          "height": 27,
+          "expected_pixel_count": 3159,
+          "valid_pixel_count": 3159,
+          "rectangle_representable": true,
+          "depth_complete": true
+        }
+      ]
+    },
+    {
+      "idx": 68693,
+      "clock_ns": 32336000000,
+      "timing": {
+        "source_stamp_ns": 32200000000
+      },
+      "selection": [
+        "recorded_clock_proxy",
+        "source_stamp_ns"
+      ],
+      "observations": [
+        {
+          "candidate_id": 0,
+          "acquisition_epoch": 0,
+          "class_name": "car",
+          "confidence": 0.8532917499542236,
+          "bbox_x_min_px": 264.1005554199219,
+          "bbox_y_min_px": 142.0529327392578,
+          "bbox_x_max_px": 382.1561279296875,
+          "bbox_y_max_px": 228.20909118652344,
+          "depth_valid": true,
+          "depth_m": 7.167951583862305,
+          "depth_valid_ratio": 1,
+          "depth_std_m": 0.08301831781864166,
+          "position_camera_m": {
+            "x": 0.04814648942024349,
+            "y": -0.8444567207298693,
+            "z": 7.167951583862305
+          },
+          "surface_recovery_enabled": true,
+          "surface_measurement_supported": false,
+          "navigation_bbox_complete": false,
+          "navigation_overlap_count": 1,
+          "navigation_exclusive_depth_complete": true,
+          "navigation_exclusive_expected_pixel_count": 7657,
+          "navigation_exclusive_valid_pixel_count": 7657,
+          "navigation_exclusive_reason": "complete_native_exclusive"
+        },
+        {
+          "candidate_id": 1,
+          "acquisition_epoch": 0,
+          "class_name": "car",
+          "confidence": 0.6614423394203186,
+          "bbox_x_min_px": 221.58824157714844,
+          "bbox_y_min_px": 116.98055267333984,
+          "bbox_x_max_px": 368.6829833984375,
+          "bbox_y_max_px": 164.7412872314453,
+          "depth_valid": true,
+          "depth_m": 13.65388298034668,
+          "depth_valid_ratio": 1,
+          "depth_std_m": 4.072505474090576,
+          "position_camera_m": {
+            "x": -0.7289359005669287,
+            "y": -2.9064071882084748,
+            "z": 13.653883457183838
+          },
+          "surface_recovery_enabled": true,
+          "surface_measurement_supported": false,
+          "navigation_bbox_complete": false,
+          "navigation_overlap_count": 1,
+          "navigation_exclusive_depth_complete": true,
+          "navigation_exclusive_expected_pixel_count": 4574,
+          "navigation_exclusive_valid_pixel_count": 4574,
+          "navigation_exclusive_reason": "complete_native_exclusive"
+        }
+      ],
+      "navigation_overlaps": [
+        {
+          "candidate_a_id": 0,
+          "candidate_b_id": 1,
+          "bbox_a_px": [
+            264.1005554199219,
+            142.0529327392578,
+            382.1561279296875,
+            228.20909118652344
+          ],
+          "bbox_b_px": [
+            221.58824157714844,
+            116.98055267333984,
+            368.6829833984375,
+            164.7412872314453
+          ],
+          "u0": 264,
+          "v0": 142,
+          "width": 105,
+          "height": 23,
+          "expected_pixel_count": 2415,
+          "valid_pixel_count": 2415,
+          "rectangle_representable": true,
+          "depth_complete": true
+        }
+      ]
+    }
+  ],
+  "focused_track_snapshots": [
+    {
+      "idx": 66708,
+      "clock_ns": 31440000000,
+      "acquisition_s": 31.3,
+      "output_s": 31.3,
+      "projected": false,
+      "target_status": "tracking",
+      "associations": [
+        [
+          3,
+          1
+        ],
+        [
+          4,
+          0
+        ]
+      ],
+      "ambiguous_track_ids": [],
+      "ambiguous_detection_indices": [],
+      "merge_uncertainty_detection_indices": [],
+      "spawn_deferred_detection_indices": [],
+      "spawn_deferred_reasons": [],
+      "tracks": [
+        {
+          "track_id": 1,
+          "bbox_xyxy": [
+            242.60765075683594,
+            74.88249969482422,
+            328.57000732421875,
+            110.4989242553711
+          ],
+          "state": "lost",
+          "matched": false,
+          "position_world_m": [
+            26.963374809532343,
+            0.7899025914760343,
+            0.630275956854733
+          ],
+          "last_detection_s": 30.4,
+          "last_measurement_s": 30.4,
+          "candidate_id": 1,
+          "selected": false,
+          "ambiguous": false,
+          "rejected_measurements": 0,
+          "measurement_diagnostics_current_frame": false
+        },
+        {
+          "track_id": 2,
+          "bbox_xyxy": [
+            254.06768798828125,
+            91.3146743774414,
+            402.9308166503906,
+            141.27542114257812
+          ],
+          "state": "coasting",
+          "matched": false,
+          "position_world_m": [
+            20.988352066211934,
+            0.2725310065450846,
+            0.7382108401232492
+          ],
+          "last_detection_s": 30.8,
+          "last_measurement_s": 30.8,
+          "candidate_id": 1,
+          "selected": false,
+          "ambiguous": false,
+          "rejected_measurements": 0,
+          "measurement_diagnostics_current_frame": false
+        },
+        {
+          "track_id": 3,
+          "bbox_xyxy": [
+            265.173095703125,
+            154.35885620117188,
+            385.0557556152344,
+            227.30899047851562
+          ],
+          "state": "confirmed",
+          "matched": true,
+          "position_world_m": [
+            14.557944624139527,
+            0.12226767262958452,
+            0.517779614789669
+          ],
+          "last_detection_s": 31.3,
+          "last_measurement_s": 31.3,
+          "candidate_id": 1,
+          "selected": true,
+          "ambiguous": false,
+          "rejected_measurements": 0,
+          "measurement_diagnostics_current_frame": true,
+          "diag": {
+            "measurement_timestamp_s": 31.3,
+            "accepted": true,
+            "reason": "ACCEPTED",
+            "raw_measurement_m": [
+              14.560515661681801,
+              0.11775851678444921,
+              0.5350536568368947
+            ],
+            "prior_state": [
+              14.5566498795367,
+              0.12342864888282945,
+              0.5113848575900547,
+              0.47312799644285014,
+              0.0031495508526036007,
+              -0.13046255338236518
+            ],
+            "mahalanobis_squared": 0.010128257549628409,
+            "gate_threshold": 9.21,
+            "attempted_candidate_id": 1,
+            "attempted_bbox_xyxy": [
+              265.173095703125,
+              154.35885620117188,
+              385.0557556152344,
+              227.30899047851562
+            ],
+            "surface_measurement_supported": false,
+            "acquisition_epoch": 0
+          }
+        },
+        {
+          "track_id": 4,
+          "bbox_xyxy": [
+            247.0157928466797,
+            113.36292266845703,
+            381.5546875,
+            162.33596801757812
+          ],
+          "state": "confirmed",
+          "matched": true,
+          "position_world_m": [
+            16.092096345999824,
+            0.27678482985616165,
+            1.170739296914448
+          ],
+          "last_detection_s": 31.3,
+          "last_measurement_s": 31.3,
+          "candidate_id": 0,
+          "selected": false,
+          "ambiguous": false,
+          "rejected_measurements": 0,
+          "measurement_diagnostics_current_frame": true
+        }
+      ]
+    },
+    {
+      "idx": 66923,
+      "clock_ns": 31536000000,
+      "acquisition_s": 31.4,
+      "output_s": 31.4,
+      "projected": false,
+      "target_status": "tracking",
+      "associations": [
+        [
+          3,
+          0
+        ]
+      ],
+      "ambiguous_track_ids": [],
+      "ambiguous_detection_indices": [],
+      "merge_uncertainty_detection_indices": [],
+      "spawn_deferred_detection_indices": [
+        1
+      ],
+      "spawn_deferred_reasons": [
+        {
+          "detection_index": 1,
+          "reason": "overlap_birth_surface_support_unknown"
+        }
+      ],
+      "tracks": [
+        {
+          "track_id": 1,
+          "bbox_xyxy": [
+            242.60765075683594,
+            74.88249969482422,
+            328.57000732421875,
+            110.4989242553711
+          ],
+          "state": "lost",
+          "matched": false,
+          "position_world_m": [
+            26.980510464428388,
+            0.7261634161213926,
+            0.6339620137316907
+          ],
+          "last_detection_s": 30.4,
+          "last_measurement_s": 30.4,
+          "candidate_id": 1,
+          "selected": false,
+          "ambiguous": false,
+          "rejected_measurements": 0,
+          "measurement_diagnostics_current_frame": false
+        },
+        {
+          "track_id": 2,
+          "bbox_xyxy": [
+            254.06768798828125,
+            91.3146743774414,
+            402.9308166503906,
+            141.27542114257812
+          ],
+          "state": "coasting",
+          "matched": false,
+          "position_world_m": [
+            21.028724549359318,
+            0.3645632773341732,
+            0.7469469661387073
+          ],
+          "last_detection_s": 30.8,
+          "last_measurement_s": 30.8,
+          "candidate_id": 1,
+          "selected": false,
+          "ambiguous": false,
+          "rejected_measurements": 0,
+          "measurement_diagnostics_current_frame": false
+        },
+        {
+          "track_id": 3,
+          "bbox_xyxy": [
+            265.3984680175781,
+            148.7821044921875,
+            385.246337890625,
+            219.92086791992188
+          ],
+          "state": "confirmed",
+          "matched": true,
+          "position_world_m": [
+            14.604557869218572,
+            0.12287031697239005,
+            0.508797079086306
+          ],
+          "last_detection_s": 31.4,
+          "last_measurement_s": 31.4,
+          "candidate_id": 0,
+          "selected": true,
+          "ambiguous": false,
+          "rejected_measurements": 0,
+          "measurement_diagnostics_current_frame": true,
+          "diag": {
+            "measurement_timestamp_s": 31.4,
+            "accepted": true,
+            "reason": "ACCEPTED",
+            "raw_measurement_m": [
+              14.60265040627997,
+              0.12454761290827998,
+              0.5173786924200321
+            ],
+            "prior_state": [
+              14.605515464415536,
+              0.12246553560348558,
+              0.5056914844003293,
+              0.47570840276010207,
+              0.0019786297390106252,
+              -0.12088130389340046
+            ],
+            "mahalanobis_squared": 0.0026654853074557527,
+            "gate_threshold": 9.21,
+            "attempted_candidate_id": 0,
+            "attempted_bbox_xyxy": [
+              265.3984680175781,
+              148.7821044921875,
+              385.246337890625,
+              219.92086791992188
+            ],
+            "surface_measurement_supported": true,
+            "acquisition_epoch": 0
+          }
+        },
+        {
+          "track_id": 4,
+          "bbox_xyxy": [
+            247.0157928466797,
+            113.36292266845703,
+            381.5546875,
+            162.33596801757812
+          ],
+          "state": "coasting",
+          "matched": false,
+          "position_world_m": [
+            15.88950062908126,
+            0.3284351093931341,
+            1.1939151241967458
+          ],
+          "last_detection_s": 31.3,
+          "last_measurement_s": 31.3,
+          "candidate_id": 0,
+          "selected": false,
+          "ambiguous": false,
+          "rejected_measurements": 0,
+          "measurement_diagnostics_current_frame": false
+        }
+      ]
+    },
+    {
+      "idx": 67145,
+      "clock_ns": 31636000000,
+      "acquisition_s": 31.5,
+      "output_s": 31.5,
+      "projected": false,
+      "target_status": "ambiguous",
+      "associations": [
+        [
+          2,
+          1
+        ]
+      ],
+      "ambiguous_track_ids": [
+        3
+      ],
+      "ambiguous_detection_indices": [
+        0,
+        2
+      ],
+      "merge_uncertainty_detection_indices": [],
+      "spawn_deferred_detection_indices": [],
+      "spawn_deferred_reasons": [],
+      "tracks": [
+        {
+          "track_id": 1,
+          "bbox_xyxy": [
+            242.60765075683594,
+            74.88249969482422,
+            328.57000732421875,
+            110.4989242553711
+          ],
+          "state": "lost",
+          "matched": false,
+          "position_world_m": [
+            26.997646119324433,
+            0.6624242407667487,
+            0.6376480706086486
+          ],
+          "last_detection_s": 30.4,
+          "last_measurement_s": 30.4,
+          "candidate_id": 1,
+          "selected": false,
+          "ambiguous": false,
+          "rejected_measurements": 0,
+          "measurement_diagnostics_current_frame": false
+        },
+        {
+          "track_id": 2,
+          "bbox_xyxy": [
+            241.50390625,
+            93.3975601196289,
+            381.00653076171875,
+            147.2239990234375
+          ],
+          "state": "confirmed",
+          "matched": true,
+          "position_world_m": [
+            21.136891255950424,
+            0.44092147369817924,
+            0.7381784586375012
+          ],
+          "last_detection_s": 31.5,
+          "last_measurement_s": 31.5,
+          "candidate_id": 1,
+          "selected": false,
+          "ambiguous": false,
+          "rejected_measurements": 0,
+          "measurement_diagnostics_current_frame": true
+        },
+        {
+          "track_id": 3,
+          "bbox_xyxy": [
+            265.3984680175781,
+            148.7821044921875,
+            385.246337890625,
+            219.92086791992188
+          ],
+          "state": "coasting",
+          "matched": false,
+          "position_world_m": [
+            14.651934458456164,
+            0.12311093816267513,
+            0.49718142450669
+          ],
+          "last_detection_s": 31.4,
+          "last_measurement_s": 31.4,
+          "candidate_id": 0,
+          "selected": true,
+          "ambiguous": true,
+          "rejected_measurements": 0,
+          "measurement_diagnostics_current_frame": false,
+          "diag": {
+            "measurement_timestamp_s": 31.4,
+            "accepted": true,
+            "reason": "ACCEPTED",
+            "raw_measurement_m": [
+              14.60265040627997,
+              0.12454761290827998,
+              0.5173786924200321
+            ],
+            "prior_state": [
+              14.605515464415536,
+              0.12246553560348558,
+              0.5056914844003293,
+              0.47570840276010207,
+              0.0019786297390106252,
+              -0.12088130389340046
+            ],
+            "mahalanobis_squared": 0.0026654853074557527,
+            "gate_threshold": 9.21,
+            "attempted_candidate_id": 0,
+            "attempted_bbox_xyxy": [
+              265.3984680175781,
+              148.7821044921875,
+              385.246337890625,
+              219.92086791992188
+            ],
+            "surface_measurement_supported": true,
+            "acquisition_epoch": 0
+          }
+        },
+        {
+          "track_id": 4,
+          "bbox_xyxy": [
+            247.0157928466797,
+            113.36292266845703,
+            381.5546875,
+            162.33596801757812
+          ],
+          "state": "coasting",
+          "matched": false,
+          "position_world_m": [
+            15.686904912162689,
+            0.38008538893010835,
+            1.2170909514790447
+          ],
+          "last_detection_s": 31.3,
+          "last_measurement_s": 31.3,
+          "candidate_id": 0,
+          "selected": false,
+          "ambiguous": false,
+          "rejected_measurements": 0,
+          "measurement_diagnostics_current_frame": false
+        }
+      ]
+    },
+    {
+      "idx": 67378,
+      "clock_ns": 31740000000,
+      "acquisition_s": 31.6,
+      "output_s": 31.6,
+      "projected": false,
+      "target_status": "reacquired",
+      "associations": [
+        [
+          3,
+          1
+        ]
+      ],
+      "ambiguous_track_ids": [],
+      "ambiguous_detection_indices": [],
+      "merge_uncertainty_detection_indices": [],
+      "spawn_deferred_detection_indices": [
+        0
+      ],
+      "spawn_deferred_reasons": [
+        {
+          "detection_index": 0,
+          "reason": "overlap_birth_surface_support_unknown"
+        }
+      ],
+      "tracks": [
+        {
+          "track_id": 1,
+          "bbox_xyxy": [
+            242.60765075683594,
+            74.88249969482422,
+            328.57000732421875,
+            110.4989242553711
+          ],
+          "state": "lost",
+          "matched": false,
+          "position_world_m": [
+            27.014781774220477,
+            0.5986850654121048,
+            0.6413341274856065
+          ],
+          "last_detection_s": 30.4,
+          "last_measurement_s": 30.4,
+          "candidate_id": 1,
+          "selected": false,
+          "ambiguous": false,
+          "rejected_measurements": 0,
+          "measurement_diagnostics_current_frame": false
+        },
+        {
+          "track_id": 2,
+          "bbox_xyxy": [
+            241.50390625,
+            93.3975601196289,
+            381.00653076171875,
+            147.2239990234375
+          ],
+          "state": "coasting",
+          "matched": false,
+          "position_world_m": [
+            21.185246519975674,
+            0.531971876886968,
+            0.7451921296050193
+          ],
+          "last_detection_s": 31.5,
+          "last_measurement_s": 31.5,
+          "candidate_id": 1,
+          "selected": false,
+          "ambiguous": false,
+          "rejected_measurements": 0,
+          "measurement_diagnostics_current_frame": false
+        },
+        {
+          "track_id": 3,
+          "bbox_xyxy": [
+            264.7301330566406,
+            104.78875732421875,
+            385.0634765625,
+            204.28533935546875
+          ],
+          "state": "confirmed",
+          "matched": true,
+          "position_world_m": [
+            14.728150726583095,
+            0.12347440603578186,
+            0.5545817113873325
+          ],
+          "last_detection_s": 31.6,
+          "last_measurement_s": 31.6,
+          "candidate_id": 1,
+          "selected": true,
+          "ambiguous": false,
+          "rejected_measurements": 0,
+          "measurement_diagnostics_current_frame": true,
+          "diag": {
+            "measurement_timestamp_s": 31.6,
+            "accepted": true,
+            "reason": "ACCEPTED",
+            "raw_measurement_m": [
+              14.769641832349153,
+              0.12581357959280254,
+              0.7050386943180915
+            ],
+            "prior_state": [
+              14.699311047693756,
+              0.1233515593529602,
+              0.485565769927074,
+              0.47376589237591293,
+              0.0024062119028507296,
+              -0.11615654579615808
+            ],
+            "mahalanobis_squared": 0.8788865309085314,
+            "gate_threshold": 9.21,
+            "attempted_candidate_id": 1,
+            "attempted_bbox_xyxy": [
+              264.7301330566406,
+              104.78875732421875,
+              385.0634765625,
+              204.28533935546875
+            ],
+            "surface_measurement_supported": false,
+            "acquisition_epoch": 0
+          }
+        },
+        {
+          "track_id": 4,
+          "bbox_xyxy": [
+            247.0157928466797,
+            113.36292266845703,
+            381.5546875,
+            162.33596801757812
+          ],
+          "state": "coasting",
+          "matched": false,
+          "position_world_m": [
+            15.484309195244117,
+            0.4317356684670826,
+            1.2402667787613435
+          ],
+          "last_detection_s": 31.3,
+          "last_measurement_s": 31.3,
+          "candidate_id": 0,
+          "selected": false,
+          "ambiguous": false,
+          "rejected_measurements": 0,
+          "measurement_diagnostics_current_frame": false
+        }
+      ]
+    },
+    {
+      "idx": 67589,
+      "clock_ns": 31836000000,
+      "acquisition_s": 31.7,
+      "output_s": 31.7,
+      "projected": false,
+      "target_status": "ambiguous",
+      "associations": [
+        [
+          2,
+          0
+        ]
+      ],
+      "ambiguous_track_ids": [
+        3,
+        4
+      ],
+      "ambiguous_detection_indices": [
+        1
+      ],
+      "merge_uncertainty_detection_indices": [],
+      "spawn_deferred_detection_indices": [],
+      "spawn_deferred_reasons": [],
+      "tracks": [
+        {
+          "track_id": 1,
+          "bbox_xyxy": [
+            242.60765075683594,
+            74.88249969482422,
+            328.57000732421875,
+            110.4989242553711
+          ],
+          "state": "lost",
+          "matched": false,
+          "position_world_m": [
+            27.031917429116522,
+            0.5349458900574631,
+            0.6450201843625641
+          ],
+          "last_detection_s": 30.4,
+          "last_measurement_s": 30.4,
+          "candidate_id": 1,
+          "selected": false,
+          "ambiguous": false,
+          "rejected_measurements": 0,
+          "measurement_diagnostics_current_frame": false
+        },
+        {
+          "track_id": 2,
+          "bbox_xyxy": [
+            234.80926513671875,
+            75.42106628417969,
+            380.9428405761719,
+            132.33355712890625
+          ],
+          "state": "confirmed",
+          "matched": true,
+          "position_world_m": [
+            21.499544272392228,
+            0.6025956610912503,
+            0.7379435814492498
+          ],
+          "last_detection_s": 31.7,
+          "last_measurement_s": 31.7,
+          "candidate_id": 0,
+          "selected": false,
+          "ambiguous": false,
+          "rejected_measurements": 0,
+          "measurement_diagnostics_current_frame": true
+        },
+        {
+          "track_id": 3,
+          "bbox_xyxy": [
+            264.7301330566406,
+            104.78875732421875,
+            385.0634765625,
+            204.28533935546875
+          ],
+          "state": "coasting",
+          "matched": false,
+          "position_world_m": [
+            14.781002857322452,
+            0.12366683496005683,
+            0.5532184819365036
+          ],
+          "last_detection_s": 31.6,
+          "last_measurement_s": 31.6,
+          "candidate_id": 1,
+          "selected": true,
+          "ambiguous": true,
+          "rejected_measurements": 0,
+          "measurement_diagnostics_current_frame": false,
+          "diag": {
+            "measurement_timestamp_s": 31.6,
+            "accepted": true,
+            "reason": "ACCEPTED",
+            "raw_measurement_m": [
+              14.769641832349153,
+              0.12581357959280254,
+              0.7050386943180915
+            ],
+            "prior_state": [
+              14.699311047693756,
+              0.1233515593529602,
+              0.485565769927074,
+              0.47376589237591293,
+              0.0024062119028507296,
+              -0.11615654579615808
+            ],
+            "mahalanobis_squared": 0.8788865309085314,
+            "gate_threshold": 9.21,
+            "attempted_candidate_id": 1,
+            "attempted_bbox_xyxy": [
+              264.7301330566406,
+              104.78875732421875,
+              385.0634765625,
+              204.28533935546875
+            ],
+            "surface_measurement_supported": false,
+            "acquisition_epoch": 0
+          }
+        },
+        {
+          "track_id": 4,
+          "bbox_xyxy": [
+            247.0157928466797,
+            113.36292266845703,
+            381.5546875,
+            162.33596801757812
+          ],
+          "state": "coasting",
+          "matched": false,
+          "position_world_m": [
+            15.281713478325553,
+            0.48338594800405504,
+            1.2634426060436414
+          ],
+          "last_detection_s": 31.3,
+          "last_measurement_s": 31.3,
+          "candidate_id": 0,
+          "selected": false,
+          "ambiguous": true,
+          "rejected_measurements": 0,
+          "measurement_diagnostics_current_frame": false
+        }
+      ]
+    },
+    {
+      "idx": 68699,
+      "clock_ns": 32336000000,
+      "acquisition_s": 32.2,
+      "output_s": 32.2,
+      "projected": false,
+      "target_status": "ambiguous",
+      "associations": [
+        [
+          2,
+          1
+        ]
+      ],
+      "ambiguous_track_ids": [
+        3,
+        4
+      ],
+      "ambiguous_detection_indices": [
+        0
+      ],
+      "merge_uncertainty_detection_indices": [],
+      "spawn_deferred_detection_indices": [],
+      "spawn_deferred_reasons": [],
+      "tracks": [
+        {
+          "track_id": 1,
+          "bbox_xyxy": [
+            242.60765075683594,
+            74.88249969482422,
+            328.57000732421875,
+            110.4989242553711
+          ],
+          "state": "lost",
+          "matched": false,
+          "position_world_m": [
+            27.117595703596745,
+            0.21625001328424553,
+            0.6634504687473534
+          ],
+          "last_detection_s": 30.4,
+          "last_measurement_s": 30.4,
+          "candidate_id": 1,
+          "selected": false,
+          "ambiguous": false,
+          "rejected_measurements": 0,
+          "measurement_diagnostics_current_frame": false
+        },
+        {
+          "track_id": 2,
+          "bbox_xyxy": [
+            221.58824157714844,
+            116.98055267333984,
+            368.6829833984375,
+            164.7412872314453
+          ],
+          "state": "confirmed",
+          "matched": true,
+          "position_world_m": [
+            22.011087659998335,
+            0.9458966198516718,
+            0.6669331223313292
+          ],
+          "last_detection_s": 32.2,
+          "last_measurement_s": 32.2,
+          "candidate_id": 1,
+          "selected": false,
+          "ambiguous": false,
+          "rejected_measurements": 0,
+          "measurement_diagnostics_current_frame": true
+        },
+        {
+          "track_id": 3,
+          "bbox_xyxy": [
+            264.7301330566406,
+            104.78875732421875,
+            385.0634765625,
+            204.28533935546875
+          ],
+          "state": "coasting",
+          "matched": false,
+          "position_world_m": [
+            15.045263511019243,
+            0.12462897958143174,
+            0.5464023346823591
+          ],
+          "last_detection_s": 31.6,
+          "last_measurement_s": 31.6,
+          "candidate_id": 1,
+          "selected": true,
+          "ambiguous": true,
+          "rejected_measurements": 0,
+          "measurement_diagnostics_current_frame": false,
+          "diag": {
+            "measurement_timestamp_s": 31.6,
+            "accepted": true,
+            "reason": "ACCEPTED",
+            "raw_measurement_m": [
+              14.769641832349153,
+              0.12581357959280254,
+              0.7050386943180915
+            ],
+            "prior_state": [
+              14.699311047693756,
+              0.1233515593529602,
+              0.485565769927074,
+              0.47376589237591293,
+              0.0024062119028507296,
+              -0.11615654579615808
+            ],
+            "mahalanobis_squared": 0.8788865309085314,
+            "gate_threshold": 9.21,
+            "attempted_candidate_id": 1,
+            "attempted_bbox_xyxy": [
+              264.7301330566406,
+              104.78875732421875,
+              385.0634765625,
+              204.28533935546875
+            ],
+            "surface_measurement_supported": false,
+            "acquisition_epoch": 0
+          }
+        },
+        {
+          "track_id": 4,
+          "bbox_xyxy": [
+            247.0157928466797,
+            113.36292266845703,
+            381.5546875,
+            162.33596801757812
+          ],
+          "state": "lost",
+          "matched": false,
+          "position_world_m": [
+            14.268734893732704,
+            0.7416373456889247,
+            1.3793217424551347
+          ],
+          "last_detection_s": 31.3,
+          "last_measurement_s": 31.3,
+          "candidate_id": 0,
+          "selected": false,
+          "ambiguous": true,
+          "rejected_measurements": 0,
+          "measurement_diagnostics_current_frame": false
+        }
+      ]
+    },
+    {
+      "idx": 68756,
+      "clock_ns": 32360000000,
+      "acquisition_s": 32.2,
+      "output_s": 32.36,
+      "projected": true,
+      "target_status": "lost",
+      "associations": [],
+      "ambiguous_track_ids": [
+        3,
+        4
+      ],
+      "ambiguous_detection_indices": [
+        0
+      ],
+      "merge_uncertainty_detection_indices": [],
+      "spawn_deferred_detection_indices": [],
+      "spawn_deferred_reasons": [],
+      "tracks": [
+        {
+          "track_id": 1,
+          "bbox_xyxy": [
+            242.60765075683594,
+            74.88249969482422,
+            328.57000732421875,
+            110.4989242553711
+          ],
+          "state": "lost",
+          "matched": false,
+          "position_world_m": [
+            27.145012751430414,
+            0.11426733271681884,
+            0.6693481597504857
+          ],
+          "last_detection_s": 30.4,
+          "last_measurement_s": 30.4,
+          "candidate_id": 1,
+          "selected": false,
+          "ambiguous": false,
+          "rejected_measurements": 0,
+          "measurement_diagnostics_current_frame": false
+        },
+        {
+          "track_id": 2,
+          "bbox_xyxy": [
+            221.58824157714844,
+            116.98055267333984,
+            368.6829833984375,
+            164.7412872314453
+          ],
+          "state": "coasting",
+          "matched": false,
+          "position_world_m": [
+            22.147876916172134,
+            1.0810207970746206,
+            0.6596772161973182
+          ],
+          "last_detection_s": 32.2,
+          "last_measurement_s": 32.2,
+          "candidate_id": 1,
+          "selected": false,
+          "ambiguous": false,
+          "rejected_measurements": 0,
+          "measurement_diagnostics_current_frame": false
+        },
+        {
+          "track_id": 3,
+          "bbox_xyxy": [
+            264.7301330566406,
+            104.78875732421875,
+            385.0634765625,
+            204.28533935546875
+          ],
+          "state": "lost",
+          "matched": false,
+          "position_world_m": [
+            15.129826920202214,
+            0.1249368658602717,
+            0.5442211675610329
+          ],
+          "last_detection_s": 31.6,
+          "last_measurement_s": 31.6,
+          "candidate_id": 1,
+          "selected": true,
+          "ambiguous": true,
+          "rejected_measurements": 0,
+          "measurement_diagnostics_current_frame": false,
+          "diag": {
+            "measurement_timestamp_s": 31.6,
+            "accepted": true,
+            "reason": "ACCEPTED",
+            "raw_measurement_m": [
+              14.769641832349153,
+              0.12581357959280254,
+              0.7050386943180915
+            ],
+            "prior_state": [
+              14.699311047693756,
+              0.1233515593529602,
+              0.485565769927074,
+              0.47376589237591293,
+              0.0024062119028507296,
+              -0.11615654579615808
+            ],
+            "mahalanobis_squared": 0.8788865309085314,
+            "gate_threshold": 9.21,
+            "attempted_candidate_id": 1,
+            "attempted_bbox_xyxy": [
+              264.7301330566406,
+              104.78875732421875,
+              385.0634765625,
+              204.28533935546875
+            ],
+            "surface_measurement_supported": false,
+            "acquisition_epoch": 0
+          }
+        },
+        {
+          "track_id": 4,
+          "bbox_xyxy": [
+            247.0157928466797,
+            113.36292266845703,
+            381.5546875,
+            162.33596801757812
+          ],
+          "state": "lost",
+          "matched": false,
+          "position_world_m": [
+            13.944581746663001,
+            0.8242777929480806,
+            1.4164030661068117
+          ],
+          "last_detection_s": 31.3,
+          "last_measurement_s": 31.3,
+          "candidate_id": 0,
+          "selected": false,
+          "ambiguous": true,
+          "rejected_measurements": 0,
+          "measurement_diagnostics_current_frame": false
+        }
+      ]
+    }
+  ],
+  "focused_navigation_diagnostics": [
+    {
+      "idx": 66707,
+      "clock_ns": 31440000000,
+      "acquisition_s": 31.3,
+      "candidate_id": 1,
+      "track_id": 3,
+      "reference_valid": false,
+      "reference_reason": "exclusive_visibility_unexplained_foreground",
+      "measurement_processing_s": 31.436000000000003,
+      "fusion_accepted": false,
+      "fusion_reason": "invalid_navigation_reference",
+      "output_s": 31.3,
+      "output_publication_s": 31.436000000000003,
+      "output_surface_status": "tracking",
+      "output_track_id": 3,
+      "output_measurement_source_s": 31.2,
+      "output_state": 2,
+      "state_reason": "prediction",
+      "measurement_age_s": 0.10000000000000142,
+      "exclusive_navigation_scalar": {
+        "method": "native_exclusive_single_face_center_v1",
+        "scope": "CONDITIONAL_NOMINAL_SINGLE_FACE_ENGINEERING_MODEL_NOT_PHYSICAL_IDENTITY",
+        "reason": "exclusive_identity_and_structure_accepted",
+        "expected_pixels": 7640,
+        "valid_pixels": 7640,
+        "native_reason": "complete_native_exclusive"
+      },
+      "exclusive_navigation_pairs": [
+        {
+          "other_candidate_id": 0,
+          "unique_accepted": true
+        }
+      ]
+    },
+    {
+      "idx": 66922,
+      "clock_ns": 31536000000,
+      "acquisition_s": 31.4,
+      "candidate_id": 0,
+      "track_id": 3,
+      "reference_valid": false,
+      "reference_reason": "exclusive_pair_not_uniquely_accepted",
+      "measurement_processing_s": 31.536,
+      "fusion_accepted": false,
+      "fusion_reason": "invalid_navigation_reference",
+      "output_s": 31.4,
+      "output_publication_s": 31.536,
+      "output_surface_status": "tracking",
+      "output_track_id": 3,
+      "output_measurement_source_s": 31.2,
+      "output_state": 2,
+      "state_reason": "prediction",
+      "measurement_age_s": 0.1999999999999993,
+      "exclusive_navigation_scalar": {
+        "method": "native_exclusive_single_face_center_v1",
+        "scope": "CONDITIONAL_NOMINAL_SINGLE_FACE_ENGINEERING_MODEL_NOT_PHYSICAL_IDENTITY",
+        "reason": "exclusive_pair_not_uniquely_accepted",
+        "expected_pixels": 7616,
+        "valid_pixels": 7616,
+        "native_reason": "complete_native_exclusive"
+      },
+      "exclusive_navigation_pairs": []
+    },
+    {
+      "idx": 67144,
+      "clock_ns": 31636000000,
+      "acquisition_s": 31.5,
+      "track_id": 3,
+      "reference_valid": false,
+      "reference_reason": "no_accepted_selected_measurement",
+      "measurement_processing_s": 31.636000000000003,
+      "fusion_accepted": false,
+      "fusion_reason": "invalid_navigation_reference",
+      "output_s": 31.5,
+      "output_publication_s": 31.636000000000003,
+      "output_surface_status": "ambiguous",
+      "output_track_id": 3,
+      "output_measurement_source_s": 31.2,
+      "output_state": 4,
+      "state_reason": "surface_ambiguous",
+      "measurement_age_s": 0.3000000000000007,
+      "exclusive_navigation_scalar": {},
+      "exclusive_navigation_pairs": null
+    },
+    {
+      "idx": 67377,
+      "clock_ns": 31740000000,
+      "acquisition_s": 31.6,
+      "candidate_id": 1,
+      "track_id": 3,
+      "reference_valid": false,
+      "reference_reason": "exclusive_pair_not_uniquely_accepted",
+      "measurement_processing_s": 31.740000000000002,
+      "fusion_accepted": false,
+      "fusion_reason": "invalid_navigation_reference",
+      "output_s": 31.6,
+      "output_publication_s": 31.740000000000002,
+      "output_surface_status": "reacquired",
+      "output_track_id": 3,
+      "output_measurement_source_s": 31.2,
+      "output_state": 2,
+      "state_reason": "prediction",
+      "measurement_age_s": 0.40000000000000213,
+      "exclusive_navigation_scalar": {
+        "method": "native_exclusive_single_face_center_v1",
+        "scope": "CONDITIONAL_NOMINAL_SINGLE_FACE_ENGINEERING_MODEL_NOT_PHYSICAL_IDENTITY",
+        "reason": "exclusive_pair_not_uniquely_accepted",
+        "expected_pixels": 8065,
+        "valid_pixels": 8065,
+        "native_reason": "complete_native_exclusive"
+      },
+      "exclusive_navigation_pairs": []
+    },
+    {
+      "idx": 67588,
+      "clock_ns": 31836000000,
+      "acquisition_s": 31.7,
+      "track_id": 3,
+      "reference_valid": false,
+      "reference_reason": "no_accepted_selected_measurement",
+      "measurement_processing_s": 31.836000000000002,
+      "fusion_accepted": false,
+      "fusion_reason": "invalid_navigation_reference",
+      "output_s": 31.7,
+      "output_publication_s": 31.836000000000002,
+      "output_surface_status": "ambiguous",
+      "output_track_id": 3,
+      "output_measurement_source_s": 31.2,
+      "output_state": 4,
+      "state_reason": "surface_ambiguous",
+      "measurement_age_s": 0.5,
+      "exclusive_navigation_scalar": {},
+      "exclusive_navigation_pairs": null
+    },
+    {
+      "idx": 68698,
+      "clock_ns": 32336000000,
+      "acquisition_s": 32.2,
+      "track_id": 3,
+      "reference_valid": false,
+      "reference_reason": "no_accepted_selected_measurement",
+      "measurement_processing_s": 32.336,
+      "fusion_accepted": false,
+      "fusion_reason": "invalid_navigation_reference",
+      "output_s": 32.2,
+      "output_publication_s": 32.336,
+      "output_surface_status": "ambiguous",
+      "output_track_id": 3,
+      "output_measurement_source_s": 31.2,
+      "output_state": 4,
+      "state_reason": "surface_ambiguous",
+      "measurement_age_s": 1.0000000000000036,
+      "exclusive_navigation_scalar": {},
+      "exclusive_navigation_pairs": null
+    }
+  ],
+  "surface_transition_chain": [
+    {
+      "idx": 66709,
+      "clock_ns": 31440000000,
+      "timing": {
+        "source_stamp_ns": 31440000000
+      },
+      "selection": [
+        "recorded_clock_proxy",
+        "source_stamp_ns"
+      ],
+      "state": 2,
+      "track_id": 3,
+      "target_visible": false,
+      "prediction_age_s": 0.14000000059604645,
+      "rejected_measurements": 0,
+      "position_m": {
+        "x": 14.624543800525942,
+        "y": 0.122544680793046,
+        "z": 0.500856232244593
+      },
+      "velocity_mps": {
+        "x": 0.47570840276010207,
+        "y": 0.0019786297390106252,
+        "z": -0.12088130389340046
+      }
+    },
+    {
+      "idx": 66920,
+      "clock_ns": 31536000000,
+      "timing": {
+        "source_stamp_ns": 31400000000
+      },
+      "selection": [
+        "recorded_clock_proxy"
+      ],
+      "state": 1,
+      "track_id": 3,
+      "target_visible": true,
+      "prediction_age_s": 0,
+      "rejected_measurements": 0,
+      "position_m": {
+        "x": 14.604557869218572,
+        "y": 0.12287031697239005,
+        "z": 0.508797079086306
+      },
+      "velocity_mps": {
+        "x": 0.47376589237591293,
+        "y": 0.0024062119028507296,
+        "z": -0.11615654579615808
+      }
+    },
+    {
+      "idx": 66931,
+      "clock_ns": 31540000000,
+      "timing": {
+        "source_stamp_ns": 31540000000
+      },
+      "selection": [
+        "recorded_clock_proxy",
+        "source_stamp_ns"
+      ],
+      "state": 2,
+      "track_id": 3,
+      "target_visible": false,
+      "prediction_age_s": 0.14000000059604645,
+      "rejected_measurements": 0,
+      "position_m": {
+        "x": 14.670885094151203,
+        "y": 0.12320718663878916,
+        "z": 0.4925351626748434
+      },
+      "velocity_mps": {
+        "x": 0.47376589237591293,
+        "y": 0.0024062119028507296,
+        "z": -0.11615654579615808
+      }
+    },
+    {
+      "idx": 67142,
+      "clock_ns": 31636000000,
+      "timing": {
+        "source_stamp_ns": 31500000000
+      },
+      "selection": [
+        "recorded_clock_proxy"
+      ],
+      "state": 4,
+      "track_id": 3,
+      "target_visible": false,
+      "prediction_age_s": 0.10000000149011612,
+      "rejected_measurements": 0,
+      "position_m": {
+        "x": 14.651934458456164,
+        "y": 0.12311093816267513,
+        "z": 0.49718142450669
+      },
+      "velocity_mps": {
+        "x": 0.47376589237591293,
+        "y": 0.0024062119028507296,
+        "z": -0.11615654579615808
+      }
+    },
+    {
+      "idx": 67375,
+      "clock_ns": 31740000000,
+      "timing": {
+        "source_stamp_ns": 31600000000
+      },
+      "selection": [
+        "recorded_clock_proxy"
+      ],
+      "state": 1,
+      "track_id": 3,
+      "target_visible": true,
+      "prediction_age_s": 0,
+      "rejected_measurements": 0,
+      "position_m": {
+        "x": 14.728150726583095,
+        "y": 0.12347440603578186,
+        "z": 0.5545817113873325
+      },
+      "velocity_mps": {
+        "x": 0.5285213073935762,
+        "y": 0.0019242892427498125,
+        "z": -0.013632294508288859
+      }
+    },
+    {
+      "idx": 67420,
+      "clock_ns": 31760000000,
+      "timing": {
+        "source_stamp_ns": 31760000000
+      },
+      "selection": [
+        "recorded_clock_proxy",
+        "source_stamp_ns"
+      ],
+      "state": 2,
+      "track_id": 3,
+      "target_visible": false,
+      "prediction_age_s": 0.1599999964237213,
+      "rejected_measurements": 0,
+      "position_m": {
+        "x": 14.812714135766068,
+        "y": 0.12378229231462183,
+        "z": 0.5524005442660063
+      },
+      "velocity_mps": {
+        "x": 0.5285213073935762,
+        "y": 0.0019242892427498125,
+        "z": -0.013632294508288859
+      }
+    },
+    {
+      "idx": 67586,
+      "clock_ns": 31836000000,
+      "timing": {
+        "source_stamp_ns": 31700000000
+      },
+      "selection": [
+        "recorded_clock_proxy"
+      ],
+      "state": 4,
+      "track_id": 3,
+      "target_visible": false,
+      "prediction_age_s": 0.10000000149011612,
+      "rejected_measurements": 0,
+      "position_m": {
+        "x": 14.781002857322452,
+        "y": 0.12366683496005683,
+        "z": 0.5532184819365036
+      },
+      "velocity_mps": {
+        "x": 0.5285213073935762,
+        "y": 0.0019242892427498125,
+        "z": -0.013632294508288859
+      }
+    },
+    {
+      "idx": 68753,
+      "clock_ns": 32360000000,
+      "timing": {
+        "source_stamp_ns": 32360000000
+      },
+      "selection": [
+        "recorded_clock_proxy",
+        "source_stamp_ns"
+      ],
+      "state": 3,
+      "track_id": 3,
+      "target_visible": false,
+      "prediction_age_s": 0.7599999904632568,
+      "rejected_measurements": 0,
+      "position_m": {
+        "x": 15.129826920202214,
+        "y": 0.1249368658602717,
+        "z": 0.5442211675610329
+      },
+      "velocity_mps": {
+        "x": 0.5285213073935762,
+        "y": 0.0019242892427498125,
+        "z": -0.013632294508288859
+      }
+    }
+  ],
+  "control_protection_transitions": [
+    {
+      "idx": 67175,
+      "clock_ns": 31652000000,
+      "timing": {
+        "source_stamp_ns": 31652000000
+      },
+      "selection": [
+        "recorded_clock_proxy",
+        "source_stamp_ns"
+      ],
+      "topic": "/tracking/command",
+      "mode": 4,
+      "valid": false,
+      "track_id": 3
+    },
+    {
+      "idx": 67176,
+      "clock_ns": 31652000000,
+      "timing": {
+        "source_stamp_ns": 31652000000
+      },
+      "selection": [
+        "recorded_clock_proxy",
+        "source_stamp_ns"
+      ],
+      "topic": "/tracking/status",
+      "track_id": 3,
+      "lifecycle": 4,
+      "reason": "target_ambiguous",
+      "time_since_measurement_s": 0.4519999921321869
+    },
+    {
+      "idx": 67618,
+      "clock_ns": 31852000000,
+      "timing": {
+        "source_stamp_ns": 31852000000
+      },
+      "selection": [
+        "recorded_clock_proxy",
+        "source_stamp_ns"
+      ],
+      "topic": "/tracking/command",
+      "mode": 4,
+      "valid": false,
+      "track_id": 3
+    },
+    {
+      "idx": 67624,
+      "clock_ns": 31852000000,
+      "timing": {
+        "source_stamp_ns": 31852000000
+      },
+      "selection": [
+        "recorded_clock_proxy",
+        "source_stamp_ns"
+      ],
+      "topic": "/tracking/status",
+      "track_id": 3,
+      "lifecycle": 4,
+      "reason": "target_ambiguous",
+      "time_since_measurement_s": 0.6520000100135803
+    },
+    {
+      "idx": 68838,
+      "clock_ns": 32400000000,
+      "timing": {
+        "source_stamp_ns": 32400000000
+      },
+      "selection": [
+        "recorded_clock_proxy",
+        "source_stamp_ns"
+      ],
+      "topic": "/tracking/status",
+      "track_id": 3,
+      "lifecycle": 4,
+      "reason": "invalid_state",
+      "time_since_measurement_s": 0.019999999552965164
+    }
+  ],
+  "derived_duplicate_geometry": {
+    "source_record_index": 67138,
+    "source_stamp_ns": 31500000000,
+    "candidates": [
+      0,
+      2
+    ],
+    "bbox_iou": 0.6559045459630202,
+    "smaller_bbox_covered_fraction": 1,
+    "depth_difference_m": 0.010096549987792969,
+    "camera_position_distance_m": 0.23973166469645482,
+    "scope": "DERIVED_GEOMETRY_NOT_PHYSICAL_DUPLICATE_CERTIFICATE"
+  },
+  "known": [
+    "Track IDs change from [1,2,3] at record 65181/source30.6 to [1,2,3,4] at65362/source30.7; new track4 is INITIALIZED accepted with recovery_enabled true and supported false.",
+    "30.7 new candidate0 has overlap_count0 and depth9.724; nearby far-shaped boxes carry depth13.052 at30.6 and13.026 at30.8. This establishes a measurement discontinuity, not physical duplicate identity.",
+    "Track4 receives fresh accepted updates at31.2 and31.3, both recovery unsupported; last accepted acquisition then stays31.3.",
+    "At31.5 track3 competes for candidates0 and2; at31.7 through32.2 tracks3 and4 compete for one acquisition-local near candidate, with no merge_uncertainty indices.",
+    "Track3 last fresh accepted surface update is31.6. Current_frame=false cached ACCEPTED diagnostics afterwards are not fresh attempts.",
+    "Surface becomes LOST at source/output32.36 with age0.76; navigation last accepted source remains31.2 and has separate invalid-reference reasons."
+  ],
+  "unknown": [
+    "Physical identity/ownership of track4 and whether31.5 candidates0 and2 are the same physical car are not certified.",
+    "Private association-before-update predictor states, full rejected pairwise gate/score matrices and counterfactual assignment outcomes were not recorded; not reconstructed.",
+    "Blocking this one unsupported birth is not yet proven sufficient to repair the closed loop or preserve new-entry recall; requires focused tests and new isolated probes.",
+    "Full ReID, cross-view identity proof, offline GT attribution and exact association replay were not performed."
+  ],
+  "proposed_scope": "No code changed. Minimal automatic unmatched-birth guard only when recovery_enabled is explicitly true and supported is false, including no-overlap cases. Existing-track matching/updates retain their existing gates; legacy disabled mode and explicit selection require distinct tests and documented semantics."
+}

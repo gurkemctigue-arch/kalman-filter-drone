@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "kind": "INDEPENDENT_DEVELOPMENT_STOP_LAYOUT_INTEGRATION_REVIEW",
+  "created_utc": "2026-10-31T21:12:09.774465+00:00",
+  "status": "PASS_SOURCE_AND_IMPORT_ONLY",
+  "actual_runner_sha256": "cc25cec2806ed199ffc481faa3a177109495836b40ee6fc5d8d30dc17399cee1",
+  "actual_helper_sha256": "7109b924f3e58d63f3b0b8af700c27c870086379b8226d4fa07520a46b6ae1a8",
+  "reviewed_candidate_sha256": "4bcc61ed8a0527c3ec95d3bf4a1e4e7858141718db85502299a4e8e64de3e920",
+  "allowed_difference": "Exactly one import module path: observe_stage1_stop -> uav_tracking.stop_observer. Full runner AST otherwise identical to reviewed02 candidate.",
+  "helper_byte_identical_to_reviewed02": true,
+  "package_import": "scripts.run_stage1_trial",
+  "dynamic_import": "spec_from_file_location + exec_module",
+  "both_imports_pass": true,
+  "actual_main_invoked": false,
+  "WSL_or_simulation": false,
+  "root_sources_unchanged_during_review": true,
+  "limits": [
+    "This verifies development-tree source/import layout only; no real child process or cleanup lifecycle was executed.",
+    "Frozen42 source and outcomes are not patched or upgraded by this layout review."
+  ]
+}

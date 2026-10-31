@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "kind": "INDEPENDENT_CLOSED_NATIVE_EXPORT_METADATA_REVIEW",
+  "created_utc": "2026-10-31T21:04:57.303393+00:00",
+  "status": "PASS_METADATA_CLOSURE_ONLY",
+  "pins": [
+    {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble42_native_causal_window01\\manifest.json",
+      "bytes": 1002482,
+      "sha256": "085ac699eafd5fb750328a00626d0bd144cd002b10a1d433fb5e5adaf8d78dfb"
+    },
+    {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble42_native_causal_export_root01.json",
+      "bytes": 3684,
+      "sha256": "a5952b45a6a01c0359a8c6b5bd72821ed0b8875742bbbb2291048bc473fb9394"
+    },
+    {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble42_native_causal_metadata_root01.json",
+      "bytes": 4488,
+      "sha256": "4ac58e751e0d547b8373e8e86c9d2bf9805d191b27d4856da483873226b7ecdf"
+    },
+    {
+      "path": "D:\\WSL\\UAVHumble22-validation\\extract_native_causal_window42_invocation01.json",
+      "bytes": 9589,
+      "sha256": "d53164c9a5ba5e8f657d60d0970ad0cf66c2be6fb47949f61b086cd593b3787c"
+    },
+    {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble42_native_import_probe01.json",
+      "bytes": 1196,
+      "sha256": "1e33908948015ab59721dba29708b9e2a21ae6612b75f2aca5f91865f51ec148"
+    }
+  ],
+  "actual_root_native_execution_returncode": 0,
+  "actual_root_native_elapsed_s": 177.97370794199998,
+  "original_status_preserved": {
+    "slot": "FAIL",
+    "core": {
+      "PASS": 8,
+      "FAIL": 1,
+      "PENDING": 3
+    },
+    "owner": "NATIVE_FAILED_RAW_ARCHIVED",
+    "healthy_cleanup": false
+  },
+  "native_records": 204788,
+  "native_traversals": 1,
+  "compressed_hash_passes": 2,
+  "declared_inventory_files": 6992,
+  "reviewed_environment": {
+    "python_executable": "/usr/bin/python3",
+    "python_version": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
+    "ROS_DISTRO": "humble",
+    "interface_prefix": "/root/uav_tracking_fullplan_v4_humble42/ros2_ws/install",
+    "px4_msgs_prefix": "/root/uav_humble22/px4_msgs_ws/install/px4_msgs"
+  },
+  "exact_image_requests": [
+    {
+      "requested_source_ns": 31400000000,
+      "follow_offset_ns": 13300000000,
+      "status": "EXACT_COMPONENTS_EXPORTED"
+    },
+    {
+      "requested_source_ns": 31500000000,
+      "follow_offset_ns": 13400000000,
+      "status": "EXACT_COMPONENTS_EXPORTED"
+    },
+    {
+      "requested_source_ns": 31600000000,
+      "follow_offset_ns": 13500000000,
+      "status": "EXACT_COMPONENTS_EXPORTED"
+    },
+    {
+      "requested_source_ns": 31700000000,
+      "follow_offset_ns": 13600000000,
+      "status": "EXACT_COMPONENTS_EXPORTED"
+    },
+    {
+      "requested_source_ns": 32200000000,
+      "follow_offset_ns": 14100000000,
+      "status": "EXACT_COMPONENTS_EXPORTED"
+    }
+  ],
+  "cache_closure": [
+    {
+      "owned_path": "/root/uav_humble22/native_causal_cache/native_causal_owned_d6xh543y",
+      "removed": true,
+      "tempfile_tempdir_restored": true,
+      "reader_close_api": "NOT_AVAILABLE_REFERENCE_RELEASE_ONLY",
+      "reader_close_result": "NOT_ATTEMPTED"
+    }
+  ],
+  "review_scope": "Only closed manifest and four small JSON receipts/invocation/import metadata. No raw bag, derived events, CDR, image payload, native invocation or simulation read/run by this review.",
+  "limits": [
+    "Native counts, image exactness, unchanged original pins/payloads and cache closure are checked for closed-receipt consistency, not independently re-executed or rehashed from payload.",
+    "No algorithm replay, rejected-pair score recovery, runtime admission, original FAIL upgrade or seed consumption follows from metadata closure."
+  ]
+}

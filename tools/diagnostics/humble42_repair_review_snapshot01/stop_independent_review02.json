@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "kind": "INDEPENDENT_EXTERNAL_STOP_OBSERVATION_REVISION02_REVIEW",
+  "created_utc": "2026-10-31T21:07:57.150775+00:00",
+  "status": "PASS_EXTERNAL_PATCH_FOR_SEPARATELY_REGISTERED_INSTRUMENTED_DIAGNOSTIC",
+  "helper_sha256": "7109b924f3e58d63f3b0b8af700c27c870086379b8226d4fa07520a46b6ae1a8",
+  "patch_sha256": "29eaf68fec05e622104b9d7ab15a5c4ecdf6cd080ae4d4a0c3e3ed9e1d4c4f19",
+  "runner_candidate_sha256": "4bcc61ed8a0527c3ec95d3bf4a1e4e7858141718db85502299a4e8e64de3e920",
+  "test_receipt": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\humble42_stop_observation02\\independent_review02_tests.json",
+    "sha256": "d471816ce709ac8726614b1fa8885032bf9f9722096d8550862449eff95c1657"
+  },
+  "tests": {
+    "tests": 27,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "elapsed_s": 0.39192010002443567,
+    "author_fixture_tests": 17,
+    "independent_fixture_tests": 10
+  },
+  "review_findings": [
+    "Original INT/TERM/KILL action trace, ROS leader/group distinction, 8/5/3 budgets, bag180/default10, exceptions and cleanup-loop AST retained.",
+    "Full runner candidate is byte-identical to reviewed01; removing the five exact reviewed hooks and restoring original stop produces original full AST.",
+    "Helper02 full AST differs from01 only by import uuid and close publication body.",
+    "Summary-only fsync failure now retains an unpublished partial and no final summary; successful final publication follows both event and summary fsync.",
+    "Link failure, final-name race, partial serialization failure and staging-name collision never overwrite evidence or publish a false complete final file.",
+    "Successful publication may retain identical partial hard-link on unlink error; published complete bytes are unchanged."
+  ],
+  "required_external_gates": [
+    "Explicit expected seven-component stop roster and started-process identity reconciliation; internal EVIDENCE_COMPLETE alone is insufficient.",
+    "Existing independent process-health audit plus separately registered no-escalation/natural-exit requirements remain authoritative.",
+    "Fresh isolated source/output/environment registration and ownership locks; original42 FAIL and three PENDING must remain unchanged."
+  ],
+  "limits": [
+    "Windows synthetic tests only; no real process/native/WSL/simulation here.",
+    "Instrumentation adds journal/metadata overhead; no original-timing or root-cause equivalence is claimed.",
+    "Atomic final-name publication is validated; this review makes no crash-durability promise for directory metadata."
+  ],
+  "unchanged_original_runner_sha256": "c49db44aba88249cbbafb27ab0d7de13be38419560466636a468a913071f2097",
+  "production_or_frozen42_patched": false,
+  "prior_revision01_preserved": true
+}

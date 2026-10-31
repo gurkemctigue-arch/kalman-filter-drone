@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "kind": "INDEPENDENT_UNANCHORED_SURFACE_BIRTH_REPAIR_REVIEW",
+  "created_utc": "2026-10-31T21:12:47.277216+00:00",
+  "status": "PASS_MINIMAL_DEVELOPMENT_REPAIR_PENDING_ISOLATED_RUNTIME_VALIDATION",
+  "source_sha256": "4d3b295bda6abc55c4a153132656f93e6f916f8650aa216f4b56db79f3dc0ca6",
+  "source_reference_commit": "dc21ff4c27095795927a57571d707c9506acf59f",
+  "independent_test_receipt": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\humble42_unanchored_birth_review01\\independent_review01_tests.json",
+    "sha256": "fd93695942da881ebdca1fbb855f865aeb4173e96d58bfc929712185274683a9"
+  },
+  "independent_tests": {
+    "tests": 8,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "elapsed_s": 0.1252221000031568
+  },
+  "reviewed_code_scope": "Only _confirm_supported_births changed against recorded HEAD; association, accepted-measurement update, timer projection and control code are unchanged.",
+  "exact_new_rule": "Within hybrid_3d plus reject_ambiguous_associations, a previously unmatched non-selected ROI with explicit surface_recovery_enabled is True and surface_measurement_supported is not True is deferred even without a current same-class overlap anchor.",
+  "preserved": [
+    "Original overlapping supported-birth two-acquisition rules and reason codes.",
+    "Existing assignments, feasible ambiguity edges, measurement gates and original numeric thresholds.",
+    "Explicit pending image-selection initialization authority and lost-task reselection latch.",
+    "All raw same-class candidates count toward AUTO_UNIQUE ambiguity, including deferred candidates.",
+    "Recovery-disabled/default legacy metadata behavior, with strict boolean opt-in."
+  ],
+  "findings": [
+    {
+      "id": "REAL_ENTRY_DELAY",
+      "level": "MATERIAL_TRADEOFF",
+      "detail": "A real independent object with persistent unsupported surface evidence can remain untracked. This can increase automatic-acquisition delay and unknown/unmatched identity samples; retain all such frames and objects in offline denominators."
+    },
+    {
+      "id": "SURFACE_IS_NOT_IDENTITY",
+      "level": "LIMITATION",
+      "detail": "Supported surface geometry does not prove physical identity; unanchored supported single-acquisition births remain possible. Physical duplicate identity for original track4 is not proved by this repair."
+    },
+    {
+      "id": "EXISTING_FALLBACK_UNCHANGED",
+      "level": "LIMITATION",
+      "detail": "Existing feasible tracks can still accept raw-depth fallback under existing gates. This birth-only patch does not repair all association or measurement failures."
+    },
+    {
+      "id": "EXPLICIT_SELECTION",
+      "level": "PRESERVED_AUTHORITY",
+      "detail": "Explicitly selected unsupported ROI can still initialize as before. Image selection chooses task identity and does not independently certify depth accuracy."
+    },
+    {
+      "id": "OPTIN_SCOPE",
+      "level": "COMPATIBILITY_BOUNDARY",
+      "detail": "Missing/nonboolean recovery opt-in, non-hybrid modes or disabled ambiguity protection preserve original behavior; do not describe this as a universal unsupported-depth birth ban."
+    }
+  ],
+  "next_validation": [
+    "Register a fresh isolated development root/source manifest and exact world/runtime/arguments; keep original42 FAIL and 8/1/3 terminal counts untouched.",
+    "Run one separately named car-crossing integration diagnostic with the reviewed stop observer and all existing health/association/loss gates. Observe new birth deferral and actual process journal; do not infer original private pair scores or claim exact replay.",
+    "Evaluate initial and newly entering real-object acquisition under persistent unsupported -> supported transitions, including one-frame entrants and multi-candidate ambiguity; report missed/delayed births and identity unknowns.",
+    "Proceed to new paired reliability batches only after the integration gates close; never discard failed or unknown samples."
+  ],
+  "WSL_or_simulation_executed_by_review": false,
+  "bag_or_events_read_by_review": false,
+  "source_modified_by_review": false,
+  "original_fail_or_unknown_labels_upgraded": false
+}

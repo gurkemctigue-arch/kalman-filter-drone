@@ -4,11 +4,14 @@ Only nested start/stop functions are loaded from the production AST. These
 mock checks do not establish clean integrated ROS launch shutdown.
 """
 import ast
+from enum import IntEnum
 from pathlib import Path
 import subprocess
 from types import SimpleNamespace
 import unittest
-from unittest.mock import MagicMock, Mock, call
+from unittest.mock import MagicMock, Mock, call, patch
+
+from uav_tracking import stop_observer as observer_module
 
 
 RUNNER = Path(__file__).resolve().parents[1] / "scripts/run_stage1_trial.py"
@@ -18,7 +21,10 @@ FUNCTIONS = [node for node in MAIN.body
              if isinstance(node, ast.FunctionDef) and node.name in {"start", "stop"}]
 # The runner targets Linux; the pure mock suite also runs on Windows, where
 # the standard signal module does not expose SIGKILL.
-SIGNALS = SimpleNamespace(SIGINT=2, SIGTERM=15, SIGKILL=9)
+class SIGNALS(IntEnum):
+    SIGINT = 2
+    SIGTERM = 15
+    SIGKILL = 9
 
 
 class TrialShutdownSignalTests(unittest.TestCase):
@@ -27,9 +33,23 @@ class TrialShutdownSignalTests(unittest.TestCase):
         fake_subprocess = SimpleNamespace(Popen=Mock(return_value=process), DEVNULL=subprocess.DEVNULL,
                                           STDOUT=subprocess.STDOUT,
                                           TimeoutExpired=subprocess.TimeoutExpired)
+        observer = object.__new__(observer_module.StopObserver)
+        observer.started_processes, observer.stops, observer.errors = {}, [], []
+        observer._emit = Mock()
+        observer._identity = Mock(return_value={"pid": process.pid})
+
+        def observed_stop(component, owned, timeout=10):
+            # Exercise the real delegated cleanup; replace only OS/process
+            # dependencies and evidence storage, never signal/wait decisions.
+            with patch.object(observer_module, "os", fake_os), \
+                    patch.object(observer_module, "signal", SIGNALS), \
+                    patch.object(observer_module, "subprocess", fake_subprocess):
+                observer.stop(component, owned, timeout)
+
         namespace = {"processes": {name: process}, "logs": [], "output": MagicMock(),
                      "root": Path("/fixture/project"), "env": {"fixture": "no subprocess"},
                      "os": fake_os, "signal": SIGNALS, "subprocess": fake_subprocess,
+                     "stop_observer": SimpleNamespace(started=Mock(), stop=observed_stop),
                      "print": Mock()}
         exec(compile(ast.Module(body=FUNCTIONS, type_ignores=[]), str(RUNNER), "exec"), namespace)
         return namespace, fake_os, fake_subprocess
