@@ -1,10 +1,13 @@
 # RGB-D UAV target tracking and following
 
-**2026-11-01 03:08（北京时间）快照：Humble42 核心12已有6项原始PASS，行人六场景全部通过，接下来为汽车六场景。** 整批观察器尚未收尾，正式仍0/280。新来源独立四包冷构建、隔离/CDR检查及1748项Linux测试已完成（1743通过、5项平台跳过）。汽车使用04微调YOLO11m、512/CPU4，请求仿真速度0.125倍，原0.60/0.75秒安全时限保留；安全4、扩展16、容量/定标及最终准入仍待完成。当前运行状态见[实时进度入口](docs/LIVE_PROGRESS.md)，下方较早记录均为历史快照。
-
-2026-10-31 最新：原Humble41核心12已闭合，11 PASS、1 FAIL；后续640/512生产后台worker各1008次时延测量已完成。选512/CPU4作为下一轮待验证配置，尚无新闭环通过结论。正式仍0/280。见[配置决定与验证顺序](planning/reliability-v4-humble42-resource-decision-20261031.md)。下方较早快照保留为历史。
+**2026-11-01 03:36（北京时间）快照：Humble42 核心12已有7项原始PASS，行人六场景及汽车速度控制通过，汽车位置控制正在运行。** 汽车速度场原attempt已健康闭合，距离/高度RMSE为0.726446/0.164642m，末端均持续稳定；整批观察器尚未收尾，正式仍0/280。新来源独立四包冷构建、隔离/CDR检查及1748项Linux测试已完成（1743通过、5项平台跳过）。汽车使用04微调YOLO11m、512/CPU4，请求仿真速度0.125倍，原0.60/0.75秒安全时限保留；安全4、扩展16、容量/定标及最终准入仍待完成。当前运行状态见[实时进度入口](docs/LIVE_PROGRESS.md)。
 
 **当前分支是 v4 开发检查点，三阶段功能已实现，最终验收与正式重复研究尚未完成。** 本机当前批次和查看方法见[实时进度入口](docs/LIVE_PROGRESS.md)；旧 `results/project_progress/current/` 是历史Humble31任务，不能用于判断当前实验。来源和历史失败边界见[交接记录](planning/reliability-v4-current-state.md)，后续工作依[可靠性修复与交付方案](planning/reliability-v4-next-actions-20261030.md)推进。公开文档均为带时间的快照。
+
+<details>
+<summary>历史开发记录（不代表当前运行状态）</summary>
+
+2026-10-31 最新：原Humble41核心12已闭合，11 PASS、1 FAIL；后续640/512生产后台worker各1008次时延测量已完成。选512/CPU4作为下一轮待验证配置，尚无新闭环通过结论。正式仍0/280。见[配置决定与验证顺序](planning/reliability-v4-humble42-resource-decision-20261031.md)。下方较早快照保留为历史。
 
 2026-10-31 23:15（北京时间）快照：Humble41原核心12已完整关闭，11 PASS、1 FAIL；失败集中在汽车多目标主动云台的一次推理长尾。临时宽限候选已撤销，原时效和丢失门限保留。当前正在执行原始RGB、固定配置、后台worker的长序列推理诊断；尚无新闭环通过结论，正式仍0/280。详见[复核与撤销](planning/reliability-v4-humble41-grace-review-20261031.md)和上述实时入口。下列快照属于历史。
 
@@ -32,7 +35,9 @@ Humble25原核心12格的9 PASS、3 FAIL保持不变：六个行人格均PASS，
 
 核心 120 槽覆盖两类目标与六组工程条件；原计划距离、噪声、延迟、加减速等八个扩展条件另有 160 槽，共 280 槽，当前均未开始正式运行。范围和剩余工作见 [执行计划](planning/reliability-v4-remaining-execution.md)。
 
-中文验收入口：[结果工件说明](docs/RESULTS_ARTIFACTS.md) · [查看与复核方法](docs/验收使用指南.md) · [三阶段实际状态](docs/THREE_STAGE_STATUS.md) · [已归档计划书](docs/最终版毕业设计计划书_最终版.docx)。结果页面和报告属于本地归档工件，保留历史失败、身份未知、缺失及未执行项；工程通过与正式重复研究完成分别判断。
+</details>
+
+当前v4计划正文见[修订计划书](docs/FINAL_PLAN_V4.md)；本轮正式Word/PDF仍待实际研究资料齐备后生成。历史交付与复核入口：[结果工件说明](docs/RESULTS_ARTIFACTS.md) · [查看与复核方法](docs/验收使用指南.md) · [三阶段历史状态](docs/THREE_STAGE_STATUS.md) · [已归档计划书](docs/最终版毕业设计计划书_最终版.docx)。历史结果页面和报告保留失败、身份未知、缺失及未执行项；工程通过与正式重复研究完成分别判断。
 
 This repository implements a simulation-first RGB-D UAV target following system with YOLO11, 3-D Kalman filtering and PX4 Offboard control. Estimation and control remain independent from ROS 2, PX4 and Gazebo so the same core can be tested, replayed and connected to a future vehicle adapter.
 
@@ -40,7 +45,7 @@ WSL EGL shutdown failures and the explicit Gazebo-only CPU rendering option are 
 
 The supported target classes are `person` and `car`. The target manager exposes two modes:
 
-- `AUTO_UNIQUE`: lock the only confirmed candidate; multiple candidates produce an `ambiguous` state.
+- `AUTO_UNIQUE`: automatically lock a unique eligible target; multiple eligible detections produce an `ambiguous` state even when some tracks are not yet confirmed.
 - `LOCKED_TARGET`: select a bounding box at task start and keep that physical target. Short occlusions coast with the 3-D filter; long loss becomes `lost` and requires re-selection.
 
 The implementation includes a portable Python core, deterministic synthetic experiments and an integrated PX4/Gazebo flight graph with an onboard aligned RGB-D camera. Runtime tracking uses images, TF and vehicle state; Gazebo truth is reserved for offline evaluation.
