@@ -486,8 +486,12 @@ class RosGzTrialHookTests(unittest.TestCase):
         (self.directory / "ros.log").write_text("clean", encoding="utf-8")
         process = SimpleNamespace(poll=lambda: 0)
         failure = ValueError("runtime changed during shutdown")
+        stop_summary = self.directory / "fixture_process_stop_summary.json"
+        stop_observer = trial.StopObserver(
+            self.directory / "fixture_process_stop_events.jsonl", stop_summary)
         namespace = {**trial.__dict__, "original_error": original_error, "recording_spool": self.directory / "spool",
             "recording_observer": None,
+            "stop_observer": stop_observer,
             "simulation_resumed": False, "output": self.directory, "snapshot": self.snapshot,
             "parameter_evidence": {}, "parameter_manifest": self.snapshot / "px4_parameters.json",
             "px4_root": self.directory, "magnetic_runtime": None, "ros_gz_runtime": {"fixture": True},
@@ -501,6 +505,8 @@ class RosGzTrialHookTests(unittest.TestCase):
             namespace["finish_fixture"]()
         self.assertEqual(events, ["verify", "archive"])
         self.assertTrue((self.directory / "bag_integrity.json").is_file())
+        self.assertTrue(stop_observer.closed)
+        self.assertEqual(json.loads(stop_summary.read_text(encoding="utf-8"))["status"], "EVIDENCE_COMPLETE")
         return caught.exception, failure
 
     def test_runtime_cleanup_error_waits_until_recording_archive_finishes(self):
