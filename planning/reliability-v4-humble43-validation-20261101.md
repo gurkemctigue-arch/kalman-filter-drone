@@ -1,5 +1,9 @@
 # Humble43验证与剩余准入
 
+**2026-11-01 20:31:33（北京时间）快照：Humble43核心12、安全4已完整闭合并独审通过；扩展16为13 START、12原终态（10 PASS/2 FAIL），前12个outer均闭合，汽车combined运行，另3格未开始；正式仍0/280。** 第12场汽车延迟原PASS，距离/高度RMSE为0.761595/0.168965米、末端稳定通过；原终态12:19:16.879080 UTC、outer闭合12:19:59.602627 UTC，flight_exit0、infrastructure_stop=false、outer error=null。整批尚未结束，完整28格容量、定标、最终根和正式重复研究仍待执行。实时状态见[扩展批次页](../results/project_progress/humble43_extension01/index.html)。
+
+新增[物理身份恢复补充工具](../tools/offline_evaluation/physical_recovery_v1/README.md)：20项微型合成测试通过，末次摘要修改后另有2项定向复验通过；独立只读审查代码SHA `f25327c03509aba6c0c5ec2d8358d65d1ca2e22da63e4a45076e23e99a52182c` 无阻塞。工具区分首次恢复、后来证实原个体及显式选择新个体，保留全部40槽/80机会与未知/缺报/删失，不改原评价。**真实补充协议和分析附件尚未生成**：须在真实FORMAL120生成且全部120槽未START时原生登记，最终由统一交付入口另行引用，不冒称原报告生成器自动消费。下方较早“当前”描述均为历史快照，按其时间阅读。
+
 2026-11-01 19:26:24（北京时间）快照。本文件说明当前证据和待执行工作，不替代原始评价。核心12独审通过；原生v2组件04的85项和3项describe真实通过；安全4原四场全部PASS、完整原guard及闭合独审PASS，安全批次主命令退出0。扩展16场已有10场开始、9原始终态（7 PASS/2 FAIL），前九个outer均闭合；行人八场及汽车深度噪声已完成，第十场汽车深度空洞运行，另六场尚未开始；后续状态以原monitor为准，整批尚未闭合。combined及位置控制加减速保留原算法FAIL，第三槽UTC/monotonic差异现获506/507实际待机证据的强支持解释。其余扩展、容量/定标及正式准入仍待完成，正式仍0/280。历史Humble42保持8 PASS、1 FAIL、3 PENDING。
 
 第九场`car_extension_depth_noise_seed004`于10:52:04.143306 UTC记录原COMPLETED/PASS，flight_exit0、infrastructure_stop=false；outer于10:52:36.053992 UTC闭合、error=null。距离/高度RMSE为0.723148/0.161357米。第十场`car_extension_depth_holes_seed004`原槽于10:56:05.664373 UTC START，outer于10:56:00.017823 UTC START；截至本快照尚无终态，不预记PASS。
