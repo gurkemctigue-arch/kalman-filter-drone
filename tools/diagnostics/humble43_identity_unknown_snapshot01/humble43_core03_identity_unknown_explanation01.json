@@ -1,0 +1,311 @@
+{
+  "schema_version": 1,
+  "scope": "BOUNDED_READ_ONLY_EXPLANATION_OF_CORE03_IDENTITY_UNKNOWN_NOT_NEW_ALGORITHM_RESULT",
+  "slot": "person_stage2_crossing_seed004",
+  "source_bindings": {
+    "physical_identity.json": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble43\\reliability_v4_humble43_probe01_person_stage2_crossing_seed004\\physical_identity.json",
+      "bytes": 1687101,
+      "sha256": "7ef5b62d5f70a98154025ad03a96eec6e638cdb78114d9f61756e5da5c4c62b1"
+    },
+    "physical_identity.frames.jsonl": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble43\\reliability_v4_humble43_probe01_person_stage2_crossing_seed004\\physical_identity.frames.jsonl",
+      "bytes": 3349700,
+      "sha256": "f5633eb5d64171151b4e0b1650dee2ce32d3a20ead216244e9ae437e98d3cd0b"
+    },
+    "stage2_evaluation.json": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble43\\reliability_v4_humble43_probe01_person_stage2_crossing_seed004\\stage2_evaluation.json",
+      "bytes": 18264,
+      "sha256": "9269382238601971b0bf8581fd9191bc9b0032b1ca97cebdbc5c230142b4d8a3"
+    },
+    "flight_evaluation.json": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble43\\reliability_v4_humble43_probe01_person_stage2_crossing_seed004\\flight_evaluation.json",
+      "bytes": 24306,
+      "sha256": "7c4c36bd3bf615605eabb93e10b2cf88af1789de03240656e938f2b84a4cabd4"
+    },
+    "navigation_reference_evaluation.json": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble43\\reliability_v4_humble43_probe01_person_stage2_crossing_seed004\\navigation_reference_evaluation.json",
+      "bytes": 147006,
+      "sha256": "2ed00b14cc846bb5d673625ed9083b0fefc80843c8f2df89bb5e6457c9c31389"
+    }
+  },
+  "primary_metric": "physical_identity.json.conservative_task_time_identity",
+  "primary": {
+    "schema_version": 1,
+    "physical_match_rule_revision": "whole_static_mesh_optical_z_front_v1",
+    "coverage_basis": "fixed_10hz_request_to_recorded_clock_end",
+    "sample_period_s": 0.1,
+    "interval": {
+      "start_s": 18.4,
+      "end_s": 93.688
+    },
+    "scheduled_samples": 753,
+    "correct": 649,
+    "wrong": 0,
+    "unknown": 104,
+    "known_coverage": 0.8618857901726428,
+    "retention_lower_bound": 0.8618857901726428,
+    "agreement_on_known_samples": 1.0,
+    "requested_task_count": 2,
+    "unconfirmed_requested_tasks": [],
+    "unknown_reason_counts": {
+      "request_not_yet_confirmed": 1,
+      "unknown_identity_evidence_in_time_cell": 102,
+      "task_boundary_within_time_cell": 1
+    },
+    "evaluation_status": "RECORDED_WITH_EXPLICIT_UNKNOWN_INTERVALS",
+    "semantics": "Fixed 0.1 s cells anchored at the first explicit REQUEST, ending at the last recorded /clock (final partial cell retained). Each cell belongs to the task active at its start; all REQUESTs are registered even without a snapshot or CONFIRMED event. Before confirmation, after CLEAR/RESET, at a task boundary, or without fresh independent identity evidence the cell is UNKNOWN. No cross-cell interpolation/forward fill. Any known wrong match in the cell takes precedence; otherwise all identity evidence must be known and correct for CORRECT. This measures conservative recorded evidence coverage, not continuous physical identity certainty. Legacy diagnostic-frame metrics remain separate.",
+    "recorded_clock": {
+      "start_s": 0.0,
+      "end_s": 93.688,
+      "messages": 24858
+    }
+  },
+  "primary_tasks": {
+    "56ce35ee-511a-4059-9d8f-45f2604e1d1f": {
+      "request_time_s": 18.4,
+      "source_image_s": 18.3,
+      "confirmation_time_s": 18.484,
+      "confirmed": true,
+      "expected_physical_id": "stage2_person_0",
+      "initial_mapping_known": true,
+      "initial_geometric_match": {
+        "status": "known",
+        "physical_id": "stage2_person_0",
+        "reason": "unique_unoccluded_image_match",
+        "candidate_ids": [
+          "stage2_person_0"
+        ],
+        "iou": 0.9124968536958873,
+        "minimum_iou": 0.5,
+        "foreground_visibility_certificate": null
+      },
+      "duplicate_request_uuid": false,
+      "scheduled_samples": 322,
+      "correct": 218,
+      "wrong": 0,
+      "unknown": 104,
+      "known_coverage": 0.6770186335403726,
+      "retention_lower_bound": 0.6770186335403726
+    },
+    "526a8a4c-8bf5-41bf-915e-d6a5be7dd42a": {
+      "request_time_s": 50.56,
+      "source_image_s": 50.4,
+      "confirmation_time_s": 50.584,
+      "confirmed": true,
+      "expected_physical_id": "stage2_person_0",
+      "initial_mapping_known": true,
+      "initial_geometric_match": {
+        "status": "known",
+        "physical_id": "stage2_person_0",
+        "reason": "unique_unoccluded_image_match",
+        "candidate_ids": [
+          "stage2_person_0"
+        ],
+        "iou": 0.9065951202949597,
+        "minimum_iou": 0.5,
+        "foreground_visibility_certificate": null
+      },
+      "duplicate_request_uuid": false,
+      "scheduled_samples": 431,
+      "correct": 431,
+      "wrong": 0,
+      "unknown": 0,
+      "known_coverage": 1.0,
+      "retention_lower_bound": 1.0
+    }
+  },
+  "diagnostic_metric_kept_separate": {
+    "field": "selected_physical_identity_all",
+    "frames": 753,
+    "counts": {
+      "CORRECT": 651,
+      "WRONG_PHYSICAL_ACTOR": 0,
+      "NOT_OBSERVED": 72,
+      "UNKNOWN_GEOMETRY": 30,
+      "UNKNOWN_TASK_INITIAL_ID": 0
+    },
+    "legacy_conservative": {
+      "frames": 753,
+      "correct": 651,
+      "wrong": 0,
+      "unknown": 102,
+      "known_coverage": 0.8645418326693227,
+      "retention_lower_bound": 0.8645418326693227,
+      "agreement_on_known_frames": 1.0,
+      "observed_physical_identity_switches_within_task": 0,
+      "task_count": 2,
+      "semantics": "Unknown/occluded frames remain in total; retention_lower_bound is not the same as conditional agreement. UUID partitions explicit tasks and never supplies physical identity."
+    },
+    "cannot_replace_primary": true
+  },
+  "primary_unknown_detail": {
+    "all_104_in_first_task": true,
+    "one_request_pending_cell": {
+      "start_s": 18.4,
+      "end_s": 18.5,
+      "confirmation_s": 18.484
+    },
+    "one_boundary_cell": {
+      "start_s": 50.5,
+      "end_s": 50.6,
+      "next_request_s": 50.56,
+      "next_confirmation_s": 50.584
+    },
+    "broad_102_correlated_diagnostic_classes": [
+      {
+        "status": "UNKNOWN_GEOMETRY",
+        "reason": "known_or_unresolved_external_occlusion",
+        "cells": 30,
+        "sidecar_shutter_guard_true": 30,
+        "meaning": "Conservative shutter guard excludes independent identity certification, including protective time around shutter requests. This does not prove every frame was physically occluded."
+      },
+      {
+        "status": "NOT_OBSERVED",
+        "reason": "no_fresh_selected_detection",
+        "cells": 72,
+        "sidecar_pred_empty": 72,
+        "sidecar_shutter_guard_true": 44,
+        "sidecar_shutter_guard_false": 28,
+        "meaning": "No fresh selected-target identity evidence. This alone does not prove raw YOLO failed, transport failed, or a wrong actor was followed; long-loss wait-for-reselection can also produce it."
+      }
+    ],
+    "runs": [
+      {
+        "start_s": 18.4,
+        "end_s": 18.5,
+        "cells": 1,
+        "classification": [
+          "request_not_yet_confirmed",
+          "CORRECT",
+          "unique_unoccluded_image_match"
+        ]
+      },
+      {
+        "start_s": 29.6,
+        "end_s": 30.6,
+        "cells": 10,
+        "classification": [
+          "unknown_identity_evidence_in_time_cell",
+          "UNKNOWN_GEOMETRY",
+          "known_or_unresolved_external_occlusion"
+        ]
+      },
+      {
+        "start_s": 30.6,
+        "end_s": 30.9,
+        "cells": 3,
+        "classification": [
+          "unknown_identity_evidence_in_time_cell",
+          "NOT_OBSERVED",
+          "no_fresh_selected_detection"
+        ]
+      },
+      {
+        "start_s": 30.9,
+        "end_s": 31.9,
+        "cells": 10,
+        "classification": [
+          "unknown_identity_evidence_in_time_cell",
+          "UNKNOWN_GEOMETRY",
+          "known_or_unresolved_external_occlusion"
+        ]
+      },
+      {
+        "start_s": 42.6,
+        "end_s": 43.6,
+        "cells": 10,
+        "classification": [
+          "unknown_identity_evidence_in_time_cell",
+          "UNKNOWN_GEOMETRY",
+          "known_or_unresolved_external_occlusion"
+        ]
+      },
+      {
+        "start_s": 43.6,
+        "end_s": 50.5,
+        "cells": 69,
+        "classification": [
+          "unknown_identity_evidence_in_time_cell",
+          "NOT_OBSERVED",
+          "no_fresh_selected_detection"
+        ]
+      },
+      {
+        "start_s": 50.5,
+        "end_s": 50.6,
+        "cells": 1,
+        "classification": [
+          "task_boundary_within_time_cell",
+          "CORRECT",
+          "unique_unoccluded_image_match"
+        ]
+      }
+    ],
+    "correlation_only_time_rounding_s": 1e-07
+  },
+  "evidence_completeness": {
+    "physical_status": "RECORDED_WITH_EXPLICIT_UNKNOWN_INTERVALS",
+    "sidecar_frames": 936,
+    "all_102_have_truth_complete": true,
+    "all_102_independent_geometry_flags_true": true,
+    "camera_geometry_status_counts": {
+      "FIXED_MOUNT": 936
+    },
+    "task_mot_unscorable_missing_truth_opportunities": {
+      "56ce35ee-511a-4059-9d8f-45f2604e1d1f": 0,
+      "526a8a4c-8bf5-41bf-915e-d6a5be7dd42a": 0
+    },
+    "stage2_input_decodes_without_errors": true,
+    "stage2_track_snapshot_errors": [],
+    "flight_read_errors": {},
+    "navigation_read_errors": {},
+    "navigation_malformed_input_counts": {},
+    "navigation_incomplete_reasons": [],
+    "meaning": "These 104 explicit UNKNOWN cells are retained evidence insufficiency for physical-identity certification, not missing report files or missing independent GT. Runtime absence and conservative exclusion remain unknown."
+  },
+  "safety_context_only": {
+    "stage2_result": "PASS",
+    "unauthorized_uuid_changes": [],
+    "unauthorized_recovery_times_s": [],
+    "unauthorized_control_after_loss_times_s": [],
+    "physical_identity_certified_by_safety_report": {
+      "evaluated": false,
+      "reason": "Requires independently validated visible GT/image labels; unchanged task UUID is not evidence of physical identity"
+    },
+    "occlusions": [
+      {
+        "start_s": 30.560000000000002,
+        "end_s": 30.840000000000003,
+        "duration_s": 0.28000000000000114,
+        "kind": "short",
+        "event_semantics": "requested shutter pose interval, not an independently measured occluder state",
+        "first_predicted_s": 30.58,
+        "first_lost_s": null,
+        "first_hover_s": 30.6,
+        "first_explicit_reselection_s": null,
+        "result": "PASS"
+      },
+      {
+        "start_s": 43.56,
+        "end_s": 46.64,
+        "duration_s": 3.0799999999999983,
+        "kind": "long",
+        "event_semantics": "requested shutter pose interval, not an independently measured occluder state",
+        "first_predicted_s": 43.56,
+        "first_lost_s": 44.26,
+        "first_hover_s": 44.252,
+        "first_explicit_reselection_s": 50.56,
+        "result": "PASS"
+      }
+    ]
+  },
+  "user_explanation": "The fixed 10 Hz task-time denominator starts with the first request and retains unconfirmed, loss, shutter-guard and task-boundary cells. It certifies 649 of 753 cells and records no proven wrong actor; 104 cells remain unknown. Both separately requested tasks independently map to stage2_person_0. Zero observed wrong matches cannot certify the unknown periods, and 431/431 after reselection does not certify other trials or the whole project.",
+  "limits": [
+    "No bag opened, decompressed or re-evaluated; only the five bound report/sidecar files were read after bounded slot metadata discovery.",
+    "No production module imported, WSL invoked, runtime controlled, original evidence changed, source edited, gate changed, or repository file edited.",
+    "The ordinary diagnostic 651/753 and its per-task 321/432 denominators remain separate from primary 649/753 and 322/431.",
+    "Both task requests have known initial mapping. Stable UUID alone is not physical identity evidence.",
+    "No new adaptive-KF, cross-trial reliability, formal-acceptance or complete-project claim is made."
+  ]
+}

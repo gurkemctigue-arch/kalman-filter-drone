@@ -1,6 +1,6 @@
 # RGB-D UAV target tracking and following
 
-**2026-11-01 07:45（北京时间）快照：Humble43 已完成隔离构建和汽车交叉诊断，正在运行同源核心12场景；前两场原始终态均为 PASS，正式仍0/280。** 1763项Linux检查中1758通过、5项平台跳过。单场汽车交叉通过不代表汽车可靠性已完成验收；完整核心12、安全4、扩展16、容量与定标仍须依次完成。原Humble42的8 PASS、1 FAIL、3 PENDING及全部身份未知保留，见[当前验证与后续准入](planning/reliability-v4-humble43-validation-20261101.md)、[原批结果](planning/reliability-v4-humble42-results-20261101.md)及[实时进度入口](docs/LIVE_PROGRESS.md)。
+**2026-11-01 09:25（北京时间）快照：Humble43 同源核心12已完成行人六场，六个原始终态均为 PASS，接下来验证汽车六场；正式仍0/280。** 行人单目标主动云台的画面中心RMSE为17.00像素，中位模式为57.71像素；这是同一开发种子的观察，仍待正式重复比较。完整核心批次、安全4、扩展16、容量与定标尚待完成。1763项Linux检查中1758通过、5项平台跳过。原失败、删失窗口与身份未知保留，见[当前验证与后续准入](planning/reliability-v4-humble43-validation-20261101.md)、[身份未知解释](tools/diagnostics/humble43_identity_unknown_snapshot01/README.md)及[实时进度入口](docs/LIVE_PROGRESS.md)。
 
 **当前分支是 v4 开发检查点，三阶段功能已实现，最终验收与正式重复研究尚未完成。** 本机当前批次和查看方法见[实时进度入口](docs/LIVE_PROGRESS.md)；旧 `results/project_progress/current/` 是历史Humble31任务，不能用于判断当前实验。来源和历史失败边界见[交接记录](planning/reliability-v4-current-state.md)，后续工作依[可靠性修复与交付方案](planning/reliability-v4-next-actions-20261030.md)推进。公开文档均为带时间的快照。
 

@@ -1,6 +1,6 @@
 # Humble43验证与剩余准入
 
-2026-11-01 07:45（北京时间）执行快照。本文件说明当前证据和待执行工作，不替代原始评价。正式实验为0/280；历史Humble42保持8 PASS、1 FAIL、3 PENDING。
+2026-11-01 09:25（北京时间）执行快照。本文件说明当前证据和待执行工作，不替代原始评价。行人六场核心已完成原始PASS，汽车六场仍待验证，完整核心批次未结束。正式实验为0/280；历史Humble42保持8 PASS、1 FAIL、3 PENDING。
 
 ## 已完成的修复验证
 
@@ -18,8 +18,16 @@ Humble43固定来源为`/root/uav_tracking_fullplan_v4_humble43`。该版本已�
 | --- | --- | ---: | ---: |
 | person_stage1_velocity_seed004 | PASS | 0.758609 | 0.147545 |
 | person_stage1_position_seed004 | PASS | 0.763342 | 0.162684 |
+| person_stage2_crossing_seed004 | PASS | 0.930522 | 0.150463 |
+| person_stage3_midpoint_seed004 | PASS | 0.765062 | 0.159948 |
+| person_stage3_active_seed004 | PASS | 0.751913 | 0.164592 |
+| person_stage3_multi_active_seed004 | PASS | 0.904853 | 0.155198 |
 
-表中RMSE取`navigation_reference_evaluation.json`的完整任务区间和`base_link`参考，包含悬停等非活动控制样本。两条报告状态均为`RECORDED_WITH_CENSORED_FAILURES`；模型原点参考等窗口存在未持续稳定结果，原值保留。不能把工程PASS解释为所有指标或所有窗口通过。整批原始终态和owner关闭尚未产生。
+表中RMSE取`navigation_reference_evaluation.json`的完整任务区间和`base_link`参考，包含悬停等非活动控制样本。六条报告状态均为`RECORDED_WITH_CENSORED_FAILURES`；模型原点参考等窗口存在未持续稳定结果，原值保留。六场机体参考下的末端距离/高度稳定条件均通过，不能把工程PASS解释为所有指标或所有窗口通过。整批原始终态和owner关闭尚未产生。
+
+单目标中位与主动云台的画面中心RMSE分别为57.705711与17.004366像素，均观察到717/751个机会。主动模式的距离RMSE略低，高度RMSE略高；单个开发种子不提供统计显著性，也不支持所有指标均改善。多目标主动的画面中心RMSE为9.463841像素，观察到678/750个机会。
+
+多目标交叉的保守主身份网格为753格中649正确、0已知错误、104未知；多目标主动为753格中648正确、0已知错误、105未知。交叉的104未知包含1格请求未确认、1格任务边界、30格保护窗内几何身份不可认证和72格无新鲜选中目标证据。后102格独立真值完整；它们不是文件缺失，但也不能算正确或直接归因为检测/通信故障。首次任务322格中218正确、104未知；重选后任务431格均已知正确，仅描述该场该任务。完整核查与证据SHA见[身份未知快照](../tools/diagnostics/humble43_identity_unknown_snapshot01/README.md)。
 
 当前候选SHA256为`6a0325714f0bc4a874219f5585b282daf658557266b75959e532073447b6eafb`；实际FINAL核心合同SHA256为`c0e179b91b001af98caa4c59290a21972acc006b5fbe8542f63e163700b9bf9b`；核心计划原件SHA256为`939fcbff695afd5ed99cea0479c97fbdb4d85928d6f5afd24ad8b45c6b6c9403`。它们绑定实际来源和原12槽，不是正式280的登记。
 
