@@ -1,6 +1,6 @@
 # RGB-D UAV target tracking and following
 
-**2026-11-01 10:42（北京时间）快照：Humble43 同源核心12已有9个原始工程 PASS，包含行人六场和汽车速度、位置、交叉三场；第10项汽车云台中位正在运行，正式仍0/280。** 汽车三场完整任务距离RMSE分别为0.750666、0.703718、0.852427米，机体参考的末端距离和高度稳定检查通过。汽车交叉的主身份网格753格中647正确、0已知错误、106未知，未知继续计入分母。行人单目标主动云台的画面中心RMSE为17.00像素，中位模式为57.71像素；这些是同一开发种子的观察，仍待正式重复比较。完整核心批次、安全4、扩展16、容量与定标尚待完成。1763项Linux检查中1758通过、5项平台跳过。原失败、删失窗口与身份未知保留，见[当前验证与后续准入](planning/reliability-v4-humble43-validation-20261101.md)、[身份未知解释](tools/diagnostics/humble43_identity_unknown_snapshot01/README.md)及[实时进度入口](docs/LIVE_PROGRESS.md)。
+**2026-11-01 11:03（北京时间）快照：Humble43 同源核心12已有10个原始工程 PASS，包含行人六场和汽车速度、位置、交叉、中位云台四场；第11项汽车主动云台正在运行，正式仍0/280。** 汽车中位云台完整任务的距离/高度RMSE为0.728828/0.157771米，末端稳定检查通过，检测框中心RMSE为81.548670像素（719/751个机会）。汽车交叉的主身份网格753格中647正确、0已知错误、106未知，未知继续计入分母。行人单目标主动云台的画面中心RMSE为17.00像素，中位模式为57.71像素；这些是同一开发种子的观察，仍待正式重复比较。完整核心批次、安全4、扩展16、容量与定标尚待完成。1763项Linux检查中1758通过、5项平台跳过。原失败、删失窗口与身份未知保留，见[当前验证与后续准入](planning/reliability-v4-humble43-validation-20261101.md)、[身份未知解释](tools/diagnostics/humble43_identity_unknown_snapshot01/README.md)及[实时进度入口](docs/LIVE_PROGRESS.md)。
 
 **当前分支是 v4 开发检查点，三阶段功能已实现，最终验收与正式重复研究尚未完成。** 本机当前批次和查看方法见[实时进度入口](docs/LIVE_PROGRESS.md)；旧 `results/project_progress/current/` 是历史Humble31任务，不能用于判断当前实验。来源和历史失败边界见[交接记录](planning/reliability-v4-current-state.md)，后续工作依[可靠性修复与交付方案](planning/reliability-v4-next-actions-20261030.md)推进。公开文档均为带时间的快照。
 
