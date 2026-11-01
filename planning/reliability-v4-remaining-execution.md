@@ -1,6 +1,6 @@
 # v4 剩余工作执行顺序
 
-2026-11-01 12:08（北京时间）当前入口见[Humble43验证记录](reliability-v4-humble43-validation-20261101.md)和[实时进度页说明](../docs/LIVE_PROGRESS.md)。Humble43隔离构建/全套检查及具名汽车交叉诊断已完成，同源核心12的行人和汽车各六场均取得原始工程PASS；原整批主命令与进度桥正常退出0，原`actual_core`完整独立复验已通过，见[本机原收据](../tools/experiment_orchestration/humble43_core12_closure_snapshot01/humble43_core12_closed_independent01.json)。正式仍0/280，不能称全部验收通过。v2完整Humble组件补验、安全4、扩展16、实际容量/定标、最终登记与正式研究仍待依次执行。按当前资源与完整任务吞吐，整个剩余工作维持5—6天量级估计；以下各时期的更短耗时与“当前”状态均为历史快照。
+2026-11-01 12:23:05（北京时间）当前入口见[Humble43验证记录](reliability-v4-humble43-validation-20261101.md)和[实时进度页说明](../docs/LIVE_PROGRESS.md)。Humble43同源核心12的行人和汽车各六场均取得原始工程PASS，原整批主命令与进度桥退出0，原`actual_core`完整独审已通过，见[原收据](../tools/experiment_orchestration/humble43_core12_closure_snapshot01/humble43_core12_closed_independent01.json)。原生v2组件04的85项全PASS、0跳过及3项describe核验已真实完成，见[新最小快照](../tools/experiment_orchestration/humble43_native_v2_components04_snapshot01/README.md)。安全4已登记并静态独审，批次命令于04:18:53 UTC启动，首场`person_auto_unique_multi_seed004`于04:23:05.109651 UTC真实开始，0/4终态、其余3场待执行，尚无PASS结论，见[安全进度页](../results/project_progress/humble43_safety01/index.html)。正式仍0/280；安全验收、扩展16、实际容量/定标、最终登记与正式研究仍待执行，不能称全部验收通过。整个剩余工作维持5—6天量级估计，依实际新结果调整；以下各时期更短耗时与“当前”状态均为历史快照。
 
 2026-10-30 吞吐与容量计量更新见[最新 75 s / RTF 0.25 / 单线程 zstd19 实测](reliability-v4-throughput-20261030.md)：12 核心槽合计 3.069 小时，280 槽设计加权投影 68.26 小时，65.06–81.14 小时仅为经验范围、非完成承诺；新增空间敏感范围 167.13–272.50 GiB，extensions16 实测和正式容量准入仍待完成。下文“正式约18小时”等估计保留为历史记录，不作为当前依据。
 

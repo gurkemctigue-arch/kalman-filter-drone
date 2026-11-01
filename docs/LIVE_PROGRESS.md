@@ -1,8 +1,8 @@
 # 查看当前实验
 
-**2026-11-01 12:08（北京时间）快照：Humble43同源核心12已有12个原始工程PASS，行人和汽车各六组全部产生终态；正式实验仍0/280。** 十二组均包含75秒任务、录包归档、评价和单槽检查。原整批主命令与进度桥均正常退出0，原owner健康闭合经原`actual_core`完整独立复验通过。[本机独审收据](../tools/experiment_orchestration/humble43_core12_closure_snapshot01/humble43_core12_closed_independent01.json)确认completed12、all_original_core_cells_pass=true；这只完成核心开发关口，安全4、扩展16及正式准入仍待完成。
+**2026-11-01 12:23:05（北京时间）快照：Humble43同源核心12的12个原始工程PASS已通过完整独立复验，原生v2组件04的85项及3项describe也已真实通过；安全4首场真实执行已开始，0/4终态、其余3场待执行，正式仍0/280。** 原核心批次主命令与进度桥均退出0，owner健康闭合已由原`actual_core`复核，[核心独审收据](../tools/experiment_orchestration/humble43_core12_closure_snapshot01/humble43_core12_closed_independent01.json)确认completed12、all_original_core_cells_pass=true。安全4尚无终态或PASS结论，扩展16及正式准入仍待完成。
 
-本机请打开[Humble43实时进度页](../results/project_progress/humble43_core01/index.html)，根据页面生成时间、心跳、当前场景和原始终态计数判断实际状态。该页面读取原始开始/终态事件；飞行结束后的归档评价期间，场景仍会显示运行中。旧Humble42、41及`current/`页面均为历史记录。
+本机当前请打开[Humble43安全批次进度页](../results/project_progress/humble43_safety01/index.html)，它提供命令级心跳和真实退出状态，尚不显示四场的槽位计数。原命令于04:18:53 UTC启动，首场`person_auto_unique_multi_seed004`于04:23:05.109651 UTC真实开始；逐场开始和终态见本机`results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_safety_seed004_audit/`原始小JSON，场景开始不能当作通过。原[核心进度页](../results/project_progress/humble43_core01/index.html)保留12个原始PASS。安全批次归档评价期间，命令仍会显示运行中；旧Humble42、41及`current/`页面均为历史记录。
 
 已完成场景的[行人速度跟随录像](../results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_person_stage1_velocity_seed004/onboard.mp4)和[行人位置跟随录像](../results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_person_stage1_position_seed004/onboard.mp4)可以直接观看。完整原始记录位于`results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/slots/`。全部12条导航报告仍为`RECORDED_WITH_CENSORED_FAILURES`；各场完整任务机体参考末端距离/高度稳定检查均为true，但必须保留模型原点参考等窗口的未稳定结果，不能把工程PASS改述为所有分析窗口通过。
 
@@ -22,9 +22,11 @@
 
 Humble43已完成四包隔离构建、来源检查和真实消息序列化检查；1763项Linux检查中1758通过、原5项平台跳过。另一个具名单场汽车交叉诊断已通过，但完整身份网格754格仍有110格未知，保守正确覆盖为644/754；该诊断不能拼入核心12或正式280。详情见[本轮证据与准入顺序](../planning/reliability-v4-humble43-validation-20261101.md)。
 
-后续依次为v2完整Humble组件补验、安全4、扩展16、28格容量实测、两条预定录制导出与R0定标、独立最终来源构建/登记/封存、正式120+160和统计交付。新增v2定标/发布工具按原协议保留可评价压力场景的算法FAIL；核心12、安全4仍须全部PASS，安全失效或缺证不能据此放行。v2工具Windows组件检查为78通过、7平台跳过，原Humble02补验为76通过、9项因核心批次占用SITL锁而报错。后续组件03因原机器锁文件身份不可用而在测试前拒绝调度，tests_run=false、85项均未运行；这既不是85项通过，也不是85项测试失败，仍须真实完整补验。
+原生v2组件04已实际退出0：30+40+15共85项全PASS、0跳过，9项真实authority完整执行，3项describe的canonical全部匹配，原终态finally核验1940个原文件。[新最小快照](../tools/experiment_orchestration/humble43_native_v2_components04_snapshot01/README.md)保存原终态、suite结果/日志、describe和peer核查。Windows78通过/7跳过、原Humble02的76通过/9锁争用ERROR均保留；组件03是tests_run=false的测试前调度拒绝，未运行85项，不计作测试失败或通过。
 
-原12槽位终态已齐、整批主命令正常退出且核心独审通过，后续还有组件补验、安全、扩展、准入及280次正式飞行，整个剩余工作维持5—6天量级估计，发生新故障时按实测修订。此处是带时间的快照，最新状态以实时页为准。进度页、视频和原始结果仅在本机存在；GitHub保存源码和证据说明，网页不会自行向聊天发送完成通知。
+安全4已登记并完成静态registry独审，首场真实执行已开始，0/4终态、其余3场待执行，尚无安全飞行验收结论。之后依次为扩展16、28格容量实测、两条预定录制导出与R0定标、独立最终来源构建/登记/封存、正式120+160和统计交付。v2定标/发布工具按原协议保留可评价压力场景的算法FAIL；核心12、安全4仍须全部PASS，安全失效或缺证不能据此放行，组件通过也不构成正式准入。
+
+原12槽位终态已齐、整批主命令正常退出且核心独审通过，原生04组件补验也已通过；后续还有安全、扩展、准入及280次正式飞行，整个剩余工作维持5—6天量级估计，发生新故障时按实测修订。此处是带时间的快照，最新状态以实时页为准。进度页、视频和原始结果仅在本机存在；GitHub保存源码和证据说明，网页不会自行向聊天发送完成通知。
 
 <details>
 <summary>Humble42及更早历史快照（不能用于判断当前进程）</summary>

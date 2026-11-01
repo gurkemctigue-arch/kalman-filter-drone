@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "kind": "COMPONENTS04_NEW_ONLY_SCHEDULER_PREPARATION_NOT_NATIVE_RESULT_OR_ADMISSION",
+  "created_utc": "2026-11-01T04:19:43.092429+00:00",
+  "helper": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\humble43_extension_contract_alignment_staging01\\root_humble_v2_components04.py",
+    "bytes": 17263,
+    "sha256": "ac75708b91a9b336e5b6dadbbe9239143c6a4558df51c775f9aceb028dfb8492"
+  },
+  "original03": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\humble43_extension_contract_alignment_staging01\\root_humble_v2_components03.py",
+    "bytes": 11285,
+    "sha256": "32163e13106d009cd766f2d2c65c4d9765da1d2b16286608634792b67df0e460"
+  },
+  "diff": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\humble43_extension_contract_alignment_staging01\\root_humble_v2_components04_vs03_01.diff",
+    "bytes": 9222,
+    "sha256": "78795d3600733545419902eec7e37de1dc6aebda7785c57d48bc291f59192f8f"
+  },
+  "scope": "Only missing-lock idle precondition and04 output/temp labels changed; no original source/test/run_lock rewrite.",
+  "static_checks": {
+    "ast_valid": true,
+    "main_same_except_temp_label": true,
+    "require_core_idle_same": true,
+    "original_core_driver_sim_prefix_and_terminal_reread_unchanged": true,
+    "original03_bytes_unchanged": true,
+    "revision02_and_ten_deployed_source_bytes_unchanged": true,
+    "utf8_no_bom_lf": true,
+    "original85_and_three_describe_flow_unchanged": true
+  },
+  "pure_boundary_checks": {
+    "author_inline_fake_io_smoke_passed": 16,
+    "independent_methods_passed": 28,
+    "independent_receipt": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble43_extension_contract_alignment_staging01\\test_root_humble_v2_components04_lock_observation01_run01.json",
+      "bytes": 4376,
+      "sha256": "7e3a6b803926edf905cebda31c427faf3ac3aaa202b0b75845aae1297c5525e8"
+    },
+    "independent_raw_log_boundary": {
+      "stdout_stderr_redirected": false,
+      "separate_original_byte_logs_available": false,
+      "tool_output_was_decoded_combined_text": true,
+      "reconstructed_text_is_not_claimed_as_original_byte_log": true,
+      "explanation": "Original one-shot execution returned decoded combined tool output. No separate raw stdout/stderr files were created. This new receipt records the observed result and does not fabricate original stream bytes. The test was not rerun for logging."
+    }
+  },
+  "new_idle_policy": {
+    "states": [
+      "ABSENT",
+      "FREE",
+      "HELD",
+      "INVALID",
+      "UNVERIFIABLE"
+    ],
+    "absent": "Bounded read-only proc FD scan; exact original path including deleted references defer; cause remains UNKNOWN.",
+    "existing": "Original inode/device plus proc locks checks; links, bad types, errors and races defer.",
+    "observation_does_not_open_create_acquire_or_unlink_machine_lock": true,
+    "actual_child_tests_retain_original_run_lock": true
+  },
+  "root_execution_status_at_receipt_creation": "Root reports04 already completed; actual evidence is separately peer-checked, not inferred from these pure tests.",
+  "author_ran_native_helper_or_original85_or_wsl": false,
+  "original_files_modified": false
+}

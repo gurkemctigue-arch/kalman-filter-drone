@@ -1,6 +1,10 @@
 # RGB-D UAV target tracking and following
 
-**2026-11-01 12:08（北京时间）快照：Humble43 同源核心12已取得12个原始工程 PASS，原整批主命令与进度桥均正常退出0，原`actual_core`完整独立复验已通过，正式仍0/280。** [本机独审收据](tools/experiment_orchestration/humble43_core12_closure_snapshot01/humble43_core12_closed_independent01.json)确认completed12、all_original_core_cells_pass=true；安全4、扩展16及正式准入尚未完成，不能称全部验收通过。汽车主动云台检测框中心RMSE为13.043403像素（718/750个机会），中位为81.548670像素（719/751）；主动模式距离/高度RMSE为0.739129/0.161260米，略高于中位的0.728828/0.157771米，不能称全指标更好。汽车交叉主身份网格753格中647正确、0已知错误、106未知；汽车多目标主动为754格中645正确、0已知错误、109未知，未知继续计入分母。行人单目标主动/中位的画面中心RMSE为17.00/57.71像素；这些均为同一开发种子的观察，仍待正式重复比较。全部12条导航报告保留删失窗口；容量、定标与最终验收尚未完成。1763项Linux检查中1758通过、5项平台跳过。原失败、删失窗口与身份未知保留，见[当前验证与后续准入](planning/reliability-v4-humble43-validation-20261101.md)、[身份未知解释](tools/diagnostics/humble43_identity_unknown_snapshot01/README.md)及[实时进度入口](docs/LIVE_PROGRESS.md)。
+**2026-11-01 12:23:05（北京时间）快照：Humble43 同源核心12的12个原始工程 PASS已通过完整独立复验，原生v2组件04的85项及3项describe也已真实通过；安全4首场真实执行已开始，0/4终态、其余3场待执行，正式仍0/280。** 安全4尚无终态或PASS结论，扩展16及正式准入未完成，不能称全部验收通过。
+
+[核心独审收据](tools/experiment_orchestration/humble43_core12_closure_snapshot01/humble43_core12_closed_independent01.json)确认completed12、all_original_core_cells_pass=true；[原生04最小证据快照](tools/experiment_orchestration/humble43_native_v2_components04_snapshot01/README.md)保留30+40+15项全PASS、0跳过、9项真实authority及3项canonical核验。安全原批次命令于04:18:53 UTC启动，首场`person_auto_unique_multi_seed004`于04:23:05.109651 UTC真实开始，当前状态见本机[安全进度页](results/project_progress/humble43_safety01/index.html)；核心旧页保留12原PASS。组件通过和场景开始均不代替安全飞行验收。
+
+汽车主动云台检测框中心RMSE为13.043403像素（718/750个机会），中位为81.548670像素（719/751）；主动模式距离/高度RMSE为0.739129/0.161260米，略高于中位的0.728828/0.157771米，不能称全指标更好。汽车交叉主身份网格753格中647正确、0已知错误、106未知；汽车多目标主动为754格中645正确、0已知错误、109未知，未知继续计入分母。行人单目标主动/中位的画面中心RMSE为17.00/57.71像素；这些均为同一开发种子的观察，仍待正式重复比较。全部12条导航报告保留删失窗口；容量、定标与最终验收尚未完成。1763项Linux检查中1758通过、5项平台跳过。原失败、删失窗口与身份未知保留，见[当前验证与后续准入](planning/reliability-v4-humble43-validation-20261101.md)、[身份未知解释](tools/diagnostics/humble43_identity_unknown_snapshot01/README.md)及[实时进度入口](docs/LIVE_PROGRESS.md)。
 
 **当前分支是 v4 开发检查点，三阶段功能已实现，最终验收与正式重复研究尚未完成。** 本机当前批次和查看方法见[实时进度入口](docs/LIVE_PROGRESS.md)；旧 `results/project_progress/current/` 是历史Humble31任务，不能用于判断当前实验。来源和历史失败边界见[交接记录](planning/reliability-v4-current-state.md)，后续工作依[可靠性修复与交付方案](planning/reliability-v4-next-actions-20261030.md)推进。公开文档均为带时间的快照。
 

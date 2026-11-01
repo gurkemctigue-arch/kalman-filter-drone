@@ -1,0 +1,177 @@
+--- root_humble_v2_components03.py
++++ root_humble_v2_components04.py
+@@ -2,6 +2,7 @@
+ import json
+ import os
+ import re
++import stat as stat_types
+ from pathlib import Path
+ import subprocess
+ import sys
+@@ -12,8 +13,129 @@
+ ROOT = Path(__file__).resolve().parent
+ EXTERNAL = ROOT.parent
+ FROZEN = Path('/root/uav_tracking_fullplan_v4_humble43')
+-OUTPUT = ROOT / 'root_humble_validation03'
++OUTPUT = ROOT / 'root_humble_validation04'
+ EXPECTED = '83eebf67bfaafc02e1ae0f2a555b2d8408be40b5bc381be1063133dcf86c8afd'
++
++
++class _ReadOnlyProcIO:
++    """Bounded native reads only; this never opens the machine lock itself."""
++    def lstat(self, path):
++        return os.lstat(path)
++
++    def identity(self, metadata):
++        return os.major(metadata.st_dev), os.minor(metadata.st_dev), metadata.st_ino
++
++    def read_proc_locks(self, proc_root, byte_limit):
++        with (Path(proc_root) / 'locks').open('rb') as stream:
++            raw = stream.read(byte_limit + 1)
++        if len(raw) > byte_limit:
++            raise RuntimeError('Original proc locks exceeds bounded read')
++        return raw.decode('utf-8')
++
++    def proc_fd_links(self, proc_root, limits):
++        process_entries = process_count = total = 0
++        with os.scandir(proc_root) as processes:
++            for process in processes:
++                process_entries += 1
++                if process_entries > limits['proc_entries']:
++                    raise RuntimeError('Proc directory enumeration exceeds bound')
++                if not process.name.isdigit():
++                    continue
++                process_count += 1
++                if process_count > limits['processes']:
++                    raise RuntimeError('Proc process enumeration exceeds bound')
++                # Keep scandir open while reading its entries, including self FD.
++                with os.scandir(Path(proc_root) / process.name / 'fd') as descriptors:
++                    per_process = 0
++                    for descriptor in descriptors:
++                        per_process += 1
++                        total += 1
++                        if per_process > limits['fds_per_process'] or total > limits['total_fds']:
++                            raise RuntimeError('Proc FD enumeration exceeds bound')
++                        if not descriptor.name.isdigit():
++                            raise RuntimeError('Unexpected nonnumeric proc FD entry')
++                        target = os.readlink(descriptor.path)
++                        if len(target) > limits['link_chars']:
++                            raise RuntimeError('Proc FD target exceeds bound')
++                        yield {'pid': int(process.name), 'fd': descriptor.name, 'target': target}
++
++
++def original_machine_lock_snapshot(lock_path='/tmp/uav_tracking_reliability_v4_sitl.lock',
++                                   proc_root='/proc', io=None):
++    """Observe ABSENT separately from FREE; any uncertainty defers, never locks."""
++    io = _ReadOnlyProcIO() if io is None else io
++    lock_path = os.fspath(lock_path)
++    limits = {'proc_entries': 8192, 'processes': 4096, 'fds_per_process': 4096,
++              'total_fds': 65536, 'link_chars': 4096, 'locks_bytes': 1024 * 1024}
++    result = {'ready': False, 'state': 'UNVERIFIABLE', 'path': lock_path,
++              'opened_or_modified': False, 'opened_fd_references': [], 'held_entries': [],
++              'limits': limits, 'reasons': []}
++    try:
++        try:
++            before = io.lstat(lock_path)
++        except FileNotFoundError:
++            before = None
++            result['state'] = 'ABSENT'
++        if before is not None and not stat_types.S_ISREG(before.st_mode):
++            result['state'] = 'INVALID'
++            result['reasons'].append('Original machine lock path is linked or not a regular file')
++            return result
++        lock_text = io.read_proc_locks(proc_root, limits['locks_bytes'])
++        if not isinstance(lock_text, str) or len(lock_text.encode('utf-8')) > limits['locks_bytes']:
++            raise RuntimeError('Invalid or oversized original proc locks text')
++        rows = []
++        for line in lock_text.splitlines():
++            if not line.strip():
++                continue
++            identities = [re.fullmatch(r'([0-9a-fA-F]+):([0-9a-fA-F]+):([0-9]+)', token)
++                          for token in line.split()]
++            identities = [item for item in identities if item is not None]
++            if len(identities) != 1:
++                raise RuntimeError('Original proc lock row cannot be verified')
++            item = identities[0]
++            rows.append(((int(item[1], 16), int(item[2], 16), int(item[3])), line))
++        result['proc_locks_rows'] = len(rows)
++        if before is None:
++            count = 0
++            for reference in io.proc_fd_links(proc_root, limits):
++                count += 1
++                if count > limits['total_fds']:
++                    raise RuntimeError('Proc FD enumeration exceeds bound')
++                if (not isinstance(reference, dict) or type(reference.get('pid')) is not int
++                        or reference['pid'] <= 0 or not isinstance(reference.get('fd'), str)
++                        or not reference['fd'].isdigit() or not isinstance(reference.get('target'), str)
++                        or len(reference['target']) > limits['link_chars']):
++                    raise RuntimeError('Original proc FD reference cannot be verified')
++                if reference['target'] in (lock_path, lock_path + ' (deleted)'):
++                    result['opened_fd_references'].append(dict(reference))
++                    result['reasons'].append('Absent original machine lock still has an open FD reference')
++                    return result
++            result['proc_fd_links_checked'] = count
++            try:
++                io.lstat(lock_path)
++            except FileNotFoundError:
++                pass
++            else:
++                raise RuntimeError('Original machine lock appeared during absent-path inspection')
++            result['absence_cause'] = 'UNKNOWN_NOT_ATTRIBUTED_TO_ORIGINAL_RUNNER_UNLINK'
++        else:
++            identity = tuple(io.identity(before))
++            if len(identity) != 3 or any(type(value) is not int or value < 0 for value in identity):
++                raise RuntimeError('Original machine lock identity cannot be verified')
++            result.update(major=identity[0], minor=identity[1], inode=identity[2])
++            result['held_entries'] = [line for item, line in rows if item == identity]
++            after = io.lstat(lock_path)
++            if not stat_types.S_ISREG(after.st_mode) or tuple(io.identity(after)) != identity:
++                raise RuntimeError('Original machine lock identity changed during inspection')
++            result['state'] = 'HELD' if result['held_entries'] else 'FREE'
++            if result['held_entries']:
++                result['reasons'].append('Original machine SITL lock is still held')
++                return result
++        result['ready'] = True
++    except (OSError, RuntimeError, ValueError, TypeError, UnicodeError) as error:
++        result['state'] = 'UNVERIFIABLE'
++        result['reasons'].append(type(error).__name__ + ': ' + str(error))
++    return result
+ 
+ 
+ def core_idle_snapshot():
+@@ -74,22 +196,10 @@
+     if residual:
+         result['reasons'].append('Actual simulation processes remain')
+         return result
+-    lock = Path('/tmp/uav_tracking_reliability_v4_sitl.lock')
+-    if not lock.is_file() or lock.is_symlink():
+-        result['reasons'].append('Expected original machine lock identity is unavailable')
+-        return result
+-    stat = lock.stat()
+-    identity = (os.major(stat.st_dev), os.minor(stat.st_dev), stat.st_ino)
+-    held = []
+-    for line in Path('/proc/locks').read_text().splitlines():
+-        for token in line.split():
+-            match = re.fullmatch(r'([0-9a-fA-F]+):([0-9a-fA-F]+):([0-9]+)', token)
+-            if match and (int(match[1], 16), int(match[2], 16), int(match[3])) == identity:
+-                held.append(line)
+-    result['original_machine_lock'] = {'path': str(lock), 'major': identity[0], 'minor': identity[1],
+-        'inode': identity[2], 'held_entries': held, 'opened_or_modified': False}
+-    if held:
+-        result['reasons'].append('Original machine SITL lock is still held')
++    observed_lock = original_machine_lock_snapshot()
++    result['original_machine_lock'] = observed_lock
++    if observed_lock['ready'] is not True:
++        result['reasons'].extend(observed_lock['reasons'])
+         return result
+     if path.read_bytes() != raw:
+         raise RuntimeError('Original core terminal changed during idle inspection')
+@@ -121,7 +231,7 @@
+     shared.validate_original_files(baseline)
+     os.nice(15)
+     OUTPUT.mkdir(exist_ok=False)
+-    temporary = tempfile.mkdtemp(prefix='uav_humble43_v2_components03_')
++    temporary = tempfile.mkdtemp(prefix='uav_humble43_v2_components04_')
+     environment = os.environ.copy()
+     environment.update(TMPDIR=temporary, TMP=temporary, TEMP=temporary, PYTHONDONTWRITEBYTECODE='1',
+                        PYTHONIOENCODING='utf-8', PYTHONPATH=str(EXTERNAL),

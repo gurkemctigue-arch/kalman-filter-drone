@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "scope": "PURE_AST_EXTRACTED_FAKE_IO_LOCK_OBSERVATION_ONLY_NOT_NATIVE_COMPONENT_OR_FLIGHT_ACCEPTANCE",
+  "receipt_created_local": "2026-11-01T12:16:08.029578+08:00",
+  "test_source": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\humble43_extension_contract_alignment_staging01\\test_root_humble_v2_components04_lock_observation01.py",
+    "bytes": 14144,
+    "sha256": "8b0eb74abc99acc159d91f1ba0470c09f6d6f3fd6a839263296edf1ab9b85c01"
+  },
+  "subject_source": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\humble43_extension_contract_alignment_staging01\\root_humble_v2_components04.py",
+    "bytes": 17263,
+    "sha256": "ac75708b91a9b336e5b6dadbbe9239143c6a4558df51c775f9aceb028dfb8492"
+  },
+  "actual_command": [
+    "python",
+    "-B",
+    "D:\\WSL\\UAVHumble22-validation\\humble43_extension_contract_alignment_staging01\\test_root_humble_v2_components04_lock_observation01.py"
+  ],
+  "observed_exec_result": {
+    "exit_code": 0,
+    "reported_tests_run": 28,
+    "reported_failures": 0,
+    "reported_errors": 0,
+    "reported_skips": 0,
+    "reported_unittest_wall_s": 0.153,
+    "reported_summary": "Ran 28 tests in 0.153s; OK",
+    "tool_output_chunk_id": "376820",
+    "tool_wall_time_seconds": 0.5188817
+  },
+  "test_names": [
+    "SnapshotBoundaryTests.test_clean_absence_keeps_unknown_cause",
+    "SnapshotBoundaryTests.test_absence_with_exact_plain_or_deleted_open_reference_defers",
+    "SnapshotBoundaryTests.test_similar_paths_do_not_match_exact_lock_reference",
+    "SnapshotBoundaryTests.test_existing_free_lock_matches_device_and_inode",
+    "SnapshotBoundaryTests.test_existing_held_lock_defers",
+    "SnapshotBoundaryTests.test_link_directory_and_fifo_are_invalid",
+    "SnapshotBoundaryTests.test_initial_lstat_permission_failure_defers",
+    "SnapshotBoundaryTests.test_proc_locks_read_failures_defer",
+    "SnapshotBoundaryTests.test_nontext_oversized_and_malformed_lock_rows_defer",
+    "SnapshotBoundaryTests.test_fd_walk_permission_and_disappearance_defer",
+    "SnapshotBoundaryTests.test_invalid_fd_payloads_defer",
+    "SnapshotBoundaryTests.test_injected_fd_enumeration_total_bound_is_still_enforced",
+    "SnapshotBoundaryTests.test_inode_change_disappearance_and_type_change_defer",
+    "SnapshotBoundaryTests.test_absent_path_appearance_or_second_stat_denied_defers",
+    "SnapshotBoundaryTests.test_bad_device_identity_is_not_free",
+    "NativeReadAdapterBoundaryTests.test_numeric_processes_and_exact_bounds_complete_and_close",
+    "NativeReadAdapterBoundaryTests.test_proc_directory_entry_bound",
+    "NativeReadAdapterBoundaryTests.test_process_count_bound",
+    "NativeReadAdapterBoundaryTests.test_per_process_fd_bound",
+    "NativeReadAdapterBoundaryTests.test_total_fd_bound",
+    "NativeReadAdapterBoundaryTests.test_target_length_bound",
+    "NativeReadAdapterBoundaryTests.test_nonnumeric_fd_is_unverifiable",
+    "NativeReadAdapterBoundaryTests.test_scandir_root_or_process_permission_failure_propagates",
+    "NativeReadAdapterBoundaryTests.test_readlink_permission_or_disappearance_propagates",
+    "NativeReadAdapterBoundaryTests.test_proc_locks_exact_byte_limit",
+    "NativeReadAdapterBoundaryTests.test_proc_locks_byte_overflow",
+    "NativeReadAdapterBoundaryTests.test_proc_locks_utf8_decode_failure",
+    "NativeReadAdapterBoundaryTests.test_proc_locks_open_permission_failure"
+  ],
+  "raw_stream_evidence": {
+    "stdout_stderr_redirected": false,
+    "separate_original_byte_logs_available": false,
+    "tool_output_was_decoded_combined_text": true,
+    "reconstructed_text_is_not_claimed_as_original_byte_log": true,
+    "explanation": "Original one-shot execution returned decoded combined tool output. No separate raw stdout/stderr files were created. This new receipt records the observed result and does not fabricate original stream bytes. The test was not rerun for logging."
+  },
+  "execution_boundary": {
+    "stdlib_and_AST_extracted_two_definitions_only": true,
+    "full_helper_or_shared_imported": false,
+    "native_main_or_original_85_tests_run": false,
+    "wsl_invoked": false,
+    "real_proc_or_lock_read": false,
+    "simulation_or_flight_controlled": false,
+    "original_or_deployed_sources_changed": false
+  },
+  "interpretation": "28 pure scheduler-boundary tests passed. They do not establish the native 85-test result, tool admission or flight acceptance."
+}

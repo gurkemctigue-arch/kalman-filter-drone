@@ -1,6 +1,6 @@
 # Humble42之后的支持门控修复与新验证
 
-更新入口：2026-11-01 12:08（北京时间），下述修复已进入Humble43隔离来源，完成Linux构建、测试和具名汽车交叉诊断；同源核心12已有行人和汽车各六场、合计12个原始工程PASS。原整批主命令与进度桥正常退出0，原`actual_core`完整独立复验已通过，见[本机原收据](D:/WSL/UAVHumble22-validation/humble43_core12_closed_independent01.json)。正式仍0/280；v2完整Humble组件补验、安全4、扩展16及正式准入尚待完成，不能称全部验收通过。最新证据与尚待工作见[本轮验证记录](reliability-v4-humble43-validation-20261101.md)。以下保留修复提出时的原始计划和当时边界。
+更新入口：2026-11-01 12:23:05（北京时间），下述修复已进入Humble43隔离来源，完成Linux构建、测试和具名汽车交叉诊断；同源核心12的12个原始工程PASS已完整独审通过，见[原收据](../tools/experiment_orchestration/humble43_core12_closure_snapshot01/humble43_core12_closed_independent01.json)。原生v2组件04的85项全PASS、0跳过及3项describe核验也已真实完成，见[新最小快照](../tools/experiment_orchestration/humble43_native_v2_components04_snapshot01/README.md)。安全4已登记并静态独审，原批次命令于04:18:53 UTC启动，首场`person_auto_unique_multi_seed004`于04:23:05.109651 UTC真实开始，0/4终态、其余3场待执行，尚无PASS结论，见[安全进度页](../results/project_progress/humble43_safety01/index.html)。正式仍0/280，安全验收、扩展16及正式准入尚待完成，不能称全部验收通过。最新证据见[本轮验证记录](reliability-v4-humble43-validation-20261101.md)。以下保留修复提出时的原始计划和当时边界。
 
 2026-11-01。本文件记录已进入工作区、尚未新冻结或飞行的修改。原Humble42保持8 PASS、1 FAIL、3 PENDING，正式0/280。
 
