@@ -1,0 +1,37 @@
+{
+  "scope": "ROOT_OBSERVED_NATIVE_PURE_TOOL_TESTS_NOT_FLIGHT",
+  "observed_utc": "2026-11-01T15:56:16.587614+00:00",
+  "command": [
+    "wsl.exe",
+    "-d",
+    "UAVHumble22",
+    "-u",
+    "root",
+    "--exec",
+    "/usr/bin/python3",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "/mnt/d/WSL/UAVHumble22-validation",
+    "-p",
+    "test_probe_one45_recording_v2.py",
+    "-v"
+  ],
+  "returncode": 0,
+  "tests": 33,
+  "skipped": 0,
+  "reported_duration_s": 0.33,
+  "footer": [
+    "Ran 33 tests in 0.330s",
+    "OK"
+  ],
+  "stdout_stderr_evidence": "Observed from native exec tool result; original stdout/stderr not separately redirected to a file. This receipt records that observation, not a synthetic test log.",
+  "input_sha256": {
+    "probe_one45_recording_v2.py": "c0d522982f69331c949e3ee17fbf1023e5d90fec64fb79fecc1ec024a8dcd33a",
+    "probe_one45_recording_v2.sh": "724c943a59484e9bf48c9a0fa6a53bec4b6ed907d7a47b6140ea474d3bf5abab",
+    "test_probe_one45_recording_v2.py": "ec594a1869be8794761a455c005b58ca0cc510e85f7e3559834613eb6bace938"
+  },
+  "flight_or_actual_plan_run_by_this_test": false
+}

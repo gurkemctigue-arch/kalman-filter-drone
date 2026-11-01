@@ -20,13 +20,21 @@
 
 全新v2适配器使用`reliability_v4_humble45_recording_probe02`，绑定完整真实冻结协议并调用现有策略校验。原飞行/评价参数、安全门、原43完整trial对照和锁不变。Windows作者和独审各33项测试通过；root另在Humble系统Python执行同33项全部通过、0跳过、0.330秒。它们是工具测试，不能当作飞行结果。
 
-## 正在执行
+## 汽车远距离单场结果
 
 probe02实际计划已生成，独审确认PENDING1、0先前飞行，原43完整trial仅映射根目录和试验名称；实际规划退出0、前后绑定一致、owner原生退出及归档均健康、清理无残留。FINAL合同仅修改状态，SHA256 `1a89fd8a4acc677e422166554018b6c4d957e686646f083a391446260f464046`。
 
-已启动该单场run，尚待真实飞行、四项评价和外层审计结束。条件为汽车、seed4、75秒、12米、512/CPU4、RTF0.125；原source-clock、native-startup、surface-flight、navigation四评价及全部退出/录包门保持。
+该单场run已结束，原工程槽PASS，外层于2026-11-01 16:21:36.132532 UTC闭合、退出0，error=null、final_errors为空、前后绑定一致、清理无残留，owner原生退出及归档均通过。条件为汽车、seed4、75秒、12米、512/CPU4、RTF0.125；原source-clock、native-startup、surface-flight、navigation四评价及全部退出/录包门保持。
 
-本次单场不计入核心或正式分母；只有实际结果通过后，才进入同来源核心12、安全4、扩展16。完整且安全的扩展算法FAIL可按原合同保留，source/native、归档和owner硬失败不可豁免。
+source-clock为PASS：raw、timing、adapted和精确匹配三元组均9235，无失败或缺证。native-startup全部检查PASS；短遮挡预测及长失锁悬停/显式重选后的持续跟踪评价PASS。
+
+导航完整752个时间格全部有真值，64个无活动控制格仍保留；距离RMSE为0.6727508112480098米，高度RMSE为0.1657141983373969米，两轴末段持续稳定。原导航状态保持`RECORDED_WITH_CENSORED_FAILURES`，不能把长丢失区间删去或改成无失败。录包关闭、归档完整性、额外退出观察和外层owner均通过。
+
+完整原外层终态SHA256为`71cf7e2554ecb4c3f9701ce00606e9b2dbd1f6a026872f0d74a15ff5fed895aa`。本次是独立开发单场，不证明队列溢出根因或批量可靠性；43原失败保持。
+
+本次单场不计入核心或正式分母。同来源核心12计划已实际生成并独审通过，完整2类别×6组、全部PENDING；原生规划退出0，owner健康。FINAL核心合同`development_contract_core_reliability_v4_humble45_probe01_01.json`仅改状态并由原生`load_contract`复验，SHA256为`50da1c5decb5157f3806abe97b40a255efc840803d03457917c2953d79e0f989`。原`run-core`命令已启动，尚无本批飞行终态。
+
+后续仍须核心12全PASS、安全4全PASS，再完整执行扩展16。完整且安全的扩展算法FAIL可按原合同保留，source/native、归档和owner硬失败不可豁免。
 
 ## 后续工作和容量限制
 

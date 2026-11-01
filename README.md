@@ -1,6 +1,6 @@
 # RGB-D UAV target tracking and following
 
-**2026-11-02???Humble45???????Linux?????1767??5?????0??/?????????probe02??????????????0/280?** ?44?????45?????????????[45?????????](planning/reliability-v4-humble45-validation-20261102.md)?
+**2026-11-02（北京时间）：Humble45四包构建及完整Linux测试通过，1767项中5项平台跳过、0错误和0失败；汽车远距离probe02原槽PASS、外层退出0，核心12场正在串行验证，正式仍0/280。** 44和43的历史失败保留，单场通过不能代表批量可靠性。见[45验证与当前边界](planning/reliability-v4-humble45-validation-20261102.md)。
 
 **2026-11-01 23:17（北京时间）：Humble44四包冷构建通过，但完整Linux测试因3个旧夹具缺少新增QoS配置而失败。** 原1767项为3 ERROR、5平台跳过，原失败保留；现已补齐夹具，受影响的13项在Humble原生全部通过，正在准备新Humble45整套验证，尚未飞行复测。此前原生录包冒烟的1290条消息完整、无缺失或重复，仅属合成配置验证。正式仍0/280。见[44原始失败与后续验证](tools/diagnostics/humble44_validation_failure01/README.md)、[录包冒烟原件](tools/diagnostics/humble44_recorder_qos_smoke01/README.md)及[本轮路线](planning/reliability-v4-humble44-recording-repair.md)。
 

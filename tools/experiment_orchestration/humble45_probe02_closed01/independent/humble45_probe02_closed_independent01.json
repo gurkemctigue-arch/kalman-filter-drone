@@ -1,0 +1,202 @@
+{
+  "schema_version": 1,
+  "scope": "INDEPENDENT_CLOSED_ONE45_PROBE02_BOUNDED_METADATA_REVIEW_NO_BAG_REPLAY",
+  "reviewer": "/root/review_repair_patch",
+  "created_utc": "2026-11-01T16:24:21.543002+00:00",
+  "status": "PASS",
+  "checks": {
+    "expected_outer_terminal_sha": true,
+    "closed_outer_rc0": true,
+    "outer_source_binding_unchanged": true,
+    "one_attempt_only": true,
+    "slot_original_pass": true,
+    "slot_digest": true,
+    "slot_plan_start_binding": true,
+    "audit_slot_pins": true,
+    "original_flight_argv": true,
+    "original_four_evaluator_argv_pins": true,
+    "seven_reports_match_slot_artifact_pins": true,
+    "source_clock_complete_pass": true,
+    "native_complete_pass": true,
+    "surface_behavior_pass": true,
+    "navigation_censoring_preserved": true,
+    "whole_truth_denominator": true,
+    "whole_rmse_reproduces_reported_values": true,
+    "both_settled_at_end": true,
+    "original_engineering_checks_all_true": true,
+    "archive_receipt_complete": true,
+    "closure_receipt_complete": true,
+    "recorder_qos_actual_frozen_snapshot": true,
+    "monitor_completed_follow": true,
+    "additional_stop_original_verdict_preserved": true,
+    "owner_prescribed_post_wait_overlay": true,
+    "owner_binding_and_health": true,
+    "owner_native_copy_and_session_health": true,
+    "owner_pins_archive_payloads": true,
+    "owner_archive_timing_cleanup": true,
+    "no_formal_or_automatic_claims": true
+  },
+  "failed_checks": [],
+  "primary_pins": {
+    "outer_execution_terminal": {
+      "bytes": 144832,
+      "sha256": "71cf7e2554ecb4c3f9701ce00606e9b2dbd1f6a026872f0d74a15ff5fed895aa"
+    },
+    "slot_record": {
+      "bytes": 54181,
+      "sha256": "7436c8fd083a61716898948f3fe2bfb16c2afae7275cb920cd9a2a03509eb61e"
+    },
+    "plan": {
+      "bytes": 85034,
+      "sha256": "5992cf5eb1a51a7aa94d59918143e8aa3d233b298f3f0d0e510f3f04c48d747d"
+    }
+  },
+  "report_pins": {
+    "px4_source_clock_report.json": {
+      "bytes": 7826,
+      "sha256": "668126d6d426360cf3ce85264654f576f1060c846aa48ed062e85da6067fd278"
+    },
+    "native_startup_report.json": {
+      "bytes": 9202,
+      "sha256": "c8ca07ad8734cb2e185f2f6f705efaa36fb96d8b9a2436ca728b21a64e71439a"
+    },
+    "flight_evaluation.json": {
+      "bytes": 24357,
+      "sha256": "c4f88a1ea7d7b74e865b75da5c878abdc3aa73bc052ff3c11d1bcd38a4024f7d"
+    },
+    "navigation_reference_evaluation.json": {
+      "bytes": 145539,
+      "sha256": "4f1c34e80e79ae0bd648814ad9bad7d22cf2f8f8f30d9032c607de8795fcd8ac"
+    },
+    "bag_integrity.json": {
+      "bytes": 4988,
+      "sha256": "0eeb89596b111e5b8607063ee2c1e3131e2506bbd51cfeadec7281864fbad75e"
+    },
+    "recording_closure.json": {
+      "bytes": 18590,
+      "sha256": "908d735a45d16adc9ba32eabe8662b4ccf22275395fcb5871d94f8253200f365"
+    },
+    "summary.json": {
+      "bytes": 4843,
+      "sha256": "af2dd7cd02b14ac346b65b9ec4ff899843ead4942bf745b1504d8f68a5382ee3"
+    }
+  },
+  "observed_metrics": {
+    "scheduled_samples": 752,
+    "truth_samples": 752,
+    "inactive_control_samples": 64,
+    "base_link_distance_rmse_m": 0.6727508112480098,
+    "base_link_height_rmse_m": 0.1657141983373969,
+    "navigation_evaluation_status": "RECORDED_WITH_CENSORED_FAILURES",
+    "distance_settling_time_s": 35.7,
+    "height_settling_time_s": 32.2
+  },
+  "scope_boundary": {
+    "files_opened": {
+      "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_recording_probe02_seed004_matrix\\plan.json": {
+        "bytes": 85034,
+        "sha256": "5992cf5eb1a51a7aa94d59918143e8aa3d233b298f3f0d0e510f3f04c48d747d"
+      },
+      "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_recording_probe02_seed004_matrix\\slots\\car_extension_far_distance_seed004.json": {
+        "bytes": 54181,
+        "sha256": "7436c8fd083a61716898948f3fe2bfb16c2afae7275cb920cd9a2a03509eb61e"
+      },
+      "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_recording_probe02_seed004_matrix\\observed_driver01\\execution_terminal.json": {
+        "bytes": 144832,
+        "sha256": "71cf7e2554ecb4c3f9701ce00606e9b2dbd1f6a026872f0d74a15ff5fed895aa"
+      },
+      "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_recording_probe02_car_extension_far_distance_seed004\\px4_source_clock_report.json": {
+        "bytes": 7826,
+        "sha256": "668126d6d426360cf3ce85264654f576f1060c846aa48ed062e85da6067fd278"
+      },
+      "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_recording_probe02_car_extension_far_distance_seed004\\native_startup_report.json": {
+        "bytes": 9202,
+        "sha256": "c8ca07ad8734cb2e185f2f6f705efaa36fb96d8b9a2436ca728b21a64e71439a"
+      },
+      "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_recording_probe02_car_extension_far_distance_seed004\\flight_evaluation.json": {
+        "bytes": 24357,
+        "sha256": "c4f88a1ea7d7b74e865b75da5c878abdc3aa73bc052ff3c11d1bcd38a4024f7d"
+      },
+      "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_recording_probe02_car_extension_far_distance_seed004\\navigation_reference_evaluation.json": {
+        "bytes": 145539,
+        "sha256": "4f1c34e80e79ae0bd648814ad9bad7d22cf2f8f8f30d9032c607de8795fcd8ac"
+      },
+      "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_recording_probe02_car_extension_far_distance_seed004\\bag_integrity.json": {
+        "bytes": 4988,
+        "sha256": "0eeb89596b111e5b8607063ee2c1e3131e2506bbd51cfeadec7281864fbad75e"
+      },
+      "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_recording_probe02_car_extension_far_distance_seed004\\recording_closure.json": {
+        "bytes": 18590,
+        "sha256": "908d735a45d16adc9ba32eabe8662b4ccf22275395fcb5871d94f8253200f365"
+      },
+      "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_recording_probe02_car_extension_far_distance_seed004\\summary.json": {
+        "bytes": 4843,
+        "sha256": "af2dd7cd02b14ac346b65b9ec4ff899843ead4942bf745b1504d8f68a5382ee3"
+      },
+      "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_recording_probe02_car_extension_far_distance_seed004\\configuration\\recording_policy.json": {
+        "bytes": 2384,
+        "sha256": "dc96b35950253e9436b419ed3e3d1a49a46299938ae356f8af1a6fa909640690"
+      },
+      "D:\\WSL\\UAVHumble22-validation\\reviewed_freeze_review_v4_humble45_01.json": {
+        "bytes": 202904,
+        "sha256": "a526b2e342bc2b5889266ef15592656f5c98eb7833bed33856d0c2d084d69b50"
+      },
+      "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_recording_probe02_car_extension_far_distance_seed004\\configuration\\recording_qos.yaml": {
+        "bytes": 672,
+        "sha256": "d56c368ecba5e77a7343a7832be4ec234a4cd4576e367aaa9a808c356cf76824"
+      },
+      "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\config\\recording_qos.yaml": {
+        "bytes": 672,
+        "sha256": "d56c368ecba5e77a7343a7832be4ec234a4cd4576e367aaa9a808c356cf76824"
+      },
+      "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_recording_probe02_seed004_matrix\\slots\\car_extension_far_distance_seed004.started.json": {
+        "bytes": 2255,
+        "sha256": "8af9274611020883f644b33187dbf0095e3670ae6ecae327372f52e2db4e8c63"
+      },
+      "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_recording_probe02_seed004_matrix\\observed_driver01\\observer_driver\\execution_terminal.json": {
+        "bytes": 8434,
+        "sha256": "fb115f73f5f8dc2dc9c4900be7ac35a248c3cbd72f191187e6f88ed07d270eed"
+      },
+      "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_recording_probe02_seed004_matrix\\observed_driver01\\observer_driver\\archive_manifest.json": {
+        "bytes": 5918,
+        "sha256": "08ca80a7b7d10c8f253bc68f8a6b2555d4e12158802efb7a1c50f69b3409e296"
+      },
+      "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_recording_probe02_car_extension_far_distance_seed004\\owned_stop_observer.json": {
+        "bytes": 5625,
+        "sha256": "9ca63f3462544daa5a6afa24f767885bac59e5b6cd6230831227a1c2f7d4cc06"
+      },
+      "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_recording_probe02_car_extension_far_distance_seed004\\owned_stop_events.jsonl": {
+        "bytes": 16556,
+        "sha256": "7b9546311f551145a59a70b231bd5b9cbe08122f16738510af3303a1f59dcf1b"
+      },
+      "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_recording_probe02_car_extension_far_distance_seed004\\process_exit_codes.json": {
+        "bytes": 84,
+        "sha256": "71bb8487608afe6c28385f5b082d043d0d055cdff8adfb6a6746ada18049954f"
+      },
+      "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_recording_probe02_seed004_matrix\\observed_driver01\\observer_driver\\native_exit_terminal.json": {
+        "bytes": 3444,
+        "sha256": "b6b1ae1aabe385c209716dc6339eb1ca69266b4a01a9aaa16a8821eeb28d94b6"
+      },
+      "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_recording_probe02_seed004_matrix\\observed_driver01\\observer_driver\\session_001\\observer_console.log": {
+        "bytes": 1381,
+        "sha256": "796d28035b59bbb27a646cafa389992b39402c014c952a6d7af33438f6a63f22"
+      },
+      "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_recording_probe02_seed004_matrix\\observed_driver01\\observer_driver\\session_001\\native_exit_terminal.json": {
+        "bytes": 2376,
+        "sha256": "e971b8efbb3e42f25547f62b4bf6dc473baedf33a3663d24616b8e6aa3581276"
+      },
+      "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_recording_probe02_seed004_matrix\\observed_driver01\\observer_driver\\session_001\\runtime_health\\health.jsonl": {
+        "bytes": 6836276,
+        "sha256": "0679bfd6ab8671c93fe066dd03cca368cd8860e7f7d7559af5d09079f8a3776d"
+      }
+    },
+    "wsl_started": false,
+    "bag_payload_opened": false,
+    "evaluator_or_tests_rerun": false,
+    "source_or_original_evidence_modified": false,
+    "new_flight_started": false,
+    "old_failure_regraded": false,
+    "formal_acceptance_claimed": false,
+    "claim": "One recorded far-distance car diagnostic passed its original engineering gates. Censored/inactive samples remain. This does not establish core12, repeated reliability, all stages, or overall project acceptance."
+  }
+}

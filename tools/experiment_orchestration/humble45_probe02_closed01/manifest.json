@@ -1,0 +1,296 @@
+{
+    "schema":  "HUMBLE45_PROBE02_CLOSED_SINGLE_DEVELOPMENT_METADATA_SNAPSHOT_V1",
+    "created_utc":  "2026-11-01T16:29:26.5368307Z",
+    "scope":  "One original closed car far-distance seed004 development diagnostic; bounded metadata snapshot, no bag replay or repeat-reliability claim",
+    "independent_review":  {
+                               "relative_path":  "independent/humble45_probe02_closed_independent01.json",
+                               "sha256":  "eb652fb71132dc1838904b07aa510869b0c9eaa4721f78c7e95890a65ce6c379",
+                               "status":  "PASS",
+                               "checks":  {
+                                              "expected_outer_terminal_sha":  true,
+                                              "closed_outer_rc0":  true,
+                                              "outer_source_binding_unchanged":  true,
+                                              "one_attempt_only":  true,
+                                              "slot_original_pass":  true,
+                                              "slot_digest":  true,
+                                              "slot_plan_start_binding":  true,
+                                              "audit_slot_pins":  true,
+                                              "original_flight_argv":  true,
+                                              "original_four_evaluator_argv_pins":  true,
+                                              "seven_reports_match_slot_artifact_pins":  true,
+                                              "source_clock_complete_pass":  true,
+                                              "native_complete_pass":  true,
+                                              "surface_behavior_pass":  true,
+                                              "navigation_censoring_preserved":  true,
+                                              "whole_truth_denominator":  true,
+                                              "whole_rmse_reproduces_reported_values":  true,
+                                              "both_settled_at_end":  true,
+                                              "original_engineering_checks_all_true":  true,
+                                              "archive_receipt_complete":  true,
+                                              "closure_receipt_complete":  true,
+                                              "recorder_qos_actual_frozen_snapshot":  true,
+                                              "monitor_completed_follow":  true,
+                                              "additional_stop_original_verdict_preserved":  true,
+                                              "owner_prescribed_post_wait_overlay":  true,
+                                              "owner_binding_and_health":  true,
+                                              "owner_native_copy_and_session_health":  true,
+                                              "owner_pins_archive_payloads":  true,
+                                              "owner_archive_timing_cleanup":  true,
+                                              "no_formal_or_automatic_claims":  true
+                                          },
+                               "failed_checks":  [
+
+                                                 ]
+                           },
+    "original_outcome":  {
+                             "slot_status":  "PASS",
+                             "engineering_result":  "PASS",
+                             "outer_returncode":  0,
+                             "outer_status":  "ONE_ORIGINAL_ATTEMPT_RETAINED",
+                             "outer_error":  null,
+                             "original_attempt_count":  1,
+                             "final_errors":  [
+
+                                              ],
+                             "cleanup":  {
+                                             "residual_processes":  [
+
+                                                                    ]
+                                         },
+                             "owner_status":  "COMPLETE",
+                             "source_clock_status":  "PASS",
+                             "native_startup_status":  "PASS",
+                             "independently_matched_source_triplets":  9235
+                         },
+    "navigation_original":  {
+                                "evaluation_status":  "RECORDED_WITH_CENSORED_FAILURES",
+                                "scheduled_samples":  752,
+                                "matched_truth_samples":  752,
+                                "inactive_control_samples":  64,
+                                "observed_metrics_from_original_independent_review":  {
+                                                                                          "scheduled_samples":  752,
+                                                                                          "truth_samples":  752,
+                                                                                          "inactive_control_samples":  64,
+                                                                                          "base_link_distance_rmse_m":  0.6727508112480098,
+                                                                                          "base_link_height_rmse_m":  0.1657141983373969,
+                                                                                          "navigation_evaluation_status":  "RECORDED_WITH_CENSORED_FAILURES",
+                                                                                          "distance_settling_time_s":  35.7,
+                                                                                          "height_settling_time_s":  32.2
+                                                                                      },
+                                "both_axes_settled_at_end_original_check":  true,
+                                "censoring_preserved":  true
+                            },
+    "boundary":  {
+                     "development_trials_represented":  1,
+                     "formal_trials_represented":  0,
+                     "formal_seed_use_authorized":  false,
+                     "core12_acceptance_claimed":  false,
+                     "repeated_reliability_claimed":  false,
+                     "project_acceptance_claimed":  false,
+                     "old_failures_regraded":  false,
+                     "evaluation_rerun":  false,
+                     "bag_payload_read":  false,
+                     "wsl_started":  false
+                 },
+    "raw_copy_count":  18,
+    "raw_copy_bytes":  454650,
+    "files_copied_raw":  [
+                             {
+                                 "relative_path":  "trial/px4_source_clock_report.json",
+                                 "source_path":  "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_recording_probe02_car_extension_far_distance_seed004\\px4_source_clock_report.json",
+                                 "role":  "original_closed_trial_report_or_receipt",
+                                 "bytes":  7826,
+                                 "source_sha256":  "668126d6d426360cf3ce85264654f576f1060c846aa48ed062e85da6067fd278",
+                                 "copied_sha256":  "668126d6d426360cf3ce85264654f576f1060c846aa48ed062e85da6067fd278",
+                                 "exact_raw_byte_copy":  true,
+                                 "original_unchanged_during_copy":  true
+                             },
+                             {
+                                 "relative_path":  "trial/native_startup_report.json",
+                                 "source_path":  "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_recording_probe02_car_extension_far_distance_seed004\\native_startup_report.json",
+                                 "role":  "original_closed_trial_report_or_receipt",
+                                 "bytes":  9202,
+                                 "source_sha256":  "c8ca07ad8734cb2e185f2f6f705efaa36fb96d8b9a2436ca728b21a64e71439a",
+                                 "copied_sha256":  "c8ca07ad8734cb2e185f2f6f705efaa36fb96d8b9a2436ca728b21a64e71439a",
+                                 "exact_raw_byte_copy":  true,
+                                 "original_unchanged_during_copy":  true
+                             },
+                             {
+                                 "relative_path":  "trial/flight_evaluation.json",
+                                 "source_path":  "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_recording_probe02_car_extension_far_distance_seed004\\flight_evaluation.json",
+                                 "role":  "original_closed_trial_report_or_receipt",
+                                 "bytes":  24357,
+                                 "source_sha256":  "c4f88a1ea7d7b74e865b75da5c878abdc3aa73bc052ff3c11d1bcd38a4024f7d",
+                                 "copied_sha256":  "c4f88a1ea7d7b74e865b75da5c878abdc3aa73bc052ff3c11d1bcd38a4024f7d",
+                                 "exact_raw_byte_copy":  true,
+                                 "original_unchanged_during_copy":  true
+                             },
+                             {
+                                 "relative_path":  "trial/navigation_reference_evaluation.json",
+                                 "source_path":  "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_recording_probe02_car_extension_far_distance_seed004\\navigation_reference_evaluation.json",
+                                 "role":  "original_closed_trial_report_or_receipt",
+                                 "bytes":  145539,
+                                 "source_sha256":  "4f1c34e80e79ae0bd648814ad9bad7d22cf2f8f8f30d9032c607de8795fcd8ac",
+                                 "copied_sha256":  "4f1c34e80e79ae0bd648814ad9bad7d22cf2f8f8f30d9032c607de8795fcd8ac",
+                                 "exact_raw_byte_copy":  true,
+                                 "original_unchanged_during_copy":  true
+                             },
+                             {
+                                 "relative_path":  "trial/summary.json",
+                                 "source_path":  "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_recording_probe02_car_extension_far_distance_seed004\\summary.json",
+                                 "role":  "original_closed_trial_report_or_receipt",
+                                 "bytes":  4843,
+                                 "source_sha256":  "af2dd7cd02b14ac346b65b9ec4ff899843ead4942bf745b1504d8f68a5382ee3",
+                                 "copied_sha256":  "af2dd7cd02b14ac346b65b9ec4ff899843ead4942bf745b1504d8f68a5382ee3",
+                                 "exact_raw_byte_copy":  true,
+                                 "original_unchanged_during_copy":  true
+                             },
+                             {
+                                 "relative_path":  "trial/recording_closure.json",
+                                 "source_path":  "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_recording_probe02_car_extension_far_distance_seed004\\recording_closure.json",
+                                 "role":  "original_closed_trial_report_or_receipt",
+                                 "bytes":  18590,
+                                 "source_sha256":  "908d735a45d16adc9ba32eabe8662b4ccf22275395fcb5871d94f8253200f365",
+                                 "copied_sha256":  "908d735a45d16adc9ba32eabe8662b4ccf22275395fcb5871d94f8253200f365",
+                                 "exact_raw_byte_copy":  true,
+                                 "original_unchanged_during_copy":  true
+                             },
+                             {
+                                 "relative_path":  "trial/bag_integrity.json",
+                                 "source_path":  "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_recording_probe02_car_extension_far_distance_seed004\\bag_integrity.json",
+                                 "role":  "original_closed_trial_report_or_receipt",
+                                 "bytes":  4988,
+                                 "source_sha256":  "0eeb89596b111e5b8607063ee2c1e3131e2506bbd51cfeadec7281864fbad75e",
+                                 "copied_sha256":  "0eeb89596b111e5b8607063ee2c1e3131e2506bbd51cfeadec7281864fbad75e",
+                                 "exact_raw_byte_copy":  true,
+                                 "original_unchanged_during_copy":  true
+                             },
+                             {
+                                 "relative_path":  "trial/process_exit_codes.json",
+                                 "source_path":  "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_recording_probe02_car_extension_far_distance_seed004\\process_exit_codes.json",
+                                 "role":  "original_closed_trial_report_or_receipt",
+                                 "bytes":  84,
+                                 "source_sha256":  "71bb8487608afe6c28385f5b082d043d0d055cdff8adfb6a6746ada18049954f",
+                                 "copied_sha256":  "71bb8487608afe6c28385f5b082d043d0d055cdff8adfb6a6746ada18049954f",
+                                 "exact_raw_byte_copy":  true,
+                                 "original_unchanged_during_copy":  true
+                             },
+                             {
+                                 "relative_path":  "trial/owned_stop_observer.json",
+                                 "source_path":  "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_recording_probe02_car_extension_far_distance_seed004\\owned_stop_observer.json",
+                                 "role":  "original_closed_trial_report_or_receipt",
+                                 "bytes":  5625,
+                                 "source_sha256":  "9ca63f3462544daa5a6afa24f767885bac59e5b6cd6230831227a1c2f7d4cc06",
+                                 "copied_sha256":  "9ca63f3462544daa5a6afa24f767885bac59e5b6cd6230831227a1c2f7d4cc06",
+                                 "exact_raw_byte_copy":  true,
+                                 "original_unchanged_during_copy":  true
+                             },
+                             {
+                                 "relative_path":  "trial/configuration/recording_qos.yaml",
+                                 "source_path":  "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_recording_probe02_car_extension_far_distance_seed004\\configuration\\recording_qos.yaml",
+                                 "role":  "actual_recording_configuration_snapshot",
+                                 "bytes":  672,
+                                 "source_sha256":  "d56c368ecba5e77a7343a7832be4ec234a4cd4576e367aaa9a808c356cf76824",
+                                 "copied_sha256":  "d56c368ecba5e77a7343a7832be4ec234a4cd4576e367aaa9a808c356cf76824",
+                                 "exact_raw_byte_copy":  true,
+                                 "original_unchanged_during_copy":  true
+                             },
+                             {
+                                 "relative_path":  "trial/configuration/recording_policy.json",
+                                 "source_path":  "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_recording_probe02_car_extension_far_distance_seed004\\configuration\\recording_policy.json",
+                                 "role":  "actual_recording_configuration_snapshot",
+                                 "bytes":  2384,
+                                 "source_sha256":  "dc96b35950253e9436b419ed3e3d1a49a46299938ae356f8af1a6fa909640690",
+                                 "copied_sha256":  "dc96b35950253e9436b419ed3e3d1a49a46299938ae356f8af1a6fa909640690",
+                                 "exact_raw_byte_copy":  true,
+                                 "original_unchanged_during_copy":  true
+                             },
+                             {
+                                 "relative_path":  "matrix/slots/car_extension_far_distance_seed004.json",
+                                 "source_path":  "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_recording_probe02_seed004_matrix\\slots\\car_extension_far_distance_seed004.json",
+                                 "role":  "original_immutable_slot_record",
+                                 "bytes":  54181,
+                                 "source_sha256":  "7436c8fd083a61716898948f3fe2bfb16c2afae7275cb920cd9a2a03509eb61e",
+                                 "copied_sha256":  "7436c8fd083a61716898948f3fe2bfb16c2afae7275cb920cd9a2a03509eb61e",
+                                 "exact_raw_byte_copy":  true,
+                                 "original_unchanged_during_copy":  true
+                             },
+                             {
+                                 "relative_path":  "matrix/observed_driver01/execution_terminal.json",
+                                 "source_path":  "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_recording_probe02_seed004_matrix\\observed_driver01\\execution_terminal.json",
+                                 "role":  "original_closed_outer_terminal",
+                                 "bytes":  144832,
+                                 "source_sha256":  "71cf7e2554ecb4c3f9701ce00606e9b2dbd1f6a026872f0d74a15ff5fed895aa",
+                                 "copied_sha256":  "71cf7e2554ecb4c3f9701ce00606e9b2dbd1f6a026872f0d74a15ff5fed895aa",
+                                 "exact_raw_byte_copy":  true,
+                                 "original_unchanged_during_copy":  true
+                             },
+                             {
+                                 "relative_path":  "matrix/observed_driver01/01_car_extension_far_distance_seed004.attempt_terminal.json",
+                                 "source_path":  "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_recording_probe02_seed004_matrix\\observed_driver01\\01_car_extension_far_distance_seed004.attempt_terminal.json",
+                                 "role":  "original_single_attempt_terminal",
+                                 "bytes":  2138,
+                                 "source_sha256":  "8418824b72759ef42ab529c6e42d84ac513532f61af18055943b1a9c9d2a585e",
+                                 "copied_sha256":  "8418824b72759ef42ab529c6e42d84ac513532f61af18055943b1a9c9d2a585e",
+                                 "exact_raw_byte_copy":  true,
+                                 "original_unchanged_during_copy":  true
+                             },
+                             {
+                                 "relative_path":  "independent/humble45_probe02_closed_independent01.json",
+                                 "source_path":  "D:\\WSL\\UAVHumble22-validation\\humble45_probe02_closed_independent01.json",
+                                 "role":  "original_independent_closed_metadata_review",
+                                 "bytes":  11593,
+                                 "source_sha256":  "eb652fb71132dc1838904b07aa510869b0c9eaa4721f78c7e95890a65ce6c379",
+                                 "copied_sha256":  "eb652fb71132dc1838904b07aa510869b0c9eaa4721f78c7e95890a65ce6c379",
+                                 "exact_raw_byte_copy":  true,
+                                 "original_unchanged_during_copy":  true
+                             },
+                             {
+                                 "relative_path":  "matrix/observed_driver01/observer_driver/execution_terminal.json",
+                                 "source_path":  "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_recording_probe02_seed004_matrix\\observed_driver01\\observer_driver\\execution_terminal.json",
+                                 "role":  "closed_owner_terminal_or_archive_manifest_metadata_only",
+                                 "bytes":  8434,
+                                 "source_sha256":  "fb115f73f5f8dc2dc9c4900be7ac35a248c3cbd72f191187e6f88ed07d270eed",
+                                 "copied_sha256":  "fb115f73f5f8dc2dc9c4900be7ac35a248c3cbd72f191187e6f88ed07d270eed",
+                                 "exact_raw_byte_copy":  true,
+                                 "original_unchanged_during_copy":  true
+                             },
+                             {
+                                 "relative_path":  "matrix/observed_driver01/observer_driver/native_exit_terminal.json",
+                                 "source_path":  "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_recording_probe02_seed004_matrix\\observed_driver01\\observer_driver\\native_exit_terminal.json",
+                                 "role":  "closed_owner_terminal_or_archive_manifest_metadata_only",
+                                 "bytes":  3444,
+                                 "source_sha256":  "b6b1ae1aabe385c209716dc6339eb1ca69266b4a01a9aaa16a8821eeb28d94b6",
+                                 "copied_sha256":  "b6b1ae1aabe385c209716dc6339eb1ca69266b4a01a9aaa16a8821eeb28d94b6",
+                                 "exact_raw_byte_copy":  true,
+                                 "original_unchanged_during_copy":  true
+                             },
+                             {
+                                 "relative_path":  "matrix/observed_driver01/observer_driver/archive_manifest.json",
+                                 "source_path":  "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_recording_probe02_seed004_matrix\\observed_driver01\\observer_driver\\archive_manifest.json",
+                                 "role":  "closed_owner_terminal_or_archive_manifest_metadata_only",
+                                 "bytes":  5918,
+                                 "source_sha256":  "08ca80a7b7d10c8f253bc68f8a6b2555d4e12158802efb7a1c50f69b3409e296",
+                                 "copied_sha256":  "08ca80a7b7d10c8f253bc68f8a6b2555d4e12158802efb7a1c50f69b3409e296",
+                                 "exact_raw_byte_copy":  true,
+                                 "original_unchanged_during_copy":  true
+                             }
+                         ],
+    "generated_files":  [
+                            {
+                                "relative_path":  "README.md",
+                                "bytes":  1749,
+                                "sha256":  "aed36f62f69f5662fc235c0c0cafce7aa2474d4ad17c3273f674c577ca07c461"
+                            }
+                        ],
+    "exclusions":  [
+                       "frames JSONL",
+                       "telemetry",
+                       "bag payloads or bag replay",
+                       "ROS log",
+                       "owner health large log",
+                       "source/model payloads",
+                       "Any current core12 runtime files"
+                   ],
+    "checksum_policy":  "SHA256SUMS covers all 20 other files, excluding itself"
+}

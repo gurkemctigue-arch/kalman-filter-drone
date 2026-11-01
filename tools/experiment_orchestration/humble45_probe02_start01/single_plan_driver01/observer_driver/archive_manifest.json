@@ -1,0 +1,129 @@
+{
+  "archive_directory": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble45/freeze_validation/reliability_v4_humble45_recording_probe02_single_plan_driver01/observer_driver",
+  "archive_wall_budget_s": 1800.0,
+  "collector_source": {
+    "bytes": 27727,
+    "path": "/root/uav_tracking_fullplan_v4_humble45/scripts/observe_runtime_health.py",
+    "sha256": "f174ec21ebf962f156d76f8d35f802eebf318163555815527a3e2227b914f180"
+  },
+  "files": [
+    {
+      "binding": {
+        "bytes": 3444,
+        "path": "/dev/shm/uav_tracking_runtime_health/owner41_08d56ab381f24c6598874e2b70529401/native_exit_terminal.json",
+        "sha256": "9f976380bda98ddc7db475d84670bbbdcbfb9e6f21a8fd836a3990806c4c891d"
+      },
+      "relative_path": "native_exit_terminal.json"
+    },
+    {
+      "binding": {
+        "bytes": 1362,
+        "path": "/dev/shm/uav_tracking_runtime_health/owner41_08d56ab381f24c6598874e2b70529401/session_001/observer_console.log",
+        "sha256": "cf9491a99c4d9a04ea11f040d18fe469c638d3c787bc4f3967e2d2a94b3056ca"
+      },
+      "relative_path": "session_001/observer_console.log"
+    },
+    {
+      "binding": {
+        "bytes": 2372,
+        "path": "/dev/shm/uav_tracking_runtime_health/owner41_08d56ab381f24c6598874e2b70529401/session_001/native_exit_terminal.json",
+        "sha256": "0d56514ad6634beb89eced67eefe6a5cdfbbdc11dbe1a4be4ddbbea772a47689"
+      },
+      "relative_path": "session_001/native_exit_terminal.json"
+    },
+    {
+      "binding": {
+        "bytes": 7624,
+        "path": "/dev/shm/uav_tracking_runtime_health/owner41_08d56ab381f24c6598874e2b70529401/session_001/runtime_health/health.jsonl",
+        "sha256": "fc2ce995165f70f4e25625334701b32e7ab9538d0d557e3f7bc23a3e9d0cf2f1"
+      },
+      "relative_path": "session_001/runtime_health/health.jsonl"
+    }
+  ],
+  "live_directory": "/dev/shm/uav_tracking_runtime_health/owner41_08d56ab381f24c6598874e2b70529401",
+  "native": {
+    "all_native_exit_monotonic_s": 65.596226551,
+    "archive_directory": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble45/freeze_validation/reliability_v4_humble45_recording_probe02_single_plan_driver01/observer_driver",
+    "driver_exception": false,
+    "healthy_cleanup": true,
+    "live_directory": "/dev/shm/uav_tracking_runtime_health/owner41_08d56ab381f24c6598874e2b70529401",
+    "max_sample_age_wall_s": 10.0,
+    "native_finished_utc": "2026-11-01T15:56:30.467887+00:00",
+    "rotation_wall_s": 5400.0,
+    "rotations": [],
+    "schema_version": 1,
+    "scope": "HUMBLE41_TMPFS_RUNTIME_OBSERVER_NATIVE_AND_ARCHIVE_SEPARATE",
+    "session_duration_wall_s": 7200.0,
+    "sessions": [
+      {
+        "archive_directory": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble45/freeze_validation/reliability_v4_humble45_recording_probe02_single_plan_driver01/observer_driver/session_001",
+        "capacity": {
+          "console_limit_bytes": 262144,
+          "free_bytes": 8313147392,
+          "health_limit_bytes": 67108864,
+          "mount": {
+            "filesystem": "tmpfs",
+            "mountpoint": "/dev/shm"
+          },
+          "required_free_bytes": 136839168
+        },
+        "command": [
+          "/root/uav_humble22/venv/bin/python",
+          "-B",
+          "/root/uav_tracking_fullplan_v4_humble45/scripts/observe_runtime_health.py",
+          "--output-dir",
+          "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble45/freeze_validation/reliability_v4_humble45_recording_probe02_single_plan_driver01/observer_driver/session_001/runtime_health",
+          "--live-output-dir",
+          "/dev/shm/uav_tracking_runtime_health/owner41_08d56ab381f24c6598874e2b70529401/session_001/runtime_health",
+          "--duration-wall-s",
+          "7200",
+          "--max-log-mib",
+          "64",
+          "--ros"
+        ],
+        "driver_exception": false,
+        "ended_before_requested_stop": false,
+        "errors": [],
+        "final_fresh_sample": {
+          "check_duration_wall_s": 0.00061932299999512,
+          "checked_monotonic_s": 65.332124485,
+          "latest_sample_monotonic_s": 64.620949327,
+          "max_sample_age_wall_s": 10.0,
+          "sample_age_wall_s": 0.711175157999989
+        },
+        "first_fresh_monotonic_s": 64.721081895,
+        "first_fresh_sample": {
+          "check_duration_wall_s": 0.0008259789999982559,
+          "checked_monotonic_s": 64.721016897,
+          "latest_sample_monotonic_s": 64.620949327,
+          "max_sample_age_wall_s": 10.0,
+          "sample_age_wall_s": 0.10006756999999311
+        },
+        "healthy_cleanup": true,
+        "index": 1,
+        "live_directory": "/dev/shm/uav_tracking_runtime_health/owner41_08d56ab381f24c6598874e2b70529401/session_001",
+        "local_evidence_removed": false,
+        "native_exit_monotonic_s": 65.596226551,
+        "native_exit_utc": "2026-11-01T15:56:30.467471+00:00",
+        "native_shutdown_wall_s": 0.2640841719999969,
+        "observer_exit_code": 0,
+        "observer_forced_stop": false,
+        "source_root": "/root/uav_tracking_fullplan_v4_humble45",
+        "started_monotonic_s": 64.21360564,
+        "started_utc": "2026-11-01T15:56:29.084589+00:00",
+        "stop_requested_monotonic_s": 65.332142379,
+        "stop_requested_utc": "2026-11-01T15:56:30.203128+00:00"
+      }
+    ],
+    "source_root": "/root/uav_tracking_fullplan_v4_humble45",
+    "started_utc": "2026-11-01T15:56:29.084523+00:00"
+  },
+  "owner_source": {
+    "bytes": 49900,
+    "path": "/mnt/d/WSL/UAVHumble22-validation/local_runtime_observer41.py",
+    "sha256": "2f1348d862525777800df823780a269ef235b0df8d96b9ec378dc61c2be99914"
+  },
+  "schema_version": 1,
+  "scope": "HUMBLE41_TMPFS_RUNTIME_OBSERVER_NATIVE_AND_ARCHIVE_SEPARATE",
+  "source_root": "/root/uav_tracking_fullplan_v4_humble45"
+}
