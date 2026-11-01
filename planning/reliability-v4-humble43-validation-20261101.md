@@ -1,6 +1,6 @@
 # Humble43验证与剩余准入
 
-2026-11-01 14:31:00（北京时间）快照。本文件说明当前证据和待执行工作，不替代原始评价。核心12独审通过；原生v2组件04的85项和3项describe真实通过；安全4原四场全部PASS、完整原guard及闭合独审PASS，安全批次主命令退出0。扩展首场`person_extension_depth_noise_seed004`已原始PASS/engineering PASS，外层attempt也已闭合；当前1/16终态、1 PASS，截至本快照第二场尚无START，扩展整批尚未闭合。其余扩展、容量/定标及正式准入仍待完成，正式仍0/280。历史Humble42保持8 PASS、1 FAIL、3 PENDING。
+2026-11-01 16:40:02（北京时间）快照。本文件说明当前证据和待执行工作，不替代原始评价。核心12独审通过；原生v2组件04的85项和3项describe真实通过；安全4原四场全部PASS、完整原guard及闭合独审PASS，安全批次主命令退出0。扩展16场已有4 START、3原槽及outer健康PASS、0 FAIL、12尚未开始，当前`person_extension_latency_seed004`；整批尚未闭合。其余扩展、容量/定标及正式准入仍待完成，正式仍0/280。第三槽出现UTC/monotonic计时差异，原因尚未确定，详见下述原始计时边界。历史Humble42保持8 PASS、1 FAIL、3 PENDING。
 
 ## 已完成的修复验证
 
@@ -73,17 +73,23 @@ v2共10个文件，当前部署字节对应revision02闭合清单SHA256：`83eeb
 
 扩展FINAL admission文件SHA256为`890a8531fb438c251e4ab469e17978cef24dd03239556515b39ec1946e1dac14`，其publication为`0c0622d29154d87458a3c32c9ee9b9cef845824d85afdfcc2246736fd61eb30b`。实际原plan已于05:41:55.836422 UTC以returncode0闭合，完整PENDING16通过104项独立静态check。root另产仅status变化的FINAL runtime合同，SHA256为`68d9ebb2c5a2888e4bfaa6cbf6142298a663380ddce0074aafa1bb0f28912058`，原publication为`deb6b086af27bdf09ec31d816b36c2c8f57837639c49f58da0cb324e4e4ca681`。[扩展16启动快照](../tools/experiment_orchestration/humble43_extension16_start_snapshot01/README.md)逐字节保留原plan、PENDING、独审、FINAL、publication及规划终态；104项是静态check，不是新增原生测试或飞行PASS。
 
-原16场run于05:46:07 UTC实际启动，13:46启动快照原字节保留。首场[原槽终态](../results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_seed004_matrix/slots/person_extension_depth_noise_seed004.json)于06:29:51.150954 UTC生成，status与engineering_result均PASS，execution_status=COMPLETED、flight_exit_code=0、infrastructure_stop=false。其[外层attempt](../results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_seed004_matrix/observed_driver01/01_person_extension_depth_noise_seed004.attempt_terminal.json)于06:31:00.198600 UTC闭合，error=null、started_this_invocation=1，原audit存在。当前1/16终态、1 PASS，截至14:31:00快照第二场尚无START；这不表示扩展整批或整批owner已经闭合。后续命令状态见本机[扩展批次进度页](../results/project_progress/humble43_extension01/index.html)。
+原16场run于05:46:07 UTC实际启动，13:46启动快照原字节保留。首场[原槽终态](../results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_seed004_matrix/slots/person_extension_depth_noise_seed004.json)于06:29:51.150954 UTC生成，status与engineering_result均PASS，execution_status=COMPLETED、flight_exit_code=0、infrastructure_stop=false。其[外层attempt](../results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_seed004_matrix/observed_driver01/01_person_extension_depth_noise_seed004.attempt_terminal.json)于06:31:00.198600 UTC闭合，error=null、started_this_invocation=1，原audit存在。当前已有4 START、3原槽及outer健康PASS、0 FAIL、12尚未开始；第四场latency原槽于08:40:02.398752 UTC START，外层于08:39:59.802360 UTC START。这不表示扩展整批或整批owner已经闭合。后续命令状态见本机[扩展批次进度页](../results/project_progress/humble43_extension01/index.html)。
 
 首场距离/高度RMSE为0.769030/0.154279米，导航覆盖0.916223404、真值覆盖1.0，六项工程检查通过。其[原归档报告](../results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_person_extension_depth_noise_seed004/bag_integrity.json)记录原始录包4,148,883,456 B、压缩1,214,272,594 B；在线RGB、在线Depth、research RGB、research Depth四流各933条。实际[recording policy](../results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_person_extension_depth_noise_seed004/configuration/recording_policy.json)及compression_command均为`zstd -T4 -19 --long=27 --check`，不能套用较早T1实测。该单个深度噪声压力样本不等于完整28格容量测量，也不证明280次空间足够。各开发scope仍不代替实际16格终态、容量/定标、最终封存及正式280。
+
+第三场[dropout原槽](../results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_seed004_matrix/slots/person_extension_dropout_seed004.json)于08:33:48.425056 UTC终态PASS、engineering PASS、flight_exit0、infrastructure_stop=false；[外层attempt](../results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_seed004_matrix/observed_driver01/03_person_extension_dropout_seed004.attempt_terminal.json)于08:35:04.731320 UTC闭合、error=null。第四场[latency原槽START](../results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_seed004_matrix/slots/person_extension_latency_seed004.started.json)及[外层START](../results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_seed004_matrix/observed_driver01/04_person_extension_latency_seed004.started.json)分别记录08:40:02.398752和08:39:59.802360 UTC；截至16:40:02北京时间快照尚无该场终态。
+
+第三槽UTC START 07:25:06.748207→08:33:48.425056共4121.676849秒，必须保留。其navigation command UTC 07:46:25.933494→08:33:38.576415跨度2832.642921秒，原`elapsed_wall_s=117.6539923`由执行源码的`time.monotonic()`计量，差2714.9889287秒（约45分15秒）；其他四条命令UTC与monotonic仅微秒差。原评价returncode0、error=null及工程PASS不变，但该时间差不能解释为约69分钟算法耗时，也不能删掉UTC跨度或将monotonic冒充UTC。
+
+08:40:36 UTC完成的有限只读核查，在Windows System日志07:40—08:40 UTC范围内查询Kernel-Power 42/107、Power-Troubleshooter 1及Kernel-General 1，均返回`NoMatchingEventsFound`；两owned进程33712/28584仍alive，新lease未到期。该范围和事件集合不足以确定原因，不能据此归因用户休眠或宣称已证实时钟跳变；工程计时异常保持未归因，不新造审计结果或改写原记录。后续完整28格分别汇总原UTC跨度与实际活跃计时，并披露无法解释的差异。
 
 ## 下一步顺序
 
 1. 核心12原`actual_core`独立复验已通过；保留实际收据、全部原始PASS及完整owner、归档、来源和清理证据，不以此覆盖任何历史失败。
 2. 原生v2组件04完整补验及安全4原四场/完整guard/主命令退出已通过；保留独立scope与真实闭合原件。
-3. 扩展原规划及PENDING16静态独审已通过、独立FINAL合同已发布；首场原PASS及外层attempt已闭合，当前1/16完成，继续按原流程执行其余原槽并完成整批owner收尾，保留所有算法与安全结果，不把单场通过当作整批闭合。
+3. 扩展原规划及PENDING16静态独审已通过、独立FINAL合同已发布；当前4 START、3原槽及outer健康PASS、0 FAIL、12尚未开始，继续按原流程执行latency及其余原槽并完成整批owner收尾，保留所有算法与安全结果和时钟异常，不把单场通过当作整批闭合。
 4. 用完整28格实测录包/归档/临时峰值和剩余空间；导出预定两条核心速度录制，完成R0定标。不能用一个小样本估计就宣布280次容量足够。
 5. 完成独立最终来源准备、冷构建、正式120+160登记、四法回放绑定、补充检测/时延的前瞻协议、源码封存及首正式前完整准入。
 6. 执行280次正式飞行、20条同观测四法离线比较、检测/身份/时延统计，生成图表、视频、最终计划书和研究报告，再同步GitHub。
 
-核心12独审、原生04组件补验及安全4开发关口已通过；扩展已有1/16原PASS，仍须完成其余槽、容量/定标、最终准入及280次逐次飞行与归档。本批剩余暂按8—10小时条件估计，全部剩余工作仍维持5—6天量级，依实际新结果调整，不恢复历史较短小时估计。未知身份和未稳定窗口将按完整分母报告；现阶段不预设“自适应KF所有指标最好”或“主动云台必然提升整体可靠性”。
+核心12独审、原生04组件补验及安全4开发关口已通过；扩展已有3/16原PASS，第四场latency运行，仍须完成其余槽、容量/定标、最终准入及280次逐次飞行与归档。本批原8—10小时、整体5—6天仍是条件估计；完整28格后按实际活跃计时与UTC分别重算，不套最初首场约27分钟作承诺，也不恢复历史较短小时估计。未知身份、未稳定窗口与未归因计时差异均保留；现阶段不预设“自适应KF所有指标最好”或“主动云台必然提升整体可靠性”。

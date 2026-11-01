@@ -1,8 +1,10 @@
 # RGB-D UAV target tracking and following
 
-**2026-11-01 14:31:00（北京时间）快照：Humble43 同源核心12独审通过，原生v2组件04的85项及3项describe真实通过；安全4原四场全部PASS、完整原guard及闭合独审通过，安全批次主命令退出0，正式仍0/280。** 扩展原16场run已产生首场`person_extension_depth_noise_seed004`原始PASS/engineering PASS，外层attempt也已闭合，当前1/16终态、1 PASS；截至本快照第二场尚无START，扩展整批尚未闭合。容量、定标及正式研究仍待完成，不能称全部验收通过。
+**2026-11-01 16:40:02（北京时间）快照：Humble43 同源核心12独审通过，原生v2组件04的85项及3项describe真实通过；安全4原四场全部PASS、完整原guard及闭合独审通过，安全批次主命令退出0，正式仍0/280。** 扩展16场已有4 START、3个原槽及外层attempt健康PASS、0 FAIL，12场尚未开始；当前为`person_extension_latency_seed004`，原槽START为08:40:02.398752 UTC。扩展整批尚未闭合，容量、定标及正式研究仍待完成。
 
-首场[原槽终态](results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_seed004_matrix/slots/person_extension_depth_noise_seed004.json)于06:29:51.150954 UTC生成，[外层attempt](results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_seed004_matrix/observed_driver01/01_person_extension_depth_noise_seed004.attempt_terminal.json)于06:31:00.198600 UTC闭合，flight_exit0、COMPLETED、infrastructure_stop=false、error=null。该压力样本原始录包4,148,883,456 B、压缩1,214,272,594 B，在线与research的RGB/Depth四流各933条，实际归档策略为`zstd -T4 -19 --long=27 --check`；不能代表完整28格容量或280次准入。本批剩余暂按8—10小时条件估计，整体仍为5—6天量级，按新实测修订。
+首场[原槽终态](results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_seed004_matrix/slots/person_extension_depth_noise_seed004.json)于06:29:51.150954 UTC生成，[外层attempt](results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_seed004_matrix/observed_driver01/01_person_extension_depth_noise_seed004.attempt_terminal.json)于06:31:00.198600 UTC闭合，flight_exit0、COMPLETED、infrastructure_stop=false、error=null。该压力样本原始录包4,148,883,456 B、压缩1,214,272,594 B，在线与research的RGB/Depth四流各933条，实际归档策略为`zstd -T4 -19 --long=27 --check`；不能代表完整28格容量或280次准入。
+
+第三场dropout原槽已于08:33:48.425056 UTC记录PASS，外层于08:35:04.731320 UTC健康闭合，但其导航评价的UTC跨度2832.642921秒与原monotonic耗时117.6539923秒相差2714.9889287秒，原因尚未确定；不能将整槽约69分钟UTC跨度解释为算法耗时。原UTC与计时证据均保留，有限Windows事件查询未能归因，详见[计时边界与原件](planning/reliability-v4-humble43-validation-20261101.md)。本批原8—10小时、整体5—6天均为条件估计；待完整28格后按实际活跃计时与UTC分别重算，不以首场约27分钟作承诺。
 
 扩展的原plan、PENDING、独审、FINAL及发布来源仍见[13:46扩展16启动快照](tools/experiment_orchestration/humble43_extension16_start_snapshot01/README.md)，原字节保留；当前命令状态见本机[扩展进度页](results/project_progress/humble43_extension01/index.html)。104项是静态check，不是104次原生测试或飞行；全部原失败、未知及完整分母继续保留。
 
