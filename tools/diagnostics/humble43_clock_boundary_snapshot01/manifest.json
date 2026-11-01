@@ -1,0 +1,93 @@
+{
+    "schema_version":  1,
+    "scope":  "EXACT_ORIGINAL_HUMBLE43_CLOCK_BOUNDARY_DIAGNOSTIC_SNAPSHOT_NOT_REPAIR_OR_ADMISSION",
+    "created_utc":  "2026-11-01T14:33:38.2572090Z",
+    "original_slot":  "car_extension_far_distance_seed004",
+    "original_native_returncode":  0,
+    "returncode_evidence":  "Root observed the original native process exit 0; diagnostic status is independently retained below.",
+    "diagnostic_status":  "DIAGNOSTIC_COMPLETE_ORIGINAL_FAILURES_RETAINED",
+    "original_started_utc":  "2026-11-01T14:28:00.747903+00:00",
+    "original_finished_utc":  "2026-11-01T14:28:39.616187+00:00",
+    "original_verdicts_changed":  false,
+    "formal_attempts_started":  0,
+    "source_copies":  {
+                          "diagnose_humble43_extension_clock_boundary01.py":  {
+                                                                                  "source_path":  "D:\\WSL\\UAVHumble22-validation\\diagnose_humble43_extension_clock_boundary01.py",
+                                                                                  "bytes":  30536,
+                                                                                  "sha256":  "81d324facf5136d9e6f194b29c3e96474d5310ba2f0be6753cdcbfa4143762d4",
+                                                                                  "byte_identical_to_source":  true
+                                                                              },
+                          "run_humble43_clock_boundary_native01.sh":  {
+                                                                          "source_path":  "D:\\WSL\\UAVHumble22-validation\\run_humble43_clock_boundary_native01.sh",
+                                                                          "bytes":  589,
+                                                                          "sha256":  "1a6df954b33f947cd3604f8733895c2ca084349c198e73070b80809c65218fc6",
+                                                                          "byte_identical_to_source":  true
+                                                                      },
+                          "started.json":  {
+                                               "source_path":  "D:\\WSL\\UAVHumble22-validation\\humble43_extension_clock_boundary_native01\\started.json",
+                                               "bytes":  1743,
+                                               "sha256":  "3a91afce447372c7ad7bbbcae3fe708198ffa9812b43181f71c97b252f3efba2",
+                                               "byte_identical_to_source":  true
+                                           },
+                          "diagnostic.json":  {
+                                                  "source_path":  "D:\\WSL\\UAVHumble22-validation\\humble43_extension_clock_boundary_native01\\diagnostic.json",
+                                                  "bytes":  597179,
+                                                  "sha256":  "90455cea7ac81d950e524905c5fa7a21556dbc46f7a65d388030fff46d826803",
+                                                  "byte_identical_to_source":  true
+                                              }
+                      },
+    "original_copy_bytes":  630047,
+    "generated_files":  {
+                            "README.md":  {
+                                              "bytes":  2601,
+                                              "sha256":  "6add723bf01514a196d12b3b8b3617d482752f35a9c17faaf011886efb0d68c8"
+                                          }
+                        },
+    "observed_facts":  {
+                           "source_counts":  {
+                                                 "raw_px4":  9173,
+                                                 "timing_diagnostics":  9173,
+                                                 "adapted_odometry":  9174,
+                                                 "claimed_accepted":  9173,
+                                                 "claimed_rejected":  0,
+                                                 "independently_matched_triplets":  9173
+                                             },
+                           "original_source_frames_equal":  true,
+                           "original_matched_frames":  9173,
+                           "orphan_count":  1,
+                           "orphan_sequence_space":  "original_source_clock_four_topic_filtered_sequence",
+                           "orphan_record_sequence":  3357,
+                           "orphan_header_ns":  2740000000,
+                           "orphan_delivery_s":  2.792,
+                           "same_header_adapted_count":  1,
+                           "raw_same_sample_count":  0,
+                           "diagnostic_same_sample_count":  0,
+                           "phase_messages":  1846,
+                           "phase_violation_count":  1,
+                           "phase_sequence_space":  "original_native_startup_nine_topic_filtered_sequence_never_source_clock_sequence",
+                           "phase_record_sequence":  3158,
+                           "phase_source_s":  2.756,
+                           "phase_delivery_s":  2.7,
+                           "phase_age_s":  -0.055999999999999606,
+                           "phase_direction":  "future",
+                           "phase_previous_clock_s":  2.7,
+                           "phase_next_clock_s":  2.7640000000000002,
+                           "source_first_clock_sequence":  0,
+                           "source_pre_clock_record_count":  0,
+                           "native_first_clock_sequence":  0,
+                           "native_pre_clock_record_count":  0,
+                           "original_source_reader_calls":  1,
+                           "original_native_reader_calls":  1,
+                           "all_reader_cache_baselines_restored":  true
+                       },
+    "conclusions":  {
+                        "anomalies_are_temporally_near":  true,
+                        "common_root_cause_proven":  false,
+                        "pre_first_clock_split_explains_these_anomalies":  false,
+                        "repair_validated":  false,
+                        "original_engineering_and_owner_failure_retained":  true,
+                        "claim_boundary":  "Location and context of the two original anomalies only; no new pairing, gate relaxation, failure relabeling, healthy extension closure, capacity admission, or formal execution."
+                    },
+    "archive_note":  "The shell preserves executed absolute paths. Original output already exists and the single-use diagnostic rejects reuse.",
+    "required_gitattributes":  "tools/diagnostics/humble43_clock_boundary_snapshot01/** -text whitespace=cr-at-eol"
+}

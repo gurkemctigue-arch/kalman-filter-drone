@@ -71,6 +71,42 @@ def apply_px4_adapter_publish_rate(parameters: dict, rate_hz: float) -> None:
     parameters["uav_tracking_flight_supervisor"]["ros__parameters"].setdefault("heartbeat_prestream_s", 1.2)
 
 
+def snapshot_recording_qos(root: Path, destination: Path) -> dict:
+    """Preserve the exact requested receive profiles before launching rosbag."""
+    source = root / "config" / "recording_qos.yaml"
+    raw = source.read_bytes()
+    profiles = yaml.safe_load(raw)
+    compatibility = {
+        "/clock": ("reliable", "volatile"),
+        "/fmu/out/vehicle_odometry": ("best_effort", "transient_local"),
+        "/vehicle/odometry_timing": ("reliable", "volatile"),
+        "/vehicle/odometry": ("reliable", "volatile"),
+        "/tracking/flight_phase": ("reliable", "volatile"),
+    }
+    if not isinstance(profiles, dict) or set(profiles) != set(compatibility):
+        raise ValueError("Recorder QoS must cover exactly the five evidence topics")
+    for topic, (reliability, durability) in compatibility.items():
+        profile = profiles[topic]
+        if (not isinstance(profile, dict) or profile.get("history") != "keep_last"
+                or type(profile.get("depth")) is not int or profile["depth"] <= 0
+                or profile.get("reliability") != reliability
+                or profile.get("durability") != durability):
+            raise ValueError(f"Invalid or incompatible recorder QoS for {topic}")
+    snapshot = destination / "recording_qos.yaml"
+    with snapshot.open("xb") as stream:
+        stream.write(raw)
+    return {"source": str(source), "snapshot": str(snapshot), "bytes": len(raw),
+            "sha256": hashlib.sha256(raw).hexdigest(), "requested_profiles": profiles,
+            "scope": "Requested recorder receive QoS; delivery and original evaluation gates remain independently verified"}
+
+
+def start_recording(start, recording_spool: Path, topics: list[str], *, qos_snapshot: Path):
+    """Use the archived QoS bytes for the actual owned recorder process."""
+    return start("bag", ["ros2", "bag", "record", "--storage", "sqlite3",
+                         "--qos-profile-overrides-path", str(qos_snapshot),
+                         "-o", str(recording_spool / "rosbag"), *topics])
+
+
 def apply_multi_target_identity(parameters: dict, bringup: Path, target_class: str) -> Path:
     """Keep designated-target safety while retaining the physical gimbal graph."""
     identity_config_path = bringup / "config" / f"stage2_tracking_{target_class}.yaml"
@@ -661,10 +697,12 @@ def main() -> None:
         start("px4", ["bash", str(runner), "px4", args.target_class])
         time.sleep(3)
         if not args.no_bag:
+            recording_qos = snapshot_recording_qos(root, snapshot)
             recording_spool = create_recording_spool(output)
             (snapshot / "recording_policy.json").write_text(json.dumps({
                 "schema_version": 1, "policy": "ext4_sqlite_close_standard_zstd_verified_native_read",
                 "recorder_storage": "sqlite3", "recorder_compression": "none",
+                "qos_overrides": recording_qos,
                 "compression_profile": archive_compression_profile(),
                 "archive_phase": "after_all_flight_processes_stopped_and_recorder_closed",
                 "spool": str(recording_spool), "published_bag": str(output / "rosbag"),
@@ -684,8 +722,8 @@ def main() -> None:
                            "/gimbal/yaw/cmd_pos", "/gimbal/pitch/cmd_pos", "/gimbal/roll/cmd_pos", "/scenario/stage2_profile",
                            "/research/camera/color/image_raw", "/research/camera/aligned_depth_to_color/image_raw"])
             topics.extend(["/tracking/navigation_state", "/tracking/navigation_diagnostics"])
-            start("bag", ["ros2", "bag", "record", "--storage", "sqlite3",
-                          "-o", str(recording_spool / "rosbag"), *topics])
+            start_recording(start, recording_spool, topics,
+                            qos_snapshot=Path(recording_qos["snapshot"]))
         monitor_cmd = [sys.executable, str(root / "scripts" / "stage1_flight_monitor.py"), "--output", str(output), "--target-class", args.target_class,
                        "--duration", str(args.duration), "--wall-timeout", str(args.wall_timeout), "--world", world,
                        "--monitor-tick-s", str(args.monitor_tick_s),
