@@ -1,0 +1,355 @@
+{
+  "schema_version": 1,
+  "created_utc": "2026-11-01T18:26:06.338193+00:00",
+  "action_binding": {
+    "review": {
+      "path": "/mnt/d/WSL/UAVHumble22-validation/reviewed_freeze_review_v4_humble46_01.json",
+      "sha256": "68e3d2891e08001e86b4162def9c33ad2f2536257df9726c866ffdb4e7ad98a4"
+    },
+    "source": {
+      "manifest_sha256": "39e0bf6dc5c6ca994b8475b057b2a66e79819640893dc0657642e63d0f98f315",
+      "freeze_source_sha256": "26bb404697eaf946e9671d0d8cae81638a89e78cdd26976d1e96da4423b0a737",
+      "verified_file_count": 1123
+    },
+    "closed_original_evidence": {
+      "capsule_sha256": "de0017bf681441ea42295ded9ef1ec03c1916c4efd4bc81a02e1cc5dfda5339a",
+      "files": 156,
+      "metadata_bytes": 9655043,
+      "file_map_sha256": "8a6e68dd5ed6053e1e8bfc3f25e1fa7e95e67300299e595ad74470643a8e1ee0",
+      "retained_fields_sha256": "c6eb1013d9938791d6c5e997d056c11ad4ba1b813c6f941e96b916245774ae53",
+      "payloads_reverified": false
+    },
+    "development_resource_override": {
+      "override": {
+        "schema_version": 1,
+        "status": "FINAL_DEVELOPMENT_BUILD_RESOURCE_OVERRIDE_INDEPENDENTLY_REVIEWED",
+        "scope": "EXPLICIT512_RESOURCE_SUPPLEMENT_WITH_UNCHANGED_GENERIC_BUILD_IMPLEMENTATIONS",
+        "tools_canonical_sha256": "517b2b2dfb989b8ca32f4f12ee4bd18b54bafd906c5d251a21d58407845ea503",
+        "resource_revision": "car_train20_04_m512_cpu4_v1",
+        "receipt": {
+          "path": "config/car_sim_train20_04_m512_resource_receipt.json",
+          "sha256": "9abeaca3a892e61761564bc7116bb8aed34d9864f4f7406bd9f3a4bc59f3c26c"
+        },
+        "supersedes_legacy_resource_choice_only": true,
+        "legacy_runtime_invariant_field_is_schema_compatibility_only": true,
+        "unchanged_contracts": [
+          "safety",
+          "bridge",
+          "magnetic",
+          "environment",
+          "source_binding",
+          "bounded_owner",
+          "build",
+          "suite"
+        ],
+        "legacy640_runtime_acceptance_claimed": false,
+        "runtime_acceptance_claimed": false,
+        "formal_seed_use_authorized": false
+      },
+      "tools_manifest": {
+        "schema_version": 1,
+        "scope": "EXPLICIT512_RESOURCE_SUPPLEMENT_WITH_UNCHANGED_GENERIC_BUILD_IMPLEMENTATIONS",
+        "files": {
+          "development_freeze_build.py": "cf54a57bffdb8944aa0e2cdd724e6de70028f4d8511acf89d3becb58c8b2c129",
+          "development_freeze_build.sh": "3a6ddd86749c944989b8618ae70457631114490cb3cc63ca6835085937975bd8",
+          "test_development_freeze_build.py": "751a9f8ce6f46129a6401f235e50844b67d2274c110b8720b6180f8a59f09ad3"
+        },
+        "reused_generic_canonical_sha256": "e57017201f1033847e49bb7843b1ef61bad28c21ac9f16e876736498980219cf",
+        "resource_guard": {
+          "schema_version": 1,
+          "scope": "DEVELOPMENT_IMAGE_REGRESSION_AND_OFFLINE_WORKER_TIMING_ONLY_NOT_FLIGHT_ACCEPTANCE",
+          "files": {
+            "development_resource_guard.py": "36dcddc624df2c725856fdedc2e8e5dd5582e88fc97d8458df31f5fcbfba58e5",
+            "test_development_resource_guard.py": "4ce70019ce71d95487af8c21fe17b20245a8e114b39b896649bfa3ab65742750"
+          },
+          "revision": "car_train20_04_m512_cpu4_v1",
+          "receipt": {
+            "path": "config/car_sim_train20_04_m512_resource_receipt.json",
+            "sha256": "9abeaca3a892e61761564bc7116bb8aed34d9864f4f7406bd9f3a4bc59f3c26c"
+          },
+          "generic_tools_canonical_sha256": "e57017201f1033847e49bb7843b1ef61bad28c21ac9f16e876736498980219cf",
+          "legacy_guard_modified": false,
+          "dependency_globals_modified": false,
+          "closed_loop_or_formal_acceptance_awarded": false
+        },
+        "actual_build_and_suite_functions": [
+          "reviewed_freeze_build.build",
+          "reviewed_freeze_build.installed_checks",
+          "reviewed_freeze_build.validate_build"
+        ],
+        "legacy_runtime_contracts_called": false,
+        "dependency_globals_modified": false,
+        "flight_actions_authorized": false,
+        "formal_seed_use_authorized": false
+      },
+      "reviewed_protocol_sha256": "a5f7412dd239d5452bdc725c825cd0b744aa5448acd15af9ebc7d6b6a9064d5b"
+    }
+  },
+  "runtime": {
+    "safety": {
+      "runtime_constants": {
+        "uav_tracking_state_estimator": {
+          "max_observation_age_s": 0.6,
+          "max_prediction_duration_s": 0.75
+        },
+        "uav_tracking_controller": {
+          "prediction_timeout_s": 0.75
+        },
+        "uav_tracking_px4_adapter": {
+          "odometry_timestamp_mode": "source_sim",
+          "odometry_source_max_age_s": 0.5,
+          "odometry_source_max_future_s": 0.05
+        },
+        "uav_tracking_flight_supervisor": {
+          "takeoff_mode": "px4_native",
+          "takeoff_height_m": 3.0,
+          "native_takeoff_timeout_sim_s": 40.0,
+          "native_wall_timeout_s": 180.0,
+          "status_timestamp_mode": "source_sim",
+          "status_source_max_age_s": 1.0,
+          "status_source_max_future_s": 0.05,
+          "status_timeout_s": 10.0
+        }
+      },
+      "native_handoff_constants": {
+        "native_takeoff_timeout_sim_s": 40.0,
+        "native_wall_timeout_s": 180.0,
+        "native_settle_s": 1.0,
+        "native_handoff_guard_s": 0.25,
+        "native_settle_speed_mps": 0.2,
+        "takeoff_position_tolerance_m": 0.18
+      },
+      "scope": "STATIC_EXISTING_CONTRACT_DECLARATIONS_ONLY_NOT_FLIGHT_ACCEPTANCE"
+    },
+    "resource": {
+      "model": "models/yolo11m_car_sim_train20_04.pt",
+      "model_sha256": "bf7a56de4ae1658f8101fc6089247e8b984c2965b58d6b4963b4b5977e9ca00c",
+      "inference_image_size": 512,
+      "inference_threads": 4,
+      "registration": {
+        "revision": "car_train20_04_m512_cpu4_v1",
+        "receipt": {
+          "path": "config/car_sim_train20_04_m512_resource_receipt.json",
+          "sha256": "9abeaca3a892e61761564bc7116bb8aed34d9864f4f7406bd9f3a4bc59f3c26c"
+        },
+        "scope": "DEVELOPMENT_IMAGE_REGRESSION_AND_OFFLINE_WORKER_TIMING_ONLY_NOT_FLIGHT_ACCEPTANCE"
+      },
+      "receipt": {
+        "path": "/root/uav_tracking_fullplan_v4_humble46/config/car_sim_train20_04_m512_resource_receipt.json",
+        "sha256": "9abeaca3a892e61761564bc7116bb8aed34d9864f4f7406bd9f3a4bc59f3c26c"
+      },
+      "quality": {
+        "candidate_id": "train20_04_best_m512",
+        "opportunities": 260,
+        "unknown": 0,
+        "summary": {
+          "path": "/mnt/d/WSL/UAVHumble22-validation/humble31_car04_scale_regression01/score01/summary.json",
+          "sha256": "570775127105dab3138ecc001b1815b05994763306546504fee1cfe6e9cca0e4"
+        },
+        "scope": "CONSUMED_IMAGE_REGRESSION_ONLY_NOT_RUNTIME_ACCEPTANCE"
+      },
+      "timing": [
+        {
+          "inference_image_size": 640,
+          "source_process": {
+            "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/worker640_t4_01/started.json",
+            "sha256": "b65e81e5cf253f1abaf551f535a0f48031ca5661c2ed956cad63335957d2d590"
+          },
+          "actual_input_shape": [
+            1,
+            3,
+            480,
+            640
+          ],
+          "predict_wall_s": {
+            "denominator": 1008,
+            "known": 1008,
+            "unknown": 0,
+            "minimum": 0.28928922000000057,
+            "median": 0.39713369899999407,
+            "p95": 0.5355440255999979,
+            "p99": 0.6222781842499925,
+            "maximum": 1.2607088899999965
+          },
+          "started_utc": "2026-10-31T15:09:18.964975+00:00",
+          "finished_utc": "2026-10-31T15:16:21.010767+00:00"
+        },
+        {
+          "inference_image_size": 512,
+          "source_process": {
+            "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/worker512_t4_01/started.json",
+            "sha256": "210095ca614e7a246983472dcef3b6ab42072adfb0ef872f94a5ecf7ff3328a4"
+          },
+          "actual_input_shape": [
+            1,
+            3,
+            384,
+            512
+          ],
+          "predict_wall_s": {
+            "denominator": 1008,
+            "known": 1008,
+            "unknown": 0,
+            "minimum": 0.1969928109999728,
+            "median": 0.2565439789999857,
+            "p95": 0.352865799149967,
+            "p99": 0.4354362921800505,
+            "maximum": 1.303711900000053
+          },
+          "started_utc": "2026-10-31T15:16:21.799329+00:00",
+          "finished_utc": "2026-10-31T15:20:57.784217+00:00"
+        }
+      ],
+      "scope": "DEVELOPMENT_IMAGE_REGRESSION_AND_OFFLINE_WORKER_TIMING_ONLY_NOT_FLIGHT_ACCEPTANCE",
+      "closed_loop_validated": false,
+      "formal_seed_use_authorized": false,
+      "evidence_bindings": [
+        {
+          "path": "/root/uav_tracking_fullplan_v4_humble46/models/yolo11m_car_sim_train20_04.pt",
+          "sha256": "bf7a56de4ae1658f8101fc6089247e8b984c2965b58d6b4963b4b5977e9ca00c",
+          "limit": 536870912
+        },
+        {
+          "path": "/root/uav_tracking_fullplan_v4_humble46/config/car_sim_train20_04_m512_resource_receipt.json",
+          "sha256": "9abeaca3a892e61761564bc7116bb8aed34d9864f4f7406bd9f3a4bc59f3c26c",
+          "limit": 16777216
+        },
+        {
+          "path": "/mnt/d/WSL/UAVHumble22-validation/humble31_car04_scale_regression01/score01/summary.json",
+          "sha256": "570775127105dab3138ecc001b1815b05994763306546504fee1cfe6e9cca0e4",
+          "limit": 16777216
+        },
+        {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/benchmark_inference_tail.worker.executed.py",
+          "sha256": "127756a06e5fe7370c645d79ba41edd095094bdee6a951e63edadce7a3ad5508",
+          "limit": 16777216
+        },
+        {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/inputs/inputs.json",
+          "sha256": "242673ed336343d1148d607d48aaa2522b5bf7583229a70436bfea33837b4047",
+          "limit": 16777216
+        },
+        {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/inputs/rgb_28000000000.png",
+          "sha256": "457087f4a947937df13ebb9a0f025c884d923c326e840b347d76bd3cd0b43245",
+          "limit": 16777216
+        },
+        {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/inputs/rgb_28500000000.png",
+          "sha256": "03496cb56cc3ec080fadba00df845e7c8f68427155a5d7b9bfd4523b9344e6b5",
+          "limit": 16777216
+        },
+        {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/inputs/rgb_29000000000.png",
+          "sha256": "aadae888615b1451b1be7f4e79095883a1de948fc4a8ad9ec6128270f71eb80c",
+          "limit": 16777216
+        },
+        {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/inputs/rgb_29500000000.png",
+          "sha256": "8846763691a8a5a4d7f7a632982008570c723c5308c3dc47358e617599cd0d9b",
+          "limit": 16777216
+        },
+        {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/inputs/rgb_29800000000.png",
+          "sha256": "033dd85238bc277a52a00d8d9838283f0ab3db1004ee107b8bc04b5e81109a09",
+          "limit": 16777216
+        },
+        {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/inputs/rgb_29900000000.png",
+          "sha256": "a825f4b4ba02eb9cee5bb7d13c9c7e8c5e2204acf0b9122c8085585a008ba916",
+          "limit": 16777216
+        },
+        {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/inputs/rgb_30000000000.png",
+          "sha256": "12ceffa15c14ed4cdfb51befb14537eaa21a2bd2f7d4bc89e88573d0bdbdb322",
+          "limit": 16777216
+        },
+        {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/inputs/rgb_30500000000.png",
+          "sha256": "584841b464ddd8326bf14eb2e0c7357b03c119b2316205733ee64b40c633d576",
+          "limit": 16777216
+        },
+        {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/inputs/rgb_31000000000.png",
+          "sha256": "70ca2617db1073b2cf260866b4f5eee618ed1f79a1e2eca7e209564212e12f60",
+          "limit": 16777216
+        },
+        {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/inputs/rgb_32000000000.png",
+          "sha256": "b851a1c562cda2796dc37fc2cfad89920dc2cb89ca4bdcf13799012b0151a117",
+          "limit": 16777216
+        },
+        {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/inputs/rgb_35000000000.png",
+          "sha256": "f04e0ac82aae741a3c65c98541584cf422faf399d25a9c1152fb2675cc84733b",
+          "limit": 16777216
+        },
+        {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/inputs/rgb_40000000000.png",
+          "sha256": "38327008b5c65931a528046edd79dd47ea16649089dc57a0e4cf61e68e322a2a",
+          "limit": 16777216
+        },
+        {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/worker640_t4_01/started.json",
+          "sha256": "b65e81e5cf253f1abaf551f535a0f48031ca5661c2ed956cad63335957d2d590",
+          "limit": 16777216
+        },
+        {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/worker640_t4_01/inputs.json",
+          "sha256": "305e1c1928b4623f82580f5e27d0181bffc128d2ef827a26bfbb62c7f5bacaa7",
+          "limit": 16777216
+        },
+        {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/worker640_t4_01/environment.json",
+          "sha256": "d18c55405a850c9d2125b7e235f93aa5c1ac7acb750929d41d6390dc928ffdc3",
+          "limit": 16777216
+        },
+        {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/worker640_t4_01/summary.json",
+          "sha256": "750d91d847bec06ab2004d66c89fe4304d6b60aa137009cd36da2792f9911b20",
+          "limit": 16777216
+        },
+        {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/worker640_t4_01/samples.jsonl",
+          "sha256": "68d1e3094b1920e5b088bf8cdfcb736ccd32c66ef7b8940f04f35246f489b42f",
+          "limit": 16777216
+        },
+        {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/worker512_t4_01/started.json",
+          "sha256": "210095ca614e7a246983472dcef3b6ab42072adfb0ef872f94a5ecf7ff3328a4",
+          "limit": 16777216
+        },
+        {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/worker512_t4_01/inputs.json",
+          "sha256": "305e1c1928b4623f82580f5e27d0181bffc128d2ef827a26bfbb62c7f5bacaa7",
+          "limit": 16777216
+        },
+        {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/worker512_t4_01/environment.json",
+          "sha256": "d18c55405a850c9d2125b7e235f93aa5c1ac7acb750929d41d6390dc928ffdc3",
+          "limit": 16777216
+        },
+        {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/worker512_t4_01/summary.json",
+          "sha256": "92f23374b8e40134430783ff5340030919239c8ce5ccf4bd82e09ea94708b100",
+          "limit": 16777216
+        },
+        {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/inference_tail_core41_01/worker512_t4_01/samples.jsonl",
+          "sha256": "57c020e69af79451b712abe6d55ad31ff1ba5da8a5852d03814fe08312019ea7",
+          "limit": 16777216
+        }
+      ]
+    },
+    "bridge": {
+      "status": "PASS",
+      "scope": "CURRENT_SOURCE_AND_ELF_MATCH_REGISTERED_CANDIDATE",
+      "fixture_only": false,
+      "registration_digest": "27cff803d620f625dfe32d2097b4df8e07025fe2a193b771b0cd47d723845fda",
+      "checked_dependency_count": 71,
+      "checked_plugin_count": 1,
+      "patch_verified_path": "/root/uav_tracking_fullplan_v4_humble46/patches/ros_gz_bridge_ownership_shutdown_A01.patch"
+    },
+    "px4_root": "/root/uav_humble22/PX4-Autopilot-v4mag"
+  }
+}
