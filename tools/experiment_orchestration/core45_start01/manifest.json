@@ -1,0 +1,180 @@
+{
+    "schema":  "HUMBLE45_CORE12_PLAN_CONTRACT_START_METADATA_SNAPSHOT_V1",
+    "created_utc":  "2026-11-01T16:39:45.1262989Z",
+    "scope":  "Actual immutable core12 plan and completed status-only contract publication; historical planning state only, no live slots or core result",
+    "candidate_sha256":  "b20438f956f91cafe4e65e25b2f9341a0cf88a50abc6194372f0912065cdabe6",
+    "source_review_sha256":  "a526b2e342bc2b5889266ef15592656f5c98eb7833bed33856d0c2d084d69b50",
+    "original_planning":  {
+                              "action":  "plan-core",
+                              "returncode":  0,
+                              "error":  null,
+                              "flights_started":  0,
+                              "initial_pending":  {
+                                                      "plan":  {
+                                                                   "path":  "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble45/reliability_v4_humble45_probe01_seed004_matrix/plan.json",
+                                                                   "sha256":  "e6f57ab7e47d53c0b4286686550fa3acce4973a3c71aaba8870905275cdd7198"
+                                                               },
+                                                      "plan_sha256":  "c0d81ee12a03ff2232ce3b1092e3e243864ef5468cdbae280840def6ad55fd84",
+                                                      "slot_ids":  [
+                                                                       "person_stage1_velocity_seed004",
+                                                                       "person_stage1_position_seed004",
+                                                                       "person_stage2_crossing_seed004",
+                                                                       "person_stage3_midpoint_seed004",
+                                                                       "person_stage3_active_seed004",
+                                                                       "person_stage3_multi_active_seed004",
+                                                                       "car_stage1_velocity_seed004",
+                                                                       "car_stage1_position_seed004",
+                                                                       "car_stage2_crossing_seed004",
+                                                                       "car_stage3_midpoint_seed004",
+                                                                       "car_stage3_active_seed004",
+                                                                       "car_stage3_multi_active_seed004"
+                                                                   ],
+                                                      "initial_status_counts":  {
+                                                                                    "PENDING":  12
+                                                                                }
+                                                  },
+                              "final_errors":  [
+
+                                               ],
+                              "cleanup":  {
+                                              "residual_processes":  [
+
+                                                                     ]
+                                          }
+                          },
+    "original_contract_publication":  {
+                                          "pending_status":  "PENDING_DEVELOPMENT_RUNTIME_REVIEW_NOT_EXECUTABLE",
+                                          "final_status":  "FINAL_DEVELOPMENT_NORMAL_RUNNER_INDEPENDENTLY_REVIEWED",
+                                          "only_status_changed":  true,
+                                          "status":  "FINAL_CORE_RUNTIME_CONTRACT_PUBLISHED_ACTUAL_LOAD_VERIFIED",
+                                          "normal_native_load_contract_executed":  true,
+                                          "plan_or_flight_started_by_publication":  false,
+                                          "publication_changes_only":  [
+                                                                           "status"
+                                                                       ]
+                                      },
+    "independent_review":  {
+                               "sha256":  "0c322df1a9d3846fa45a2552c0af5333c2c0e0609f7ac90a3238dc89be71ff6f",
+                               "status":  "PASS",
+                               "checks":  {
+                                              "expected_pending_final_pins":  true,
+                                              "only_status_changed":  true,
+                                              "correct_status_transition":  true,
+                                              "original_plan_bindings":  true,
+                                              "original12_scope":  true,
+                                              "independent_review_pins":  true,
+                                              "separate_review_not_added_to_contract":  true,
+                                              "native_post_publication_load_receipt":  true,
+                                              "no_flight_formal_retry_claims":  true
+                                          },
+                               "scope_boundary":  {
+                                                      "wsl_started":  false,
+                                                      "bag_payload_opened":  false,
+                                                      "tests_or_flight_started":  false,
+                                                      "contract_or_plan_modified":  false,
+                                                      "freshness_not_rechecked_during_active_run":  true,
+                                                      "runtime_or_project_acceptance_claimed":  false
+                                                  }
+                           },
+    "boundary":  {
+                     "root_reported_core_running_at_snapshot_request":  true,
+                     "current_slot_freshness_rechecked":  false,
+                     "current_slot_rows_copied":  false,
+                     "started_markers_copied":  false,
+                     "core_terminal_claimed":  false,
+                     "core_acceptance_claimed":  false,
+                     "formal_trials_represented":  0,
+                     "wsl_started":  false,
+                     "bag_read":  false,
+                     "tests_or_build_run":  false
+                 },
+    "raw_copy_count":  7,
+    "raw_copy_bytes":  381088,
+    "files_copied_raw":  [
+                             {
+                                 "relative_path":  "plan/plan.json",
+                                 "source_path":  "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_probe01_seed004_matrix\\plan.json",
+                                 "role":  "actual_immutable_core12_plan",
+                                 "bytes":  189859,
+                                 "source_sha256":  "e6f57ab7e47d53c0b4286686550fa3acce4973a3c71aaba8870905275cdd7198",
+                                 "copied_sha256":  "e6f57ab7e47d53c0b4286686550fa3acce4973a3c71aaba8870905275cdd7198",
+                                 "exact_raw_byte_copy":  true,
+                                 "original_unchanged_during_copy":  true
+                             },
+                             {
+                                 "relative_path":  "core_plan_driver01/execution_terminal.json",
+                                 "source_path":  "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble45\\freeze_validation\\reliability_v4_humble45_probe01_core_plan_driver01\\execution_terminal.json",
+                                 "role":  "closed_zero_flight_core_planning_terminal",
+                                 "bytes":  108705,
+                                 "source_sha256":  "5774632538b65c565203490ec879982e7b61abbd34dc93d555a87b32712c84a4",
+                                 "copied_sha256":  "5774632538b65c565203490ec879982e7b61abbd34dc93d555a87b32712c84a4",
+                                 "exact_raw_byte_copy":  true,
+                                 "original_unchanged_during_copy":  true
+                             },
+                             {
+                                 "relative_path":  "contracts/development_contract_core_reliability_v4_humble45_probe01_pending01.json",
+                                 "source_path":  "D:\\WSL\\UAVHumble22-validation\\development_contract_core_reliability_v4_humble45_probe01_pending01.json",
+                                 "role":  "original_pending_runtime_contract",
+                                 "bytes":  37238,
+                                 "source_sha256":  "b29180ad77326b4e8cabd1567518f1a8fce70788f1052a45cdc14a130ae09c04",
+                                 "copied_sha256":  "b29180ad77326b4e8cabd1567518f1a8fce70788f1052a45cdc14a130ae09c04",
+                                 "exact_raw_byte_copy":  true,
+                                 "original_unchanged_during_copy":  true
+                             },
+                             {
+                                 "relative_path":  "contracts/development_contract_core_reliability_v4_humble45_probe01_01.json",
+                                 "source_path":  "D:\\WSL\\UAVHumble22-validation\\development_contract_core_reliability_v4_humble45_probe01_01.json",
+                                 "role":  "original_status_only_final_contract",
+                                 "bytes":  37243,
+                                 "source_sha256":  "50da1c5decb5157f3806abe97b40a255efc840803d03457917c2953d79e0f989",
+                                 "copied_sha256":  "50da1c5decb5157f3806abe97b40a255efc840803d03457917c2953d79e0f989",
+                                 "exact_raw_byte_copy":  true,
+                                 "original_unchanged_during_copy":  true
+                             },
+                             {
+                                 "relative_path":  "contracts/development_contract_core_humble45_publication_result01.json",
+                                 "source_path":  "D:\\WSL\\UAVHumble22-validation\\development_contract_core_humble45_publication_result01.json",
+                                 "role":  "actual_native_load_after_publication_receipt",
+                                 "bytes":  1585,
+                                 "source_sha256":  "d34f37e4fc7fef99257a4f8d278f912e5e56057d2c23566768d664f3454a0222",
+                                 "copied_sha256":  "d34f37e4fc7fef99257a4f8d278f912e5e56057d2c23566768d664f3454a0222",
+                                 "exact_raw_byte_copy":  true,
+                                 "original_unchanged_during_copy":  true
+                             },
+                             {
+                                 "relative_path":  "independent/development_contract_core_humble45_root_peer01.json",
+                                 "source_path":  "D:\\WSL\\UAVHumble22-validation\\development_contract_core_humble45_root_peer01.json",
+                                 "role":  "actual_native_root_review_before_execution",
+                                 "bytes":  4340,
+                                 "source_sha256":  "a247ca6b01a9f1d013f08766466a90cd28f5c9f880ef0b3574c9c0946e9dad6a",
+                                 "copied_sha256":  "a247ca6b01a9f1d013f08766466a90cd28f5c9f880ef0b3574c9c0946e9dad6a",
+                                 "exact_raw_byte_copy":  true,
+                                 "original_unchanged_during_copy":  true
+                             },
+                             {
+                                 "relative_path":  "independent/humble45_core_contract_independent01.json",
+                                 "source_path":  "D:\\WSL\\UAVHumble22-validation\\humble45_core_contract_independent01.json",
+                                 "role":  "latest_independent_contract_metadata_review_no_live_freshness_claim",
+                                 "bytes":  2118,
+                                 "source_sha256":  "0c322df1a9d3846fa45a2552c0af5333c2c0e0609f7ac90a3238dc89be71ff6f",
+                                 "copied_sha256":  "0c322df1a9d3846fa45a2552c0af5333c2c0e0609f7ac90a3238dc89be71ff6f",
+                                 "exact_raw_byte_copy":  true,
+                                 "original_unchanged_during_copy":  true
+                             }
+                         ],
+    "generated_files":  [
+                            {
+                                "relative_path":  "README.md",
+                                "bytes":  1491,
+                                "sha256":  "a83ec6ca7a6214cbe473e3d87903d578656b1d5ef9ff29dc65e6f713281b3970"
+                            }
+                        ],
+    "exclusions":  [
+                       "Live core slots and started markers",
+                       "Runtime driver or telemetry",
+                       "Bag/model payloads",
+                       "Full owner health payloads",
+                       "Any current core result or formal completion claim"
+                   ],
+    "checksum_policy":  "SHA256SUMS covers all nine other files, excluding itself"
+}
