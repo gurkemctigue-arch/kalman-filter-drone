@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "scope": "INDEPENDENT_CLOSED_COMPLETE_WINDOWS_SUITE_AND_MINIMUM_LEGACY_HASH_ASSERTION_REPAIR_REVIEW_ONLY_NOT_NATIVE_ACCEPTANCE",
+  "status": "PASS_WINDOWS_COMPLETE_SUITE_ACTUAL47_COMMIT_MAPS_AND_FRESH_NATIVE_VALIDATION_REQUIRED",
+  "created_utc": "2026-11-01T18:55:30.596848+00:00",
+  "evidence_bindings": {
+    "humble47_full_windows_suite01_receipt.json": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble47_full_windows_suite01_receipt.json",
+      "bytes": 1956,
+      "sha256": "4dfc5804cfae70edbd93e1a7f47defb3654c8fb79e30e61d6ed5d563da3e02a8"
+    },
+    "humble47_full_windows_suite01.log": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble47_full_windows_suite01.log",
+      "bytes": 343095,
+      "sha256": "a77b6d5f527ae7de06c27da1fe92079dc8b8e0342b110417a75fd3c70abe4d16"
+    },
+    "humble47_legacy_hash_windows_related01_receipt.json": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble47_legacy_hash_windows_related01_receipt.json",
+      "bytes": 2131,
+      "sha256": "8e8fb6e8331fc5eba9543861544e4b87b417361838f104468fa64af5cb0acd71"
+    },
+    "humble47_legacy_hash_windows_related01.log": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble47_legacy_hash_windows_related01.log",
+      "bytes": 136,
+      "sha256": "fdcf27c753de98735b0c63017b8d287c825bfc6069e101ff34a8a6e05c797b05"
+    },
+    "humble47_legacy_hash_assertion_repair_independent01.json": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble47_legacy_hash_assertion_repair_independent01.json",
+      "bytes": 4462,
+      "sha256": "6c13ccb49d66a69b51fb174f8ac9bc3d7e76f6fff9c38e35246b86ac617cb4d9"
+    }
+  },
+  "actual_complete_windows_suite": {
+    "returncode": 0,
+    "tests": 1789,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 11,
+    "original_footer": "OK (skipped=11)",
+    "original_test_elapsed_s": 759.591,
+    "wrapper_elapsed_wall_s": 772.0,
+    "full_discovery_command": [
+      "C:\\Program Files\\Python312\\python.exe",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-v"
+    ],
+    "repaired_legacy_test_explicitly_ok": true,
+    "log_hash_and_receipt_footer_verified": true
+  },
+  "eleven_actual_platform_skips": {
+    "test_exclusive_navigation_cdr.ExclusiveNavigationCDRTests.test_real_cdr_retains_complete_native_cloud_and_independent_invalid_candidate": "Requires Linux ROS 2 generated messages after colcon build",
+    "test_frozen_environment.OfflineEnvironmentShellTests.test_contradictory_override_fails_before_loading_any_ros_environment": "POSIX shell integration; run in WSL",
+    "test_frozen_environment.OfflineEnvironmentShellTests.test_default_and_matching_override_use_scripts_own_install_and_algorithms": "POSIX shell integration; run in WSL",
+    "test_gazebo_library_provenance.OwnedProcFixtureTests.test_equal_binary_hash_at_an_unregistered_path_is_rejected": "Linux device/inode proc fixture",
+    "test_gazebo_library_provenance.OwnedProcFixtureTests.test_nonowned_leader_and_bounded_process_count_are_rejected": "Linux device/inode proc fixture",
+    "test_gazebo_library_provenance.OwnedProcFixtureTests.test_only_owned_descendant_maps_are_read_and_segments_are_deduplicated": "Linux device/inode proc fixture",
+    "test_gazebo_library_provenance.OwnedProcFixtureTests.test_registered_binary_hash_mismatch_is_rejected": "Linux device/inode proc fixture",
+    "test_runtime_health_live_output.LiveStorageTests.test_ancestor_leaf_and_broken_symlinks_are_not_aliases_for_live_output": "Real symbolic links are validated in Linux",
+    "test_simulation_seed.SeedShellTests.test_both_render_branches_pass_the_exact_registered_seed_as_one_argument": "POSIX shell integration; run this test in WSL",
+    "test_simulation_seed.SeedShellTests.test_invalid_seeds_fail_before_fake_simulator_can_execute": "POSIX shell integration; run this test in WSL",
+    "test_simulation_seed.SeedShellTests.test_unpaused_start_preserves_seed_and_adds_run_flag": "POSIX shell integration; run this test in WSL"
+  },
+  "skip_source_review": {
+    "decorators_reviewed_in": [
+      "tests/test_exclusive_navigation_cdr.py",
+      "tests/test_frozen_environment.py",
+      "tests/test_gazebo_library_provenance.py",
+      "tests/test_runtime_health_live_output.py",
+      "tests/test_simulation_seed.py"
+    ],
+    "all_eleven_skip_reasons_match_existing_Windows_platform_guards": true,
+    "windows11_not_substituted_for_native5_contract": true
+  },
+  "five_current_full_suite_source_pins": {
+    "tests/test_car_surface_registration.py": "35c49e0fa21a9bbafc294550668c99c5ea251c4378e8bb338c89bd4b0e2d1e2c",
+    "scripts/run_stage1_trial.py": "da22505060e3775af1077877177e13639a710209e581c9dfabacaa4ec212419e",
+    "scripts/run_reliability_v4.py": "50da43f141fcc572d4cf580eb9a38edb34da91d58f29548861e9b2b32fd1596e",
+    "scripts/build_reliability_v4_probe_gate.py": "d370b45d91b273bedce22add566d8d63dcb9ea1032632401e0b69e0d250293f5",
+    "ros2_ws/src/uav_tracking_px4_adapter/uav_tracking_px4_adapter/flight_supervisor.py": "9ea9b08d456f59618f14533cdecb8c2315263af4860e3cb570615746cc889064"
+  },
+  "source_before_after_and_current_physical_hashes_match": true,
+  "related_windows_tests": {
+    "tests": 32,
+    "skipped": 0,
+    "returncode": 0,
+    "original_test_elapsed_s": 5.385,
+    "raw_base64_log_and_all_five_current_source_pins_verified": true
+  },
+  "repair_binding": {
+    "test_sha256": "35c49e0fa21a9bbafc294550668c99c5ea251c4378e8bb338c89bd4b0e2d1e2c",
+    "minimum_test_only_repair_prior_independent_review_unchanged": true,
+    "production_receipt_wall_flag_preserved": true
+  },
+  "boundaries": [
+    "Windows PASS is neither a native Humble suite nor a build/runtime/flight acceptance",
+    "Original failed46 suite1789/1failure/5skip remains immutable and failed",
+    "Fresh47 committed source maps and final pinned adapter must be independently reviewed before native source assembly",
+    "Fresh47 cold native build and full native suite must pass original contracts before candidate/flight admission"
+  ],
+  "no_tests_rerun_WSL_native_actions_or_source_edits_by_reviewer": true,
+  "blockers": []
+}

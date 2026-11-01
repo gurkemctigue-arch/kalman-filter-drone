@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "scope": "INDEPENDENT_MINIMUM_LEGACY_TRIAL_ASSERTION_REPAIR_AND_ORIGINAL45_VS46_EVIDENCE_REVIEW_ONLY_NOT_NATIVE_ACCEPTANCE",
+  "status": "PASS_MINIMUM_TEST_ONLY_REPAIR_FULL_WINDOWS_SUITE_AND_FRESH47_NATIVE_VALIDATION_REQUIRED",
+  "created_utc": "2026-11-01T18:39:18.224748+00:00",
+  "test_file": {
+    "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tests\\test_car_surface_registration.py",
+    "bytes": 17639,
+    "sha256": "35c49e0fa21a9bbafc294550668c99c5ea251c4378e8bb338c89bd4b0e2d1e2c"
+  },
+  "evidence_bindings": {
+    "humble46_full_suite_failure_independent01.json": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble46_full_suite_failure_independent01.json",
+      "bytes": 4918,
+      "sha256": "6578d4a50988f76f8dba7c3ed2488ee23b116bad216ff0b4b8eb6cdd94188c04"
+    },
+    "humble46_legacy_trial_hash_source45_comparison01.json": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble46_legacy_trial_hash_source45_comparison01.json",
+      "bytes": 19074,
+      "sha256": "f59f4516203cb28058fbd7f987898fd26e83e17348a9f1e86cc74cef8b8e4cb1"
+    },
+    "humble46_legacy_trial_hash_source45_comparison02.json": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble46_legacy_trial_hash_source45_comparison02.json",
+      "bytes": 48152,
+      "sha256": "0b433f46c535a13eb617acf0e5628a2ce171ce2ee62ce729ab4f623bf37d9bc9"
+    },
+    "humble47_legacy_hash_windows_related01_receipt.json": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble47_legacy_hash_windows_related01_receipt.json",
+      "bytes": 2131,
+      "sha256": "8e8fb6e8331fc5eba9543861544e4b87b417361838f104468fa64af5cb0acd71"
+    },
+    "humble47_legacy_hash_windows_related01.log": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble47_legacy_hash_windows_related01.log",
+      "bytes": 136,
+      "sha256": "fdcf27c753de98735b0c63017b8d287c825bfc6069e101ff34a8a6e05c797b05"
+    }
+  },
+  "isolated_comparison_review": {
+    "source45_git_runner_fixture_protocol_pins_rehashed": true,
+    "all28_full_trial_keys_equal_except_new_argv_pair": true,
+    "new_pair": [
+      "--supervisor-stream-timestamp-mode",
+      "receipt_wall"
+    ],
+    "new_pair_index_in_recorded_argv": 74,
+    "full_old37bb_hash_independently_recomputed": true,
+    "new_fc7_hash_independently_recomputed": true,
+    "removing_only_verified_pair_restores_entire_old_trial_object_and_hash": true,
+    "common_input_author45_protocol_results_consistent_with_full_recorded_objects": true,
+    "fixture_protocol_only_difference": "Added explanatory supervisor_stream_policy text; no new timing registration; independently checked full protocol objects after removing only that text",
+    "reviewer_did_not_execute_original_runner_or_fixtures": true
+  },
+  "minimum_patch_static_checks": [
+    "Literal CLI name asserted once, exact following receipt_wall value asserted before normalization",
+    "Only recursive normalized_paths detached dict/list copy is changed; actual generated trial and protocol remain available for unchanged assertions",
+    "Original37bb complete legacy non-migration hash retained; no acceptance by replacing expected hash with fc7",
+    "Production explicit receipt_wall flag, auto default resolution and all source/future/wall timing semantics preserved",
+    "No current production source Git delta in scripts/uav_tracking/ros2_ws/src/config/launch/models/patches; old frozen46 untouched"
+  ],
+  "related_author_tests": {
+    "modules": [
+      "tests.test_car_surface_registration",
+      "tests.test_supervisor_stream_contract"
+    ],
+    "returncode": 0,
+    "tests": 32,
+    "skipped": 0,
+    "elapsed_log_s": 5.385,
+    "raw_log_hash_and_base64_verified": true,
+    "all_five_before_after_source_pins_match_current_files": true,
+    "tests_executed_by_this_reviewer": false
+  },
+  "original46_failure_remains": {
+    "status": "FAIL",
+    "tests": 1789,
+    "failures": 1,
+    "skipped": 5,
+    "candidate46_or_flight_authorized": false
+  },
+  "required_next_steps": [
+    "Root executes complete Windows test suite on repaired source, not a subset",
+    "After all required checks pass, commit exact repaired source and metadata, review full actual47 maps and assemble a fresh47 source generation preserving original46 failure",
+    "Cold native build/full suite of47 must pass before candidate47/runtime contracts/flight admission"
+  ],
+  "no_source_edit_WSL_tests_bag_or_flight_by_reviewer": true,
+  "blockers": []
+}

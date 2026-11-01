@@ -57,8 +57,16 @@ class CarSurfaceRegistrationTests(unittest.TestCase):
         before = deepcopy(self.legacy)
         trial = v4.trial_spec(Path("LEGACY_FROZEN_ROOT"), self.legacy,
                               "reliability_v4_legacy_surface", "car", "stage2_crossing", 4, 600.)
-        # Captured against the pre-change runner, with slash normalization only.
-        self.assertEqual(v4.digest(normalized_paths(trial)),
+        # Keep the pre-stream-contract hash after checking only its explicit
+        # legacy-mode compatibility pair in a detached normalized copy.
+        compatible_trial = normalized_paths(trial)
+        command = compatible_trial["flight_command"]
+        stream_flag = "--supervisor-stream-timestamp-mode"
+        self.assertEqual(command.count(stream_flag), 1)
+        stream_index = command.index(stream_flag)
+        self.assertEqual(command[stream_index:stream_index + 2], [stream_flag, "receipt_wall"])
+        del command[stream_index:stream_index + 2]
+        self.assertEqual(v4.digest(compatible_trial),
                          "37bb3da92a9fc27516a4220592d864c0ab885ed537ed0b273878e4a8322372e3")
         self.assertNotIn(v4.CAR_SURFACE_RECOVERY_FIELD, trial)
         self.assertNotIn(v4.CAR_SURFACE_RECOVERY_FLAG, trial["flight_command"])
