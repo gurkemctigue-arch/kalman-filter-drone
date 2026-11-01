@@ -1,0 +1,856 @@
+{
+  "schema_version": 1,
+  "scope": "ACTUAL_ORIGINAL_CORE43_CLOSURE_VIA_EXISTING_PARAMETERIZED_VALIDATOR",
+  "started_utc": "2026-11-01T03:57:05.852929+00:00",
+  "finished_utc": "2026-11-01T04:00:06.134654+00:00",
+  "original_core_validator": "development_safety.actual_core",
+  "candidate_manifest": {
+    "path": "/mnt/d/WSL/UAVHumble22-validation/development_candidate_humble43_01.json",
+    "sha256": "6a0325714f0bc4a874219f5585b282daf658557266b75959e532073447b6eafb"
+  },
+  "actual_core_contract": {
+    "path": "/mnt/d/WSL/UAVHumble22-validation/development_contract_core_reliability_v4_humble43_probe01_01.json",
+    "sha256": "c0e179b91b001af98caa4c59290a21972acc006b5fbe8542f63e163700b9bf9b"
+  },
+  "safety_tools_canonical_sha256": "fa7e2461320a299a7ca8cb224722ac7c34358efed127d79cdf07d0efae4af275",
+  "original_closure_verifier": {
+    "result": "PASS",
+    "core_plan": {
+      "plan": {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/plan.json",
+        "sha256": "939fcbff695afd5ed99cea0479c97fbdb4d85928d6f5afd24ad8b45c6b6c9403"
+      },
+      "plan_sha256": "96bd9da398e253c6d9594b02dbbe05380b36e3a0d15ec595697108a092e74220",
+      "slot_ids": [
+        "person_stage1_velocity_seed004",
+        "person_stage1_position_seed004",
+        "person_stage2_crossing_seed004",
+        "person_stage3_midpoint_seed004",
+        "person_stage3_active_seed004",
+        "person_stage3_multi_active_seed004",
+        "car_stage1_velocity_seed004",
+        "car_stage1_position_seed004",
+        "car_stage2_crossing_seed004",
+        "car_stage3_midpoint_seed004",
+        "car_stage3_active_seed004",
+        "car_stage3_multi_active_seed004"
+      ],
+      "initial_status_counts": {
+        "PENDING": 12
+      }
+    },
+    "execution_terminal": {
+      "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_seed004_matrix/observed_driver01/execution_terminal.json",
+      "sha256": "688785987f9bae192a420b10934629d0ddeeb56aeb1d0effc786c923a3cf08bc"
+    },
+    "completed_count": 12,
+    "all_original_core_cells_pass": true,
+    "original_terminals": [
+      {
+        "id": "person_stage1_velocity_seed004",
+        "status": "PASS",
+        "record_binding": {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/slots/person_stage1_velocity_seed004.json",
+          "sha256": "8c5d9a375044255f8636696dfe5eb6db58d4cb74e1320d3697045431c291342f",
+          "record_sha256": "087aec64129bc960747daff2fd1074f298783eafa526043f078754b6906009c9",
+          "started_marker": {
+            "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/slots/person_stage1_velocity_seed004.started.json",
+            "sha256": "beb959c60b794fa1014762b3b5093d24b56e41af3f6e876b5e43a8d6523d5475"
+          },
+          "plan_sha256": "96bd9da398e253c6d9594b02dbbe05380b36e3a0d15ec595697108a092e74220",
+          "started_utc": "2026-10-31T22:59:21.794327+00:00"
+        },
+        "attempt_terminal": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_seed004_matrix/observed_driver01/01_person_stage1_velocity_seed004.attempt_terminal.json",
+          "sha256": "41c44345672b8274682b92a3df5e0334c8cce99c914e1d725fc8e0b87ecc3957"
+        }
+      },
+      {
+        "id": "person_stage1_position_seed004",
+        "status": "PASS",
+        "record_binding": {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/slots/person_stage1_position_seed004.json",
+          "sha256": "511a0d07112865e6f2f8c976424215642372bb1909a2b104bc566788b1b38cf6",
+          "record_sha256": "050b1d09430ee249e25be9cbc3248377e184769240b6de64b31373ffa8e69dad",
+          "started_marker": {
+            "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/slots/person_stage1_position_seed004.started.json",
+            "sha256": "2a90177071bd5abb79549c8c6391eac1208dcb701dc4bec3c8edfcf97e4e0797"
+          },
+          "plan_sha256": "96bd9da398e253c6d9594b02dbbe05380b36e3a0d15ec595697108a092e74220",
+          "started_utc": "2026-10-31T23:20:50.206441+00:00"
+        },
+        "attempt_terminal": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_seed004_matrix/observed_driver01/02_person_stage1_position_seed004.attempt_terminal.json",
+          "sha256": "f0c3123aa5283c49275ebc6e5f4c0b99c4798595ae8b17fdc6a5d1bb9e981c39"
+        }
+      },
+      {
+        "id": "person_stage2_crossing_seed004",
+        "status": "PASS",
+        "record_binding": {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/slots/person_stage2_crossing_seed004.json",
+          "sha256": "418f2e86e2f825ace88239ea465430428218f6296e8b5dee88a55494dd28b305",
+          "record_sha256": "d1230babfeb71783f4411e4273b181f0cb750ef52ebd7b5c77c2e8c634f69a6b",
+          "started_marker": {
+            "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/slots/person_stage2_crossing_seed004.started.json",
+            "sha256": "f1ce6ce8dd8905744b116eadc00ec46768288d3b94901df4094103bbd7810efe"
+          },
+          "plan_sha256": "96bd9da398e253c6d9594b02dbbe05380b36e3a0d15ec595697108a092e74220",
+          "started_utc": "2026-10-31T23:42:30.658114+00:00"
+        },
+        "attempt_terminal": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_seed004_matrix/observed_driver01/03_person_stage2_crossing_seed004.attempt_terminal.json",
+          "sha256": "cb8a1fb986cd9828e05b293d0c0794610f1a9c123c13eb398e13e702d7c53309"
+        }
+      },
+      {
+        "id": "person_stage3_midpoint_seed004",
+        "status": "PASS",
+        "record_binding": {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/slots/person_stage3_midpoint_seed004.json",
+          "sha256": "0da632eb84acfaca5e2c4f438ab06bc859f8e738faeb3d68becdcbb3c5ae2a1e",
+          "record_sha256": "56fd5c7c3a77ad00f0f5b666893859d0b90114b7d7b27878d8dd0d05c487f32a",
+          "started_marker": {
+            "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/slots/person_stage3_midpoint_seed004.started.json",
+            "sha256": "6eec97d4e3fa6f5f5c2f2f00231fcbd272fe7f377e0b4282b60db094f706398b"
+          },
+          "plan_sha256": "96bd9da398e253c6d9594b02dbbe05380b36e3a0d15ec595697108a092e74220",
+          "started_utc": "2026-11-01T00:08:46.635497+00:00"
+        },
+        "attempt_terminal": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_seed004_matrix/observed_driver01/04_person_stage3_midpoint_seed004.attempt_terminal.json",
+          "sha256": "ac106a9a36423962e38f597bda4057dd873d1003c61905d019f5978a3c853699"
+        }
+      },
+      {
+        "id": "person_stage3_active_seed004",
+        "status": "PASS",
+        "record_binding": {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/slots/person_stage3_active_seed004.json",
+          "sha256": "61e5ae949663bfc623e0a8bedca66b02443ba7cb2b5d30b5de9fa5f709d11900",
+          "record_sha256": "2a486016b6a10d0b49d48cb654429499759954a685794d78ad8cb5925676f8ad",
+          "started_marker": {
+            "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/slots/person_stage3_active_seed004.started.json",
+            "sha256": "4cab75c99c6853bf5f84c523be69fa8984b0812e09f48320c5248358f2768c09"
+          },
+          "plan_sha256": "96bd9da398e253c6d9594b02dbbe05380b36e3a0d15ec595697108a092e74220",
+          "started_utc": "2026-11-01T00:33:01.105185+00:00"
+        },
+        "attempt_terminal": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_seed004_matrix/observed_driver01/05_person_stage3_active_seed004.attempt_terminal.json",
+          "sha256": "775bd6a39bfcefe5b0ca55a9ac6113d9b4ae722cf633a733e03ae8b96dea54f2"
+        }
+      },
+      {
+        "id": "person_stage3_multi_active_seed004",
+        "status": "PASS",
+        "record_binding": {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/slots/person_stage3_multi_active_seed004.json",
+          "sha256": "c6baffbd26063c0b0b635815b15c4454894fb0c9a2c7a976effde92ca5ac8d2e",
+          "record_sha256": "2ea9d4a2d9870351068a58366b935809b95b208ec8d90be80b33de7cda9fed43",
+          "started_marker": {
+            "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/slots/person_stage3_multi_active_seed004.started.json",
+            "sha256": "413e728dce2e04952c75f92b17d647b1d73f5657a649af7a99f636717f513a1e"
+          },
+          "plan_sha256": "96bd9da398e253c6d9594b02dbbe05380b36e3a0d15ec595697108a092e74220",
+          "started_utc": "2026-11-01T00:56:19.336379+00:00"
+        },
+        "attempt_terminal": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_seed004_matrix/observed_driver01/06_person_stage3_multi_active_seed004.attempt_terminal.json",
+          "sha256": "155a3b4c6fdc99b6be50faf5a917ffae38f0b8fa195ba906aafc2e01de68917c"
+        }
+      },
+      {
+        "id": "car_stage1_velocity_seed004",
+        "status": "PASS",
+        "record_binding": {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/slots/car_stage1_velocity_seed004.json",
+          "sha256": "1668ddd2b83054f00b269243e794b87ab77d5d15a841fe64b7cdb9c2fc0c2e25",
+          "record_sha256": "58e26ca582d8ed89bbe79dfeaefe882f8b4f2af5e1f5fdc0dbcb8d3248c623ed",
+          "started_marker": {
+            "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/slots/car_stage1_velocity_seed004.started.json",
+            "sha256": "63429b4cdbaf4c15983e5c67ace24279123a5b5385160d41d12dec4861e73e2c"
+          },
+          "plan_sha256": "96bd9da398e253c6d9594b02dbbe05380b36e3a0d15ec595697108a092e74220",
+          "started_utc": "2026-11-01T01:25:47.358280+00:00"
+        },
+        "attempt_terminal": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_seed004_matrix/observed_driver01/07_car_stage1_velocity_seed004.attempt_terminal.json",
+          "sha256": "6bc742628034d526ed1cedbd2cbcbb9a625c18682766e11042693dc856d7af03"
+        }
+      },
+      {
+        "id": "car_stage1_position_seed004",
+        "status": "PASS",
+        "record_binding": {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/slots/car_stage1_position_seed004.json",
+          "sha256": "2e6030f6808596c2e181cba29e86279ea46849550a11c37aabd918baef585c43",
+          "record_sha256": "efd718a6bc0386e29126610a616515bd1f60df54210a0d71ed6eaf318c577792",
+          "started_marker": {
+            "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/slots/car_stage1_position_seed004.started.json",
+            "sha256": "23e212142c6ccb020efd2c394a0e0d9b52c531ae7eae6a21f99510ddd7498b2a"
+          },
+          "plan_sha256": "96bd9da398e253c6d9594b02dbbe05380b36e3a0d15ec595697108a092e74220",
+          "started_utc": "2026-11-01T01:48:15.555819+00:00"
+        },
+        "attempt_terminal": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_seed004_matrix/observed_driver01/08_car_stage1_position_seed004.attempt_terminal.json",
+          "sha256": "e6cb13375b9f89bfc2407801a92c5f34a083777598941733fc99affdcd572c71"
+        }
+      },
+      {
+        "id": "car_stage2_crossing_seed004",
+        "status": "PASS",
+        "record_binding": {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/slots/car_stage2_crossing_seed004.json",
+          "sha256": "4ea1fe41cfe9aa21c3d9ca0ef4a06f48070ca5b9bd03a1c9e74e8181755b500d",
+          "record_sha256": "8cc87f3f1997fab739a8bf0fcc06443c0d98ef6389eba41b0b96076b06f0eb69",
+          "started_marker": {
+            "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/slots/car_stage2_crossing_seed004.started.json",
+            "sha256": "8622ed6586fc173623497b787c6029cfe5c3abfa0cb5420fec509ecd1b0210bf"
+          },
+          "plan_sha256": "96bd9da398e253c6d9594b02dbbe05380b36e3a0d15ec595697108a092e74220",
+          "started_utc": "2026-11-01T02:10:29.833953+00:00"
+        },
+        "attempt_terminal": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_seed004_matrix/observed_driver01/09_car_stage2_crossing_seed004.attempt_terminal.json",
+          "sha256": "a45451c75218363fe1a1e4f0bed93a7463e434718b730f8482e52f65558e9e6e"
+        }
+      },
+      {
+        "id": "car_stage3_midpoint_seed004",
+        "status": "PASS",
+        "record_binding": {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/slots/car_stage3_midpoint_seed004.json",
+          "sha256": "a9f11770f4f5224a6300ee03b52e0cf94d53a6eae2c67ded5422afad9c5b40d6",
+          "record_sha256": "e5ad2d611fc3642df1de804be7f416e5188b90607473128a0aa23d1a99187ff5",
+          "started_marker": {
+            "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/slots/car_stage3_midpoint_seed004.started.json",
+            "sha256": "bed3b76881f2a4cb74a4b9f36bbde128c995f1db44cb88f6554ac56576d4cfc8"
+          },
+          "plan_sha256": "96bd9da398e253c6d9594b02dbbe05380b36e3a0d15ec595697108a092e74220",
+          "started_utc": "2026-11-01T02:37:30.244250+00:00"
+        },
+        "attempt_terminal": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_seed004_matrix/observed_driver01/10_car_stage3_midpoint_seed004.attempt_terminal.json",
+          "sha256": "3342c1bd2af0007f0ef9028cf024f6afdd83536427ea8b105d402ebf7a758c3c"
+        }
+      },
+      {
+        "id": "car_stage3_active_seed004",
+        "status": "PASS",
+        "record_binding": {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/slots/car_stage3_active_seed004.json",
+          "sha256": "204072d3d8d7733e48c131dff50616812a2e0ae0e3a9bdb947426f93b868e8b9",
+          "record_sha256": "b8bb8c6a5a5c95f10e8830603dc5bedf9ff852a834e66cd1afa14f4d1cfca6a2",
+          "started_marker": {
+            "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/slots/car_stage3_active_seed004.started.json",
+            "sha256": "01a78ea1782cf7a2314e4565645f650374cb4d9c2c7dc0a51720b61f6124cf1b"
+          },
+          "plan_sha256": "96bd9da398e253c6d9594b02dbbe05380b36e3a0d15ec595697108a092e74220",
+          "started_utc": "2026-11-01T03:02:20.440748+00:00"
+        },
+        "attempt_terminal": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_seed004_matrix/observed_driver01/11_car_stage3_active_seed004.attempt_terminal.json",
+          "sha256": "ef3ff3097e0a859e68e45893c57bb9302de21bf6b8ba27d89c6f77356f677faa"
+        }
+      },
+      {
+        "id": "car_stage3_multi_active_seed004",
+        "status": "PASS",
+        "record_binding": {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/slots/car_stage3_multi_active_seed004.json",
+          "sha256": "7c10e787c8c7186cc7eb1018675c290b406ae9c6005a658e3888c592383f6283",
+          "record_sha256": "ba19729c24507e921561166aea74f3f2124609423666a61eac55ae1e0374cec8",
+          "started_marker": {
+            "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/slots/car_stage3_multi_active_seed004.started.json",
+            "sha256": "b55e078486a5a926ac40a72c842a86568ed32ab768b8e995ba0bfcf05613e9d8"
+          },
+          "plan_sha256": "96bd9da398e253c6d9594b02dbbe05380b36e3a0d15ec595697108a092e74220",
+          "started_utc": "2026-11-01T03:25:37.346907+00:00"
+        },
+        "attempt_terminal": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_seed004_matrix/observed_driver01/12_car_stage3_multi_active_seed004.attempt_terminal.json",
+          "sha256": "5b17bda3cad65b44ac42c94724179f7d5366566d8cc85105f1aa76edf777b78b"
+        }
+      }
+    ],
+    "observer": {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/observed_driver01/observer_driver/execution_terminal.json",
+      "sha256": "8e0a0944a9b788a4ac3dc8228cf61500f7dcaa92e7d8feba5a0dac07659aea3c",
+      "scope": "HUMBLE41_TMPFS_RUNTIME_OBSERVER_NATIVE_AND_ARCHIVE_SEPARATE",
+      "session_count": 4,
+      "native_and_archive_both_verified": true,
+      "owner_terminal": {
+        "archive": {
+          "copies": [
+            {
+              "archive": {
+                "bytes": 14140,
+                "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/observed_driver01/observer_driver/native_exit_terminal.json",
+                "sha256": "b2e009fb83bae51f75e95828cbe8e644a6db38727f937609e618a06a96577873"
+              },
+              "local_before_and_after": {
+                "bytes": 14140,
+                "path": "/dev/shm/uav_tracking_runtime_health/owner41_e9d3f7739d9640feb5a0da4108959837/native_exit_terminal.json",
+                "sha256": "b2e009fb83bae51f75e95828cbe8e644a6db38727f937609e618a06a96577873"
+              },
+              "relative_path": "native_exit_terminal.json"
+            },
+            {
+              "archive": {
+                "bytes": 1363,
+                "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/observed_driver01/observer_driver/session_001/observer_console.log",
+                "sha256": "5ab3174a9fe5c29bc3bb03d08c667c42c1543fc643be1b79bf43e15ca68527d9"
+              },
+              "local_before_and_after": {
+                "bytes": 1363,
+                "path": "/dev/shm/uav_tracking_runtime_health/owner41_e9d3f7739d9640feb5a0da4108959837/session_001/observer_console.log",
+                "sha256": "5ab3174a9fe5c29bc3bb03d08c667c42c1543fc643be1b79bf43e15ca68527d9"
+              },
+              "relative_path": "session_001/observer_console.log"
+            },
+            {
+              "archive": {
+                "bytes": 2357,
+                "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/observed_driver01/observer_driver/session_001/native_exit_terminal.json",
+                "sha256": "064a517c09cb618225674aa8e568baee1ee47e2272ad6232518b60f1fe3727be"
+              },
+              "local_before_and_after": {
+                "bytes": 2357,
+                "path": "/dev/shm/uav_tracking_runtime_health/owner41_e9d3f7739d9640feb5a0da4108959837/session_001/native_exit_terminal.json",
+                "sha256": "064a517c09cb618225674aa8e568baee1ee47e2272ad6232518b60f1fe3727be"
+              },
+              "relative_path": "session_001/native_exit_terminal.json"
+            },
+            {
+              "archive": {
+                "bytes": 30948032,
+                "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/observed_driver01/observer_driver/session_001/runtime_health/health.jsonl",
+                "sha256": "cf14f5d49ab952fcf59112f6610d8a1baff15a675249c1d363fef46b42fda767"
+              },
+              "local_before_and_after": {
+                "bytes": 30948032,
+                "path": "/dev/shm/uav_tracking_runtime_health/owner41_e9d3f7739d9640feb5a0da4108959837/session_001/runtime_health/health.jsonl",
+                "sha256": "cf14f5d49ab952fcf59112f6610d8a1baff15a675249c1d363fef46b42fda767"
+              },
+              "relative_path": "session_001/runtime_health/health.jsonl"
+            },
+            {
+              "archive": {
+                "bytes": 1374,
+                "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/observed_driver01/observer_driver/session_002/observer_console.log",
+                "sha256": "13fd19fc7458aaede5552af561d063290d9571aef03decc2104389c6f1d9d4a7"
+              },
+              "local_before_and_after": {
+                "bytes": 1374,
+                "path": "/dev/shm/uav_tracking_runtime_health/owner41_e9d3f7739d9640feb5a0da4108959837/session_002/observer_console.log",
+                "sha256": "13fd19fc7458aaede5552af561d063290d9571aef03decc2104389c6f1d9d4a7"
+              },
+              "relative_path": "session_002/observer_console.log"
+            },
+            {
+              "archive": {
+                "bytes": 2361,
+                "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/observed_driver01/observer_driver/session_002/native_exit_terminal.json",
+                "sha256": "762f0128748a2019e7496ddc77ea9498952237de815c0db2ac77028513580bab"
+              },
+              "local_before_and_after": {
+                "bytes": 2361,
+                "path": "/dev/shm/uav_tracking_runtime_health/owner41_e9d3f7739d9640feb5a0da4108959837/session_002/native_exit_terminal.json",
+                "sha256": "762f0128748a2019e7496ddc77ea9498952237de815c0db2ac77028513580bab"
+              },
+              "relative_path": "session_002/native_exit_terminal.json"
+            },
+            {
+              "archive": {
+                "bytes": 30965317,
+                "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/observed_driver01/observer_driver/session_002/runtime_health/health.jsonl",
+                "sha256": "97405a064b046323655b467bc95f9c90c4b667e7d158459229bd56719a0821ad"
+              },
+              "local_before_and_after": {
+                "bytes": 30965317,
+                "path": "/dev/shm/uav_tracking_runtime_health/owner41_e9d3f7739d9640feb5a0da4108959837/session_002/runtime_health/health.jsonl",
+                "sha256": "97405a064b046323655b467bc95f9c90c4b667e7d158459229bd56719a0821ad"
+              },
+              "relative_path": "session_002/runtime_health/health.jsonl"
+            },
+            {
+              "archive": {
+                "bytes": 1373,
+                "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/observed_driver01/observer_driver/session_003/observer_console.log",
+                "sha256": "651f7b709dec8bebd6d2b660d5d975551837081bb40df9c6fc5ecc2aa3680f06"
+              },
+              "local_before_and_after": {
+                "bytes": 1373,
+                "path": "/dev/shm/uav_tracking_runtime_health/owner41_e9d3f7739d9640feb5a0da4108959837/session_003/observer_console.log",
+                "sha256": "651f7b709dec8bebd6d2b660d5d975551837081bb40df9c6fc5ecc2aa3680f06"
+              },
+              "relative_path": "session_003/observer_console.log"
+            },
+            {
+              "archive": {
+                "bytes": 2369,
+                "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/observed_driver01/observer_driver/session_003/native_exit_terminal.json",
+                "sha256": "9c3a02527494c4f4114600e85783f443393a6deae9fe487d69a777edd3be875a"
+              },
+              "local_before_and_after": {
+                "bytes": 2369,
+                "path": "/dev/shm/uav_tracking_runtime_health/owner41_e9d3f7739d9640feb5a0da4108959837/session_003/native_exit_terminal.json",
+                "sha256": "9c3a02527494c4f4114600e85783f443393a6deae9fe487d69a777edd3be875a"
+              },
+              "relative_path": "session_003/native_exit_terminal.json"
+            },
+            {
+              "archive": {
+                "bytes": 31022822,
+                "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/observed_driver01/observer_driver/session_003/runtime_health/health.jsonl",
+                "sha256": "5fdc1d69cc26c3bcda8bb62370cafa73ff0ad9cf63da7fd78ad5a55b63018ea1"
+              },
+              "local_before_and_after": {
+                "bytes": 31022822,
+                "path": "/dev/shm/uav_tracking_runtime_health/owner41_e9d3f7739d9640feb5a0da4108959837/session_003/runtime_health/health.jsonl",
+                "sha256": "5fdc1d69cc26c3bcda8bb62370cafa73ff0ad9cf63da7fd78ad5a55b63018ea1"
+              },
+              "relative_path": "session_003/runtime_health/health.jsonl"
+            },
+            {
+              "archive": {
+                "bytes": 1372,
+                "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/observed_driver01/observer_driver/session_004/observer_console.log",
+                "sha256": "a81fe6a97702137d1356f56126889b48bc3a1c4dd0a9d3ad2b7febbf714540f9"
+              },
+              "local_before_and_after": {
+                "bytes": 1372,
+                "path": "/dev/shm/uav_tracking_runtime_health/owner41_e9d3f7739d9640feb5a0da4108959837/session_004/observer_console.log",
+                "sha256": "a81fe6a97702137d1356f56126889b48bc3a1c4dd0a9d3ad2b7febbf714540f9"
+              },
+              "relative_path": "session_004/observer_console.log"
+            },
+            {
+              "archive": {
+                "bytes": 2368,
+                "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/observed_driver01/observer_driver/session_004/native_exit_terminal.json",
+                "sha256": "8f79e392e9998b7bd0e6da45c26b46e817baf3cc159793512a909c62d39f22b4"
+              },
+              "local_before_and_after": {
+                "bytes": 2368,
+                "path": "/dev/shm/uav_tracking_runtime_health/owner41_e9d3f7739d9640feb5a0da4108959837/session_004/native_exit_terminal.json",
+                "sha256": "8f79e392e9998b7bd0e6da45c26b46e817baf3cc159793512a909c62d39f22b4"
+              },
+              "relative_path": "session_004/native_exit_terminal.json"
+            },
+            {
+              "archive": {
+                "bytes": 8678106,
+                "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/observed_driver01/observer_driver/session_004/runtime_health/health.jsonl",
+                "sha256": "4c5379a2486e971348dfa9749edae4804e8a4bf32a23d1eab9a87d62c6240e4e"
+              },
+              "local_before_and_after": {
+                "bytes": 8678106,
+                "path": "/dev/shm/uav_tracking_runtime_health/owner41_e9d3f7739d9640feb5a0da4108959837/session_004/runtime_health/health.jsonl",
+                "sha256": "4c5379a2486e971348dfa9749edae4804e8a4bf32a23d1eab9a87d62c6240e4e"
+              },
+              "relative_path": "session_004/runtime_health/health.jsonl"
+            }
+          ],
+          "finished_utc": "2026-11-01T03:53:53.845676+00:00",
+          "local_evidence_removed": false,
+          "payload_elapsed_wall_s": 4.247037159999309,
+          "payload_verified_monotonic_s": 17882.670410061,
+          "started_monotonic_s": 17878.423372901,
+          "started_utc": "2026-11-01T03:53:49.598622+00:00",
+          "status": "VERIFIED_COPY",
+          "wall_budget_s": 1800.0
+        },
+        "archive_directory": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/observed_driver01/observer_driver",
+        "archive_manifest": {
+          "bytes": 20234,
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/observed_driver01/observer_driver/archive_manifest.json",
+          "sha256": "06fce46ccdcb9b64bc4660831209489ed58e486eaa9471dbc7212be2d1557fb4"
+        },
+        "collector_source": {
+          "bytes": 27727,
+          "path": "/root/uav_tracking_fullplan_v4_humble43/scripts/observe_runtime_health.py",
+          "sha256": "f174ec21ebf962f156d76f8d35f802eebf318163555815527a3e2227b914f180"
+        },
+        "formal_seed_use_authorized": false,
+        "healthy_cleanup": true,
+        "live_directory": "/dev/shm/uav_tracking_runtime_health/owner41_e9d3f7739d9640feb5a0da4108959837",
+        "native": {
+          "all_native_exit_monotonic_s": 17877.273402758,
+          "archive_directory": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/observed_driver01/observer_driver",
+          "driver_exception": false,
+          "healthy_cleanup": true,
+          "live_directory": "/dev/shm/uav_tracking_runtime_health/owner41_e9d3f7739d9640feb5a0da4108959837",
+          "max_sample_age_wall_s": 10.0,
+          "native_finished_utc": "2026-11-01T03:53:49.257554+00:00",
+          "rotation_wall_s": 5400.0,
+          "rotations": [
+            {
+              "completed_monotonic_s": 5565.857614839,
+              "new_first_fresh_sample": {
+                "check_duration_wall_s": 0.0004921059999105637,
+                "checked_monotonic_s": 5565.641875516,
+                "latest_sample_monotonic_s": 5565.547552126,
+                "max_sample_age_wall_s": 10.0,
+                "sample_age_wall_s": 0.09432339000068168
+              },
+              "new_fresh_after_old_finish": {
+                "check_duration_wall_s": 0.0006170890001158114,
+                "checked_monotonic_s": 5565.857596801,
+                "latest_sample_monotonic_s": 5565.547552126,
+                "max_sample_age_wall_s": 10.0,
+                "sample_age_wall_s": 0.31004467500042665
+              },
+              "new_index": 2,
+              "old_index": 1,
+              "old_last_fresh_sample": {
+                "check_duration_wall_s": 0.0005708359994969214,
+                "checked_monotonic_s": 5565.641383057,
+                "latest_sample_monotonic_s": 5565.551451991,
+                "max_sample_age_wall_s": 10.0,
+                "sample_age_wall_s": 0.08993106599973544
+              }
+            },
+            {
+              "completed_monotonic_s": 10966.825338671,
+              "new_first_fresh_sample": {
+                "check_duration_wall_s": 0.0006188770003063837,
+                "checked_monotonic_s": 10966.607534495,
+                "latest_sample_monotonic_s": 10966.557481835,
+                "max_sample_age_wall_s": 10.0,
+                "sample_age_wall_s": 0.05005266000080155
+              },
+              "new_fresh_after_old_finish": {
+                "check_duration_wall_s": 0.001824873999794363,
+                "checked_monotonic_s": 10966.825289119,
+                "latest_sample_monotonic_s": 10966.557481835,
+                "max_sample_age_wall_s": 10.0,
+                "sample_age_wall_s": 0.2678072840008099
+              },
+              "new_index": 3,
+              "old_index": 2,
+              "old_last_fresh_sample": {
+                "check_duration_wall_s": 0.0007820970004104311,
+                "checked_monotonic_s": 10966.606908271,
+                "latest_sample_monotonic_s": 10966.547191957,
+                "max_sample_age_wall_s": 10.0,
+                "sample_age_wall_s": 0.059716313999160775
+              }
+            },
+            {
+              "completed_monotonic_s": 16366.941242931,
+              "new_first_fresh_sample": {
+                "check_duration_wall_s": 0.0011298130011709873,
+                "checked_monotonic_s": 16366.723394511,
+                "latest_sample_monotonic_s": 16366.662793335,
+                "max_sample_age_wall_s": 10.0,
+                "sample_age_wall_s": 0.06060117600100057
+              },
+              "new_fresh_after_old_finish": {
+                "check_duration_wall_s": 0.0009791200009203749,
+                "checked_monotonic_s": 16366.941216352,
+                "latest_sample_monotonic_s": 16366.662793335,
+                "max_sample_age_wall_s": 10.0,
+                "sample_age_wall_s": 0.2784230170000228
+              },
+              "new_index": 4,
+              "old_index": 3,
+              "old_last_fresh_sample": {
+                "check_duration_wall_s": 0.0018276869996043388,
+                "checked_monotonic_s": 16366.722239708,
+                "latest_sample_monotonic_s": 16366.557015451,
+                "max_sample_age_wall_s": 10.0,
+                "sample_age_wall_s": 0.16522425699986343
+              }
+            }
+          ],
+          "schema_version": 1,
+          "scope": "HUMBLE41_TMPFS_RUNTIME_OBSERVER_NATIVE_AND_ARCHIVE_SEPARATE",
+          "session_duration_wall_s": 7200.0,
+          "sessions": [
+            {
+              "archive_directory": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/observed_driver01/observer_driver/session_001",
+              "capacity": {
+                "console_limit_bytes": 262144,
+                "free_bytes": 8313147392,
+                "health_limit_bytes": 67108864,
+                "mount": {
+                  "filesystem": "tmpfs",
+                  "mountpoint": "/dev/shm"
+                },
+                "required_free_bytes": 136839168
+              },
+              "command": [
+                "/root/uav_humble22/venv/bin/python",
+                "-B",
+                "/root/uav_tracking_fullplan_v4_humble43/scripts/observe_runtime_health.py",
+                "--output-dir",
+                "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/observed_driver01/observer_driver/session_001/runtime_health",
+                "--live-output-dir",
+                "/dev/shm/uav_tracking_runtime_health/owner41_e9d3f7739d9640feb5a0da4108959837/session_001/runtime_health",
+                "--duration-wall-s",
+                "7200",
+                "--max-log-mib",
+                "64",
+                "--ros"
+              ],
+              "driver_exception": false,
+              "ended_before_requested_stop": false,
+              "errors": [],
+              "final_fresh_sample": {
+                "check_duration_wall_s": 0.0005206699997870601,
+                "checked_monotonic_s": 5565.642403973,
+                "latest_sample_monotonic_s": 5565.551451991,
+                "max_sample_age_wall_s": 10.0,
+                "sample_age_wall_s": 0.0909519819997513
+              },
+              "first_fresh_monotonic_s": 165.566447045,
+              "first_fresh_sample": {
+                "check_duration_wall_s": 0.0008384449999994104,
+                "checked_monotonic_s": 165.566379456,
+                "latest_sample_monotonic_s": 165.551875705,
+                "max_sample_age_wall_s": 10.0,
+                "sample_age_wall_s": 0.01450375100000656
+              },
+              "healthy_cleanup": true,
+              "index": 1,
+              "live_directory": "/dev/shm/uav_tracking_runtime_health/owner41_e9d3f7739d9640feb5a0da4108959837/session_001",
+              "local_evidence_removed": false,
+              "native_exit_monotonic_s": 5565.856552798,
+              "native_exit_utc": "2026-11-01T00:28:36.534101+00:00",
+              "native_shutdown_wall_s": 0.21413377699991543,
+              "observer_exit_code": 0,
+              "observer_forced_stop": false,
+              "source_root": "/root/uav_tracking_fullplan_v4_humble43",
+              "started_monotonic_s": 165.160846213,
+              "started_utc": "2026-10-31T22:58:35.838120+00:00",
+              "stop_requested_monotonic_s": 5565.642419021,
+              "stop_requested_utc": "2026-11-01T00:28:36.319695+00:00"
+            },
+            {
+              "archive_directory": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/observed_driver01/observer_driver/session_002",
+              "capacity": {
+                "console_limit_bytes": 262144,
+                "free_bytes": 8281591808,
+                "health_limit_bytes": 67108864,
+                "mount": {
+                  "filesystem": "tmpfs",
+                  "mountpoint": "/dev/shm"
+                },
+                "required_free_bytes": 136839168
+              },
+              "command": [
+                "/root/uav_humble22/venv/bin/python",
+                "-B",
+                "/root/uav_tracking_fullplan_v4_humble43/scripts/observe_runtime_health.py",
+                "--output-dir",
+                "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/observed_driver01/observer_driver/session_002/runtime_health",
+                "--live-output-dir",
+                "/dev/shm/uav_tracking_runtime_health/owner41_e9d3f7739d9640feb5a0da4108959837/session_002/runtime_health",
+                "--duration-wall-s",
+                "7200",
+                "--max-log-mib",
+                "64",
+                "--ros"
+              ],
+              "driver_exception": false,
+              "ended_before_requested_stop": false,
+              "errors": [],
+              "final_fresh_sample": {
+                "check_duration_wall_s": 0.0006370540013449499,
+                "checked_monotonic_s": 10966.608176803,
+                "latest_sample_monotonic_s": 10966.547191957,
+                "max_sample_age_wall_s": 10.0,
+                "sample_age_wall_s": 0.06098484599897347
+              },
+              "first_fresh_monotonic_s": 5565.640826973,
+              "first_fresh_sample": {
+                "check_duration_wall_s": 0.0007401530001516221,
+                "checked_monotonic_s": 5565.64076479,
+                "latest_sample_monotonic_s": 5565.547552126,
+                "max_sample_age_wall_s": 10.0,
+                "sample_age_wall_s": 0.0932126640000206
+              },
+              "healthy_cleanup": true,
+              "index": 2,
+              "live_directory": "/dev/shm/uav_tracking_runtime_health/owner41_e9d3f7739d9640feb5a0da4108959837/session_002",
+              "local_evidence_removed": false,
+              "native_exit_monotonic_s": 10966.822647168,
+              "native_exit_utc": "2026-11-01T01:58:37.998440+00:00",
+              "native_shutdown_wall_s": 0.21445403299912869,
+              "observer_exit_code": 0,
+              "observer_forced_stop": false,
+              "source_root": "/root/uav_tracking_fullplan_v4_humble43",
+              "started_monotonic_s": 5565.335218,
+              "started_utc": "2026-11-01T00:28:36.012508+00:00",
+              "stop_requested_monotonic_s": 10966.608193135,
+              "stop_requested_utc": "2026-11-01T01:58:37.783436+00:00"
+            },
+            {
+              "archive_directory": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/observed_driver01/observer_driver/session_003",
+              "capacity": {
+                "console_limit_bytes": 262144,
+                "free_bytes": 8243904512,
+                "health_limit_bytes": 67108864,
+                "mount": {
+                  "filesystem": "tmpfs",
+                  "mountpoint": "/dev/shm"
+                },
+                "required_free_bytes": 136839168
+              },
+              "command": [
+                "/root/uav_humble22/venv/bin/python",
+                "-B",
+                "/root/uav_tracking_fullplan_v4_humble43/scripts/observe_runtime_health.py",
+                "--output-dir",
+                "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/observed_driver01/observer_driver/session_003/runtime_health",
+                "--live-output-dir",
+                "/dev/shm/uav_tracking_runtime_health/owner41_e9d3f7739d9640feb5a0da4108959837/session_003/runtime_health",
+                "--duration-wall-s",
+                "7200",
+                "--max-log-mib",
+                "64",
+                "--ros"
+              ],
+              "driver_exception": false,
+              "ended_before_requested_stop": false,
+              "errors": [],
+              "final_fresh_sample": {
+                "check_duration_wall_s": 0.0012548269987746608,
+                "checked_monotonic_s": 16366.724662498,
+                "latest_sample_monotonic_s": 16366.557015451,
+                "max_sample_age_wall_s": 10.0,
+                "sample_age_wall_s": 0.1676470469992637
+              },
+              "first_fresh_monotonic_s": 10966.606146435,
+              "first_fresh_sample": {
+                "check_duration_wall_s": 0.0008450690002064221,
+                "checked_monotonic_s": 10966.606075082,
+                "latest_sample_monotonic_s": 10966.557481835,
+                "max_sample_age_wall_s": 10.0,
+                "sample_age_wall_s": 0.04859324700009893
+              },
+              "healthy_cleanup": true,
+              "index": 3,
+              "live_directory": "/dev/shm/uav_tracking_runtime_health/owner41_e9d3f7739d9640feb5a0da4108959837/session_003",
+              "local_evidence_removed": false,
+              "native_exit_monotonic_s": 16366.939376079,
+              "native_exit_utc": "2026-11-01T03:28:38.115182+00:00",
+              "native_shutdown_wall_s": 0.21468087600078434,
+              "observer_exit_code": 0,
+              "observer_forced_stop": false,
+              "source_root": "/root/uav_tracking_fullplan_v4_humble43",
+              "started_monotonic_s": 10966.300526217,
+              "started_utc": "2026-11-01T01:58:37.475770+00:00",
+              "stop_requested_monotonic_s": 16366.724695203,
+              "stop_requested_utc": "2026-11-01T03:28:37.899940+00:00"
+            },
+            {
+              "archive_directory": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/observed_driver01/observer_driver/session_004",
+              "capacity": {
+                "console_limit_bytes": 262144,
+                "free_bytes": 8212262912,
+                "health_limit_bytes": 67108864,
+                "mount": {
+                  "filesystem": "tmpfs",
+                  "mountpoint": "/dev/shm"
+                },
+                "required_free_bytes": 136839168
+              },
+              "command": [
+                "/root/uav_humble22/venv/bin/python",
+                "-B",
+                "/root/uav_tracking_fullplan_v4_humble43/scripts/observe_runtime_health.py",
+                "--output-dir",
+                "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/observed_driver01/observer_driver/session_004/runtime_health",
+                "--live-output-dir",
+                "/dev/shm/uav_tracking_runtime_health/owner41_e9d3f7739d9640feb5a0da4108959837/session_004/runtime_health",
+                "--duration-wall-s",
+                "7200",
+                "--max-log-mib",
+                "64",
+                "--ros"
+              ],
+              "driver_exception": false,
+              "ended_before_requested_stop": false,
+              "errors": [],
+              "final_fresh_sample": {
+                "check_duration_wall_s": 0.0008827199999359436,
+                "checked_monotonic_s": 17877.109243357,
+                "latest_sample_monotonic_s": 17876.662425363,
+                "max_sample_age_wall_s": 10.0,
+                "sample_age_wall_s": 0.4468179940013215
+              },
+              "first_fresh_monotonic_s": 16366.72046633,
+              "first_fresh_sample": {
+                "check_duration_wall_s": 0.0017688490006548818,
+                "checked_monotonic_s": 16366.720308363,
+                "latest_sample_monotonic_s": 16366.662793335,
+                "max_sample_age_wall_s": 10.0,
+                "sample_age_wall_s": 0.05751502800012531
+              },
+              "healthy_cleanup": true,
+              "index": 4,
+              "live_directory": "/dev/shm/uav_tracking_runtime_health/owner41_e9d3f7739d9640feb5a0da4108959837/session_004",
+              "local_evidence_removed": false,
+              "native_exit_monotonic_s": 17877.273402758,
+              "native_exit_utc": "2026-11-01T03:53:48.449014+00:00",
+              "native_shutdown_wall_s": 0.16413015000216546,
+              "observer_exit_code": 0,
+              "observer_forced_stop": false,
+              "source_root": "/root/uav_tracking_fullplan_v4_humble43",
+              "started_monotonic_s": 16366.413082982,
+              "started_utc": "2026-11-01T03:28:37.588327+00:00",
+              "stop_requested_monotonic_s": 17877.109272608,
+              "stop_requested_utc": "2026-11-01T03:53:48.284516+00:00"
+            }
+          ],
+          "source_root": "/root/uav_tracking_fullplan_v4_humble43",
+          "started_utc": "2026-10-31T22:58:35.838059+00:00"
+        },
+        "owner_source": {
+          "bytes": 49900,
+          "path": "/mnt/d/WSL/UAVHumble22-validation/local_runtime_observer41.py",
+          "sha256": "2f1348d862525777800df823780a269ef235b0df8d96b9ec378dc61c2be99914"
+        },
+        "readiness_claimed": false,
+        "schema_version": 1,
+        "scope": "HUMBLE41_TMPFS_RUNTIME_OBSERVER_NATIVE_AND_ARCHIVE_SEPARATE",
+        "source_root": "/root/uav_tracking_fullplan_v4_humble43",
+        "status": "COMPLETE",
+        "archive_process": {
+          "command": [
+            "/root/uav_humble22/venv/bin/python",
+            "-B",
+            "/mnt/d/WSL/UAVHumble22-validation/local_runtime_observer41.py",
+            "_archive-worker",
+            "--manifest",
+            "/dev/shm/uav_tracking_runtime_health/owner41_e9d3f7739d9640feb5a0da4108959837/archive_manifest.json",
+            "--manifest-sha256",
+            "06fce46ccdcb9b64bc4660831209489ed58e486eaa9471dbc7212be2d1557fb4"
+          ],
+          "returncode": 0,
+          "forced_stop": false,
+          "error": null,
+          "elapsed_wall_s": 4.577490892999776,
+          "wall_budget_s": 1800.0
+        },
+        "copy_terminal": {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/observed_driver01/observer_driver/execution_terminal.json",
+          "bytes": 26404,
+          "sha256": "8e0a0944a9b788a4ac3dc8228cf61500f7dcaa92e7d8feba5a0dac07659aea3c"
+        }
+      }
+    },
+    "formal_seed_use_authorized": false
+  },
+  "flight_or_plan_started": false,
+  "safety_registry_created": false,
+  "safety_or_extension_admitted": false,
+  "formal_seed_use_authorized": false,
+  "formal_seeds_consumed": false,
+  "automatic_retry": false,
+  "automatic_next_action": false
+}

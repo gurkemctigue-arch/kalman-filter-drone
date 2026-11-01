@@ -1,26 +1,30 @@
 # 查看当前实验
 
-**2026-11-01 11:03（北京时间）快照：Humble43同源核心12已有10个原始工程PASS，行人六组及汽车速度、位置、交叉、中位云台四组完成，第11项汽车主动云台正在运行；正式实验仍0/280。** 已完成十组均包含75秒任务、录包归档、评价和单槽检查。原批次继续执行，整体退出和观察器关闭尚未产生，完整核心12仍待完成。
+**2026-11-01 12:08（北京时间）快照：Humble43同源核心12已有12个原始工程PASS，行人和汽车各六组全部产生终态；正式实验仍0/280。** 十二组均包含75秒任务、录包归档、评价和单槽检查。原整批主命令与进度桥均正常退出0，原owner健康闭合经原`actual_core`完整独立复验通过。[本机独审收据](../tools/experiment_orchestration/humble43_core12_closure_snapshot01/humble43_core12_closed_independent01.json)确认completed12、all_original_core_cells_pass=true；这只完成核心开发关口，安全4、扩展16及正式准入仍待完成。
 
 本机请打开[Humble43实时进度页](../results/project_progress/humble43_core01/index.html)，根据页面生成时间、心跳、当前场景和原始终态计数判断实际状态。该页面读取原始开始/终态事件；飞行结束后的归档评价期间，场景仍会显示运行中。旧Humble42、41及`current/`页面均为历史记录。
 
-已完成场景的[行人速度跟随录像](../results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_person_stage1_velocity_seed004/onboard.mp4)和[行人位置跟随录像](../results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_person_stage1_position_seed004/onboard.mp4)可以直接观看。完整原始记录位于`results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/slots/`。导航报告仍为`RECORDED_WITH_CENSORED_FAILURES`，必须保留模型原点参考等窗口的未稳定结果，不能把工程PASS改述为所有分析窗口通过。
+已完成场景的[行人速度跟随录像](../results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_person_stage1_velocity_seed004/onboard.mp4)和[行人位置跟随录像](../results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_person_stage1_position_seed004/onboard.mp4)可以直接观看。完整原始记录位于`results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_seed004_matrix/slots/`。全部12条导航报告仍为`RECORDED_WITH_CENSORED_FAILURES`；各场完整任务机体参考末端距离/高度稳定检查均为true，但必须保留模型原点参考等窗口的未稳定结果，不能把工程PASS改述为所有分析窗口通过。
 
 还可观看[行人多目标交叉](../results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_person_stage2_crossing_seed004/onboard.mp4)、[云台中位](../results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_person_stage3_midpoint_seed004/onboard.mp4)、[主动云台](../results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_person_stage3_active_seed004/onboard.mp4)及[多目标主动云台](../results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_person_stage3_multi_active_seed004/onboard.mp4)。单目标中位/主动的画面中心RMSE为57.705711/17.004366像素，两者均有717/751个可观测机会；各场物理距离、高度和末端机体参考稳定检查通过。它们是一个开发种子的结果，不代表正式效果结论。
 
-两条多目标场景的主身份分母分别为753格：交叉649正确、0已知错误、104未知；多目标主动648正确、0已知错误、105未知。未知继续计入分母。交叉场景104格的证据分解和边界见[独立核查小收据](../tools/diagnostics/humble43_identity_unknown_snapshot01/README.md)，不能把未知当作正确，也不能把粗原因直接解释成YOLO或通信故障。
+行人两条多目标场景的主身份分母分别为753格：交叉649正确、0已知错误、104未知；多目标主动648正确、0已知错误、105未知。未知继续计入分母。交叉场景104格的证据分解和边界见[独立核查小收据](../tools/diagnostics/humble43_identity_unknown_snapshot01/README.md)，不能把未知当作正确，也不能把粗原因直接解释成YOLO或通信故障。
 
 汽车[速度跟随录像](../results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_car_stage1_velocity_seed004/onboard.mp4)和[位置跟随录像](../results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_car_stage1_position_seed004/onboard.mp4)已生成。完整任务的距离/高度RMSE分别为0.750666/0.162098米和0.703718/0.167942米；两场机体参考末端距离、高度稳定均通过。导航报告仍含删失窗口，单个开发种子的通过不能代替汽车全部场景或正式重复可靠性结论。
 
 汽车[多目标交叉录像](../results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_car_stage2_crossing_seed004/onboard.mp4)已生成，完整任务距离/高度RMSE为0.852427/0.152493米，末端机体参考稳定及18项阶段二检查通过。独立主身份网格753格中647正确、0已知错误、106未知，保守正确覆盖85.923%；两个显式请求任务均独立映射到同一物理汽车。该场既保留未知身份，也保留导航删失窗口；不能将工程PASS解释为全时刻身份确定或所有窗口通过。
 
-汽车[云台中位录像](../results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_car_stage3_midpoint_seed004/onboard.mp4)已生成。完整任务距离/高度RMSE为0.728828/0.157771米，机体参考末端稳定检查通过；751个检测机会中719个提供有效中心观测，其框中心RMSE为81.548670像素。汽车主动模式尚待完成，不能据此给出两种模式的比较结论。
+汽车[云台中位录像](../results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_car_stage3_midpoint_seed004/onboard.mp4)已生成。完整任务距离/高度RMSE为0.728828/0.157771米，机体参考末端稳定检查通过；751个检测机会中719个提供有效中心观测，其框中心RMSE为81.548670像素。
+
+汽车[主动云台录像](../results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_car_stage3_active_seed004/onboard.mp4)对应原槽于03:22:48 UTC完成PASS，13项云台检查通过。距离/高度RMSE为0.739129/0.161260米，导航覆盖0.916223404、真值覆盖1.0；框中心RMSE为13.043403像素（718/750个机会）。本开发种子的中心误差较中位低，距离和高度误差略高，不能据此称主动模式全指标更好或已经证明总体可靠性提升。
+
+汽车[多目标主动云台录像](../results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_car_stage3_multi_active_seed004/onboard.mp4)对应原槽于03:52:20 UTC完成PASS，13项云台检查通过。距离/高度RMSE为0.841079/0.174023米，导航覆盖0.898936170、真值覆盖1.0；框中心RMSE为5.554585像素（674/751个机会）。主身份754格中645正确、0已知错误、109未知：首次任务322格中215正确、107未知；重选后432格中430正确、2未知。该主汇总最初通过原报告1 MiB有界前缀读取，原整批记录与报告绑定现已由既有独审通过；未知仍保留，不能当作全时刻身份已知。
 
 Humble43已完成四包隔离构建、来源检查和真实消息序列化检查；1763项Linux检查中1758通过、原5项平台跳过。另一个具名单场汽车交叉诊断已通过，但完整身份网格754格仍有110格未知，保守正确覆盖为644/754；该诊断不能拼入核心12或正式280。详情见[本轮证据与准入顺序](../planning/reliability-v4-humble43-validation-20261101.md)。
 
-后续依次为核心12完整关闭审查、安全4、扩展16、28格容量实测、两条预定录制导出与R0定标、独立最终来源构建/登记/封存、正式120+160和统计交付。新增v2定标/发布工具按原协议保留可评价压力场景的算法FAIL；核心12、安全4仍须全部PASS，安全失效或缺证不能据此放行。v2工具Windows组件检查为78通过、7平台跳过，Humble补验为76通过、9项因核心批次占用SITL锁而报错，须待整批空闲后完整重验，尚不构成准入。
+后续依次为v2完整Humble组件补验、安全4、扩展16、28格容量实测、两条预定录制导出与R0定标、独立最终来源构建/登记/封存、正式120+160和统计交付。新增v2定标/发布工具按原协议保留可评价压力场景的算法FAIL；核心12、安全4仍须全部PASS，安全失效或缺证不能据此放行。v2工具Windows组件检查为78通过、7平台跳过，原Humble02补验为76通过、9项因核心批次占用SITL锁而报错。后续组件03因原机器锁文件身份不可用而在测试前拒绝调度，tests_run=false、85项均未运行；这既不是85项通过，也不是85项测试失败，仍须真实完整补验。
 
-按本轮前两槽约20分钟及历史不同组别耗时，核心12仍按约5—6小时总量估计。其后还有280次正式飞行，整个剩余工作维持5—6天量级估计，发生新故障时按实测修订。此处是带时间的快照，最新状态以实时页为准。进度页、视频和原始结果仅在本机存在；GitHub保存源码和证据说明，网页不会自行向聊天发送完成通知。
+原12槽位终态已齐、整批主命令正常退出且核心独审通过，后续还有组件补验、安全、扩展、准入及280次正式飞行，整个剩余工作维持5—6天量级估计，发生新故障时按实测修订。此处是带时间的快照，最新状态以实时页为准。进度页、视频和原始结果仅在本机存在；GitHub保存源码和证据说明，网页不会自行向聊天发送完成通知。
 
 <details>
 <summary>Humble42及更早历史快照（不能用于判断当前进程）</summary>
