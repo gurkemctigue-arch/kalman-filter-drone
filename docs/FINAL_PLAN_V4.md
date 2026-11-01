@@ -19,11 +19,11 @@
 
 统一管线为RGB-D与CameraInfo/TF输入、YOLO11检测、二维/三维关联、目标选择、独立导航参考重建、三维卡尔曼估计、世界坐标跟随控制和PX4 Offboard。算法核心不直接依赖PX4或Gazebo消息类型。SensorAdapter、VehicleStateAdapter、TargetManager、StateEstimator、FollowController、PX4Adapter和GimbalAdapter分离。
 
-运行时仅使用传感器、TF、云台编码器和PX4状态。Gazebo实体名称、真值ID及真值位姿不得用于在线关联、目标选择或控制。独立仿真真值仅用于录制后的评价，不能反向进入滤波、关联或调参。
+运行时仅使用传感器、TF、云台编码器和PX4状态。Gazebo实体名称、真值ID及真值位姿不得用于在线滤波、关联、目标选择或控制。独立仿真真值用于录制后的评价；开发资料和正式留出资料分开，正式真值不能用于事后调整模型、参数或判定门槛。
 
 ## 四、RGB-D测量、导航参考与不确定性
 
-YOLO11权重按类别记录来源。行人使用预训练YOLO11n；汽车使用仿真数据微调后的 `yolo11m_car_sim_train20_04.pt`，不能称为未微调的YOLO11s。两类使用同一系统接口，模型文件SHA、输入尺寸、线程和设备冻结。Humble42候选资源为行人320/CPU2线程、汽车512/CPU4线程，CPU原生PT/FP32，请求仿真速度0.125倍、PX4适配器发布频率50 Hz；这些资源参数及相应开发证据不证明实时时钟下的性能。汽车权重SHA与资源依据见[资源收据](../config/car_sim_train20_04_m512_resource_receipt.json)。正式版本以实际登记和完整开发关口为准。
+YOLO11权重按类别记录来源。行人使用预训练YOLO11n；汽车使用仿真数据微调后的 `yolo11m_car_sim_train20_04.pt`，不能称为未微调的YOLO11s。两类使用同一系统接口，模型文件SHA、输入尺寸、线程和设备冻结。当前Humble43开发资源为行人320/CPU2线程、汽车512/CPU4线程，CPU原生PT/FP32，请求仿真速度0.125倍、PX4适配器发布频率50 Hz；这些资源参数及相应开发证据不证明实时时钟下的性能。汽车权重SHA与资源依据见[资源收据](../config/car_sim_train20_04_m512_resource_receipt.json)。正式版本以实际登记和完整开发关口为准。
 
 深度ROI保留有效率、离散度与异常值信息，测量无效或过期时不能刷新三维状态。相机光学坐标中的反投影使用同采集时刻TF转到稳定的局部世界坐标；不能用命令角冒充真实云台角。ROS ENU/FLU与PX4 NED/FRD转换集中在PX4适配器。
 
