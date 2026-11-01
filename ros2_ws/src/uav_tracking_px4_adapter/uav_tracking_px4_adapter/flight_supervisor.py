@@ -102,6 +102,11 @@ class FlightSupervisor(Node):
             "heartbeat_prestream_s": 1.2,
             "command_timeout_s": 0.5,
             "odometry_timeout_s": 0.5,
+            "stream_timestamp_mode": "receipt_wall",
+            "odometry_source_max_age_s": 0.5,
+            "odometry_source_max_future_s": 0.05,
+            "command_source_max_age_s": 0.5,
+            "command_source_max_future_s": 0.05,
             "status_timeout_s": 1.0,
             "status_timestamp_mode": "receipt_wall",
             "status_source_max_age_s": 1.0,
@@ -141,6 +146,7 @@ class FlightSupervisor(Node):
         self._status_last_ros_ns: int | None = None
         self._status_ros_regressed = False
         self._status_last_rejection = "none"
+        self._configure_stream_timing()
         if requested_rtf != 1.0 and not (
             bool(self.get_parameter("simulation_only").value)
             and bool(self.get_parameter("use_sim_time").value)
@@ -190,6 +196,8 @@ class FlightSupervisor(Node):
                                      qos_profile_sensor_data)
         self.create_timer(1.0 / float(self.get_parameter("publish_rate_hz").value), self._tick)
         self._create_diagnostics_timer()
+        if self._stream_timestamp_mode == "source_sim":
+            self._create_stream_watchdog_timer()
         if self._native_takeoff:
             # A ROS-time timer stops when /clock pauses. This independent
             # steady timer must still enforce the native wall-time ceiling.
@@ -211,6 +219,30 @@ class FlightSupervisor(Node):
     def _number(self, name: str) -> float:
         return float(self.get_parameter(name).value)
 
+    def _configure_stream_timing(self) -> None:
+        self._stream_timestamp_mode = self._p("stream_timestamp_mode")
+        if self._stream_timestamp_mode not in ("receipt_wall", "source_sim"):
+            raise ValueError("unsupported stream_timestamp_mode")
+        if self._source_stream_mode():
+            if not (self.get_parameter("simulation_only").value is True
+                    and self.get_parameter("use_sim_time").value is True):
+                raise RuntimeError("source_sim stream guards require simulation_only and use_sim_time")
+            for stream in ("odometry", "command"):
+                age = self._native_finite(self.get_parameter(stream + "_source_max_age_s").value)
+                future = self._native_finite(self.get_parameter(stream + "_source_max_future_s").value)
+                wall = self._native_finite(self.get_parameter(stream + "_timeout_s").value)
+                if not (age is not None and 0 < age <= .5
+                        and future is not None and 0 <= future <= .05
+                        and wall is not None and 0 < wall <= 10.):
+                    raise ValueError("stream source bounds and receipt wall watchdog must be finite and bounded")
+        self._stream_last_ros_ns: int | None = None
+        self._stream_ros_regressed = False
+        self._stream_last_source_ns: dict[str, int] = {}
+        self._stream_source_regressed: set[str] = set()
+        self._stream_last_rejection: dict[str, str] = {}
+        self._command_last_issues: list[str] = []
+        self._command_cancelled = False
+
     def _on_odom(self, message: Any) -> None:
         p = message.pose.pose.position
         if not all(math.isfinite(float(v)) for v in (p.x, p.y, p.z)):
@@ -218,6 +250,8 @@ class FlightSupervisor(Node):
         try:
             quaternion_yaw(message.pose.pose.orientation)
         except ValueError:
+            return
+        if not self._accept_source_stream("odometry", message):
             return
         self._odom, self._odom_received = message, time.monotonic()
         self._odom_received_source_s = self.get_clock().now().nanoseconds * 1e-9
@@ -287,6 +321,32 @@ class FlightSupervisor(Node):
                           "status_source_future_s": source_future_ns / 1e9 if source_future_ns is not None else None,
                           "odometry_wall_s": self._number("odometry_timeout_s")},
         )
+        if self._source_stream_mode():
+            command = self._controller_command
+            command_ns = self._native_odom_stamp_ns(command)
+            payload.update(
+                stream_timestamp_mode="source_sim",
+                command={"source_stamp_ns": command_ns,
+                         "received_wall_monotonic_s": self._command_received if command is not None else None,
+                         "age_wall_s": now - self._command_received if command is not None else None,
+                         "age_source_s": (ros_ns-command_ns)/1e9 if command_ns is not None else None,
+                         "last_control_issues": list(self._command_last_issues),
+                         "cancelled": self._command_cancelled},
+                stream_last_rejections=dict(self._stream_last_rejection),
+                stream_ros_regressed=self._stream_ros_regressed,
+                stream_source_regressed=sorted(self._stream_source_regressed),
+                stream_watchdog_contract={"clock": "STEADY_TIME", "period_wall_s": .1,
+                    "executor": "SAME_SINGLE_THREADED_EXECUTOR_AS_CONTROL",
+                    "action": "LATCH_ABORT_AND_PUBLISH_ONE_INVALID_COMMAND_ONLY_ON_FAILURE",
+                    "limitation": "An executor stall delays this check; it is not an independent DDS observer."},
+            )
+            payload["guard_limits"].update(
+                odometry_source_age_s=self._number("odometry_source_max_age_s"),
+                odometry_source_future_s=self._number("odometry_source_max_future_s"),
+                command_wall_s=self._number("command_timeout_s"),
+                command_source_age_s=self._number("command_source_max_age_s"),
+                command_source_future_s=self._number("command_source_max_future_s"),
+            )
         message = String()
         message.data = json.dumps(payload, allow_nan=False, separators=(",", ":"))
         self._diagnostics_pub.publish(message)
@@ -321,7 +381,91 @@ class FlightSupervisor(Node):
         return issues
 
     def _on_command(self, message: Any) -> None:
+        # A stop intent must cancel the old motion immediately, even when its
+        # timestamp is rejected. Only a later accepted valid command releases it.
+        if self._source_stream_mode() and not message.valid:
+            self._command_cancelled = True
+        if not self._accept_source_stream("command", message):
+            return
         self._controller_command, self._command_received = message, time.monotonic()
+        if self._source_stream_mode() and message.valid:
+            self._command_cancelled = False
+
+    def _source_stream_mode(self) -> bool:
+        return getattr(self, "_stream_timestamp_mode", "receipt_wall") == "source_sim"
+
+    def _stream_ros_now_ns(self) -> int:
+        now_ns = self.get_clock().now().nanoseconds
+        previous = getattr(self, "_stream_last_ros_ns", None)
+        if previous is not None and now_ns < previous:
+            self._stream_ros_regressed = True
+        self._stream_last_ros_ns = now_ns
+        return now_ns
+
+    def _source_stream_issues(self, stream: str, message: Any) -> list[str]:
+        """Use the actual ROS header, never requested RTF, to measure age."""
+        now_ns = self._stream_ros_now_ns()
+        if (getattr(self, "_stream_ros_regressed", False)
+                or stream in getattr(self, "_stream_source_regressed", set())):
+            return [stream + "_source_clock_regression_restart_required"]
+        stamp_ns = self._native_odom_stamp_ns(message)
+        if now_ns <= 0 or stamp_ns is None:
+            return [stream + "_source_timestamp_invalid"]
+        age_ns = now_ns - stamp_ns
+        if age_ns > round(self._number(stream + "_source_max_age_s") * 1e9):
+            return [stream + "_source_stale"]
+        if age_ns < -round(self._number(stream + "_source_max_future_s") * 1e9):
+            return [stream + "_source_future"]
+        return []
+
+    def _accept_source_stream(self, stream: str, message: Any) -> bool:
+        if not self._source_stream_mode():
+            return True
+        stamp_ns = self._native_odom_stamp_ns(message)
+        previous = self._stream_last_source_ns.get(stream)
+        if stamp_ns is not None and previous is not None and stamp_ns < previous:
+            self._stream_source_regressed.add(stream)
+        issues = self._source_stream_issues(stream, message)
+        if not issues and stamp_ns == previous:
+            issues = [stream + "_duplicate_source_sample"]
+        self._stream_last_rejection[stream] = ", ".join(issues) if issues else "none"
+        if issues:
+            return False
+        self._stream_last_source_ns[stream] = stamp_ns
+        return True
+
+    def _odometry_timing_issues(self, now: float) -> list[str]:
+        if self._odom is None:
+            return ["odometry_missing"]
+        if not self._source_stream_mode():
+            return ["odometry_stale"] if now - self._odom_received > self._number("odometry_timeout_s") else []
+        issues = self._source_stream_issues("odometry", self._odom)
+        if now - self._odom_received > self._number("odometry_timeout_s"):
+            issues.append("odometry_receipt_wall_stale")
+        return issues
+
+    def _create_stream_watchdog_timer(self) -> None:
+        # Same single-threaded executor: this survives a /clock pause only
+        # while scheduled. It never publishes normal control commands.
+        self._stream_watchdog_clock = Clock(clock_type=ClockType.STEADY_TIME)
+        self._stream_watchdog_timer = self.create_timer(.10, self._stream_wall_watchdog,
+                                                        clock=self._stream_watchdog_clock)
+
+    def _stream_wall_watchdog(self) -> None:
+        if not self._source_stream_mode() or self._phase not in ("FOLLOW", "HOLD"):
+            return
+        now = time.monotonic()
+        # These are the same state guards used by the normal FOLLOW/HOLD
+        # tick, including the unchanged status source/wall/future bounds.
+        issues = self._state_guard_issues(now, require_armed_offboard=True)
+        if "command" in self._stream_source_regressed:
+            issues.append("command_source_clock_regression_restart_required")
+        if issues:
+            self._abort("stream watchdog: " + ", ".join(issues), now)
+            outgoing = self._velocity_command()
+            outgoing.valid = False
+            self._flight_pub.publish(outgoing)
+            self._publish_phase(wall_s=now)
 
     def _on_native_local(self, message: Any) -> None:
         self._native_local = message
@@ -521,7 +665,7 @@ class FlightSupervisor(Node):
         return bool(
             self._odom is not None
             and self._status is not None
-            and now - self._odom_received <= self._number("odometry_timeout_s")
+            and not self._odometry_timing_issues(now)
             and not self._status_timing_issues(now)
         )
 
@@ -537,10 +681,7 @@ class FlightSupervisor(Node):
         """Explain the existing guards without changing their thresholds."""
 
         issues = []
-        if self._odom is None:
-            issues.append("odometry_missing")
-        elif now - self._odom_received > self._number("odometry_timeout_s"):
-            issues.append("odometry_stale")
+        issues.extend(self._odometry_timing_issues(now))
         if self._status is None:
             issues.append("status_missing")
         else:
@@ -574,6 +715,19 @@ class FlightSupervisor(Node):
                 f"status_source_future_limit_s={self._status_clock.max_future_ns / 1e9:.3f}, "
                 f"status_last_rejection={self._status_last_rejection}, "
             )
+        stream_timing = ""
+        if self._source_stream_mode():
+            stamp_ns = self._native_odom_stamp_ns(self._odom)
+            age = (self.get_clock().now().nanoseconds-stamp_ns)/1e9 if stamp_ns is not None else math.nan
+            stream_timing = (
+                "stream_timestamp_mode=source_sim, "
+                f"odom_age_source_s={age:.3f}, "
+                f"odom_source_limit_s={self._number('odometry_source_max_age_s'):.3f}, "
+                f"odom_source_future_limit_s={self._number('odometry_source_max_future_s'):.3f}, "
+                f"command_wall_limit_s={self._number('command_timeout_s'):.3f}, "
+                f"command_source_limit_s={self._number('command_source_max_age_s'):.3f}, "
+                f"command_source_future_limit_s={self._number('command_source_max_future_s'):.3f}, "
+            )
         return (
             f"wall_monotonic_s={now:.6f}, ros_now_ns={self.get_clock().now().nanoseconds}, "
             f"odom_age_wall_s={now - self._odom_received:.3f}, "
@@ -581,7 +735,7 @@ class FlightSupervisor(Node):
             f"odom_received_monotonic_s={self._odom_received:.6f}, odom_stamp_ns={odom_stamp_ns}, "
             f"status_age_wall_s={now - self._status_received:.3f}, "
             f"status_limit_s={self._number('status_timeout_s'):.3f}, "
-            f"status_timestamp_mode={mode}, {source_timing}"
+            f"status_timestamp_mode={mode}, {source_timing}{stream_timing}"
             f"status_received_monotonic_s={self._status_received:.6f}, "
             f"status_px4_stamp_us={getattr(status, 'timestamp', 'missing')}, "
             f"arming_state={getattr(status, 'arming_state', 'missing')}, "
@@ -629,11 +783,23 @@ class FlightSupervisor(Node):
 
     def _controller_is_fresh(self, now: float) -> bool:
         command = self._controller_command
+        if self._source_stream_mode():
+            issues = ["command_missing"] if command is None else self._source_stream_issues("command", command)
+            if command is not None:
+                if not command.valid or getattr(self, "_command_cancelled", False):
+                    issues.append("command_invalid")
+                if now - self._command_received > self._number("command_timeout_s"):
+                    issues.append("command_receipt_wall_stale")
+            self._command_last_issues = issues
+            if issues:
+                return False
+        # Preserve the legacy custom timeout's original wall AND source gates.
         if command is None or not command.valid or now - self._command_received > self._number("command_timeout_s"):
             return False
         stamp_ns = command.header.stamp.sec * 1_000_000_000 + command.header.stamp.nanosec
         age_s = (self.get_clock().now().nanoseconds - stamp_ns) * 1e-9
-        if stamp_ns <= 0 or age_s < -0.05 or age_s > self._number("command_timeout_s"):
+        if not self._source_stream_mode() and (stamp_ns <= 0 or age_s < -0.05
+                                              or age_s > self._number("command_timeout_s")):
             return False
         if command.mode == TrackingCommand.MODE_VELOCITY:
             values = (command.linear_mps.x, command.linear_mps.y, command.linear_mps.z, command.yaw_rad, command.yaw_rate_radps)
@@ -641,7 +807,10 @@ class FlightSupervisor(Node):
             values = (command.position_m.x, command.position_m.y, command.position_m.z, command.yaw_rad, command.yaw_rate_radps)
         else:
             return False
-        return all(math.isfinite(float(v)) for v in values)
+        finite = all(math.isfinite(float(v)) for v in values)
+        if self._source_stream_mode() and not finite:
+            self._command_last_issues = ["command_nonfinite"]
+        return finite
 
     def _tick(self) -> None:
         now = time.monotonic()

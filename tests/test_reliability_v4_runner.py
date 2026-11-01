@@ -71,6 +71,7 @@ def fixture(root, *, navigation=True, gates=False, ros_distro="jazzy"):
     protocol.pop("model_adaptation", None)
     protocol.pop("car_input_scale_registration", None)
     protocol.pop("simulation_pacing_registration", None)
+    protocol.pop(v4.SUPERVISOR_STREAM_FIELD, None)
     protocol.update(real_time_factor=.25, flight_wall_timeout_s=600.)
     protocol["resources"]["car"]["model"] = "models/yolo11m.pt"
     protocol["resources"]["car"]["inference_image_size"] = 960

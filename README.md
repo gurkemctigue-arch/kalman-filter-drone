@@ -1,6 +1,6 @@
 # RGB-D UAV target tracking and following
 
-**2026-11-02（北京时间）：Humble45核心批次已停止，原结果为1 PASS、1基础设施错误、10未开始，正式仍0/280。** 第2场因里程计墙钟新鲜度保护中止，正进行离线时序取证；原失败和owner收尾错误保留。构建及单场诊断的通过不能代替本批验收。见[45故障与后续工作](planning/reliability-v4-humble45-position-abort-20261102.md)。
+**2026-11-02（北京时间）：Humble45核心批次停止后，已完成时序取证和时钟修复候选；145项相关测试及22项补充复验通过，最终独审通过。** 原结果1 PASS、1基础设施错误、10未开始保持，正式仍0/280；接下来准备新Humble46隔离构建、完整原生测试和新核心批次。见[故障、修复与后续工作](planning/reliability-v4-humble45-position-abort-20261102.md)。
 
 **2026-11-01 23:17（北京时间）：Humble44四包冷构建通过，但完整Linux测试因3个旧夹具缺少新增QoS配置而失败。** 原1767项为3 ERROR、5平台跳过，原失败保留；现已补齐夹具，受影响的13项在Humble原生全部通过，正在准备新Humble45整套验证，尚未飞行复测。此前原生录包冒烟的1290条消息完整、无缺失或重复，仅属合成配置验证。正式仍0/280。见[44原始失败与后续验证](tools/diagnostics/humble44_validation_failure01/README.md)、[录包冒烟原件](tools/diagnostics/humble44_recorder_qos_smoke01/README.md)及[本轮路线](planning/reliability-v4-humble44-recording-repair.md)。
 

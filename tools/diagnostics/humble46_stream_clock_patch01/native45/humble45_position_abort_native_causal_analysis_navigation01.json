@@ -1,0 +1,1287 @@
+{
+  "schema_version": 1,
+  "scope": "INDEPENDENT_WINDOWS_REVIEW_OF_EXISTING_NATIVE_EXPORT_ONLY_NOT_RAW_BAG_OR_REPLAY",
+  "created_utc": "2026-11-01T17:15:39.949823+00:00",
+  "reviewer": "/root/exclusive_navigation_prototype",
+  "status": "ORIGINAL_ABORT_SUPPORTED_CLOCK_SEMANTICS_MISMATCH_OBSERVED_UPSTREAM_CAUSE_NOT_ISOLATED",
+  "input_artifacts": {
+    "manifest.json": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble45_position_abort_native_window01\\manifest.json",
+      "bytes": 769442,
+      "sha256": "d91a858f6fb6c538fb4c43618ea31c179efff46f536c5ae4da6eca3ea9d3ee2b"
+    },
+    "events.jsonl": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble45_position_abort_native_window01\\events.jsonl",
+      "bytes": 15000830,
+      "sha256": "2381703c57f2567c998b65d0f5b89439024e94161862a1c8be71bbb3b8fb5315"
+    },
+    "image_requests.json": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble45_position_abort_native_window01\\image_requests.json",
+      "bytes": 2223,
+      "sha256": "b85e3e831211b8d32284617dc8f1af7aec79d29d8f32824676d85d187b0b685d"
+    }
+  },
+  "root_export_receipt": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\humble45_position_abort_native_causal_export_root01.json",
+    "bytes": 3582,
+    "sha256": "5b92f088461c403f86249a5f45853e9728439901ef28dd1aab2cf1f1d5d71707"
+  },
+  "root_export_elapsed_wall_s": 95.932362176,
+  "original_slot_status": "INFRASTRUCTURE_ERROR",
+  "original_core_counts": {
+    "PASS": 1,
+    "INFRASTRUCTURE_ERROR": 1,
+    "PENDING": 10
+  },
+  "export_contract": {
+    "source_window_ns": [
+      56000000000,
+      60640000000
+    ],
+    "follow_source_ns": 17852000000,
+    "native_traversals": 1,
+    "compressed_hash_passes": 2,
+    "originals_unchanged": true,
+    "gt_scope": "NOT_DESERIALIZED",
+    "requested_frame_status": [
+      {
+        "requested_source_ns": 60200000000,
+        "follow_offset_ns": 42348000000,
+        "status": "EXACT_COMPONENTS_EXPORTED"
+      }
+    ]
+  },
+  "reviewed_source": {
+    "relative": "ros2_ws/src/uav_tracking_px4_adapter/uav_tracking_px4_adapter/flight_supervisor.py",
+    "workspace_copy_pin": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\ros2_ws\\src\\uav_tracking_px4_adapter\\uav_tracking_px4_adapter\\flight_supervisor.py",
+      "bytes": 48847,
+      "sha256": "adccfaab097f2962e6607aee3ade9d1a8a0d102f99de46b7f4376464a51632f3"
+    },
+    "same_sha_as_frozen_review": true,
+    "method_lines": {
+      "_publish_supervisor_diagnostics": {
+        "first_line": 262,
+        "last_line": 292
+      },
+      "_on_command": {
+        "first_line": 323,
+        "last_line": 324
+      },
+      "_fresh_state": {
+        "first_line": 520,
+        "last_line": 526
+      },
+      "_state_guard_issues": {
+        "first_line": 536,
+        "last_line": 555
+      },
+      "_state_snapshot": {
+        "first_line": 557,
+        "last_line": 591
+      },
+      "_controller_is_fresh": {
+        "first_line": 630,
+        "last_line": 644
+      },
+      "_tick": {
+        "first_line": 646,
+        "last_line": 800
+      }
+    }
+  },
+  "abort_latched_snapshot": {
+    "decision_wall_monotonic_s": 1978.382349,
+    "decision_ros_ns": 60252000000,
+    "cached_odom_source_ns": 60172000000,
+    "cached_odom_received_wall_monotonic_s_rounded": 1977.649832,
+    "cached_odom_age_wall_s_rounded": 0.733,
+    "odom_wall_limit_s": 0.5,
+    "status_age_wall_s_rounded": 3.004,
+    "status_wall_limit_s": 10.0,
+    "status_age_source_s": 0.3,
+    "status_source_limit_s": 1.0,
+    "arming_state": 2,
+    "nav_state": 14,
+    "failsafe": "False",
+    "cached_odom_age_source_s_derived": 0.08
+  },
+  "phase_transitions_at_tail": [
+    {
+      "record_index": 98778,
+      "topic": "/tracking/flight_phase",
+      "bag_record_ns": 1793552346222122133,
+      "recorded_clock_proxy_ns": 60156000000,
+      "cdr": "cdr/000098778.cdr",
+      "cdr_sha256": "4c35a93507b0f05edbf8104ce38b83c38ee297a77bd4a9c74636ad66ab757574",
+      "phase": "HOLD",
+      "phase_wall_monotonic_s": 1977.131642987,
+      "phase_source_s": 60.152,
+      "raw_phase_prefix": "HOLD: visual command absent, invalid or stale; zero-velocity hover; phase_wall_monotonic_s=1977.131642987"
+    },
+    {
+      "record_index": 98850,
+      "topic": "/tracking/flight_phase",
+      "bag_record_ns": 1793552346875660032,
+      "recorded_clock_proxy_ns": 60212000000,
+      "cdr": "cdr/000098850.cdr",
+      "cdr_sha256": "5e2699b37792a7fd032fa3e7d23c31d11e8e990a652079115d6e528933ffff02",
+      "phase": "FOLLOW",
+      "phase_wall_monotonic_s": 1977.76286827,
+      "phase_source_s": 60.204,
+      "raw_phase_prefix": "FOLLOW: forwarding fresh visual controller command; phase_wall_monotonic_s=1977.762868270"
+    },
+    {
+      "record_index": 98980,
+      "topic": "/tracking/flight_phase",
+      "bag_record_ns": 1793552348169241954,
+      "recorded_clock_proxy_ns": 60300000000,
+      "cdr": "cdr/000098980.cdr",
+      "cdr_sha256": "583d047cb3965e6939924dd8dbf259c66230dfe69ba90250793444a91bc081a7",
+      "phase": "ABORTED",
+      "phase_wall_monotonic_s": 1978.382348639,
+      "phase_source_s": 60.252,
+      "raw_phase_prefix": "ABORTED: flight guard: odometry_stale; wall_monotonic_s=1978.382349, ros_now_ns=60252000000, odom_age_wall_s=0.733, odom_limit_s=0.500, odom_received_monotonic_s=1977.649832, odom_stamp_ns=60172000000, status_age_wall_s=3.004, status_limit_s=10.000, status_timestamp_mode=source_sim, status_age_source_s=0.300, status_source_limit_s=1.000, status_source_future_limit_s=0.050, status_last_rejection=none, status_received_monotonic_s=1975.378186, status_px4_stamp_us=59952000, arming_state=2, nav_state=14, failsafe=False, preflight_pass=True; phase_wall_monotonic_s=1978.382348639"
+    }
+  ],
+  "diagnostics_tail": [
+    {
+      "record_index": 97765,
+      "topic": "/tracking/supervisor_diagnostics",
+      "bag_record_ns": 1793552341185199830,
+      "recorded_clock_proxy_ns": 59552000000,
+      "cdr": "cdr/000097765.cdr",
+      "cdr_sha256": "0f8394bb9729205f5a3902e41279408cf098ea3f0d9749d6a67e9ca0648c9f44",
+      "sample_ros_ns": 59552000000,
+      "sample_monotonic_s": 1972.196546685,
+      "phase": "FOLLOW",
+      "odometry": {
+        "source_stamp_ns": 59548000000,
+        "received_wall_monotonic_s": 1972.180125518,
+        "age_wall_s": 0.01642116699986218,
+        "age_source_s": 0.004
+      },
+      "accepted_control_status": {
+        "source_stamp_ns": 59448000000,
+        "received_wall_monotonic_s": 1971.34694095,
+        "age_wall_s": 0.8496057349998409,
+        "age_source_s": 0.104
+      },
+      "control_tick": {
+        "count": 1191,
+        "last_wall_monotonic_s": 1972.178435999,
+        "age_wall_s": 0.018110685999999987
+      },
+      "diagnostic_clock": {
+        "callback_count": 484,
+        "wall_delta_s": 0.9936462779999147,
+        "ros_delta_s": 0.124,
+        "observed_ros_progress_per_wall": 0.12479289939031064,
+        "wall_since_observed_ros_change_s": 0.0,
+        "observed_ros_regressions": 0
+      },
+      "completed_max_wall_gaps_s": {
+        "raw_status_callbacks": 5.0565312139999605,
+        "accepted_status_callbacks": 5.055125825000005,
+        "control_ticks": 1.283328438999888,
+        "diagnostic_callbacks": 1.0755910350001159
+      }
+    },
+    {
+      "record_index": 97976,
+      "topic": "/tracking/supervisor_diagnostics",
+      "bag_record_ns": 1793552342195983846,
+      "recorded_clock_proxy_ns": 59680000000,
+      "cdr": "cdr/000097976.cdr",
+      "cdr_sha256": "0b3022a204b812e995b2b6fa6af27b72cb5206082ebaa4d20f7d16f13cb7387e",
+      "sample_ros_ns": 59680000000,
+      "sample_monotonic_s": 1973.207121482,
+      "phase": "FOLLOW",
+      "odometry": {
+        "source_stamp_ns": 59668000000,
+        "received_wall_monotonic_s": 1973.140575346,
+        "age_wall_s": 0.06654613599994263,
+        "age_source_s": 0.012
+      },
+      "accepted_control_status": {
+        "source_stamp_ns": 59448000000,
+        "received_wall_monotonic_s": 1971.34694095,
+        "age_wall_s": 1.8601805319999585,
+        "age_source_s": 0.232
+      },
+      "control_tick": {
+        "count": 1193,
+        "last_wall_monotonic_s": 1972.978459475,
+        "age_wall_s": 0.22866200700013906
+      },
+      "diagnostic_clock": {
+        "callback_count": 485,
+        "wall_delta_s": 1.0105747970001175,
+        "ros_delta_s": 0.128,
+        "observed_ros_progress_per_wall": 0.12666058997311913,
+        "wall_since_observed_ros_change_s": 0.0,
+        "observed_ros_regressions": 0
+      },
+      "completed_max_wall_gaps_s": {
+        "raw_status_callbacks": 5.0565312139999605,
+        "accepted_status_callbacks": 5.055125825000005,
+        "control_ticks": 1.283328438999888,
+        "diagnostic_callbacks": 1.0755910350001159
+      }
+    },
+    {
+      "record_index": 98199,
+      "topic": "/tracking/supervisor_diagnostics",
+      "bag_record_ns": 1793552343233232164,
+      "recorded_clock_proxy_ns": 59808000000,
+      "cdr": "cdr/000098199.cdr",
+      "cdr_sha256": "5e18c23414c9acbd483b5235c156a587894c9ea7b16930ba9bda710d7c95b5bb",
+      "sample_ros_ns": 59808000000,
+      "sample_monotonic_s": 1974.244454988,
+      "phase": "FOLLOW",
+      "odometry": {
+        "source_stamp_ns": 59804000000,
+        "received_wall_monotonic_s": 1974.198113164,
+        "age_wall_s": 0.04634182399991005,
+        "age_source_s": 0.004
+      },
+      "accepted_control_status": {
+        "source_stamp_ns": 59448000000,
+        "received_wall_monotonic_s": 1971.34694095,
+        "age_wall_s": 2.8975140379998265,
+        "age_source_s": 0.36
+      },
+      "control_tick": {
+        "count": 1196,
+        "last_wall_monotonic_s": 1974.163498352,
+        "age_wall_s": 0.08095663599988256
+      },
+      "diagnostic_clock": {
+        "callback_count": 486,
+        "wall_delta_s": 1.037333505999868,
+        "ros_delta_s": 0.128,
+        "observed_ros_progress_per_wall": 0.12339329565627304,
+        "wall_since_observed_ros_change_s": 0.0,
+        "observed_ros_regressions": 0
+      },
+      "completed_max_wall_gaps_s": {
+        "raw_status_callbacks": 5.0565312139999605,
+        "accepted_status_callbacks": 5.055125825000005,
+        "control_ticks": 1.283328438999888,
+        "diagnostic_callbacks": 1.0755910350001159
+      }
+    },
+    {
+      "record_index": 98409,
+      "topic": "/tracking/supervisor_diagnostics",
+      "bag_record_ns": 1793552344255152825,
+      "recorded_clock_proxy_ns": 59936000000,
+      "cdr": "cdr/000098409.cdr",
+      "cdr_sha256": "96099224dc09ad3cd5ac379522e068ee8bc50469d9b70b95ebe9acdccf7c78fa",
+      "sample_ros_ns": 59936000000,
+      "sample_monotonic_s": 1975.266427373,
+      "phase": "FOLLOW",
+      "odometry": {
+        "source_stamp_ns": 59932000000,
+        "received_wall_monotonic_s": 1975.220636642,
+        "age_wall_s": 0.04579073099989728,
+        "age_source_s": 0.004
+      },
+      "accepted_control_status": {
+        "source_stamp_ns": 59448000000,
+        "received_wall_monotonic_s": 1971.34694095,
+        "age_wall_s": 3.919486422999853,
+        "age_source_s": 0.488
+      },
+      "control_tick": {
+        "count": 1198,
+        "last_wall_monotonic_s": 1974.962562402,
+        "age_wall_s": 0.30386497099993903
+      },
+      "diagnostic_clock": {
+        "callback_count": 487,
+        "wall_delta_s": 1.0219723850000264,
+        "ros_delta_s": 0.128,
+        "observed_ros_progress_per_wall": 0.12524800266496114,
+        "wall_since_observed_ros_change_s": 0.0,
+        "observed_ros_regressions": 0
+      },
+      "completed_max_wall_gaps_s": {
+        "raw_status_callbacks": 5.0565312139999605,
+        "accepted_status_callbacks": 5.055125825000005,
+        "control_ticks": 1.283328438999888,
+        "diagnostic_callbacks": 1.0755910350001159
+      }
+    },
+    {
+      "record_index": 98623,
+      "topic": "/tracking/supervisor_diagnostics",
+      "bag_record_ns": 1793552345248956798,
+      "recorded_clock_proxy_ns": 60060000000,
+      "cdr": "cdr/000098623.cdr",
+      "cdr_sha256": "af9e5cf8685f39013d66e72377c726aa2b933f2e135b3b4cccb8fdb17aa01ed3",
+      "sample_ros_ns": 60060000000,
+      "sample_monotonic_s": 1976.260227198,
+      "phase": "FOLLOW",
+      "odometry": {
+        "source_stamp_ns": 60052000000,
+        "received_wall_monotonic_s": 1976.181027096,
+        "age_wall_s": 0.07920010199995886,
+        "age_source_s": 0.008
+      },
+      "accepted_control_status": {
+        "source_stamp_ns": 59952000000,
+        "received_wall_monotonic_s": 1975.378186173,
+        "age_wall_s": 0.882041025000035,
+        "age_source_s": 0.108
+      },
+      "control_tick": {
+        "count": 1201,
+        "last_wall_monotonic_s": 1976.178508523,
+        "age_wall_s": 0.08171867500004737
+      },
+      "diagnostic_clock": {
+        "callback_count": 488,
+        "wall_delta_s": 0.9937998249999964,
+        "ros_delta_s": 0.124,
+        "observed_ros_progress_per_wall": 0.12477361826864927,
+        "wall_since_observed_ros_change_s": 0.0,
+        "observed_ros_regressions": 0
+      },
+      "completed_max_wall_gaps_s": {
+        "raw_status_callbacks": 5.0565312139999605,
+        "accepted_status_callbacks": 5.055125825000005,
+        "control_ticks": 1.283328438999888,
+        "diagnostic_callbacks": 1.0755910350001159
+      }
+    },
+    {
+      "record_index": 98788,
+      "topic": "/tracking/supervisor_diagnostics",
+      "bag_record_ns": 1793552346304146738,
+      "recorded_clock_proxy_ns": 60164000000,
+      "cdr": "cdr/000098788.cdr",
+      "cdr_sha256": "cb40fcad42f4f4874b412ada808683b45c151c6e08d8fe726fd9d5ba30478f0d",
+      "sample_ros_ns": 60156000000,
+      "sample_monotonic_s": 1977.281841859,
+      "phase": "HOLD",
+      "odometry": {
+        "source_stamp_ns": 60140000000,
+        "received_wall_monotonic_s": 1977.062351088,
+        "age_wall_s": 0.2194907709999825,
+        "age_source_s": 0.016
+      },
+      "accepted_control_status": {
+        "source_stamp_ns": 59952000000,
+        "received_wall_monotonic_s": 1975.378186173,
+        "age_wall_s": 1.9036556860000928,
+        "age_source_s": 0.204
+      },
+      "control_tick": {
+        "count": 1203,
+        "last_wall_monotonic_s": 1977.131642987,
+        "age_wall_s": 0.150198871999919
+      },
+      "diagnostic_clock": {
+        "callback_count": 489,
+        "wall_delta_s": 1.0216146610000578,
+        "ros_delta_s": 0.096,
+        "observed_ros_progress_per_wall": 0.0939688942071619,
+        "wall_since_observed_ros_change_s": 0.0,
+        "observed_ros_regressions": 0
+      },
+      "completed_max_wall_gaps_s": {
+        "raw_status_callbacks": 5.0565312139999605,
+        "accepted_status_callbacks": 5.055125825000005,
+        "control_ticks": 1.283328438999888,
+        "diagnostic_callbacks": 1.0755910350001159
+      }
+    },
+    {
+      "record_index": 98896,
+      "topic": "/tracking/supervisor_diagnostics",
+      "bag_record_ns": 1793552347311833797,
+      "recorded_clock_proxy_ns": 60252000000,
+      "cdr": "cdr/000098896.cdr",
+      "cdr_sha256": "4ee342cc4dba5c747e33b50a8c35c48eaf33f46286e901ef535efd0804a6d1c2",
+      "sample_ros_ns": 60248000000,
+      "sample_monotonic_s": 1978.273829357,
+      "phase": "FOLLOW",
+      "odometry": {
+        "source_stamp_ns": 60172000000,
+        "received_wall_monotonic_s": 1977.649831669,
+        "age_wall_s": 0.623997688000145,
+        "age_source_s": 0.076
+      },
+      "accepted_control_status": {
+        "source_stamp_ns": 59952000000,
+        "received_wall_monotonic_s": 1975.378186173,
+        "age_wall_s": 2.895643184000164,
+        "age_source_s": 0.296
+      },
+      "control_tick": {
+        "count": 1204,
+        "last_wall_monotonic_s": 1977.76286827,
+        "age_wall_s": 0.5109610870001688
+      },
+      "diagnostic_clock": {
+        "callback_count": 490,
+        "wall_delta_s": 0.9919874980000714,
+        "ros_delta_s": 0.092,
+        "observed_ros_progress_per_wall": 0.09274310430875347,
+        "wall_since_observed_ros_change_s": 0.0,
+        "observed_ros_regressions": 0
+      },
+      "completed_max_wall_gaps_s": {
+        "raw_status_callbacks": 5.0565312139999605,
+        "accepted_status_callbacks": 5.055125825000005,
+        "control_ticks": 1.283328438999888,
+        "diagnostic_callbacks": 1.0755910350001159
+      }
+    },
+    {
+      "record_index": 98986,
+      "topic": "/tracking/supervisor_diagnostics",
+      "bag_record_ns": 1793552348380173292,
+      "recorded_clock_proxy_ns": 60300000000,
+      "cdr": "cdr/000098986.cdr",
+      "cdr_sha256": "cf3887d7bfea97bfe7d52fc6da07c54868203da079898fd650d6978c36b4c501",
+      "sample_ros_ns": 60300000000,
+      "sample_monotonic_s": 1979.371780673,
+      "phase": "ABORTED",
+      "odometry": {
+        "source_stamp_ns": 60252000000,
+        "received_wall_monotonic_s": 1979.30911,
+        "age_wall_s": 0.06267067300018425,
+        "age_source_s": 0.048
+      },
+      "accepted_control_status": {
+        "source_stamp_ns": 59952000000,
+        "received_wall_monotonic_s": 1975.378186173,
+        "age_wall_s": 3.9935945000001993,
+        "age_source_s": 0.348
+      },
+      "control_tick": {
+        "count": 1206,
+        "last_wall_monotonic_s": 1979.237330899,
+        "age_wall_s": 0.13444977400013158
+      },
+      "diagnostic_clock": {
+        "callback_count": 491,
+        "wall_delta_s": 1.0979513160000351,
+        "ros_delta_s": 0.052,
+        "observed_ros_progress_per_wall": 0.047360934170963126,
+        "wall_since_observed_ros_change_s": 0.0,
+        "observed_ros_regressions": 0
+      },
+      "completed_max_wall_gaps_s": {
+        "raw_status_callbacks": 5.0565312139999605,
+        "accepted_status_callbacks": 5.055125825000005,
+        "control_ticks": 1.283328438999888,
+        "diagnostic_callbacks": 1.0979513160000351
+      }
+    },
+    {
+      "record_index": 99081,
+      "topic": "/tracking/supervisor_diagnostics",
+      "bag_record_ns": 1793552349228031303,
+      "recorded_clock_proxy_ns": 60360000000,
+      "cdr": "cdr/000099081.cdr",
+      "cdr_sha256": "d642e5215eef702dace8d50ee2f889ca3d448496abac07c8df3d9ba999747407",
+      "sample_ros_ns": 60356000000,
+      "sample_monotonic_s": 1980.237447722,
+      "phase": "ABORTED",
+      "odometry": {
+        "source_stamp_ns": 60340000000,
+        "received_wall_monotonic_s": 1980.173935039,
+        "age_wall_s": 0.06351268299999902,
+        "age_source_s": 0.016
+      },
+      "accepted_control_status": {
+        "source_stamp_ns": 59952000000,
+        "received_wall_monotonic_s": 1975.378186173,
+        "age_wall_s": 4.859261549000166,
+        "age_source_s": 0.404
+      },
+      "control_tick": {
+        "count": 1207,
+        "last_wall_monotonic_s": 1980.206291203,
+        "age_wall_s": 0.03115651899997829
+      },
+      "diagnostic_clock": {
+        "callback_count": 492,
+        "wall_delta_s": 0.8656670489999669,
+        "ros_delta_s": 0.056,
+        "observed_ros_progress_per_wall": 0.064689998382972,
+        "wall_since_observed_ros_change_s": 0.0,
+        "observed_ros_regressions": 0
+      },
+      "completed_max_wall_gaps_s": {
+        "raw_status_callbacks": 5.0565312139999605,
+        "accepted_status_callbacks": 5.055125825000005,
+        "control_ticks": 1.283328438999888,
+        "diagnostic_callbacks": 1.0979513160000351
+      }
+    },
+    {
+      "record_index": 99289,
+      "topic": "/tracking/supervisor_diagnostics",
+      "bag_record_ns": 1793552350233624279,
+      "recorded_clock_proxy_ns": 60484000000,
+      "cdr": "cdr/000099289.cdr",
+      "cdr_sha256": "a1bd0afc6e41fc10756ce2cfc015de34288d6e29256a4845b672f511b16e5951",
+      "sample_ros_ns": 60484000000,
+      "sample_monotonic_s": 1981.240625646,
+      "phase": "ABORTED",
+      "odometry": {
+        "source_stamp_ns": 60472000000,
+        "received_wall_monotonic_s": 1981.127760818,
+        "age_wall_s": 0.11286482799982878,
+        "age_source_s": 0.012
+      },
+      "accepted_control_status": {
+        "source_stamp_ns": 60456000000,
+        "received_wall_monotonic_s": 1980.985174342,
+        "age_wall_s": 0.25545130399996197,
+        "age_source_s": 0.028
+      },
+      "control_tick": {
+        "count": 1209,
+        "last_wall_monotonic_s": 1980.95164508,
+        "age_wall_s": 0.2889805659999638
+      },
+      "diagnostic_clock": {
+        "callback_count": 493,
+        "wall_delta_s": 1.0031779239998286,
+        "ros_delta_s": 0.128,
+        "observed_ros_progress_per_wall": 0.1275945143306621,
+        "wall_since_observed_ros_change_s": 0.0,
+        "observed_ros_regressions": 0
+      },
+      "completed_max_wall_gaps_s": {
+        "raw_status_callbacks": 5.606815145999917,
+        "accepted_status_callbacks": 5.606988169000033,
+        "control_ticks": 1.283328438999888,
+        "diagnostic_callbacks": 1.0979513160000351
+      }
+    },
+    {
+      "record_index": 99511,
+      "topic": "/tracking/supervisor_diagnostics",
+      "bag_record_ns": 1793552351258630913,
+      "recorded_clock_proxy_ns": 60616000000,
+      "cdr": "cdr/000099511.cdr",
+      "cdr_sha256": "5800e1beab150d74220d305aab00e65d643e48100f0a5e2f05f699ceb510c4c0",
+      "sample_ros_ns": 60616000000,
+      "sample_monotonic_s": 1982.268670379,
+      "phase": "ABORTED",
+      "odometry": {
+        "source_stamp_ns": 60612000000,
+        "received_wall_monotonic_s": 1982.252702355,
+        "age_wall_s": 0.01596802399990338,
+        "age_source_s": 0.004
+      },
+      "accepted_control_status": {
+        "source_stamp_ns": 60456000000,
+        "received_wall_monotonic_s": 1980.985174342,
+        "age_wall_s": 1.2834960370000772,
+        "age_source_s": 0.16
+      },
+      "control_tick": {
+        "count": 1212,
+        "last_wall_monotonic_s": 1982.159994203,
+        "age_wall_s": 0.10867617600001722
+      },
+      "diagnostic_clock": {
+        "callback_count": 494,
+        "wall_delta_s": 1.0280447330001152,
+        "ros_delta_s": 0.132,
+        "observed_ros_progress_per_wall": 0.12839908202709036,
+        "wall_since_observed_ros_change_s": 0.0,
+        "observed_ros_regressions": 0
+      },
+      "completed_max_wall_gaps_s": {
+        "raw_status_callbacks": 5.606815145999917,
+        "accepted_status_callbacks": 5.606988169000033,
+        "control_ticks": 1.283328438999888,
+        "diagnostic_callbacks": 1.0979513160000351
+      }
+    }
+  ],
+  "command_tail": {
+    "/tracking/command": [
+      {
+        "record_index": 98433,
+        "topic": "/tracking/command",
+        "bag_record_ns": 1793552344367464954,
+        "recorded_clock_proxy_ns": 59952000000,
+        "cdr": "cdr/000098433.cdr",
+        "cdr_sha256": "e116206ba1f3c57cc66efc7b72ca9cedb45894d3a3bd9d88a879136ccac3529a",
+        "source_stamp_ns": 59952000000,
+        "mode": 2,
+        "valid": true,
+        "track_id": 2,
+        "command_age_s_field": 0.0,
+        "linear_mps": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "position_m": {
+          "x": 18.3681790399149,
+          "y": 4.778961385004848,
+          "z": 1.7750918715384414
+        }
+      },
+      {
+        "record_index": 98519,
+        "topic": "/tracking/command",
+        "bag_record_ns": 1793552344751555271,
+        "recorded_clock_proxy_ns": 60000000000,
+        "cdr": "cdr/000098519.cdr",
+        "cdr_sha256": "29feac2362d700ce1342f43f2aa25f696cc2f47e575714aa401f0824e5a1cfc2",
+        "source_stamp_ns": 60000000000,
+        "mode": 2,
+        "valid": true,
+        "track_id": 2,
+        "command_age_s_field": 0.0,
+        "linear_mps": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "position_m": {
+          "x": 18.40096492050519,
+          "y": 4.780726740785859,
+          "z": 1.7744661880865507
+        }
+      },
+      {
+        "record_index": 98606,
+        "topic": "/tracking/command",
+        "bag_record_ns": 1793552345168056360,
+        "recorded_clock_proxy_ns": 60052000000,
+        "cdr": "cdr/000098606.cdr",
+        "cdr_sha256": "565ade918875c41cee90760c8eab199abd0ddaa7b5378f15b6f6002bba9bcf1c",
+        "source_stamp_ns": 60052000000,
+        "mode": 2,
+        "valid": true,
+        "track_id": 2,
+        "command_age_s_field": 0.0,
+        "linear_mps": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "position_m": {
+          "x": 18.434883116468164,
+          "y": 4.782694008729141,
+          "z": 1.7738265942105738
+        }
+      },
+      {
+        "record_index": 98687,
+        "topic": "/tracking/command",
+        "bag_record_ns": 1793552345551720299,
+        "recorded_clock_proxy_ns": 60100000000,
+        "cdr": "cdr/000098687.cdr",
+        "cdr_sha256": "f11e2931c7345055b76a88435700563a7c9c8c493055fb4155c4015de94f1785",
+        "source_stamp_ns": 60100000000,
+        "mode": 2,
+        "valid": true,
+        "track_id": 2,
+        "command_age_s_field": 0.0,
+        "linear_mps": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "position_m": {
+          "x": 18.466260133638176,
+          "y": 4.784086084638003,
+          "z": 1.7733368009813917
+        }
+      },
+      {
+        "record_index": 98780,
+        "topic": "/tracking/command",
+        "bag_record_ns": 1793552346239249806,
+        "recorded_clock_proxy_ns": 60156000000,
+        "cdr": "cdr/000098780.cdr",
+        "cdr_sha256": "d16979bc3cf3fed8169d205250d66671028fd39daa688a25e4fea3e04d43fbf1",
+        "source_stamp_ns": 60152000000,
+        "mode": 2,
+        "valid": true,
+        "track_id": 2,
+        "command_age_s_field": 0.0,
+        "linear_mps": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "position_m": {
+          "x": 18.498724332614565,
+          "y": 4.7856726738409785,
+          "z": 1.7728446317253679
+        }
+      },
+      {
+        "record_index": 98841,
+        "topic": "/tracking/command",
+        "bag_record_ns": 1793552346764031771,
+        "recorded_clock_proxy_ns": 60204000000,
+        "cdr": "cdr/000098841.cdr",
+        "cdr_sha256": "2d656a20dab0190a790fe2220a639dae5dd7a6d91823100246f52d95c7900ee4",
+        "source_stamp_ns": 60200000000,
+        "mode": 2,
+        "valid": true,
+        "track_id": 2,
+        "command_age_s_field": 0.0,
+        "linear_mps": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "position_m": {
+          "x": 18.53084883852225,
+          "y": 4.787197672600443,
+          "z": 1.7723616521794618
+        }
+      },
+      {
+        "record_index": 98907,
+        "topic": "/tracking/command",
+        "bag_record_ns": 1793552347413961363,
+        "recorded_clock_proxy_ns": 60260000000,
+        "cdr": "cdr/000098907.cdr",
+        "cdr_sha256": "5a84c072c99f357340ffcfa99900ca59bd21f75c8479b5060a2a6809e196ca0e",
+        "source_stamp_ns": 60252000000,
+        "mode": 2,
+        "valid": true,
+        "track_id": 2,
+        "command_age_s_field": 0.0,
+        "linear_mps": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "position_m": {
+          "x": 18.563711436488585,
+          "y": 4.788854424126935,
+          "z": 1.7718711121123847
+        }
+      },
+      {
+        "record_index": 98966,
+        "topic": "/tracking/command",
+        "bag_record_ns": 1793552347968071792,
+        "recorded_clock_proxy_ns": 60300000000,
+        "cdr": "cdr/000098966.cdr",
+        "cdr_sha256": "f71ebb061bdb592a7932b56b8fc2d7d338dc53b553e369d6d32087c3d566db31",
+        "source_stamp_ns": 60300000000,
+        "mode": 2,
+        "valid": true,
+        "track_id": 2,
+        "command_age_s_field": 0.0,
+        "linear_mps": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "position_m": {
+          "x": 18.595249456706306,
+          "y": 4.79026997482945,
+          "z": 1.771399765620319
+        }
+      }
+    ],
+    "/tracking/flight_command": [
+      {
+        "record_index": 98436,
+        "topic": "/tracking/flight_command",
+        "bag_record_ns": 1793552344367486298,
+        "recorded_clock_proxy_ns": 59952000000,
+        "cdr": "cdr/000098436.cdr",
+        "cdr_sha256": "efacc93bd96d6207a33180237920a8f4a3d644e057a51f20ef435c3c954a1b59",
+        "source_stamp_ns": 59952000000,
+        "mode": 2,
+        "valid": true,
+        "track_id": 2,
+        "command_age_s_field": 0.0,
+        "linear_mps": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "position_m": {
+          "x": 18.332336426339015,
+          "y": 4.776578890108568,
+          "z": 1.7758366005255688
+        }
+      },
+      {
+        "record_index": 98517,
+        "topic": "/tracking/flight_command",
+        "bag_record_ns": 1793552344751289474,
+        "recorded_clock_proxy_ns": 60000000000,
+        "cdr": "cdr/000098517.cdr",
+        "cdr_sha256": "cd461b59bfa7435f5675adb9870eb2e41043d46de29f1096794330051dbfd423",
+        "source_stamp_ns": 60000000000,
+        "mode": 2,
+        "valid": true,
+        "track_id": 2,
+        "command_age_s_field": 0.0,
+        "linear_mps": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "position_m": {
+          "x": 18.3681790399149,
+          "y": 4.778961385004848,
+          "z": 1.7750918715384414
+        }
+      },
+      {
+        "record_index": 98602,
+        "topic": "/tracking/flight_command",
+        "bag_record_ns": 1793552345167249484,
+        "recorded_clock_proxy_ns": 60052000000,
+        "cdr": "cdr/000098602.cdr",
+        "cdr_sha256": "1e8c66493f61b4db2107708ffbbe05215eef1e3aca1758df13373aa4f3a94bd9",
+        "source_stamp_ns": 60052000000,
+        "mode": 2,
+        "valid": true,
+        "track_id": 2,
+        "command_age_s_field": 0.0,
+        "linear_mps": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "position_m": {
+          "x": 18.40096492050519,
+          "y": 4.780726740785859,
+          "z": 1.7744661880865507
+        }
+      },
+      {
+        "record_index": 98689,
+        "topic": "/tracking/flight_command",
+        "bag_record_ns": 1793552345551745251,
+        "recorded_clock_proxy_ns": 60100000000,
+        "cdr": "cdr/000098689.cdr",
+        "cdr_sha256": "a991436d4d5bef021b3bdfab5e7b2a1b361e1421bd5bccee6c43ed2cad56e7a7",
+        "source_stamp_ns": 60100000000,
+        "mode": 2,
+        "valid": true,
+        "track_id": 2,
+        "command_age_s_field": 0.0,
+        "linear_mps": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "position_m": {
+          "x": 18.434883116468164,
+          "y": 4.782694008729141,
+          "z": 1.7738265942105738
+        }
+      },
+      {
+        "record_index": 98776,
+        "topic": "/tracking/flight_command",
+        "bag_record_ns": 1793552346220636088,
+        "recorded_clock_proxy_ns": 60156000000,
+        "cdr": "cdr/000098776.cdr",
+        "cdr_sha256": "b0ce1ba5c5936bb3b820d1f20cee2627cd55503baa0097ad7f6bb21a68f0fbfe",
+        "source_stamp_ns": 60152000000,
+        "mode": 1,
+        "valid": true,
+        "track_id": 0,
+        "command_age_s_field": 0.0,
+        "linear_mps": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "position_m": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "record_index": 98851,
+        "topic": "/tracking/flight_command",
+        "bag_record_ns": 1793552346875728932,
+        "recorded_clock_proxy_ns": 60212000000,
+        "cdr": "cdr/000098851.cdr",
+        "cdr_sha256": "1f04fe6afa1042d1bfb90e18890624120d08d009a31c489cee5d3a10b9ec8443",
+        "source_stamp_ns": 60204000000,
+        "mode": 2,
+        "valid": true,
+        "track_id": 2,
+        "command_age_s_field": 0.0,
+        "linear_mps": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "position_m": {
+          "x": 18.498724332614565,
+          "y": 4.7856726738409785,
+          "z": 1.7728446317253679
+        }
+      },
+      {
+        "record_index": 98977,
+        "topic": "/tracking/flight_command",
+        "bag_record_ns": 1793552348152150225,
+        "recorded_clock_proxy_ns": 60300000000,
+        "cdr": "cdr/000098977.cdr",
+        "cdr_sha256": "6cae9a05a4ff0e27a4a8308e3be1ad1743173f51840a06281ef687f2c8127b67",
+        "source_stamp_ns": 60252000000,
+        "mode": 1,
+        "valid": false,
+        "track_id": 0,
+        "command_age_s_field": 0.0,
+        "linear_mps": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "position_m": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      },
+      {
+        "record_index": 98981,
+        "topic": "/tracking/flight_command",
+        "bag_record_ns": 1793552348255897660,
+        "recorded_clock_proxy_ns": 60300000000,
+        "cdr": "cdr/000098981.cdr",
+        "cdr_sha256": "9eca9b002ad89d06c2e8c89e3967e0790982d6db714b0be1e8f3c99e828993eb",
+        "source_stamp_ns": 60300000000,
+        "mode": 1,
+        "valid": false,
+        "track_id": 0,
+        "command_age_s_field": 0.0,
+        "linear_mps": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "position_m": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        }
+      }
+    ]
+  },
+  "recorded_gap_statistics": {
+    "/vehicle/odometry": {
+      "selected_in_declared_clock_window": 458,
+      "largest_5_recorded_wall_gaps": [
+        {
+          "left_record_index": 98821,
+          "right_record_index": 98911,
+          "recorded_wall_gap_s": 0.878225876,
+          "left_source_ns": 60172000000,
+          "right_source_ns": 60244000000,
+          "source_delta_s": 0.072,
+          "left_clock_proxy_ns": 60188000000,
+          "right_clock_proxy_ns": 60264000000
+        },
+        {
+          "left_record_index": 98978,
+          "right_record_index": 99000,
+          "recorded_wall_gap_s": 0.614973612,
+          "left_source_ns": 60300000000,
+          "right_source_ns": 60308000000,
+          "source_delta_s": 0.008,
+          "left_clock_proxy_ns": 60300000000,
+          "right_clock_proxy_ns": 60308000000
+        },
+        {
+          "left_record_index": 98744,
+          "right_record_index": 98766,
+          "recorded_wall_gap_s": 0.279526892,
+          "left_source_ns": 60132000000,
+          "right_source_ns": 60140000000,
+          "source_delta_s": 0.008,
+          "left_clock_proxy_ns": 60132000000,
+          "right_clock_proxy_ns": 60148000000
+        },
+        {
+          "left_record_index": 99414,
+          "right_record_index": 99445,
+          "recorded_wall_gap_s": 0.258261888,
+          "left_source_ns": 60552000000,
+          "right_source_ns": 60560000000,
+          "source_delta_s": 0.008,
+          "left_clock_proxy_ns": 60556000000,
+          "right_clock_proxy_ns": 60580000000
+        },
+        {
+          "left_record_index": 98779,
+          "right_record_index": 98798,
+          "recorded_wall_gap_s": 0.202486549,
+          "left_source_ns": 60148000000,
+          "right_source_ns": 60156000000,
+          "source_delta_s": 0.008,
+          "left_clock_proxy_ns": 60156000000,
+          "right_clock_proxy_ns": 60168000000
+        }
+      ]
+    },
+    "/tracking/command": {
+      "selected_in_declared_clock_window": 93,
+      "largest_5_recorded_wall_gaps": [
+        {
+          "left_record_index": 98966,
+          "right_record_index": 99066,
+          "recorded_wall_gap_s": 1.226660265,
+          "left_source_ns": 60300000000,
+          "right_source_ns": 60352000000,
+          "source_delta_s": 0.052,
+          "left_clock_proxy_ns": 60300000000,
+          "right_clock_proxy_ns": 60352000000
+        },
+        {
+          "left_record_index": 98687,
+          "right_record_index": 98780,
+          "recorded_wall_gap_s": 0.687529507,
+          "left_source_ns": 60100000000,
+          "right_source_ns": 60152000000,
+          "source_delta_s": 0.052,
+          "left_clock_proxy_ns": 60100000000,
+          "right_clock_proxy_ns": 60156000000
+        },
+        {
+          "left_record_index": 98841,
+          "right_record_index": 98907,
+          "recorded_wall_gap_s": 0.649929592,
+          "left_source_ns": 60200000000,
+          "right_source_ns": 60252000000,
+          "source_delta_s": 0.052,
+          "left_clock_proxy_ns": 60204000000,
+          "right_clock_proxy_ns": 60260000000
+        },
+        {
+          "left_record_index": 98907,
+          "right_record_index": 98966,
+          "recorded_wall_gap_s": 0.554110429,
+          "left_source_ns": 60252000000,
+          "right_source_ns": 60300000000,
+          "source_delta_s": 0.048,
+          "left_clock_proxy_ns": 60260000000,
+          "right_clock_proxy_ns": 60300000000
+        },
+        {
+          "left_record_index": 98780,
+          "right_record_index": 98841,
+          "recorded_wall_gap_s": 0.524781965,
+          "left_source_ns": 60152000000,
+          "right_source_ns": 60200000000,
+          "source_delta_s": 0.048,
+          "left_clock_proxy_ns": 60156000000,
+          "right_clock_proxy_ns": 60204000000
+        }
+      ]
+    },
+    "/tracking/flight_command": {
+      "selected_in_declared_clock_window": 93,
+      "largest_5_recorded_wall_gaps": [
+        {
+          "left_record_index": 98851,
+          "right_record_index": 98977,
+          "recorded_wall_gap_s": 1.276421293,
+          "left_source_ns": 60204000000,
+          "right_source_ns": 60252000000,
+          "source_delta_s": 0.048,
+          "left_clock_proxy_ns": 60212000000,
+          "right_clock_proxy_ns": 60300000000
+        },
+        {
+          "left_record_index": 98981,
+          "right_record_index": 99070,
+          "recorded_wall_gap_s": 0.942438979,
+          "left_source_ns": 60300000000,
+          "right_source_ns": 60352000000,
+          "source_delta_s": 0.052,
+          "left_clock_proxy_ns": 60300000000,
+          "right_clock_proxy_ns": 60356000000
+        },
+        {
+          "left_record_index": 98689,
+          "right_record_index": 98776,
+          "recorded_wall_gap_s": 0.668890837,
+          "left_source_ns": 60100000000,
+          "right_source_ns": 60152000000,
+          "source_delta_s": 0.052,
+          "left_clock_proxy_ns": 60100000000,
+          "right_clock_proxy_ns": 60156000000
+        },
+        {
+          "left_record_index": 98776,
+          "right_record_index": 98851,
+          "recorded_wall_gap_s": 0.655092844,
+          "left_source_ns": 60152000000,
+          "right_source_ns": 60204000000,
+          "source_delta_s": 0.052,
+          "left_clock_proxy_ns": 60156000000,
+          "right_clock_proxy_ns": 60212000000
+        },
+        {
+          "left_record_index": 94795,
+          "right_record_index": 94885,
+          "recorded_wall_gap_s": 0.41755545,
+          "left_source_ns": 57800000000,
+          "right_source_ns": 57852000000,
+          "source_delta_s": 0.052,
+          "left_clock_proxy_ns": 57800000000,
+          "right_clock_proxy_ns": 57852000000
+        }
+      ]
+    },
+    "/fmu/in/trajectory_setpoint": {
+      "selected_in_declared_clock_window": 233,
+      "largest_5_recorded_wall_gaps": [
+        {
+          "left_record_index": 98974,
+          "right_record_index": 99016,
+          "recorded_wall_gap_s": 0.806593101,
+          "left_source_ns": 60300000000,
+          "right_source_ns": 60320000000,
+          "source_delta_s": 0.02,
+          "left_clock_proxy_ns": 60300000000,
+          "right_clock_proxy_ns": 60320000000
+        },
+        {
+          "left_record_index": 98753,
+          "right_record_index": 98810,
+          "recorded_wall_gap_s": 0.559136715,
+          "left_source_ns": 60140000000,
+          "right_source_ns": 60164000000,
+          "source_delta_s": 0.024,
+          "left_clock_proxy_ns": 60140000000,
+          "right_clock_proxy_ns": 60180000000
+        },
+        {
+          "left_record_index": 98895,
+          "right_record_index": 98931,
+          "recorded_wall_gap_s": 0.320431223,
+          "left_source_ns": 60252000000,
+          "right_source_ns": 60268000000,
+          "source_delta_s": 0.016,
+          "left_clock_proxy_ns": 60252000000,
+          "right_clock_proxy_ns": 60276000000
+        },
+        {
+          "left_record_index": 98866,
+          "right_record_index": 98895,
+          "recorded_wall_gap_s": 0.307808923,
+          "left_source_ns": 60220000000,
+          "right_source_ns": 60252000000,
+          "source_delta_s": 0.032,
+          "left_clock_proxy_ns": 60228000000,
+          "right_clock_proxy_ns": 60252000000
+        },
+        {
+          "left_record_index": 98837,
+          "right_record_index": 98866,
+          "recorded_wall_gap_s": 0.27302959,
+          "left_source_ns": 60200000000,
+          "right_source_ns": 60220000000,
+          "source_delta_s": 0.02,
+          "left_clock_proxy_ns": 60200000000,
+          "right_clock_proxy_ns": 60228000000
+        }
+      ]
+    }
+  },
+  "findings": [
+    {
+      "level": "DIRECT_OBSERVATION",
+      "claim": "The aborting guard used a 0.500 wall-second odometry callback-receipt timeout; its latched snapshot has 0.733 wall-second age while cached odometry is only 0.080 source-second old.",
+      "evidence_records": [
+        98980,
+        98896,
+        98986
+      ]
+    },
+    {
+      "level": "DIRECT_OBSERVATION",
+      "claim": "At diagnostic ROS60.248 the same odometry callback cache is 0.623997688 wall-second old and 0.076 source-second old. Phase still reports FOLLOW because the previous control tick was wall1977.76286827, 0.510961087 wall-second before the diagnostic. The diagnostic is an observation, not a new guard decision.",
+      "evidence_records": [
+        98896
+      ]
+    },
+    {
+      "level": "DIRECT_OBSERVATION",
+      "claim": "Following abort, odometry cache advances to source60.252 with age0.062670673 wall-second /0.048 source-second at ROS60.300. The ABORTED phase and original failure remain latched.",
+      "evidence_records": [
+        98986
+      ]
+    },
+    {
+      "level": "DIRECT_OBSERVATION",
+      "claim": "Recorded adapted odometry has a real receipt gap0.878225876 wall-second between source60.172 and60.244 (0.072 source-second). This is recorder receipt evidence, not raw PX4 publication evidence or supervisor callback chronology.",
+      "evidence_records": [
+        98821,
+        98911
+      ]
+    },
+    {
+      "level": "DIRECT_OBSERVATION",
+      "claim": "One HOLD at phase source60.152 and wall1977.131642987 is followed by FOLLOW at phase source60.204 and wall1977.762868270. Incoming recorded commands around both are valid position commands for track2; input source cadence remains approximately0.048/0.052 seconds while recorded wall gaps exceed0.5 seconds.",
+      "evidence_records": [
+        98687,
+        98778,
+        98780,
+        98841,
+        98850,
+        98851
+      ]
+    },
+    {
+      "level": "SOURCE_AND_OBSERVATION_CONSISTENT_NOT_PROVEN_CAUSE",
+      "claim": "The command guard uses command_timeout_s for both monotonic callback-receipt age and ROS header source age. The observed HOLD is consistent with the wall timeout expiring under slowed simulation, but exact command callback receipt/outcome was not recorded, so the precise failed predicate cannot be reconstructed."
+    },
+    {
+      "level": "DIRECT_OBSERVATION",
+      "claim": "Status was accepted with no recorded rejection; at the abort it remained armed2/offboard14/failsafeFalse with status age3.004 wall seconds and0.300 source seconds, within its distinct10 wall/1 source limits."
+    },
+    {
+      "level": "BOUNDARY",
+      "claim": "The original exporter does not deserialize /fmu/out/vehicle_odometry, /fmu/out/vehicle_status_v1 or /vehicle/odometry_timing. Their complete native counts exist but are not a causal timing trace. No raw transport, PX4 publisher, adapter source-clock or executor fault is excluded."
+    },
+    {
+      "level": "BOUNDARY",
+      "claim": "The steady diagnostic timer shares the single-threaded control executor. Diagnostics do not independently prove DDS health; diagnostic/tick intervals include scheduling delay and only observe completed ticks."
+    },
+    {
+      "level": "BOUNDARY",
+      "claim": "No counterfactual patched flight was run and no successful core/safety/formal acceptance follows from this analysis. The original infrastructure failure and engineering FAIL remain unchanged."
+    }
+  ],
+  "recommended_minimal_direction": [
+    "Separate callback receipt wall budgets from source age/future limits for odometry and visual commands; preserve both guards.",
+    "Use the same explicit source/receipt timing contract in readiness, run guards and command freshness, with restart-required handling for source regressions.",
+    "Add command callback timing/outcome and explicit odometry source-age guard fields to diagnostics, so a later HOLD can identify its precise predicate.",
+    "Do not interpret rate50Hz setpoint heartbeats as odometry sample rate or use recorded native counts alone as transport proof."
+  ],
+  "actions_not_taken": [
+    "WSL",
+    "bag/native reader",
+    "native rerun",
+    "inference",
+    "GT deserialization",
+    "original slot mutation",
+    "main source changes"
+  ]
+}

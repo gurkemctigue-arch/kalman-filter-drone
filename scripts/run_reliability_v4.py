@@ -34,6 +34,8 @@ GROUPS = ("stage1_velocity", "stage1_position", "stage2_crossing", "stage3_midpo
           "stage3_active", "stage3_multi_active")
 TERMINAL = {"PASS", "FAIL", "INCOMPLETE_EVIDENCE", "EVALUATION_PENDING", "INFRASTRUCTURE_ERROR", "INTERRUPTED"}
 PROTOCOL_PATH = "planning/reliability-v4-preregistration.json"
+SUPERVISOR_STREAM_FIELD = "supervisor_stream_timing"
+SUPERVISOR_STREAM_FLAG = "--supervisor-stream-timestamp-mode"
 EXTENSION_PROTOCOL_PATH = "planning/reliability-v4-extension-preregistration.json"
 EXTENSION_CONDITIONS = ("depth_noise", "depth_holes", "dropout", "latency", "combined",
                         "speed_changes_velocity", "speed_changes_position", "far_distance")
@@ -642,8 +644,59 @@ def source_hashes(root):
     return {path.relative_to(root).as_posix(): sha(path) for path in sorted(set(paths))}
 
 
+def supervisor_stream_summary(protocol):
+    """An absent historical registration is legacy, never an implicit opt-in."""
+    declaration = protocol.get(SUPERVISOR_STREAM_FIELD)
+    if SUPERVISOR_STREAM_FIELD not in protocol:
+        return None
+    rtf = protocol.get("real_time_factor")
+    if (isinstance(rtf, bool) or not isinstance(rtf, (int, float))
+            or not math.isfinite(rtf) or not 0 < rtf <= 1):
+        raise ValueError("Invalid supervisor stream planning RTF")
+    wall = .5 / rtf
+    if not math.isfinite(wall) or wall > 10.:
+        raise ValueError("Supervisor stream receipt wall budget exceeds the registered host ceiling")
+    expected = {"revision": "source_header_age_receipt_wall_v1", "stream_timestamp_mode": "source_sim",
+        "odometry_source_max_age_s": .5, "odometry_source_max_future_s": .05,
+        "command_source_max_age_s": .5, "command_source_max_future_s": .05,
+        "odometry_timeout_wall_s": wall, "command_timeout_wall_s": wall,
+        "receipt_wall_max_s": 10., "receipt_wall_budget_rule": "0.5 / requested RTF; planning only; never measured-age conversion",
+        "status_wall_check_clock": "Overrides supervisor_status_timing.wall_check_clock in FOLLOW/HOLD: ROS-time control tick plus STEADY_TIME 0.1 s; same single-threaded executor; abort only",
+        "wall_check_clock": "STEADY_TIME 0.1 s; same single-threaded executor; abort only"}
+    if not _fixed_registration_value_matches(declaration, expected):
+        raise ValueError("v4 engineering protocol differs at " + SUPERVISOR_STREAM_FIELD)
+    return deepcopy(expected)
+
+
+def supervisor_stream_parameters(protocol):
+    registration = supervisor_stream_summary(protocol)
+    if registration is None:
+        return {"stream_timestamp_mode": "receipt_wall"}
+    return {"stream_timestamp_mode": "source_sim",
+        "odometry_timeout_s": registration["odometry_timeout_wall_s"],
+        "command_timeout_s": registration["command_timeout_wall_s"],
+        **{key: registration[key] for key in ("odometry_source_max_age_s", "odometry_source_max_future_s",
+                                            "command_source_max_age_s", "command_source_max_future_s")}}
+
+
+def supervisor_stream_trial_binding(protocol, trial):
+    registration = supervisor_stream_summary(protocol)
+    command = trial.get("flight_command", [])
+    count = command.count(SUPERVISOR_STREAM_FLAG)
+    if registration is None:
+        if (SUPERVISOR_STREAM_FIELD in trial or count != 1
+                or command.index(SUPERVISOR_STREAM_FLAG)+1 >= len(command)
+                or command[command.index(SUPERVISOR_STREAM_FLAG)+1] != "receipt_wall"):
+            raise ValueError("Historical protocol must explicitly retain receipt_wall stream timing")
+    elif (not _fixed_registration_value_matches(trial.get(SUPERVISOR_STREAM_FIELD), registration)
+          or count != 1 or command.index(SUPERVISOR_STREAM_FLAG)+1 >= len(command)
+          or command[command.index(SUPERVISOR_STREAM_FLAG)+1] != "source_sim"):
+        raise ValueError("Trial supervisor stream registration/command differs")
+
+
 def validate_protocol(protocol):
     pacing = simulation_pacing_summary(protocol)
+    supervisor_stream_summary(protocol)
     exact = {"classes": list(CLASSES), "groups": list(GROUPS), "seeds": list(FORMAL_SEEDS),
              "formal_trial_count": 120, "duration_s": 75., "short_occlusion_s": .2,
              "long_occlusion_s": 3., "real_time_factor": pacing["real_time_factor"],
@@ -746,6 +799,8 @@ def trial_spec(root, protocol, prefix, cls, group, seed, wall_timeout):
             **deepcopy(setting)}
     if SIMULATION_PACING_FIELD in protocol:
         spec[SIMULATION_PACING_FIELD] = deepcopy(protocol[SIMULATION_PACING_FIELD])
+    if SUPERVISOR_STREAM_FIELD in protocol:
+        spec[SUPERVISOR_STREAM_FIELD] = supervisor_stream_summary(protocol)
     if PX4_ADAPTER_PUBLISH_RATE_FIELD in pacing:
         spec[PX4_ADAPTER_PUBLISH_RATE_FIELD] = pacing[PX4_ADAPTER_PUBLISH_RATE_FIELD]
     command = wrapper_command(root, "run_stage1_trial.py", "--name", spec["name"], "--class", cls,
@@ -767,6 +822,8 @@ def trial_spec(root, protocol, prefix, cls, group, seed, wall_timeout):
         "--occlusions", "--short-occlusion-s", "0.2", "--reselect-after-loss")
     if spec["multi_target"]:
         command.append("--multi-target")
+    command.extend([SUPERVISOR_STREAM_FLAG,
+                    "source_sim" if SUPERVISOR_STREAM_FIELD in protocol else "receipt_wall"])
     if PX4_ADAPTER_PUBLISH_RATE_FIELD in pacing:
         command.extend([PX4_ADAPTER_PUBLISH_RATE_FLAG, str(pacing[PX4_ADAPTER_PUBLISH_RATE_FIELD])])
     if correlated_bound:
@@ -1351,6 +1408,7 @@ def runtime_configuration(plan, trial):
     errors = []
     try:
         simulation_pacing_trial_binding(plan, trial)
+        supervisor_stream_trial_binding(plan["protocol"], trial)
         correlated_bound, explicit_bound = correlated_two_face_trial_binding(plan, trial)
         surface_recovery, explicit_surface_recovery = car_surface_recovery_trial_binding(plan, trial)
         exclusive_navigation_trial_binding(plan, trial)
@@ -1372,6 +1430,18 @@ def runtime_configuration(plan, trial):
         if "motion_profile_kind" in trial:
             expected["motion_profile_kind"] = trial["motion_profile_kind"]
         errors.extend("run_config:" + key for key, value in expected.items() if config.get(key) != value)
+        stream = supervisor_stream_parameters(plan["protocol"])
+        if SUPERVISOR_STREAM_FIELD in plan["protocol"]:
+            expected.update(supervisor_stream_timestamp_mode="source_sim", supervisor_stream_timing=stream)
+            for key in ("supervisor_stream_timestamp_mode", "supervisor_stream_timing"):
+                if not _fixed_registration_value_matches(config.get(key), expected[key]):
+                    errors.append("run_config:" + key)
+        else:
+            if config.get("supervisor_stream_timestamp_mode", "receipt_wall") != "receipt_wall":
+                errors.append("run_config:undeclared_supervisor_stream_timestamp_mode")
+            if ("supervisor_stream_timing" in config and not _fixed_registration_value_matches(
+                    config["supervisor_stream_timing"], stream)):
+                errors.append("run_config:undeclared_supervisor_stream_timing")
         _bound_boolean_evidence(config, "correlated_two_face_bound", correlated_bound, explicit_bound,
                                 errors, "run_config:correlated_two_face_bound")
         expected["correlated_two_face_bound"] = correlated_bound
@@ -1420,6 +1490,15 @@ def runtime_configuration(plan, trial):
         for node, values in expected_parameters.items():
             actual = parameters.get(node, {}).get("ros__parameters", {})
             errors.extend(f"runtime_parameters:{node}:{key}" for key, value in values.items() if actual.get(key) != value)
+        supervisor = parameters.get("uav_tracking_flight_supervisor", {}).get("ros__parameters", {})
+        if SUPERVISOR_STREAM_FIELD in plan["protocol"]:
+            actual_stream_contract = dict(stream, use_sim_time=True, simulation_only=True)
+            expected_parameters["uav_tracking_flight_supervisor"].update(actual_stream_contract)
+            for key, value in actual_stream_contract.items():
+                if not _fixed_registration_value_matches(supervisor.get(key), value):
+                    errors.append("runtime_parameters:uav_tracking_flight_supervisor:" + key)
+        elif supervisor.get("stream_timestamp_mode", "receipt_wall") != "receipt_wall":
+            errors.append("runtime_parameters:undeclared_supervisor_stream_timestamp_mode")
         estimator = parameters.get("uav_tracking_state_estimator", {}).get("ros__parameters", {})
         _bound_boolean_evidence(estimator, CORRELATED_BOUND_FIELD, correlated_bound, explicit_bound,
                                 errors, "runtime_parameters:uav_tracking_state_estimator:" + CORRELATED_BOUND_FIELD)
@@ -2046,6 +2125,8 @@ def validate_probe_gate(plan, *, extensions=False):
         expected_binding["exclusive_navigation_sha256"] = digest(exclusive_navigation_summary(plan["protocol"]))
     if simulation_pacing_declared(plan["protocol"]):
         expected_binding["simulation_pacing_sha256"] = digest(simulation_pacing_summary(plan["protocol"]))
+    if SUPERVISOR_STREAM_FIELD in plan["protocol"]:
+        expected_binding["supervisor_stream_timing_sha256"] = digest(supervisor_stream_summary(plan["protocol"]))
     if gate.get("bindings") != expected_binding:
         raise ValueError("Development probe gate source/model/runtime/evaluator/threshold binding differs")
     slots = gate.get("probe_slots")
@@ -2097,6 +2178,8 @@ def validate_probe_gate(plan, *, extensions=False):
                 raise ValueError("Development probe exclusive navigation policy differs from final class registration")
             if simulation_pacing_summary(previous["protocol"]) != simulation_pacing_summary(plan["protocol"]):
                 raise ValueError("Development probe simulation pacing differs from final registration")
+            if supervisor_stream_summary(previous["protocol"]) != supervisor_stream_summary(plan["protocol"]):
+                raise ValueError("Development probe supervisor stream timing differs from final registration")
             if (any(previous["protocol"]["resources"][cls]["model"] != plan["protocol"]["resources"][cls]["model"]
                     for cls in CLASSES)
                     or previous["protocol"].get("model_adaptation") != plan["protocol"].get("model_adaptation")

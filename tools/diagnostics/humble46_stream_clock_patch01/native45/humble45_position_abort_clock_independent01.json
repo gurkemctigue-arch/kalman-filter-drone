@@ -1,0 +1,699 @@
+{
+  "schema_version": 1,
+  "reviewer": "/root/review_repair_patch",
+  "status": "INDEPENDENT_WINDOWS_EXPORTED_EVIDENCE_REVIEW_COMPLETE_NOT_FLIGHT_ACCEPTANCE",
+  "scope": "Windows exported manifest/events/image metadata/CDR hashes and original small files only. No WSL, ROS, bag payload/native reader, validator, test, flight, source modification or new freeze.",
+  "inputs": {
+    "root_export_receipt": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble45_position_abort_native_causal_export_root01.json",
+      "bytes": 3582,
+      "sha256": "5b92f088461c403f86249a5f45853e9728439901ef28dd1aab2cf1f1d5d71707"
+    },
+    "manifest": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble45_position_abort_native_window01\\manifest.json",
+      "bytes": 769442,
+      "sha256": "d91a858f6fb6c538fb4c43618ea31c179efff46f536c5ae4da6eca3ea9d3ee2b"
+    },
+    "events": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble45_position_abort_native_window01\\events.jsonl",
+      "bytes": 15000830,
+      "sha256": "2381703c57f2567c998b65d0f5b89439024e94161862a1c8be71bbb3b8fb5315"
+    },
+    "images": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble45_position_abort_native_window01\\image_requests.json",
+      "bytes": 2223,
+      "sha256": "b85e3e831211b8d32284617dc8f1af7aec79d29d8f32824676d85d187b0b685d"
+    }
+  },
+  "checks": {
+    "export_root_exit0": true,
+    "one_native_traversal_tool_reported": true,
+    "exact_declared_window_and_follow": true,
+    "all_exported_files_independently_rehashed": 5396,
+    "all_accessible_original_small_input_pins_rehashed": 15,
+    "seven_explicit_original_contract_pins_included": true,
+    "events_counts_equal_manifest": true,
+    "events_unique_original_indices": true,
+    "cdr_event_hashes_bound_to_manifest": true,
+    "native_counts_equal_original_raw_and_native_metadata": true,
+    "exact_frame60200000000_exported_no_substitution": true,
+    "no_gt_deserialized_or_exported": true
+  },
+  "originals_preserved": {
+    "slot_status": "INFRASTRUCTURE_ERROR",
+    "core_status": "STOPPED_ORIGINAL_ATTEMPTS_RETAINED",
+    "counts": {
+      "PASS": 1,
+      "INFRASTRUCTURE_ERROR": 1,
+      "PENDING": 10
+    },
+    "original_attempt_error": "ValueError:Incomplete/infrastructure attempt requires diagnosis: person_stage1_position_seed004",
+    "source_and_compressed_payload_unchanged": "TOOL_REPORTED_TRUE_NOT_INDEPENDENT_BAG_REHASH"
+  },
+  "selected_counts": {
+    "/tf_static": 1,
+    "/tracking/flight_phase": 1216,
+    "/tracking/selection": 1,
+    "/clock": 1161,
+    "/camera/color/camera_info": 47,
+    "/tracking/command": 95,
+    "/fmu/in/offboard_control_mode": 235,
+    "/tracking/status": 95,
+    "/tracking/flight_command": 95,
+    "/fmu/in/trajectory_setpoint": 235,
+    "/tracking/state": 277,
+    "/tracking/navigation_state": 277,
+    "/tracking/navigation_diagnostics": 276,
+    "/tracking/tracks": 276,
+    "/vehicle/odometry": 458,
+    "/tf": 458,
+    "/tracking/supervisor_diagnostics": 39,
+    "/tracking/observation_frames": 46,
+    "/tracking/observations": 46,
+    "/tracking/detection_diagnostics": 46
+  },
+  "window_phase_counts": {
+    "FOLLOW": 84,
+    "HOLD": 1,
+    "ABORTED": 8
+  },
+  "phase_transitions": [
+    {
+      "record_index": 91757,
+      "source_s": 56.0,
+      "wall_monotonic_s": 1943.762496762,
+      "phase": "FOLLOW",
+      "reason": "FOLLOW: forwarding fresh visual controller command"
+    },
+    {
+      "record_index": 98778,
+      "source_s": 60.152,
+      "wall_monotonic_s": 1977.131642987,
+      "phase": "HOLD",
+      "reason": "HOLD: visual command absent, invalid or stale; zero-velocity hover"
+    },
+    {
+      "record_index": 98850,
+      "source_s": 60.204,
+      "wall_monotonic_s": 1977.76286827,
+      "phase": "FOLLOW",
+      "reason": "FOLLOW: forwarding fresh visual controller command"
+    },
+    {
+      "record_index": 98980,
+      "source_s": 60.252,
+      "wall_monotonic_s": 1978.382348639,
+      "phase": "ABORTED",
+      "reason": "ABORTED: flight guard: odometry_stale; wall_monotonic_s=1978.382349, ros_now_ns=60252000000, odom_age_wall_s=0.733, odom_limit_s=0.500, odom_received_monotonic_s=1977.649832, odom_stamp_ns=60172000000, status_age_wall_s=3.004, status_limit_s=10.000, status_timestamp_mode=source_sim, status_age_source_s=0.300, status_source_limit_s=1.000, status_source_future_limit_s=0.050, status_last_rejection=none, status_received_monotonic_s=1975.378186, status_px4_stamp_us=59952000, arming_state=2, nav_state=14, failsafe=False, preflight_pass=True"
+    }
+  ],
+  "last_eight_supervisor_diagnostics": [
+    {
+      "record_index": 98409,
+      "source_s": 59.936,
+      "wall_monotonic_s": 1975.266427373,
+      "phase": "FOLLOW",
+      "odometry": {
+        "source_stamp_ns": 59932000000,
+        "received_wall_monotonic_s": 1975.220636642,
+        "age_wall_s": 0.04579073099989728,
+        "age_source_s": 0.004
+      },
+      "control_tick": {
+        "count": 1198,
+        "last_wall_monotonic_s": 1974.962562402,
+        "age_wall_s": 0.30386497099993903
+      },
+      "diagnostic_clock": {
+        "callback_count": 487,
+        "wall_delta_s": 1.0219723850000264,
+        "ros_delta_s": 0.128,
+        "observed_ros_progress_per_wall": 0.12524800266496114,
+        "wall_since_observed_ros_change_s": 0.0,
+        "observed_ros_regressions": 0
+      },
+      "status_counts": {
+        "raw_received": 136,
+        "accepted": 136,
+        "rejected": 0,
+        "raw_without_recorded_outcome": 0
+      },
+      "status_source_age_s": 0.488,
+      "status_wall_age_s": 3.919486422999853,
+      "cumulative_completed_max_wall_gaps_s": {
+        "raw_status_callbacks": 5.0565312139999605,
+        "accepted_status_callbacks": 5.055125825000005,
+        "control_ticks": 1.283328438999888,
+        "diagnostic_callbacks": 1.0755910350001159
+      }
+    },
+    {
+      "record_index": 98623,
+      "source_s": 60.06,
+      "wall_monotonic_s": 1976.260227198,
+      "phase": "FOLLOW",
+      "odometry": {
+        "source_stamp_ns": 60052000000,
+        "received_wall_monotonic_s": 1976.181027096,
+        "age_wall_s": 0.07920010199995886,
+        "age_source_s": 0.008
+      },
+      "control_tick": {
+        "count": 1201,
+        "last_wall_monotonic_s": 1976.178508523,
+        "age_wall_s": 0.08171867500004737
+      },
+      "diagnostic_clock": {
+        "callback_count": 488,
+        "wall_delta_s": 0.9937998249999964,
+        "ros_delta_s": 0.124,
+        "observed_ros_progress_per_wall": 0.12477361826864927,
+        "wall_since_observed_ros_change_s": 0.0,
+        "observed_ros_regressions": 0
+      },
+      "status_counts": {
+        "raw_received": 137,
+        "accepted": 137,
+        "rejected": 0,
+        "raw_without_recorded_outcome": 0
+      },
+      "status_source_age_s": 0.108,
+      "status_wall_age_s": 0.882041025000035,
+      "cumulative_completed_max_wall_gaps_s": {
+        "raw_status_callbacks": 5.0565312139999605,
+        "accepted_status_callbacks": 5.055125825000005,
+        "control_ticks": 1.283328438999888,
+        "diagnostic_callbacks": 1.0755910350001159
+      }
+    },
+    {
+      "record_index": 98788,
+      "source_s": 60.156,
+      "wall_monotonic_s": 1977.281841859,
+      "phase": "HOLD",
+      "odometry": {
+        "source_stamp_ns": 60140000000,
+        "received_wall_monotonic_s": 1977.062351088,
+        "age_wall_s": 0.2194907709999825,
+        "age_source_s": 0.016
+      },
+      "control_tick": {
+        "count": 1203,
+        "last_wall_monotonic_s": 1977.131642987,
+        "age_wall_s": 0.150198871999919
+      },
+      "diagnostic_clock": {
+        "callback_count": 489,
+        "wall_delta_s": 1.0216146610000578,
+        "ros_delta_s": 0.096,
+        "observed_ros_progress_per_wall": 0.0939688942071619,
+        "wall_since_observed_ros_change_s": 0.0,
+        "observed_ros_regressions": 0
+      },
+      "status_counts": {
+        "raw_received": 137,
+        "accepted": 137,
+        "rejected": 0,
+        "raw_without_recorded_outcome": 0
+      },
+      "status_source_age_s": 0.204,
+      "status_wall_age_s": 1.9036556860000928,
+      "cumulative_completed_max_wall_gaps_s": {
+        "raw_status_callbacks": 5.0565312139999605,
+        "accepted_status_callbacks": 5.055125825000005,
+        "control_ticks": 1.283328438999888,
+        "diagnostic_callbacks": 1.0755910350001159
+      }
+    },
+    {
+      "record_index": 98896,
+      "source_s": 60.248,
+      "wall_monotonic_s": 1978.273829357,
+      "phase": "FOLLOW",
+      "odometry": {
+        "source_stamp_ns": 60172000000,
+        "received_wall_monotonic_s": 1977.649831669,
+        "age_wall_s": 0.623997688000145,
+        "age_source_s": 0.076
+      },
+      "control_tick": {
+        "count": 1204,
+        "last_wall_monotonic_s": 1977.76286827,
+        "age_wall_s": 0.5109610870001688
+      },
+      "diagnostic_clock": {
+        "callback_count": 490,
+        "wall_delta_s": 0.9919874980000714,
+        "ros_delta_s": 0.092,
+        "observed_ros_progress_per_wall": 0.09274310430875347,
+        "wall_since_observed_ros_change_s": 0.0,
+        "observed_ros_regressions": 0
+      },
+      "status_counts": {
+        "raw_received": 137,
+        "accepted": 137,
+        "rejected": 0,
+        "raw_without_recorded_outcome": 0
+      },
+      "status_source_age_s": 0.296,
+      "status_wall_age_s": 2.895643184000164,
+      "cumulative_completed_max_wall_gaps_s": {
+        "raw_status_callbacks": 5.0565312139999605,
+        "accepted_status_callbacks": 5.055125825000005,
+        "control_ticks": 1.283328438999888,
+        "diagnostic_callbacks": 1.0755910350001159
+      }
+    },
+    {
+      "record_index": 98986,
+      "source_s": 60.3,
+      "wall_monotonic_s": 1979.371780673,
+      "phase": "ABORTED",
+      "odometry": {
+        "source_stamp_ns": 60252000000,
+        "received_wall_monotonic_s": 1979.30911,
+        "age_wall_s": 0.06267067300018425,
+        "age_source_s": 0.048
+      },
+      "control_tick": {
+        "count": 1206,
+        "last_wall_monotonic_s": 1979.237330899,
+        "age_wall_s": 0.13444977400013158
+      },
+      "diagnostic_clock": {
+        "callback_count": 491,
+        "wall_delta_s": 1.0979513160000351,
+        "ros_delta_s": 0.052,
+        "observed_ros_progress_per_wall": 0.047360934170963126,
+        "wall_since_observed_ros_change_s": 0.0,
+        "observed_ros_regressions": 0
+      },
+      "status_counts": {
+        "raw_received": 137,
+        "accepted": 137,
+        "rejected": 0,
+        "raw_without_recorded_outcome": 0
+      },
+      "status_source_age_s": 0.348,
+      "status_wall_age_s": 3.9935945000001993,
+      "cumulative_completed_max_wall_gaps_s": {
+        "raw_status_callbacks": 5.0565312139999605,
+        "accepted_status_callbacks": 5.055125825000005,
+        "control_ticks": 1.283328438999888,
+        "diagnostic_callbacks": 1.0979513160000351
+      }
+    },
+    {
+      "record_index": 99081,
+      "source_s": 60.356,
+      "wall_monotonic_s": 1980.237447722,
+      "phase": "ABORTED",
+      "odometry": {
+        "source_stamp_ns": 60340000000,
+        "received_wall_monotonic_s": 1980.173935039,
+        "age_wall_s": 0.06351268299999902,
+        "age_source_s": 0.016
+      },
+      "control_tick": {
+        "count": 1207,
+        "last_wall_monotonic_s": 1980.206291203,
+        "age_wall_s": 0.03115651899997829
+      },
+      "diagnostic_clock": {
+        "callback_count": 492,
+        "wall_delta_s": 0.8656670489999669,
+        "ros_delta_s": 0.056,
+        "observed_ros_progress_per_wall": 0.064689998382972,
+        "wall_since_observed_ros_change_s": 0.0,
+        "observed_ros_regressions": 0
+      },
+      "status_counts": {
+        "raw_received": 137,
+        "accepted": 137,
+        "rejected": 0,
+        "raw_without_recorded_outcome": 0
+      },
+      "status_source_age_s": 0.404,
+      "status_wall_age_s": 4.859261549000166,
+      "cumulative_completed_max_wall_gaps_s": {
+        "raw_status_callbacks": 5.0565312139999605,
+        "accepted_status_callbacks": 5.055125825000005,
+        "control_ticks": 1.283328438999888,
+        "diagnostic_callbacks": 1.0979513160000351
+      }
+    },
+    {
+      "record_index": 99289,
+      "source_s": 60.484,
+      "wall_monotonic_s": 1981.240625646,
+      "phase": "ABORTED",
+      "odometry": {
+        "source_stamp_ns": 60472000000,
+        "received_wall_monotonic_s": 1981.127760818,
+        "age_wall_s": 0.11286482799982878,
+        "age_source_s": 0.012
+      },
+      "control_tick": {
+        "count": 1209,
+        "last_wall_monotonic_s": 1980.95164508,
+        "age_wall_s": 0.2889805659999638
+      },
+      "diagnostic_clock": {
+        "callback_count": 493,
+        "wall_delta_s": 1.0031779239998286,
+        "ros_delta_s": 0.128,
+        "observed_ros_progress_per_wall": 0.1275945143306621,
+        "wall_since_observed_ros_change_s": 0.0,
+        "observed_ros_regressions": 0
+      },
+      "status_counts": {
+        "raw_received": 138,
+        "accepted": 138,
+        "rejected": 0,
+        "raw_without_recorded_outcome": 0
+      },
+      "status_source_age_s": 0.028,
+      "status_wall_age_s": 0.25545130399996197,
+      "cumulative_completed_max_wall_gaps_s": {
+        "raw_status_callbacks": 5.606815145999917,
+        "accepted_status_callbacks": 5.606988169000033,
+        "control_ticks": 1.283328438999888,
+        "diagnostic_callbacks": 1.0979513160000351
+      }
+    },
+    {
+      "record_index": 99511,
+      "source_s": 60.616,
+      "wall_monotonic_s": 1982.268670379,
+      "phase": "ABORTED",
+      "odometry": {
+        "source_stamp_ns": 60612000000,
+        "received_wall_monotonic_s": 1982.252702355,
+        "age_wall_s": 0.01596802399990338,
+        "age_source_s": 0.004
+      },
+      "control_tick": {
+        "count": 1212,
+        "last_wall_monotonic_s": 1982.159994203,
+        "age_wall_s": 0.10867617600001722
+      },
+      "diagnostic_clock": {
+        "callback_count": 494,
+        "wall_delta_s": 1.0280447330001152,
+        "ros_delta_s": 0.132,
+        "observed_ros_progress_per_wall": 0.12839908202709036,
+        "wall_since_observed_ros_change_s": 0.0,
+        "observed_ros_regressions": 0
+      },
+      "status_counts": {
+        "raw_received": 138,
+        "accepted": 138,
+        "rejected": 0,
+        "raw_without_recorded_outcome": 0
+      },
+      "status_source_age_s": 0.16,
+      "status_wall_age_s": 1.2834960370000772,
+      "cumulative_completed_max_wall_gaps_s": {
+        "raw_status_callbacks": 5.606815145999917,
+        "accepted_status_callbacks": 5.606988169000033,
+        "control_ticks": 1.283328438999888,
+        "diagnostic_callbacks": 1.0979513160000351
+      }
+    }
+  ],
+  "channel_metrics": {
+    "/vehicle/odometry": {
+      "selected_count": 458,
+      "largest_bag_record_gap": {
+        "bag_record_wall_gap_s": 0.878225876,
+        "source_header_delta_s": 0.072,
+        "record_indices": [
+          98821,
+          98911
+        ],
+        "source_header_ns": [
+          60172000000,
+          60244000000
+        ]
+      },
+      "invalid_count": 0,
+      "mode_counts": {
+        "None": 458
+      }
+    },
+    "/tracking/command": {
+      "selected_count": 95,
+      "largest_bag_record_gap": {
+        "bag_record_wall_gap_s": 1.226660265,
+        "source_header_delta_s": 0.052,
+        "record_indices": [
+          98966,
+          99066
+        ],
+        "source_header_ns": [
+          60300000000,
+          60352000000
+        ]
+      },
+      "invalid_count": 0,
+      "mode_counts": {
+        "2": 95
+      }
+    },
+    "/tracking/flight_command": {
+      "selected_count": 95,
+      "largest_bag_record_gap": {
+        "bag_record_wall_gap_s": 1.276421293,
+        "source_header_delta_s": 0.048,
+        "record_indices": [
+          98851,
+          98977
+        ],
+        "source_header_ns": [
+          60204000000,
+          60252000000
+        ]
+      },
+      "invalid_count": 9,
+      "mode_counts": {
+        "2": 85,
+        "1": 10
+      }
+    },
+    "/tracking/supervisor_diagnostics": {
+      "selected_count": 39,
+      "largest_bag_record_gap": {
+        "bag_record_wall_gap_s": 1.068339495,
+        "source_header_delta_s": null,
+        "record_indices": [
+          98896,
+          98986
+        ],
+        "source_header_ns": [
+          null,
+          null
+        ]
+      },
+      "invalid_count": 0,
+      "mode_counts": {
+        "None": 39
+      }
+    },
+    "/clock": {
+      "selected_count": 1161,
+      "largest_bag_record_gap": {
+        "bag_record_wall_gap_s": 0.895516814,
+        "source_header_delta_s": null,
+        "record_indices": [
+          98958,
+          98991
+        ],
+        "source_header_ns": [
+          null,
+          null
+        ]
+      },
+      "invalid_count": 0,
+      "mode_counts": {
+        "None": 1161
+      }
+    }
+  },
+  "quantitative_findings": [
+    "93 explicit-source phase ticks in56.0-60.64 s: FOLLOW84,HOLD1,ABORTED8. HOLD60.152/wall1977.131642987; FOLLOW60.204/wall1977.762868270; ABORT60.252/wall1978.382348639.",
+    "Abort last accepted odometry header60.172 has source age0.080 s, accepted callback wall age0.732516970 s exceeds0.500 wall guard. Status remains source0.300/wall3.004 s within1/10, armed2/nav14/failsafe=false.",
+    "Preceding diag60.248/wall1978.273829357 reports odometry wall age0.623997688/source age0.076, phase still FOLLOW because diagnostic does not execute flight guard; last actual control tick wall1977.762868270 was0.510961087 s earlier.",
+    "Next diag60.300/wall1979.371780673 has recovered odometry source60.252/accepted wall1979.309110000, wall age0.062670673/source age0.048; ABORTED remains latched.",
+    "Adapted recorder source60.172(record98821) to60.244(record98911) gap is0.072 source and0.878225876 bag-wall s. This cannot establish whether raw production, DDS, adapter scheduling or supervisor scheduling caused the gap.",
+    "All95 selected incoming commands are valid finite position commands. Supervisor emits85 position+10 velocity: one valid zero velocity HOLD and nine invalid zero velocities including post-abort boundary. These mode transitions do not demonstrate simultaneous PX4 position/velocity use.",
+    "Incoming command maximum recorder gap1.226660265 wall s corresponds to0.052 source s(60.300-60.352). Recorder gaps do not measure supervisor receipt. HOLD cannot be assigned uniquely to wall versus source freshness without local command diagnostics.",
+    "39 same-executor steady diagnostics: no observed ROS regressions or rejected status. Observed ROS progress/wall minimum0.047360934; requestedRTF0.125 is not guaranteed instantaneous progress.",
+    "Cumulative observed maximum control-tick gap1.283328439 and accepted-status gap5.606988169 wall s include startup/history through samples; do not label as only the failure window."
+  ],
+  "causal_conclusion": {
+    "proved": "Odometry receipt-wall guard aborts despite source validity. Adapted-recorder delivery/source gap, transient HOLD and post-abort recovery are recorded.",
+    "not_proved": [
+      "Raw PX4 production/DDS condition",
+      "CPU/memory/disk cause",
+      "Supervisor-only starvation",
+      "Position-controller failure",
+      "Permanent reliability fix"
+    ],
+    "scope_limitation": "Raw PX4 odom/status and adapter timing were counted but not deserialized/exported. No second native reader is required for this review."
+  },
+  "minimum_repair_review_contract": {
+    "root_authorized_candidate": "Explicit source_sim odometry+command timing: independent source age0.5/future0.05 and receipt-wall budget. Root selected0.5/requestedRTF only to plan host stop-flow budget(.125=>4;1=>.5). It is not a source-age conversion and does not guarantee measured RTF.",
+    "preserve": {
+      "odometry_source_age_s": 0.5,
+      "command_source_age_s": 0.5,
+      "source_future_s": 0.05,
+      "status_source_age_s": 1.0,
+      "status_source_future_s": 0.05,
+      "status_receipt_wall_s": 10.0,
+      "real_legacy_receipt_wall_s": 0.5
+    },
+    "required_diff_checks": [
+      "New source_sim path requires explicit mode, simulation_only and use_sim_time. Default real/legacy behavior remains unchanged.",
+      "Check preserved ROS-nanosecond source stamps both at callback acceptance and each control tick; never infer source age from requestedRTF or replace source with receipt time.",
+      "Rejected stale/future/invalid/duplicate/regressing data never refresh accepted receipt; source/ROS regressions latch until restart. Do not round ROS-nanosecond headers through the PX4-microsecond helper.",
+      "Retain invalid vehicle -> latched ABORTED; invalid controller -> HOLD zero velocity; PX4 position/velocity mutually exclusive.",
+      "ROS pause must not disable wall stop-flow checks: a steady callback can abort but must not become a second normal setpoint publisher. State clearly that both timers still share an executor.",
+      "Expose local command source/receipt and odometry rejection evidence in scalar diagnostics; exact modes/age/future/host budgets are bound in runtime YAML/run_config/protocol.",
+      "Do not modify engineering performance gates or original safety4 registration/actual-core prerequisites. Preserve failed45 and pending10. Use fresh freeze/prefix for failing person-position probe, all original evaluators, then new full core12."
+    ],
+    "verification_cases": [
+      "Exact source-age/future/wall boundaries and non-simulation refusal",
+      "Fresh source with slow receipt, queued stale source with fresh receipt, invalid/duplicate/future/wrong-domain/source and ROS regressions cannot refresh accepted state",
+      "Paused source clock with steady wall stop-flow, same-executor limitation explicit",
+      "Legacy/status unchanged, HOLD/ABORT latch and mutual exclusion unchanged",
+      "Original safety4 build/admission executable; new probe is not final core/car/gimbal/statistics acceptance"
+    ]
+  },
+  "original_small_inputs": {
+    "source_review": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\reviewed_freeze_review_v4_humble45_01.json",
+      "bytes": 202904,
+      "sha256": "a526b2e342bc2b5889266ef15592656f5c98eb7833bed33856d0c2d084d69b50"
+    },
+    "source_manifest": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble45\\freeze_validation\\source_freeze_manifest.json",
+      "bytes": 242728,
+      "sha256": "e85627c38791ffda37ee1a53ea29e4a2adfc4ce204c80f016dfb9aca00952c02"
+    },
+    "plan": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_probe01_seed004_matrix\\plan.json",
+      "bytes": 189859,
+      "sha256": "e6f57ab7e47d53c0b4286686550fa3acce4973a3c71aaba8870905275cdd7198"
+    },
+    "slot": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_probe01_seed004_matrix\\slots\\person_stage1_position_seed004.json",
+      "bytes": 38240,
+      "sha256": "983aef6be21724df9d1b5a9bc53a65545642913970edcb829108e2d055746f0f"
+    },
+    "attempt": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_probe01_seed004_matrix\\observed_driver01\\02_person_stage1_position_seed004.attempt_terminal.json",
+      "bytes": 2673,
+      "sha256": "973143f34114eab839a6216fc6022833a95752e43c80e3d2190f956e56c99323"
+    },
+    "core_terminal": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_probe01_seed004_matrix\\observed_driver01\\execution_terminal.json",
+      "bytes": 168362,
+      "sha256": "7de32e4471c90bee52f02ea886a8b3c87e5ef5011e4d97855e21234b1109ebcb"
+    },
+    "contract": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\development_contract_core_reliability_v4_humble45_probe01_01.json",
+      "bytes": 37243,
+      "sha256": "50da1c5decb5157f3806abe97b40a255efc840803d03457917c2953d79e0f989"
+    },
+    "started_7": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_probe01_seed004_matrix\\slots\\person_stage1_position_seed004.started.json",
+      "bytes": 2115,
+      "sha256": "8a0c6a5629801954ad6fa89fbdc330f361b0bdc844e2acef87279690920ef16f"
+    },
+    "started_8": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_probe01_seed004_matrix\\observed_driver01\\02_person_stage1_position_seed004.started.json",
+      "bytes": 35572,
+      "sha256": "e42adbf6ee99350b5e21b20a58cad097ca6d177416962f1de8c0a8a58addd682"
+    },
+    "artifact_bag_integrity.json": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_probe01_person_stage1_position_seed004\\bag_integrity.json",
+      "bytes": 4970,
+      "sha256": "b930332d1c9ce183a145ffd22ff7551b28f3de629a607838eeadd35a22ff5cf2"
+    },
+    "artifact_recording_closure.json": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_probe01_person_stage1_position_seed004\\recording_closure.json",
+      "bytes": 20066,
+      "sha256": "ca93f7ca1490590e1d50b2a8efc1af09bf7f74d9bf89754d5b2479783743bd46"
+    },
+    "artifact_summary.json": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_probe01_person_stage1_position_seed004\\summary.json",
+      "bytes": 4857,
+      "sha256": "deb895b830cb8de98e3a1fb96c481cca81659a1867d555c973a42f42bef1f8ca"
+    },
+    "artifact_run_config.json": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_probe01_person_stage1_position_seed004\\run_config.json",
+      "bytes": 2135,
+      "sha256": "7fe1ba71938f3bf8fc81a70634dfbef668cb441dd33dba572911a2dcbaf0510f"
+    },
+    "artifact_configuration/runtime_parameters.yaml": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_probe01_person_stage1_position_seed004\\configuration\\runtime_parameters.yaml",
+      "bytes": 4377,
+      "sha256": "2c0c0fbd86955aa8df472ff7a754f49a3c5bfa335dabc7defc05ec3fa0197f56"
+    },
+    "artifact_rosbag/metadata.yaml": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble45\\reliability_v4_humble45_probe01_person_stage1_position_seed004\\rosbag\\metadata.yaml",
+      "bytes": 16892,
+      "sha256": "7982bc5f18f3e704ad9c11440653e0f28f59badca8df33b22f35ab223d807b35"
+    }
+  },
+  "native_source_pins_not_independently_reopened": {
+    "source_0": {
+      "path": "/root/uav_tracking_fullplan_v4_humble45/scripts/evaluate_stage1_flight.py",
+      "sha256": "655cf6fc7c0cc2a954db7d06d2fbb00a000f2fca80ba0930d153025e28efb7c1"
+    },
+    "source_1": {
+      "path": "/root/uav_tracking_fullplan_v4_humble45/uav_tracking/core/target_manager.py",
+      "sha256": "4d3b295bda6abc55c4a153132656f93e6f916f8650aa216f4b56db79f3dc0ca6"
+    },
+    "source_2": {
+      "path": "/root/uav_tracking_fullplan_v4_humble45/ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/state_estimator_node.py",
+      "sha256": "b5ad7953b4e5e040b37919431e5be36869116e240eeddd427546089686ef40df"
+    },
+    "source_3": {
+      "path": "/root/uav_tracking_fullplan_v4_humble45/ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/stage2_telemetry.py",
+      "sha256": "b74e8e9835c81b7e90ea2f7a0d549e8c85ce6f9221551122926f881ad98d80d9"
+    },
+    "source_4": {
+      "path": "/root/uav_tracking_fullplan_v4_humble45/ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/navigation_estimator.py",
+      "sha256": "8d1abef9fe9d623f4cd43b0874e7c7843238a79920f198b17942d6cc8ebe2114"
+    },
+    "source_5": {
+      "path": "/root/uav_tracking_fullplan_v4_humble45/ros2_ws/src/uav_tracking_interfaces/msg/TargetObservationArray.msg",
+      "sha256": "68687bae96f70b1b3c26093cd6a4c5250bc84f75c7ef027617a440d8ec4c226d"
+    },
+    "source_6": {
+      "path": "/root/uav_tracking_fullplan_v4_humble45/ros2_ws/src/uav_tracking_interfaces/msg/TargetObservation.msg",
+      "sha256": "5dd36466a5b2e98bd79e2fad952727243c005012867fa08ef179a2f19d2384e5"
+    },
+    "source_7": {
+      "path": "/root/uav_tracking_fullplan_v4_humble45/ros2_ws/src/uav_tracking_interfaces/msg/NavigationOverlap.msg",
+      "sha256": "a18a359efeae5d9b14509f6346864738ee6a63faf2bcd7f53b88cf006416bf76"
+    },
+    "source_8": {
+      "path": "/root/uav_tracking_fullplan_v4_humble45/ros2_ws/src/uav_tracking_interfaces/msg/TargetState.msg",
+      "sha256": "b1967b3f2a0f31f298c2205a1c3defd0dcbea892745d9a6f3ea1c2fd97d84271"
+    },
+    "source_9": {
+      "path": "/root/uav_tracking_fullplan_v4_humble45/ros2_ws/src/uav_tracking_interfaces/msg/TargetSelection.msg",
+      "sha256": "ad7426a38093e990b61c6c1798f536111e735f8903b5cba5e8075f12a22b7e8c"
+    },
+    "source_10": {
+      "path": "/root/uav_tracking_fullplan_v4_humble45/ros2_ws/src/uav_tracking_interfaces/msg/TrackingStatus.msg",
+      "sha256": "f9d29ba33ee852f1bb301fa42f7d6e57aac92159f73961098d08e5a8f65a2f79"
+    },
+    "source_11": {
+      "path": "/root/uav_tracking_fullplan_v4_humble45/ros2_ws/src/uav_tracking_interfaces/msg/TrackingCommand.msg",
+      "sha256": "f7156a45aae6000ef70178eb46d27f2830d98c3369b1114961bceef63c04f172"
+    }
+  }
+}

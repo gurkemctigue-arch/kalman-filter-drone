@@ -1,0 +1,168 @@
+{
+  "schema_version": 1,
+  "reviewer": "/root/review_repair_patch",
+  "status": "INDEPENDENT_STATIC_AND_TEST_EVIDENCE_REVIEW_PASS_FOR_NEW_COLD_BUILD_ONLY",
+  "scope": "Read-only Windows review of exact seven-file final source, original external strict tools, actual author-run Windows test receipts/logs and prior exported causal evidence. Reviewer did not modify main/external strict tools, run tests, invoke WSL/ROS/native reader, open bag payload, create a freeze or fly.",
+  "source_files": {
+    "planning/reliability-v4-preregistration.json": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\planning\\reliability-v4-preregistration.json",
+      "bytes": 18146,
+      "sha256": "a5f7412dd239d5452bdc725c825cd0b744aa5448acd15af9ebc7d6b6a9064d5b"
+    },
+    "ros2_ws/src/uav_tracking_px4_adapter/uav_tracking_px4_adapter/flight_supervisor.py": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\ros2_ws\\src\\uav_tracking_px4_adapter\\uav_tracking_px4_adapter\\flight_supervisor.py",
+      "bytes": 57717,
+      "sha256": "9ea9b08d456f59618f14533cdecb8c2315263af4860e3cb570615746cc889064"
+    },
+    "scripts/run_stage1_trial.py": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\scripts\\run_stage1_trial.py",
+      "bytes": 61591,
+      "sha256": "da22505060e3775af1077877177e13639a710209e581c9dfabacaa4ec212419e"
+    },
+    "scripts/run_reliability_v4.py": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\scripts\\run_reliability_v4.py",
+      "bytes": 165270,
+      "sha256": "50da43f141fcc572d4cf580eb9a38edb34da91d58f29548861e9b2b32fd1596e"
+    },
+    "scripts/build_reliability_v4_probe_gate.py": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\scripts\\build_reliability_v4_probe_gate.py",
+      "bytes": 24114,
+      "sha256": "d370b45d91b273bedce22add566d8d63dcb9ea1032632401e0b69e0d250293f5"
+    },
+    "tests/test_reliability_v4_runner.py": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tests\\test_reliability_v4_runner.py",
+      "bytes": 120623,
+      "sha256": "bf7fc2a05ea706555eaf9cd09e8b5ca009ed92ae4fcfe0e17f9f7d42e665c329"
+    },
+    "tests/test_supervisor_stream_contract.py": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tests\\test_supervisor_stream_contract.py",
+      "bytes": 22474,
+      "sha256": "a23f545d2ff127828e0d62302d9e46925af3dbe0b7337297dcdd402cad813eeb"
+    }
+  },
+  "source_file_count": 7,
+  "verification": {
+    "author_full_related_suite_before_metadata_finalization": {
+      "receipt": {
+        "path": "D:\\WSL\\UAVHumble22-validation\\humble46_stream_clock_windows_tests04_receipt.json",
+        "bytes": 2674,
+        "sha256": "d0aff1edb7122f38de89d3b9e59ee3215844dbd659d8d80a7c02e4521a085f6b"
+      },
+      "log": {
+        "path": "D:\\WSL\\UAVHumble22-validation\\humble46_stream_clock_windows_tests04.log",
+        "bytes": 30589,
+        "sha256": "ebd3fb2714554c2dcf9190863d9b46f5c6ac1ee1b15198d9ed94e755bab175ba"
+      },
+      "tests": 145,
+      "skips": 0,
+      "result": "OK",
+      "before_equals_after": true
+    },
+    "author_final_affected_suite": {
+      "receipt": {
+        "path": "D:\\WSL\\UAVHumble22-validation\\humble46_stream_clock_windows_tests05_receipt.json",
+        "bytes": 2770,
+        "sha256": "e96c87f6d04c3a76166c285c42ff77e25a6ef3f53c8562f3c57c184aeb6643d8"
+      },
+      "log": {
+        "path": "D:\\WSL\\UAVHumble22-validation\\humble46_stream_clock_windows_tests05.log",
+        "bytes": 4672,
+        "sha256": "07ae407ccf4babfae2911b5132de5875983f9c20151e8ead323ac9a2bb8f29d6"
+      },
+      "tests": 22,
+      "skips": 0,
+      "result": "OK",
+      "before_equals_after": true
+    },
+    "two_metadata_only_files_changed_after_full_suite": [
+      "planning/reliability-v4-preregistration.json",
+      "scripts/run_reliability_v4.py"
+    ],
+    "all_final_current_hashes_match_test05": true,
+    "all_seven_utf8_no_bom_lf": true,
+    "all_changed_python_ast_parse": true,
+    "original_external_compatibility_tools_rehashed_unchanged": true
+  },
+  "findings": [],
+  "reviewed_invariants": [
+    {
+      "item": "Independent clock domains",
+      "evidence": "flight_supervisor.py:_source_stream_issues; run_stage1_trial.py:supervisor_stream_timing",
+      "result": "PASS",
+      "detail": "Source age directly subtracts preserved integer ROS header nanoseconds from ROS now. Source age0.5/future0.05 remain fixed. RequestedRTF only plans0.5/RTF host receipt budget, bounded<=10 s;0.125 produces4.0 s and1.0 produces0.5 s."
+    },
+    {
+      "item": "Real/legacy custom behavior",
+      "evidence": "flight_supervisor.py defaults/_controller_is_fresh; run_reliability_v4.py:supervisor_stream_trial_binding",
+      "result": "PASS",
+      "detail": "Node default remains receipt_wall, custom legacy command timeout still applies both existing wall and source checks. New runner explicitly emits receipt_wall for historical protocols without the declaration; original frozen roots/source are untouched."
+    },
+    {
+      "item": "Rejected data and restart latches",
+      "evidence": "flight_supervisor.py:_on_odom/_accept_source_stream/_stream_ros_now_ns",
+      "result": "PASS",
+      "detail": "Malformed source headers, future, stale, duplicate or regressing source stamps cannot refresh accepted stream receipt. Odometry finite position/quaternion validation remains before caching. Source/ROS regressions latch until node restart."
+    },
+    {
+      "item": "Controller stop and stale policy",
+      "evidence": "flight_supervisor.py:_on_command/_controller_is_fresh/_stream_wall_watchdog",
+      "result": "PASS",
+      "detail": "Valid=False with legitimate source timing is a live stop intent and yields HOLD. A rejected-header invalid stop also cancels prior valid motion until later accepted valid command. Command receipt/source expiry remains HOLD, with no new command-timeout ABORT. Source-clock regression still aborts."
+    },
+    {
+      "item": "Steady execution and status",
+      "evidence": "flight_supervisor.py:_create_stream_watchdog_timer/_stream_wall_watchdog",
+      "result": "PASS",
+      "detail": "New0.1 s steady guard runs only in FOLLOW/HOLD and reuses exact existing odometry/status/armed-Offboard/failsafe state guard. It publishes one invalid zero-velocity command only on transition to ABORTED; no second normal control stream. Same-executor limitation is explicit."
+    },
+    {
+      "item": "Status numerical invariants and honest metadata",
+      "evidence": "planning/reliability-v4-preregistration.json:supervisor_status_timing/supervisor_stream_timing.status_wall_check_clock",
+      "result": "PASS",
+      "detail": "Original status source1/future0.05/wall10 values remain. New stream registration explicitly overrides the baseline status clock description in FOLLOW/HOLD, and exact stream summary/digest binds this string. No old status/source evidence is reinterpreted."
+    },
+    {
+      "item": "Simulation-only restriction and actual runtime archive",
+      "evidence": "flight_supervisor.py:_configure_stream_timing; run_stage1_trial.py:main; run_reliability_v4.py:runtime_configuration",
+      "result": "PASS",
+      "detail": "Node source mode requires actual boolean simulation_only/use_sim_time true. Trial mode auto resolves from explicit PX4 domain, archives resolved mode/budgets before run_config write, and writes actual parameters. New core runtime audit exactly binds mode, all source/wall limits, simulation_only and use_sim_time."
+    },
+    {
+      "item": "New plan, argv and readiness identity",
+      "evidence": "run_reliability_v4.py:trial_spec/validate_plan/runtime_configuration/validate_probe_gate; build_reliability_v4_probe_gate.py:bindings/matching_pacing_policy",
+      "result": "PASS",
+      "detail": "New protocol and each trial carry exact stream declaration and explicit source CLI. Gate bindings include stream SHA; old/new timing policies cannot certify each other. The limited gate-builder change adds the new binding/comparison and removes no prior check."
+    },
+    {
+      "item": "Existing external strict compatibility",
+      "evidence": "humble46_external_stream_compatibility_static01.json; development_safety.py:policy_flags/safety_definitions/safety_runtime; tools/reliability_v4_guard.py:validate_safety",
+      "result": "CONDITIONALLY_COMPATIBLE",
+      "detail": "No hard extra-field/argv rejection in parameterized core/safety. Original safety argv already declares PX4 source_sim; same-source new auto rule supplies stream source mode without rewriting original external tools/argv. Original tools do not validate these new fields, so prospective four expected-runtime bindings and post-flight four actual-runtime independent checks are mandatory."
+    },
+    {
+      "item": "Scope remains local",
+      "evidence": "Seven-file git diff and source pins",
+      "result": "PASS",
+      "detail": "No detector/model/tracking/association/geometry/follow-control tuning, performance gate relaxation, old validator exemption, frozen failure replacement, bag mutation, or automatic old-slot retry."
+    }
+  ],
+  "limitations_and_remaining_gates": [
+    "This review permits preparing a fresh46 source freeze/cold build; it does not prove native ROS integration or flight reliability. Root requires new native full tests, cold build, source review and complete original core12 before safety/extension admission.",
+    "The0.1 s steady stream guard intentionally covers FOLLOW/HOLD only. Native startup retains existing original readiness/source gates and independent180 s wall budget; do not claim the new steady check covers every phase.",
+    "A blocked same SingleThreadedExecutor delays both ROS and steady callbacks. No independent DDS observer or scheduler isolation has been implemented or proved.",
+    "The measured45 cause is receipt-wall/source mismatch with an adapted-recorder gap, not a proven raw DDS/CPU root cause. A4 s host budget is registered simulation configuration, not guaranteed real-time progress or a permanent reliability cure.",
+    "Root selected a fresh complete core12 directly after the new46 build/review; failing person-position is second slot. No old45 single-flight result or fixed45 probe can authorize46.",
+    "Original safety4 register must first pass actual new core12 all-PASS and untouched original closure checks. Independently review prospective registry plus same-source auto-domain resolution and four expected runtime contracts, then independently compare all four actual new run_config/YAML values after flight, in addition to every original guard check.",
+    "Keep original45 INFRASTRUCTURE_ERROR/FAIL, owner mismatch and PENDING10 unchanged. Formal held-out experiments and final car/gimbal/statistical conclusions remain unfulfilled."
+  ],
+  "causal_evidence_review": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\humble45_position_abort_clock_independent01.json",
+    "bytes": 30292,
+    "sha256": "274416ff11db7ff1746252fc471a52dc864e93a51c81bade16dff407fbbe890d"
+  },
+  "external_compatibility_review": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\humble46_external_stream_compatibility_static01.json",
+    "bytes": 5964,
+    "sha256": "3446676c24490074bbf4cf2e21aeef76d5b9699c8334a47b8f1c4c41df74e1ca"
+  }
+}

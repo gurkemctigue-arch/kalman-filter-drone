@@ -67,6 +67,8 @@ def bindings(plan):
         result["exclusive_navigation_sha256"] = v4.digest(v4.exclusive_navigation_summary(plan["protocol"]))
     if v4.simulation_pacing_declared(plan["protocol"]):
         result["simulation_pacing_sha256"] = v4.digest(v4.simulation_pacing_summary(plan["protocol"]))
+    if v4.SUPERVISOR_STREAM_FIELD in plan["protocol"]:
+        result["supervisor_stream_timing_sha256"] = v4.digest(v4.supervisor_stream_summary(plan["protocol"]))
     return result
 
 
@@ -81,6 +83,8 @@ def matching_recovery_policy(target, previous):
 def matching_pacing_policy(target, previous):
     if v4.simulation_pacing_summary(previous["protocol"]) != v4.simulation_pacing_summary(target["protocol"]):
         raise ValueError("Probe simulation pacing policy differs from the target registration")
+    if v4.supervisor_stream_summary(previous["protocol"]) != v4.supervisor_stream_summary(target["protocol"]):
+        raise ValueError("Probe supervisor stream timing differs from the target registration")
 
 
 def register_gimbal_reevaluations(target_plan, probe_plan, output):

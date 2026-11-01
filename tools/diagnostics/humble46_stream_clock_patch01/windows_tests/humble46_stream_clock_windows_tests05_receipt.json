@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "scope": "WINDOWS_DIRECTED_TESTS_AFTER_STATUS_CLOCK_REGISTRATION_METADATA_ONLY_FINALIZATION",
+  "started_utc": "2026-11-01T17:40:02.777301+00:00",
+  "finished_utc": "2026-11-01T17:40:04.151048+00:00",
+  "command": [
+    "C:\\Program Files\\Python312\\python.exe",
+    "-B",
+    "-m",
+    "unittest",
+    "-v",
+    "tests.test_supervisor_stream_contract"
+  ],
+  "returncode": 0,
+  "elapsed_wall_s": 1.375,
+  "source_sha256_before": {
+    "planning/reliability-v4-preregistration.json": "a5f7412dd239d5452bdc725c825cd0b744aa5448acd15af9ebc7d6b6a9064d5b",
+    "ros2_ws/src/uav_tracking_px4_adapter/uav_tracking_px4_adapter/flight_supervisor.py": "9ea9b08d456f59618f14533cdecb8c2315263af4860e3cb570615746cc889064",
+    "scripts/run_stage1_trial.py": "da22505060e3775af1077877177e13639a710209e581c9dfabacaa4ec212419e",
+    "scripts/run_reliability_v4.py": "50da43f141fcc572d4cf580eb9a38edb34da91d58f29548861e9b2b32fd1596e",
+    "scripts/build_reliability_v4_probe_gate.py": "d370b45d91b273bedce22add566d8d63dcb9ea1032632401e0b69e0d250293f5",
+    "tests/test_reliability_v4_runner.py": "bf7fc2a05ea706555eaf9cd09e8b5ca009ed92ae4fcfe0e17f9f7d42e665c329",
+    "tests/test_supervisor_stream_contract.py": "a23f545d2ff127828e0d62302d9e46925af3dbe0b7337297dcdd402cad813eeb"
+  },
+  "source_sha256_after": {
+    "planning/reliability-v4-preregistration.json": "a5f7412dd239d5452bdc725c825cd0b744aa5448acd15af9ebc7d6b6a9064d5b",
+    "ros2_ws/src/uav_tracking_px4_adapter/uav_tracking_px4_adapter/flight_supervisor.py": "9ea9b08d456f59618f14533cdecb8c2315263af4860e3cb570615746cc889064",
+    "scripts/run_stage1_trial.py": "da22505060e3775af1077877177e13639a710209e581c9dfabacaa4ec212419e",
+    "scripts/run_reliability_v4.py": "50da43f141fcc572d4cf580eb9a38edb34da91d58f29548861e9b2b32fd1596e",
+    "scripts/build_reliability_v4_probe_gate.py": "d370b45d91b273bedce22add566d8d63dcb9ea1032632401e0b69e0d250293f5",
+    "tests/test_reliability_v4_runner.py": "bf7fc2a05ea706555eaf9cd09e8b5ca009ed92ae4fcfe0e17f9f7d42e665c329",
+    "tests/test_supervisor_stream_contract.py": "a23f545d2ff127828e0d62302d9e46925af3dbe0b7337297dcdd402cad813eeb"
+  },
+  "sources_unchanged_during_tests": true,
+  "utf8_lf_all_owned": true,
+  "prior_full_algorithm_suite": "humble46_stream_clock_windows_tests04_receipt.json",
+  "changes_since_prior_suite": [
+    "planning/reliability-v4-preregistration.json: add explicit status_wall_check_clock override metadata",
+    "scripts/run_reliability_v4.py: require exact matching status_wall_check_clock registration field"
+  ],
+  "log": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\humble46_stream_clock_windows_tests05.log",
+    "bytes": 4672,
+    "sha256": "07ae407ccf4babfae2911b5132de5875983f9c20151e8ead323ac9a2bb8f29d6"
+  }
+}

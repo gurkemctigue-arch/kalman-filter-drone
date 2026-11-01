@@ -59,6 +59,36 @@ def supervisor_status_timing(px4_time_mode: str, requested_real_time_factor: flo
     }
 
 
+def supervisor_stream_timing(mode: str | None, requested_real_time_factor: float,
+                             px4_time_mode: str = "source_sim") -> dict:
+    """Plan a bounded host watchdog separately from actual header source age.
+
+    RTF only plans a receipt-wall budget; it never converts a measured age.
+    An omitted CLI mode resolves from the explicit PX4 timestamp domain.
+    Historical protocol runners explicitly request receipt_wall to retain
+    their custom legacy timeout gates; actual parsed values are archived.
+    """
+    if mode is None:
+        if px4_time_mode not in {"receipt", "source_sim"}:
+            raise ValueError("unsupported PX4 timestamp mode")
+        mode = "source_sim" if px4_time_mode == "source_sim" else "receipt_wall"
+    if mode not in {"receipt_wall", "source_sim"}:
+        raise ValueError("unsupported supervisor stream timestamp mode")
+    if mode == "receipt_wall":
+        return {"stream_timestamp_mode": "receipt_wall"}
+    if (px4_time_mode != "source_sim" or isinstance(requested_real_time_factor, bool)
+            or not isinstance(requested_real_time_factor, (int, float))
+            or not math.isfinite(requested_real_time_factor) or not 0 < requested_real_time_factor <= 1):
+        raise ValueError("source_sim stream timing requires explicit simulation source time and finite RTF")
+    wall_budget = .5 / requested_real_time_factor
+    if not math.isfinite(wall_budget) or wall_budget > 10.:
+        raise ValueError("planned stream receipt wall budget exceeds the 10 second host ceiling")
+    return {"stream_timestamp_mode": "source_sim", "odometry_timeout_s": wall_budget,
+            "command_timeout_s": wall_budget, "odometry_source_max_age_s": .5,
+            "odometry_source_max_future_s": .05, "command_source_max_age_s": .5,
+            "command_source_max_future_s": .05}
+
+
 def apply_px4_adapter_publish_rate(parameters: dict, rate_hz: float) -> None:
     """Archive the adapter override and existing 20 Hz loop defaults separately."""
     if (isinstance(rate_hz, bool) or not isinstance(rate_hz, (int, float))
@@ -388,6 +418,8 @@ def main() -> None:
     parser.add_argument("--px4-time-mode", choices=["receipt", "source_sim"], default="receipt",
                         help="source_sim disables XRCE wall-time mapping before client startup and validates PX4 source time against /clock")
     parser.add_argument("--real-time-factor", type=float, default=1.0)
+    parser.add_argument("--supervisor-stream-timestamp-mode", choices=("receipt_wall", "source_sim"),
+                        default=None, help="Defaults to the explicit PX4 timestamp domain; resolved timing is archived")
     parser.add_argument("--px4-adapter-publish-rate-hz", type=float, choices=(20., 50.), default=20.,
                         help="PX4 adapter source-time publication rate; controller/supervisor rates and wall safety limits are unchanged")
     parser.add_argument("--motion-profile-kind", choices=["standard", "speed_changes"], default="standard")
@@ -432,6 +464,13 @@ def main() -> None:
     args.supervisor_status_source_max_age_s = status_timing["status_source_max_age_s"]
     args.supervisor_status_source_max_future_s = status_timing["status_source_max_future_s"]
     args.supervisor_status_timeout_wall_s = status_timing["status_timeout_s"]
+    try:
+        stream_timing = supervisor_stream_timing(args.supervisor_stream_timestamp_mode,
+                                                  args.real_time_factor, args.px4_time_mode)
+    except ValueError as error:
+        parser.error(str(error))
+    args.supervisor_stream_timestamp_mode = stream_timing["stream_timestamp_mode"]
+    args.supervisor_stream_timing = dict(stream_timing)
     if args.control_reference == "ground_footprint":
         # Declared vehicle geometry for independent offline scoring only.
         # Runtime tracking/control never consumes Gazebo truth.
@@ -515,10 +554,11 @@ def main() -> None:
                      for folder in [root / "uav_tracking", root / "ros2_ws" / "src", root / "scripts"]
                      for path in folder.rglob("*") if path.is_file() and path.suffix in {".py", ".sh", ".msg"}}
     parameters = yaml.safe_load(config_path.read_text())
-    # Only the simulation supervisor consumes these overrides. Do not change
-    # odometry, command, or target measurement/prediction safety thresholds.
+    # Only the explicitly opted-in simulation supervisor separates stream
+    # source ages from planned host liveness. Target/filter gates stay fixed.
     parameters.setdefault("uav_tracking_flight_supervisor", {}).setdefault("ros__parameters", {}).update(
         **status_timing,
+        **stream_timing,
     )
     if args.multi_target:
         # Carry stage-two identity safety into the physical-gimbal graph.

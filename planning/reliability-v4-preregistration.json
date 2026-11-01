@@ -58,6 +58,21 @@
     "status_timeout_wall_s": 10.0,
     "wall_check_clock": "ROS-time control tick; no independent status steady timer"
   },
+  "supervisor_stream_timing": {
+    "revision": "source_header_age_receipt_wall_v1",
+    "stream_timestamp_mode": "source_sim",
+    "odometry_source_max_age_s": 0.5,
+    "odometry_source_max_future_s": 0.05,
+    "command_source_max_age_s": 0.5,
+    "command_source_max_future_s": 0.05,
+    "odometry_timeout_wall_s": 4.0,
+    "command_timeout_wall_s": 4.0,
+    "receipt_wall_max_s": 10.0,
+    "receipt_wall_budget_rule": "0.5 / requested RTF; planning only; never measured-age conversion",
+    "status_wall_check_clock": "Overrides supervisor_status_timing.wall_check_clock in FOLLOW/HOLD: ROS-time control tick plus STEADY_TIME 0.1 s; same single-threaded executor; abort only",
+    "wall_check_clock": "STEADY_TIME 0.1 s; same single-threaded executor; abort only"
+  },
+  "supervisor_stream_policy": "New candidate registration only; frozen Humble45 failures and contracts remain unchanged. Actual ROS header source ages retain independent 0.5 s limits and 0.05 s future bounds. Requested RTF only plans bounded host receipt watchdog budgets (0.5/RTF, at most 10 wall seconds); it never converts observed source age. Command expiry or stream silence retains zero-velocity HOLD, while odometry stream loss or source clock regression latches ABORT. A 0.1 s steady watchdog shares the control executor and reuses the normal FOLLOW/HOLD state guards, including unchanged status source/wall/future limits and vehicle state; it publishes one invalid command only when aborting and does not add a second normal control stream or prove independent DDS health. The trial CLI resolves an omitted stream mode from the explicit PX4 timestamp domain: source_sim selects source_sim and receipt selects receipt_wall. Core plans always name the mode; a historical protocol without this registration explicitly requests receipt_wall in the new runner to preserve custom legacy timeout semantics. The node default and real/receipt behavior stay unchanged. Every new plan, resolved argv policy, run_config and actual runtime YAML must bind the actual mode and budgets before fresh development validation; original safety argv remains subject to independent four-slot resolved-runtime verification.",
   "source_time_policy": "Disable XRCE Agent wall-clock mapping before client startup only for this Gazebo simulation. Independently audit raw PX4, timing diagnostics and source-stamped adapted odometry, keeping callback receipt and recorder delivery distinct and retaining all clock-tail silence. Invalid domains/regressions or a locked vehicle-frame reset fail the trial even when online protection correctly rejects them. Source-clock evaluator PASS is necessary but does not establish navigation performance or flight success. Preserve original bounds and register numeric navigation gates only after development probes, before formal trials.",
   "vehicle_uncertainty_policy": "Propagate reported PX4 pose covariance into navigation measurement covariance, including attitude uncertainty. This prospective setting remains subject to development probes and does not change the original innovation/safety gates.",
   "estimator_method": "adaptive_kf",
