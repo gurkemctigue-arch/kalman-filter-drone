@@ -1,5 +1,7 @@
 # 查看当前实验
 
+**2026-11-01 23:17（北京时间）：44冷构建通过、完整测试3项夹具ERROR；修补后13项原生定向测试全部通过，正准备45重新验证，未开始飞行。** 正式仍0/280。本机[本轮进度页](../results/project_progress/humble44_recording01/index.html)会在步骤经核实后更新；[44失败原件](../tools/diagnostics/humble44_validation_failure01/README.md)与此前43失败均保留。
+
 **2026-11-01 22:39（北京时间）：约2.7秒处录制证据异常已定位；正在准备Humble44录包队列候选与原生验证，尚未新飞行。** 原43批次继续为STOPPED_FAULT，正式0/280。4项新测试和36项相关Windows回归通过，不等于原生飞行修复已验收。见[诊断原件](../tools/diagnostics/humble43_clock_boundary_snapshot01/README.md)与[后续路线](../planning/reliability-v4-humble44-recording-repair.md)。
 
 **2026-11-01 22:02（北京时间）批次终态：Humble43扩展16已停止，原始槽为12 PASS、4 FAIL，原生driver退出2；完整外层审计计数15，最后汽车远距离的source-clock及native-startup未通过硬门。** 核心12和安全4的既有通过记录保留，正式仍0/280。该最后失败不能当作允许的压力算法FAIL，容量collector/定标/正式发布前置未满足；当前继续离线取证，尚未选择修复。详见[停止与诊断记录](../planning/reliability-v4-humble43-extension-stop-20261101.md)及[原件快照](../tools/diagnostics/humble43_extension_stop_snapshot01/README.md)，本机[进度页](../results/project_progress/humble43_extension01/index.html)为STOPPED_FAULT。下方运行中描述均为有时间标记的历史。

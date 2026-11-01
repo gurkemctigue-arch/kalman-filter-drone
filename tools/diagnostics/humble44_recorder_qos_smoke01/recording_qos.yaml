@@ -1,0 +1,27 @@
+# Requested recorder receive histories for small evidence messages.
+# This is a delivery-capacity hypothesis; original evaluation gates still apply.
+/clock:
+  history: keep_last
+  depth: 2048
+  reliability: reliable
+  durability: volatile
+/fmu/out/vehicle_odometry:
+  history: keep_last
+  depth: 1024
+  reliability: best_effort
+  durability: transient_local
+/vehicle/odometry_timing:
+  history: keep_last
+  depth: 1024
+  reliability: reliable
+  durability: volatile
+/vehicle/odometry:
+  history: keep_last
+  depth: 1024
+  reliability: reliable
+  durability: volatile
+/tracking/flight_phase:
+  history: keep_last
+  depth: 256
+  reliability: reliable
+  durability: volatile

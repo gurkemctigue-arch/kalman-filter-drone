@@ -1,0 +1,205 @@
+{
+  "schema_version": 1,
+  "scope": "BOUNDED_SINGLE_ACTION_PROCESS_GROUP_ONLY_NOT_FLIGHT_ACCEPTANCE",
+  "action": "validate",
+  "status": "FAILED",
+  "started_utc": "2026-11-01T15:09:09.882941+00:00",
+  "finished_utc": "2026-11-01T15:11:16.680264+00:00",
+  "elapsed_wall_s": 126.79732751999998,
+  "timeout_s": 600.0,
+  "term_grace_s": 30.0,
+  "kill_confirm_s": 5.0,
+  "command": [
+    "/bin/bash",
+    "/mnt/d/WSL/UAVHumble22-validation/development_freeze_build.sh",
+    "validate",
+    "/mnt/d/WSL/UAVHumble22-validation/reviewed_freeze_review_v4_humble44_01.json",
+    "2dc534334af16e8a1699803bb812fc8d4d6a726466887925ecc8e81114c2c7ba"
+  ],
+  "pid": 386,
+  "direct_child_returncode": 2,
+  "requested_signals": [],
+  "launcher_error": null,
+  "cleanup": {
+    "members_before_cleanup": [],
+    "signals": [],
+    "residual_processes": [],
+    "actual_proc_group_empty": true,
+    "direct_child_reaped": true
+  },
+  "binding_before": {
+    "review": {
+      "path": "/mnt/d/WSL/UAVHumble22-validation/reviewed_freeze_review_v4_humble44_01.json",
+      "sha256": "2dc534334af16e8a1699803bb812fc8d4d6a726466887925ecc8e81114c2c7ba"
+    },
+    "source": {
+      "manifest_sha256": "432875aa5e39f499e90c4b0400ccaa1e6b0f49e3459bd92d9680f540d00e13fa",
+      "freeze_source_sha256": "b92d24736852b9e01d97c1eb64a805205a9c945aed6d6750a2ab1f374970a563",
+      "verified_file_count": 998
+    },
+    "closed_original_evidence": {
+      "capsule_sha256": "f1963aa374169e59520f41b84facc7fbb48838c6ae480326bd0ca14c7a5e997e",
+      "files": 112,
+      "metadata_bytes": 6733013,
+      "file_map_sha256": "e95f2b76f4b257646b89c1d5f22a95d4235d967060adf2effb4de57411024a09",
+      "retained_fields_sha256": "910274c866b4c735168891dc9f50c894f22f6033843122cbad0ccc91011563fb",
+      "payloads_reverified": false
+    },
+    "development_resource_override": {
+      "override": {
+        "schema_version": 1,
+        "status": "FINAL_DEVELOPMENT_BUILD_RESOURCE_OVERRIDE_INDEPENDENTLY_REVIEWED",
+        "scope": "EXPLICIT512_RESOURCE_SUPPLEMENT_WITH_UNCHANGED_GENERIC_BUILD_IMPLEMENTATIONS",
+        "tools_canonical_sha256": "517b2b2dfb989b8ca32f4f12ee4bd18b54bafd906c5d251a21d58407845ea503",
+        "resource_revision": "car_train20_04_m512_cpu4_v1",
+        "receipt": {
+          "path": "config/car_sim_train20_04_m512_resource_receipt.json",
+          "sha256": "9abeaca3a892e61761564bc7116bb8aed34d9864f4f7406bd9f3a4bc59f3c26c"
+        },
+        "supersedes_legacy_resource_choice_only": true,
+        "legacy_runtime_invariant_field_is_schema_compatibility_only": true,
+        "unchanged_contracts": [
+          "safety",
+          "bridge",
+          "magnetic",
+          "environment",
+          "source_binding",
+          "bounded_owner",
+          "build",
+          "suite"
+        ],
+        "legacy640_runtime_acceptance_claimed": false,
+        "runtime_acceptance_claimed": false,
+        "formal_seed_use_authorized": false
+      },
+      "tools_manifest": {
+        "schema_version": 1,
+        "scope": "EXPLICIT512_RESOURCE_SUPPLEMENT_WITH_UNCHANGED_GENERIC_BUILD_IMPLEMENTATIONS",
+        "files": {
+          "development_freeze_build.py": "cf54a57bffdb8944aa0e2cdd724e6de70028f4d8511acf89d3becb58c8b2c129",
+          "development_freeze_build.sh": "3a6ddd86749c944989b8618ae70457631114490cb3cc63ca6835085937975bd8",
+          "test_development_freeze_build.py": "751a9f8ce6f46129a6401f235e50844b67d2274c110b8720b6180f8a59f09ad3"
+        },
+        "reused_generic_canonical_sha256": "e57017201f1033847e49bb7843b1ef61bad28c21ac9f16e876736498980219cf",
+        "resource_guard": {
+          "schema_version": 1,
+          "scope": "DEVELOPMENT_IMAGE_REGRESSION_AND_OFFLINE_WORKER_TIMING_ONLY_NOT_FLIGHT_ACCEPTANCE",
+          "files": {
+            "development_resource_guard.py": "36dcddc624df2c725856fdedc2e8e5dd5582e88fc97d8458df31f5fcbfba58e5",
+            "test_development_resource_guard.py": "4ce70019ce71d95487af8c21fe17b20245a8e114b39b896649bfa3ab65742750"
+          },
+          "revision": "car_train20_04_m512_cpu4_v1",
+          "receipt": {
+            "path": "config/car_sim_train20_04_m512_resource_receipt.json",
+            "sha256": "9abeaca3a892e61761564bc7116bb8aed34d9864f4f7406bd9f3a4bc59f3c26c"
+          },
+          "generic_tools_canonical_sha256": "e57017201f1033847e49bb7843b1ef61bad28c21ac9f16e876736498980219cf",
+          "legacy_guard_modified": false,
+          "dependency_globals_modified": false,
+          "closed_loop_or_formal_acceptance_awarded": false
+        },
+        "actual_build_and_suite_functions": [
+          "reviewed_freeze_build.build",
+          "reviewed_freeze_build.installed_checks",
+          "reviewed_freeze_build.validate_build"
+        ],
+        "legacy_runtime_contracts_called": false,
+        "dependency_globals_modified": false,
+        "flight_actions_authorized": false,
+        "formal_seed_use_authorized": false
+      },
+      "reviewed_protocol_sha256": "66dda6a6c48e9c2613bf77ada018573e13487caf80f0c9db0be7651008c09dc7"
+    }
+  },
+  "binding_after": {
+    "review": {
+      "path": "/mnt/d/WSL/UAVHumble22-validation/reviewed_freeze_review_v4_humble44_01.json",
+      "sha256": "2dc534334af16e8a1699803bb812fc8d4d6a726466887925ecc8e81114c2c7ba"
+    },
+    "source": {
+      "manifest_sha256": "432875aa5e39f499e90c4b0400ccaa1e6b0f49e3459bd92d9680f540d00e13fa",
+      "freeze_source_sha256": "b92d24736852b9e01d97c1eb64a805205a9c945aed6d6750a2ab1f374970a563",
+      "verified_file_count": 998
+    },
+    "closed_original_evidence": {
+      "capsule_sha256": "f1963aa374169e59520f41b84facc7fbb48838c6ae480326bd0ca14c7a5e997e",
+      "files": 112,
+      "metadata_bytes": 6733013,
+      "file_map_sha256": "e95f2b76f4b257646b89c1d5f22a95d4235d967060adf2effb4de57411024a09",
+      "retained_fields_sha256": "910274c866b4c735168891dc9f50c894f22f6033843122cbad0ccc91011563fb",
+      "payloads_reverified": false
+    },
+    "development_resource_override": {
+      "override": {
+        "schema_version": 1,
+        "status": "FINAL_DEVELOPMENT_BUILD_RESOURCE_OVERRIDE_INDEPENDENTLY_REVIEWED",
+        "scope": "EXPLICIT512_RESOURCE_SUPPLEMENT_WITH_UNCHANGED_GENERIC_BUILD_IMPLEMENTATIONS",
+        "tools_canonical_sha256": "517b2b2dfb989b8ca32f4f12ee4bd18b54bafd906c5d251a21d58407845ea503",
+        "resource_revision": "car_train20_04_m512_cpu4_v1",
+        "receipt": {
+          "path": "config/car_sim_train20_04_m512_resource_receipt.json",
+          "sha256": "9abeaca3a892e61761564bc7116bb8aed34d9864f4f7406bd9f3a4bc59f3c26c"
+        },
+        "supersedes_legacy_resource_choice_only": true,
+        "legacy_runtime_invariant_field_is_schema_compatibility_only": true,
+        "unchanged_contracts": [
+          "safety",
+          "bridge",
+          "magnetic",
+          "environment",
+          "source_binding",
+          "bounded_owner",
+          "build",
+          "suite"
+        ],
+        "legacy640_runtime_acceptance_claimed": false,
+        "runtime_acceptance_claimed": false,
+        "formal_seed_use_authorized": false
+      },
+      "tools_manifest": {
+        "schema_version": 1,
+        "scope": "EXPLICIT512_RESOURCE_SUPPLEMENT_WITH_UNCHANGED_GENERIC_BUILD_IMPLEMENTATIONS",
+        "files": {
+          "development_freeze_build.py": "cf54a57bffdb8944aa0e2cdd724e6de70028f4d8511acf89d3becb58c8b2c129",
+          "development_freeze_build.sh": "3a6ddd86749c944989b8618ae70457631114490cb3cc63ca6835085937975bd8",
+          "test_development_freeze_build.py": "751a9f8ce6f46129a6401f235e50844b67d2274c110b8720b6180f8a59f09ad3"
+        },
+        "reused_generic_canonical_sha256": "e57017201f1033847e49bb7843b1ef61bad28c21ac9f16e876736498980219cf",
+        "resource_guard": {
+          "schema_version": 1,
+          "scope": "DEVELOPMENT_IMAGE_REGRESSION_AND_OFFLINE_WORKER_TIMING_ONLY_NOT_FLIGHT_ACCEPTANCE",
+          "files": {
+            "development_resource_guard.py": "36dcddc624df2c725856fdedc2e8e5dd5582e88fc97d8458df31f5fcbfba58e5",
+            "test_development_resource_guard.py": "4ce70019ce71d95487af8c21fe17b20245a8e114b39b896649bfa3ab65742750"
+          },
+          "revision": "car_train20_04_m512_cpu4_v1",
+          "receipt": {
+            "path": "config/car_sim_train20_04_m512_resource_receipt.json",
+            "sha256": "9abeaca3a892e61761564bc7116bb8aed34d9864f4f7406bd9f3a4bc59f3c26c"
+          },
+          "generic_tools_canonical_sha256": "e57017201f1033847e49bb7843b1ef61bad28c21ac9f16e876736498980219cf",
+          "legacy_guard_modified": false,
+          "dependency_globals_modified": false,
+          "closed_loop_or_formal_acceptance_awarded": false
+        },
+        "actual_build_and_suite_functions": [
+          "reviewed_freeze_build.build",
+          "reviewed_freeze_build.installed_checks",
+          "reviewed_freeze_build.validate_build"
+        ],
+        "legacy_runtime_contracts_called": false,
+        "dependency_globals_modified": false,
+        "flight_actions_authorized": false,
+        "formal_seed_use_authorized": false
+      },
+      "reviewed_protocol_sha256": "66dda6a6c48e9c2613bf77ada018573e13487caf80f0c9db0be7651008c09dc7"
+    }
+  },
+  "binding_error": null,
+  "action_log_sha256": "95823457ae30b2a0e3f32683ca232c3f828ac4a9c59778ece4f7591611fa9066",
+  "execution_count": 1,
+  "automatic_retry": false,
+  "automatic_next_step": false,
+  "formal_seeds_consumed": false,
+  "runtime_acceptance": "NOT_EVALUATED"
+}

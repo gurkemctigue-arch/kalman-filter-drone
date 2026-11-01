@@ -1,0 +1,63 @@
+test_car_surface_recovery_is_explicitly_archived_and_reaches_launched_graph (tests.test_simulation_seed.SeedRunnerTests) ... started gazebo pid=731
+started agent pid=731
+started px4 pid=731
+started monitor pid=731
+started ros pid=731
+monitor exited 0; evidence: /tmp/tmpxqi3_uui/results/seed_trial
+ok
+test_closure_failure_still_closes_and_archives_failed_trial (tests.test_simulation_seed.SeedRunnerTests) ... started gazebo pid=731
+started agent pid=731
+started px4 pid=731
+started bag pid=731
+started monitor pid=731
+started ros pid=731
+monitor exited 0; evidence: /tmp/tmpn8pvh44e/results/seed_trial
+ok
+test_copied_yaml_cannot_enable_recovery_without_the_cli_opt_in (tests.test_simulation_seed.SeedRunnerTests) ... started gazebo pid=731
+started agent pid=731
+started px4 pid=731
+started monitor pid=731
+started ros pid=731
+monitor exited 0; evidence: /tmp/tmp_dtqzdi5/results/seed_trial
+ok
+test_full_runner_records_seed_and_passes_it_to_the_gazebo_process_environment (tests.test_simulation_seed.SeedRunnerTests) ... started gazebo pid=731
+started agent pid=731
+started px4 pid=731
+started monitor pid=731
+started ros pid=731
+monitor exited 0; evidence: /tmp/tmpsjovfli5/results/seed_trial
+started gazebo pid=731
+started agent pid=731
+started px4 pid=731
+started monitor pid=731
+started ros pid=731
+monitor exited 0; evidence: /tmp/tmpb_angcl5/results/seed_trial
+ok
+test_observer_cleanup_reporting_fault_still_preserves_and_archives_failed_trial (tests.test_simulation_seed.SeedRunnerTests) ... started gazebo pid=731
+started agent pid=731
+started px4 pid=731
+started bag pid=731
+started monitor pid=731
+started ros pid=731
+monitor exited 0; evidence: /tmp/tmpo1o5414s/results/seed_trial
+ok
+test_recording_closure_precedes_recorder_stop_and_archive (tests.test_simulation_seed.SeedRunnerTests) ... started gazebo pid=731
+started agent pid=731
+started px4 pid=731
+started bag pid=731
+started monitor pid=731
+started ros pid=731
+monitor exited 0; evidence: /tmp/tmpv5g3i7ef/results/seed_trial
+ok
+test_both_render_branches_pass_the_exact_registered_seed_as_one_argument (tests.test_simulation_seed.SeedShellTests) ... ok
+test_invalid_seeds_fail_before_fake_simulator_can_execute (tests.test_simulation_seed.SeedShellTests) ... ok
+test_unpaused_start_preserves_seed_and_adds_run_flag (tests.test_simulation_seed.SeedShellTests) ... ok
+test_checked_in_profiles_bound_only_five_evidence_histories (tests.test_recording_qos.RecordingQoSTests) ... ok
+test_original_bytes_hash_and_actual_recorder_command_use_snapshot (tests.test_recording_qos.RecordingQoSTests) ... ok
+test_reliable_raw_override_is_rejected_before_snapshot_or_start (tests.test_recording_qos.RecordingQoSTests) ... ok
+test_zero_and_boolean_keep_last_depths_are_rejected (tests.test_recording_qos.RecordingQoSTests) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 1.517s
+
+OK

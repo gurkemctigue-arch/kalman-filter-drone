@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "provenance": {
+    "schema": "SMOKE_SYNTHETIC_NOT_FLIGHT_NOT_ROOT_CAUSE"
+  },
+  "started_utc": "2026-11-01T14:50:19.815522+00:00",
+  "environment": {
+    "previous_ROS_DOMAIN_ID": "73",
+    "ROS_DOMAIN_ID": "74",
+    "ROS_DISTRO": "humble",
+    "python": "/root/uav_humble22/venv/bin/python",
+    "RMW_IMPLEMENTATION": null
+  },
+  "qos_snapshot": {
+    "source": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/config/recording_qos.yaml",
+    "snapshot": "/mnt/d/WSL/UAVHumble22-validation/humble44_recorder_qos_native_smoke01/recording_qos.yaml",
+    "sha256": "d56c368ecba5e77a7343a7832be4ec234a4cd4576e367aaa9a808c356cf76824",
+    "bytes": 672,
+    "requested_profiles": {
+      "/clock": {
+        "history": "keep_last",
+        "depth": 2048,
+        "reliability": "reliable",
+        "durability": "volatile"
+      },
+      "/fmu/out/vehicle_odometry": {
+        "history": "keep_last",
+        "depth": 1024,
+        "reliability": "best_effort",
+        "durability": "transient_local"
+      },
+      "/vehicle/odometry_timing": {
+        "history": "keep_last",
+        "depth": 1024,
+        "reliability": "reliable",
+        "durability": "volatile"
+      },
+      "/vehicle/odometry": {
+        "history": "keep_last",
+        "depth": 1024,
+        "reliability": "reliable",
+        "durability": "volatile"
+      },
+      "/tracking/flight_phase": {
+        "history": "keep_last",
+        "depth": 256,
+        "reliability": "reliable",
+        "durability": "volatile"
+      }
+    }
+  },
+  "code": {
+    "path": "/mnt/d/WSL/UAVHumble22-validation/probe_recorder_qos44_native01.py",
+    "sha256": "d3794f9952febcf304a0488d4075e89f3e7af5ad215c5236a023a8184458375d"
+  },
+  "recorder_command": [
+    "/opt/ros/humble/bin/ros2",
+    "bag",
+    "record",
+    "--storage",
+    "sqlite3",
+    "--node-name",
+    "qos44_smoke_recorder01",
+    "--qos-profile-overrides-path",
+    "/mnt/d/WSL/UAVHumble22-validation/humble44_recorder_qos_native_smoke01/recording_qos.yaml",
+    "-o",
+    "/mnt/d/WSL/UAVHumble22-validation/humble44_recorder_qos_native_smoke01/rosbag",
+    "/clock",
+    "/fmu/out/vehicle_odometry",
+    "/vehicle/odometry_timing",
+    "/vehicle/odometry",
+    "/tracking/flight_phase"
+  ],
+  "recorder_process": {
+    "pid": 435,
+    "state": "R",
+    "ppid": 308,
+    "pgid": 435,
+    "session": 435,
+    "start_ticks": 573
+  }
+}

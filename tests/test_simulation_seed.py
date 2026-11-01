@@ -52,6 +52,11 @@ class SeedRunnerTests(unittest.TestCase):
                 destination=bringup/relative
                 destination.parent.mkdir(parents=True,exist_ok=True)
                 shutil.copy2(ROOT/"ros2_ws/src/uav_tracking_bringup"/relative,destination)
+            if with_bag:
+                # Exercise the production QoS validation and byte snapshot.
+                recording_qos=root/"config/recording_qos.yaml"
+                recording_qos.parent.mkdir(parents=True,exist_ok=True)
+                recording_qos.write_bytes((ROOT/"config/recording_qos.yaml").read_bytes())
             if configured_recovery is not None:
                 config_path=bringup/f"config/stage1_tracking_{target_class}.yaml"
                 configured=yaml.safe_load(config_path.read_text(encoding="utf-8"))

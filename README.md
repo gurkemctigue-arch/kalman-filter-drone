@@ -1,5 +1,7 @@
 # RGB-D UAV target tracking and following
 
+**2026-11-01 23:17（北京时间）：Humble44四包冷构建通过，但完整Linux测试因3个旧夹具缺少新增QoS配置而失败。** 原1767项为3 ERROR、5平台跳过，原失败保留；现已补齐夹具，受影响的13项在Humble原生全部通过，正在准备新Humble45整套验证，尚未飞行复测。此前原生录包冒烟的1290条消息完整、无缺失或重复，仅属合成配置验证。正式仍0/280。见[44原始失败与后续验证](tools/diagnostics/humble44_validation_failure01/README.md)、[录包冒烟原件](tools/diagnostics/humble44_recorder_qos_smoke01/README.md)及[本轮路线](planning/reliability-v4-humble44-recording-repair.md)。
+
 **2026-11-01 22:39（北京时间）：原生只读诊断已完成，已定位约2.7秒处缺失raw/timing和一次phase未来56毫秒；首clock边界解释已排除，共同根因未证实。** 新Humble44候选为5条关键证据流添加显式recorder深队列及每场配置快照；4项新测试、36项相关Windows回归通过，原生录包及新飞行验证待执行。原43失败与正式0/280保留。见[诊断原件](tools/diagnostics/humble43_clock_boundary_snapshot01/README.md)及[修复与验证路线](planning/reliability-v4-humble44-recording-repair.md)。下方状态按各自时间阅读。
 
 **2026-11-01 22:02（北京时间）批次终态：Humble43扩展16已停止，原始槽为12 PASS、4 FAIL，原生driver退出2；完整外层审计计数15，最后汽车远距离的source-clock及native-startup未通过硬门。** 核心12和安全4的既有通过记录保留，正式仍0/280。该最后失败不能当作允许的压力算法FAIL，容量collector/定标/正式发布前置未满足；当前继续离线取证，尚未选择修复。详见[停止与诊断记录](planning/reliability-v4-humble43-extension-stop-20261101.md)及[原件快照](tools/diagnostics/humble43_extension_stop_snapshot01/README.md)，本机[进度页](results/project_progress/humble43_extension01/index.html)为STOPPED_FAULT。下方运行中描述均为有时间标记的历史。

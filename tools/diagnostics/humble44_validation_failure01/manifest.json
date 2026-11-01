@@ -1,0 +1,181 @@
+{
+    "schema":  "HUMBLE44_VALIDATION_FAILURE_RAW_SNAPSHOT_V1",
+    "created_utc":  "2026-11-01T15:20:41.3756647Z",
+    "scope":  "Original Humble44 build/full-suite failure evidence plus separate Humble45 targeted fixture-repair followup; no runtime acceptance",
+    "original44":  {
+                       "build":  {
+                                     "status":  "PASS",
+                                     "direct_child_returncode":  0,
+                                     "execution_count":  1,
+                                     "started_utc":  "2026-11-01T15:07:04.474045+00:00",
+                                     "finished_utc":  "2026-11-01T15:08:14.053216+00:00",
+                                     "cleanup":  {
+                                                     "members_before_cleanup":  [
+
+                                                                                ],
+                                                     "signals":  [
+
+                                                                 ],
+                                                     "residual_processes":  [
+
+                                                                            ],
+                                                     "actual_proc_group_empty":  true,
+                                                     "direct_child_reaped":  true
+                                                 }
+                                 },
+                       "bounded_validate":  {
+                                                "status":  "FAILED",
+                                                "direct_child_returncode":  2,
+                                                "execution_count":  1,
+                                                "started_utc":  "2026-11-01T15:09:09.882941+00:00",
+                                                "finished_utc":  "2026-11-01T15:11:16.680264+00:00",
+                                                "cleanup":  {
+                                                                "members_before_cleanup":  [
+
+                                                                                           ],
+                                                                "signals":  [
+
+                                                                            ],
+                                                                "residual_processes":  [
+
+                                                                                       ],
+                                                                "actual_proc_group_empty":  true,
+                                                                "direct_child_reaped":  true
+                                                            }
+                                            },
+                       "inner_suite":  {
+                                           "status":  "FAIL",
+                                           "returncode":  1,
+                                           "tests_total_including_skipped":  1767,
+                                           "skipped":  5,
+                                           "errors_from_original_log":  3,
+                                           "failures_from_original_log":  0,
+                                           "duration_seconds_from_original_log":  86.449,
+                                           "original_footer":  [
+                                                                   "Ran 1767 tests in 86.449s",
+                                                                   "FAILED (errors=3, skipped=5)"
+                                                               ],
+                                           "suite_log_sha256":  "991cc87b4cf3fbac253f43d0c4f57c14136674ab909acbb61698d78be84613da",
+                                           "passed_derived":  {
+                                                                  "value":  1759,
+                                                                  "is_original_summary_field":  false,
+                                                                  "formula":  "1767 total - 3 ERROR - 5 skipped - 0 failures"
+                                                              }
+                                       },
+                       "error_test_names":  [
+                                                "test_simulation_seed.SeedRunnerTests.test_closure_failure_still_closes_and_archives_failed_trial",
+                                                "test_simulation_seed.SeedRunnerTests.test_observer_cleanup_reporting_fault_still_preserves_and_archives_failed_trial",
+                                                "test_simulation_seed.SeedRunnerTests.test_recording_closure_precedes_recorder_stop_and_archive"
+                                            ],
+                       "error_cause_from_traceback":  "Temporary old test fixture lacks config/recording_qos.yaml; FileNotFoundError via run_stage1_trial.py main line700 -\u003e snapshot_recording_qos line77 -\u003e source.read_bytes",
+                       "four_packages_built":  true,
+                       "module_ament_isolation":  true,
+                       "source_unchanged":  true,
+                       "verified_source_file_count":  998,
+                       "runtime_acceptance":  "NOT_EVALUATED",
+                       "formal_seeds_consumed":  false,
+                       "original_failure_retained":  true,
+                       "no_retry_or_relabel_of44":  true
+                   },
+    "followup45":  {
+                       "independent_from44":  true,
+                       "evidence_type":  "Targeted Linux unittest run after main-tree fixture repair, not a full suite",
+                       "modules":  [
+                                       "tests.test_simulation_seed",
+                                       "tests.test_recording_qos"
+                                   ],
+                       "log_footer":  [
+                                          "Ran 13 tests in 1.517s",
+                                          "OK"
+                                      ],
+                       "tests_total":  13,
+                       "errors":  0,
+                       "failures":  0,
+                       "skipped":  0,
+                       "duration_seconds":  1.517,
+                       "exit0_reported_by_executor":  true,
+                       "independent_terminal_exit_receipt_included":  false,
+                       "original_sha256_file_semantics":  "Four input source-file hashes, not the log hash and not an independent exit-status receipt",
+                       "counted_toward44_passes":  false,
+                       "full_suite45_evidence_included":  false
+                   },
+    "files_copied_raw":  [
+                             {
+                                 "relative_path":  "build_validation_summary.json",
+                                 "source_path":  "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble44\\freeze_validation\\build_validation_summary.json",
+                                 "role":  "original_inner_suite_summary",
+                                 "bytes":  4894,
+                                 "source_sha256":  "f1fb69e690b60caec94f4e93b3061959e5d7a1e76235d3cc68ec45d3a8f23309",
+                                 "copied_sha256":  "f1fb69e690b60caec94f4e93b3061959e5d7a1e76235d3cc68ec45d3a8f23309",
+                                 "exact_raw_byte_copy":  true
+                             },
+                             {
+                                 "relative_path":  "unittest.log",
+                                 "source_path":  "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble44\\freeze_validation\\unittest.log",
+                                 "role":  "original_full_suite_log",
+                                 "bytes":  225366,
+                                 "source_sha256":  "991cc87b4cf3fbac253f43d0c4f57c14136674ab909acbb61698d78be84613da",
+                                 "copied_sha256":  "991cc87b4cf3fbac253f43d0c4f57c14136674ab909acbb61698d78be84613da",
+                                 "exact_raw_byte_copy":  true
+                             },
+                             {
+                                 "relative_path":  "build_action.terminal.json",
+                                 "source_path":  "D:\\WSL\\UAVHumble22-validation\\reviewed_freeze_actions_v4_humble44\\build\\action.terminal.json",
+                                 "role":  "original_bounded_build_terminal",
+                                 "bytes":  9376,
+                                 "source_sha256":  "aaf134929fe657c31cc101b4ef9a566d49a055e13d21dcba571ceed7d75254c6",
+                                 "copied_sha256":  "aaf134929fe657c31cc101b4ef9a566d49a055e13d21dcba571ceed7d75254c6",
+                                 "exact_raw_byte_copy":  true
+                             },
+                             {
+                                 "relative_path":  "validate_action.terminal.json",
+                                 "source_path":  "D:\\WSL\\UAVHumble22-validation\\reviewed_freeze_actions_v4_humble44\\validate\\action.terminal.json",
+                                 "role":  "original_bounded_validate_terminal",
+                                 "bytes":  9389,
+                                 "source_sha256":  "53ecc8f9cede70c09b3b327909fd7283a196cff3dfea7fc66616ba965624b66e",
+                                 "copied_sha256":  "53ecc8f9cede70c09b3b327909fd7283a196cff3dfea7fc66616ba965624b66e",
+                                 "exact_raw_byte_copy":  true
+                             },
+                             {
+                                 "relative_path":  "followup45/humble45_fixture_regression_native01.log",
+                                 "source_path":  "D:\\WSL\\UAVHumble22-validation\\humble45_fixture_regression_native01.log",
+                                 "role":  "independent_followup_targeted_test_log",
+                                 "bytes":  2884,
+                                 "source_sha256":  "0626363c2ea13072fb605c39078a5028c49736ebff96cd7488c81126c33fa570",
+                                 "copied_sha256":  "0626363c2ea13072fb605c39078a5028c49736ebff96cd7488c81126c33fa570",
+                                 "exact_raw_byte_copy":  true
+                             },
+                             {
+                                 "relative_path":  "followup45/humble45_fixture_regression_native01.sha256",
+                                 "source_path":  "D:\\WSL\\UAVHumble22-validation\\humble45_fixture_regression_native01.sha256",
+                                 "role":  "independent_followup_four_input_source_hashes_not_log_hash",
+                                 "bytes":  376,
+                                 "source_sha256":  "22ed169204992836115f1f42fca3129e278fb3bf5cc6c8bb4bc8809235091ff2",
+                                 "copied_sha256":  "22ed169204992836115f1f42fca3129e278fb3bf5cc6c8bb4bc8809235091ff2",
+                                 "exact_raw_byte_copy":  true
+                             },
+                             {
+                                 "relative_path":  "followup45/run_humble45_fixture_regression_native01.sh",
+                                 "source_path":  "D:\\WSL\\UAVHumble22-validation\\run_humble45_fixture_regression_native01.sh",
+                                 "role":  "independent_followup_original_invocation",
+                                 "bytes":  1044,
+                                 "source_sha256":  "35324c8f90388c58dade90fc48eabf009c5cf0c2a88fc55e02c4dfdc3b9eb311",
+                                 "copied_sha256":  "35324c8f90388c58dade90fc48eabf009c5cf0c2a88fc55e02c4dfdc3b9eb311",
+                                 "exact_raw_byte_copy":  true
+                             }
+                         ],
+    "generated_files":  [
+                            {
+                                "relative_path":  "README.md",
+                                "bytes":  2314,
+                                "sha256":  "8cae490ebe391af004a5372960a6ee6470d207c40906acfe47b56d69f9b01562"
+                            }
+                        ],
+    "exclusions":  [
+                       "No db3 copied or read for this archive task",
+                       "No Gazebo/PX4 runtime or acceptance result generated",
+                       "No original files or frozen44 edited",
+                       "No Humble45 full-suite evidence included"
+                   ],
+    "checksum_policy":  "SHA256SUMS covers all nine other files, excluding itself"
+}

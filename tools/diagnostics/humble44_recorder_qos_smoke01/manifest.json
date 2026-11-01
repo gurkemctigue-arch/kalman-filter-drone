@@ -1,0 +1,161 @@
+{
+    "schema_version":  1,
+    "provenance":  {
+                       "schema":  "SMOKE_SYNTHETIC_NOT_FLIGHT_NOT_ROOT_CAUSE"
+                   },
+    "creation_scope":  "EXTERNAL_STAGING_ONLY_REPOSITORY_UNMODIFIED_BY_THIS_TASK",
+    "created_utc":  "2026-11-01T15:04:14.0550834Z",
+    "external_staging_path":  "D:\\WSL\\UAVHumble22-validation\\humble44_recorder_qos_snapshot_staging01",
+    "original_run_path":  "D:\\WSL\\UAVHumble22-validation\\humble44_recorder_qos_native_smoke01",
+    "original_native_returncode":  0,
+    "returncode_evidence":  "Root observed actual native script exit 0; original result and recorder closure fields are copied unchanged.",
+    "original_status":  "PASS_SYNTHETIC_CLI_PROFILE_AND_KNOWN_STREAMS_ONLY",
+    "original_started_utc":  "2026-11-01T14:50:19.815522+00:00",
+    "original_finished_utc":  "2026-11-01T14:50:25.553140+00:00",
+    "source_copies":  {
+                          "probe_recorder_qos44_native01.py":  {
+                                                                   "source_path":  "D:\\WSL\\UAVHumble22-validation\\probe_recorder_qos44_native01.py",
+                                                                   "bytes":  22521,
+                                                                   "sha256":  "d3794f9952febcf304a0488d4075e89f3e7af5ad215c5236a023a8184458375d",
+                                                                   "byte_identical_to_source":  true
+                                                               },
+                          "run_humble44_recorder_qos_native01.sh":  {
+                                                                        "source_path":  "D:\\WSL\\UAVHumble22-validation\\run_humble44_recorder_qos_native01.sh",
+                                                                        "bytes":  736,
+                                                                        "sha256":  "06301194e422331fbc000ec8ef513c68d8dd3cc903b703763c5f16d89671c952",
+                                                                        "byte_identical_to_source":  true
+                                                                    },
+                          "result.json":  {
+                                              "source_path":  "D:\\WSL\\UAVHumble22-validation\\humble44_recorder_qos_native_smoke01\\result.json",
+                                              "bytes":  71413,
+                                              "sha256":  "cff3e74e7b8573601dd542e3af3298a9d20a34f24ced597c9c340cf01def9bc3",
+                                              "byte_identical_to_source":  true
+                                          },
+                          "started.json":  {
+                                               "source_path":  "D:\\WSL\\UAVHumble22-validation\\humble44_recorder_qos_native_smoke01\\started.json",
+                                               "bytes":  2399,
+                                               "sha256":  "397a295b59240b2e91a31e617c2a191114e25a2ec657a158c72d6f61c641bb99",
+                                               "byte_identical_to_source":  true
+                                           },
+                          "recording_qos.yaml":  {
+                                                     "source_path":  "D:\\WSL\\UAVHumble22-validation\\humble44_recorder_qos_native_smoke01\\recording_qos.yaml",
+                                                     "bytes":  672,
+                                                     "sha256":  "d56c368ecba5e77a7343a7832be4ec234a4cd4576e367aaa9a808c356cf76824",
+                                                     "byte_identical_to_source":  true
+                                                 },
+                          "recorder.log":  {
+                                               "source_path":  "D:\\WSL\\UAVHumble22-validation\\humble44_recorder_qos_native_smoke01\\recorder.log",
+                                               "bytes":  2000,
+                                               "sha256":  "e19ebc957f5d0c8b9adbb7c2d813020a4a63938cb3e183a636c3593f0825dac0",
+                                               "byte_identical_to_source":  true
+                                           },
+                          "rosbag/metadata.yaml":  {
+                                                       "source_path":  "D:\\WSL\\UAVHumble22-validation\\humble44_recorder_qos_native_smoke01\\rosbag\\metadata.yaml",
+                                                       "bytes":  2923,
+                                                       "sha256":  "eacd91a248f641fe41ec1950ff6e2c41c556484868a68b97e755e8f2c7eacdfc",
+                                                       "byte_identical_to_source":  true
+                                                   }
+                      },
+    "original_copy_bytes":  102664,
+    "generated_files":  {
+                            "README.md":  {
+                                              "bytes":  2167,
+                                              "sha256":  "465e6f434db82a41d8ae85b868cee56df2726fb2c80b5aadf926ca87529a4d18"
+                                          }
+                        },
+    "observed_facts":  {
+                           "ROS_DOMAIN_ID":  "74",
+                           "qos_snapshot_sha256":  "d56c368ecba5e77a7343a7832be4ec234a4cd4576e367aaa9a808c356cf76824",
+                           "qos_snapshot_bytes":  672,
+                           "known_publication":  {
+                                                     "requested_duration_s":  2.0,
+                                                     "wall_s":  2.000901374,
+                                                     "rates_hz":  {
+                                                                      "/clock":  250.0,
+                                                                      "/fmu/out/vehicle_odometry":  125.0,
+                                                                      "/vehicle/odometry_timing":  125.0,
+                                                                      "/vehicle/odometry":  125.0,
+                                                                      "/tracking/flight_phase":  20.0
+                                                                  },
+                                                     "sent":  {
+                                                                  "/clock":  500,
+                                                                  "/fmu/out/vehicle_odometry":  250,
+                                                                  "/vehicle/odometry_timing":  250,
+                                                                  "/vehicle/odometry":  250,
+                                                                  "/tracking/flight_phase":  40
+                                                              },
+                                                     "max_scheduler_lateness_s":  0.002251397,
+                                                     "total_messages":  1290
+                                                 },
+                           "per_topic_comparisons":  [
+                                                         {
+                                                             "topic":  "/clock",
+                                                             "expected_count":  500,
+                                                             "observed_count":  500,
+                                                             "missing_key_count":  0,
+                                                             "unexpected_or_duplicate_key_count":  0,
+                                                             "exact_key_multiset_equal":  true
+                                                         },
+                                                         {
+                                                             "topic":  "/fmu/out/vehicle_odometry",
+                                                             "expected_count":  250,
+                                                             "observed_count":  250,
+                                                             "missing_key_count":  0,
+                                                             "unexpected_or_duplicate_key_count":  0,
+                                                             "exact_key_multiset_equal":  true
+                                                         },
+                                                         {
+                                                             "topic":  "/vehicle/odometry_timing",
+                                                             "expected_count":  250,
+                                                             "observed_count":  250,
+                                                             "missing_key_count":  0,
+                                                             "unexpected_or_duplicate_key_count":  0,
+                                                             "exact_key_multiset_equal":  true
+                                                         },
+                                                         {
+                                                             "topic":  "/vehicle/odometry",
+                                                             "expected_count":  250,
+                                                             "observed_count":  250,
+                                                             "missing_key_count":  0,
+                                                             "unexpected_or_duplicate_key_count":  0,
+                                                             "exact_key_multiset_equal":  true
+                                                         },
+                                                         {
+                                                             "topic":  "/tracking/flight_phase",
+                                                             "expected_count":  40,
+                                                             "observed_count":  40,
+                                                             "missing_key_count":  0,
+                                                             "unexpected_or_duplicate_key_count":  0,
+                                                             "exact_key_multiset_equal":  true
+                                                         }
+                                                     ],
+                           "requested_signals":  [
+                                                     "SIGINT"
+                                                 ],
+                           "recorder_returncode":  0,
+                           "recorder_direct_child_reaped":  true,
+                           "recorder_residual_process_count":  0
+                       },
+    "omitted_payload":  {
+                            "relative_path":  "rosbag/rosbag_0.db3",
+                            "original_path":  "D:\\WSL\\UAVHumble22-validation\\humble44_recorder_qos_native_smoke01\\rosbag\\rosbag_0.db3",
+                            "original_result_recorded_bytes":  344064,
+                            "original_result_recorded_sha256":  "f310d94b0f431a42c64856987a9348b3d1bbfc4a135bbe484a07935953aecb28",
+                            "copied":  false,
+                            "payload_read_for_snapshot":  false,
+                            "retained_at_original_external_location":  true,
+                            "metadata_only_rosbag_subdirectory_is_replayable":  false
+                        },
+    "boundaries":  {
+                       "low_volume_synthetic_only":  true,
+                       "stress_or_flight_validation":  false,
+                       "default_depth_failure_reproduced":  false,
+                       "root_cause_proven":  false,
+                       "original_failures_relabelled":  false,
+                       "prior_native_tool20_results_included":  false,
+                       "smoke_rerun_during_snapshot":  false,
+                       "repository_files_changed_by_staging":  false,
+                       "claim_boundary":  "Only exact supplied YAML accepted by actual Humble recorder plus compatible matched writers and this low-volume known sequence. No default-depth failure reproduction, flight validation, source-clock repair, or common root-cause proof."
+                   },
+    "byte_preservation_requirement":  "Before eventual repository staging, apply -text whitespace=cr-at-eol to the selected snapshot directory; verify source/copy SHA again."
+}
