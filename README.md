@@ -1,5 +1,7 @@
 # RGB-D UAV target tracking and following
 
+**2026-11-01 22:02（北京时间）批次终态：Humble43扩展16已停止，原始槽为12 PASS、4 FAIL，原生driver退出2；完整外层审计计数15，最后汽车远距离的source-clock及native-startup未通过硬门。** 核心12和安全4的既有通过记录保留，正式仍0/280。该最后失败不能当作允许的压力算法FAIL，容量collector/定标/正式发布前置未满足；当前继续离线取证，尚未选择修复。详见[停止与诊断记录](planning/reliability-v4-humble43-extension-stop-20261101.md)及[原件快照](tools/diagnostics/humble43_extension_stop_snapshot01/README.md)，本机[进度页](results/project_progress/humble43_extension01/index.html)为STOPPED_FAULT。下方运行中描述均为有时间标记的历史。
+
 **2026-11-01 20:31:33（北京时间）快照：Humble43核心12、安全4已完整闭合并独审通过；扩展16为13 START、12原终态（10 PASS/2 FAIL），前12个outer均闭合，汽车combined运行，另3格未开始；正式仍0/280。** 第12场汽车延迟原PASS，距离/高度RMSE为0.761595/0.168965米、末端稳定通过；原终态12:19:16.879080 UTC、outer闭合12:19:59.602627 UTC，flight_exit0、infrastructure_stop=false、outer error=null。整批尚未结束，完整28格容量、定标、最终根和正式重复研究仍待执行。实时状态见[扩展批次页](results/project_progress/humble43_extension01/index.html)。
 
 新增[物理身份恢复补充工具](tools/offline_evaluation/physical_recovery_v1/README.md)：20项微型合成测试通过，末次摘要修改后另有2项定向复验通过；独立只读审查代码SHA `f25327c03509aba6c0c5ec2d8358d65d1ca2e22da63e4a45076e23e99a52182c` 无阻塞。工具区分首次恢复、后来证实原个体及显式选择新个体，保留全部40槽/80机会与未知/缺报/删失，不改原评价。**真实补充协议和分析附件尚未生成**：须在真实FORMAL120生成且全部120槽未START时原生登记，最终由统一交付入口另行引用，不冒称原报告生成器自动消费。下方较早“当前”描述均为历史快照，按其时间阅读。

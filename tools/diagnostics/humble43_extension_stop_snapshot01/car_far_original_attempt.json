@@ -1,0 +1,43 @@
+{
+  "slot": "car_extension_far_distance_seed004",
+  "number": 16,
+  "started_utc": "2026-11-01T13:40:51.917011+00:00",
+  "runner_result": {
+    "started_this_invocation": 1,
+    "stop": null,
+    "plan_sha256": "9b4dad69a18e9b6ba60162841205bd7fa9333624fb8b79ae9066d9ec2c03fbbd",
+    "mode": "EXTENSION_PROBE",
+    "planned_count": 16,
+    "status_counts": {
+      "PASS": 12,
+      "FAIL": 4
+    },
+    "terminal_count": 16,
+    "all_engineering_pass": false,
+    "exit_code_semantics": "Run exit zero means no orchestration/infrastructure stop; inspect all_engineering_pass and every terminal result separately.",
+    "pending_ids": [],
+    "scope": "Independent 160-slot post-repair condition extensions; paired reference IDs are core-plan slots, not additional core successes."
+  },
+  "record": {
+    "status": "FAIL",
+    "engineering_result": "FAIL",
+    "record_binding": {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_seed004_matrix/slots/car_extension_far_distance_seed004.json",
+      "sha256": "d696b0063b220e37c4bb981ecc95231d36cc673519e5115ec9da0d5459bd59e6",
+      "record_sha256": "1db8c634f84de057644954261f1c980e5ba46983d7277b303c1414cfcf10b4bb",
+      "started_marker": {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_seed004_matrix/slots/car_extension_far_distance_seed004.started.json",
+        "sha256": "faf072dfab9d5b5037cc7b9267c29ce9f7354a817504d9a9e864c5a86fe302f9"
+      },
+      "plan_sha256": "9b4dad69a18e9b6ba60162841205bd7fa9333624fb8b79ae9066d9ec2c03fbbd",
+      "started_utc": "2026-11-01T13:41:10.822968+00:00"
+    }
+  },
+  "audit": null,
+  "error": "ValueError:Original source-clock/native-startup evidence must independently PASS",
+  "started_marker": {
+    "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_extensions_probe01_seed004_matrix/observed_driver01/16_car_extension_far_distance_seed004.started.json",
+    "sha256": "bc756b32b8a4098f3b3a46c603b3c62b58c8c3a407e65dde335b14655cb45939"
+  },
+  "finished_utc": "2026-11-01T14:00:31.837143+00:00"
+}
