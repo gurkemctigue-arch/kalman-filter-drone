@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "status": "OBSERVATION_NOT_TERMINAL_EVALUATION",
+  "created_utc": "2026-11-01T09:18:38.1700572+00:00",
+  "scope": "One bounded sequential read of an existing telemetry prefix; no terminal evaluation or experiment completion is certified",
+  "trial_id": "person_extension_combined_seed004",
+  "trial_name": "reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004",
+  "plan_sha256": "9b4dad69a18e9b6ba60162841205bd7fa9333624fb8b79ae9066d9ec2c03fbbd",
+  "source": {
+    "telemetry_absolute_path": "D:/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004/telemetry.jsonl",
+    "plan_absolute_path": "D:/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_seed004_matrix/plan.json",
+    "run_config_absolute_path": "D:/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004/run_config.json",
+    "runtime_parameters_absolute_path": "D:/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004/configuration/runtime_parameters.yaml",
+    "sensor_faults_absolute_path": "D:/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004/configuration/sensor_faults.json",
+    "telemetry_sha256": null,
+    "hash_limitation": "No final hash is claimed for the mutable telemetry file. A separate closed-original binding review is required after the actual slot closes."
+  },
+  "read_method": {
+    "host": "Windows",
+    "sequential_passes": 1,
+    "initial_prefix_limit_bytes": 82759305,
+    "bytes_read": 82759305,
+    "parsed_json_rows": 21447,
+    "partial_or_invalid_json_rows": 0,
+    "whole_file_loaded_into_memory": false,
+    "reread_for_this_publication": false,
+    "wsl_commands_run": false,
+    "bag_or_health_payload_read": false,
+    "note": "Counts apply only to the prefix present at the initial stat. The original growing file was not rescanned to publish this record."
+  },
+  "time_basis": {
+    "event_time_field": "Original telemetry time_s, in simulation seconds, preserving original record order",
+    "first_follow_time_s": 18.400000000000002,
+    "first_follow_source_sim_s": 18.4,
+    "first_follow_phase_wall_monotonic_s": 9026.499991664,
+    "scheduled_short_start_s": 30.400000000000002,
+    "scheduled_long_start_s": 43.400000000000006,
+    "earliest_explicit_reselection_s": 50.400000000000006
+  },
+  "recorded_fault_configuration": {
+    "seed": 4,
+    "noise_std_m": 0.05,
+    "hole_fraction": 0.2,
+    "drop_fraction": 0.1,
+    "delay_s": 0.08,
+    "maximum_prediction_duration_s": 0.75,
+    "controller_prediction_timeout_s": 0.75,
+    "failsafe_mode": "hold"
+  },
+  "events": [
+    {"time_s": 30.400000000000002, "kind": "shutter", "active": true, "request_id": 1},
+    {"time_s": 30.42, "kind": "shutter_service_result", "active": true, "request_id": 1, "success": true},
+    {"time_s": 30.680000000000003, "kind": "shutter", "active": false, "request_id": 3},
+    {"time_s": 30.700000000000003, "kind": "shutter_service_result", "active": false, "request_id": 3, "success": true},
+    {"time_s": 34.852000000000004, "kind": "control_status", "lifecycle": 4, "reason": "stale_target", "measurement_age_s": 0.7520000338554382},
+    {"time_s": 34.86, "kind": "target_state", "state": 3, "track_id": 1, "target_uuid": "88b04691-ff6f-4a64-bb13-1191ffa07afa", "prediction_age_s": 0.7599999904632568, "original_json_line": 5204, "original_byte_offset": 14589445},
+    {"time_s": 34.900000000000006, "kind": "control_status", "lifecycle": 4, "reason": "invalid_state"},
+    {"time_s": 34.900000000000006, "kind": "phase", "phase": "HOLD"},
+    {"time_s": 43.400000000000006, "kind": "shutter", "active": true, "request_id": 4},
+    {"time_s": 43.42, "kind": "shutter_service_result", "active": true, "request_id": 4, "success": true},
+    {"time_s": 46.480000000000004, "kind": "shutter", "active": false, "request_id": 19},
+    {"time_s": 46.5, "kind": "shutter_service_result", "active": false, "request_id": 19, "success": true},
+    {"time_s": 50.400000000000006, "kind": "explicit_reselection_requested", "target_uuid": "0ee4d76d-2578-4473-b274-ac31f562464d", "source": "TEST_SCRIPT_EXPLICIT_RESELECTION", "image_stamp_s": 50.2, "original_json_line": 9502, "original_byte_offset": 25773925},
+    {"time_s": 50.404, "kind": "target_state", "state": 1, "track_id": 3, "target_uuid": "0ee4d76d-2578-4473-b274-ac31f562464d", "prediction_age_s": 0.0, "original_json_line": 9510, "original_byte_offset": 25794047},
+    {"time_s": 50.404, "kind": "explicit_reselection_confirmed", "track_id": 3, "target_uuid": "0ee4d76d-2578-4473-b274-ac31f562464d"},
+    {"time_s": 50.452000000000005, "kind": "control_status", "lifecycle": 3, "reason": "coasting_prediction"},
+    {"time_s": 50.5, "kind": "phase", "phase": "FOLLOW"}
+  ],
+  "early_loss_observation": {
+    "first_lost_time_s": 34.86,
+    "last_contiguous_lost_time_s": 50.400000000000006,
+    "lost_state_records": 909,
+    "original_target_uuid": "88b04691-ff6f-4a64-bb13-1191ffa07afa",
+    "original_track_id": 1,
+    "first_nonlost_after_interval_s": 50.404,
+    "new_target_uuid": "0ee4d76d-2578-4473-b274-ac31f562464d",
+    "new_track_id": 3,
+    "interpretation": "Initial loss precedes the scheduled long shutter request. Long-window LOST observations continue an already lost task; they do not establish that this long shutter independently caused initial loss. Observed return follows the explicitly recorded new-task selection."
+  },
+  "limitations": [
+    "This observation does not assign a terminal PASS, FAIL, infrastructure outcome, or batch completion.",
+    "The observed age crossing supports the immediate stale-state safety trigger. It does not isolate detection misses, delayed delivery, association, measurement gating, or another causal mechanism.",
+    "The combined fault configuration is context, not proof of the root cause of the early loss.",
+    "Shutter requests and matched service acknowledgements corroborate execution; they are not independently measured rendered-image occlusion duration.",
+    "Onboard target UUID continuity and a new-task selection do not certify independent multi-object physical identity.",
+    "No bag evaluation, raw-image review, health-stream analysis, final source-file hashing, threshold change, or frozen-result modification was performed.",
+    "If the later original engineering result is PASS, this independently observed early loss must still be retained as a reliability diagnostic."
+  ]
+}

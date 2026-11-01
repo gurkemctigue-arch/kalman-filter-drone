@@ -1,0 +1,949 @@
+{
+  "started_utc": "2026-11-01T09:02:05.275124+00:00",
+  "execution_status": "COMPLETED",
+  "status": "FAIL",
+  "engineering_result": "FAIL",
+  "engineering_evidence": {
+    "negative_evaluators": [
+      "surface_flight"
+    ],
+    "pending": [],
+    "incomplete": []
+  },
+  "infrastructure_stop": false,
+  "infrastructure": {
+    "stop": false,
+    "reasons": [],
+    "evidence": {
+      "trial_dir": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004",
+      "files": {
+        "recording_closure.json": {
+          "exists": true,
+          "bytes": 38601,
+          "sha256": "6e24aa40027f58203ffcafd2f4341fe5e475cea0aad4df7374591636609db91f"
+        },
+        "bag_integrity.json": {
+          "exists": true,
+          "bytes": 5210,
+          "sha256": "64df4e035cc9befd8a606f4fb092349637f3e37954f62283d5243ed13efc33b0"
+        },
+        "summary.json": {
+          "exists": true,
+          "bytes": 4955,
+          "sha256": "1bc43aed0568d5635d884dbd894f313e4936eebe67270a97673f0bacb21f0eaf"
+        },
+        "process_exit_codes.json": {
+          "exists": true,
+          "bytes": 106,
+          "sha256": "c9416c3944f601db0a3d21f3d4c955f912835be982815403c4e4508452d6db16"
+        },
+        "telemetry.jsonl": {
+          "exists": true,
+          "sha256": "1d41dfd6022b53aa99baabb82bf204855534adef7d711d734f493000dc2b558f"
+        },
+        "offline_evaluation.json": {
+          "exists": false
+        },
+        "flight_evaluation.json": {
+          "exists": true,
+          "bytes": 24442,
+          "sha256": "a23d757bd5c880da5fb8bdc0effc8eebca350b02a3e29011a293862e63d4ad24"
+        },
+        "stage2_evaluation.json": {
+          "exists": false
+        },
+        "auto_unique_evaluation.json": {
+          "exists": false
+        },
+        "gimbal_evaluation.json": {
+          "exists": false
+        },
+        "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004/px4_source_clock_report.json": {
+          "exists": true,
+          "bytes": 7891,
+          "sha256": "dfbd4e0241e5e1f02e8d63ad0d40f47b45654b5115925571c03b42540cec0fe8"
+        },
+        "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004/native_startup_report.json": {
+          "exists": true,
+          "bytes": 9225,
+          "sha256": "7a7855b92d5ca5ffeedec7818085a813b72e979c004046d3d1174808c4fc9117"
+        },
+        "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004/navigation_reference_evaluation.json": {
+          "exists": true,
+          "bytes": 145962,
+          "sha256": "61e7ae3f980d1a054e4c3e7ec3ad271167137791357e78b0d59764cc06f1e739"
+        }
+      },
+      "parse_errors": [],
+      "policy": {
+        "minimum_vehicle_span_for_no_takeoff_s": 10.0,
+        "no_takeoff_altitude_below_m": 0.5,
+        "called_after_process_exit": true,
+        "tracking_failures_are_not_infrastructure": true
+      },
+      "recording_artifacts": {
+        "stop": false,
+        "reasons": [],
+        "files": {
+          "recording_closure.json": {
+            "exists": true,
+            "bytes": 38601,
+            "sha256": "6e24aa40027f58203ffcafd2f4341fe5e475cea0aad4df7374591636609db91f"
+          },
+          "bag_integrity.json": {
+            "exists": true,
+            "bytes": 5210,
+            "sha256": "64df4e035cc9befd8a606f4fb092349637f3e37954f62283d5243ed13efc33b0"
+          }
+        },
+        "reports": {
+          "recording_closure.json": {
+            "schema_version": 1,
+            "status": "PASS",
+            "error": null,
+            "scope": "WORLD_PAUSE_ACK_AND_OBSERVED_FINAL_SOURCE_CORRESPONDENCE_BEFORE_RECORDER_CLOSE",
+            "policy": "Recorder and producers remain alive during closure; complete recorded Clock tail and all rows remain in independent evaluation"
+          },
+          "bag_integrity.json": {
+            "schema_version": 1,
+            "status": "PASS",
+            "error": null,
+            "scope": null,
+            "policy": "ext4_sqlite_close_standard_zstd_verified_native_read"
+          }
+        },
+        "scope": "Closure/archive JSON only; no bag or telemetry reads, and no engineering PASS conclusion"
+      },
+      "monitor": {
+        "termination_reason": "follow_duration_reached",
+        "monitor_exit_code": 0,
+        "basic_flight_passed": true,
+        "armed_seen": true,
+        "offboard_seen": true,
+        "start_sim_s": 0.02,
+        "end_sim_s": 93.38000000000001,
+        "follow_start_s": 18.400000000000002,
+        "max_vehicle_altitude_m": 2.9870190620422363
+      },
+      "process_exit_codes": {
+        "gazebo": 0,
+        "agent": -2,
+        "px4": 0,
+        "bag": 0,
+        "monitor": 0,
+        "sensor_faults": 0,
+        "ros": 0
+      },
+      "ros_child_exit_audit": {
+        "log_exists": true,
+        "unexpected_exits": [],
+        "log_bytes": 2147904,
+        "sampled_bytes": 262170,
+        "sample_sha256": "b9e85c2509f61fd904d528d4f11128a9055dcc9e5e1e350bb1288ddbceb1022f"
+      },
+      "telemetry": {
+        "lines": 21447,
+        "decoded_records": 21447,
+        "malformed_lines": 0,
+        "vehicle_samples": 465,
+        "first_vehicle_time_s": 0.5800000000000001,
+        "last_vehicle_time_s": 93.38000000000001,
+        "vehicle_span_s": 92.80000000000001,
+        "max_vehicle_altitude_m": 2.9870190620422363,
+        "phases": [
+          "WAITING",
+          "REQUEST_NATIVE_TAKEOFF",
+          "NATIVE_TAKEOFF",
+          "REQUEST_OFFBOARD",
+          "HOLD",
+          "FOLLOW"
+        ],
+        "abort_events": []
+      },
+      "bag": {
+        "metadata_exists": true,
+        "topic_message_counts": {
+          "/tracking/observation_frames": 654,
+          "/tracking/detection_diagnostics": 811,
+          "/ground_truth/poses": 23392,
+          "/fmu/out/vehicle_odometry": 9301,
+          "/camera/aligned_depth_to_color/image_raw": 935,
+          "/camera/color/camera_info": 935,
+          "/fmu/out/vehicle_local_position_v1": 4651,
+          "/tracking/tracks": 4417,
+          "/fmu/in/offboard_control_mode": 4678,
+          "/fmu/out/vehicle_command_ack": 5,
+          "/research/camera/aligned_depth_to_color/image_raw": 840,
+          "/fmu/in/trajectory_setpoint": 4678,
+          "/tf": 9301,
+          "/camera/color/image_raw": 935,
+          "/fmu/out/estimator_status_flags": 103,
+          "/vehicle/odometry_timing": 9301,
+          "/tracking/selection": 1,
+          "/tracking/navigation_state": 4417,
+          "/tf_static": 1,
+          "/tracking/observations": 633,
+          "/tracking/state": 4417,
+          "/tracking/status": 1871,
+          "/research/camera/color/image_raw": 840,
+          "/vehicle/odometry": 9301,
+          "/tracking/flight_command": 1871,
+          "/fmu/in/vehicle_command": 3,
+          "/tracking/supervisor_diagnostics": 752,
+          "/fmu/out/vehicle_status_v1": 202,
+          "/tracking/navigation_diagnostics": 4417,
+          "/tracking/flight_phase": 1871,
+          "/tracking/command": 1871,
+          "/ground_truth/vehicle_poses": 23392,
+          "/clock": 25122
+        },
+        "declared_files": [
+          "rosbag_0.db3.zstd"
+        ],
+        "missing_files": [],
+        "metadata_parse_available": true,
+        "sha256": "8be866258984efa8ae0b1e5294dccbeeeb70bb98c263d4cbdd763388568459b6"
+      },
+      "evaluators": [
+        {
+          "source": "flight_evaluation.json",
+          "schema_version": 3,
+          "clock_recorded": true,
+          "clock_samples_read": 25122,
+          "unavailable_types": {},
+          "read_errors": {},
+          "core_topics_present": {
+            "/clock": true,
+            "/vehicle/odometry": true
+          }
+        }
+      ],
+      "evaluator_execution": [
+        {
+          "report": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004/px4_source_clock_report.json",
+          "report_exists": true,
+          "completed_report_verdict": "PASS",
+          "returncode": 0,
+          "log": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_seed004_matrix/logs/person_extension_combined_seed004.source_clock.log",
+          "signals": [],
+          "verdict_scope": "Report completion only; recorded statuses do not assert engineering PASS",
+          "log_bytes": 563,
+          "sampled_bytes": 563,
+          "sample_scheme": "complete",
+          "sample_sha256": "f16e36dd942b58a293d199b41164d17565d8e9387e357bc8f4a2fba45ccb02b8",
+          "detected_signal_kinds": []
+        },
+        {
+          "report": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004/native_startup_report.json",
+          "report_exists": true,
+          "completed_report_verdict": "PASS",
+          "returncode": 0,
+          "log": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_seed004_matrix/logs/person_extension_combined_seed004.native_startup.log",
+          "signals": [],
+          "verdict_scope": "Report completion only; recorded statuses do not assert engineering PASS",
+          "log_bytes": 563,
+          "sampled_bytes": 563,
+          "sample_scheme": "complete",
+          "sample_sha256": "1d708eababd22258611906da6e56c4c4e512770245b5f288303913ef65ea5ed2",
+          "detected_signal_kinds": []
+        },
+        {
+          "report": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004/flight_evaluation.json",
+          "report_exists": true,
+          "completed_report_verdict": "FAIL",
+          "returncode": 0,
+          "log": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_seed004_matrix/logs/person_extension_combined_seed004.surface_flight.log",
+          "signals": [],
+          "verdict_scope": "Report completion only; recorded statuses do not assert engineering PASS",
+          "log_bytes": 1035,
+          "sampled_bytes": 1035,
+          "sample_scheme": "complete",
+          "sample_sha256": "002b5377984a098200dd32671a63b319af0534acfeec5b322a60ee2f75ff591c",
+          "detected_signal_kinds": []
+        },
+        {
+          "report": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004/navigation_reference_evaluation.json",
+          "report_exists": true,
+          "completed_report_verdict": "RECORDED_WITH_CENSORED_FAILURES",
+          "returncode": 0,
+          "log": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_seed004_matrix/logs/person_extension_combined_seed004.navigation.log",
+          "signals": [],
+          "verdict_scope": "Report completion only; recorded statuses do not assert engineering PASS",
+          "log_bytes": 571,
+          "sampled_bytes": 571,
+          "sample_scheme": "complete",
+          "sample_sha256": "0c1344850530f331fa3df9e80db1371f7af3bb02b216863622aa2280304ceb5f",
+          "detected_signal_kinds": []
+        }
+      ],
+      "no_takeoff_assessment": {
+        "maximum_observed_altitude_m": 2.9870190620422363,
+        "sufficient_vehicle_window": true,
+        "explicit_abort": false
+      }
+    }
+  },
+  "cleanup": {
+    "residual_processes": [],
+    "process_exit_codes": {
+      "gazebo": 0,
+      "agent": -2,
+      "px4": 0,
+      "bag": 0,
+      "monitor": 0,
+      "sensor_faults": 0,
+      "ros": 0
+    }
+  },
+  "flight_exit_code": 0,
+  "runtime_configuration": {
+    "errors": [],
+    "arguments": {
+      "name": "reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004",
+      "target_class": "person",
+      "stage": 1,
+      "seed": 4,
+      "speed_mps": 0.47360480897374346,
+      "command_mode": "velocity",
+      "takeoff_mode": "px4_native",
+      "gimbal_mode": "midpoint",
+      "target_mode": "auto_unique",
+      "association_mode": "legacy",
+      "initial_select": "none",
+      "initial_min_candidates": 2,
+      "scenario_kind": "parallel",
+      "multi_target": false,
+      "inference_image_size": 320,
+      "inference_threads": 2,
+      "desired_distance_m": 5.0,
+      "gazebo_render_driver": "llvmpipe",
+      "duration": 75.0,
+      "wall_timeout": 1000.0,
+      "control_reference": "ground_footprint",
+      "real_time_factor": 0.125,
+      "max_inference_rate_hz": 10.0,
+      "monitor_tick_s": 0.02,
+      "condition": "combined",
+      "estimator_method": "adaptive_kf",
+      "occlusions": true,
+      "reselect_after_loss": true,
+      "short_occlusion_s": 0.2,
+      "magnetic_environment": "gazebo_enu",
+      "magnetic_runtime_manifest": "/root/uav_tracking_fullplan_v4_humble43/config/px4_magnetic_runtime.json",
+      "magnetic_library_registration": "/root/uav_tracking_fullplan_v4_humble43/config/gazebo_magnetic_runtime_humble22.json",
+      "px4_time_mode": "source_sim",
+      "propagate_vehicle_uncertainty": true,
+      "supervisor_status_timestamp_mode": "source_sim",
+      "supervisor_status_source_max_age_s": 1.0,
+      "supervisor_status_source_max_future_s": 0.05,
+      "supervisor_status_timeout_wall_s": 10.0,
+      "model_path": "/root/uav_tracking_fullplan_v4_humble43/models/yolo11n.pt",
+      "vehicle_control_point_offset_flu_m": [
+        0.0,
+        0.0,
+        0.24
+      ],
+      "motion_profile_kind": "standard",
+      "correlated_two_face_bound": false
+    },
+    "simulation_pacing": {
+      "errors": [],
+      "px4_adapter_publish_rate_hz": 50.0,
+      "adapter_rate_explicit": true
+    },
+    "exclusive_navigation": {
+      "enabled": false,
+      "explicit": false,
+      "errors": [],
+      "method": "native_exclusive_single_face_center_v1",
+      "max_native_exclusive_pixels": 16384,
+      "scope": "CONDITIONAL_ON_ORIGINAL_NOMINAL_FACE_ASSIGNMENT_NOT_PHYSICAL_IDENTITY_CERTIFICATE"
+    },
+    "magnetic_environment": {
+      "errors": [],
+      "source_world_sha256": "daf55756085816c0dde85f092198a8604de4a313a5bb8402c19b8a74a28f0f9c",
+      "runtime_world_sha256": "1b422ac909ec253a33aa4401cc8eaf1d185df8288595b5f0d93dd531cd8dc8da",
+      "lookup_sha256": "e53bf39273da3af8acd82ca63831be1ba4854db2732797ceac137e7bb693c058",
+      "px4_runtime_manifest_sha256": "3c4f9693cfab51c6b2049af619bfb6e3edbd22a8328468b7e84f75053485c66b",
+      "contract": "gazebo_enu_flu_to_frd_v1",
+      "px4_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+      "binary_path": "/root/uav_humble22/PX4-Autopilot-v4mag/build/px4_sitl_default/bin/px4",
+      "binary_sha256": "6cf784c1cb4de2945b4291aa9391a2301c78315a1462ef3f51f541e119fd7ce7",
+      "actual_startup_log_sha256": "a2f55cd62a0e06aaec94fc912a1d8d6e3238a80ec1615fc799038800b92bb3b0",
+      "magnetic_library_registration_sha256": "0e80e51994948b5186c3a76c7e5c9651d27cf3d9acf63109f3f66544de801e6a",
+      "actual_loaded_libraries_sha256": "4e7c9961a1ace66a6d6df73c4df97671a5043677bde00897c403d5af1ed77109",
+      "environment_id": "UAVHumble22_ubuntu22_humble_osrf_harmonic",
+      "scope": "Saved runtime/source/log/manifest binding; no live PX4 or current configuration helper used in this audit"
+    },
+    "gazebo_rendering": {
+      "errors": [],
+      "report_path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004/configuration/gazebo_rendering_libraries.json",
+      "report_sha256": "23e65438ff8a9c8db5b16cf4e88b5a094b8916c87e867249b41a39b3223ae5de",
+      "evidence": {
+        "schema_version": 1,
+        "status": "PASS",
+        "owned_pid": 12585,
+        "expected_driver": "llvmpipe",
+        "actual_process_environment": {
+          "MESA_LOADER_DRIVER_OVERRIDE": "swrast",
+          "GALLIUM_DRIVER": "llvmpipe",
+          "LP_NUM_THREADS": "4",
+          "DISPLAY": ":0",
+          "LIBGL_ALWAYS_SOFTWARE": "1",
+          "OMP_NUM_THREADS": "2"
+        },
+        "actual_mappings": [
+          "7ce4aa800000-7ce4b0f12000 r-xp 00000000 08:30 11593                      /usr/lib/x86_64-linux-gnu/libLLVM-15.so.1",
+          "7ce4b0f12000-7ce4b1730000 r--p 06711000 08:30 11593                      /usr/lib/x86_64-linux-gnu/libLLVM-15.so.1",
+          "7ce4b1730000-7ce4b1776000 rw-p 06f2f000 08:30 11593                      /usr/lib/x86_64-linux-gnu/libLLVM-15.so.1",
+          "7ce4b1800000-7ce4b1896000 r--p 00000000 08:30 48557                      /usr/lib/x86_64-linux-gnu/dri/swrast_dri.so",
+          "7ce4b1896000-7ce4b2b96000 r-xp 00096000 08:30 48557                      /usr/lib/x86_64-linux-gnu/dri/swrast_dri.so",
+          "7ce4b2b96000-7ce4b3682000 r--p 01396000 08:30 48557                      /usr/lib/x86_64-linux-gnu/dri/swrast_dri.so",
+          "7ce4b3682000-7ce4b3709000 r--p 01e81000 08:30 48557                      /usr/lib/x86_64-linux-gnu/dri/swrast_dri.so",
+          "7ce4b3709000-7ce4b371b000 rw-p 01f08000 08:30 48557                      /usr/lib/x86_64-linux-gnu/dri/swrast_dri.so",
+          "7ce4b3a00000-7ce4b3b18000 r--p 00000000 08:30 116816                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextMain.so.2.3.1",
+          "7ce4b3b18000-7ce4b3e47000 r-xp 00118000 08:30 116816                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextMain.so.2.3.1",
+          "7ce4b3e47000-7ce4b3f3f000 r--p 00447000 08:30 116816                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextMain.so.2.3.1",
+          "7ce4b3f3f000-7ce4b3f57000 r--p 0053e000 08:30 116816                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextMain.so.2.3.1",
+          "7ce4b3f57000-7ce4b3f58000 rw-p 00556000 08:30 116816                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextMain.so.2.3.1",
+          "7ce4d8247000-7ce4d8388000 rw-s 00000000 08:30 252077                     /root/.cache/mesa_shader_cache/index",
+          "7ce4d8388000-7ce4d839c000 r--p 00000000 08:30 116810                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/OGRE/Plugin_ParticleFX.so.2.3.1",
+          "7ce4d839c000-7ce4d83ac000 r-xp 00014000 08:30 116810                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/OGRE/Plugin_ParticleFX.so.2.3.1",
+          "7ce4d83ac000-7ce4d83b3000 r--p 00024000 08:30 116810                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/OGRE/Plugin_ParticleFX.so.2.3.1",
+          "7ce4d83b3000-7ce4d83b6000 r--p 0002a000 08:30 116810                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/OGRE/Plugin_ParticleFX.so.2.3.1",
+          "7ce4d83b6000-7ce4d83b7000 rw-p 0002d000 08:30 116810                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/OGRE/Plugin_ParticleFX.so.2.3.1",
+          "7ce4d83b7000-7ce4d83c1000 r--p 00000000 08:30 74835                      /usr/lib/x86_64-linux-gnu/libEGL_mesa.so.0.0.0",
+          "7ce4d83c1000-7ce4d83ec000 r-xp 0000a000 08:30 74835                      /usr/lib/x86_64-linux-gnu/libEGL_mesa.so.0.0.0",
+          "7ce4d83ec000-7ce4d83fc000 r--p 00035000 08:30 74835                      /usr/lib/x86_64-linux-gnu/libEGL_mesa.so.0.0.0",
+          "7ce4d83fc000-7ce4d83ff000 r--p 00044000 08:30 74835                      /usr/lib/x86_64-linux-gnu/libEGL_mesa.so.0.0.0",
+          "7ce4d83ff000-7ce4d8400000 rw-p 00047000 08:30 74835                      /usr/lib/x86_64-linux-gnu/libEGL_mesa.so.0.0.0",
+          "7ce4d8400000-7ce4d852f000 r--p 00000000 08:30 117789                     /usr/lib/x86_64-linux-gnu/gz-rendering-8/engine-plugins/libgz-rendering8-ogre2.so.8.3.0",
+          "7ce4d852f000-7ce4d8647000 r-xp 0012f000 08:30 117789                     /usr/lib/x86_64-linux-gnu/gz-rendering-8/engine-plugins/libgz-rendering8-ogre2.so.8.3.0",
+          "7ce4d8647000-7ce4d8693000 r--p 00247000 08:30 117789                     /usr/lib/x86_64-linux-gnu/gz-rendering-8/engine-plugins/libgz-rendering8-ogre2.so.8.3.0",
+          "7ce4d8693000-7ce4d8694000 ---p 00293000 08:30 117789                     /usr/lib/x86_64-linux-gnu/gz-rendering-8/engine-plugins/libgz-rendering8-ogre2.so.8.3.0",
+          "7ce4d8694000-7ce4d872e000 r--p 00293000 08:30 117789                     /usr/lib/x86_64-linux-gnu/gz-rendering-8/engine-plugins/libgz-rendering8-ogre2.so.8.3.0",
+          "7ce4d872e000-7ce4d8730000 rw-p 0032d000 08:30 117789                     /usr/lib/x86_64-linux-gnu/gz-rendering-8/engine-plugins/libgz-rendering8-ogre2.so.8.3.0",
+          "7ce4e00e7000-7ce4e00f4000 r--p 00000000 08:30 48630                      /usr/lib/x86_64-linux-gnu/libglapi.so.0.0.0",
+          "7ce4e00f4000-7ce4e0102000 r-xp 0000d000 08:30 48630                      /usr/lib/x86_64-linux-gnu/libglapi.so.0.0.0",
+          "7ce4e0102000-7ce4e0116000 r--p 0001b000 08:30 48630                      /usr/lib/x86_64-linux-gnu/libglapi.so.0.0.0",
+          "7ce4e0116000-7ce4e0117000 ---p 0002f000 08:30 48630                      /usr/lib/x86_64-linux-gnu/libglapi.so.0.0.0",
+          "7ce4e0117000-7ce4e011b000 r--p 0002f000 08:30 48630                      /usr/lib/x86_64-linux-gnu/libglapi.so.0.0.0",
+          "7ce4e011b000-7ce4e011c000 rw-p 00033000 08:30 48630                      /usr/lib/x86_64-linux-gnu/libglapi.so.0.0.0",
+          "7ce4e011c000-7ce4e0135000 r--p 00000000 08:30 48600                      /usr/lib/x86_64-linux-gnu/libGLX_mesa.so.0.0.0",
+          "7ce4e0135000-7ce4e0174000 r-xp 00019000 08:30 48600                      /usr/lib/x86_64-linux-gnu/libGLX_mesa.so.0.0.0",
+          "7ce4e0174000-7ce4e018a000 r--p 00058000 08:30 48600                      /usr/lib/x86_64-linux-gnu/libGLX_mesa.so.0.0.0",
+          "7ce4e018a000-7ce4e018d000 r--p 0006d000 08:30 48600                      /usr/lib/x86_64-linux-gnu/libGLX_mesa.so.0.0.0",
+          "7ce4e018d000-7ce4e018e000 rw-p 00070000 08:30 48600                      /usr/lib/x86_64-linux-gnu/libGLX_mesa.so.0.0.0",
+          "7ce4e018f000-7ce4e01c1000 r--p 00000000 08:30 116811                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/OGRE/RenderSystem_GL3Plus.so.2.3.1",
+          "7ce4e01c1000-7ce4e0217000 r-xp 00032000 08:30 116811                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/OGRE/RenderSystem_GL3Plus.so.2.3.1",
+          "7ce4e0217000-7ce4e0237000 r--p 00088000 08:30 116811                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/OGRE/RenderSystem_GL3Plus.so.2.3.1",
+          "7ce4e0237000-7ce4e0238000 ---p 000a8000 08:30 116811                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/OGRE/RenderSystem_GL3Plus.so.2.3.1",
+          "7ce4e0238000-7ce4e023e000 r--p 000a8000 08:30 116811                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/OGRE/RenderSystem_GL3Plus.so.2.3.1",
+          "7ce4e023e000-7ce4e023f000 rw-p 000ae000 08:30 116811                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/OGRE/RenderSystem_GL3Plus.so.2.3.1",
+          "7ce4e03a0000-7ce4e03b8000 r--p 00000000 08:30 116818                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextOverlay.so.2.3.1",
+          "7ce4e03b8000-7ce4e03d9000 r-xp 00018000 08:30 116818                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextOverlay.so.2.3.1",
+          "7ce4e03d9000-7ce4e03e5000 r--p 00039000 08:30 116818                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextOverlay.so.2.3.1",
+          "7ce4e03e5000-7ce4e03e6000 ---p 00045000 08:30 116818                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextOverlay.so.2.3.1",
+          "7ce4e03e6000-7ce4e03e9000 r--p 00045000 08:30 116818                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextOverlay.so.2.3.1",
+          "7ce4e03e9000-7ce4e03ea000 rw-p 00048000 08:30 116818                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextOverlay.so.2.3.1",
+          "7ce4e03ea000-7ce4e03f7000 r--p 00000000 08:30 116815                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextHlmsUnlit.so.2.3.1",
+          "7ce4e03f7000-7ce4e0409000 r-xp 0000d000 08:30 116815                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextHlmsUnlit.so.2.3.1",
+          "7ce4e0409000-7ce4e040f000 r--p 0001f000 08:30 116815                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextHlmsUnlit.so.2.3.1",
+          "7ce4e040f000-7ce4e0411000 r--p 00024000 08:30 116815                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextHlmsUnlit.so.2.3.1",
+          "7ce4e0411000-7ce4e0412000 rw-p 00026000 08:30 116815                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextHlmsUnlit.so.2.3.1",
+          "7ce4e0412000-7ce4e0439000 r--p 00000000 08:30 116814                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextHlmsPbs.so.2.3.1",
+          "7ce4e0439000-7ce4e049b000 r-xp 00027000 08:30 116814                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextHlmsPbs.so.2.3.1",
+          "7ce4e049b000-7ce4e04b1000 r--p 00089000 08:30 116814                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextHlmsPbs.so.2.3.1",
+          "7ce4e04b1000-7ce4e04b4000 r--p 0009e000 08:30 116814                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextHlmsPbs.so.2.3.1",
+          "7ce4e04b4000-7ce4e04b5000 rw-p 000a1000 08:30 116814                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextHlmsPbs.so.2.3.1",
+          "7ce4e1d59000-7ce4e1d99000 r--p 00000000 08:30 107993                     /usr/lib/x86_64-linux-gnu/libgz-rendering8.so.8.3.0",
+          "7ce4e1d99000-7ce4e1dd4000 r-xp 00040000 08:30 107993                     /usr/lib/x86_64-linux-gnu/libgz-rendering8.so.8.3.0",
+          "7ce4e1dd4000-7ce4e1deb000 r--p 0007b000 08:30 107993                     /usr/lib/x86_64-linux-gnu/libgz-rendering8.so.8.3.0",
+          "7ce4e1deb000-7ce4e1dfc000 r--p 00091000 08:30 107993                     /usr/lib/x86_64-linux-gnu/libgz-rendering8.so.8.3.0",
+          "7ce4e1dfc000-7ce4e1dfd000 rw-p 000a2000 08:30 107993                     /usr/lib/x86_64-linux-gnu/libgz-rendering8.so.8.3.0",
+          "7ce4e23f2000-7ce4e23f6000 r--p 00000000 08:30 116819                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextPlanarReflections.so.2.3.1",
+          "7ce4e23f6000-7ce4e23fc000 r-xp 00004000 08:30 116819                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextPlanarReflections.so.2.3.1",
+          "7ce4e23fc000-7ce4e23fe000 r--p 0000a000 08:30 116819                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextPlanarReflections.so.2.3.1",
+          "7ce4e23fe000-7ce4e23ff000 r--p 0000b000 08:30 116819                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextPlanarReflections.so.2.3.1",
+          "7ce4e23ff000-7ce4e2400000 rw-p 0000c000 08:30 116819                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextPlanarReflections.so.2.3.1",
+          "7ce4e30e1000-7ce4e30e4000 r--p 00000000 08:30 11580                      /usr/lib/x86_64-linux-gnu/libEGL.so.1.1.0",
+          "7ce4e30e4000-7ce4e30ee000 r-xp 00003000 08:30 11580                      /usr/lib/x86_64-linux-gnu/libEGL.so.1.1.0",
+          "7ce4e30ee000-7ce4e30f2000 r--p 0000d000 08:30 11580                      /usr/lib/x86_64-linux-gnu/libEGL.so.1.1.0",
+          "7ce4e30f2000-7ce4e30f3000 r--p 00010000 08:30 11580                      /usr/lib/x86_64-linux-gnu/libEGL.so.1.1.0",
+          "7ce4e30f3000-7ce4e30f4000 rw-p 00011000 08:30 11580                      /usr/lib/x86_64-linux-gnu/libEGL.so.1.1.0",
+          "7ce505091000-7ce505094000 r--p 00000000 08:30 11586                      /usr/lib/x86_64-linux-gnu/libGLX.so.0.0.0",
+          "7ce505094000-7ce5050af000 r-xp 00003000 08:30 11586                      /usr/lib/x86_64-linux-gnu/libGLX.so.0.0.0",
+          "7ce5050af000-7ce5050b2000 r--p 0001e000 08:30 11586                      /usr/lib/x86_64-linux-gnu/libGLX.so.0.0.0",
+          "7ce5050b2000-7ce5050b3000 ---p 00021000 08:30 11586                      /usr/lib/x86_64-linux-gnu/libGLX.so.0.0.0",
+          "7ce5050b3000-7ce5050b4000 r--p 00021000 08:30 11586                      /usr/lib/x86_64-linux-gnu/libGLX.so.0.0.0",
+          "7ce5050b4000-7ce5050b5000 rw-p 00022000 08:30 11586                      /usr/lib/x86_64-linux-gnu/libGLX.so.0.0.0"
+        ],
+        "actual_libraries": {
+          "/usr/lib/x86_64-linux-gnu/libLLVM-15.so.1": {
+            "sha256": "de2e35a4f9b3f6a06d2a8a3342b3f62a3842b1923b8dfc2a6ce48e0cc2d1e85d",
+            "inode": 11593,
+            "device_major": 8,
+            "device_minor": 48
+          },
+          "/usr/lib/x86_64-linux-gnu/dri/swrast_dri.so": {
+            "sha256": "1a274eaf6b7a9453256367af11f24deb858425df3336f7779a36b7644f3f425f",
+            "inode": 48557,
+            "device_major": 8,
+            "device_minor": 48
+          },
+          "/usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextMain.so.2.3.1": {
+            "sha256": "5c7093ecc7d2d4fcdcc5707f21feafe7351177176c07a30502ae8141c9c82ff5",
+            "inode": 116816,
+            "device_major": 8,
+            "device_minor": 48
+          },
+          "/root/.cache/mesa_shader_cache/index": {
+            "sha256": "1b00ff9592b92efa44e5692edf344d873fee3d3dbfe52f20a462e9a26e817b0d",
+            "inode": 252077,
+            "device_major": 8,
+            "device_minor": 48
+          },
+          "/usr/lib/x86_64-linux-gnu/OGRE-2.3/OGRE/Plugin_ParticleFX.so.2.3.1": {
+            "sha256": "b85636f016a424369bfe91c6ff8638789c4ea1609e327df3854846c509d326a1",
+            "inode": 116810,
+            "device_major": 8,
+            "device_minor": 48
+          },
+          "/usr/lib/x86_64-linux-gnu/libEGL_mesa.so.0.0.0": {
+            "sha256": "267172b546de46e94e0ce1318327b7cd68e791cf1c7e70b8c86c032a8e6430a8",
+            "inode": 74835,
+            "device_major": 8,
+            "device_minor": 48
+          },
+          "/usr/lib/x86_64-linux-gnu/gz-rendering-8/engine-plugins/libgz-rendering8-ogre2.so.8.3.0": {
+            "sha256": "b4fd576d6746ad10e79256c010c7f5e3b731f9ed128afbf5de22f9d76e007dba",
+            "inode": 117789,
+            "device_major": 8,
+            "device_minor": 48
+          },
+          "/usr/lib/x86_64-linux-gnu/libglapi.so.0.0.0": {
+            "sha256": "6b0b3d9623ca09ae7d16d3320d8866dc0557d67e9cbb63c12752fe723444a0a1",
+            "inode": 48630,
+            "device_major": 8,
+            "device_minor": 48
+          },
+          "/usr/lib/x86_64-linux-gnu/libGLX_mesa.so.0.0.0": {
+            "sha256": "75aa70461b471d69f95a48a29e8fb06bb919921f305799609132128a3f3942e9",
+            "inode": 48600,
+            "device_major": 8,
+            "device_minor": 48
+          },
+          "/usr/lib/x86_64-linux-gnu/OGRE-2.3/OGRE/RenderSystem_GL3Plus.so.2.3.1": {
+            "sha256": "1a5245cba34b42307e2f1fd143e9b661c65fe5df0e3cd52c717aa2a4c6c65d79",
+            "inode": 116811,
+            "device_major": 8,
+            "device_minor": 48
+          },
+          "/usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextOverlay.so.2.3.1": {
+            "sha256": "f87e9025fe0a22534cdc91a90b45be77e43bd83b44e42f76226e03738c8a99d3",
+            "inode": 116818,
+            "device_major": 8,
+            "device_minor": 48
+          },
+          "/usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextHlmsUnlit.so.2.3.1": {
+            "sha256": "ae01873345966b348d91ac391dbd99a1a8562f0a9d6d3dcca22ed376e04e07e6",
+            "inode": 116815,
+            "device_major": 8,
+            "device_minor": 48
+          },
+          "/usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextHlmsPbs.so.2.3.1": {
+            "sha256": "cb9160e9bc1b3e34685d4a9963d4a22404349860595de9e0e08b62c1f044e189",
+            "inode": 116814,
+            "device_major": 8,
+            "device_minor": 48
+          },
+          "/usr/lib/x86_64-linux-gnu/libgz-rendering8.so.8.3.0": {
+            "sha256": "e9128f0a23a4c077e86b95f33b83a5924267eaa7ff95c281134b92cf8f270b46",
+            "inode": 107993,
+            "device_major": 8,
+            "device_minor": 48
+          },
+          "/usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextPlanarReflections.so.2.3.1": {
+            "sha256": "4514bf77c5f27a8bcbf16009515edf912ce85fd3d0eac4c476126d9ea72ffa5b",
+            "inode": 116819,
+            "device_major": 8,
+            "device_minor": 48
+          },
+          "/usr/lib/x86_64-linux-gnu/libEGL.so.1.1.0": {
+            "sha256": "69816a7062d7d624144472f5ef71f5b23732b9003df7472662920602e62805db",
+            "inode": 11580,
+            "device_major": 8,
+            "device_minor": 48
+          },
+          "/usr/lib/x86_64-linux-gnu/libGLX.so.0.0.0": {
+            "sha256": "19ad2625b20a3afe6f5e55f9acd1e18e0dfc81b0965d7d3f2181a05b6d48edbf",
+            "inode": 11586,
+            "device_major": 8,
+            "device_minor": 48
+          }
+        },
+        "contract_issues": [],
+        "evidence_scope": "actual Gazebo process ELF mapping and selected environment; renderer performance is measured separately",
+        "attempts": 1
+      }
+    },
+    "run_config_sha256": "a3d97eed34b34c972d94e3b4264e0962413d1d7b3efc7f71326957eeeeec126a",
+    "runtime_parameters_sha256": "04e19bb984cbffeed450fdd68b2e1239646432be5b97d3cfb8f06aa530f644a3"
+  },
+  "commands": [
+    {
+      "kind": "flight",
+      "command": [
+        "bash",
+        "/root/uav_tracking_fullplan_v4_humble43/scripts/run_research_session.sh",
+        "/root/uav_tracking_fullplan_v4_humble43/scripts/run_stage1_trial.py",
+        "--name",
+        "reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004",
+        "--class",
+        "person",
+        "--stage",
+        "1",
+        "--seed",
+        "4",
+        "--speed-mps",
+        "0.47360480897374346",
+        "--duration",
+        "75.0",
+        "--condition",
+        "combined",
+        "--estimator-method",
+        "adaptive_kf",
+        "--command-mode",
+        "velocity",
+        "--target-mode",
+        "auto_unique",
+        "--association-mode",
+        "legacy",
+        "--initial-select",
+        "none",
+        "--initial-min-candidates",
+        "2",
+        "--gimbal-mode",
+        "midpoint",
+        "--scenario-kind",
+        "parallel",
+        "--real-time-factor",
+        "0.125",
+        "--max-inference-rate-hz",
+        "10.0",
+        "--monitor-tick-s",
+        "0.02",
+        "--control-reference",
+        "ground_footprint",
+        "--motion-profile-kind",
+        "standard",
+        "--model-path",
+        "/root/uav_tracking_fullplan_v4_humble43/models/yolo11n.pt",
+        "--inference-image-size",
+        "320",
+        "--inference-threads",
+        "2",
+        "--desired-distance-m",
+        "5.0",
+        "--takeoff-height-m",
+        "3.0",
+        "--takeoff-mode",
+        "px4_native",
+        "--wall-timeout",
+        "1000.0",
+        "--render-backend",
+        "egl",
+        "--gazebo-render-driver",
+        "llvmpipe",
+        "--magnetic-environment",
+        "gazebo_enu",
+        "--magnetic-runtime-manifest",
+        "/root/uav_tracking_fullplan_v4_humble43/config/px4_magnetic_runtime.json",
+        "--magnetic-library-registration",
+        "/root/uav_tracking_fullplan_v4_humble43/config/gazebo_magnetic_runtime_humble22.json",
+        "--propagate-vehicle-uncertainty",
+        "--px4-time-mode",
+        "source_sim",
+        "--occlusions",
+        "--short-occlusion-s",
+        "0.2",
+        "--reselect-after-loss",
+        "--px4-adapter-publish-rate-hz",
+        "50.0"
+      ],
+      "started_utc": "2026-11-01T09:02:05.281430+00:00",
+      "finished_utc": "2026-11-01T09:19:33.541539+00:00",
+      "elapsed_wall_s": 1048.2601931919999,
+      "returncode": 0,
+      "error": null,
+      "outer_cleanup_actions": [],
+      "log": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_seed004_matrix/logs/person_extension_combined_seed004.flight.log",
+      "timeout_wall_s": 2800.0
+    },
+    {
+      "kind": "source_clock",
+      "command": [
+        "bash",
+        "/root/uav_tracking_fullplan_v4_humble43/scripts/run_research_session.sh",
+        "/root/uav_tracking_fullplan_v4_humble43/scripts/evaluate_px4_source_clock.py",
+        "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004",
+        "--output",
+        "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004/px4_source_clock_report.json"
+      ],
+      "started_utc": "2026-11-01T09:19:38.135926+00:00",
+      "finished_utc": "2026-11-01T09:20:21.959731+00:00",
+      "elapsed_wall_s": 43.82380586600084,
+      "returncode": 0,
+      "error": null,
+      "outer_cleanup_actions": [],
+      "log": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_seed004_matrix/logs/person_extension_combined_seed004.source_clock.log",
+      "timeout_wall_s": 1800.0
+    },
+    {
+      "kind": "native_startup",
+      "command": [
+        "bash",
+        "/root/uav_tracking_fullplan_v4_humble43/scripts/run_research_session.sh",
+        "/root/uav_tracking_fullplan_v4_humble43/scripts/evaluate_native_startup.py",
+        "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004",
+        "--output",
+        "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004/native_startup_report.json"
+      ],
+      "started_utc": "2026-11-01T09:20:21.968788+00:00",
+      "finished_utc": "2026-11-01T09:21:08.547271+00:00",
+      "elapsed_wall_s": 46.578508982998756,
+      "returncode": 0,
+      "error": null,
+      "outer_cleanup_actions": [],
+      "log": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_seed004_matrix/logs/person_extension_combined_seed004.native_startup.log",
+      "timeout_wall_s": 1800.0
+    },
+    {
+      "kind": "surface_flight",
+      "command": [
+        "bash",
+        "/root/uav_tracking_fullplan_v4_humble43/scripts/run_research_session.sh",
+        "/root/uav_tracking_fullplan_v4_humble43/scripts/evaluate_stage1_flight.py",
+        "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004/rosbag",
+        "--target-class",
+        "person",
+        "--telemetry-jsonl",
+        "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004/telemetry.jsonl",
+        "--monitor-summary",
+        "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004/summary.json",
+        "--desired-distance-m",
+        "5.0",
+        "--desired-height-m",
+        "2.0",
+        "--output",
+        "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004/flight_evaluation.json"
+      ],
+      "started_utc": "2026-11-01T09:21:08.558967+00:00",
+      "finished_utc": "2026-11-01T09:21:55.989075+00:00",
+      "elapsed_wall_s": 47.43013580099978,
+      "returncode": 0,
+      "error": null,
+      "outer_cleanup_actions": [],
+      "log": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_seed004_matrix/logs/person_extension_combined_seed004.surface_flight.log",
+      "timeout_wall_s": 1800.0
+    },
+    {
+      "kind": "navigation",
+      "command": [
+        "bash",
+        "/root/uav_tracking_fullplan_v4_humble43/scripts/run_research_session.sh",
+        "/root/uav_tracking_fullplan_v4_humble43/scripts/evaluate_navigation_reference.py",
+        "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004",
+        "--target-class",
+        "person",
+        "--output",
+        "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004/navigation_reference_evaluation.json"
+      ],
+      "started_utc": "2026-11-01T09:21:56.000428+00:00",
+      "finished_utc": "2026-11-01T09:22:46.980286+00:00",
+      "elapsed_wall_s": 50.97983337699952,
+      "returncode": 0,
+      "error": null,
+      "outer_cleanup_actions": [],
+      "log": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_seed004_matrix/logs/person_extension_combined_seed004.navigation.log",
+      "timeout_wall_s": 1800.0
+    }
+  ],
+  "evaluations": [
+    {
+      "kind": "source_clock",
+      "report": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004/px4_source_clock_report.json",
+      "execution": {
+        "command": [
+          "bash",
+          "/root/uav_tracking_fullplan_v4_humble43/scripts/run_research_session.sh",
+          "/root/uav_tracking_fullplan_v4_humble43/scripts/evaluate_px4_source_clock.py",
+          "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004",
+          "--output",
+          "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004/px4_source_clock_report.json"
+        ],
+        "started_utc": "2026-11-01T09:19:38.135926+00:00",
+        "finished_utc": "2026-11-01T09:20:21.959731+00:00",
+        "elapsed_wall_s": 43.82380586600084,
+        "returncode": 0,
+        "error": null,
+        "outer_cleanup_actions": [],
+        "log": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_seed004_matrix/logs/person_extension_combined_seed004.source_clock.log",
+        "timeout_wall_s": 1800.0
+      },
+      "result": "PASS",
+      "reported_verdict": "PASS",
+      "report_sha256": "dfbd4e0241e5e1f02e8d63ad0d40f47b45654b5115925571c03b42540cec0fe8",
+      "error": null
+    },
+    {
+      "kind": "native_startup",
+      "report": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004/native_startup_report.json",
+      "execution": {
+        "command": [
+          "bash",
+          "/root/uav_tracking_fullplan_v4_humble43/scripts/run_research_session.sh",
+          "/root/uav_tracking_fullplan_v4_humble43/scripts/evaluate_native_startup.py",
+          "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004",
+          "--output",
+          "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004/native_startup_report.json"
+        ],
+        "started_utc": "2026-11-01T09:20:21.968788+00:00",
+        "finished_utc": "2026-11-01T09:21:08.547271+00:00",
+        "elapsed_wall_s": 46.578508982998756,
+        "returncode": 0,
+        "error": null,
+        "outer_cleanup_actions": [],
+        "log": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_seed004_matrix/logs/person_extension_combined_seed004.native_startup.log",
+        "timeout_wall_s": 1800.0
+      },
+      "result": "PASS",
+      "reported_verdict": "PASS",
+      "report_sha256": "7a7855b92d5ca5ffeedec7818085a813b72e979c004046d3d1174808c4fc9117",
+      "error": null
+    },
+    {
+      "kind": "surface_flight",
+      "report": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004/flight_evaluation.json",
+      "execution": {
+        "command": [
+          "bash",
+          "/root/uav_tracking_fullplan_v4_humble43/scripts/run_research_session.sh",
+          "/root/uav_tracking_fullplan_v4_humble43/scripts/evaluate_stage1_flight.py",
+          "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004/rosbag",
+          "--target-class",
+          "person",
+          "--telemetry-jsonl",
+          "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004/telemetry.jsonl",
+          "--monitor-summary",
+          "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004/summary.json",
+          "--desired-distance-m",
+          "5.0",
+          "--desired-height-m",
+          "2.0",
+          "--output",
+          "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004/flight_evaluation.json"
+        ],
+        "started_utc": "2026-11-01T09:21:08.558967+00:00",
+        "finished_utc": "2026-11-01T09:21:55.989075+00:00",
+        "elapsed_wall_s": 47.43013580099978,
+        "returncode": 0,
+        "error": null,
+        "outer_cleanup_actions": [],
+        "log": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_seed004_matrix/logs/person_extension_combined_seed004.surface_flight.log",
+        "timeout_wall_s": 1800.0
+      },
+      "result": "FAIL",
+      "reported_verdict": "FAIL",
+      "report_sha256": "a23d757bd5c880da5fb8bdc0effc8eebca350b02a3e29011a293862e63d4ad24",
+      "error": null
+    },
+    {
+      "kind": "navigation",
+      "report": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004/navigation_reference_evaluation.json",
+      "execution": {
+        "command": [
+          "bash",
+          "/root/uav_tracking_fullplan_v4_humble43/scripts/run_research_session.sh",
+          "/root/uav_tracking_fullplan_v4_humble43/scripts/evaluate_navigation_reference.py",
+          "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004",
+          "--target-class",
+          "person",
+          "--output",
+          "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004/navigation_reference_evaluation.json"
+        ],
+        "started_utc": "2026-11-01T09:21:56.000428+00:00",
+        "finished_utc": "2026-11-01T09:22:46.980286+00:00",
+        "elapsed_wall_s": 50.97983337699952,
+        "returncode": 0,
+        "error": null,
+        "outer_cleanup_actions": [],
+        "log": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_seed004_matrix/logs/person_extension_combined_seed004.navigation.log",
+        "timeout_wall_s": 1800.0
+      },
+      "result": "RECORDED_WITH_CENSORED_FAILURES",
+      "reported_verdict": "RECORDED_WITH_CENSORED_FAILURES",
+      "report_sha256": "61e7ae3f980d1a054e4c3e7ec3ad271167137791357e78b0d59764cc06f1e739",
+      "error": null
+    }
+  ],
+  "id": "person_extension_combined_seed004",
+  "name": "reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004",
+  "plan_sha256": "9b4dad69a18e9b6ba60162841205bd7fa9333624fb8b79ae9066d9ec2c03fbbd",
+  "finished_utc": "2026-11-01T09:22:51.706659+00:00",
+  "artifact_hashes": {
+    "agent.log": "1d5a4d649705a2214998d4fa603281a73be4827d433f90ff5314f9cd4594f485",
+    "bag.log": "4000deb274cb8790d6e526d5c0369752ce2d4a6396f2d864467db3d6421da346",
+    "bag_integrity.json": "64df4e035cc9befd8a606f4fb092349637f3e37954f62283d5243ed13efc33b0",
+    "configuration/gazebo_loaded_magnetic_libraries.json": "4e7c9961a1ace66a6d6df73c4df97671a5043677bde00897c403d5af1ed77109",
+    "configuration/gazebo_magnetic_reference.json": "e53bf39273da3af8acd82ca63831be1ba4854db2732797ceac137e7bb693c058",
+    "configuration/gazebo_magnetic_runtime_registration.json": "0e80e51994948b5186c3a76c7e5c9651d27cf3d9acf63109f3f66544de801e6a",
+    "configuration/gazebo_rendering_libraries.json": "23e65438ff8a9c8db5b16cf4e88b5a094b8916c87e867249b41a39b3223ae5de",
+    "configuration/magnetic_environment.json": "48c76b20441f8ed6e10c17f92d09bf338c87cf4a46a06f5ce232589652dce374",
+    "configuration/px4_magnetic_runtime.json": "3c4f9693cfab51c6b2049af619bfb6e3edbd22a8328468b7e84f75053485c66b",
+    "configuration/px4_magnetic_runtime_actual.json": "ac5fb07ecbe2aeea0f43259d376531b16050b8bd2acdc6d47a36dcbb59cb9168",
+    "configuration/px4_parameters.json": "e09884df84a19941385ee7f8051e0f039cbac36571fd4eac4ad85943b4156b88",
+    "configuration/px4_parameters_after.bson": "7bfb76a036b32fe1a6c426dfa2b87bdd3e18164729900e838de12fc84d6d580a",
+    "configuration/px4_parameters_before.bson": "7bfb76a036b32fe1a6c426dfa2b87bdd3e18164729900e838de12fc84d6d580a",
+    "configuration/recording_policy.json": "86e3ae01b1f4a619df6cadd85b3a7e18f7fa4adab6758836c83067c41a3d4c0b",
+    "configuration/ros_gz_runtime_actual.json": "44e15b4c34375e4896bb5ca8a9eedb3775ce8506139509019c88a781466335a9",
+    "configuration/ros_gz_runtime_after.json": "85285954aad06c167b47ea28e932cdd875970fb1601c641187ff04cf75c9b9e2",
+    "configuration/ros_gz_runtime_preflight.json": "adb75dd57900d1f83d43bf7d786fee6ea9cb50d60d8a654c056aedf2cbf768a7",
+    "configuration/ros_gz_runtime_registration.json": "08cbc9ea8a2b6e50b71efc4910e5adef7c309b742fb0e9177cd803e934a028af",
+    "configuration/runtime_parameters.yaml": "04e19bb984cbffeed450fdd68b2e1239646432be5b97d3cfb8f06aa530f644a3",
+    "configuration/runtime_world.sdf": "1b422ac909ec253a33aa4401cc8eaf1d185df8288595b5f0d93dd531cd8dc8da",
+    "configuration/sensor_faults.json": "cc5b4c6413537d24bb402d9295182647d773ee540de0fd1524a9bdbb5ad73f36",
+    "configuration/source_sha256.json": "6563bfa35862be97e6ac95bc853f9cdbd4f09a07abc1835f94a37d4bbde990ae",
+    "configuration/stage1_flight_bridge.yaml": "c1aca2657d9b2fcb1d46dc293dc70a1d92ec92c30c0f8a4714e54bb9d384dfcb",
+    "configuration/stage1_flight_person.sdf": "daf55756085816c0dde85f092198a8604de4a313a5bb8402c19b8a74a28f0f9c",
+    "configuration/stage1_tracking_person.yaml": "1e4d5384939d6e4741dbad35c93953aaa28b68d6dd81f90251b28b0ce274110b",
+    "configuration/target_person_model.sdf": "95fb0060cd30ffb16c34ec44ff1e4b55a1342332b65f6cf760a7e730d6e8bdb0",
+    "configuration/x500_stage1_model.sdf": "3c27bec2e851e219538bcf5e087c44e8b0b6713abb43791091a5e5cd964336f4",
+    "flight_evaluation.json": "a23d757bd5c880da5fb8bdc0effc8eebca350b02a3e29011a293862e63d4ad24",
+    "gazebo.log": "91386e5fcea587bfd64af5c573c650a3578f660243f692d671d1905d06d34053",
+    "graph_startup_readiness.json": "170b6468f8608d7117714a6880d80eff95ca75db901bd8935d91bcf6e436efd0",
+    "monitor.log": "6e00b5c85fa710ebbc28756608db8f0e4a3136a2ee7fc7886fb179e5c92d802f",
+    "native_startup_report.frames.jsonl": "ae4a86c1498a3b1ac9220c2a2c070356523a93a007a819171093c540cd68b6ce",
+    "native_startup_report.json": "7a7855b92d5ca5ffeedec7818085a813b72e979c004046d3d1174808c4fc9117",
+    "navigation_reference_evaluation.frames.jsonl": "f4e411e2262bd15d3c597b3952eef423ea6b1b32b0e0188f0ad7d764d551577e",
+    "navigation_reference_evaluation.json": "61e7ae3f980d1a054e4c3e7ec3ad271167137791357e78b0d59764cc06f1e739",
+    "navigation_reference_evaluation.message_frames.jsonl": "28fbd69bde2f1f1a480d2a9deb1518be52a9dda601084c4b69a426efbfabebde",
+    "navigation_reference_evaluation.raw_frames.jsonl": "3f816c1965002367cfbfc0a9edac1f96d1c7b6ba885cfc8a93fb3027c4bc5b7f",
+    "owned_stop_events.jsonl": "274afd8a47614bfa0fc02655cdb520e91dc70d93aabe77281c3d0180e9909aae",
+    "owned_stop_observer.json": "f67f4ae9de6ccf50c3728aa244deb834dfa2d5ad7655e8839c76275998863cc2",
+    "process_exit_codes.json": "c9416c3944f601db0a3d21f3d4c955f912835be982815403c4e4508452d6db16",
+    "px4.log": "a2f55cd62a0e06aaec94fc912a1d8d6e3238a80ec1615fc799038800b92bb3b0",
+    "px4_source_clock_report.frames.jsonl": "4199e450d0abeea24badc9f7890b23f210b754697455ded4b7ef354d5f58544f",
+    "px4_source_clock_report.json": "dfbd4e0241e5e1f02e8d63ad0d40f47b45654b5115925571c03b42540cec0fe8",
+    "recording_closure.json": "6e24aa40027f58203ffcafd2f4341fe5e475cea0aad4df7374591636609db91f",
+    "recording_closure_observer.json": "d331582031d4eb33f26456121bb15a0b273ef7d4ae39c239aed70bf69b644564",
+    "ros.log": "90ce744eeca1ff0017e9153b25ef184858f9c2b3c48baab95999049750279350",
+    "rosbag/metadata.yaml": "8be866258984efa8ae0b1e5294dccbeeeb70bb98c263d4cbdd763388568459b6",
+    "run_config.json": "a3d97eed34b34c972d94e3b4264e0962413d1d7b3efc7f71326957eeeeec126a",
+    "sensor_faults.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "summary.json": "1bc43aed0568d5635d884dbd894f313e4936eebe67270a97673f0bacb21f0eaf",
+    "telemetry.jsonl": "1d41dfd6022b53aa99baabb82bf204855534adef7d711d734f493000dc2b558f",
+    "unpause.log": "46eeeedc969f106320d874ff0cb0c5c1ea169952665865f64b8f5318d626c8a3"
+  },
+  "record_sha256": "d39911b3b5bb212c979fe992d178d6a7e1a634c2c8b850dadae34a77978afb23"
+}

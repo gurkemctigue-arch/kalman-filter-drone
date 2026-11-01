@@ -1,0 +1,423 @@
+{
+  "schema_version": 1,
+  "status": "CLOSED_ORIGINAL_BINDING_REVIEW_ALGORITHM_FAIL_RETAINED",
+  "created_utc": "2026-11-01T09:26:06.784177+00:00",
+  "scope": "Small original slot/report/summary/outer JSON binding only; one closed development slot, not extension-batch completion or formal-repeat acceptance",
+  "trial_id": "person_extension_combined_seed004",
+  "trial_name": "reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004",
+  "plan_sha256": "9b4dad69a18e9b6ba60162841205bd7fa9333624fb8b79ae9066d9ec2c03fbbd",
+  "source_bindings": {
+    "slot": {
+      "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble43\\reliability_v4_humble43_extensions_probe01_seed004_matrix\\slots\\person_extension_combined_seed004.json",
+      "bytes": 53835,
+      "file_sha256": "333461ca312e03e7dd0a500c913b645321497e47cddd1d6f8be261689c7fd0dd"
+    },
+    "flight_evaluation": {
+      "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble43\\reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004\\flight_evaluation.json",
+      "bytes": 24442,
+      "file_sha256": "a23d757bd5c880da5fb8bdc0effc8eebca350b02a3e29011a293862e63d4ad24"
+    },
+    "summary": {
+      "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble43\\reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004\\summary.json",
+      "bytes": 4955,
+      "file_sha256": "1bc43aed0568d5635d884dbd894f313e4936eebe67270a97673f0bacb21f0eaf"
+    },
+    "outer": {
+      "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble43\\reliability_v4_humble43_extensions_probe01_seed004_matrix\\observed_driver01\\05_person_extension_combined_seed004.attempt_terminal.json",
+      "bytes": 32096,
+      "file_sha256": "7736816a98e51fdfbe8de79ac2fec3c28ab2b9271b8bbf177fd98aaa02634f98"
+    },
+    "prior_observation": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble43_combined_early_loss_observation01.json",
+      "bytes": 6777,
+      "file_sha256": "d83274b42bcc510057fee9503e4489536e79053aa989c3b5e9fdb3290789fc25"
+    }
+  },
+  "metadata_consistency_checks": {
+    "original_slot_completed_fail": true,
+    "flight_report_matches_original_artifact_hash": true,
+    "summary_matches_original_artifact_hash": true,
+    "outer_binds_actual_slot_file_hash": true,
+    "outer_binds_recorded_internal_digest": true,
+    "outer_preserves_algorithm_fail": true,
+    "outer_error_is_null": true,
+    "outer_has_no_orchestration_stop": true,
+    "no_original_infrastructure_stop": true,
+    "original_flight_exit_zero": true,
+    "all_recorded_commands_exit_zero_without_error": true,
+    "early_observation_counts_corroborated_by_monitor_summary": true,
+    "prior_observation_retained": true,
+    "reported_telemetry_sha_matches_requested_reference": true
+  },
+  "original_slot": {
+    "started_utc": "2026-11-01T09:02:05.275124+00:00",
+    "finished_utc": "2026-11-01T09:22:51.706659+00:00",
+    "execution_status": "COMPLETED",
+    "status": "FAIL",
+    "engineering_result": "FAIL",
+    "engineering_evidence": {
+      "negative_evaluators": [
+        "surface_flight"
+      ],
+      "pending": [],
+      "incomplete": []
+    },
+    "infrastructure_stop": false,
+    "flight_exit_code": 0,
+    "record_sha256": "d39911b3b5bb212c979fe992d178d6a7e1a634c2c8b850dadae34a77978afb23"
+  },
+  "recorded_command_outcomes": [
+    {
+      "kind": "flight",
+      "started_utc": "2026-11-01T09:02:05.281430+00:00",
+      "finished_utc": "2026-11-01T09:19:33.541539+00:00",
+      "elapsed_wall_s": 1048.2601931919999,
+      "returncode": 0,
+      "error": null
+    },
+    {
+      "kind": "source_clock",
+      "started_utc": "2026-11-01T09:19:38.135926+00:00",
+      "finished_utc": "2026-11-01T09:20:21.959731+00:00",
+      "elapsed_wall_s": 43.82380586600084,
+      "returncode": 0,
+      "error": null
+    },
+    {
+      "kind": "native_startup",
+      "started_utc": "2026-11-01T09:20:21.968788+00:00",
+      "finished_utc": "2026-11-01T09:21:08.547271+00:00",
+      "elapsed_wall_s": 46.578508982998756,
+      "returncode": 0,
+      "error": null
+    },
+    {
+      "kind": "surface_flight",
+      "started_utc": "2026-11-01T09:21:08.558967+00:00",
+      "finished_utc": "2026-11-01T09:21:55.989075+00:00",
+      "elapsed_wall_s": 47.43013580099978,
+      "returncode": 0,
+      "error": null
+    },
+    {
+      "kind": "navigation",
+      "started_utc": "2026-11-01T09:21:56.000428+00:00",
+      "finished_utc": "2026-11-01T09:22:46.980286+00:00",
+      "elapsed_wall_s": 50.97983337699952,
+      "returncode": 0,
+      "error": null
+    }
+  ],
+  "telemetry_reference": {
+    "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble43\\reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004\\telemetry.jsonl",
+    "sha256_as_saved_in_original_slot_artifact_hashes": "1d41dfd6022b53aa99baabb82bf204855534adef7d711d734f493000dc2b558f",
+    "hash_provenance": "Original slot artifact_hashes and original infrastructure evidence; not a large-file rehash by this review",
+    "telemetry_reopened_or_rehashed_by_this_review": false,
+    "prior_single_prefix_read": {
+      "host": "Windows",
+      "sequential_passes": 1,
+      "initial_prefix_limit_bytes": 82759305,
+      "bytes_read": 82759305,
+      "parsed_json_rows": 21447,
+      "partial_or_invalid_json_rows": 0,
+      "whole_file_loaded_into_memory": false,
+      "reread_for_this_publication": false,
+      "wsl_commands_run": false,
+      "bag_or_health_payload_read": false,
+      "note": "Counts apply only to the prefix present at the initial stat. The original growing file was not rescanned to publish this record."
+    },
+    "final_full_payload_independently_verified_by_this_review": false
+  },
+  "original_surface_report": {
+    "acceptance": {
+      "result": "FAIL",
+      "scope": "Observed flight/occlusion behavior only; no ground-truth accuracy threshold is asserted",
+      "short_occlusion_recorded": true,
+      "long_occlusion_recorded": true,
+      "clock_timebase_available": true,
+      "missing_topics": [],
+      "input_read_error_count": 0,
+      "failed_events_retained": true
+    },
+    "interval": {
+      "start_s": 18.4,
+      "end_s": 93.568,
+      "duration_s": 75.168,
+      "follow_start_s": 18.4,
+      "recorded_end_s": 93.568,
+      "covers_recorded_trial_end": true
+    },
+    "short": {
+      "kind": "short",
+      "start_s": 30.400000000000002,
+      "end_s": 30.680000000000003,
+      "duration_s": 0.28000000000000114,
+      "complete": true,
+      "result": "PASS",
+      "first_predicted_s": 30.42,
+      "first_lost_s": null,
+      "first_hover_s": null,
+      "first_measured_after_open_s": 30.804,
+      "first_explicit_reselection_s": null,
+      "first_unrequested_active_state_after_loss_s": null,
+      "first_unrequested_tracking_control_after_loss_s": null,
+      "speed_at_shutter_start_mps": 0.44178949546012836,
+      "speed_at_hover_entry_mps": null,
+      "sustained_low_speed_start_s": null,
+      "braking_from_motion_demonstrated": false,
+      "checks": {
+        "recorded_close_event": true,
+        "shutter_close_service_succeeded": true,
+        "shutter_open_service_succeeded": true,
+        "shutter_close_ack_before_open_request": true,
+        "detector_interruption_observed": true,
+        "prediction_observed": true,
+        "lost_observed_for_long_occlusion": null,
+        "hover_observed_for_long_occlusion": null,
+        "sustained_low_speed_after_hover": null,
+        "no_automatic_recovery_after_long_loss": null,
+        "no_tracking_control_before_reselection_after_long_loss": null,
+        "sustained_tracking_after_reselection": null,
+        "no_loss_during_short_occlusion": true,
+        "identity_preserved_on_observed_recovery": true
+      },
+      "explicit_reselection": null,
+      "post_reselection_tracking": null
+    },
+    "long": {
+      "kind": "long",
+      "start_s": 43.400000000000006,
+      "end_s": 46.480000000000004,
+      "duration_s": 3.0799999999999983,
+      "complete": true,
+      "result": "FAIL",
+      "first_predicted_s": null,
+      "first_lost_s": 43.42,
+      "first_hover_s": 43.452,
+      "first_measured_after_open_s": null,
+      "first_explicit_reselection_s": 50.4,
+      "first_unrequested_active_state_after_loss_s": null,
+      "first_unrequested_tracking_control_after_loss_s": null,
+      "speed_at_shutter_start_mps": 0.010217749396616555,
+      "speed_at_hover_entry_mps": 0.010852518571456415,
+      "sustained_low_speed_start_s": 43.452,
+      "braking_from_motion_demonstrated": false,
+      "checks": {
+        "recorded_close_event": true,
+        "shutter_close_service_succeeded": true,
+        "shutter_open_service_succeeded": true,
+        "shutter_close_ack_before_open_request": true,
+        "detector_interruption_observed": true,
+        "prediction_observed": false,
+        "lost_observed_for_long_occlusion": true,
+        "hover_observed_for_long_occlusion": true,
+        "sustained_low_speed_after_hover": true,
+        "no_automatic_recovery_after_long_loss": true,
+        "no_tracking_control_before_reselection_after_long_loss": true,
+        "sustained_tracking_after_reselection": true,
+        "no_loss_during_short_occlusion": null,
+        "identity_preserved_on_observed_recovery": null
+      },
+      "explicit_reselection": {
+        "confirmed": true,
+        "original_target_uuid": "88b04691-ff6f-4a64-bb13-1191ffa07afa",
+        "requested_target_uuid": "0ee4d76d-2578-4473-b274-ac31f562464d",
+        "confirmed_target_uuid": "0ee4d76d-2578-4473-b274-ac31f562464d",
+        "selection_time_s": 50.4,
+        "confirmation_time_s": 50.404,
+        "confirmation_record_sequence": 49910,
+        "confirmation_state_index": 1874,
+        "confirmation_image_stamp_s": 50.3,
+        "confirmed_track_id": 3,
+        "action": "SELECT",
+        "selection_action_code": 0,
+        "first_valid_request_s": 50.4,
+        "invalid_candidates": []
+      },
+      "post_reselection_tracking": {
+        "result": "PASS",
+        "checks": {
+          "minimum_recording_duration": true,
+          "minimum_state_span": true,
+          "minimum_control_span": true,
+          "same_target_active_states_only": true,
+          "tracking_control_only_after_grace": true,
+          "continuous_state_evidence": true,
+          "continuous_control_evidence": true,
+          "fresh_state_at_trial_end": true,
+          "tracking_control_at_trial_end": true,
+          "chronological_state_and_control_evidence": true
+        },
+        "confirmed_target_uuid": "0ee4d76d-2578-4473-b274-ac31f562464d",
+        "confirmation_time_s": 50.404,
+        "confirmation_record_sequence": 49910,
+        "confirmation_state_index": 1874,
+        "trial_end_s": 93.568,
+        "minimum_duration_s": 5.0,
+        "tail_freshness_s": 0.5,
+        "maximum_evidence_gap_s": 0.5,
+        "control_grace_s": 0.1,
+        "maximum_measurement_age_s": 0.75,
+        "observed_duration_s": 43.163999999999994,
+        "state_span_s": 43.156,
+        "control_span_s": 43.10000000000001,
+        "last_state_age_to_trial_end_s": 0.007999999999995566,
+        "last_control_age_to_trial_end_s": 0.015999999999991132,
+        "last_state_measurement_age_at_trial_end_s": 0.16799999642371688,
+        "maximum_state_evidence_gap_s": 0.020000000000010232,
+        "maximum_control_evidence_gap_s": 0.05200000000000671,
+        "state_count": 2538,
+        "tracking_control_count": 863,
+        "state_counts": {
+          "MEASURED": 380,
+          "PREDICTED": 2158
+        },
+        "lifecycle_counts": {
+          "PREDICT": 830,
+          "FOLLOW": 33
+        },
+        "first_invalid_state_s": null,
+        "first_uuid_mismatch_s": null,
+        "first_nontracking_control_after_grace_s": null,
+        "state_time_regression_count": 0,
+        "control_time_regression_count": 0,
+        "receive_clock_regression_count": 0,
+        "invalid_receive_clock_count": 0,
+        "chronology_time_basis": "received_sim_s",
+        "receive_clock_order_scope": "GLOBAL_RECORD_SEQUENCE",
+        "operational_time_regressions_are_diagnostic_only": true,
+        "boundary_evidence": "RECORD_SEQUENCE",
+        "semantics": "The exact confirmation record starts the sustained interval. Recording order, not a float-time window, selects later records; equal-time or backdated later faults remain evidence. Receive /clock values must be valid and nondecreasing. Derived max(header, receive) time regressions are diagnostic because measurement and prediction headers have different meanings. A brief confirmation cannot certify sustained tracking"
+      }
+    },
+    "false_long_checks": [
+      "prediction_observed"
+    ]
+  },
+  "monitor_summary": {
+    "follow_start_s": 18.400000000000002,
+    "end_sim_s": 93.38000000000001,
+    "states": {
+      "1": 519,
+      "2": 2978,
+      "3": 909
+    },
+    "lifecycles": {
+      "6": 366,
+      "3": 1156,
+      "4": 312,
+      "2": 33
+    },
+    "occlusion_schedule": [
+      {
+        "name": "short",
+        "start_offset_s": 12.0,
+        "duration_s": 0.2,
+        "render_margin_s": 0.05,
+        "state": "complete",
+        "close_request_id": 1,
+        "close_ack_s": 30.42,
+        "open_not_before_s": 30.67,
+        "open_request_id": 3,
+        "open_request_s": 30.680000000000003,
+        "open_ack_s": 30.700000000000003
+      },
+      {
+        "name": "long",
+        "start_offset_s": 25.0,
+        "duration_s": 3.0,
+        "render_margin_s": 0.05,
+        "state": "complete",
+        "close_request_id": 4,
+        "close_ack_s": 43.42,
+        "open_not_before_s": 46.47,
+        "open_request_id": 19,
+        "open_request_s": 46.480000000000004,
+        "open_ack_s": 46.5
+      }
+    ],
+    "explicit_reselection": {
+      "enabled": true,
+      "requested_target_uuid": "0ee4d76d-2578-4473-b274-ac31f562464d",
+      "measured_confirmation": true
+    },
+    "basic_flight_passed": true,
+    "termination_reason": "follow_duration_reached",
+    "monitor_exit_code": 0
+  },
+  "outer_closure": {
+    "started_utc": "2026-11-01T09:02:02.021058+00:00",
+    "finished_utc": "2026-11-01T09:23:21.491184+00:00",
+    "error": null,
+    "runner_stop": null,
+    "started_this_invocation": 1,
+    "status_counts_snapshot": {
+      "PASS": 4,
+      "FAIL": 1,
+      "PENDING": 11
+    },
+    "terminal_count_snapshot": 5,
+    "planned_count": 16,
+    "process_audit_status": "PASS",
+    "process_audit_errors": [],
+    "bridge_audit_status": "PASS",
+    "closed75_archive_as_recorded": {
+      "scope": "ORIGINAL75S_CLOSED_ARCHIVE_METADATA_ONLY_NO_PAYLOAD_READ",
+      "reports": {
+        "summary.json": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004/summary.json",
+          "sha256": "1bc43aed0568d5635d884dbd894f313e4936eebe67270a97673f0bacb21f0eaf"
+        },
+        "recording_closure.json": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004/recording_closure.json",
+          "sha256": "6e24aa40027f58203ffcafd2f4341fe5e475cea0aad4df7374591636609db91f"
+        },
+        "bag_integrity.json": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004/bag_integrity.json",
+          "sha256": "64df4e035cc9befd8a606f4fb092349637f3e37954f62283d5243ed13efc33b0"
+        },
+        "process_exit_codes.json": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_extensions_probe01_person_extension_combined_seed004/process_exit_codes.json",
+          "sha256": "c9416c3944f601db0a3d21f3d4c955f912835be982815403c4e4508452d6db16"
+        }
+      },
+      "full75s_source_clock": true,
+      "native_archive_closed": true
+    },
+    "known_algorithm_failures_as_recorded": [
+      "navigation:REGISTERED_PERFORMANCE_GATES_FAILED",
+      "surface:long:prediction_observed=FAIL"
+    ],
+    "global_batch_driver_native_completion_claimed": false,
+    "native_health_stream_revalidated_by_this_review": false
+  },
+  "early_loss_observation_retained": {
+    "first_lost_time_s": 34.86,
+    "last_contiguous_lost_time_s": 50.400000000000006,
+    "lost_state_records": 909,
+    "original_target_uuid": "88b04691-ff6f-4a64-bb13-1191ffa07afa",
+    "original_track_id": 1,
+    "first_nonlost_after_interval_s": 50.404,
+    "new_target_uuid": "0ee4d76d-2578-4473-b274-ac31f562464d",
+    "new_track_id": 3,
+    "interpretation": "Initial loss precedes the scheduled long shutter request. Long-window LOST observations continue an already lost task; they do not establish that this long shutter independently caused initial loss. Observed return follows the explicitly recorded new-task selection."
+  },
+  "diagnostic_conclusions": [
+    "The original engineering FAIL is retained. The original surface report is FAIL, with short PASS and long FAIL; the only false long-window check is prediction_observed.",
+    "The earlier observation places initial LOST at simulation 34.86 s, before the scheduled long shutter request at 43.400000000000006 s. The long report first_lost_s=43.42 is its first in-window lost sample, not the global onset of loss.",
+    "Long-window prediction was not demonstrated while the task was already lost. The matching shutter acknowledgements do not remove the earlier reliability failure.",
+    "Explicit selection at 50.4 s confirmed a fresh new task at 50.404 s. The original report certifies 43.163999999999994 s of sustained post-reselection tracking through the recorded end at 93.568 s.",
+    "Low speed during the long window passed, but braking_from_motion_demonstrated is false; the original reported speed at shutter start was already approximately 0.0102 m/s.",
+    "The outer closure reports no orchestration error or infrastructure stop and preserves legal algorithm failure. Its snapshot is 4 PASS, 1 FAIL and 11 PENDING; the full extension batch was not complete at that snapshot.",
+    "The outer original known_algorithm_failures also retains navigation:REGISTERED_PERFORMANCE_GATES_FAILED. This binding does not reinterpret a completed navigation report as a performance PASS."
+  ],
+  "limitations": [
+    "No bag, telemetry payload, health payload, raw image, model, or full source tree was reread or rehashed for this binding.",
+    "This review binds the prior observation and small closed originals; it does not replace the original evaluator, rerun thresholds, or manufacture native completion evidence.",
+    "Detection, delayed delivery, association and measurement gating remain unresolved causal alternatives for the early stale-state transition.",
+    "Shutter request/ACK times are service execution evidence, not independently measured rendered occlusion duration.",
+    "Task UUID confirmation and tracking continuity do not certify independent physical identity or automatic ReID.",
+    "The monitor end_sim_s and the full recorded evaluation endpoint are retained separately and are not forced to coincide.",
+    "The prior observation file and frozen results remain unchanged. A healthy algorithm FAIL remains FAIL."
+  ]
+}
