@@ -1,8 +1,10 @@
 # 查看当前实验
 
-**2026-11-01 13:46:07（北京时间）快照：Humble43同源核心12独审通过，原生v2组件04的85项及3项describe真实通过；安全4原四场全部PASS、完整原guard及闭合独审通过，批次主命令退出0，正式仍0/280。** 扩展原plan已真实退出0并通过104项静态独审，独立FINAL合同已发布；原16场run于05:46:07 UTC启动，当前首飞前核验、0/16完成，尚无已起飞或飞行通过结论。
+**2026-11-01 14:31:00（北京时间）快照：Humble43同源核心12独审通过，原生v2组件04的85项及3项describe真实通过；安全4原四场全部PASS、完整原guard及闭合独审通过，安全批次主命令退出0，正式仍0/280。** 扩展首场`person_extension_depth_noise_seed004`已产生原始PASS/engineering PASS，外层attempt也已闭合；当前1/16终态、1 PASS，截至本快照第二场尚无START，扩展整批尚未闭合。
 
-当前请打开本机[Humble43扩展批次进度页](../results/project_progress/humble43_extension01/index.html)，原规划、PENDING、独审及FINAL发布依据见[扩展16启动快照](../tools/experiment_orchestration/humble43_extension16_start_snapshot01/README.md)。命令心跳或进程存在不能证明起飞，须以真实开始/终态判断；104项静态check不计作新增原生测试或实验PASS。核心及安全原件仍见[核心独审收据](../tools/experiment_orchestration/humble43_core12_closure_snapshot01/humble43_core12_closed_independent01.json)及[安全4闭合快照](../tools/experiment_orchestration/humble43_safety4_closure_snapshot01/README.md)。
+当前请打开本机[Humble43扩展批次进度页](../results/project_progress/humble43_extension01/index.html)。首场[原槽终态](../results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_seed004_matrix/slots/person_extension_depth_noise_seed004.json)于06:29:51.150954 UTC生成，[外层attempt](../results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_seed004_matrix/observed_driver01/01_person_extension_depth_noise_seed004.attempt_terminal.json)于06:31:00.198600 UTC闭合：flight_exit0、COMPLETED、infrastructure_stop=false、error=null，started_this_invocation=1且原audit存在。原规划、PENDING、独审及FINAL发布依据仍见[13:46扩展16启动快照](../tools/experiment_orchestration/humble43_extension16_start_snapshot01/README.md)，原字节保留。命令心跳不能替代真实终态，104项静态check不计作新增原生测试或实验PASS。核心及安全原件仍见[核心独审收据](../tools/experiment_orchestration/humble43_core12_closure_snapshot01/humble43_core12_closed_independent01.json)及[安全4闭合快照](../tools/experiment_orchestration/humble43_safety4_closure_snapshot01/README.md)。
+
+该首场深度噪声压力样本的原始录包为4,148,883,456 B、压缩为1,214,272,594 B，在线与research的RGB/Depth四流各933条；[原归档报告](../results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_person_extension_depth_noise_seed004/bag_integrity.json)记录实际`zstd -T4 -19 --long=27 --check`策略。单场不能代替完整28格容量测量，也不授予正式准入。本批剩余暂按8—10小时条件估计，须继续按实际终态、归档和观察器收尾更新。
 
 本机[Humble43安全批次进度页](../results/project_progress/humble43_safety01/index.html)提供命令级心跳和真实退出状态，尚不显示四场的槽位计数。原完整guard于05:12:36.708586—05:16:57.707220 UTC通过，monitor的owned-main于05:16:58.567204 UTC记录code0；四场原PASS见上述闭合快照或本机`results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_safety_seed004_audit/`原始小JSON。闭合依据为postwait owner COMPLETE及原guard，较早COPY_VERIFIED_PENDING_OWNER_CLOSURE候选不代表最终owner仍未收尾。原[核心进度页](../results/project_progress/humble43_core01/index.html)保留12个原始PASS；旧Humble42、41及`current/`页面均为历史记录。
 
@@ -26,7 +28,7 @@ Humble43已完成四包隔离构建、来源检查和真实消息序列化检查
 
 原生v2组件04已实际退出0：30+40+15共85项全PASS、0跳过，9项真实authority完整执行，3项describe的canonical全部匹配，原终态finally核验1940个原文件。[新最小快照](../tools/experiment_orchestration/humble43_native_v2_components04_snapshot01/README.md)保存原终态、suite结果/日志、describe和peer核查。Windows78通过/7跳过、原Humble02的76通过/9锁争用ERROR均保留；组件03是tests_run=false的测试前调度拒绝，未运行85项，不计作测试失败或通过。
 
-安全4已真实完成4 PASS、完整原guard PASS、闭合独审PASS与主命令code0。扩展原plan闭合和104项静态独审已通过，PENDING保持原样，root仅改变status另产独立FINAL runtime合同；原16场run已启动，当前首飞前核验、0/16完成。之后依次完成实际扩展16、28格容量实测、两条预定录制导出与R0定标、独立最终来源构建/登记/封存、正式120+160和统计交付。v2定标/发布工具按原协议保留可评价压力场景的算法FAIL；原安全失效或缺证仍不能据此放行，开发关口通过不构成正式准入。
+安全4已真实完成4 PASS、完整原guard PASS、闭合独审PASS与主命令code0。扩展原plan闭合和104项静态独审已通过，PENDING保持原样，root仅改变status另产独立FINAL runtime合同；原16场run已有首场原PASS及外层attempt闭合，当前1/16完成，截至14:31:00快照第二场尚无START，整批owner仍待最后收尾。之后依次完成其余实际扩展、28格容量实测、两条预定录制导出与R0定标、独立最终来源构建/登记/封存、正式120+160和统计交付。v2定标/发布工具按原协议保留可评价压力场景的算法FAIL；原安全失效或缺证仍不能据此放行，开发关口通过不构成正式准入。
 
 核心12独审、原生04组件补验与安全4开发关口已通过；后续还有扩展、容量/定标、最终准入及280次正式飞行，整个剩余工作维持5—6天量级估计，发生新故障时按实测修订。此处是带时间的快照，最新状态以实际原件和实时页为准。进度页、视频和完整原始结果仅在本机存在；GitHub保存源码和最小证据说明，网页不会自行向聊天发送完成通知。
 

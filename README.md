@@ -1,8 +1,10 @@
 # RGB-D UAV target tracking and following
 
-**2026-11-01 13:46:07（北京时间）快照：Humble43 同源核心12独审通过，原生v2组件04的85项及3项describe真实通过；安全4原四场全部PASS、完整原guard及闭合独审通过，批次主命令退出0，正式仍0/280。** 扩展原plan已退出0并通过104项静态独审，独立FINAL合同已发布，原16场run于05:46:07 UTC启动，当前首飞前核验、0/16完成；不能把启动当作已起飞或通过。容量、定标及正式研究仍待完成，不能称全部验收通过。
+**2026-11-01 14:31:00（北京时间）快照：Humble43 同源核心12独审通过，原生v2组件04的85项及3项describe真实通过；安全4原四场全部PASS、完整原guard及闭合独审通过，安全批次主命令退出0，正式仍0/280。** 扩展原16场run已产生首场`person_extension_depth_noise_seed004`原始PASS/engineering PASS，外层attempt也已闭合，当前1/16终态、1 PASS；截至本快照第二场尚无START，扩展整批尚未闭合。容量、定标及正式研究仍待完成，不能称全部验收通过。
 
-扩展的原plan、PENDING、独审、FINAL及发布来源见[扩展16启动快照](tools/experiment_orchestration/humble43_extension16_start_snapshot01/README.md)，当前命令状态见本机[扩展进度页](results/project_progress/humble43_extension01/index.html)。104项是静态check，不是104次原生测试或飞行；全部原失败、未知及完整分母继续保留。
+首场[原槽终态](results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_seed004_matrix/slots/person_extension_depth_noise_seed004.json)于06:29:51.150954 UTC生成，[外层attempt](results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_seed004_matrix/observed_driver01/01_person_extension_depth_noise_seed004.attempt_terminal.json)于06:31:00.198600 UTC闭合，flight_exit0、COMPLETED、infrastructure_stop=false、error=null。该压力样本原始录包4,148,883,456 B、压缩1,214,272,594 B，在线与research的RGB/Depth四流各933条，实际归档策略为`zstd -T4 -19 --long=27 --check`；不能代表完整28格容量或280次准入。本批剩余暂按8—10小时条件估计，整体仍为5—6天量级，按新实测修订。
+
+扩展的原plan、PENDING、独审、FINAL及发布来源仍见[13:46扩展16启动快照](tools/experiment_orchestration/humble43_extension16_start_snapshot01/README.md)，原字节保留；当前命令状态见本机[扩展进度页](results/project_progress/humble43_extension01/index.html)。104项是静态check，不是104次原生测试或飞行；全部原失败、未知及完整分母继续保留。
 
 [核心独审收据](tools/experiment_orchestration/humble43_core12_closure_snapshot01/humble43_core12_closed_independent01.json)确认completed12、all_original_core_cells_pass=true；[原生04快照](tools/experiment_orchestration/humble43_native_v2_components04_snapshot01/README.md)保留85项全PASS、0跳过及3项canonical核验；[安全4闭合快照](tools/experiment_orchestration/humble43_safety4_closure_snapshot01/README.md)保留真实四场终态、facts与完整guard。安全原guard于05:12:36.708586—05:16:57.707220 UTC通过，monitor的owned-main于05:16:58.567204 UTC记录code0；原终态中的postwait owner为COMPLETE，不能与较早COPY候选pending混为一谈。本机[安全进度页](results/project_progress/humble43_safety01/index.html)保留命令级退出状态，核心旧页保留12原PASS；这些开发关口不等于整个项目验收。
 
