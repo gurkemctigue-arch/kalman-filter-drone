@@ -4,7 +4,7 @@
 
 第六场`person_extension_speed_changes_velocity_seed004`的原槽于09:27:20.264007 UTC START，外层于09:27:16.137633 UTC START，截至本快照尚无终态。[前五场失败与原件快照](tools/experiment_orchestration/humble43_extension_partial05_snapshot01/README.md)保留4 PASS/1 FAIL；其中11未开始是第六场START之前的历史时点，原字节保留。
 
-第五场`person_extension_combined_seed004`于09:22:51.706659 UTC记录COMPLETED/FAIL，flight_exit0、infrastructure_stop=false；外层于09:23:21.491184 UTC闭合、error=null。目标在34.86秒已提前LOST，长遮挡请求43.4秒才开始，因此`long.prediction_observed=false`，不能把提前失锁当正常长遮挡触发。短遮挡通过，50.4秒显式重选后43.164秒持续跟踪通过；这些局部通过不抵消原FAIL。外层另保留导航性能门失败，完整原件和边界见[当前验证记录](planning/reliability-v4-humble43-validation-20261101.md)。
+第五场`person_extension_combined_seed004`于09:22:51.706659 UTC记录COMPLETED/FAIL，flight_exit0、infrastructure_stop=false；外层于09:23:21.491184 UTC闭合、error=null。目标在34.86秒已提前LOST，长遮挡请求43.4秒才开始，因此`long.prediction_observed=false`，不能把提前失锁当正常长遮挡触发。短遮挡通过，50.4秒显式重选后43.164秒持续跟踪通过；这些局部通过不抵消原FAIL。外层另保留导航性能门失败，完整原件和边界见[当前验证记录](planning/reliability-v4-humble43-validation-20261101.md)。后续[观测空窗诊断](tools/diagnostics/humble43_combined_gap_snapshot01/README.md)显示，冻结丢帧规则的三个连续200 ms窗口与超出预测预算的测量间隙吻合；仍缺逐帧交付账本，原FAIL保持。
 
 首场[原槽终态](results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_seed004_matrix/slots/person_extension_depth_noise_seed004.json)于06:29:51.150954 UTC生成，[外层attempt](results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_seed004_matrix/observed_driver01/01_person_extension_depth_noise_seed004.attempt_terminal.json)于06:31:00.198600 UTC闭合，flight_exit0、COMPLETED、infrastructure_stop=false、error=null。该压力样本原始录包4,148,883,456 B、压缩1,214,272,594 B，在线与research的RGB/Depth四流各933条，实际归档策略为`zstd -T4 -19 --long=27 --check`；不能代表完整28格容量或280次准入。
 
