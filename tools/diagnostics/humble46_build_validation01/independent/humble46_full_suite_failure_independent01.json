@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "scope": "INDEPENDENT_ACTUAL_HUMBLE46_FULL_NATIVE_SUITE_FAILURE_PRESERVATION_NOT_CANDIDATE_ACCEPTANCE",
+  "status": "CONFIRMED_ORIGINAL_FAILURE_SOURCE_STABLE_AND_CLEANUP_CLOSED_NO_CANDIDATE_OR_FLIGHT",
+  "created_utc": "2026-11-01T18:34:15.964147+00:00",
+  "bindings": {
+    "action.terminal.json": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\reviewed_freeze_actions_v4_humble46\\validate\\action.terminal.json",
+      "bytes": 9392,
+      "sha256": "04a034078c326f56e8a3fdb938f029f40de7b0586fec043299015e252509de5f"
+    },
+    "action.log": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\reviewed_freeze_actions_v4_humble46\\validate\\action.log",
+      "bytes": 239,
+      "sha256": "95823457ae30b2a0e3f32683ca232c3f828ac4a9c59778ece4f7591611fa9066"
+    },
+    "runtime_preflight.json": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\reviewed_freeze_actions_v4_humble46\\validate\\runtime_preflight.json",
+      "bytes": 16688,
+      "sha256": "49983e800823bb6bcb1dc6f2a0c96e9dbc49dbc1bc31831788ca04b3fa7f4758"
+    },
+    "build_validation_summary.json": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble46\\freeze_validation\\build_validation_summary.json",
+      "bytes": 4896,
+      "sha256": "90c3d4e4af0c30663b49d83138d18298e2748a94e94efe05a146475ae780a2f2"
+    },
+    "unittest.log": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble46\\freeze_validation\\unittest.log",
+      "bytes": 225628,
+      "sha256": "763298660528c61efacfd0ec96af340988f7d0d5ffd1d0b8553115765f9f5594"
+    },
+    "source_freeze_manifest.json": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble46\\freeze_validation\\source_freeze_manifest.json",
+      "bytes": 288626,
+      "sha256": "39e0bf6dc5c6ca994b8475b057b2a66e79819640893dc0657642e63d0f98f315"
+    },
+    "generated_message_roundtrip.json": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble46\\freeze_validation\\generated_message_roundtrip.json",
+      "bytes": 1960,
+      "sha256": "f22af0325c0ea2a2a6609f5401301c0950193a8448a4b682b756fb84f03f5ec4"
+    }
+  },
+  "native_validate_action": {
+    "status": "FAILED",
+    "direct_child_returncode": 2,
+    "elapsed_wall_s": 158.26009007799996,
+    "original_timeout_s": 600,
+    "execution_count": 1,
+    "requested_signals": [],
+    "cleanup_closed": true,
+    "before_after_source_review_capsule_supplement_equal": true
+  },
+  "actual_full_suite": {
+    "original_status": "FAIL",
+    "original_returncode": 1,
+    "tests_total_including_skipped": 1789,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 5,
+    "run_elapsed_s": 99.268,
+    "exact_five_skip_contract_preserved": true,
+    "failed_test": "test_legacy_trial_exact_hash_and_no_mutated_default_fields (test_car_surface_registration.CarSurfaceRegistrationTests)",
+    "failed_assertion": "Normalized complete legacy trial digest differs",
+    "actual_hash": "fc7b96087836086f1d83dc9a76a58bcc8a07af0a838cf6813c466f1251f89150",
+    "old_expected_hash": "37bb3da92a9fc27516a4220592d864c0ab885ed537ed0b273878e4a8322372e3",
+    "source_unchanged": true,
+    "closed_historical_evidence_unchanged": true,
+    "execution_count": 1
+  },
+  "already_passed_build_is_separate": {
+    "four_packages_built": true,
+    "module_ament_isolation": true,
+    "actual_CDR11_report_hash": "f22af0325c0ea2a2a6609f5401301c0950193a8448a4b682b756fb84f03f5ec4"
+  },
+  "cause_status": "Static trial generator intentionally now emits one explicit receipt_wall stream-mode flag for historical protocols; exact old full-trial hash predates this. Await isolated original45 vs46 trial comparison before approving minimum assertion repair. No claim that algorithm or real flight behavior was validated.",
+  "required_next_steps": [
+    "Preserve actual46 failed suite/terminal/summary and old roots unchanged",
+    "Compare isolated original45 and46 legacy trials and prove the entire difference is the independently reviewed explicit receipt_wall opt-in",
+    "Repair only the regression assertion while retaining original37bb hash for all non-migration bytes and exact explicit flag count/value semantics; no simple hash replacement or production flag removal",
+    "Run complete Windows suite after repair, then review/freeze a fresh47 source generation and perform original cold native build/full suite",
+    "Do not publish candidate46, generate46 runtime flight contracts or fly46"
+  ],
+  "no_original_or_frozen_source_modified": true,
+  "no_WSL_tests_or_bag_execution_by_reviewer": true,
+  "runtime_or_candidate_acceptance": false,
+  "blockers": [
+    "Native46 full-suite one original assertion failure; remains a real engineering validation failure until fresh repaired source passes full validation"
+  ]
+}

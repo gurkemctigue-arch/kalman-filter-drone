@@ -1,5 +1,7 @@
 # 查看当前实验
 
+**2026-11-02：Humble46冷构建通过，完整原生1789项测试出现1项旧协议摘要断言失败、5项平台跳过；正在核对兼容性并准备47。** 原46失败保留，未开始46飞行，正式0/280。见[本轮验证记录](../planning/reliability-v4-humble46-validation-20261102.md)和本机[原测试终态](../results/project_progress/humble46_validate01/index.html)。
+
 **2026-11-02（北京时间）：Humble45核心批次停止后，已完成时序取证和时钟修复候选；145项相关测试及22项补充复验通过，最终独审通过。** 原结果1 PASS、1基础设施错误、10未开始保持，正式仍0/280；接下来准备新Humble46隔离构建、完整原生测试和新核心批次。见[故障、修复与后续工作](../planning/reliability-v4-humble45-position-abort-20261102.md)。
 
 可观看本轮[汽车远距离单场录像](../results/frozen_fullplan_v4_humble45/reliability_v4_humble45_recording_probe02_car_extension_far_distance_seed004/onboard.mp4)，或打开[核心12实时进度页](../results/project_progress/humble44_recording01/index.html)。页面每15秒观察一次本地原始小文件，浏览器刷新后显示最新内容；页面不会向聊天主动发送消息。录像及实时页仅在本机存在，GitHub保存源码和最小证据快照。

@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "scope": "READ_ONLY_ORIGINAL46_VALIDATE_FAILURE_AND_FIVE_SKIP_METADATA_REVIEW_NOT_RETRY_OR_RUNTIME_ACCEPTANCE",
+  "status": "ORIGINAL_VALIDATE_FAILURE_RETAINED",
+  "created_utc": "2026-11-01T18:34:44.165604+00:00",
+  "original_inputs": {
+    "actions/validate/action.terminal.json": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\diagnostics\\humble46_build_validation01\\actions\\validate\\action.terminal.json",
+      "sha256": "04a034078c326f56e8a3fdb938f029f40de7b0586fec043299015e252509de5f",
+      "bytes": 9392
+    },
+    "freeze_validation/build_validation_summary.json": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\diagnostics\\humble46_build_validation01\\freeze_validation\\build_validation_summary.json",
+      "sha256": "90c3d4e4af0c30663b49d83138d18298e2748a94e94efe05a146475ae780a2f2",
+      "bytes": 4896
+    },
+    "freeze_validation/unittest.log": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\diagnostics\\humble46_build_validation01\\freeze_validation\\unittest.log",
+      "sha256": "763298660528c61efacfd0ec96af340988f7d0d5ffd1d0b8553115765f9f5594",
+      "bytes": 225628
+    }
+  },
+  "action": {
+    "status": "FAILED",
+    "direct_child_returncode": 2,
+    "elapsed_wall_s": 158.26009007799996,
+    "requested_signals": [],
+    "cleanup": {
+      "members_before_cleanup": [],
+      "signals": [],
+      "residual_processes": [],
+      "actual_proc_group_empty": true,
+      "direct_child_reaped": true
+    }
+  },
+  "suite": {
+    "tests_total_including_skips": 1789,
+    "failure_count_from_original_headers": 1,
+    "error_count_from_original_headers": 0,
+    "skipped": 5,
+    "original_summary_status": "FAIL",
+    "original_summary_returncode": 1,
+    "execution_count": 1,
+    "source_unchanged": true,
+    "closed_original_evidence_unchanged": true,
+    "raw_failure_and_footer": [
+      "FAIL: test_legacy_trial_exact_hash_and_no_mutated_default_fields (test_car_surface_registration.CarSurfaceRegistrationTests)",
+      "----------------------------------------------------------------------",
+      "Traceback (most recent call last):",
+      "  File \"/root/uav_tracking_fullplan_v4_humble46/tests/test_car_surface_registration.py\", line 61, in test_legacy_trial_exact_hash_and_no_mutated_default_fields",
+      "    self.assertEqual(v4.digest(normalized_paths(trial)),",
+      "AssertionError: 'fc7b96087836086f1d83dc9a76a58bcc8a07af0a838cf6813c466f1251f89150' != '37bb3da92a9fc27516a4220592d864c0ab885ed537ed0b273878e4a8322372e3'",
+      "- fc7b96087836086f1d83dc9a76a58bcc8a07af0a838cf6813c466f1251f89150",
+      "+ 37bb3da92a9fc27516a4220592d864c0ab885ed537ed0b273878e4a8322372e3",
+      "",
+      "",
+      "----------------------------------------------------------------------",
+      "Ran 1789 tests in 99.268s",
+      "",
+      "FAILED (failures=1, skipped=5)",
+      "{\"status\": \"COMPLETE_AUXILIARY_ANALYSIS\", \"output\": \"/tmp/tmp3twytsbc/inputs/appendix\", \"manifest_sha256\": \"ee157088c470d9ad2b488927d363d93675f0d840026bb9c62d5f717b58611263\"}",
+      "{\"status\": \"INCOMPLETE_EVIDENCE\", \"output\": \"/tmp/tmpd_ihnikd/inputs/appendix\", \"manifest_sha256\": \"1b7f93dc091bf6201d7c367fb10cfe0258c178415e8e2c344f6110bb02976346\"}"
+    ]
+  },
+  "five_actual_skips": {
+    "test_document_runtime_preparation.DocumentRuntimePreparationTests.test_word_script_paths_only_never_starts_word_and_preserves_existing_pdf": "Windows PowerShell path-only fixture",
+    "test_project_progress_monitor.ProjectProgressTests.test_real_monitor_survives_busy_snapshot_without_restarting_or_killing_target": "Real Windows sharing semantics",
+    "test_project_progress_monitor.ProjectProgressTests.test_real_windows_persistent_lock_preserves_snapshot_and_cleans_temporary": "Real Windows sharing semantics",
+    "test_project_progress_monitor.ProjectProgressTests.test_real_windows_reader_releasing_lock_allows_json_and_html_publication": "Real Windows sharing semantics",
+    "test_reliability_v4_report.ReliabilityReportTests.test_node_gate_verifies_python_sources_without_rendering_docx": "Node.js and npm docx are required for the source-only renderer gate"
+  },
+  "five_skip_source_contract": {
+    "expected_skip_count": 5,
+    "source_counts": {
+      "tests/test_document_runtime_preparation.py": 1,
+      "tests/test_project_progress_monitor.py": 3,
+      "tests/test_reliability_v4_report.py": 1
+    },
+    "expected_tests": {
+      "test_document_runtime_preparation.DocumentRuntimePreparationTests.test_word_script_paths_only_never_starts_word_and_preserves_existing_pdf": "Windows PowerShell path-only fixture",
+      "test_reliability_v4_report.ReliabilityReportTests.test_node_gate_verifies_python_sources_without_rendering_docx": "Node.js and npm docx are required for the source-only renderer gate",
+      "test_project_progress_monitor.ProjectProgressTests.test_real_windows_reader_releasing_lock_allows_json_and_html_publication": "Real Windows sharing semantics",
+      "test_project_progress_monitor.ProjectProgressTests.test_real_windows_persistent_lock_preserves_snapshot_and_cleans_temporary": "Real Windows sharing semantics",
+      "test_project_progress_monitor.ProjectProgressTests.test_real_monitor_survives_busy_snapshot_without_restarting_or_killing_target": "Real Windows sharing semantics"
+    }
+  },
+  "exact_skip_log_summary_source_contract_equal": true,
+  "candidate_or_runtime_acceptance_claimed": false,
+  "tests_runtime_modified_by_reviewer": false,
+  "WSL_or_retry_executed_by_reviewer": false
+}

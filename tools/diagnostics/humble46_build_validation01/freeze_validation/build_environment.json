@@ -1,0 +1,46 @@
+{
+  "created_utc": "2026-11-01T18:26:06.672315+00:00",
+  "command": [
+    "/root/uav_humble22/venv/bin/python",
+    "/usr/bin/colcon",
+    "build",
+    "--merge-install",
+    "--symlink-install",
+    "--packages-select",
+    "uav_tracking_interfaces",
+    "uav_tracking_nodes",
+    "uav_tracking_bringup",
+    "uav_tracking_px4_adapter",
+    "--cmake-args",
+    "-DPython3_EXECUTABLE=/root/uav_humble22/venv/bin/python",
+    "-DPYTHON_EXECUTABLE=/root/uav_humble22/venv/bin/python",
+    "-Dfastcdr_DIR=/opt/ros/humble/lib/cmake/fastcdr"
+  ],
+  "variables": {
+    "PATH": "/root/uav_humble22/venv/bin:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+    "AMENT_PREFIX_PATH": "/root/uav_humble22/px4_msgs_ws/install/px4_msgs:/root/uav_humble22/ros_gz_shutdown_A01_ws/install:/root/uav_humble22/ros_gz_ws/install/ros_gz_sim:/root/uav_humble22/ros_gz_ws/install/ros_gz_bridge:/root/uav_humble22/ros_gz_ws/install/ros_gz_interfaces:/opt/ros/humble",
+    "COLCON_PREFIX_PATH": "/root/uav_humble22/px4_msgs_ws/install:/root/uav_humble22/ros_gz_ws/install:/root/uav_humble22/ros_gz_shutdown_A01_ws/install",
+    "CMAKE_PREFIX_PATH": "/root/uav_humble22/px4_msgs_ws/install/px4_msgs:/root/uav_humble22/ros_gz_shutdown_A01_ws/install:/root/uav_humble22/ros_gz_ws/install/ros_gz_sim:/root/uav_humble22/ros_gz_ws/install/ros_gz_bridge:/root/uav_humble22/ros_gz_ws/install/ros_gz_interfaces",
+    "CMAKE_MODULE_PATH": null,
+    "CMAKE_INCLUDE_PATH": null,
+    "CMAKE_LIBRARY_PATH": null,
+    "CMAKE_PROGRAM_PATH": null,
+    "CMAKE_FRAMEWORK_PATH": null,
+    "CMAKE_APPBUNDLE_PATH": null,
+    "CPATH": null,
+    "CPLUS_INCLUDE_PATH": null,
+    "C_INCLUDE_PATH": null,
+    "LIBRARY_PATH": null,
+    "PKG_CONFIG_PATH": null,
+    "LD_LIBRARY_PATH": "/root/uav_humble22/px4_msgs_ws/install/px4_msgs/lib:/root/uav_humble22/ros_gz_shutdown_A01_ws/install/lib:/root/uav_humble22/ros_gz_ws/install/ros_gz_sim/lib:/root/uav_humble22/ros_gz_ws/install/ros_gz_bridge/lib:/root/uav_humble22/ros_gz_ws/install/ros_gz_interfaces/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib",
+    "PYTHONPATH": "/root/uav_tracking_fullplan_v4_humble46:/root/uav_humble22/px4_msgs_ws/install/px4_msgs/lib/python3.10/site-packages:/root/uav_humble22/ros_gz_ws/install/ros_gz_interfaces/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages",
+    "PYTHONHOME": null
+  },
+  "source_binding_before": {
+    "manifest_sha256": "39e0bf6dc5c6ca994b8475b057b2a66e79819640893dc0657642e63d0f98f315",
+    "freeze_source_sha256": "26bb404697eaf946e9671d0d8cae81638a89e78cdd26976d1e96da4423b0a737",
+    "verified_file_count": 1123
+  },
+  "execution_count": 1,
+  "agent_compile_prefix_absent": true
+}

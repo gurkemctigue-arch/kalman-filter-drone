@@ -1,0 +1,45 @@
+{
+  "scope": "ADDITIVE_GIT_OBJECT_STORAGE_MAINTENANCE_NOT_SOURCE_OR_PROTOCOL_CHANGE",
+  "status": "PASS_ORIGINAL_GIT_BYTES_RETAINED",
+  "finished_utc": "2026-11-01T18:14:22.823211+00:00",
+  "elapsed_wall_s": 9.625,
+  "command": [
+    "git",
+    "-C",
+    "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2",
+    "-c",
+    "pack.threads=2",
+    "repack",
+    "-a",
+    "-n",
+    "-q"
+  ],
+  "returncode": 0,
+  "stdout": "",
+  "stderr": "",
+  "before_inventory_sha256": "af590cbf3a38b88e1a155f8af7d5ddc1df5939776a1c63d9593fc86846c0bd96",
+  "original_git_file_count": 2593,
+  "all_original_git_file_bytes_unchanged": true,
+  "source_commit": "de89a6696d60a113929c97bab775dc2258ef4d01",
+  "new_files": {
+    "objects/pack/pack-dd658bf140c0d055a427f940d2cc7fe35ae0e277.idx": {
+      "bytes": 72752,
+      "sha256": "ffbfb1fe24fc018e9e75fcff828ad583e4ba173aef2b0f285300598b1b869ef8"
+    },
+    "objects/pack/pack-dd658bf140c0d055a427f940d2cc7fe35ae0e277.pack": {
+      "bytes": 35122932,
+      "sha256": "2da1667605cd9f60a9a02e56325628bf8161fe4ace7543349fb2cd3ce7ae17b9"
+    },
+    "objects/pack/pack-dd658bf140c0d055a427f940d2cc7fe35ae0e277.rev": {
+      "bytes": 10292,
+      "sha256": "c7991b1ffa444073173d9542da806f96ceb31033c593315f689def0f1617d13a"
+    }
+  },
+  "count_objects_after": "count: 2568\nsize: 43215\nin-pack: 2560\npacks: 1\nsize-pack: 34370\nprune-packable: 2560\ngarbage: 0\nsize-garbage: 0\n",
+  "git_fsck_full_exit0": true,
+  "git_fsck_full_stdout": "dangling blob f66b1f6ff0cd5d5dee1cee237ffeeb31efb9b3c0\ndangling blob 610cf7e7a312201b168e93483899a08ac5542672\ndangling blob 9812ceb1ffd9bbf0c98ab6f94243da0324852c1c\ndangling blob f0b584b736083326b52f724fc1c601f550693d8d\ndangling blob 2c56b4a27d01a9fdaafb494a4284236ebd7ca99b\ndangling blob 8417cc3c24aa0b672262908d36c1372e677545d8\ndangling blob ef190468fc72baf6b7969fc79fe8711752fd9efc\ndangling blob dc5e6076f688e168bde1e140695b96d40c7c2bde\n",
+  "original_objects_pruned": false,
+  "refs_index_head_unchanged": true,
+  "GIT_environment_override_used": false,
+  "performance_gain_measured": false
+}

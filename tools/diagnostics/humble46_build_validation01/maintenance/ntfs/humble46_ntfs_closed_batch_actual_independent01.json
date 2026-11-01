@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "scope": "INDEPENDENT_ACTUAL_SIX_FILE_NTFS_CLOSED_BATCH_RECEIPT_REVIEW_ONLY_NO_PAYLOAD_REREAD",
+  "status": "PASS_ACTUAL_CLOSED_COMPRESSION_AND_LOGICAL_PRESERVATION_EVIDENCE_NOT_FLIGHT_ADMISSION",
+  "created_utc": "2026-11-01T18:14:13.063667+00:00",
+  "input_bindings": {
+    "humble46_ntfs_closed_batch_idle_root01.json": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble46_ntfs_closed_batch_idle_root01.json",
+      "bytes": 18578,
+      "sha256": "45a4dbb88e1381acd91ac7293c232413dfdd60be398884a2cadcab620fc1e5e9"
+    },
+    "humble46_ntfs_closed_batch_execution_root01.jsonl": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble46_ntfs_closed_batch_execution_root01.jsonl",
+      "bytes": 32963,
+      "sha256": "06c5d126b5af77b9264413dfd44f7b58bd080bf54503a484fad6743fadba2e59"
+    },
+    "humble46_ntfs_closed_batch_root_outcome01.json": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble46_ntfs_closed_batch_root_outcome01.json",
+      "bytes": 21497,
+      "sha256": "7a18bb57b422666efce951cedef5dbfe6a013a67fb380014e9e96fb0457f01da"
+    }
+  },
+  "actual_whole_call": {
+    "root_owned": true,
+    "wrapper_call_count": 1,
+    "launcher_returncode": 0,
+    "wrapper_returncode": 0,
+    "stderr_empty": true,
+    "raw_stdout_equal_complete_event": true,
+    "started_utc": "2026-11-01T18:10:49.281894+00:00",
+    "finished_utc": "2026-11-01T18:11:26.846536+00:00"
+  },
+  "gate": {
+    "fresh120s_all_file_events_within_window": true,
+    "wrapper_manifest_helper_independent_hash_pins_equal": true,
+    "actual_wsl_ps_raw_and_windows_cim_raw_recorded": true,
+    "matching_active_windows_producers": [],
+    "no_native_build_simulation_or_unittest_visible_in_actual_ps": true,
+    "continuing_idle_ownership_is_root_assertion": true
+  },
+  "execution_checks": {
+    "event_count": 20,
+    "order": "STARTED + six PREPARED/VERIFIED/CLOSED + COMPLETE",
+    "all_six_unique_exact_manifest_paths": true,
+    "six_native_sha_readbacks_returncode0_and_equal_before_after_sha": true,
+    "identity_eof_single_link_mtime_unchanged": true,
+    "only_compression_attribute_changed": true,
+    "original_allocation_matches_manifest": true,
+    "rollback_headroom_recorded_before_each_mutation": true,
+    "no_error_or_rollback_event": true,
+    "wholecall_exit0_supplies_clean_file_and_journal_close_evidence": true,
+    "root_gate_hash_unchanged": true,
+    "original45_exact_core_bytes_counters_owner_error_unchanged": true
+  },
+  "files": [
+    {
+      "relative_path": "frozen_fullplan_v4_humble25/reliability_v4_humble25_probe_car_stage3_multi_active_seed004/telemetry.jsonl",
+      "logical_bytes": 218356115,
+      "sha256_before_after_and_native": "b4c2cfa94bcb2e1ce531c3ba643b1bebbc05201dcd42522f9541da24259a6e3d",
+      "allocation_before": 218357760,
+      "allocation_after": 128933888,
+      "signed_allocation_reduction_bytes": 89423872
+    },
+    {
+      "relative_path": "frozen_fullplan_v4_humble25/reliability_v4_humble25_probe_car_stage2_crossing_seed004/telemetry.jsonl",
+      "logical_bytes": 196160018,
+      "sha256_before_after_and_native": "ae0f3e7b705a1eea0054a8122af229aaa4269a3b6bf563257692c6227feb173e",
+      "allocation_before": 196161536,
+      "allocation_after": 119357440,
+      "signed_allocation_reduction_bytes": 76804096
+    },
+    {
+      "relative_path": "frozen_fullplan_v4_humble25/reliability_v4_humble25_probe_person_stage3_multi_active_seed004/telemetry.jsonl",
+      "logical_bytes": 131526398,
+      "sha256_before_after_and_native": "09571e43de2b7156b4b3df133cf05fa7f866c21e147b2728ee7d46bbde07a8ea",
+      "allocation_before": 131526656,
+      "allocation_after": 81534976,
+      "signed_allocation_reduction_bytes": 49991680
+    },
+    {
+      "relative_path": "frozen_fullplan_v4_humble25/reliability_v4_humble25_probe_person_stage2_crossing_seed004/telemetry.jsonl",
+      "logical_bytes": 128337281,
+      "sha256_before_after_and_native": "9078237325169a8d4ba70e0524109380e9c6af37147beb14fdaa232377b36382",
+      "allocation_before": 128339968,
+      "allocation_after": 79613952,
+      "signed_allocation_reduction_bytes": 48726016
+    },
+    {
+      "relative_path": "frozen_fullplan_v4_humble25/reliability_v4_humble25_probe_car_stage3_active_seed004/telemetry.jsonl",
+      "logical_bytes": 76203845,
+      "sha256_before_after_and_native": "9821e77a2c47eb08a5686d01f90f09ab65b3507cd22f968b0157988923d25f52",
+      "allocation_before": 76206080,
+      "allocation_after": 46985216,
+      "signed_allocation_reduction_bytes": 29220864
+    },
+    {
+      "relative_path": "frozen_fullplan_v4_humble25/reliability_v4_humble25_probe_person_stage3_active_seed004/telemetry.jsonl",
+      "logical_bytes": 73271869,
+      "sha256_before_after_and_native": "e1e5a758dac74f1e304817b8d5149b622e02b2a6f3c244918702c22eff1c2c76",
+      "allocation_before": 73273344,
+      "allocation_after": 44298240,
+      "signed_allocation_reduction_bytes": 28975104
+    }
+  ],
+  "capacity_observations": {
+    "sum_actual_file_allocation_before_bytes": 823865344,
+    "sum_actual_file_allocation_after_bytes": 500723712,
+    "sum_signed_file_allocation_reduction_bytes": 323141632,
+    "host_window_net_free_change_bytes": 310968320,
+    "host_free_before_bytes": 176423477248,
+    "host_free_after_bytes": 176734445568,
+    "these_are_separate_observations_never_added": true,
+    "no_pilot_ratio_or_future_budget_discount": true
+  },
+  "limits": [
+    "Reviewer read only three small actual receipts, existing small source/manifest/review metadata, and original45 terminal; candidate telemetry payloads were not reopened or rehashed",
+    "Native actual SHA readbacks are root-owned recorded execution evidence; no WSL or wrapper/helper execution by this reviewer",
+    "This is evidence of successful historical transparent compression only, not changed engineering outcomes, algorithm accuracy or runtime admission"
+  ],
+  "payload_reread_or_rehash_by_reviewer": false,
+  "WSL_or_maintenance_executed_by_reviewer": false,
+  "blockers": []
+}

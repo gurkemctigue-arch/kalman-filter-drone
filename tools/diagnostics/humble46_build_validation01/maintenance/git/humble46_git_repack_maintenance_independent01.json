@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "scope": "INDEPENDENT_READ_ONLY_SMALL_METADATA_REVIEW_OF_ROOT_ADDITIVE_GIT_MAINTENANCE_NOT_A_SECOND_OBJECT_PAYLOAD_AUDIT",
+  "status": "PASS_ROOT_MAINTENANCE_AND_SAME_SOURCE_TIMING_EVIDENCE_ONLY",
+  "created_utc": "2026-11-01T18:17:58.991295+00:00",
+  "inputs": {
+    "repack46_git_objects_root01.py": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\repack46_git_objects_root01.py",
+      "bytes": 3507,
+      "sha256": "5c3f797373c660097918f0203e88bbf42af41d4249369202b1464631243a13be"
+    },
+    "humble46_git_repack_before_root01.json": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble46_git_repack_before_root01.json",
+      "bytes": 439809,
+      "sha256": "af590cbf3a38b88e1a155f8af7d5ddc1df5939776a1c63d9593fc86846c0bd96"
+    },
+    "humble46_git_repack_outcome_root01.json": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble46_git_repack_outcome_root01.json",
+      "bytes": 2079,
+      "sha256": "00e96565b0720a1d70277a737030a82a6c19399ea213b32e1e301374f3f2c17a"
+    },
+    "measure_source46_binding_after_repack_root01.py": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\measure_source46_binding_after_repack_root01.py",
+      "bytes": 1904,
+      "sha256": "af43f371c5d1653773d6d4f01f6f838459a48a9dc13841d1ff0098d056dc982e"
+    },
+    "humble46_source_binding_after_git_repack_root01.json": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble46_source_binding_after_git_repack_root01.json",
+      "bytes": 715,
+      "sha256": "e627890a725ac0a7580465ea5e7616e998ea849e6cb810b378435dd13e9e4ea6"
+    },
+    "reviewed_freeze_actions_v4_humble46/prepare/action.terminal.json": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\reviewed_freeze_actions_v4_humble46\\prepare\\action.terminal.json",
+      "bytes": 165860,
+      "sha256": "7e32c32891a1dec6aea5a028e04f170c8eec5ea4052348a7d462e493f3733605"
+    },
+    "reviewed_freeze_review_v4_humble46_01.json": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\reviewed_freeze_review_v4_humble46_01.json",
+      "bytes": 272985,
+      "sha256": "68e3d2891e08001e86b4162def9c33ad2f2536257df9726c866ffdb4e7ad98a4"
+    },
+    "source_from_closed43_to46_01/reviewed_commit46_maps01.json": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\source_from_closed43_to46_01\\reviewed_commit46_maps01.json",
+      "bytes": 267800,
+      "sha256": "427be692d9706aa901b3843d92f5422ebff5cc076bbfd5f0942290af066ec4d8"
+    }
+  },
+  "checks": {
+    "before_inventory_real_sha_matches_outcome": true,
+    "actual_root_commit_matches_final46": true,
+    "original_git_inventory2593_and_loose2568": true,
+    "original_pack_list_empty": true,
+    "actual_command_additive_no_d_no_prune_no_gc": true,
+    "root_reports_all_original_git_bytes_retained": true,
+    "only_three_new_pack_index_reverse_index": true,
+    "root_fsck_full_exit0_preserves_eight_dangling": true,
+    "pack_counts_keep_original_loose": true,
+    "actual_prepare_before_after_same": true,
+    "timed_binding_exact_prepare_canonical": true,
+    "all286_actual_blob_pairs_cover_exact_delta": true,
+    "actual_source_binding_fullmap_identity": true,
+    "original_generic_source_sha_unchanged": true,
+    "original_budget300_and_gates_unchanged": true,
+    "no_git_env_override_in_root_reports": true,
+    "timing_is_one_real_measurement_not_copy_acceptance": true
+  },
+  "check_count": 17,
+  "failed_checks": [],
+  "visible_facts": {
+    "original_git_files": 2593,
+    "original_loose_objects": 2568,
+    "new_files": {
+      "objects/pack/pack-dd658bf140c0d055a427f940d2cc7fe35ae0e277.idx": {
+        "bytes": 72752,
+        "sha256": "ffbfb1fe24fc018e9e75fcff828ad583e4ba173aef2b0f285300598b1b869ef8"
+      },
+      "objects/pack/pack-dd658bf140c0d055a427f940d2cc7fe35ae0e277.pack": {
+        "bytes": 35122932,
+        "sha256": "2da1667605cd9f60a9a02e56325628bf8161fe4ace7543349fb2cd3ce7ae17b9"
+      },
+      "objects/pack/pack-dd658bf140c0d055a427f940d2cc7fe35ae0e277.rev": {
+        "bytes": 10292,
+        "sha256": "c7991b1ffa444073173d9542da806f96ceb31033c593315f689def0f1617d13a"
+      }
+    },
+    "new_pack_object_count": 2560,
+    "root_fsck_full_exit0": true,
+    "preserved_dangling_blobs": 8,
+    "unchanged_candidate_binding_wall_s": 39.795510264,
+    "actual_blob_comparisons": 286,
+    "four_times_observed_binding_only_s": 159.182041056,
+    "original_copy_timeout_s": 300.0
+  },
+  "claim_boundaries": [
+    "Reviewer read named small receipts/source and independently recomputed metadata hashes/counts/canonical binding; did not rehash all current Git objects or new35MB pack during active copy.",
+    "Original byte preservation/fsck are checked root execution evidence, not a newly executed independent fsck.",
+    "One39.8s candidate measurement does not guarantee a four-call copy will finish within300s; await its actual original terminal.",
+    "No WSL,Git repack/prune/gc,source mutation,copy,build or flight was performed by this reviewer."
+  ],
+  "current_copy_or_build_acceptance_claimed": false,
+  "formal_seed_use_authorized": false
+}
