@@ -1,6 +1,6 @@
 # Humble43验证与剩余准入
 
-2026-11-01 09:25（北京时间）执行快照。本文件说明当前证据和待执行工作，不替代原始评价。行人六场核心已完成原始PASS，汽车六场仍待验证，完整核心批次未结束。正式实验为0/280；历史Humble42保持8 PASS、1 FAIL、3 PENDING。
+2026-11-01 10:17（北京时间）执行快照。本文件说明当前证据和待执行工作，不替代原始评价。核心12已有8个原始工程PASS：行人六场及汽车速度、位置两场；第9项汽车交叉正在运行，后三项汽车云台场景尚未尝试，完整核心批次未结束。正式实验为0/280；历史Humble42保持8 PASS、1 FAIL、3 PENDING。
 
 ## 已完成的修复验证
 
@@ -22,8 +22,10 @@ Humble43固定来源为`/root/uav_tracking_fullplan_v4_humble43`。该版本已�
 | person_stage3_midpoint_seed004 | PASS | 0.765062 | 0.159948 |
 | person_stage3_active_seed004 | PASS | 0.751913 | 0.164592 |
 | person_stage3_multi_active_seed004 | PASS | 0.904853 | 0.155198 |
+| car_stage1_velocity_seed004 | PASS | 0.750666 | 0.162098 |
+| car_stage1_position_seed004 | PASS | 0.703718 | 0.167942 |
 
-表中RMSE取`navigation_reference_evaluation.json`的完整任务区间和`base_link`参考，包含悬停等非活动控制样本。六条报告状态均为`RECORDED_WITH_CENSORED_FAILURES`；模型原点参考等窗口存在未持续稳定结果，原值保留。六场机体参考下的末端距离/高度稳定条件均通过，不能把工程PASS解释为所有指标或所有窗口通过。整批原始终态和owner关闭尚未产生。
+表中RMSE取`navigation_reference_evaluation.json`的完整任务区间和`base_link`参考，包含悬停等非活动控制样本。八条报告状态均为`RECORDED_WITH_CENSORED_FAILURES`；模型原点参考等窗口存在未持续稳定结果，原值保留。八场机体参考下的末端距离/高度稳定条件均通过，不能把工程PASS解释为所有指标或所有窗口通过。整批原始终态和owner关闭尚未产生。
 
 单目标中位与主动云台的画面中心RMSE分别为57.705711与17.004366像素，均观察到717/751个机会。主动模式的距离RMSE略低，高度RMSE略高；单个开发种子不提供统计显著性，也不支持所有指标均改善。多目标主动的画面中心RMSE为9.463841像素，观察到678/750个机会。
 

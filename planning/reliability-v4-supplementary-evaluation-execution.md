@@ -10,7 +10,9 @@
 4. 将[补充选源清单](reliability-v4-supplementary-detection-selections.json)的实际SHA和新协议SHA保存到独立执行记录中。协议输出须使用`D:/WSL/UAVHumble22-validation`下的全新外部文件，不能放进最终源根或其`results`实际目标。该清单不是协议本身，不授予飞行准入。
 5. 完成原最终来源封存和完整280槽容量准入，再核验补充协议、选源与真实正式计划的绑定，才可正式串行执行。原guard不消费补充检测协议；不能用原guard通过代替这项额外事前核验。
 
-额外检查由[补充协议前置校验工具](../tools/experiment_orchestration/humble42_supplementary_preflight_snapshot/README.md)连接原串行器；它的显式绑定合同必须等实际sealed admission生成后才创建并独立核对。该工具作者34项、独审40项Windows合成测试通过，实际Humble Python3.10组件验证、Linux exec及原适配器串行接线仍待资源独占窗口完成；目前没有真实绑定合同或正式执行结果。
+额外检查由[补充协议前置校验工具](../tools/experiment_orchestration/humble42_supplementary_preflight_snapshot/README.md)连接原串行器；它的显式绑定合同必须等实际sealed admission生成后才创建并独立核对。该工具作者34项、独审40项Windows合成测试通过；另已完成UAVHumble22系统Python3.10.12的40项合成组件验证（34项作者测试与6项独审测试），全部通过、无跳过、原生退出码0，测试前后四份源码SHA一致。实际Linux exec、信号、并发写入及原适配器串行接线仍未验证；组件验证没有运行真实guard、适配器、串行器、飞行或数据处理，也未授予正式准入。目前没有真实绑定合同或正式执行结果。
+
+上述Humble验证的原始外部证据为[收据](D:/WSL/UAVHumble22-validation/formal_supplementary_preflight_humble01.json)（2305字节，SHA256 `9b716e9c409560eb0843c753998e3c2788b1dd4f8a9fa933ecb2a857afa405aa`）和[测试日志](D:/WSL/UAVHumble22-validation/formal_supplementary_preflight_humble01_tests.log)（5277字节，SHA256 `8f2ead43105817b3a109faa81a17278978e51051fa9625fcd855436efecb1cae`），执行时间为2026-10-31 20:28:55至20:29:19 UTC。日志逐项保留40个`ok`及`Ran 40 tests`/`OK`；收据的工具canonical SHA为`53f96e7a92cf8c839d8ff245e8db45b06cfb65371614a012536c417146d609d1`，与已批准独审身份一致。旧源码快照README及handoff所写的“尚未完成Humble组件验证”保留为快照形成时状态，本卡据后续实测证据更新当前状态；这两份外部证据尚未收入该历史快照，不能仅凭克隆仓库复核其原字节。本次文档校正只核对已有小型收据、日志和源码摘要，未重新运行测试或WSL。
 
 协议命令形态如下。大写参数须替换为真实物理路径和SHA；此卡没有执行命令：
 
