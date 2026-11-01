@@ -1,0 +1,15 @@
+# Humble43 扩展16规划、独审和FINAL运行合同快照
+
+2026-11-01 13:46:07（北京时间）启动快照：原扩展plan已真实退出0，原PENDING16规划通过104项独立静态check；root另产只改变status的FINAL contract，原16场run已于05:46:07 UTC实际启动，当前首飞前核验、0/16完成。命令启动不代表已经起飞；本目录不包含扩展飞行结果，正式仍0/280。
+
+[原plan](plan.json)包含person/car各八条件、seed004的完整16格。其文件SHA为`954baf82accd5a227faaa6b57776736c93fb6a23c937025afa112616f71e5ada`，内部plan digest另为`9b4dad69a18e9b6ba60162841205bd7fa9333624fb8b79ae9066d9ec2c03fbbd`，两者不能混用。原[规划终态](execution_terminal.json)于05:41:55.836422 UTC记录returncode0、error=null、flights_started=0，postwait owner为COMPLETE；这是规划闭合，不是16场飞行完成。
+
+原[PENDING合同](development_extension_contract_reliability_v4_humble43_extensions_probe01_pending01.json)保持`PENDING_EXTENSION16_RUNTIME_REVIEW_NOT_EXECUTABLE`，SHA为`7812a9db05041bb66c6840fc6b31672978817b18316e8bc863ebf6012d018f18`。[独立静态收据](development_extension_contract_humble43_pending_independent01.json)逐项复核原完整16定义、命令与故障参数、同源core/safety前置和实际owner闭合，104项check全PASS；SHA为`6f4bda863841840ee796e4831d6d11e65bd057ed7378dd526ada3c1d9fe2c79b`。它引用root实际获得的原CLI退出0，没有虚构单独完成JSON，也没有新增WSL、生产import、测试、validator或飞行；104项不计作原生测试或实验PASS。
+
+[FINAL合同](development_extension_contract_reliability_v4_humble43_extensions_probe01_final01.json)状态为`FINAL_PARAMETERIZED_EXTENSION16_NORMAL_RUNNER_INDEPENDENTLY_REVIEWED`，SHA为`68d9ebb2c5a2888e4bfaa6cbf6142298a663380ddce0074aafa1bb0f28912058`。[原发布收据](development_extension_contract_humble43_publication01.json)记录只改变status、其他JSON值完全相等，SHA为`deb6b086af27bdf09ec31d816b36c2c8f57837639c49f58da0cb324e4e4ca681`；PENDING及其历史不覆盖。运行时仍由原load_contract重新核当前来源、资源、前置、owner、空闲及新鲜度，静态收据不冒充这次实际原生核验的结果。
+
+本机实际进度见[扩展批次页面](../../../results/project_progress/humble43_extension01/index.html)。此页面可继续更新，本目录保留具名启动时点，不追改为后续飞行终态。首飞前核验、归档和评价都可能占用时间；必须以真实开始/终态事件判断，不能仅凭进程或心跳宣称起飞。扩展压力算法FAIL按原冻结函数保留与披露；安全失败、基础设施停止或缺证仍不能当成可接受算法FAIL。
+
+前置开发证据分别见[核心12闭合](../humble43_core12_closure_snapshot01/README.md)、[安全4闭合](../humble43_safety4_closure_snapshot01/README.md)和[原生v2组件](../humble43_native_v2_components04_snapshot01/README.md)。各scope独立，规划、合同发布或run启动均不等于扩展16通过、正式准入或项目全部验收。
+
+本快照仅逐字节保存六个原JSON，没有复制bag、视频、health大payload或源码树，也没有另跑验证器。完整依赖仍在本机原Humble43及外部编排环境；GitHub克隆本目录不构成独立可运行环境。`ARCHIVE_MANIFEST.json`记录六payload来源、字节及SHA，`SHA256SUMS`覆盖六payload、本说明和manifest，排除校验表自身；旧快照和旧失败不改写。

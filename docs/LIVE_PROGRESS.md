@@ -1,6 +1,8 @@
 # 查看当前实验
 
-**2026-11-01 13:23:54（北京时间）快照：Humble43同源核心12独审通过，原生v2组件04的85项及3项describe真实通过；安全4原四场全部PASS、完整原guard及闭合独审通过，批次主命令退出0，正式仍0/280。** [核心独审收据](../tools/experiment_orchestration/humble43_core12_closure_snapshot01/humble43_core12_closed_independent01.json)确认completed12、all_original_core_cells_pass=true；[安全4闭合快照](../tools/experiment_orchestration/humble43_safety4_closure_snapshot01/README.md)保留真实原件。扩展16原plan命令已启动，当前仍在前置核验、尚未起飞，尚无plan完成或后续飞行结论；容量、定标及正式研究仍待完成。
+**2026-11-01 13:46:07（北京时间）快照：Humble43同源核心12独审通过，原生v2组件04的85项及3项describe真实通过；安全4原四场全部PASS、完整原guard及闭合独审通过，批次主命令退出0，正式仍0/280。** 扩展原plan已真实退出0并通过104项静态独审，独立FINAL合同已发布；原16场run于05:46:07 UTC启动，当前首飞前核验、0/16完成，尚无已起飞或飞行通过结论。
+
+当前请打开本机[Humble43扩展批次进度页](../results/project_progress/humble43_extension01/index.html)，原规划、PENDING、独审及FINAL发布依据见[扩展16启动快照](../tools/experiment_orchestration/humble43_extension16_start_snapshot01/README.md)。命令心跳或进程存在不能证明起飞，须以真实开始/终态判断；104项静态check不计作新增原生测试或实验PASS。核心及安全原件仍见[核心独审收据](../tools/experiment_orchestration/humble43_core12_closure_snapshot01/humble43_core12_closed_independent01.json)及[安全4闭合快照](../tools/experiment_orchestration/humble43_safety4_closure_snapshot01/README.md)。
 
 本机[Humble43安全批次进度页](../results/project_progress/humble43_safety01/index.html)提供命令级心跳和真实退出状态，尚不显示四场的槽位计数。原完整guard于05:12:36.708586—05:16:57.707220 UTC通过，monitor的owned-main于05:16:58.567204 UTC记录code0；四场原PASS见上述闭合快照或本机`results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_safety_seed004_audit/`原始小JSON。闭合依据为postwait owner COMPLETE及原guard，较早COPY_VERIFIED_PENDING_OWNER_CLOSURE候选不代表最终owner仍未收尾。原[核心进度页](../results/project_progress/humble43_core01/index.html)保留12个原始PASS；旧Humble42、41及`current/`页面均为历史记录。
 
@@ -24,7 +26,7 @@ Humble43已完成四包隔离构建、来源检查和真实消息序列化检查
 
 原生v2组件04已实际退出0：30+40+15共85项全PASS、0跳过，9项真实authority完整执行，3项describe的canonical全部匹配，原终态finally核验1940个原文件。[新最小快照](../tools/experiment_orchestration/humble43_native_v2_components04_snapshot01/README.md)保存原终态、suite结果/日志、describe和peer核查。Windows78通过/7跳过、原Humble02的76通过/9锁争用ERROR均保留；组件03是tests_run=false的测试前调度拒绝，未运行85项，不计作测试失败或通过。
 
-安全4已真实完成4 PASS、完整原guard PASS、闭合独审PASS与主命令code0。扩展已由已审PENDING仅改变status另产独立FINAL admission，原plan命令于约05:23:40 UTC启动，目前仍在前置核验、0飞行；须等真实plan产物及后续原run验证，不把命令启动当作已起飞。之后依次为完整扩展16、28格容量实测、两条预定录制导出与R0定标、独立最终来源构建/登记/封存、正式120+160和统计交付。v2定标/发布工具按原协议保留可评价压力场景的算法FAIL；原安全失效或缺证仍不能据此放行，开发关口通过不构成正式准入。
+安全4已真实完成4 PASS、完整原guard PASS、闭合独审PASS与主命令code0。扩展原plan闭合和104项静态独审已通过，PENDING保持原样，root仅改变status另产独立FINAL runtime合同；原16场run已启动，当前首飞前核验、0/16完成。之后依次完成实际扩展16、28格容量实测、两条预定录制导出与R0定标、独立最终来源构建/登记/封存、正式120+160和统计交付。v2定标/发布工具按原协议保留可评价压力场景的算法FAIL；原安全失效或缺证仍不能据此放行，开发关口通过不构成正式准入。
 
 核心12独审、原生04组件补验与安全4开发关口已通过；后续还有扩展、容量/定标、最终准入及280次正式飞行，整个剩余工作维持5—6天量级估计，发生新故障时按实测修订。此处是带时间的快照，最新状态以实际原件和实时页为准。进度页、视频和完整原始结果仅在本机存在；GitHub保存源码和最小证据说明，网页不会自行向聊天发送完成通知。
 

@@ -1,6 +1,6 @@
 # Humble43验证与剩余准入
 
-2026-11-01 13:23:54（北京时间）快照。本文件说明当前证据和待执行工作，不替代原始评价。核心12独审通过；原生v2组件04的85项和3项describe真实通过；安全4原四场全部PASS、完整原guard及闭合独审PASS，批次主命令退出0。扩展16原plan命令已启动，当前仍在前置核验、尚未起飞，实际plan完成与后续飞行尚无结论；扩展、容量/定标及正式准入仍待完成，正式仍0/280。历史Humble42保持8 PASS、1 FAIL、3 PENDING。
+2026-11-01 13:46:07（北京时间）快照。本文件说明当前证据和待执行工作，不替代原始评价。核心12独审通过；原生v2组件04的85项和3项describe真实通过；安全4原四场全部PASS、完整原guard及闭合独审PASS，批次主命令退出0。扩展原plan已真实退出0并通过104项静态独审，独立FINAL合同已发布；原16场run于05:46:07 UTC启动，当前首飞前核验、0/16完成，不等于已经起飞或通过。实际扩展、容量/定标及正式准入仍待完成，正式仍0/280。历史Humble42保持8 PASS、1 FAIL、3 PENDING。
 
 ## 已完成的修复验证
 
@@ -71,13 +71,15 @@ v2共10个文件，当前部署字节对应revision02闭合清单SHA256：`83eeb
 
 原终态中的postwait owner为`COMPLETE`、healthy_cleanup=true，归档进程returncode0、无强制停止或错误，entry前后相同、final_errors和残留均为空。较早归档COPY候选的`COPY_VERIFIED_PENDING_OWNER_CLOSURE`不是postwait最终owner；不能只看候选标签宣称未闭合，也不能只凭COPY产物宣称已闭合。本次依据postwait实际终态及完整原guard。这个结果只完成四安全开发关口，不授予扩展或正式准入。
 
-扩展已由已审PENDING仅改变status另产独立FINAL admission，其文件SHA256为`890a8531fb438c251e4ab469e17978cef24dd03239556515b39ec1946e1dac14`，publication为`0c0622d29154d87458a3c32c9ee9b9cef845824d85afdfcc2246736fd61eb30b`。原plan命令于约05:23:40 UTC启动，当前仍在前置核验、0飞行，尚无plan完成或后续run飞行结论；不能把规划命令启动当作起飞。静态registry独审、组件通过和开发关口通过仍各有独立scope，均不代替后续实际16格、容量/定标、最终封存及正式280。
+扩展FINAL admission文件SHA256为`890a8531fb438c251e4ab469e17978cef24dd03239556515b39ec1946e1dac14`，其publication为`0c0622d29154d87458a3c32c9ee9b9cef845824d85afdfcc2246736fd61eb30b`。实际原plan已于05:41:55.836422 UTC以returncode0闭合，完整PENDING16通过104项独立静态check。root另产仅status变化的FINAL runtime合同，SHA256为`68d9ebb2c5a2888e4bfaa6cbf6142298a663380ddce0074aafa1bb0f28912058`，原publication为`deb6b086af27bdf09ec31d816b36c2c8f57837639c49f58da0cb324e4e4ca681`。[扩展16启动快照](../tools/experiment_orchestration/humble43_extension16_start_snapshot01/README.md)逐字节保留原plan、PENDING、独审、FINAL、publication及规划终态；104项是静态check，不是新增原生测试或飞行PASS。
+
+原16场run已于05:46:07 UTC实际启动，当前首飞前核验、0/16完成，见本机[扩展批次进度页](../results/project_progress/humble43_extension01/index.html)。实际load_contract与飞行结果仍由原流程产生，不能凭命令启动、心跳或进程宣称已经起飞。各开发scope仍不代替实际16格终态、容量/定标、最终封存及正式280。
 
 ## 下一步顺序
 
 1. 核心12原`actual_core`独立复验已通过；保留实际收据、全部原始PASS及完整owner、归档、来源和清理证据，不以此覆盖任何历史失败。
 2. 原生v2组件04完整补验及安全4原四场/完整guard/主命令退出已通过；保留独立scope与真实闭合原件。
-3. 扩展FINAL admission已独立发布、原plan命令正在前置核验；等待真实规划完成并独审实际PENDING16原件后，再按原流程运行完整扩展16，保留所有算法与安全结果，不把规划启动当作已飞行。
+3. 扩展原规划及PENDING16静态独审已通过、独立FINAL合同已发布；原16场run已启动且处于首飞前核验，继续按原流程完成全部原终态，保留所有算法与安全结果，不把run启动当作已飞行。
 4. 用完整28格实测录包/归档/临时峰值和剩余空间；导出预定两条核心速度录制，完成R0定标。不能用一个小样本估计就宣布280次容量足够。
 5. 完成独立最终来源准备、冷构建、正式120+160登记、四法回放绑定、补充检测/时延的前瞻协议、源码封存及首正式前完整准入。
 6. 执行280次正式飞行、20条同观测四法离线比较、检测/身份/时延统计，生成图表、视频、最终计划书和研究报告，再同步GitHub。

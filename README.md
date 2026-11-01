@@ -1,6 +1,8 @@
 # RGB-D UAV target tracking and following
 
-**2026-11-01 13:23:54（北京时间）快照：Humble43 同源核心12独审通过，原生v2组件04的85项及3项describe真实通过；安全4原四场全部PASS、完整原guard及闭合独审通过，批次主命令退出0，正式仍0/280。** 扩展16原plan命令已启动，当前仍在前置核验、尚未起飞；实际plan完成与后续飞行尚无结论，容量、定标及正式研究仍待完成，不能称全部验收通过。
+**2026-11-01 13:46:07（北京时间）快照：Humble43 同源核心12独审通过，原生v2组件04的85项及3项describe真实通过；安全4原四场全部PASS、完整原guard及闭合独审通过，批次主命令退出0，正式仍0/280。** 扩展原plan已退出0并通过104项静态独审，独立FINAL合同已发布，原16场run于05:46:07 UTC启动，当前首飞前核验、0/16完成；不能把启动当作已起飞或通过。容量、定标及正式研究仍待完成，不能称全部验收通过。
+
+扩展的原plan、PENDING、独审、FINAL及发布来源见[扩展16启动快照](tools/experiment_orchestration/humble43_extension16_start_snapshot01/README.md)，当前命令状态见本机[扩展进度页](results/project_progress/humble43_extension01/index.html)。104项是静态check，不是104次原生测试或飞行；全部原失败、未知及完整分母继续保留。
 
 [核心独审收据](tools/experiment_orchestration/humble43_core12_closure_snapshot01/humble43_core12_closed_independent01.json)确认completed12、all_original_core_cells_pass=true；[原生04快照](tools/experiment_orchestration/humble43_native_v2_components04_snapshot01/README.md)保留85项全PASS、0跳过及3项canonical核验；[安全4闭合快照](tools/experiment_orchestration/humble43_safety4_closure_snapshot01/README.md)保留真实四场终态、facts与完整guard。安全原guard于05:12:36.708586—05:16:57.707220 UTC通过，monitor的owned-main于05:16:58.567204 UTC记录code0；原终态中的postwait owner为COMPLETE，不能与较早COPY候选pending混为一谈。本机[安全进度页](results/project_progress/humble43_safety01/index.html)保留命令级退出状态，核心旧页保留12原PASS；这些开发关口不等于整个项目验收。
 
