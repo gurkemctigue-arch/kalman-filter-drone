@@ -1,6 +1,6 @@
 # Humble43验证与剩余准入
 
-2026-11-01 12:23:05（北京时间）快照。本文件说明当前证据和待执行工作，不替代原始评价。核心12的12个原始工程PASS及原owner健康闭合已由原`actual_core`完整独审通过；原生v2组件04的85项和3项describe也已真实通过。安全4已登记并静态独审，首场真实执行已开始，0/4终态、其余3场待执行，尚无PASS结论。安全验收、扩展16及正式准入未完成，正式仍0/280；历史Humble42保持8 PASS、1 FAIL、3 PENDING。
+2026-11-01 13:23:54（北京时间）快照。本文件说明当前证据和待执行工作，不替代原始评价。核心12独审通过；原生v2组件04的85项和3项describe真实通过；安全4原四场全部PASS、完整原guard及闭合独审PASS，批次主命令退出0。扩展16原plan命令已启动，当前仍在前置核验、尚未起飞，实际plan完成与后续飞行尚无结论；扩展、容量/定标及正式准入仍待完成，正式仍0/280。历史Humble42保持8 PASS、1 FAIL、3 PENDING。
 
 ## 已完成的修复验证
 
@@ -65,17 +65,21 @@ v2共10个文件，当前部署字节对应revision02闭合清单SHA256：`83eeb
 
 这些是组件验证，不是飞行验收，v2尚未用于实际定标、最终发布或正式准入。v2实现与较早原始结果保留于[具名v2快照](../tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/README.md)，04真实验证另见上述新快照，旧快照不改写。完整数据保留在本机；工具依赖现有外部编排环境，不能保证任意GitHub克隆可独立运行。
 
-## 安全4当前入口
+## 安全4真实闭合
 
-安全registry已经登记并完成静态独审，结论为`PASS_STATIC_ONLY`，不代表安全飞行通过。原`development_safety.sh run`命令于2026-11-01 04:18:53.350239 UTC经既有唯一monitor启动，任务名为`humble43_safety4_original01`；首场`person_auto_unique_multi_seed004`于04:23:05.109651 UTC真实开始，0/4终态、其余3场待执行，尚无槽位PASS或完整guard结论。本机[安全批次进度页](../results/project_progress/humble43_safety01/index.html)已实际生成，核心旧页继续保留12原PASS。场景开始与registry静态通过不能替代四条实际安全运行及完整原guard验证。
+原`development_safety.sh run`命令经既有唯一monitor运行，四场person/car×auto_unique_multi/locked_ambiguity均已产生原PASS，planned4、attempted4、pending0。原终态文件SHA256为`cd53295d127b4afdffa12e0714f9deaad826632aefb29b590f475892dfd6a4b0`。随后完整冻结安全guard于05:12:36.708586—05:16:57.707220 UTC执行通过，guard原件SHA256为`9268be526d5a00ea293979868303c935605daa4a2e7b46c8e841d8eef5be75d2`；monitor的owned-main于05:16:58.567204 UTC记录code0。[安全4最小闭合快照](../tools/experiment_orchestration/humble43_safety4_closure_snapshot01/README.md)保留原terminal、facts、guard及随后实际形成的[独立静态闭合收据](../tools/experiment_orchestration/humble43_safety4_closure_snapshot01/humble43_safety4_closed_independent01.json)；该收据引用真实原native guard结果，不是新跑的validator。本机[安全进度页](../results/project_progress/humble43_safety01/index.html)保留命令级状态，核心旧页继续保留12原PASS。
+
+原终态中的postwait owner为`COMPLETE`、healthy_cleanup=true，归档进程returncode0、无强制停止或错误，entry前后相同、final_errors和残留均为空。较早归档COPY候选的`COPY_VERIFIED_PENDING_OWNER_CLOSURE`不是postwait最终owner；不能只看候选标签宣称未闭合，也不能只凭COPY产物宣称已闭合。本次依据postwait实际终态及完整原guard。这个结果只完成四安全开发关口，不授予扩展或正式准入。
+
+扩展已由已审PENDING仅改变status另产独立FINAL admission，其文件SHA256为`890a8531fb438c251e4ab469e17978cef24dd03239556515b39ec1946e1dac14`，publication为`0c0622d29154d87458a3c32c9ee9b9cef845824d85afdfcc2246736fd61eb30b`。原plan命令于约05:23:40 UTC启动，当前仍在前置核验、0飞行，尚无plan完成或后续run飞行结论；不能把规划命令启动当作起飞。静态registry独审、组件通过和开发关口通过仍各有独立scope，均不代替后续实际16格、容量/定标、最终封存及正式280。
 
 ## 下一步顺序
 
 1. 核心12原`actual_core`独立复验已通过；保留实际收据、全部原始PASS及完整owner、归档、来源和清理证据，不以此覆盖任何历史失败。
-2. 原生v2组件04完整补验已通过；安全4已登记并静态独审，首场真实执行已开始，继续按既有流程完成实际四槽和完整原guard核验，要求全部PASS。
-3. 登记并运行完整扩展16，按原冻结判定保留所有算法与安全结果。
+2. 原生v2组件04完整补验及安全4原四场/完整guard/主命令退出已通过；保留独立scope与真实闭合原件。
+3. 扩展FINAL admission已独立发布、原plan命令正在前置核验；等待真实规划完成并独审实际PENDING16原件后，再按原流程运行完整扩展16，保留所有算法与安全结果，不把规划启动当作已飞行。
 4. 用完整28格实测录包/归档/临时峰值和剩余空间；导出预定两条核心速度录制，完成R0定标。不能用一个小样本估计就宣布280次容量足够。
 5. 完成独立最终来源准备、冷构建、正式120+160登记、四法回放绑定、补充检测/时延的前瞻协议、源码封存及首正式前完整准入。
 6. 执行280次正式飞行、20条同观测四法离线比较、检测/身份/时延统计，生成图表、视频、最终计划书和研究报告，再同步GitHub。
 
-核心12原槽位终态已齐、整批主命令正常退出且既有完整独审通过，原生04组件补验也已通过；仍须完成安全、扩展、准入及280次逐次飞行与归档。全部剩余工作维持5—6天量级估计，依实际新结果调整。未知身份和未稳定窗口将按完整分母报告；现阶段不预设“自适应KF所有指标最好”或“主动云台必然提升整体可靠性”。
+核心12独审、原生04组件补验及安全4开发关口已通过；仍须完成扩展、容量/定标、最终准入及280次逐次飞行与归档。全部剩余工作维持5—6天量级估计，依实际新结果调整。未知身份和未稳定窗口将按完整分母报告；现阶段不预设“自适应KF所有指标最好”或“主动云台必然提升整体可靠性”。

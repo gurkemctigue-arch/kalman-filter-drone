@@ -1,0 +1,1066 @@
+{
+  "schema_version": 1,
+  "kind": "RELIABILITY_V4_SAFETY_EXECUTION_FACTS",
+  "evidence_scope": "REAL_RECORDED_DEVELOPMENT_EVIDENCE",
+  "created_utc": "2026-11-01T05:12:36.664987+00:00",
+  "result": "PASS",
+  "registry": {
+    "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/registry.json",
+    "sha256": "7e08d5fd7ae971fc03fa15009818b2ef7ac689bbc4c7c401af2c9e61d05168b5"
+  },
+  "slots": [
+    {
+      "id": "person_auto_unique_multi_seed004",
+      "target_class": "person",
+      "case": "auto_unique_multi",
+      "seed": 4,
+      "result": "PASS",
+      "original_status": "PASS",
+      "trial_directory": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_auto_unique_multi_seed004",
+      "executions": {
+        "flight": {
+          "argv": [
+            "bash",
+            "/root/uav_tracking_fullplan_v4_humble43/scripts/run_research_session.sh",
+            "/root/uav_tracking_fullplan_v4_humble43/scripts/run_stage1_trial.py",
+            "--name",
+            "reliability_v4_humble43_probe01_safety_person_auto_unique_multi_seed004",
+            "--class",
+            "person",
+            "--stage",
+            "2",
+            "--seed",
+            "4",
+            "--condition",
+            "clean",
+            "--estimator-method",
+            "adaptive_kf",
+            "--command-mode",
+            "velocity",
+            "--gimbal-mode",
+            "midpoint",
+            "--real-time-factor",
+            "0.125",
+            "--max-inference-rate-hz",
+            "10.0",
+            "--monitor-tick-s",
+            "0.02",
+            "--control-reference",
+            "ground_footprint",
+            "--motion-profile-kind",
+            "standard",
+            "--model-path",
+            "/root/uav_tracking_fullplan_v4_humble43/models/yolo11n.pt",
+            "--inference-image-size",
+            "320",
+            "--inference-threads",
+            "2",
+            "--desired-distance-m",
+            "5.0",
+            "--takeoff-height-m",
+            "3.0",
+            "--takeoff-mode",
+            "px4_native",
+            "--wall-timeout",
+            "1000.0",
+            "--render-backend",
+            "egl",
+            "--gazebo-render-driver",
+            "llvmpipe",
+            "--magnetic-environment",
+            "gazebo_enu",
+            "--magnetic-runtime-manifest",
+            "/root/uav_tracking_fullplan_v4_humble43/config/px4_magnetic_runtime.json",
+            "--magnetic-library-registration",
+            "/root/uav_tracking_fullplan_v4_humble43/config/gazebo_magnetic_runtime_humble22.json",
+            "--ros-gz-runtime-registration",
+            "/root/uav_tracking_fullplan_v4_humble43/config/ros_gz_runtime_humble22.json",
+            "--propagate-vehicle-uncertainty",
+            "--px4-time-mode",
+            "source_sim",
+            "--target-mode",
+            "auto_unique",
+            "--association-mode",
+            "legacy",
+            "--scenario-kind",
+            "parallel",
+            "--initial-select",
+            "none",
+            "--initial-min-candidates",
+            "2",
+            "--duration",
+            "35.0",
+            "--no-follow-duration-s",
+            "35.0",
+            "--px4-adapter-publish-rate-hz",
+            "50.0"
+          ],
+          "started_utc": "2026-11-01T04:23:05.113735+00:00",
+          "finished_utc": "2026-11-01T04:28:49.216990+00:00",
+          "returncode": 0,
+          "error": null,
+          "outer_cleanup_actions": [],
+          "outer_receipt": {
+            "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/person_auto_unique_multi_seed004_flight.outer_execution.json",
+            "sha256": "46fcd9414c333954eca2c13ec825f1f9ade7cf3a692334618b385c2edca87002"
+          },
+          "log": {
+            "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/person_auto_unique_multi_seed004_flight.log",
+            "sha256": "294bf257a92f3a11f127ca235e34ead139265220d016297f48f57c94e5722d56"
+          }
+        },
+        "source_clock": {
+          "argv": [
+            "bash",
+            "/root/uav_tracking_fullplan_v4_humble43/scripts/run_research_session.sh",
+            "/root/uav_tracking_fullplan_v4_humble43/scripts/evaluate_px4_source_clock.py",
+            "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_auto_unique_multi_seed004",
+            "--output",
+            "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_auto_unique_multi_seed004/px4_source_clock_report.json"
+          ],
+          "started_utc": "2026-11-01T04:28:50.442028+00:00",
+          "finished_utc": "2026-11-01T04:29:05.486291+00:00",
+          "returncode": 0,
+          "error": null,
+          "outer_cleanup_actions": [],
+          "outer_receipt": {
+            "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/person_auto_unique_multi_seed004_source_clock.outer_execution.json",
+            "sha256": "16064e982508fae22edd8322d39478eff4390e639faa6256b2015c771722e77c"
+          },
+          "log": {
+            "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/person_auto_unique_multi_seed004_source_clock.log",
+            "sha256": "707d6caac10eb458746d44f910ed9a1dd1b8837cea1d609b893bd851c8d312ed"
+          }
+        },
+        "native_startup": {
+          "argv": [
+            "bash",
+            "/root/uav_tracking_fullplan_v4_humble43/scripts/run_research_session.sh",
+            "/root/uav_tracking_fullplan_v4_humble43/scripts/evaluate_native_startup.py",
+            "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_auto_unique_multi_seed004",
+            "--output",
+            "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_auto_unique_multi_seed004/native_startup_report.json"
+          ],
+          "started_utc": "2026-11-01T04:29:05.532761+00:00",
+          "finished_utc": "2026-11-01T04:29:22.787625+00:00",
+          "returncode": 0,
+          "error": null,
+          "outer_cleanup_actions": [],
+          "outer_receipt": {
+            "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/person_auto_unique_multi_seed004_native_startup.outer_execution.json",
+            "sha256": "f049b43106f75f7856c4ba2e1302fe941349a547b22e1774684c1579af3e5227"
+          },
+          "log": {
+            "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/person_auto_unique_multi_seed004_native_startup.log",
+            "sha256": "111759d2266206c725894379e325a9172da2936d37163df6c9544f01dbb531db"
+          }
+        },
+        "specialized": {
+          "argv": [
+            "bash",
+            "/root/uav_tracking_fullplan_v4_humble43/scripts/run_research_session.sh",
+            "/root/uav_tracking_fullplan_v4_humble43/scripts/run_stage23_matrix.py",
+            "--evaluate-auto-unique",
+            "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_auto_unique_multi_seed004/rosbag",
+            "--target-class",
+            "person",
+            "--output",
+            "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_auto_unique_multi_seed004/auto_unique_evaluation_v2.json"
+          ],
+          "started_utc": "2026-11-01T04:29:22.802897+00:00",
+          "finished_utc": "2026-11-01T04:29:49.867756+00:00",
+          "returncode": 0,
+          "error": null,
+          "outer_cleanup_actions": [],
+          "outer_receipt": {
+            "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/person_auto_unique_multi_seed004_specialized.outer_execution.json",
+            "sha256": "e22b9b01a84dc08771e8fcc7f263de4f16eb63175164119ad5d1a625fea20157"
+          },
+          "log": {
+            "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/person_auto_unique_multi_seed004_specialized.log",
+            "sha256": "1a74fba0e4e6c9b0c2b7eb06a480ee6f6da8380a9d70dae729855f13baa5053a"
+          }
+        },
+        "terminal_speed": {
+          "argv": [
+            "bash",
+            "/root/uav_tracking_fullplan_v4_humble43/scripts/run_research_session.sh",
+            "/mnt/d/WSL/UAVHumble22-validation/evaluate_humble41_safety_tail01.py",
+            "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_auto_unique_multi_seed004",
+            "/mnt/d/WSL/UAVHumble22-validation/humble41_safety_execution01.md"
+          ],
+          "started_utc": "2026-11-01T04:29:49.880838+00:00",
+          "finished_utc": "2026-11-01T04:30:21.532436+00:00",
+          "returncode": 0,
+          "error": null,
+          "outer_cleanup_actions": [],
+          "outer_receipt": {
+            "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/person_auto_unique_multi_seed004_terminal_speed.outer_execution.json",
+            "sha256": "642dd3925f2161dabc69d213d810c0eea0cd451b316a4ed2b1ef1e7448ba48ef"
+          },
+          "log": {
+            "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/person_auto_unique_multi_seed004_terminal_speed.log",
+            "sha256": "274ada31b6587cecd051ef0611bfb1837746b8cfbf31e71fcf323ff42ae86b17"
+          },
+          "code_script": {
+            "path": "/mnt/d/WSL/UAVHumble22-validation/evaluate_humble41_safety_tail01.py",
+            "sha256": "05d1d11b6357db83a9805fc96f013e01c1c7741d109d6c10501e497215c2b612"
+          }
+        }
+      },
+      "evidence": {
+        "run_config": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_auto_unique_multi_seed004/run_config.json",
+          "sha256": "e0a6a6f34d2bd444578d78e2d9df40af17fb6c909ef504945fb0028a15f5d3de"
+        },
+        "source_snapshot": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_auto_unique_multi_seed004/configuration/source_sha256.json",
+          "sha256": "6563bfa35862be97e6ac95bc853f9cdbd4f09a07abc1835f94a37d4bbde990ae"
+        },
+        "runtime_parameters": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_auto_unique_multi_seed004/configuration/runtime_parameters.yaml",
+          "sha256": "908589244929dfa796bbbe30a9c7fee04fb4acb1060d848b7ac4fa22c451f248"
+        },
+        "bag_integrity": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_auto_unique_multi_seed004/bag_integrity.json",
+          "sha256": "4da0d187d13f96188f351e82d4c9c35e03c5da75d17d1c9c507b1e93551ebd66"
+        },
+        "recording_closure": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_auto_unique_multi_seed004/recording_closure.json",
+          "sha256": "c3971b8fb0dfd861c1e8e8a0a700a2d7a537fb6a6f690725e5f46d3300fcbda2"
+        },
+        "process_exit_codes": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_auto_unique_multi_seed004/process_exit_codes.json",
+          "sha256": "71bb8487608afe6c28385f5b082d043d0d055cdff8adfb6a6746ada18049954f"
+        },
+        "source_clock": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_auto_unique_multi_seed004/px4_source_clock_report.json",
+          "sha256": "be37fdd0077ac524faaa9b351abed95b8a6794b08f5cddf47297d95bcf2d3356"
+        },
+        "native_startup": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_auto_unique_multi_seed004/native_startup_report.json",
+          "sha256": "ae341921bb4d7de14e9bdff271d19133fc54eb5e14adb1205aaf43f6533b799a"
+        },
+        "specialized": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_auto_unique_multi_seed004/auto_unique_evaluation_v2.json",
+          "sha256": "381b78bec0d11768d2496265607460ccdf246520e8c1ae5eb6db1be983eea0c4"
+        },
+        "terminal_speed": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_auto_unique_multi_seed004/terminal_hover_speed_evaluation.json",
+          "sha256": "2187fe2cc05a7863d9869fb348e3bff67e8ee0cfd8532e111bfe32aea0cda622"
+        },
+        "rendering": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_auto_unique_multi_seed004/configuration/gazebo_rendering_libraries.json",
+          "sha256": "aba3a54b255d2374eda0a2ac420868fff4f86b83ffc61250f6cc320d3cce9615"
+        },
+        "magnetic": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_auto_unique_multi_seed004/configuration/magnetic_environment.json",
+          "sha256": "e980a5b4ec9df83b08fbc9d470f867758c6ded8e27458f59c6d5df5c76610298"
+        }
+      },
+      "missing_evidence": [],
+      "infrastructure_stop": false,
+      "original_error": null,
+      "original_terminal": {
+        "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/person_auto_unique_multi_seed004.json",
+        "sha256": "87a29506764dcc22781c5d546e030c4dccef895ccde07c6ea0b46a367b95347a"
+      }
+    },
+    {
+      "id": "person_locked_ambiguity_seed004",
+      "target_class": "person",
+      "case": "locked_ambiguity",
+      "seed": 4,
+      "result": "PASS",
+      "original_status": "PASS",
+      "trial_directory": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_locked_ambiguity_seed004",
+      "executions": {
+        "flight": {
+          "argv": [
+            "bash",
+            "/root/uav_tracking_fullplan_v4_humble43/scripts/run_research_session.sh",
+            "/root/uav_tracking_fullplan_v4_humble43/scripts/run_stage1_trial.py",
+            "--name",
+            "reliability_v4_humble43_probe01_safety_person_locked_ambiguity_seed004",
+            "--class",
+            "person",
+            "--stage",
+            "2",
+            "--seed",
+            "4",
+            "--condition",
+            "clean",
+            "--estimator-method",
+            "adaptive_kf",
+            "--command-mode",
+            "velocity",
+            "--gimbal-mode",
+            "midpoint",
+            "--real-time-factor",
+            "0.125",
+            "--max-inference-rate-hz",
+            "10.0",
+            "--monitor-tick-s",
+            "0.02",
+            "--control-reference",
+            "ground_footprint",
+            "--motion-profile-kind",
+            "standard",
+            "--model-path",
+            "/root/uav_tracking_fullplan_v4_humble43/models/yolo11n.pt",
+            "--inference-image-size",
+            "320",
+            "--inference-threads",
+            "2",
+            "--desired-distance-m",
+            "5.0",
+            "--takeoff-height-m",
+            "3.0",
+            "--takeoff-mode",
+            "px4_native",
+            "--wall-timeout",
+            "1000.0",
+            "--render-backend",
+            "egl",
+            "--gazebo-render-driver",
+            "llvmpipe",
+            "--magnetic-environment",
+            "gazebo_enu",
+            "--magnetic-runtime-manifest",
+            "/root/uav_tracking_fullplan_v4_humble43/config/px4_magnetic_runtime.json",
+            "--magnetic-library-registration",
+            "/root/uav_tracking_fullplan_v4_humble43/config/gazebo_magnetic_runtime_humble22.json",
+            "--ros-gz-runtime-registration",
+            "/root/uav_tracking_fullplan_v4_humble43/config/ros_gz_runtime_humble22.json",
+            "--propagate-vehicle-uncertainty",
+            "--px4-time-mode",
+            "source_sim",
+            "--target-mode",
+            "locked_target",
+            "--association-mode",
+            "hybrid_3d",
+            "--scenario-kind",
+            "ambiguity",
+            "--initial-select",
+            "middle",
+            "--initial-min-candidates",
+            "3",
+            "--duration",
+            "50.0",
+            "--px4-adapter-publish-rate-hz",
+            "50.0"
+          ],
+          "started_utc": "2026-11-01T04:31:34.642245+00:00",
+          "finished_utc": "2026-11-01T04:42:34.494146+00:00",
+          "returncode": 0,
+          "error": null,
+          "outer_cleanup_actions": [],
+          "outer_receipt": {
+            "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/person_locked_ambiguity_seed004_flight.outer_execution.json",
+            "sha256": "56e70412dad9cdaacd6a96854c5e0da25c3717ef8bf3cd987c4f3bd65614062e"
+          },
+          "log": {
+            "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/person_locked_ambiguity_seed004_flight.log",
+            "sha256": "1f3425b2144b1619e2c01d3c360ee21d93a7edcefabbc32bc26eb00dcd668cd6"
+          }
+        },
+        "source_clock": {
+          "argv": [
+            "bash",
+            "/root/uav_tracking_fullplan_v4_humble43/scripts/run_research_session.sh",
+            "/root/uav_tracking_fullplan_v4_humble43/scripts/evaluate_px4_source_clock.py",
+            "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_locked_ambiguity_seed004",
+            "--output",
+            "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_locked_ambiguity_seed004/px4_source_clock_report.json"
+          ],
+          "started_utc": "2026-11-01T04:42:38.296127+00:00",
+          "finished_utc": "2026-11-01T04:43:03.446172+00:00",
+          "returncode": 0,
+          "error": null,
+          "outer_cleanup_actions": [],
+          "outer_receipt": {
+            "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/person_locked_ambiguity_seed004_source_clock.outer_execution.json",
+            "sha256": "b0fb2bdd031bd6e32c54990087ced4a5896633375b08fb1b52b6b1607a6b6b5e"
+          },
+          "log": {
+            "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/person_locked_ambiguity_seed004_source_clock.log",
+            "sha256": "2c2486c7d7ecadf301904d2e1b882553ea115e5750e1d20d171590377f0c9095"
+          }
+        },
+        "native_startup": {
+          "argv": [
+            "bash",
+            "/root/uav_tracking_fullplan_v4_humble43/scripts/run_research_session.sh",
+            "/root/uav_tracking_fullplan_v4_humble43/scripts/evaluate_native_startup.py",
+            "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_locked_ambiguity_seed004",
+            "--output",
+            "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_locked_ambiguity_seed004/native_startup_report.json"
+          ],
+          "started_utc": "2026-11-01T04:43:03.542551+00:00",
+          "finished_utc": "2026-11-01T04:43:42.909874+00:00",
+          "returncode": 0,
+          "error": null,
+          "outer_cleanup_actions": [],
+          "outer_receipt": {
+            "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/person_locked_ambiguity_seed004_native_startup.outer_execution.json",
+            "sha256": "dd00d864b69c38df46a39ec468ba06d9c645ac8bed35004ce07a3634549a75aa"
+          },
+          "log": {
+            "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/person_locked_ambiguity_seed004_native_startup.log",
+            "sha256": "5ff6c8be516dd2f5368f185be6979ef6cfb51ce9bed7df1ab7555009ab23dc21"
+          }
+        },
+        "specialized": {
+          "argv": [
+            "bash",
+            "/root/uav_tracking_fullplan_v4_humble43/scripts/run_research_session.sh",
+            "/root/uav_tracking_fullplan_v4_humble43/scripts/evaluate_stage2_flight.py",
+            "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_locked_ambiguity_seed004/rosbag",
+            "--target-class",
+            "person",
+            "--telemetry-jsonl",
+            "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_locked_ambiguity_seed004/telemetry.jsonl",
+            "--monitor-summary",
+            "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_locked_ambiguity_seed004/summary.json",
+            "--no-require-occlusions",
+            "--require-ambiguity",
+            "--terminal-expectation",
+            "hover",
+            "--output",
+            "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_locked_ambiguity_seed004/stage2_evaluation.json"
+          ],
+          "started_utc": "2026-11-01T04:43:43.069919+00:00",
+          "finished_utc": "2026-11-01T04:44:42.516484+00:00",
+          "returncode": 0,
+          "error": null,
+          "outer_cleanup_actions": [],
+          "outer_receipt": {
+            "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/person_locked_ambiguity_seed004_specialized.outer_execution.json",
+            "sha256": "513c06e60a417bdbd614e1a0f1a94fc0a1506c4d7449449a0fdeafc1f0373ceb"
+          },
+          "log": {
+            "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/person_locked_ambiguity_seed004_specialized.log",
+            "sha256": "47bf53da723cd5f5fb6e739dbc2965e3144ea0ca8d742455ed36084929e90943"
+          }
+        },
+        "terminal_speed": {
+          "argv": [
+            "bash",
+            "/root/uav_tracking_fullplan_v4_humble43/scripts/run_research_session.sh",
+            "/mnt/d/WSL/UAVHumble22-validation/evaluate_humble41_safety_tail01.py",
+            "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_locked_ambiguity_seed004",
+            "/mnt/d/WSL/UAVHumble22-validation/humble41_safety_execution01.md"
+          ],
+          "started_utc": "2026-11-01T04:44:42.532476+00:00",
+          "finished_utc": "2026-11-01T04:45:43.914874+00:00",
+          "returncode": 0,
+          "error": null,
+          "outer_cleanup_actions": [],
+          "outer_receipt": {
+            "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/person_locked_ambiguity_seed004_terminal_speed.outer_execution.json",
+            "sha256": "c0bb4faa20535757f1a2ef6c6baee0cfe49a899f22736070902de3a251ca02e4"
+          },
+          "log": {
+            "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/person_locked_ambiguity_seed004_terminal_speed.log",
+            "sha256": "3e3023967d19ce5ecc2ba9dc0ede58b1dd966e4e8507111480c1516ce22bb365"
+          },
+          "code_script": {
+            "path": "/mnt/d/WSL/UAVHumble22-validation/evaluate_humble41_safety_tail01.py",
+            "sha256": "05d1d11b6357db83a9805fc96f013e01c1c7741d109d6c10501e497215c2b612"
+          }
+        }
+      },
+      "evidence": {
+        "run_config": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_locked_ambiguity_seed004/run_config.json",
+          "sha256": "6feca5a36b48b275ca076f610d803f56dcf551caf05cda1ca3eee1b445c3f71a"
+        },
+        "source_snapshot": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_locked_ambiguity_seed004/configuration/source_sha256.json",
+          "sha256": "6563bfa35862be97e6ac95bc853f9cdbd4f09a07abc1835f94a37d4bbde990ae"
+        },
+        "runtime_parameters": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_locked_ambiguity_seed004/configuration/runtime_parameters.yaml",
+          "sha256": "23975eb1b2643f86d7ca94fedee03e10469a58f37374a4a33fd6864c2769caf1"
+        },
+        "bag_integrity": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_locked_ambiguity_seed004/bag_integrity.json",
+          "sha256": "a6246bee8b074fa53c2cad08c6fe9ed6560112788737c72cb4945884e40b1020"
+        },
+        "recording_closure": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_locked_ambiguity_seed004/recording_closure.json",
+          "sha256": "9cd491da34d4db91d1981f84b21bc82f23e8ffac7df8ea5bb6723c4f047b3ace"
+        },
+        "process_exit_codes": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_locked_ambiguity_seed004/process_exit_codes.json",
+          "sha256": "71bb8487608afe6c28385f5b082d043d0d055cdff8adfb6a6746ada18049954f"
+        },
+        "source_clock": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_locked_ambiguity_seed004/px4_source_clock_report.json",
+          "sha256": "3565ec263813849d45f953080a8788bda7cebb73d0094afcc35c7bf709d9b5a6"
+        },
+        "native_startup": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_locked_ambiguity_seed004/native_startup_report.json",
+          "sha256": "e89e109c5467333c76294276eaf545ebedbf1916bfbb1d6ed15b4cb2c62b64b5"
+        },
+        "specialized": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_locked_ambiguity_seed004/stage2_evaluation.json",
+          "sha256": "f225137b6d077a2d3dcbb5baa14c408dc7d2feb87c4e3afe207d7b4e4826a000"
+        },
+        "terminal_speed": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_locked_ambiguity_seed004/terminal_hover_speed_evaluation.json",
+          "sha256": "094abd339ebd1354e9a9d399999af9af405ccbda724ce10844d14a3f6b69a487"
+        },
+        "rendering": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_locked_ambiguity_seed004/configuration/gazebo_rendering_libraries.json",
+          "sha256": "d9a5d286007b3dba789cf700ef363b6eab259855885e190bc0220cdbe8159c5b"
+        },
+        "magnetic": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_person_locked_ambiguity_seed004/configuration/magnetic_environment.json",
+          "sha256": "01f5eeae6e612be988767efb157b8cf6e46754b0b522127d1302dcb040f36beb"
+        }
+      },
+      "missing_evidence": [],
+      "infrastructure_stop": false,
+      "original_error": null,
+      "original_terminal": {
+        "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/person_locked_ambiguity_seed004.json",
+        "sha256": "d4a1a966d3f496ddc55caf4240c21cdc305a0bc354ef1874979f6c60f702080f"
+      }
+    },
+    {
+      "id": "car_auto_unique_multi_seed004",
+      "target_class": "car",
+      "case": "auto_unique_multi",
+      "seed": 4,
+      "result": "PASS",
+      "original_status": "PASS",
+      "trial_directory": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_auto_unique_multi_seed004",
+      "executions": {
+        "flight": {
+          "argv": [
+            "bash",
+            "/root/uav_tracking_fullplan_v4_humble43/scripts/run_research_session.sh",
+            "/root/uav_tracking_fullplan_v4_humble43/scripts/run_stage1_trial.py",
+            "--name",
+            "reliability_v4_humble43_probe01_safety_car_auto_unique_multi_seed004",
+            "--class",
+            "car",
+            "--stage",
+            "2",
+            "--seed",
+            "4",
+            "--condition",
+            "clean",
+            "--estimator-method",
+            "adaptive_kf",
+            "--command-mode",
+            "velocity",
+            "--gimbal-mode",
+            "midpoint",
+            "--real-time-factor",
+            "0.125",
+            "--max-inference-rate-hz",
+            "10.0",
+            "--monitor-tick-s",
+            "0.02",
+            "--control-reference",
+            "ground_footprint",
+            "--motion-profile-kind",
+            "standard",
+            "--model-path",
+            "/root/uav_tracking_fullplan_v4_humble43/models/yolo11m_car_sim_train20_04.pt",
+            "--inference-image-size",
+            "512",
+            "--inference-threads",
+            "4",
+            "--desired-distance-m",
+            "9.0",
+            "--takeoff-height-m",
+            "3.0",
+            "--takeoff-mode",
+            "px4_native",
+            "--wall-timeout",
+            "1000.0",
+            "--render-backend",
+            "egl",
+            "--gazebo-render-driver",
+            "llvmpipe",
+            "--magnetic-environment",
+            "gazebo_enu",
+            "--magnetic-runtime-manifest",
+            "/root/uav_tracking_fullplan_v4_humble43/config/px4_magnetic_runtime.json",
+            "--magnetic-library-registration",
+            "/root/uav_tracking_fullplan_v4_humble43/config/gazebo_magnetic_runtime_humble22.json",
+            "--ros-gz-runtime-registration",
+            "/root/uav_tracking_fullplan_v4_humble43/config/ros_gz_runtime_humble22.json",
+            "--propagate-vehicle-uncertainty",
+            "--px4-time-mode",
+            "source_sim",
+            "--target-mode",
+            "auto_unique",
+            "--association-mode",
+            "legacy",
+            "--scenario-kind",
+            "parallel",
+            "--initial-select",
+            "none",
+            "--initial-min-candidates",
+            "2",
+            "--duration",
+            "35.0",
+            "--no-follow-duration-s",
+            "35.0",
+            "--correlated-two-face-bound",
+            "--car-surface-recovery",
+            "--exclusive-navigation-reference",
+            "--px4-adapter-publish-rate-hz",
+            "50.0"
+          ],
+          "started_utc": "2026-11-01T04:47:00.745090+00:00",
+          "finished_utc": "2026-11-01T04:52:46.709983+00:00",
+          "returncode": 0,
+          "error": null,
+          "outer_cleanup_actions": [],
+          "outer_receipt": {
+            "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/car_auto_unique_multi_seed004_flight.outer_execution.json",
+            "sha256": "08638d02cc9038a1f7295ad347618a5f3a969841b4c471f99cdbfcd83495c52a"
+          },
+          "log": {
+            "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/car_auto_unique_multi_seed004_flight.log",
+            "sha256": "df832c02c70b46125ac1de2cb5a5939f6fe1dbfa9ae3021021dad52a4f5e33c5"
+          }
+        },
+        "source_clock": {
+          "argv": [
+            "bash",
+            "/root/uav_tracking_fullplan_v4_humble43/scripts/run_research_session.sh",
+            "/root/uav_tracking_fullplan_v4_humble43/scripts/evaluate_px4_source_clock.py",
+            "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_auto_unique_multi_seed004",
+            "--output",
+            "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_auto_unique_multi_seed004/px4_source_clock_report.json"
+          ],
+          "started_utc": "2026-11-01T04:52:48.551133+00:00",
+          "finished_utc": "2026-11-01T04:53:02.742903+00:00",
+          "returncode": 0,
+          "error": null,
+          "outer_cleanup_actions": [],
+          "outer_receipt": {
+            "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/car_auto_unique_multi_seed004_source_clock.outer_execution.json",
+            "sha256": "882e42d68f9c5a08fd9497a63c9878ede9f24fdd4abf308e7c15d2caa8123497"
+          },
+          "log": {
+            "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/car_auto_unique_multi_seed004_source_clock.log",
+            "sha256": "6c7860d64f3ffdc7854693260da0121ecae71883701fdbf7ac2902a0ac1ca6be"
+          }
+        },
+        "native_startup": {
+          "argv": [
+            "bash",
+            "/root/uav_tracking_fullplan_v4_humble43/scripts/run_research_session.sh",
+            "/root/uav_tracking_fullplan_v4_humble43/scripts/evaluate_native_startup.py",
+            "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_auto_unique_multi_seed004",
+            "--output",
+            "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_auto_unique_multi_seed004/native_startup_report.json"
+          ],
+          "started_utc": "2026-11-01T04:53:02.766056+00:00",
+          "finished_utc": "2026-11-01T04:53:23.006210+00:00",
+          "returncode": 0,
+          "error": null,
+          "outer_cleanup_actions": [],
+          "outer_receipt": {
+            "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/car_auto_unique_multi_seed004_native_startup.outer_execution.json",
+            "sha256": "ba7708aaf7838d4715cb484e362b5a28f71126b998ad0f6ee90ce14a3369844b"
+          },
+          "log": {
+            "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/car_auto_unique_multi_seed004_native_startup.log",
+            "sha256": "6b1f3b491cd3322f05efd2049fa9376b838d851a2ea0996623016ecca1d308ec"
+          }
+        },
+        "specialized": {
+          "argv": [
+            "bash",
+            "/root/uav_tracking_fullplan_v4_humble43/scripts/run_research_session.sh",
+            "/root/uav_tracking_fullplan_v4_humble43/scripts/run_stage23_matrix.py",
+            "--evaluate-auto-unique",
+            "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_auto_unique_multi_seed004/rosbag",
+            "--target-class",
+            "car",
+            "--output",
+            "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_auto_unique_multi_seed004/auto_unique_evaluation_v2.json"
+          ],
+          "started_utc": "2026-11-01T04:53:23.022451+00:00",
+          "finished_utc": "2026-11-01T04:53:47.467147+00:00",
+          "returncode": 0,
+          "error": null,
+          "outer_cleanup_actions": [],
+          "outer_receipt": {
+            "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/car_auto_unique_multi_seed004_specialized.outer_execution.json",
+            "sha256": "fbce3d56cc1cf4e9ad7875a3d42b311cf2de850dd53f2e3cd3e92cb9dd40076e"
+          },
+          "log": {
+            "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/car_auto_unique_multi_seed004_specialized.log",
+            "sha256": "f642e905d36d580945320a83b0a3b43f4bb0041a96a6bc00e95853e3a43d0376"
+          }
+        },
+        "terminal_speed": {
+          "argv": [
+            "bash",
+            "/root/uav_tracking_fullplan_v4_humble43/scripts/run_research_session.sh",
+            "/mnt/d/WSL/UAVHumble22-validation/evaluate_humble41_safety_tail01.py",
+            "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_auto_unique_multi_seed004",
+            "/mnt/d/WSL/UAVHumble22-validation/humble41_safety_execution01.md"
+          ],
+          "started_utc": "2026-11-01T04:53:47.482465+00:00",
+          "finished_utc": "2026-11-01T04:54:14.483391+00:00",
+          "returncode": 0,
+          "error": null,
+          "outer_cleanup_actions": [],
+          "outer_receipt": {
+            "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/car_auto_unique_multi_seed004_terminal_speed.outer_execution.json",
+            "sha256": "09cdbf8a0bfd1886feed27cea30df286cc9ed16ddfb207a57d852496e78f8cf5"
+          },
+          "log": {
+            "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/car_auto_unique_multi_seed004_terminal_speed.log",
+            "sha256": "81ddf25601427827d3bf5abf80d7ecb21f8d218a0c8d67334daac738a19d0a2a"
+          },
+          "code_script": {
+            "path": "/mnt/d/WSL/UAVHumble22-validation/evaluate_humble41_safety_tail01.py",
+            "sha256": "05d1d11b6357db83a9805fc96f013e01c1c7741d109d6c10501e497215c2b612"
+          }
+        }
+      },
+      "evidence": {
+        "run_config": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_auto_unique_multi_seed004/run_config.json",
+          "sha256": "4464f7ea6411d64071b62ec749394a898aff282894af21b20ace444442fbd137"
+        },
+        "source_snapshot": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_auto_unique_multi_seed004/configuration/source_sha256.json",
+          "sha256": "7c079eb18530f65654f09d85ba237e5e8a30f4c7bc119785bf2f16bf149ed199"
+        },
+        "runtime_parameters": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_auto_unique_multi_seed004/configuration/runtime_parameters.yaml",
+          "sha256": "c26f84febb10913bf2e07f593ea3041409c020cd281ba367b4ab13146fa29178"
+        },
+        "bag_integrity": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_auto_unique_multi_seed004/bag_integrity.json",
+          "sha256": "5d80dd14b72870f1a4acfb234cd13558289d6488b5e7ce4a2149406f16265efe"
+        },
+        "recording_closure": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_auto_unique_multi_seed004/recording_closure.json",
+          "sha256": "a4733720eb00ac075daeaf508127e0ca13ddc33b1f63b2ce269d21b1c526899f"
+        },
+        "process_exit_codes": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_auto_unique_multi_seed004/process_exit_codes.json",
+          "sha256": "71bb8487608afe6c28385f5b082d043d0d055cdff8adfb6a6746ada18049954f"
+        },
+        "source_clock": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_auto_unique_multi_seed004/px4_source_clock_report.json",
+          "sha256": "cada4b73e7d01e9b36f081d0641f22da2bec1dd9094c4b920d5be6bac83627bd"
+        },
+        "native_startup": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_auto_unique_multi_seed004/native_startup_report.json",
+          "sha256": "0d088060e584eeba0b610819d7a64d0260cf6ac8ae7726139f37d7d1c7137d23"
+        },
+        "specialized": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_auto_unique_multi_seed004/auto_unique_evaluation_v2.json",
+          "sha256": "ee4f7486e7772eb6f07bd81e120fd4853ef7f3953471df1a1cc67ec20374fe12"
+        },
+        "terminal_speed": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_auto_unique_multi_seed004/terminal_hover_speed_evaluation.json",
+          "sha256": "88fe8c4628e5b2be47e0da115cb4c1db57320d6b8660fa66e6774767d65135c4"
+        },
+        "rendering": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_auto_unique_multi_seed004/configuration/gazebo_rendering_libraries.json",
+          "sha256": "78113d853ac90147836b6975a8222b8f4a8d3a2d9c99a12c63b4b1f8809cb63e"
+        },
+        "magnetic": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_auto_unique_multi_seed004/configuration/magnetic_environment.json",
+          "sha256": "3a4c7abf30a8a84f2454f14e8a8496af17f968bb035d7195260f451481b402d7"
+        }
+      },
+      "missing_evidence": [],
+      "infrastructure_stop": false,
+      "original_error": null,
+      "original_terminal": {
+        "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/car_auto_unique_multi_seed004.json",
+        "sha256": "d4d3acdc057eb64a5e6072bfc0542dc3cb6e5bf68b0f1027192ecf92460906b0"
+      }
+    },
+    {
+      "id": "car_locked_ambiguity_seed004",
+      "target_class": "car",
+      "case": "locked_ambiguity",
+      "seed": 4,
+      "result": "PASS",
+      "original_status": "PASS",
+      "trial_directory": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_locked_ambiguity_seed004",
+      "executions": {
+        "flight": {
+          "argv": [
+            "bash",
+            "/root/uav_tracking_fullplan_v4_humble43/scripts/run_research_session.sh",
+            "/root/uav_tracking_fullplan_v4_humble43/scripts/run_stage1_trial.py",
+            "--name",
+            "reliability_v4_humble43_probe01_safety_car_locked_ambiguity_seed004",
+            "--class",
+            "car",
+            "--stage",
+            "2",
+            "--seed",
+            "4",
+            "--condition",
+            "clean",
+            "--estimator-method",
+            "adaptive_kf",
+            "--command-mode",
+            "velocity",
+            "--gimbal-mode",
+            "midpoint",
+            "--real-time-factor",
+            "0.125",
+            "--max-inference-rate-hz",
+            "10.0",
+            "--monitor-tick-s",
+            "0.02",
+            "--control-reference",
+            "ground_footprint",
+            "--motion-profile-kind",
+            "standard",
+            "--model-path",
+            "/root/uav_tracking_fullplan_v4_humble43/models/yolo11m_car_sim_train20_04.pt",
+            "--inference-image-size",
+            "512",
+            "--inference-threads",
+            "4",
+            "--desired-distance-m",
+            "9.0",
+            "--takeoff-height-m",
+            "3.0",
+            "--takeoff-mode",
+            "px4_native",
+            "--wall-timeout",
+            "1000.0",
+            "--render-backend",
+            "egl",
+            "--gazebo-render-driver",
+            "llvmpipe",
+            "--magnetic-environment",
+            "gazebo_enu",
+            "--magnetic-runtime-manifest",
+            "/root/uav_tracking_fullplan_v4_humble43/config/px4_magnetic_runtime.json",
+            "--magnetic-library-registration",
+            "/root/uav_tracking_fullplan_v4_humble43/config/gazebo_magnetic_runtime_humble22.json",
+            "--ros-gz-runtime-registration",
+            "/root/uav_tracking_fullplan_v4_humble43/config/ros_gz_runtime_humble22.json",
+            "--propagate-vehicle-uncertainty",
+            "--px4-time-mode",
+            "source_sim",
+            "--target-mode",
+            "locked_target",
+            "--association-mode",
+            "hybrid_3d",
+            "--scenario-kind",
+            "ambiguity",
+            "--initial-select",
+            "middle",
+            "--initial-min-candidates",
+            "3",
+            "--duration",
+            "50.0",
+            "--correlated-two-face-bound",
+            "--car-surface-recovery",
+            "--exclusive-navigation-reference",
+            "--px4-adapter-publish-rate-hz",
+            "50.0"
+          ],
+          "started_utc": "2026-11-01T04:55:32.388168+00:00",
+          "finished_utc": "2026-11-01T05:06:36.967227+00:00",
+          "returncode": 0,
+          "error": null,
+          "outer_cleanup_actions": [],
+          "outer_receipt": {
+            "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/car_locked_ambiguity_seed004_flight.outer_execution.json",
+            "sha256": "17808163a7660c4f7e60fe03b916f198c249fefd74cb66e25b714f8c6f666765"
+          },
+          "log": {
+            "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/car_locked_ambiguity_seed004_flight.log",
+            "sha256": "1e8bb6f059f5da3f6e65df4f5d11f55e401fb855a3e6219ad184d315e3698ae4"
+          }
+        },
+        "source_clock": {
+          "argv": [
+            "bash",
+            "/root/uav_tracking_fullplan_v4_humble43/scripts/run_research_session.sh",
+            "/root/uav_tracking_fullplan_v4_humble43/scripts/evaluate_px4_source_clock.py",
+            "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_locked_ambiguity_seed004",
+            "--output",
+            "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_locked_ambiguity_seed004/px4_source_clock_report.json"
+          ],
+          "started_utc": "2026-11-01T05:06:44.157227+00:00",
+          "finished_utc": "2026-11-01T05:07:22.666383+00:00",
+          "returncode": 0,
+          "error": null,
+          "outer_cleanup_actions": [],
+          "outer_receipt": {
+            "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/car_locked_ambiguity_seed004_source_clock.outer_execution.json",
+            "sha256": "2304a3ab35d2bcc6611f8424c2330eb35ddb4a0480d6d9dc16d7232091b140e6"
+          },
+          "log": {
+            "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/car_locked_ambiguity_seed004_source_clock.log",
+            "sha256": "309789a9a03c61380e6e328c973548d5184f6bd305f053e2c4af564ac8645678"
+          }
+        },
+        "native_startup": {
+          "argv": [
+            "bash",
+            "/root/uav_tracking_fullplan_v4_humble43/scripts/run_research_session.sh",
+            "/root/uav_tracking_fullplan_v4_humble43/scripts/evaluate_native_startup.py",
+            "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_locked_ambiguity_seed004",
+            "--output",
+            "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_locked_ambiguity_seed004/native_startup_report.json"
+          ],
+          "started_utc": "2026-11-01T05:07:22.688489+00:00",
+          "finished_utc": "2026-11-01T05:08:09.674399+00:00",
+          "returncode": 0,
+          "error": null,
+          "outer_cleanup_actions": [],
+          "outer_receipt": {
+            "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/car_locked_ambiguity_seed004_native_startup.outer_execution.json",
+            "sha256": "dc9394c9fc33a5a035262b6c7b4845a1b24319f494871e1ecc805a49c6008151"
+          },
+          "log": {
+            "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/car_locked_ambiguity_seed004_native_startup.log",
+            "sha256": "f11307c26405846d0c9fe35f0978716b87d4cdbc54fc0cd4684ee1daa812c9ee"
+          }
+        },
+        "specialized": {
+          "argv": [
+            "bash",
+            "/root/uav_tracking_fullplan_v4_humble43/scripts/run_research_session.sh",
+            "/root/uav_tracking_fullplan_v4_humble43/scripts/evaluate_stage2_flight.py",
+            "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_locked_ambiguity_seed004/rosbag",
+            "--target-class",
+            "car",
+            "--telemetry-jsonl",
+            "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_locked_ambiguity_seed004/telemetry.jsonl",
+            "--monitor-summary",
+            "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_locked_ambiguity_seed004/summary.json",
+            "--no-require-occlusions",
+            "--require-ambiguity",
+            "--terminal-expectation",
+            "hover",
+            "--output",
+            "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_locked_ambiguity_seed004/stage2_evaluation.json"
+          ],
+          "started_utc": "2026-11-01T05:08:09.884817+00:00",
+          "finished_utc": "2026-11-01T05:09:20.635629+00:00",
+          "returncode": 0,
+          "error": null,
+          "outer_cleanup_actions": [],
+          "outer_receipt": {
+            "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/car_locked_ambiguity_seed004_specialized.outer_execution.json",
+            "sha256": "f450d564fd0d91e167ec379ce9270106171c9638d648e9e3373a9158bc2b6642"
+          },
+          "log": {
+            "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/car_locked_ambiguity_seed004_specialized.log",
+            "sha256": "6ae6e6b89304e5c7e819817d7fe34ac6145682b719cf5d6f120a6010f0a0d0c1"
+          }
+        },
+        "terminal_speed": {
+          "argv": [
+            "bash",
+            "/root/uav_tracking_fullplan_v4_humble43/scripts/run_research_session.sh",
+            "/mnt/d/WSL/UAVHumble22-validation/evaluate_humble41_safety_tail01.py",
+            "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_locked_ambiguity_seed004",
+            "/mnt/d/WSL/UAVHumble22-validation/humble41_safety_execution01.md"
+          ],
+          "started_utc": "2026-11-01T05:09:20.730348+00:00",
+          "finished_utc": "2026-11-01T05:10:29.318641+00:00",
+          "returncode": 0,
+          "error": null,
+          "outer_cleanup_actions": [],
+          "outer_receipt": {
+            "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/car_locked_ambiguity_seed004_terminal_speed.outer_execution.json",
+            "sha256": "c11c9f5396222703af498249367945b8096a8af4e517b6e610b81075755263d2"
+          },
+          "log": {
+            "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/car_locked_ambiguity_seed004_terminal_speed.log",
+            "sha256": "4eff74a25fc7f2e870cace622f482bb5d6b7d6f1f2fc813f9a9f06b21b8fde7e"
+          },
+          "code_script": {
+            "path": "/mnt/d/WSL/UAVHumble22-validation/evaluate_humble41_safety_tail01.py",
+            "sha256": "05d1d11b6357db83a9805fc96f013e01c1c7741d109d6c10501e497215c2b612"
+          }
+        }
+      },
+      "evidence": {
+        "run_config": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_locked_ambiguity_seed004/run_config.json",
+          "sha256": "99a06634db827538d8ba8fda3ca1647eba948d7ffc5120cfc2382d04f41f2011"
+        },
+        "source_snapshot": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_locked_ambiguity_seed004/configuration/source_sha256.json",
+          "sha256": "7c079eb18530f65654f09d85ba237e5e8a30f4c7bc119785bf2f16bf149ed199"
+        },
+        "runtime_parameters": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_locked_ambiguity_seed004/configuration/runtime_parameters.yaml",
+          "sha256": "b9c8399774b34e1e88316abdf16573985a39d8c630e780ae27d4e84593c342c4"
+        },
+        "bag_integrity": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_locked_ambiguity_seed004/bag_integrity.json",
+          "sha256": "0e708e8139ec3294584f268c79208f9764b30832ce6a5825a7a511b660ecaa6f"
+        },
+        "recording_closure": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_locked_ambiguity_seed004/recording_closure.json",
+          "sha256": "367ec6afc599518ffbe9950c7cca15636f2d197f8072922d69ed5186393bfaf3"
+        },
+        "process_exit_codes": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_locked_ambiguity_seed004/process_exit_codes.json",
+          "sha256": "71bb8487608afe6c28385f5b082d043d0d055cdff8adfb6a6746ada18049954f"
+        },
+        "source_clock": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_locked_ambiguity_seed004/px4_source_clock_report.json",
+          "sha256": "49b5eb4264c90c908643f179d2d242a6c806dd4e469015d146a48cea80045c81"
+        },
+        "native_startup": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_locked_ambiguity_seed004/native_startup_report.json",
+          "sha256": "4bb368c2a87ba1b28548f228d63451d5631166792e963d75d0e18d7ec9d14b13"
+        },
+        "specialized": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_locked_ambiguity_seed004/stage2_evaluation.json",
+          "sha256": "a5311314239d539ebcf7368a2fd04f6c9ec4bf217397fedb51301d3bd42518f4"
+        },
+        "terminal_speed": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_locked_ambiguity_seed004/terminal_hover_speed_evaluation.json",
+          "sha256": "df21b050d959c3e349ab4e9e683bb7e25e837d2bb381e5844eb4d45265b64353"
+        },
+        "rendering": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_locked_ambiguity_seed004/configuration/gazebo_rendering_libraries.json",
+          "sha256": "82dfd13f552788f6cf3da294fe576af11355d70bbb178158c380886941804aea"
+        },
+        "magnetic": {
+          "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_car_locked_ambiguity_seed004/configuration/magnetic_environment.json",
+          "sha256": "2cb24fe6fb7f7de2c5a5ba23e97134870e1ecedb40934110a2b5936d9adc021f"
+        }
+      },
+      "missing_evidence": [],
+      "infrastructure_stop": false,
+      "original_error": null,
+      "original_terminal": {
+        "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/car_locked_ambiguity_seed004.json",
+        "sha256": "ec0698e95a3623e5a286b8d267a912869b530c1beb37ef5c2fa6cf6f622aaeb2"
+      }
+    }
+  ],
+  "planned_count": 4,
+  "attempted_count": 4,
+  "pending_count": 0,
+  "execution_terminal": {
+    "path": "/root/uav_tracking_fullplan_v4_humble43/results/reliability_v4_humble43_probe01_safety_seed004_audit/execution_terminal.json",
+    "sha256": "cd53295d127b4afdffa12e0714f9deaad826632aefb29b590f475892dfd6a4b0"
+  },
+  "final_bindings_status": "DEVELOPMENT_ONLY_NOT_REGISTERED_FORMAL_GATE",
+  "formal_seeds_consumed": false
+}
