@@ -1,6 +1,6 @@
 # 当前工作交接（持续开发，非验收报告）
 
-**2026-11-02（北京时间）：Humble45四包构建及完整Linux测试通过，1767项中5项平台跳过、0错误和0失败；汽车远距离probe02原槽PASS、外层退出0，核心12场正在串行验证，正式仍0/280。** 44和43的历史失败保留，单场通过不能代表批量可靠性。见[45验证与当前边界](reliability-v4-humble45-validation-20261102.md)。
+**2026-11-02（北京时间）：Humble45核心批次已停止，原结果为1 PASS、1基础设施错误、10未开始，正式仍0/280。** 第2场因里程计墙钟新鲜度保护中止，正进行离线时序取证；原失败和owner收尾错误保留。构建及单场诊断的通过不能代替本批验收。见[45故障与后续工作](reliability-v4-humble45-position-abort-20261102.md)。
 
 **2026-11-01 23:17（北京时间）：44原生冷构建PASS但全suite FAIL；正在准备45，正式0/280、尚未新飞行。** 44测试1767项，3 ERROR均为`test_simulation_seed`临时root缺`recording_qos.yaml`，5项平台跳过；validate launcher原FAILED/child2，suite原FAIL/rc1，均保留。main仅补该夹具5行复制原字节；root在Humble独占运行13项定向测试全部PASS、0跳过、1.517秒。原录包smoke1290条全匹配、SIGINT正常关闭的结论仍限低量合成。见[44失败及后续验证原件](../tools/diagnostics/humble44_validation_failure01/README.md)、[smoke快照](../tools/diagnostics/humble44_recorder_qos_smoke01/README.md)与[后续路线](reliability-v4-humble44-recording-repair.md)。44根/原validate不重写；新45以健康43build/validate为来源前驱，保留44失败。
 

@@ -1,0 +1,55 @@
+{
+  "slot": "person_stage1_position_seed004",
+  "number": 2,
+  "started_utc": "2026-11-01T16:50:39.893107+00:00",
+  "runner_result": {
+    "started_this_invocation": 1,
+    "stop": "INFRASTRUCTURE_STOP",
+    "plan_sha256": "c0d81ee12a03ff2232ce3b1092e3e243864ef5468cdbae280840def6ad55fd84",
+    "mode": "PROBE",
+    "planned_count": 12,
+    "status_counts": {
+      "PASS": 1,
+      "INFRASTRUCTURE_ERROR": 1,
+      "PENDING": 10
+    },
+    "terminal_count": 2,
+    "all_engineering_pass": false,
+    "exit_code_semantics": "Run exit zero means no orchestration/infrastructure stop; inspect all_engineering_pass and every terminal result separately.",
+    "pending_ids": [
+      "person_stage2_crossing_seed004",
+      "person_stage3_midpoint_seed004",
+      "person_stage3_active_seed004",
+      "person_stage3_multi_active_seed004",
+      "car_stage1_velocity_seed004",
+      "car_stage1_position_seed004",
+      "car_stage2_crossing_seed004",
+      "car_stage3_midpoint_seed004",
+      "car_stage3_active_seed004",
+      "car_stage3_multi_active_seed004"
+    ],
+    "scope": "New post-repair engineering slots; navigation/base_link evidence and unknown identity are retained. This is not a new v3 four-estimator comparison."
+  },
+  "record": {
+    "status": "INFRASTRUCTURE_ERROR",
+    "engineering_result": "FAIL",
+    "record_binding": {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble45/reliability_v4_humble45_probe01_seed004_matrix/slots/person_stage1_position_seed004.json",
+      "sha256": "983aef6be21724df9d1b5a9bc53a65545642913970edcb829108e2d055746f0f",
+      "record_sha256": "371b43d7e253abcf4d0c4a49a4ac43942b25feb0d5674e20023e6d9a82ded52e",
+      "started_marker": {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble45/reliability_v4_humble45_probe01_seed004_matrix/slots/person_stage1_position_seed004.started.json",
+        "sha256": "8a0c6a5629801954ad6fa89fbdc330f361b0bdc844e2acef87279690920ef16f"
+      },
+      "plan_sha256": "c0d81ee12a03ff2232ce3b1092e3e243864ef5468cdbae280840def6ad55fd84",
+      "started_utc": "2026-11-01T16:50:42.131795+00:00"
+    }
+  },
+  "audit": null,
+  "error": "ValueError:Incomplete/infrastructure attempt requires diagnosis: person_stage1_position_seed004",
+  "started_marker": {
+    "path": "/root/uav_tracking_fullplan_v4_humble45/results/reliability_v4_humble45_probe01_seed004_matrix/observed_driver01/02_person_stage1_position_seed004.started.json",
+    "sha256": "e42adbf6ee99350b5e21b20a58cad097ca6d177416962f1de8c0a8a58addd682"
+  },
+  "finished_utc": "2026-11-01T17:01:00.927589+00:00"
+}

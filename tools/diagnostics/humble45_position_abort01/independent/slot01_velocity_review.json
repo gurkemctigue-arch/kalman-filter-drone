@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "scope": "CORE45_ORIGINAL_SLOT01_SMALL_METADATA_AND_ATTEMPT_REVIEW_OUTER_STILL_RUNNING",
+  "reviewer": "/root/review_repair_patch",
+  "created_utc": "2026-11-01T16:51:50.481498+00:00",
+  "status": "PASS_BOUNDED_SLOT_REVIEW",
+  "slot": "person_stage1_velocity_seed004",
+  "original_slot_status": "PASS",
+  "checks": {
+    "slot_plan_digest_binding": true,
+    "original_slot_pass_no_infrastructure_stop": true,
+    "original_flight_and_four_evaluator_argv": true,
+    "all_seven_report_artifact_pins": true,
+    "source_clock_gates_complete": true,
+    "native_startup_gates_complete": true,
+    "surface_behavior_pass": true,
+    "truth_coverage_and_censored_samples_preserved": true,
+    "both_axes_settled": true,
+    "closure_observer_healthy": true,
+    "archive_native_full_stream_receipt": true,
+    "saved_source180_bound_to_review_and_models": true,
+    "saved_original_runtime_person_resources": true,
+    "attempt_original_once_pass": true,
+    "attempt_slot_pin_and_digest": true,
+    "driver_marker_plan_contract_source_binding": true,
+    "slot_started_marker_original_argv": true,
+    "outer_and_owner_not_yet_closed": true
+  },
+  "pins": {
+    "slot_file_sha256": "8d969aa44399f43e4be155f05d3b799bb4ff38788c0bb5346799489bc29ec202",
+    "record_canonical_sha256": "27f840eda9d5d90b81f266e50bd8441d4646e104ec8cb8c087002f035f22480e",
+    "attempt_terminal_sha256": "a3ca51511691dad39fdeaf472d115ce28fa8fcea545c867c3178cd6aee6cbda3",
+    "reports": {
+      "px4_source_clock_report.json": "ecd6c6811f81d4940b7c9f6bddbbea84358fabaf55babb45f81be26936606443",
+      "native_startup_report.json": "416ed7f8e7a9ee89d3db29bfeec25f2420e7303f4a379fee114cf8fd1c212086",
+      "flight_evaluation.json": "ee2449622c87cdd9d35e27be480930020d76ae86d0de499772a28705f7af38ac",
+      "navigation_reference_evaluation.json": "9d8fb8d88151859fe365f58528c9564bfce7c6ecc4b885d6b5577fbc3afe20c2",
+      "recording_closure.json": "a3edb2fdf14431b9b170c4b1cfc31fb4a46ebebbbc08a223d7d67d3952a1009c",
+      "bag_integrity.json": "b4750042781acd5b87bdc283e32d4203d283559504348b47d8566bac335208ce",
+      "summary.json": "582523650bdd4c83116055bfc0c59035bdc1667580019b505546d91e3c165c82"
+    }
+  },
+  "observed_metrics": {
+    "source_raw_timing_adapted_matched_triplets": 9241,
+    "scheduled_and_truth_samples": 752,
+    "inactive_control_samples": 63,
+    "navigation_status": "RECORDED_WITH_CENSORED_FAILURES",
+    "distance_rmse_m": 0.7506871286612729,
+    "height_rmse_m": 0.15281964559948094,
+    "distance_settling_time_s": 36.400000000000006,
+    "height_settling_time_s": 32.10000000000001
+  },
+  "boundary": {
+    "outer_closed": false,
+    "outer_owner_closed": false,
+    "complete12_acceptance_claimed": false,
+    "wsl_started": false,
+    "bag_payload_opened": false,
+    "validator_or_tests_run": false,
+    "source_or_original_evidence_modified": false,
+    "note": "Trial recording closure observer cleanup is healthy; the shared core runtime observer owner is still active and has not produced its final closure. Final native actual_core remains required via original safety register."
+  }
+}

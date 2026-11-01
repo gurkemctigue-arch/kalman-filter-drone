@@ -1,6 +1,6 @@
 # 查看当前实验
 
-**2026-11-02（北京时间）：Humble45四包构建及完整Linux测试通过，1767项中5项平台跳过、0错误和0失败；汽车远距离probe02原槽PASS、外层退出0，核心12场正在串行验证，正式仍0/280。** 44和43的历史失败保留，单场通过不能代表批量可靠性。见[45验证与当前边界](../planning/reliability-v4-humble45-validation-20261102.md)。
+**2026-11-02（北京时间）：Humble45核心批次已停止，原结果为1 PASS、1基础设施错误、10未开始，正式仍0/280。** 第2场因里程计墙钟新鲜度保护中止，正进行离线时序取证；原失败和owner收尾错误保留。构建及单场诊断的通过不能代替本批验收。见[45故障与后续工作](../planning/reliability-v4-humble45-position-abort-20261102.md)。
 
 可观看本轮[汽车远距离单场录像](../results/frozen_fullplan_v4_humble45/reliability_v4_humble45_recording_probe02_car_extension_far_distance_seed004/onboard.mp4)，或打开[核心12实时进度页](../results/project_progress/humble44_recording01/index.html)。页面每15秒观察一次本地原始小文件，浏览器刷新后显示最新内容；页面不会向聊天主动发送消息。录像及实时页仅在本机存在，GitHub保存源码和最小证据快照。
 
