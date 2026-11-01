@@ -1,8 +1,10 @@
 # 查看当前实验
 
-**2026-11-01 18:33:25（北京时间）快照：Humble43同源核心12独审通过，原生v2组件04的85项及3项describe真实通过；安全4原四场全部PASS、完整原guard及闭合独审通过，安全批次主命令退出0，正式仍0/280。** 扩展16场已有9场开始、8个原始终态：6 PASS、2 FAIL，前八个外层attempt均已闭合；行人八场已完成，第九场汽车深度噪声已开始，另七场尚未开始；后续状态以本机进度页为准，整批尚未闭合。
+**2026-11-01 19:26:24（北京时间）快照：Humble43同源核心12独审通过，原生v2组件04的85项及3项describe真实通过；安全4原四场全部PASS、完整原guard及闭合独审通过，安全批次主命令退出0，正式仍0/280。** 扩展16场已有10场开始、9个原始终态：7 PASS、2 FAIL，前九个外层attempt均已闭合；行人八场及汽车深度噪声已完成，第十场汽车深度空洞运行，另六场尚未开始；后续状态以本机进度页为准，整批尚未闭合。
 
-第九场`car_extension_depth_noise_seed004`的原槽于10:31:25.828004 UTC START，outer于10:31:20.485282 UTC START；截至本快照尚无终态，不预记PASS。
+第九场`car_extension_depth_noise_seed004`于10:52:04.143306 UTC记录原COMPLETED/PASS，flight_exit0、infrastructure_stop=false；outer于10:52:36.053992 UTC闭合、error=null。距离/高度RMSE为0.723148/0.161357米。第十场`car_extension_depth_holes_seed004`原槽于10:56:05.664373 UTC START，outer于10:56:00.017823 UTC START；截至本快照尚无终态，不预记PASS。
+
+新增[Modern Standby派生快照](../tools/diagnostics/humble43_modern_standby_snapshot01/README.md)：506/507事件848770报告2715.306845秒实际睡眠，与第三槽2714.9889287秒UTC/monotonic间隙仅差0.3179163秒，强支持主机待机解释；后续848828另报告903.207217秒实际睡眠。旧42/107等限定查询无匹配的历史保留，Reason不识别操作者，不据此归责用户。新任务辅助进程PID10468的0x80000003请求已被API接受；这不证明永久排除睡眠或保证后续不中断。
 
 第六场速度控制加减速原PASS；第七场位置控制加减速原FAIL，唯一未过的性能门为`final_distance_settled=false`，距离稳定时间仍为null并右删失；第八场远距离于10:27:25.595403 UTC原PASS，outer于10:27:56.265509 UTC闭合、error=null。三场均COMPLETED、flight_exit0、infrastructure_stop=false，不能把第七场距离RMSE达标解释为持续稳定。[前五场失败与原件快照](../tools/experiment_orchestration/humble43_extension_partial05_snapshot01/README.md)保留4 PASS/1 FAIL；其中5原终态、11未开始是第六场START之前的历史时点，原字节保留。
 
@@ -14,7 +16,7 @@
 
 第三场[dropout原槽](../results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_seed004_matrix/slots/person_extension_dropout_seed004.json)于08:33:48.425056 UTC记录PASS、flight_exit0、infrastructure_stop=false，其[外层attempt](../results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_seed004_matrix/observed_driver01/03_person_extension_dropout_seed004.attempt_terminal.json)于08:35:04.731320 UTC闭合、error=null。第四场latency的[原槽](../results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_seed004_matrix/slots/person_extension_latency_seed004.json)已于08:57:53.783337 UTC记录PASS、flight_exit0、infrastructure_stop=false；此前16:40:02快照中的latency START状态现为历史。
 
-第三槽从07:25:06.748207至08:33:48.425056 UTC共4121.676849秒；其中导航评价UTC跨度2832.642921秒，原monotonic耗时仅117.6539923秒，差2714.9889287秒。其余四命令两种计时仅微秒差。08:40:36 UTC的有限Windows System事件查询无匹配，两owned进程仍alive、lease未到期，均不足以确定原因；不能归因用户休眠、宣称已证实时钟跳变或将约69分钟都记作算法耗时。完整UTC与monotonic均保留，详见[工程时钟边界](../planning/reliability-v4-humble43-validation-20261101.md)。本批原8—10小时、整体5—6天仅为条件估计，完整28格后按实际活跃计时与UTC分别重算，不套首场约27分钟作承诺。
+第三槽从07:25:06.748207至08:33:48.425056 UTC共4121.676849秒；其中导航评价UTC跨度2832.642921秒，原monotonic耗时仅117.6539923秒，差2714.9889287秒。其余四命令两种计时仅微秒差。08:40:36 UTC的有限Windows System事件查询无匹配，两owned进程仍alive、lease未到期；这些旧结果当时不足以归因。后续506/507记录实际Modern Standby，强支持待机解释，仍不能识别操作者、归责用户或将约69分钟都记作算法耗时。完整UTC与monotonic均保留，详见[工程时钟边界](../planning/reliability-v4-humble43-validation-20261101.md)。本批原8—10小时、整体5—6天仅为条件估计，完整28格后按实际活跃计时与UTC分别重算，不套首场约27分钟作承诺。
 
 本机[Humble43安全批次进度页](../results/project_progress/humble43_safety01/index.html)提供命令级心跳和真实退出状态，尚不显示四场的槽位计数。原完整guard于05:12:36.708586—05:16:57.707220 UTC通过，monitor的owned-main于05:16:58.567204 UTC记录code0；四场原PASS见上述闭合快照或本机`results/frozen_fullplan_v4_humble43/reliability_v4_humble43_probe01_safety_seed004_audit/`原始小JSON。闭合依据为postwait owner COMPLETE及原guard，较早COPY_VERIFIED_PENDING_OWNER_CLOSURE候选不代表最终owner仍未收尾。原[核心进度页](../results/project_progress/humble43_core01/index.html)保留12个原始PASS；旧Humble42、41及`current/`页面均为历史记录。
 
@@ -38,7 +40,7 @@ Humble43已完成四包隔离构建、来源检查和真实消息序列化检查
 
 原生v2组件04已实际退出0：30+40+15共85项全PASS、0跳过，9项真实authority完整执行，3项describe的canonical全部匹配，原终态finally核验1940个原文件。[新最小快照](../tools/experiment_orchestration/humble43_native_v2_components04_snapshot01/README.md)保存原终态、suite结果/日志、describe和peer核查。Windows78通过/7跳过、原Humble02的76通过/9锁争用ERROR均保留；组件03是tests_run=false的测试前调度拒绝，未运行85项，不计作测试失败或通过。
 
-安全4已真实完成4 PASS、完整原guard PASS、闭合独审PASS与主命令code0。扩展原plan闭合和104项静态独审已通过，PENDING保持原样，root仅改变status另产独立FINAL runtime合同；原16场run当前9场开始、8终态（6 PASS/2 FAIL）、第九场汽车深度噪声运行、其余7场未开始，全部原结果保留，整批owner仍待最后收尾。之后依次完成其余实际扩展、28格容量实测、两条预定录制导出与R0定标、独立最终来源构建/登记/封存、正式120+160和统计交付。v2定标/发布工具按原协议保留可评价压力场景的算法FAIL；原安全失效或缺证仍不能据此放行，开发关口通过不构成正式准入。
+安全4已真实完成4 PASS、完整原guard PASS、闭合独审PASS与主命令code0。扩展原plan闭合和104项静态独审已通过，PENDING保持原样，root仅改变status另产独立FINAL runtime合同；原16场run当前10场开始、9终态（7 PASS/2 FAIL）、第十场汽车深度空洞运行、其余6场未开始，全部原结果保留，整批owner仍待最后收尾。之后依次完成其余实际扩展、28格容量实测、两条预定录制导出与R0定标、独立最终来源构建/登记/封存、正式120+160和统计交付。v2定标/发布工具按原协议保留可评价压力场景的算法FAIL；原安全失效或缺证仍不能据此放行，开发关口通过不构成正式准入。
 
 核心12独审、原生04组件补验与安全4开发关口已通过；后续还有扩展、容量/定标、最终准入及280次正式飞行，整个剩余工作维持5—6天量级估计，发生新故障时按实测修订。此处是带时间的快照，最新状态以实际原件和实时页为准。进度页、视频和完整原始结果仅在本机存在；GitHub保存源码和最小证据说明，网页不会自行向聊天发送完成通知。
 

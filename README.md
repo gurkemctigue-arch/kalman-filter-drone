@@ -1,8 +1,10 @@
 # RGB-D UAV target tracking and following
 
-**2026-11-01 18:33:25（北京时间）快照：Humble43 同源核心12独审通过，原生v2组件04的85项及3项describe真实通过；安全4原四场全部PASS、完整原guard及闭合独审通过，安全批次主命令退出0，正式仍0/280。** 扩展16场已有9场开始、8个原始终态：6 PASS、2 FAIL，前八个外层attempt均已闭合；行人八场已完成，第九场汽车深度噪声已开始，另七场尚未开始；后续状态以本机进度页为准。扩展整批尚未闭合，容量、定标及正式研究仍待完成。
+**2026-11-01 19:26:24（北京时间）快照：Humble43 同源核心12独审通过，原生v2组件04的85项及3项describe真实通过；安全4原四场全部PASS、完整原guard及闭合独审通过，安全批次主命令退出0，正式仍0/280。** 扩展16场已有10场开始、9个原始终态：7 PASS、2 FAIL，前九个外层attempt均已闭合；行人八场及汽车深度噪声已完成，第十场汽车深度空洞运行，另六场尚未开始；后续状态以本机进度页为准。扩展整批尚未闭合，容量、定标及正式研究仍待完成。
 
-第九场`car_extension_depth_noise_seed004`的原槽于10:31:25.828004 UTC START，outer于10:31:20.485282 UTC START；截至本快照尚无终态，不预记PASS。
+第九场`car_extension_depth_noise_seed004`于10:52:04.143306 UTC记录原COMPLETED/PASS，flight_exit0、infrastructure_stop=false；outer于10:52:36.053992 UTC闭合、error=null。距离/高度RMSE为0.723148/0.161357米。第十场`car_extension_depth_holes_seed004`原槽于10:56:05.664373 UTC START，outer于10:56:00.017823 UTC START；截至本快照尚无终态，不预记PASS。
+
+新增[Modern Standby派生快照](tools/diagnostics/humble43_modern_standby_snapshot01/README.md)：506/507事件848770报告2715.306845秒实际睡眠，与第三槽2714.9889287秒UTC/monotonic间隙仅差0.3179163秒，强支持主机待机解释；后续848828另报告903.207217秒实际睡眠。旧42/107等限定查询无匹配的历史保留，Reason不识别操作者，不据此归责用户。新任务辅助进程PID10468的0x80000003请求已被API接受；这不证明永久排除睡眠或保证后续不中断。
 
 第六场速度控制加减速原PASS；第七场位置控制加减速原FAIL，唯一未过的性能门为`final_distance_settled=false`，距离稳定时间仍为null并右删失；第八场远距离于10:27:25.595403 UTC原PASS，outer于10:27:56.265509 UTC闭合、error=null。三场均COMPLETED、flight_exit0、infrastructure_stop=false，不能把第七场距离RMSE达标解释为持续稳定。[前五场失败与原件快照](tools/experiment_orchestration/humble43_extension_partial05_snapshot01/README.md)保留4 PASS/1 FAIL；其中5原终态、11未开始是第六场START之前的历史时点，原字节保留。
 
@@ -10,7 +12,7 @@
 
 首场[原槽终态](results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_seed004_matrix/slots/person_extension_depth_noise_seed004.json)于06:29:51.150954 UTC生成，[外层attempt](results/frozen_fullplan_v4_humble43/reliability_v4_humble43_extensions_probe01_seed004_matrix/observed_driver01/01_person_extension_depth_noise_seed004.attempt_terminal.json)于06:31:00.198600 UTC闭合，flight_exit0、COMPLETED、infrastructure_stop=false、error=null。该压力样本原始录包4,148,883,456 B、压缩1,214,272,594 B，在线与research的RGB/Depth四流各933条，实际归档策略为`zstd -T4 -19 --long=27 --check`；不能代表完整28格容量或280次准入。
 
-第三场dropout原槽已于08:33:48.425056 UTC记录PASS，外层于08:35:04.731320 UTC健康闭合，但其导航评价的UTC跨度2832.642921秒与原monotonic耗时117.6539923秒相差2714.9889287秒，原因尚未确定；不能将整槽约69分钟UTC跨度解释为算法耗时。原UTC与计时证据均保留，有限Windows事件查询未能归因，详见[计时边界与原件](planning/reliability-v4-humble43-validation-20261101.md)。本批原8—10小时、整体5—6天均为条件估计；待完整28格后按实际活跃计时与UTC分别重算，不以首场约27分钟作承诺。
+第三场dropout原槽已于08:33:48.425056 UTC记录PASS，外层于08:35:04.731320 UTC健康闭合，但其导航评价的UTC跨度2832.642921秒与原monotonic耗时117.6539923秒相差2714.9889287秒；新增506/507事件报告2715.306845秒实际睡眠，强支持待机解释；不能将整槽约69分钟UTC跨度解释为算法耗时。原UTC与计时证据均保留，旧限定Windows事件查询当时未能归因，后续506/507证据见上述派生摘要，详见[计时边界与原件](planning/reliability-v4-humble43-validation-20261101.md)。本批原8—10小时、整体5—6天均为条件估计；待完整28格后按实际活跃计时与UTC分别重算，不以首场约27分钟作承诺。
 
 扩展的原plan、PENDING、独审、FINAL及发布来源仍见[13:46扩展16启动快照](tools/experiment_orchestration/humble43_extension16_start_snapshot01/README.md)，原字节保留；当前命令状态见本机[扩展进度页](results/project_progress/humble43_extension01/index.html)。104项是静态check，不是104次原生测试或飞行；全部原失败、未知及完整分母继续保留。
 

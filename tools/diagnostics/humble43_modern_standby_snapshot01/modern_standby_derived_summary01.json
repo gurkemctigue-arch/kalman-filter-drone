@@ -1,0 +1,209 @@
+{
+  "schema_version": 1,
+  "status": "DERIVED_SYSTEM_EVENT_SUMMARY_NOT_RESEARCH_OR_ADMISSION_VERDICT",
+  "derived_utc": "2026-11-01T11:28:01.165809+00:00",
+  "source_diagnostic": {
+    "path": "D:/WSL/UAVHumble22-validation/humble43_modern_standby_clock_gap_independent01.json",
+    "bytes": 51979,
+    "sha256": "2d568768ec5790567372b89973ff7fb5f4cd9d4b6bf4b24329a1cc95e275dacd",
+    "captured_utc": "2026-11-01T11:21:11.5705269+00:00",
+    "finalized_utc": "2026-11-01T11:23:13.098103+00:00"
+  },
+  "derivation_scope": "Selected event metadata and saved clock comparison only. Original event XML and full diagnostic remain local. No new event query or runtime experiment was performed.",
+  "events": [
+    {
+      "utc": "2026-11-01T08:33:03.3760783Z",
+      "id": 507,
+      "record_id": 848770,
+      "reason_as_reported": "Lid",
+      "sleep_entered_as_reported": "true",
+      "sleep_duration_in_us_as_reported": "2715306845",
+      "sleep_duration_s": "2715.306845"
+    },
+    {
+      "utc": "2026-11-01T08:33:39.6808284Z",
+      "id": 506,
+      "record_id": 848774,
+      "reason_as_reported": "Idle Timeout",
+      "sleep_entered_as_reported": null,
+      "sleep_duration_in_us_as_reported": null,
+      "sleep_duration_s": null
+    },
+    {
+      "utc": "2026-11-01T08:34:56.7872592Z",
+      "id": 507,
+      "record_id": 848778,
+      "reason_as_reported": "AC/DC Display Burst Suppressed",
+      "sleep_entered_as_reported": "false",
+      "sleep_duration_in_us_as_reported": "0",
+      "sleep_duration_s": "0"
+    },
+    {
+      "utc": "2026-11-01T08:34:56.7881060Z",
+      "id": 506,
+      "record_id": 848780,
+      "reason_as_reported": "AC/DC Display Burst Suppressed",
+      "sleep_entered_as_reported": null,
+      "sleep_duration_in_us_as_reported": null,
+      "sleep_duration_s": null
+    },
+    {
+      "utc": "2026-11-01T08:34:59.1290576Z",
+      "id": 507,
+      "record_id": 848782,
+      "reason_as_reported": "Lid",
+      "sleep_entered_as_reported": "false",
+      "sleep_duration_in_us_as_reported": "0",
+      "sleep_duration_s": "0"
+    },
+    {
+      "utc": "2026-11-01T08:35:29.1531190Z",
+      "id": 506,
+      "record_id": 848786,
+      "reason_as_reported": "Idle Timeout",
+      "sleep_entered_as_reported": null,
+      "sleep_duration_in_us_as_reported": null,
+      "sleep_duration_s": null
+    },
+    {
+      "utc": "2026-11-01T08:36:46.2569143Z",
+      "id": 507,
+      "record_id": 848787,
+      "reason_as_reported": "Input Keyboard",
+      "sleep_entered_as_reported": "false",
+      "sleep_duration_in_us_as_reported": "0",
+      "sleep_duration_s": "0"
+    },
+    {
+      "utc": "2026-11-01T10:51:01.9591863Z",
+      "id": 506,
+      "record_id": 848804,
+      "reason_as_reported": "Idle Timeout",
+      "sleep_entered_as_reported": null,
+      "sleep_duration_in_us_as_reported": null,
+      "sleep_duration_s": null
+    },
+    {
+      "utc": "2026-11-01T11:11:34.3053212Z",
+      "id": 507,
+      "record_id": 848828,
+      "reason_as_reported": "Lid",
+      "sleep_entered_as_reported": "true",
+      "sleep_duration_in_us_as_reported": "903207217",
+      "sleep_duration_s": "903.207217"
+    },
+    {
+      "utc": "2026-11-01T10:56:31.2012254Z",
+      "id": 1,
+      "record_id": 848809,
+      "reason_as_reported": "An application or system component changed the time.",
+      "sleep_entered_as_reported": null,
+      "sleep_duration_in_us_as_reported": null,
+      "sleep_duration_s": null
+    }
+  ],
+  "dropout_navigation_comparison": {
+    "slot_id": "person_extension_dropout_seed004",
+    "original_command_started_utc": "2026-11-01T07:46:25.933494+00:00",
+    "original_command_finished_utc": "2026-11-01T08:33:38.576415+00:00",
+    "original_utc_span_s": "2832.642921",
+    "original_monotonic_elapsed_s": "117.65399230000003",
+    "original_utc_minus_monotonic_s": "2714.98892869999997",
+    "matching_exit_record_id": 848770,
+    "reported_actual_sleep_duration_s": "2715.306845",
+    "sleep_duration_minus_clock_gap_s": "0.31791630000003",
+    "interpretation": "Actual Modern Standby sleep strongly supports host suspension as the main explanation for the clock discrepancy. The approximately 0.318-second residual is preserved, without exact attribution.",
+    "original_results_and_timing_unchanged": true
+  },
+  "later_actual_sleep": {
+    "exit_record_id": 848828,
+    "exit_utc": "2026-11-01T11:11:34.3053212Z",
+    "sleep_duration_s": "903.207217",
+    "sleep_entered_as_reported": "true",
+    "claim_boundary": "The full 506-to-507 session duration is not actual CPU sleep duration; this record gives no trial completion verdict."
+  },
+  "previous_limited_query_preserved": {
+    "checked_utc": "2026-11-01T08:40:36.3790873+00:00",
+    "start_utc": "2026-11-01T07:40:00Z",
+    "end_utc": "2026-11-01T08:40:00Z",
+    "provider_id_filters": [
+      {
+        "provider": "Microsoft-Windows-Kernel-Power",
+        "ids": [
+          42,
+          107
+        ]
+      },
+      {
+        "provider": "Microsoft-Windows-Power-Troubleshooter",
+        "ids": [
+          1
+        ]
+      },
+      {
+        "provider": "Microsoft-Windows-Kernel-General",
+        "ids": [
+          1
+        ]
+      }
+    ],
+    "result_for_each_filter": "NoMatchingEventsFound",
+    "scope_boundary": "The older query did not include Kernel-Power 506/507. Its narrower no-match result remains unchanged and did not establish absence of sleep."
+  },
+  "helper_copies": [
+    {
+      "original_path": "D:/WSL/UAVHumble22-validation/keep_project_awake_display01.ps1",
+      "archived_name": "keep_project_awake_display01.ps1",
+      "bytes": 2444,
+      "sha256": "b561f285ee951e1b9abae6869287edbcf2e19b98d4b992f62af039bd451ce6f9",
+      "copy_mode": "BYTE_IDENTICAL_SINGLE_READ_SNAPSHOT"
+    },
+    {
+      "original_path": "D:/WSL/UAVHumble22-validation/keep_project_awake_humble43_display_lease01.json",
+      "archived_name": "keep_project_awake_humble43_display_lease01.json",
+      "bytes": 659,
+      "sha256": "3955b916760dd03f3c0d7fea7a2f47c72da4e85e26460e787d337643664bba4b",
+      "copy_mode": "BYTE_IDENTICAL_SINGLE_READ_SNAPSHOT"
+    },
+    {
+      "original_path": "D:/WSL/UAVHumble22-validation/keep_project_awake_humble43_display_process01.json",
+      "archived_name": "keep_project_awake_humble43_display_process01.json",
+      "bytes": 717,
+      "sha256": "7f48abb6d8de01cfb604be93105e7f34b9a950c08a0523e391ac9cdb11aa1e24",
+      "copy_mode": "BYTE_IDENTICAL_SINGLE_READ_SNAPSHOT"
+    },
+    {
+      "original_path": "D:/WSL/UAVHumble22-validation/keep_project_awake_humble43_display_status01.json",
+      "archived_name": "keep_project_awake_humble43_display_status_observed01.json",
+      "bytes": 651,
+      "sha256": "61fc78f3c6cd80d04532ef051bbda05fbbc4174cf70f022b6e9ad5333500c486",
+      "copy_mode": "BYTE_IDENTICAL_SINGLE_READ_SNAPSHOT"
+    }
+  ],
+  "helper_observation": {
+    "pid": 10468,
+    "status_utc": "2026-11-01T11:27:37.3659442+00:00",
+    "status": "ACTIVE",
+    "api_accepted": true,
+    "requested_flags": 2147483651,
+    "scope": "Task-owned thread execution-state request; no global power configuration changes.",
+    "expiry_utc": "2026-11-08T05:52:27.433025+00:00",
+    "release_boundary": "Release signal, expiry and finally paths were statically reviewed, not exercised by this archive operation. In RELEASED records requested_flags describes the initial awake request; the actual finally release call uses 0x80000000.",
+    "efficacy_boundary": "API acceptance does not prove prevention of all sleep, explicit sleep/lid policy, or future uninterrupted execution."
+  },
+  "protected_file_current_sha256": {
+    "keep_project_awake.ps1": "83f3cb3ccdd865298178fbdd01f55e5839dc5ccc2490f92e7f0c07e025ee3e24",
+    "keep_project_awake_lease.json": "9e0c4db56619da10f5984d456686b7102fcabdb16ff7c19ef347e49651d23ac7",
+    "keep_project_awake_lease.previous_20261031_191700.json": "27cb7796a51d2720939e55c530fe492cfe0ebb21e224189e3c0b6d28fe4035ed",
+    "keep_project_awake_humble43_7day_lease01.json": "fa14241396866f1d5ebb5f3bfccc819a6ab207e926a2ea66ccb46cebb389219f"
+  },
+  "limitations": [
+    "Reason strings describe OS events and do not identify a person or establish user fault.",
+    "SleepEntered=false and zero-duration exit records are retained and are not counted as actual sleep.",
+    "The entry event for the older matched sleep session was outside the bounded saved window; no entry timestamp is invented.",
+    "The approximately 0.318-second residual is not reconciled by changing original timing.",
+    "No WSL, simulation, test, bag, telemetry, health payload or model was invoked or read for this derived archive.",
+    "No algorithm PASS, formal admission, completed trial or permanent sleep-prevention result is asserted."
+  ],
+  "protected_files_unchanged_during_this_snapshot_work": true
+}
