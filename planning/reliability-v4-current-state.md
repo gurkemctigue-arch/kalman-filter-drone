@@ -1,5 +1,7 @@
 # 当前工作交接（持续开发，非验收报告）
 
+**2026-11-02???Humble45???????Linux?????1767??5?????0??/?????????probe02??????????????0/280?** ?44?????45?????????????[45?????????](reliability-v4-humble45-validation-20261102.md)?
+
 **2026-11-01 23:17（北京时间）：44原生冷构建PASS但全suite FAIL；正在准备45，正式0/280、尚未新飞行。** 44测试1767项，3 ERROR均为`test_simulation_seed`临时root缺`recording_qos.yaml`，5项平台跳过；validate launcher原FAILED/child2，suite原FAIL/rc1，均保留。main仅补该夹具5行复制原字节；root在Humble独占运行13项定向测试全部PASS、0跳过、1.517秒。原录包smoke1290条全匹配、SIGINT正常关闭的结论仍限低量合成。见[44失败及后续验证原件](../tools/diagnostics/humble44_validation_failure01/README.md)、[smoke快照](../tools/diagnostics/humble44_recorder_qos_smoke01/README.md)与[后续路线](reliability-v4-humble44-recording-repair.md)。44根/原validate不重写；新45以健康43build/validate为来源前驱，保留44失败。
 
 **2026-11-01 22:39（北京时间）：原生只读取证完成；Humble44接收队列候选已落地，待原生录包、冷构建与新飞行验证。** 2.740秒adapted在全包无同key raw/timing，2.756秒WAITING相对最新已录clock未来56毫秒；共同根因未知。原43和正式0/280保持。4项新测试及36项相关Windows回归通过。下一步按[新验证路线](reliability-v4-humble44-recording-repair.md)执行，[诊断快照](../tools/diagnostics/humble43_clock_boundary_snapshot01/README.md)保存真实39秒只读过程与原件。

@@ -1,0 +1,994 @@
+{
+  "schema_version": 1,
+  "scope": "ROOT_PEER_ACTUAL_SOURCE45_REVIEW_NOT_BUILD_OR_RUNTIME_ACCEPTANCE",
+  "created_utc": "2026-11-01T15:28:27.478727+00:00",
+  "reviewer_role": "root peer of independently authored source assembler",
+  "result": "PASS_SOURCE_PUBLICATION_ONLY",
+  "pending": {
+    "path": "/mnt/d/WSL/UAVHumble22-validation/reviewed_freeze_review_v4_humble45_pending01.json",
+    "sha256": "31f2e0303a87964d81b2cb08d545f6e14d70b1daf75485d23f007d31194a6412"
+  },
+  "final": {
+    "path": "/mnt/d/WSL/UAVHumble22-validation/reviewed_freeze_review_v4_humble45_01.json",
+    "sha256": "a526b2e342bc2b5889266ef15592656f5c98eb7833bed33856d0c2d084d69b50"
+  },
+  "closed_original_evidence": {
+    "capsule_sha256": "d1bcc0969e21fae528e4892dfcbb8f1f47fa33610e5247f41334a010583c926d",
+    "files": 118,
+    "metadata_bytes": 7567084,
+    "file_map_sha256": "196289dfa0c2be1b6469950ee291932764850bd89d7f4f9f826639e9aaa7597c",
+    "retained_fields_sha256": "2e30fe55c5e5e03bef901c4d599f1e3de1704bb0b5aaa5ed1ef25f5b6e1b3479",
+    "payloads_reverified": false
+  },
+  "actual_candidate_binding": {
+    "source_root": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2",
+    "source_commit": "57dd00965b749c64060cd86409fa6e68feb1c10a",
+    "files_canonical_sha256": "7013fa62edddc400379a5b6fdb3c6700f3ee74e38208f90d8062227c4ca7e2b6",
+    "physical_byte_authority": true,
+    "copy_normalizes_line_endings": false,
+    "changed_or_added_blob_pairs": {
+      ".gitattributes": {
+        "bytes": 2991,
+        "sha256": "f101ca9bd3dec9cd2ebc8ea14eea2afdb6ff78626858081dee1762df64657c7b",
+        "actual_equals_git_blob": true
+      },
+      "README.md": {
+        "bytes": 25943,
+        "sha256": "34e58603ff69aaea260eaabb86cf7e2abfd8c282349d1ff6e91ec3ea016effa2",
+        "actual_equals_git_blob": true
+      },
+      "docs/FINAL_PLAN_V4.md": {
+        "bytes": 11115,
+        "sha256": "bef361a90c0b3bcde8d21d002189584510de6d1642f48650045a77a2263bcfb4",
+        "actual_equals_git_blob": true
+      },
+      "docs/LIVE_PROGRESS.md": {
+        "bytes": 26791,
+        "sha256": "a79e132a7216722c0e166d67742e813c7d7bfd4048bcedbbb0e2ac2f734c76f1",
+        "actual_equals_git_blob": true
+      },
+      "docs/V4_WORK_STATUS.md": {
+        "bytes": 22337,
+        "sha256": "d8c352e394d5419471508eab03fbf9b060864b61615d119f7612af921c74b247",
+        "actual_equals_git_blob": true
+      },
+      "planning/reliability-v4-current-state.md": {
+        "bytes": 114161,
+        "sha256": "dd634374c8dd465fbed2333be46f5bad58c859a03ceaf5428288193f88b91100",
+        "actual_equals_git_blob": true
+      },
+      "planning/reliability-v4-humble43-repair.md": {
+        "bytes": 6881,
+        "sha256": "cbac0c6aecf9166dfc2bee4d65710a35253733327287061aa4fcf8008f187d8b",
+        "actual_equals_git_blob": true
+      },
+      "planning/reliability-v4-remaining-execution.md": {
+        "bytes": 21458,
+        "sha256": "706eea44a83f318cd602d62d8e616179b820382c6fc3fdc744d47513edb2372f",
+        "actual_equals_git_blob": true
+      },
+      "planning/reliability-v4-supplementary-evaluation-execution.md": {
+        "bytes": 7497,
+        "sha256": "d2a2adb37bfd06a55568dab9bc661b8cf84e1a7e17fa920243d009ae23243bfa",
+        "actual_equals_git_blob": true
+      },
+      "scripts/run_stage1_trial.py": {
+        "bytes": 59099,
+        "sha256": "23a31a557fef49c4f3867a76a712d1946fe1d22aca45c974ff3161569379f843",
+        "actual_equals_git_blob": true
+      },
+      "tests/test_simulation_seed.py": {
+        "bytes": 14924,
+        "sha256": "1624fedd50865049174a5860d23d5917b8d64658a34fc91423ca5c8db424c32f",
+        "actual_equals_git_blob": true
+      },
+      "config/recording_qos.yaml": {
+        "bytes": 672,
+        "sha256": "d56c368ecba5e77a7343a7832be4ec234a4cd4576e367aaa9a808c356cf76824",
+        "actual_equals_git_blob": true
+      },
+      "planning/reliability-v4-humble43-extension-stop-20261101.md": {
+        "bytes": 3943,
+        "sha256": "a6fc7aa8bca15d22f597ab54ef5c347d05df59826f44cce0fc2e4e6fc1c4c2dd",
+        "actual_equals_git_blob": true
+      },
+      "planning/reliability-v4-humble43-validation-20261101.md": {
+        "bytes": 29229,
+        "sha256": "cd3e21b5c79a76a76728c4c96b745164a197b2f8b0147b99d923ce1730f839e4",
+        "actual_equals_git_blob": true
+      },
+      "planning/reliability-v4-humble44-recording-repair.md": {
+        "bytes": 4484,
+        "sha256": "4a37b29df8313efb770b16bc829b4c964f2a14f11497240585298a4d3fcea6b5",
+        "actual_equals_git_blob": true
+      },
+      "tests/test_recording_qos.py": {
+        "bytes": 4296,
+        "sha256": "c3cc016c416befe0492d7bf11bb6a9a811e5e8113edff60371681bdfd5c7c403",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble43_clock_boundary_snapshot01/README.md": {
+        "bytes": 2601,
+        "sha256": "6add723bf01514a196d12b3b8b3617d482752f35a9c17faaf011886efb0d68c8",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble43_clock_boundary_snapshot01/SHA256SUMS": {
+        "bytes": 537,
+        "sha256": "ceb2fc2c2f09d992ca56b327651d2d15d9a17c16436c235e1ed01ebe96519572",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble43_clock_boundary_snapshot01/diagnose_humble43_extension_clock_boundary01.py": {
+        "bytes": 30536,
+        "sha256": "81d324facf5136d9e6f194b29c3e96474d5310ba2f0be6753cdcbfa4143762d4",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble43_clock_boundary_snapshot01/diagnostic.json": {
+        "bytes": 597179,
+        "sha256": "90455cea7ac81d950e524905c5fa7a21556dbc46f7a65d388030fff46d826803",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble43_clock_boundary_snapshot01/manifest.json": {
+        "bytes": 6764,
+        "sha256": "e76ff8590322cf836e5752e5727acbb2bbd0513a60302a70362b3de2dcf99072",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble43_clock_boundary_snapshot01/run_humble43_clock_boundary_native01.sh": {
+        "bytes": 589,
+        "sha256": "1a6df954b33f947cd3604f8733895c2ca084349c198e73070b80809c65218fc6",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble43_clock_boundary_snapshot01/started.json": {
+        "bytes": 1743,
+        "sha256": "3a91afce447372c7ad7bbbcae3fe708198ffa9812b43181f71c97b252f3efba2",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble43_combined_gap_snapshot01/ARCHIVE_MANIFEST.json": {
+        "bytes": 3079,
+        "sha256": "7f75ec802ce69c404ee8dca28dd50c8345bd2670dd9c7741abdbbe6955c28a97",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble43_combined_gap_snapshot01/README.md": {
+        "bytes": 2303,
+        "sha256": "ea5141df12c380e54ba3b91d2a200cd9e0a06f87c370dda7f7dd666eef842c2d",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble43_combined_gap_snapshot01/SHA256SUMS": {
+        "bytes": 280,
+        "sha256": "60eaefc63b0c8b6934824d0d97ad5707490726b66204a99b92887655a8c63087",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble43_combined_gap_snapshot01/humble43_combined_early_loss_causal_window01.json": {
+        "bytes": 64769,
+        "sha256": "73a0785b491d8715f695ac09b2d834b749bf3db446a09e14da721740ae6bc783",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble43_extension_stop_snapshot01/README.md": {
+        "bytes": 1773,
+        "sha256": "c4ea9d6ccd2430cbe6c460d5859f31f06ad0c19fc8c9ec6d816a0326d5572b9d",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble43_extension_stop_snapshot01/bag_integrity.json": {
+        "bytes": 4988,
+        "sha256": "2bc2c2b5c0304a94873ee7a1a3ff291c0b9f3bd34ded0d38973c0409c8b3de38",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble43_extension_stop_snapshot01/car_far_original_attempt.json": {
+        "bytes": 2240,
+        "sha256": "85b9c0f3160211fb9997170bedc81d8c2b1c214f3c0388646803590e399414f7",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble43_extension_stop_snapshot01/car_far_original_slot.json": {
+        "bytes": 53813,
+        "sha256": "d696b0063b220e37c4bb981ecc95231d36cc673519e5115ec9da0d5459bd59e6",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble43_extension_stop_snapshot01/manifest.json": {
+        "bytes": 11523,
+        "sha256": "5a112ecf36ca47adf2a9c9b337ac009918da55d5af993a99d3f7b4575189ad54",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble43_extension_stop_snapshot01/native_startup_report.json": {
+        "bytes": 9264,
+        "sha256": "5bab9a8146c3fc173f31e09d9baaee0bc776a2144df0f93c3cda823af3121b82",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble43_extension_stop_snapshot01/navigation_reference_evaluation.json": {
+        "bytes": 144621,
+        "sha256": "4fb6f721c5f63c6ad640bd72caaa1fca88d85163de2c65d7a4da810d7441fadf",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble43_extension_stop_snapshot01/original_execution_terminal.json": {
+        "bytes": 1230921,
+        "sha256": "691c651a37a41c43e501a16309acf704628be8f428d65c6663a8c5acba932e04",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble43_extension_stop_snapshot01/px4_source_clock_report.json": {
+        "bytes": 8004,
+        "sha256": "e66a5abf0d8347d86abf813150c39500d364b20fb3dbf9b222b99b200170db71",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble43_extension_stop_snapshot01/recording_closure.json": {
+        "bytes": 34309,
+        "sha256": "fcc61b01f3be21e86ae5bbd71464d2b9993a3842b9131876c84210f9a876eda9",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble43_extension_stop_snapshot01/summary.json": {
+        "bytes": 4840,
+        "sha256": "49879d8c7ab3970f3abf37519fac64d3a2c71ce6e525b1287d04d527d93ad567",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble43_identity_unknown_snapshot01/README.md": {
+        "bytes": 2334,
+        "sha256": "4b79e0cf7bec9a577dccddd8c2baaae3fc82934d3a09b3b12f06ff764679e3aa",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble43_identity_unknown_snapshot01/SHA256SUMS": {
+        "bytes": 194,
+        "sha256": "320cb25408827f02e45783208b8b922447385beac0dcc872da1f14b452db2007",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble43_identity_unknown_snapshot01/humble43_core03_identity_unknown_explanation01.json": {
+        "bytes": 12484,
+        "sha256": "4fcd4b8cd1c755d596d013aca8da97006238517b3723d2cbba847a35f52e9dc1",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble43_modern_standby_snapshot01/README.md": {
+        "bytes": 3781,
+        "sha256": "d4156b114be3376045cdcc8ecf5d211843924da4abbb58245d862d4a160cb0e6",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble43_modern_standby_snapshot01/SHA256SUMS": {
+        "bytes": 636,
+        "sha256": "54794fd7eff334ab91ae1e94181928a2245e4b10c9976d700781217589c65069",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble43_modern_standby_snapshot01/keep_project_awake_display01.ps1": {
+        "bytes": 2444,
+        "sha256": "b561f285ee951e1b9abae6869287edbcf2e19b98d4b992f62af039bd451ce6f9",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble43_modern_standby_snapshot01/keep_project_awake_humble43_display_lease01.json": {
+        "bytes": 659,
+        "sha256": "3955b916760dd03f3c0d7fea7a2f47c72da4e85e26460e787d337643664bba4b",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble43_modern_standby_snapshot01/keep_project_awake_humble43_display_process01.json": {
+        "bytes": 717,
+        "sha256": "7f48abb6d8de01cfb604be93105e7f34b9a950c08a0523e391ac9cdb11aa1e24",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble43_modern_standby_snapshot01/keep_project_awake_humble43_display_status_observed01.json": {
+        "bytes": 651,
+        "sha256": "61fc78f3c6cd80d04532ef051bbda05fbbc4174cf70f022b6e9ad5333500c486",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble43_modern_standby_snapshot01/modern_standby_derived_summary01.json": {
+        "bytes": 8803,
+        "sha256": "e54f1d2e562a5d73c43e61c0b835460d5b6096cb68b8a48cd7c45f991f11c7b6",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble44_recorder_qos_smoke01/README.md": {
+        "bytes": 2167,
+        "sha256": "465e6f434db82a41d8ae85b868cee56df2726fb2c80b5aadf926ca87529a4d18",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble44_recorder_qos_smoke01/SHA256SUMS": {
+        "bytes": 767,
+        "sha256": "a028559bbf78ec68ad942bd36d8ee17f742d796896b6abe24367995bd04e4415",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble44_recorder_qos_smoke01/manifest.json": {
+        "bytes": 12678,
+        "sha256": "da1757a22231ece3b56b2453e457d8f5b05f58093d9364fdaca877073cc8a521",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble44_recorder_qos_smoke01/probe_recorder_qos44_native01.py": {
+        "bytes": 22521,
+        "sha256": "d3794f9952febcf304a0488d4075e89f3e7af5ad215c5236a023a8184458375d",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble44_recorder_qos_smoke01/recorder.log": {
+        "bytes": 2000,
+        "sha256": "e19ebc957f5d0c8b9adbb7c2d813020a4a63938cb3e183a636c3593f0825dac0",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble44_recorder_qos_smoke01/recording_qos.yaml": {
+        "bytes": 672,
+        "sha256": "d56c368ecba5e77a7343a7832be4ec234a4cd4576e367aaa9a808c356cf76824",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble44_recorder_qos_smoke01/result.json": {
+        "bytes": 71413,
+        "sha256": "cff3e74e7b8573601dd542e3af3298a9d20a34f24ced597c9c340cf01def9bc3",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble44_recorder_qos_smoke01/rosbag/metadata.yaml": {
+        "bytes": 2923,
+        "sha256": "eacd91a248f641fe41ec1950ff6e2c41c556484868a68b97e755e8f2c7eacdfc",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble44_recorder_qos_smoke01/run_humble44_recorder_qos_native01.sh": {
+        "bytes": 736,
+        "sha256": "06301194e422331fbc000ec8ef513c68d8dd3cc903b703763c5f16d89671c952",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble44_recorder_qos_smoke01/started.json": {
+        "bytes": 2399,
+        "sha256": "397a295b59240b2e91a31e617c2a191114e25a2ec657a158c72d6f61c641bb99",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble44_validation_failure01/README.md": {
+        "bytes": 2314,
+        "sha256": "8cae490ebe391af004a5372960a6ee6470d207c40906acfe47b56d69f9b01562",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble44_validation_failure01/SHA256SUMS": {
+        "bytes": 880,
+        "sha256": "0234d87a9dadf55ff4fb419c24028261a2af3abd2ef6476f9f4a709dd4784948",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble44_validation_failure01/build_action.terminal.json": {
+        "bytes": 9376,
+        "sha256": "aaf134929fe657c31cc101b4ef9a566d49a055e13d21dcba571ceed7d75254c6",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble44_validation_failure01/build_validation_summary.json": {
+        "bytes": 4894,
+        "sha256": "f1fb69e690b60caec94f4e93b3061959e5d7a1e76235d3cc68ec45d3a8f23309",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble44_validation_failure01/followup45/humble45_fixture_regression_native01.log": {
+        "bytes": 2884,
+        "sha256": "0626363c2ea13072fb605c39078a5028c49736ebff96cd7488c81126c33fa570",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble44_validation_failure01/followup45/humble45_fixture_regression_native01.sha256": {
+        "bytes": 376,
+        "sha256": "22ed169204992836115f1f42fca3129e278fb3bf5cc6c8bb4bc8809235091ff2",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble44_validation_failure01/followup45/run_humble45_fixture_regression_native01.sh": {
+        "bytes": 1044,
+        "sha256": "35324c8f90388c58dade90fc48eabf009c5cf0c2a88fc55e02c4dfdc3b9eb311",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble44_validation_failure01/manifest.json": {
+        "bytes": 12704,
+        "sha256": "f45f09d1b4ff6a3e7b3a3b94c9cfdb735ad4dc1de4e5169ab5dc6e8daeabed1e",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble44_validation_failure01/unittest.log": {
+        "bytes": 225366,
+        "sha256": "991cc87b4cf3fbac253f43d0c4f57c14136674ab909acbb61698d78be84613da",
+        "actual_equals_git_blob": true
+      },
+      "tools/diagnostics/humble44_validation_failure01/validate_action.terminal.json": {
+        "bytes": 9389,
+        "sha256": "53ecc8f9cede70c09b3b327909fd7283a196cff3dfea7fc66616ba965624b66e",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_core12_closure_snapshot01/README.md": {
+        "bytes": 784,
+        "sha256": "f71925f7454bb413b353fd2c767f357cc97b657d12e490f07a318dee5d79b3ce",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_core12_closure_snapshot01/humble43_core12_closed_independent01.json": {
+        "bytes": 49654,
+        "sha256": "f94f6f01e4da2c2ddca804ff2478e33de59a5ab9f227d6bdfde7d8d4aa653c1a",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension16_start_snapshot01/ARCHIVE_MANIFEST.json": {
+        "bytes": 2255,
+        "sha256": "bab6550c23d4171c07e1ad8f2b20e34c6bdd9d665dad4993e3b5b52468a44c43",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension16_start_snapshot01/README.md": {
+        "bytes": 3511,
+        "sha256": "1186177db43033f10716e53a8c783a4d1646a0584173d75631e90a824e710398",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension16_start_snapshot01/SHA256SUMS": {
+        "bytes": 896,
+        "sha256": "069d74b4c8cf18adc7f3863a9351a6ac5305aa7d6fc5e048fa4568d46a31dcab",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension16_start_snapshot01/development_extension_contract_humble43_pending_independent01.json": {
+        "bytes": 56656,
+        "sha256": "6f4bda863841840ee796e4831d6d11e65bd057ed7378dd526ada3c1d9fe2c79b",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension16_start_snapshot01/development_extension_contract_humble43_publication01.json": {
+        "bytes": 1171,
+        "sha256": "deb6b086af27bdf09ec31d816b36c2c8f57837639c49f58da0cb324e4e4ca681",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension16_start_snapshot01/development_extension_contract_reliability_v4_humble43_extensions_probe01_final01.json": {
+        "bytes": 112801,
+        "sha256": "68d9ebb2c5a2888e4bfaa6cbf6142298a663380ddce0074aafa1bb0f28912058",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension16_start_snapshot01/development_extension_contract_reliability_v4_humble43_extensions_probe01_pending01.json": {
+        "bytes": 112782,
+        "sha256": "7812a9db05041bb66c6840fc6b31672978817b18316e8bc863ebf6012d018f18",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension16_start_snapshot01/execution_terminal.json": {
+        "bytes": 221765,
+        "sha256": "0ff0a04ed6fae7a97790ecb0b5a804cd7a14ab7e6bbf525aa288f3c90a2ab89e",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension16_start_snapshot01/plan.json": {
+        "bytes": 219673,
+        "sha256": "954baf82accd5a227faaa6b57776736c93fb6a23c937025afa112616f71e5ada",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/ARCHIVE_MANIFEST.json": {
+        "bytes": 18785,
+        "sha256": "5159e994e327e2735775ca1330f6386fae7d751940fba4029040b50d005825e2",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/README.md": {
+        "bytes": 6067,
+        "sha256": "024e4dd032b742e83156a4f905d4b6e6ceb9ba89eafeb7e8357b09f8ab1acc9a",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/SHA256SUMS": {
+        "bytes": 5733,
+        "sha256": "47fa571ba82e84cf9b8d8ce404cb46ee1cae718c74f84aae2ab69670cd8beb4d",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/evidence/native02/root_terminal.json": {
+        "bytes": 15976,
+        "sha256": "2771787aaec64970f93465adf8a5fba98f5cf97ff5f9656c0224d3be6b79e990",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/evidence/native02/test_development_calibration_v2.result.json": {
+        "bytes": 3892,
+        "sha256": "31d6dfb2ac20d92b2758d0220e3de3eba87297116b16bea03c1f43e1f1d74bff",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/evidence/native02/test_development_calibration_v2.stderr.log": {
+        "bytes": 3755,
+        "sha256": "8b86bf4fb2fabccc8da765a2c5bb922e827399143e0b4f3b94917cc4f83e409c",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/evidence/native02/test_development_calibration_v2.stdout.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/evidence/native02/test_development_final_root_v2.result.json": {
+        "bytes": 7066,
+        "sha256": "cb1c1e176dd45408331cf3cf8d3298eb6c98bb9226f877061fb63b294819ee78",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/evidence/native02/test_development_final_root_v2.stderr.log": {
+        "bytes": 21130,
+        "sha256": "108c09b0c13386968730c7252ed6d572cf5e091461d9ded234308a90ff5d8ded",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/evidence/native02/test_development_final_root_v2.stdout.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/evidence/native02/test_seal_development_final_source_v2.result.json": {
+        "bytes": 2380,
+        "sha256": "d7cb2be3652a51683d6764de8b1e4ace71f61cefb4eb73b6bfc33f775613793a",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/evidence/native02/test_seal_development_final_source_v2.stderr.log": {
+        "bytes": 2209,
+        "sha256": "35200004cdf51bcdd97721b9add8edfa86cea11f7337f98f3e9e0715269b44e7",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/evidence/native02/test_seal_development_final_source_v2.stdout.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/evidence/native02_lock_contention_diagnostic01.json": {
+        "bytes": 16447,
+        "sha256": "f148b6dc4e38f9e7b564b5dad615f4a3dfe7cfcd697298bd5201185e759e263d",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/evidence/windows01/test_development_calibration_v2.result.json": {
+        "bytes": 4300,
+        "sha256": "6f04e3d18259f0c8baf16db21b838548a128dd80b30b11231b1c5b4aefef3b02",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/evidence/windows01/test_development_calibration_v2.stderr.log": {
+        "bytes": 9343,
+        "sha256": "df95f52349f90ee99c293ab652b37c697ececef22bf0887d43e83509601ebf0b",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/evidence/windows01/test_development_final_root_v2.result.json": {
+        "bytes": 9832,
+        "sha256": "3830f6e1b3c2ff1adf1f0c1761d865fff262d4de96803dc14f7e875c83fb7580",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/evidence/windows01/test_development_final_root_v2.stderr.log": {
+        "bytes": 27914,
+        "sha256": "fd0f4fae2230c8a16c9f0165fca670fddfdef3efdba3b137665dbcaee0f5bf1c",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/evidence/windows02/development_calibration_v2.py.describe.json": {
+        "bytes": 2590,
+        "sha256": "dd196448ed2a67df863b6bbebb37f753caadce7e8a5b4663010bad83bb25d46c",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/evidence/windows02/prepare_development_final_root_v2.py.describe.json": {
+        "bytes": 1896,
+        "sha256": "6cda2bd78300137300ae252fa771c637fb4d06067e7b81cedc04fdb42fcaec06",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/evidence/windows02/root_terminal.json": {
+        "bytes": 17625,
+        "sha256": "2626bcddb69510ea67a283f0666ba220fc404162295a9a0499fd6369f18f26dd",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/evidence/windows02/seal_development_final_source_v2.py.describe.json": {
+        "bytes": 709,
+        "sha256": "19a8357b1037ffc71ce090286b2b901ddd07a9b38c84182eecca5ac35d701e3c",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/evidence/windows02/test_development_calibration_v2.result.json": {
+        "bytes": 4663,
+        "sha256": "27253942ec539d44cb4ed780aca49d78284375e3429775d899475942b4dd2e24",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/evidence/windows02/test_development_calibration_v2.stderr.log": {
+        "bytes": 5931,
+        "sha256": "5e67c9f84315c2e5cdac5938bcb12b84cea8d88bc1ca0b4939bc53b17b86cd46",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/evidence/windows02/test_development_calibration_v2.stdout.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/evidence/windows02/test_development_final_root_v2.result.json": {
+        "bytes": 6712,
+        "sha256": "0681717d0e6e92190eaa22b1b2ccd02856df6b02668a7a86a141ec6389c60c48",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/evidence/windows02/test_development_final_root_v2.stderr.log": {
+        "bytes": 8919,
+        "sha256": "51c8c6d8ff55d32ec8804ef0b5eab666abc5594ac1557078db245bd1bffb8adb",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/evidence/windows02/test_development_final_root_v2.stdout.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/evidence/windows02/test_seal_development_final_source_v2.result.json": {
+        "bytes": 2412,
+        "sha256": "1811fe4ef7aa7739d8f8907557c8e134c6302488d96db9ce297b929769f68d29",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/evidence/windows02/test_seal_development_final_source_v2.stderr.log": {
+        "bytes": 3328,
+        "sha256": "742415b9c160424885af26dc140373fda9bed4eb5677a3b38e3ca68d4bacd137",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/evidence/windows02/test_seal_development_final_source_v2.stdout.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/external_tools/build_development_final_root_v2.py": {
+        "bytes": 23697,
+        "sha256": "ad18c3fc2ea073871bcd0f2852602639b41c614514d0dbbe82a42cafecadda4a",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/external_tools/build_development_final_root_v2.sh": {
+        "bytes": 2232,
+        "sha256": "2460aada950445d4153838e8b0d43fac8bacc229f696365b8d795fd5548e0005",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/external_tools/development_calibration_v2.py": {
+        "bytes": 46511,
+        "sha256": "16348aee4b7aad6ff2836fd5e4769e43ede5b5f1b43f34ddfebc2ce06e31205f",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/external_tools/development_calibration_v2.sh": {
+        "bytes": 2354,
+        "sha256": "6696d94435173f7702dfb94974778a71bab1ad9dbad0ff8f7a23665fef4ca401",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/external_tools/prepare_development_final_root_v2.py": {
+        "bytes": 16301,
+        "sha256": "a937087cc589b55ceafd747af8a0744bf97998ab76b4901972331ae1deceb9a5",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/external_tools/publish_development_final_protocols_v2.py": {
+        "bytes": 18415,
+        "sha256": "9376a4eeb259de8a12dd6e1575b92031437a8b3afd1f5be4d7ac1d43bd53befa",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/external_tools/seal_development_final_source_v2.py": {
+        "bytes": 22586,
+        "sha256": "c27a08af2be2d03421eed8691602fcfaf8148162e3e8503dd6a5cc9d8c998d5d",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/external_tools/test_development_calibration_v2.py": {
+        "bytes": 45551,
+        "sha256": "97f5efa2e9d3621f6f9aa013d7686c7267888d64461a699c6af915a98eaea087",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/external_tools/test_development_final_root_v2.py": {
+        "bytes": 67216,
+        "sha256": "8ea7352922a41d0092c8a32512e8225b9258840437ae93ac6cb1b5c77f36119a",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/external_tools/test_seal_development_final_source_v2.py": {
+        "bytes": 27719,
+        "sha256": "c8528f013ad0f7103395a8132b327f915c67978293adc4a56f96f2de489c6b58",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/manifests/v2_ten_file_closed_manifest.json": {
+        "bytes": 4234,
+        "sha256": "1cb301ccd6dd344b03ca83ad986a96c5d8962ebb44c5bb8479696baf7020dc0a",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/manifests/v2_ten_file_closed_manifest_revision02.json": {
+        "bytes": 12698,
+        "sha256": "83eebf67bfaafc02e1ae0f2a555b2d8408be40b5bc381be1063133dcf86c8afd",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/policy/01_semantic_policy_delta.patch": {
+        "bytes": 9369,
+        "sha256": "940ca1ebe5159e449c70991f0eaee1aa7df9105fe344f2970e44ba665653883a",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/policy/BOUNDARY_TEST_DESIGN.md": {
+        "bytes": 6844,
+        "sha256": "800db779001906c6198816cf9fde709117bbc7e1f6c4e4493d51638f18d06b7b",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/policy/DEPENDENCY_STRATEGY.md": {
+        "bytes": 5466,
+        "sha256": "da8865bbf49bcd6693ce0e1b50e3fad886a49df78c73cd7f4f326bb3c6bfd408",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/policy/PRE_OUTCOME_DECISION.md": {
+        "bytes": 4263,
+        "sha256": "aca620a812d26682689f52e67dd449e5f3402ccbf5089b64fa593f2e0ed599e9",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/policy/calibration_platform_revision02.patch": {
+        "bytes": 2273,
+        "sha256": "ff777d59af638f9d7c35d5b1409bec4d4ac1c710036952d59e9ab3000e95c25c",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_alignment_v2_snapshot/policy/test_family_revision02.patch": {
+        "bytes": 3015,
+        "sha256": "6fe9edcf6cd6b0e3dc03dbd7dea6e9f077a7125d72a409ca5259c7f3d8f78edd",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_partial05_snapshot01/ARCHIVE_MANIFEST.json": {
+        "bytes": 3207,
+        "sha256": "9bc3c060c470762fa25f82610cbf11ec4c24f8de7c3e5ecf69a209a3c4d7a502",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_partial05_snapshot01/README.md": {
+        "bytes": 2109,
+        "sha256": "690c318bc86973964f602514ba19948e8c77798e5fc371f5da044c98910d9577",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_partial05_snapshot01/SHA256SUMS": {
+        "bytes": 1053,
+        "sha256": "d1223be0a60958184f94971202453c29311e0306b2615bc1eedd33983122c406",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_partial05_snapshot01/evidence/05_person_extension_combined_seed004.attempt_terminal.json": {
+        "bytes": 32096,
+        "sha256": "7736816a98e51fdfbe8de79ac2fec3c28ab2b9271b8bbf177fd98aaa02634f98",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_partial05_snapshot01/evidence/bag_integrity.json": {
+        "bytes": 5210,
+        "sha256": "64df4e035cc9befd8a606f4fb092349637f3e37954f62283d5243ed13efc33b0",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_partial05_snapshot01/evidence/flight_evaluation.json": {
+        "bytes": 24442,
+        "sha256": "a23d757bd5c880da5fb8bdc0effc8eebca350b02a3e29011a293862e63d4ad24",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_partial05_snapshot01/evidence/humble43_combined_early_loss_closed_binding01.json": {
+        "bytes": 19305,
+        "sha256": "8140ca6284acc586231fe4a14f9c8192b610cccc806f9ac64d2c2b6e59eff069",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_partial05_snapshot01/evidence/humble43_combined_early_loss_observation01.json": {
+        "bytes": 6777,
+        "sha256": "d83274b42bcc510057fee9503e4489536e79053aa989c3b5e9fdb3290789fc25",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_partial05_snapshot01/evidence/navigation_reference_evaluation.json": {
+        "bytes": 145962,
+        "sha256": "61e7ae3f980d1a054e4c3e7ec3ad271167137791357e78b0d59764cc06f1e739",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_partial05_snapshot01/evidence/person_extension_combined_seed004.json": {
+        "bytes": 53835,
+        "sha256": "333461ca312e03e7dd0a500c913b645321497e47cddd1d6f8be261689c7fd0dd",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_extension_partial05_snapshot01/evidence/summary.json": {
+        "bytes": 4955,
+        "sha256": "1bc43aed0568d5635d884dbd894f313e4936eebe67270a97673f0bacb21f0eaf",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_native_v2_components04_snapshot01/ARCHIVE_MANIFEST.json": {
+        "bytes": 8178,
+        "sha256": "79421687089935f2222efd148f5a0245cc9083dcc24c779f03480859dfbaf584",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_native_v2_components04_snapshot01/README.md": {
+        "bytes": 3628,
+        "sha256": "a00d2b54c4e72296932483802aac0360dadb3008f3fdb4f5bec93e31dfa0c56a",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_native_v2_components04_snapshot01/SHA256SUMS": {
+        "bytes": 3057,
+        "sha256": "6215846e8c763b0429718d82bed80ea939edba93e652ddf431ef647e120ff45f",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_native_v2_components04_snapshot01/evidence/native04/development_calibration_v2.py.describe.json": {
+        "bytes": 2540,
+        "sha256": "2554ac508caee2c61ed11d025d8ec8ad6706211e22b016d57c562a4e97559401",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_native_v2_components04_snapshot01/evidence/native04/development_calibration_v2.py.describe.stderr.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_native_v2_components04_snapshot01/evidence/native04/prepare_development_final_root_v2.py.describe.json": {
+        "bytes": 1895,
+        "sha256": "4550db3e24f462d64ed71f9aa08d9df4ebd19ca51cab5b24ad3f2cc764934c87",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_native_v2_components04_snapshot01/evidence/native04/prepare_development_final_root_v2.py.describe.stderr.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_native_v2_components04_snapshot01/evidence/native04/root_terminal.json": {
+        "bytes": 25548,
+        "sha256": "9e5826f023e05f0ab6488cfa5f5909ac87b69be1e7d254772ed495fcbd9c1742",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_native_v2_components04_snapshot01/evidence/native04/seal_development_final_source_v2.py.describe.json": {
+        "bytes": 708,
+        "sha256": "aa1171502e92834b11c12e40e7355636222ce10f10e253f254dec72a5a1fa8fc",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_native_v2_components04_snapshot01/evidence/native04/seal_development_final_source_v2.py.describe.stderr.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_native_v2_components04_snapshot01/evidence/native04/test_development_calibration_v2.result.json": {
+        "bytes": 3891,
+        "sha256": "36288650db6ca0040170623821c985e19a5b75e94f995ce5ab45049835fb1911",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_native_v2_components04_snapshot01/evidence/native04/test_development_calibration_v2.stderr.log": {
+        "bytes": 3755,
+        "sha256": "fe6ba7c6feb4b9eeba9f03a8b534a7988a9d7a1b9f4e917bc4714c5da7c0a00d",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_native_v2_components04_snapshot01/evidence/native04/test_development_calibration_v2.stdout.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_native_v2_components04_snapshot01/evidence/native04/test_development_final_root_v2.result.json": {
+        "bytes": 5744,
+        "sha256": "ecf0f50a21c1f403937c837b088a233dc81bcceee256339eefac5993a085a49a",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_native_v2_components04_snapshot01/evidence/native04/test_development_final_root_v2.stderr.log": {
+        "bytes": 5630,
+        "sha256": "573750443ea390a42ffa93fd5c3315cd343eab2053a063e0b5a7a0f9e61846a8",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_native_v2_components04_snapshot01/evidence/native04/test_development_final_root_v2.stdout.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_native_v2_components04_snapshot01/evidence/native04/test_seal_development_final_source_v2.result.json": {
+        "bytes": 2381,
+        "sha256": "4b9957f6c7e7ef75c21f37f775934b7a9807632fc65857843cc3353c0a493275",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_native_v2_components04_snapshot01/evidence/native04/test_seal_development_final_source_v2.stderr.log": {
+        "bytes": 2209,
+        "sha256": "35f3b4b41db393b0095b5882a202e4fd6d3296edff744e708a993d4a78bc660d",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_native_v2_components04_snapshot01/evidence/native04/test_seal_development_final_source_v2.stdout.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_native_v2_components04_snapshot01/review/humble43_v2_components04_actual_peer01.json": {
+        "bytes": 13259,
+        "sha256": "5fe710d7c1120a70218810f910d0c0175f5b5dd3b8052a5f2aa89b83ace9dfbc",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_native_v2_components04_snapshot01/review/humble43_v2_components04_preparation01.json": {
+        "bytes": 3145,
+        "sha256": "5fbeaede33ad2e521e1df4c0a672ffeac1f7451cbcc92f3d6eae570a78a3043c",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_native_v2_components04_snapshot01/review/root_humble_v2_components04_vs03_01.diff": {
+        "bytes": 9222,
+        "sha256": "78795d3600733545419902eec7e37de1dc6aebda7785c57d48bc291f59192f8f",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_native_v2_components04_snapshot01/review/test_root_humble_v2_components04_lock_observation01_run01.json": {
+        "bytes": 4376,
+        "sha256": "7e3a6b803926edf905cebda31c427faf3ac3aaa202b0b75845aae1297c5525e8",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_native_v2_components04_snapshot01/tools/root_humble_v2_components04.py": {
+        "bytes": 17263,
+        "sha256": "ac75708b91a9b336e5b6dadbbe9239143c6a4558df51c775f9aceb028dfb8492",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_native_v2_components04_snapshot01/tools/root_install_validate_v2_01.py": {
+        "bytes": 9421,
+        "sha256": "d7855f611984f4f0d674bb5343c517aa96ee98d8c273efbb2d24ff77de9f6dd1",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_native_v2_components04_snapshot01/tools/test_root_humble_v2_components04_lock_observation01.py": {
+        "bytes": 14144,
+        "sha256": "8b0eb74abc99acc159d91f1ba0470c09f6d6f3fd6a839263296edf1ab9b85c01",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_safety4_closure_snapshot01/ARCHIVE_MANIFEST.json": {
+        "bytes": 1500,
+        "sha256": "c6889a58e5cb8536a6a37a18df79ce97b85c8966dc19ff9dbe7b580259665862",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_safety4_closure_snapshot01/README.md": {
+        "bytes": 3054,
+        "sha256": "cf3091b5b4c8a3829b9f88751a1ea81297a7ac8de3fe967120123cedf96ac9fb",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_safety4_closure_snapshot01/SHA256SUMS": {
+        "bytes": 546,
+        "sha256": "4840c69171785f2d11254c8f202b08a6f65e74865b2b6ea24d83d2c8df4fb2c9",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_safety4_closure_snapshot01/development_guard_validation.json": {
+        "bytes": 21729,
+        "sha256": "9268be526d5a00ea293979868303c935605daa4a2e7b46c8e841d8eef5be75d2",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_safety4_closure_snapshot01/execution_terminal.json": {
+        "bytes": 92575,
+        "sha256": "cd53295d127b4afdffa12e0714f9deaad826632aefb29b590f475892dfd6a4b0",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_safety4_closure_snapshot01/humble43_safety4_closed_independent01.json": {
+        "bytes": 181287,
+        "sha256": "e8ddbe799d0209c800d9899f08e8b4d1b527392937b2c4ced162540b6ea04690",
+        "actual_equals_git_blob": true
+      },
+      "tools/experiment_orchestration/humble43_safety4_closure_snapshot01/slots_facts.json": {
+        "bytes": 56115,
+        "sha256": "5f0ec18bca33d835df98ffa84aea288c600364a92276c3622247b2e809aafc95",
+        "actual_equals_git_blob": true
+      },
+      "tools/offline_evaluation/physical_recovery_v1/README.md": {
+        "bytes": 6521,
+        "sha256": "5c6ac164cd13ba6cb70066b8ada1c8553bdcde7064a08ff01bf76fa3e8b9250f",
+        "actual_equals_git_blob": true
+      },
+      "tools/offline_evaluation/physical_recovery_v1/native_humble44_01.log": {
+        "bytes": 2250,
+        "sha256": "f8edc9bb3726883ba2e634f957af9dc690de91273e2c0e7e7f983b978a2607d1",
+        "actual_equals_git_blob": true
+      },
+      "tools/offline_evaluation/physical_recovery_v1/physical_recovery.py": {
+        "bytes": 48667,
+        "sha256": "f25327c03509aba6c0c5ec2d8358d65d1ca2e22da63e4a45076e23e99a52182c",
+        "actual_equals_git_blob": true
+      },
+      "tools/offline_evaluation/physical_recovery_v1/test_physical_recovery.py": {
+        "bytes": 19388,
+        "sha256": "63e3010a0310ef68b02ea51f338882e94e8622b77b0e0e96df5a35bfb77553e4",
+        "actual_equals_git_blob": true
+      }
+    }
+  },
+  "resource_supplement": {
+    "override": {
+      "schema_version": 1,
+      "status": "FINAL_DEVELOPMENT_BUILD_RESOURCE_OVERRIDE_INDEPENDENTLY_REVIEWED",
+      "scope": "EXPLICIT512_RESOURCE_SUPPLEMENT_WITH_UNCHANGED_GENERIC_BUILD_IMPLEMENTATIONS",
+      "tools_canonical_sha256": "517b2b2dfb989b8ca32f4f12ee4bd18b54bafd906c5d251a21d58407845ea503",
+      "resource_revision": "car_train20_04_m512_cpu4_v1",
+      "receipt": {
+        "path": "config/car_sim_train20_04_m512_resource_receipt.json",
+        "sha256": "9abeaca3a892e61761564bc7116bb8aed34d9864f4f7406bd9f3a4bc59f3c26c"
+      },
+      "supersedes_legacy_resource_choice_only": true,
+      "legacy_runtime_invariant_field_is_schema_compatibility_only": true,
+      "unchanged_contracts": [
+        "safety",
+        "bridge",
+        "magnetic",
+        "environment",
+        "source_binding",
+        "bounded_owner",
+        "build",
+        "suite"
+      ],
+      "legacy640_runtime_acceptance_claimed": false,
+      "runtime_acceptance_claimed": false,
+      "formal_seed_use_authorized": false
+    },
+    "tools_manifest": {
+      "schema_version": 1,
+      "scope": "EXPLICIT512_RESOURCE_SUPPLEMENT_WITH_UNCHANGED_GENERIC_BUILD_IMPLEMENTATIONS",
+      "files": {
+        "development_freeze_build.py": "cf54a57bffdb8944aa0e2cdd724e6de70028f4d8511acf89d3becb58c8b2c129",
+        "development_freeze_build.sh": "3a6ddd86749c944989b8618ae70457631114490cb3cc63ca6835085937975bd8",
+        "test_development_freeze_build.py": "751a9f8ce6f46129a6401f235e50844b67d2274c110b8720b6180f8a59f09ad3"
+      },
+      "reused_generic_canonical_sha256": "e57017201f1033847e49bb7843b1ef61bad28c21ac9f16e876736498980219cf",
+      "resource_guard": {
+        "schema_version": 1,
+        "scope": "DEVELOPMENT_IMAGE_REGRESSION_AND_OFFLINE_WORKER_TIMING_ONLY_NOT_FLIGHT_ACCEPTANCE",
+        "files": {
+          "development_resource_guard.py": "36dcddc624df2c725856fdedc2e8e5dd5582e88fc97d8458df31f5fcbfba58e5",
+          "test_development_resource_guard.py": "4ce70019ce71d95487af8c21fe17b20245a8e114b39b896649bfa3ab65742750"
+        },
+        "revision": "car_train20_04_m512_cpu4_v1",
+        "receipt": {
+          "path": "config/car_sim_train20_04_m512_resource_receipt.json",
+          "sha256": "9abeaca3a892e61761564bc7116bb8aed34d9864f4f7406bd9f3a4bc59f3c26c"
+        },
+        "generic_tools_canonical_sha256": "e57017201f1033847e49bb7843b1ef61bad28c21ac9f16e876736498980219cf",
+        "legacy_guard_modified": false,
+        "dependency_globals_modified": false,
+        "closed_loop_or_formal_acceptance_awarded": false
+      },
+      "actual_build_and_suite_functions": [
+        "reviewed_freeze_build.build",
+        "reviewed_freeze_build.installed_checks",
+        "reviewed_freeze_build.validate_build"
+      ],
+      "legacy_runtime_contracts_called": false,
+      "dependency_globals_modified": false,
+      "flight_actions_authorized": false,
+      "formal_seed_use_authorized": false
+    },
+    "reviewed_protocol_sha256": "66dda6a6c48e9c2613bf77ada018573e13487caf80f0c9db0be7651008c09dc7"
+  },
+  "runtime_delta_from43": {
+    "changed": [
+      "scripts/run_stage1_trial.py"
+    ],
+    "added": [
+      "config/recording_qos.yaml"
+    ],
+    "removed": []
+  },
+  "runtime_identical_to44": true,
+  "only_two_status_fields_changed": true,
+  "build_or_flight_started": false,
+  "original_failures_changed": false,
+  "code": {
+    "path": "/mnt/d/WSL/UAVHumble22-validation/publish_humble45_source_root_peer01.py",
+    "sha256": "d921268c72617089f23b87817e22b52fa6c8623609a45ee2136da97bbd0096ca"
+  }
+}

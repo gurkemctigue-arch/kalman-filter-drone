@@ -1,0 +1,207 @@
+{
+  "schema_version": 1,
+  "kind": "HUMBLE45_SMALL_ORIGINAL_BUILD_PUBLICATION_AND_ZERO_FLIGHT_PLAN_FAILURE_SNAPSHOT_ONLY",
+  "created_utc": "2026-11-01T15:57:25.180876+00:00",
+  "source_root": "D:\\基于yolo和卡尔曼滤波",
+  "copied_original_files": 20,
+  "copied_original_bytes": 1106190,
+  "copy_verification": "Every copied file compared byte-for-byte against its original after copy; only named small source evidence was read.",
+  "readme": {
+    "path": "README.md",
+    "bytes": 2055,
+    "sha256": "c4bd07185fa7fb5aec9d5ab9fa5f4117d129ed090037156c638d717755a54b69"
+  },
+  "facts": {
+    "actions": {
+      "prepare": {
+        "status": "PASS",
+        "direct_child_returncode": 0
+      },
+      "copy": {
+        "status": "PASS",
+        "direct_child_returncode": 0
+      },
+      "build": {
+        "status": "PASS",
+        "direct_child_returncode": 0
+      },
+      "validate": {
+        "status": "PASS",
+        "direct_child_returncode": 0
+      }
+    },
+    "original_suite": {
+      "status": "PASS",
+      "tests_including_skips": 1767,
+      "skipped": 5,
+      "passed_derived_from_total_minus_skipped": 1762,
+      "derived_pass_count_is_not_separate_test_run": true,
+      "original_footer": "OK (skipped=5)",
+      "original_summary_sha256": "4f9ee1cf5de2ec5c23368b1438beb52f0f82528a0b2dc510ee0b4cafa071f12e"
+    },
+    "candidate_status": "FINAL_DEVELOPMENT_CANDIDATE_INDEPENDENTLY_REVIEWED",
+    "candidate_sha256": "b20438f956f91cafe4e65e25b2f9341a0cf88a50abc6194372f0912065cdabe6",
+    "publication_status": "PASS_ACTUAL_CANDIDATE_PUBLICATION_AND_NORMAL_NATIVE_LOAD_ONLY",
+    "system_python_failure_preserved_separately": true,
+    "first_plan": {
+      "returncode": 2,
+      "flights_started": 0,
+      "plan_pending": null,
+      "error": "ValueError: Inherited resource/T4 timing envelope changed",
+      "final_errors": [
+        "observer:ValueError:Owner outcome differs from original immutable D copy candidate"
+      ]
+    },
+    "original44_failures_preserved": "../humble44_validation_failure01/",
+    "runtime_acceptance": "NOT_EVALUATED",
+    "formal_admission": false,
+    "project_acceptance": false
+  },
+  "files": [
+    {
+      "source_path": "D:\\WSL\\UAVHumble22-validation\\reviewed_freeze_actions_v4_humble45\\prepare\\action.terminal.json",
+      "snapshot_path": "actions/prepare.terminal.json",
+      "bytes": 106870,
+      "sha256": "236df38c7e44fde10c3f837aa96a069b60c6ece55e7d74c0e95fa6ce279149d8",
+      "original_bytes_preserved": true
+    },
+    {
+      "source_path": "D:\\WSL\\UAVHumble22-validation\\reviewed_freeze_actions_v4_humble45\\copy\\action.terminal.json",
+      "snapshot_path": "actions/copy.terminal.json",
+      "bytes": 106864,
+      "sha256": "4cba315bf91032d89f24d42a6134f69f209f7883f8cdb9a06906e446164cbad0",
+      "original_bytes_preserved": true
+    },
+    {
+      "source_path": "D:\\WSL\\UAVHumble22-validation\\reviewed_freeze_actions_v4_humble45\\build\\action.terminal.json",
+      "snapshot_path": "actions/build.terminal.json",
+      "bytes": 9384,
+      "sha256": "8d00c91a18715fb7f1a083b2ba77aa3e89776cf3b0f65b763c440380e22d4c29",
+      "original_bytes_preserved": true
+    },
+    {
+      "source_path": "D:\\WSL\\UAVHumble22-validation\\reviewed_freeze_actions_v4_humble45\\validate\\action.terminal.json",
+      "snapshot_path": "actions/validate.terminal.json",
+      "bytes": 9389,
+      "sha256": "cdee269d2bbee06aeeb3783b945a2f4d6803f3b90cf41b82b6f0a9dc43ac6b29",
+      "original_bytes_preserved": true
+    },
+    {
+      "source_path": "D:\\WSL\\UAVHumble22-validation\\reviewed_freeze_review_v4_humble45_01.json",
+      "snapshot_path": "external/reviewed_freeze_review_v4_humble45_01.json",
+      "bytes": 202904,
+      "sha256": "a526b2e342bc2b5889266ef15592656f5c98eb7833bed33856d0c2d084d69b50",
+      "original_bytes_preserved": true
+    },
+    {
+      "source_path": "D:\\WSL\\UAVHumble22-validation\\reviewed_freeze_source_humble45_root_peer01.json",
+      "snapshot_path": "external/reviewed_freeze_source_humble45_root_peer01.json",
+      "bytes": 51871,
+      "sha256": "0e342c6985e14307474af1de2b48bc1743bab9ba4c2d2746eef0a2462a6783cc",
+      "original_bytes_preserved": true
+    },
+    {
+      "source_path": "D:\\WSL\\UAVHumble22-validation\\development_candidate_humble45_01.json",
+      "snapshot_path": "external/development_candidate_humble45_01.json",
+      "bytes": 3554,
+      "sha256": "b20438f956f91cafe4e65e25b2f9341a0cf88a50abc6194372f0912065cdabe6",
+      "original_bytes_preserved": true
+    },
+    {
+      "source_path": "D:\\WSL\\UAVHumble22-validation\\development_candidate_humble45_root_peer01.json",
+      "snapshot_path": "external/development_candidate_humble45_root_peer01.json",
+      "bytes": 22967,
+      "sha256": "ff2796e4bbc7034a0b27942499f57a658b9418f5fe17084d758696c785a130d4",
+      "original_bytes_preserved": true
+    },
+    {
+      "source_path": "D:\\WSL\\UAVHumble22-validation\\development_candidate_humble45_publication_result01.json",
+      "snapshot_path": "external/development_candidate_humble45_publication_result01.json",
+      "bytes": 847,
+      "sha256": "026d2c33714fd2a28640df932884ca01dd54e1e82fc9c35791ef58111b6ae651",
+      "original_bytes_preserved": true
+    },
+    {
+      "source_path": "D:\\WSL\\UAVHumble22-validation\\humble45_candidate_system_python_invocation_failure01.json",
+      "snapshot_path": "external/humble45_candidate_system_python_invocation_failure01.json",
+      "bytes": 772,
+      "sha256": "6a13b85de32badfc6cdbdb8fe12636e1249b1d8a684ba97a164e3509745fdbaa",
+      "original_bytes_preserved": true
+    },
+    {
+      "source_path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble45\\freeze_validation\\source_freeze_manifest.json",
+      "snapshot_path": "freeze_validation/source_freeze_manifest.json",
+      "bytes": 242728,
+      "sha256": "e85627c38791ffda37ee1a53ea29e4a2adfc4ce204c80f016dfb9aca00952c02",
+      "original_bytes_preserved": true
+    },
+    {
+      "source_path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble45\\freeze_validation\\build_validation_summary.json",
+      "snapshot_path": "freeze_validation/build_validation_summary.json",
+      "bytes": 4896,
+      "sha256": "4f9ee1cf5de2ec5c23368b1438beb52f0f82528a0b2dc510ee0b4cafa071f12e",
+      "original_bytes_preserved": true
+    },
+    {
+      "source_path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble45\\freeze_validation\\unittest.log",
+      "snapshot_path": "freeze_validation/unittest.log",
+      "bytes": 221897,
+      "sha256": "e0a626ada4098bfc584298e164017938659e8f4d46c62537b7e10c4d3e00c47a",
+      "original_bytes_preserved": true
+    },
+    {
+      "source_path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble45\\freeze_validation\\colcon_build.log",
+      "snapshot_path": "freeze_validation/colcon_build.log",
+      "bytes": 589,
+      "sha256": "bcc662c8ee5fcb8e51ae3bfb7a1952fc2644d89e31e050fa9ec2b37ba60ebb9f",
+      "original_bytes_preserved": true
+    },
+    {
+      "source_path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble45\\freeze_validation\\generated_message_roundtrip.json",
+      "snapshot_path": "freeze_validation/generated_message_roundtrip.json",
+      "bytes": 1960,
+      "sha256": "6d322dffc5514e6ede70d66788070edb079a4469587daaed069e7de6829a47e8",
+      "original_bytes_preserved": true
+    },
+    {
+      "source_path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble45\\freeze_validation\\import_isolation.json",
+      "snapshot_path": "freeze_validation/import_isolation.json",
+      "bytes": 3354,
+      "sha256": "7131fb64f70cbb920a3cd1b29bde2f9e0caa54337b62af7e54342823db2a5522",
+      "original_bytes_preserved": true
+    },
+    {
+      "source_path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble45\\freeze_validation\\fastcdr_provenance.json",
+      "snapshot_path": "freeze_validation/fastcdr_provenance.json",
+      "bytes": 5724,
+      "sha256": "f9f69d3dca9b1eb573e129f69b0e4d75c6ac0961ed42ce15f25e71c5cfba56f6",
+      "original_bytes_preserved": true
+    },
+    {
+      "source_path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble45\\freeze_validation\\reliability_v4_humble45_recording_probe01_single_plan_driver01\\execution_terminal.json",
+      "snapshot_path": "first_plan_failure/execution_terminal.json",
+      "bytes": 97686,
+      "sha256": "b277b92f754bbff3ac5f3dca43b8dc9ef86c8a25a3b95e5254c6d294cf80e90a",
+      "original_bytes_preserved": true
+    },
+    {
+      "source_path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble45\\freeze_validation\\reliability_v4_humble45_recording_probe01_single_plan_driver01\\observer_driver\\execution_terminal.json",
+      "snapshot_path": "first_plan_failure/observer_execution_terminal.json",
+      "bytes": 8476,
+      "sha256": "b9d31cfa240a03f752f3ceeccda1717cf39b7f1e0e58ebbe109a11dfca074ab5",
+      "original_bytes_preserved": true
+    },
+    {
+      "source_path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble45\\freeze_validation\\reliability_v4_humble45_recording_probe01_single_plan_driver01\\observer_driver\\native_exit_terminal.json",
+      "snapshot_path": "first_plan_failure/observer_native_exit_terminal.json",
+      "bytes": 3458,
+      "sha256": "0d845741eeba5222d10872490bb29a4eba7f9a79efb26eb723df09cdab1821c0",
+      "original_bytes_preserved": true
+    }
+  ],
+  "limits": [
+    "This is an additive snapshot, not a new source/runtime/owner admission.",
+    "Absolute paths, original FAILs and all source bytes stay unchanged.",
+    "No WSL/build/test/simulation/bag read/deletion, no entrypoint/gitattributes/production/old-directory mutation performed for this snapshot."
+  ]
+}

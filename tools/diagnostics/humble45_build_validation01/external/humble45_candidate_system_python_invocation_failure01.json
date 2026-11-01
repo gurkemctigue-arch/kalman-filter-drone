@@ -1,0 +1,17 @@
+{
+  "scope": "INVOCATION_FAILURE_BEFORE_PUBLICATION_NOT_BUILD_FAILURE",
+  "observed_utc": "2026-11-01T15:46:30.826378+00:00",
+  "command": [
+    "/usr/bin/python3",
+    "-B",
+    "publish_humble45_candidate_root_peer01.py",
+    "--pending-sha256",
+    "22aca9a0c87705d52ac089926b047d0dab51eb2c43de913a09ad9098e1f7c224"
+  ],
+  "returncode": 1,
+  "error": "ValueError: Original archive process command/manifest binding differs",
+  "origin": "core.original_closure_binding -> local_runtime_observer41.validate_observer_root exact sys.executable comparison",
+  "final_candidate_written": false,
+  "receipt_written": false,
+  "resolution": "Use original reviewed Humble45 probe shell environment with project venv interpreter; only final exec target differs."
+}
