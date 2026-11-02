@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "scope": "BUILD53_INSTALL_TRANSITION_AND_EXACT_CV2_IMPORT_ENVIRONMENT_RESTORATION",
+  "status": "FINAL_BUILD53_INSTALL_AND_IMPORT_TRANSITIONS_INDEPENDENTLY_REVIEWED",
+  "source_review": {
+    "path": "/mnt/d/WSL/UAVHumble22-validation/dds48_tools01/reviewed_freeze_review_v4_humble53_01.json",
+    "sha256": "ca6271c8dc674927936063863c73f8aa8319defe3ffadd171b54ba2435addeb3"
+  },
+  "copy_terminal": {
+    "path": "/mnt/d/WSL/UAVHumble22-validation/dds48_tools01/reviewed_freeze_actions_v4_humble53/copy/action.terminal.json",
+    "sha256": "4e26fa86a5d28d8943234cd4683473aa598e86a260a2a8743f89cc59db63581e"
+  },
+  "frozen_manifest": {
+    "path": "/root/uav_tracking_fullplan_v4_humble53/results/freeze_validation/source_freeze_manifest.json",
+    "sha256": "332feb64bd79b5721e036a48a75c8fe9c87ed47e996e8bb796ef8941062c6f3d"
+  },
+  "frozen_binding": {
+    "manifest_sha256": "332feb64bd79b5721e036a48a75c8fe9c87ed47e996e8bb796ef8941062c6f3d",
+    "freeze_source_sha256": "6166c9bd3fa62c8481765c3b2bade7bbac61484e21087839f4353cf87f571d91",
+    "verified_file_count": 1451
+  },
+  "tool_manifest": {
+    "schema_version": 1,
+    "scope": "BUILD53_INSTALL_TRANSITION_AND_EXACT_CV2_IMPORT_ENVIRONMENT_RESTORATION",
+    "files": {
+      "build_humble53_transition01.py": "402629f8827c9745a7bf3e1a401128d9858c93010f07257dc0a877af49a58c03",
+      "build_humble53_transition01.sh": "9ae9b7ee3f48dc20908dcab854b40fbc3fad426d81ece48ecda106ec3ac41aa4",
+      "cv2_import_environment01.py": "c3696a457df49ae95d92785fd213a03019b14c1c3507cd6728eb5955040ad0b4"
+    },
+    "unchanged_build_tools_canonical_sha256": "919a4483554c73cfbabb1efda910c2dd831e79b963443545bece5307fe51077e",
+    "original_body": [
+      "development_freeze_build.child_action(review, build, action)",
+      "development_freeze_build.child_action(review, validate, action)"
+    ],
+    "original_installed_checks": "reviewed_freeze_build.installed_checks",
+    "build_timeout_s": 1800.0,
+    "validate_timeout_s": 600.0,
+    "cv2_import": "Exact pinned wheel import delta restored before unchanged installed and validate checks",
+    "term_grace_s": 30.0,
+    "kill_confirm_s": 5.0,
+    "only_allowed_environment_change": "Agent,DDS + same-root merge-install/lib + original complete tail",
+    "source_or_original_tools_changed": false,
+    "flight_actions_authorized": false,
+    "native_temporary_directory": "/tmp"
+  },
+  "authorized_actions": [
+    "build",
+    "validate"
+  ],
+  "formal_seed_use_authorized": false,
+  "runtime_acceptance_claimed": false,
+  "automatic_retry": false
+}
