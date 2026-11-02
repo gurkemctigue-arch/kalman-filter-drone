@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "kind": "STATIC_ACTUAL_DETECTOR_SCHEMA_FIX03_AND_SYNTHETIC_REGRESSION_NOT_NATIVE_RESULT",
+  "created_utc": "2026-11-02T21:56:59.810126+00:00",
+  "finding": "Actual detector diagnostics uses stamp_s; acquisition_s is a separate job-log field. The original exporter passes JSON through unchanged.",
+  "fix": "Read only detector.stamp_s and pin actual detector_node.py in SUPPORTED_SOURCES; no wrong-key fallback.",
+  "current_method_canonical_sha256": "98c8ce9253fd1b46ef2bc5ec23f290918f4c1aa0d385d85939d050fe1fbb99dd",
+  "current_sources": {
+    "control_tick_lineage.py": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\offline_evaluation\\control_tick_lineage_v1\\control_tick_lineage.py",
+      "bytes": 33398,
+      "sha256": "5ef5d82999165ad2932c239f142dfa6b565cd4e43a2493c2f43c8c40be723247"
+    },
+    "test_control_tick_lineage.py": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\offline_evaluation\\control_tick_lineage_v1\\test_control_tick_lineage.py",
+      "bytes": 26422,
+      "sha256": "d317356eeb23a23f0e05c9ed5346d4e0f950e09b3e7bb5aaf5f76d20f8ef2488"
+    },
+    "README.md": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\offline_evaluation\\control_tick_lineage_v1\\README.md",
+      "bytes": 6591,
+      "sha256": "d2fd12dba573cc791f1f60bf63d0a295c40e95a185c2701432402623c58ea690"
+    }
+  },
+  "supported_actual_semantic_source_bindings": {
+    "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/controller_node.py": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\ros2_ws\\src\\uav_tracking_nodes\\uav_tracking_nodes\\controller_node.py",
+      "bytes": 15149,
+      "sha256": "fa37a4de445896f8fd08b0bfa2c99a200623c39d98427ccedfe16cc9c6361959"
+    },
+    "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/state_estimator_node.py": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\ros2_ws\\src\\uav_tracking_nodes\\uav_tracking_nodes\\state_estimator_node.py",
+      "bytes": 60365,
+      "sha256": "696184b13ebb21307f1091171f15f5f628e6b46b101c692f1dcacea77861fbd0"
+    },
+    "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/navigation_estimator.py": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\ros2_ws\\src\\uav_tracking_nodes\\uav_tracking_nodes\\navigation_estimator.py",
+      "bytes": 10690,
+      "sha256": "8d1abef9fe9d623f4cd43b0874e7c7843238a79920f198b17942d6cc8ebe2114"
+    },
+    "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/detector_node.py": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\ros2_ws\\src\\uav_tracking_nodes\\uav_tracking_nodes\\detector_node.py",
+      "bytes": 56810,
+      "sha256": "2316a7f331afec55844da65f6d6b4bb76de551e1bad262bd26ad3728a4636510"
+    },
+    "ros2_ws/src/uav_tracking_interfaces/msg/TrackingCommand.msg": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\ros2_ws\\src\\uav_tracking_interfaces\\msg\\TrackingCommand.msg",
+      "bytes": 369,
+      "sha256": "f7156a45aae6000ef70178eb46d27f2830d98c3369b1114961bceef63c04f172"
+    },
+    "ros2_ws/src/uav_tracking_interfaces/msg/TrackingStatus.msg": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\ros2_ws\\src\\uav_tracking_interfaces\\msg\\TrackingStatus.msg",
+      "bytes": 492,
+      "sha256": "f9d29ba33ee852f1bb301fa42f7d6e57aac92159f73961098d08e5a8f65a2f79"
+    },
+    "ros2_ws/src/uav_tracking_interfaces/msg/TargetState.msg": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\ros2_ws\\src\\uav_tracking_interfaces\\msg\\TargetState.msg",
+      "bytes": 542,
+      "sha256": "b1967b3f2a0f31f298c2205a1c3defd0dcbea892745d9a6f3ea1c2fd97d84271"
+    }
+  },
+  "original_revision_archive": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\research_delivery_static_audit54_01\\control_tick_lineage_revision01_archive\\manifest.json",
+    "bytes": 2944,
+    "sha256": "fcb02021581ec3358e5cbe7996dee698de5d3912035cb5570f3824d905a05051"
+  },
+  "numeric_fix02_archive": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\research_delivery_static_audit54_01\\control_tick_lineage_fix02_numeric_only_archive\\manifest.json",
+    "bytes": 3241,
+    "sha256": "27bbf7917b85483a77346387a8faa62c9e120e91844e5b58b67eccbb5a792396"
+  },
+  "numeric_fix02_review": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\research_delivery_static_audit54_01\\control_tick_lineage_fix02_review01.json",
+    "bytes": 6417,
+    "sha256": "1cd165f9ae732c92e0f9e66afd5ebe3ad5ab1942825d20895ae8b42b7c90ce6e"
+  },
+  "source_diffs": {
+    "control_tick_lineage_fix03_source_diff01.patch": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\research_delivery_static_audit54_01\\control_tick_lineage_fix03_source_diff01.patch",
+      "bytes": 6741,
+      "sha256": "f6963bdcf6308089f915694b3a619aeb0eaa058521d65962837ab486e8bdf4d2"
+    },
+    "control_tick_lineage_full_fix01_03_source_diff01.patch": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\research_delivery_static_audit54_01\\control_tick_lineage_full_fix01_03_source_diff01.patch",
+      "bytes": 16047,
+      "sha256": "555cb2f9a39a0fb9f57d7aea1a8ecbbd4a786421f0843335fd7838628301ed37"
+    }
+  },
+  "actual_windows_describe": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\research_delivery_static_audit54_01\\control_tick_lineage_fix03_describe01.json",
+    "bytes": 2034,
+    "sha256": "c15066cca0f62b34b64154f348221658a45a95119c00de34bd011d1637831baa"
+  },
+  "actual_windows_describe_command": [
+    "C:\\Program Files\\Python312\\python.exe",
+    "-B",
+    "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\offline_evaluation\\control_tick_lineage_v1\\control_tick_lineage.py",
+    "describe"
+  ],
+  "actual_windows_describe_exit": 0,
+  "actual_windows_test_receipt": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\research_delivery_static_audit54_01\\control_tick_lineage_fix03_tests01.json",
+    "bytes": 1873,
+    "sha256": "6eca5431f5c4ec127b6b8f3360e7d94808cc40ced3b5153ab9487078e45dbe27"
+  },
+  "actual_windows_test_log": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\research_delivery_static_audit54_01\\control_tick_lineage_fix03_tests01.log",
+    "bytes": 6150,
+    "sha256": "11ec5e66b1e2a3c9d14e593a372882e968f1e38a51b3d704de9f35ba2af2577d"
+  },
+  "tests": {
+    "total": 36,
+    "passed": 36,
+    "previous33_regressions_retained": true,
+    "new_actual_field_schema_cases": 3
+  },
+  "actual_small_source_evidence": {
+    "detector_node.py:395-400": "_stamp_seconds=float(sec)+float(nanosec)*1e-9; _stamp_nanoseconds=int(sec)*1e9+int(nanosec).",
+    "detector_node.py:912-914": "JSON stamp_s=stamp_seconds, clock_epoch=snapshot.clock_epoch, acquisition_ns=_stamp_nanoseconds(message.header.stamp).",
+    "timing_v2/offline_pipeline_timing.py:425-427": "payload=loads(message.data) for JSON topics, then event.message=payload; no field rename.",
+    "new_tests": "Actual schema without acquisition_s passes; only incorrect acquisition_s cannot substitute; conflicting extra wrong key is ignored, incorrect stamp_s cannot be rescued by it."
+  },
+  "native_execution": false,
+  "actual_bag_or_real_events_read": false,
+  "real_events_schema_validation_completed": false,
+  "formal_protocol_or_registration_created": false,
+  "independent_review_status": "PENDING_CANDIDATE_AND_ROOT_DIFF_REVIEW"
+}

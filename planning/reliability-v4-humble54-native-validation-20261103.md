@@ -21,3 +21,13 @@ Humble54 冻结自提交 `a32060d`。Ubuntu 22.04 / ROS 2 Humble 原生四包冷
 导航报告仍为 `RECORDED_WITH_CENSORED_FAILURES`，保留长丢失、悬停等无效区间；工程 PASS 来自已登记的六项独立检查，不能把它改称所有区间均成功。原始小文件与 SHA 见 [单场终态快照](../tools/experiment_orchestration/humble54_car_position_closed01/README.md)。
 
 随后公开 CLI 新建同源、两类各六组、seed004、每场 75 秒的完整 12 场 PROBE，计划 digest 为 `3e34bdfae710f7b518a5f5fd1506054b03d3275c89e2f827ae136bfa2f682a31`。创建时全部 12 PENDING；正常 core owner 已开始串行执行，任何核心非 PASS 都停止后续。上述单场不拼进新核心 12，原 Humble53 和正式 0/280 不变。新实时入口：[核心 12 执行进度](../results/project_progress/humble54_core12_run01/index.html)。
+
+## 06:09 核心开发检查点
+
+本批原始终态为 **8 PASS / 4 尚未终态**。行人六组与汽车速度、位置两组均已完成，原 owner 仍在运行，第九场为 `car_stage2_crossing_seed004`。本批未改冻结算法源；后续四场没有预记通过。
+
+汽车位置模式于北京时间 06:08:20 完成 `COMPLETED / PASS`，独立 base_link 距离 RMSE 为 **0.704895 米**、高度 RMSE 为 **0.165654 米**，导航有效覆盖 **0.913679**，真值覆盖 **1.0**。六项工程门、源时钟、原生启动、遮挡行为及录包检查均通过，无基础设施停止、配置错误或残留进程。导航报告仍保留 `RECORDED_WITH_CENSORED_FAILURES`，不把条件达标解释为全部时段都有有效跟踪。
+
+行人多目标主动云台的完整请求时间网格为 **648 正确 / 0 已知错误 / 106 未知，共 754 格**；覆盖为 0.859416。逐诊断帧统计有不同分母，不用于替代完整任务网格；总体覆盖不能证明每个重选任务分别达标。六个行人的小文件原件与独审边界见 [person6 快照](../tools/experiment_orchestration/humble54_person6_closed01/README.md)。
+
+只有实际核心 12 全部通过并完成进程清理后，才执行原生审计、四项歧义安全及新的 16 个扩展工况。正式研究仍为 **0/280**，后续容量、定标、登记、封存、重复实验和统计交付尚待执行。

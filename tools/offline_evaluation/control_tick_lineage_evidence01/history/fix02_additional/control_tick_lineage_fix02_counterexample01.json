@@ -1,0 +1,426 @@
+{
+  "schema_version": 1,
+  "kind": "PURE_SYNTHETIC_FLOAT64_INVERSE_ALIAS_COUNTEREXAMPLE_NOT_ACTUAL_EVENTS",
+  "two_original_source_ns": [
+    8500000000000001,
+    8500000000000002
+  ],
+  "same_source_seconds": 8500000.000000002,
+  "events": [
+    {
+      "stream": "bag",
+      "bag_sequence": 0,
+      "record_timestamp_ns": 1000000000,
+      "kind": "clock",
+      "topic": "/clock",
+      "message": {
+        "clock": {
+          "sec": 8499999,
+          "nanosec": 1
+        }
+      }
+    },
+    {
+      "stream": "bag",
+      "bag_sequence": 1,
+      "record_timestamp_ns": 1000000001,
+      "kind": "detector",
+      "topic": "/tracking/detection_diagnostics",
+      "message": {
+        "clock_epoch": 0,
+        "acquisition_ns": 8500000000000001,
+        "acquisition_s": 8500000.000000002
+      }
+    },
+    {
+      "stream": "bag",
+      "bag_sequence": 2,
+      "record_timestamp_ns": 1000000002,
+      "kind": "detector",
+      "topic": "/tracking/detection_diagnostics",
+      "message": {
+        "clock_epoch": 0,
+        "acquisition_ns": 8500000000000002,
+        "acquisition_s": 8500000.000000002
+      }
+    },
+    {
+      "stream": "bag",
+      "bag_sequence": 3,
+      "record_timestamp_ns": 1000000003,
+      "kind": "navigation_state",
+      "topic": "/tracking/navigation_state",
+      "message": {
+        "header": {
+          "stamp": {
+            "sec": 8500000,
+            "nanosec": 250000000
+          },
+          "frame_id": "map"
+        },
+        "state": 2,
+        "track_id": 7,
+        "target_uuid": "task-A",
+        "position_m": {
+          "x": 1.0,
+          "y": 2.0,
+          "z": 3.0
+        },
+        "velocity_mps": {
+          "x": 0.1,
+          "y": 0.2,
+          "z": 0.3
+        },
+        "covariance": [
+          0.10000000149011612,
+          0.10000000149011612,
+          0.10000000149011612,
+          0.10000000149011612,
+          0.10000000149011612,
+          0.10000000149011612,
+          0.10000000149011612,
+          0.10000000149011612,
+          0.10000000149011612,
+          0.10000000149011612,
+          0.10000000149011612,
+          0.10000000149011612,
+          0.10000000149011612,
+          0.10000000149011612,
+          0.10000000149011612,
+          0.10000000149011612,
+          0.10000000149011612,
+          0.10000000149011612,
+          0.10000000149011612,
+          0.10000000149011612,
+          0.10000000149011612,
+          0.10000000149011612,
+          0.10000000149011612,
+          0.10000000149011612,
+          0.10000000149011612,
+          0.10000000149011612,
+          0.10000000149011612,
+          0.10000000149011612,
+          0.10000000149011612,
+          0.10000000149011612,
+          0.10000000149011612,
+          0.10000000149011612,
+          0.10000000149011612,
+          0.10000000149011612,
+          0.10000000149011612,
+          0.10000000149011612
+        ],
+        "prediction_age_s": 0.25,
+        "target_visible": false
+      }
+    },
+    {
+      "stream": "bag",
+      "bag_sequence": 4,
+      "record_timestamp_ns": 1000000004,
+      "kind": "navigation_diagnostics",
+      "topic": "/tracking/navigation_diagnostics",
+      "message": {
+        "diagnostic_schema_version": 2,
+        "valid": true,
+        "output_s": 8500000.25,
+        "output_publication_s": 8500000.250000002,
+        "output_track_id": 7,
+        "output_target_uuid": "task-A",
+        "output_state": 2,
+        "output_measurement_source_s": 8500000.000000002,
+        "measurement_age_s": 0.24999999813735485,
+        "output_position_world_m": [
+          1.0,
+          2.0,
+          3.0
+        ],
+        "output_velocity_world_mps": [
+          0.1,
+          0.2,
+          0.3
+        ],
+        "output_covariance_world_6x6": [
+          [
+            0.1,
+            0.1,
+            0.1,
+            0.1,
+            0.1,
+            0.1
+          ],
+          [
+            0.1,
+            0.1,
+            0.1,
+            0.1,
+            0.1,
+            0.1
+          ],
+          [
+            0.1,
+            0.1,
+            0.1,
+            0.1,
+            0.1,
+            0.1
+          ],
+          [
+            0.1,
+            0.1,
+            0.1,
+            0.1,
+            0.1,
+            0.1
+          ],
+          [
+            0.1,
+            0.1,
+            0.1,
+            0.1,
+            0.1,
+            0.1
+          ],
+          [
+            0.1,
+            0.1,
+            0.1,
+            0.1,
+            0.1,
+            0.1
+          ]
+        ]
+      }
+    },
+    {
+      "stream": "bag",
+      "bag_sequence": 5,
+      "record_timestamp_ns": 1000000005,
+      "kind": "controller_command",
+      "topic": "/tracking/command",
+      "message": {
+        "header": {
+          "stamp": {
+            "sec": 8500000,
+            "nanosec": 500000000
+          },
+          "frame_id": "map"
+        },
+        "track_id": 7,
+        "valid": true,
+        "mode": 1
+      }
+    },
+    {
+      "stream": "bag",
+      "bag_sequence": 6,
+      "record_timestamp_ns": 1000000006,
+      "kind": "controller_status",
+      "topic": "/tracking/status",
+      "message": {
+        "header": {
+          "stamp": {
+            "sec": 8500000,
+            "nanosec": 500000000
+          },
+          "frame_id": "map"
+        },
+        "track_id": 7,
+        "lifecycle": 3,
+        "prediction_active": true,
+        "target_visible": false,
+        "time_since_measurement_s": 0.5
+      }
+    },
+    {
+      "stream": "bag",
+      "bag_sequence": 7,
+      "record_timestamp_ns": 1000000007,
+      "kind": "clock",
+      "topic": "/clock",
+      "message": {
+        "clock": {
+          "sec": 8500000,
+          "nanosec": 500000001
+        }
+      }
+    }
+  ],
+  "original_revision_result": {
+    "schema_version": 1,
+    "kind": "OFFLINE_UNIQUE_RECORDED_CONTROL_TICK_LINEAGE_V1_NOT_CALLBACK_CAUSALITY",
+    "endpoint_label": "\u91c7\u96c6\u2192\u63a7\u5236\u5faa\u73af\u53d6\u65f6\uff08tick\u5f00\u59cb\uff09source_sim",
+    "time_domain": "RECORDED_ROS_SOURCE_SIM_CLOCK",
+    "coverage": {
+      "native_bag_read_to_end": true
+    },
+    "original_command_denominator": 1,
+    "known_commands": 1,
+    "unknown_commands": 0,
+    "known_command_coverage": 1.0,
+    "unknown_reasons": {},
+    "statistics_s_known_subset_only": {
+      "mean": 0.49999999800000006,
+      "median": 0.49999999800000006,
+      "p95": 0.49999999800000006,
+      "max": 0.49999999800000006
+    },
+    "commands": [
+      {
+        "command_event_index": 5,
+        "status": "UNIQUE_RECORDED_CONSTRAINT_SOLUTION",
+        "reasons": [],
+        "value_s": 0.49999999800000006,
+        "tick_ns": 8500000500000000,
+        "track_id": 7,
+        "status_event_indices": [
+          6
+        ],
+        "native_headers_after_tick_total": 0,
+        "arithmetic_window_acquisition_ns": [
+          8499999999999896,
+          8500000000000089
+        ],
+        "indexed_native_candidate_count": 1,
+        "formula_native_candidate_count": 1,
+        "candidates": [
+          {
+            "native_event_index": 3,
+            "diagnostic_event_indices": [
+              4
+            ],
+            "native_candidate_count_at_key": 1,
+            "diagnostic_candidate_count": 1,
+            "header_ns": 8500000250000000,
+            "track_id": 7,
+            "target_uuid": "task-A",
+            "state": 2,
+            "acquisition_ns": 8500000000000002,
+            "reason": null,
+            "expected_status_age_binary32": "3f000000",
+            "formula_match": true
+          }
+        ],
+        "lineage": {
+          "clock_epoch": 0,
+          "acquisition_ns": 8500000000000002,
+          "target_uuid": "task-A",
+          "track_id": 7,
+          "native_event_index": 3,
+          "diagnostic_event_indices": [
+            4
+          ],
+          "detector_event_index": 2
+        }
+      }
+    ],
+    "stream_opportunities": {
+      "clock": 2,
+      "detector": 2,
+      "navigation_state": 1,
+      "navigation_diagnostics": 1,
+      "controller_command": 1,
+      "controller_status": 1
+    },
+    "decode_errors_by_stream": {},
+    "global_unknown_reasons": [],
+    "anomalies": [],
+    "not_observed": [
+      "complete_callback_causality",
+      "controller_publish_completion",
+      "px4_receipt_or_execution",
+      "wall_capture_to_effect_e2e",
+      "worker_wall_fps"
+    ],
+    "interpretation": [
+      "Endpoint is tick-start before controller.update and publish; not publish completion.",
+      "Only a unique recorded constraint solution is reported; subscriber consumption is unobserved.",
+      "Every original command, including inactive/decode errors/duplicates, stays in the denominator.",
+      "Multiple native candidates stay UNKNOWN even when they share the same image lineage.",
+      "Unknown samples do not receive zero latency and known-subset quantiles are not whole-run quantiles.",
+      "Recorder timestamp is not used as a verified source clock or callback causality proof."
+    ]
+  },
+  "fixed_revision_result": {
+    "schema_version": 1,
+    "kind": "OFFLINE_UNIQUE_RECORDED_CONTROL_TICK_LINEAGE_V1_NOT_CALLBACK_CAUSALITY",
+    "endpoint_label": "\u91c7\u96c6\u2192\u63a7\u5236\u5faa\u73af\u53d6\u65f6\uff08tick\u5f00\u59cb\uff09source_sim",
+    "time_domain": "RECORDED_ROS_SOURCE_SIM_CLOCK",
+    "coverage": {
+      "native_bag_read_to_end": true
+    },
+    "original_command_denominator": 1,
+    "known_commands": 0,
+    "unknown_commands": 1,
+    "known_command_coverage": 0.0,
+    "unknown_reasons": {
+      "no_unique_native_formula_candidate": 1,
+      "unindexable_native_lineage_for_track": 1
+    },
+    "statistics_s_known_subset_only": {
+      "mean": null,
+      "median": null,
+      "p95": null,
+      "max": null
+    },
+    "commands": [
+      {
+        "command_event_index": 5,
+        "status": "UNKNOWN",
+        "reasons": [
+          "no_unique_native_formula_candidate",
+          "unindexable_native_lineage_for_track"
+        ],
+        "value_s": null,
+        "tick_ns": 8500000500000000,
+        "track_id": 7,
+        "status_event_indices": [
+          6
+        ],
+        "native_headers_after_tick_total": 0,
+        "arithmetic_window_acquisition_ns": [
+          8499999999999896,
+          8500000000000089
+        ],
+        "indexed_native_candidate_count": 0,
+        "formula_native_candidate_count": 0,
+        "candidates": [],
+        "lineage": null
+      }
+    ],
+    "stream_opportunities": {
+      "clock": 2,
+      "detector": 2,
+      "navigation_state": 1,
+      "navigation_diagnostics": 1,
+      "controller_command": 1,
+      "controller_status": 1
+    },
+    "decode_errors_by_stream": {},
+    "global_unknown_reasons": [],
+    "anomalies": [
+      {
+        "native_event_index": 3,
+        "diagnostic_event_indices": [
+          4
+        ],
+        "reason": "source_seconds_ambiguous_nanosecond_inverse"
+      }
+    ],
+    "not_observed": [
+      "complete_callback_causality",
+      "controller_publish_completion",
+      "px4_receipt_or_execution",
+      "wall_capture_to_effect_e2e",
+      "worker_wall_fps"
+    ],
+    "interpretation": [
+      "Endpoint is tick-start before controller.update and publish; not publish completion.",
+      "Only a unique recorded constraint solution is reported; subscriber consumption is unobserved.",
+      "Every original command, including inactive/decode errors/duplicates, stays in the denominator.",
+      "Multiple native candidates stay UNKNOWN even when they share the same image lineage.",
+      "Unknown samples do not receive zero latency and known-subset quantiles are not whole-run quantiles.",
+      "Recorder timestamp is not used as a verified source clock or callback causality proof."
+    ]
+  },
+  "actual_bag_or_events_read": false
+}

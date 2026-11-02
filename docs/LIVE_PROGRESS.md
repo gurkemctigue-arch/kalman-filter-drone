@@ -1,5 +1,18 @@
 # 查看当前实验
 
+**2026-11-03 06:09（北京时间）检查点：当前是 Humble54 核心开发批次，8 个原始 PASS、4 个尚未终态；第 9 场汽车多目标交叉正在运行。正式研究仍为 0/280。** 六个行人场景和汽车速度、位置跟随已经通过，汽车交叉与三个云台场景尚待本轮判定。独立汽车位置复验不拼入本批计数。
+
+汽车位置模式原槽于北京时间 06:08:20 完成 PASS：独立 base_link 距离 / 高度 RMSE 为 0.704895 / 0.165654 米，导航有效覆盖 0.913679，真值覆盖 1.0，六项工程检查均通过；无基础设施停止或残留进程。导航报告原状态仍为 `RECORDED_WITH_CENSORED_FAILURES`，不删除丢失、悬停或删失区间。上述结果只属于本轮开发种子，不能替代正式重复实验。
+
+- [当前命令、进程身份、心跳与原槽计数](../results/project_progress/humble54_core12_run01/index.html)：打开本机页面并核对最新更新时间；停止、过期或未核实状态均不能读作运行中。
+- [六个行人场景原件与独立复核](../tools/experiment_orchestration/humble54_person6_closed01/README.md)：保留完整身份分母、未知和删失，并说明小文件复核的边界。
+- [当前环境与原生验证](../planning/reliability-v4-humble54-native-validation-20261103.md)及[正式启动工具修复](../tools/experiment_orchestration/formal55_supplementary01/SNAPSHOT.md)：工具测试不计为新增飞行通过。
+
+实时页面、录包及录像位于本机，GitHub 保存代码和小证据快照。批处理可以独立运行，网页不会主动向聊天发送完成消息。PASS/FAIL 以每个原始终态为准；命令退出或报告文件生成不等于整个项目验收完成。
+
+<details>
+<summary>此前运行记录与入口（按各自时间阅读）</summary>
+
 **2026-11-02 20:10（北京时间）修复进展：时钟桥与数据桥分离候选已通过生产 RGB-D 组件检查，新增 54 项测试通过。** 20 秒仿真时间取得 202 组同步 RGB-D，时钟最大接收间隔约 33.7 ms，三进程正常退出。Windows 完整回归发现的旧夹具模式错误已修正，受影响两模块回归通过；新冷构建和 75 秒飞行复验待完成。原 Humble51 仍为 **3 PASS / 1 FAIL / 8 PENDING**，正式 **0/280**，项目尚未全部验收。详见[候选与真实证据](../planning/reliability-v4-clock-isolation-20261102.md)。
 
 **2026-11-02 19:10:29（北京时间）监控终态：Humble51原核心命令已退出2、STOPPED_FAULT；原始结果3 PASS、1 FAIL、8 PENDING，正式0/280。** 第四场行人云台中位的source-clock/native-startup未通过独立硬门，当前不能把下方18:58的“运行中”当作实时状态。4次未来源时刻拒绝、1次诊断交付越界和2条raw/timing缺配对，以及1次phase时间越界均保留；起飞、模式序列和handoff检查通过。84.028秒附近的聚集只是诊断线索，共同根因仍待原包核实。查看[停止说明与后续诊断](../planning/reliability-v4-humble51-clock-stop-20261102.md)、[最小原件](../tools/diagnostics/humble51_clock_stop01/README.md)和本机[命令终态](../results/project_progress/humble51_core_run01/index.html)。后续新的只读诊断不等于该原核心批次仍在飞行，下方历史快照原样保留。
@@ -130,5 +143,7 @@ Humble43已完成四包隔离构建、来源检查和真实消息序列化检查
 旧 `results/project_progress/current/` 是此前Humble31任务的历史记录，其中的已结束状态不能用于判断Humble41是否运行。其他旧页面和失败记录保留。
 
 进度页与视频属于本机结果，不随GitHub源代码提交；从GitHub新克隆后，没有本机结果时这些链接不可用。本文是带时间的入口说明，网页也不会自动向聊天发送完成通知。
+
+</details>
 
 </details>

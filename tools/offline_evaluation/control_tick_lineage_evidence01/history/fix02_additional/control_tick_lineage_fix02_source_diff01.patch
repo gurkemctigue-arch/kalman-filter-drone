@@ -1,0 +1,194 @@
+--- revision01/control_tick_lineage.py
++++ fix02/control_tick_lineage.py
+@@ -99,14 +99,38 @@
+     return result
+ 
+ 
+-def seconds_ns(value):
+-    """Require an exact supported integer-nanosecond round trip, no tolerance."""
+-    require(number(value) and 0 <= value < 2**53 / 1e9, 'invalid_source_seconds')
+-    ns = round(value * 1e9)
+-    sec, nano = divmod(ns, 1_000_000_000)
+-    require(value in (ns * 1e-9, ns / 1e9, float(sec) + float(nano) * 1e-9),
++def seconds_ns(value, *, conversion='stamp_parts'):
++    """Require one exact integer preimage of the actual source conversion.
++
++    State/output/accepted-source and detector stamps use the node's
++    float(sec) + float(nanosec) * 1e-9. Only publication_s uses ns * 1e-9.
++    Both are nondecreasing for integer 0 <= ns < 2**53: the integer operands
++    are exact binary64 values, multiplication/addition use positive operands,
++    and the last fractional stamp of a second never exceeds the next second.
++    A lower bound finds the first preimage over that complete supported domain;
++    an equal next integer proves ambiguity. No rounded centre, local tolerance
++    or presumed inverse window can discard another compatible source stamp.
++    """
++    require(number(value) and 0 <= value < 2**53 / 1e9
++            and (value != 0 or math.copysign(1, value) > 0), 'invalid_source_seconds')
++    require(conversion in ('stamp_parts', 'nanoseconds_product'), 'unsupported_source_seconds_conversion')
++    def encode(ns):
++        if conversion == 'nanoseconds_product':
++            return ns * 1e-9
++        sec, nano = divmod(ns, 1_000_000_000)
++        return float(sec) + float(nano) * 1e-9
++    lower, upper = 0, 2**53
++    while lower < upper:
++        middle = (lower + upper) // 2
++        if encode(middle) < value:
++            lower = middle + 1
++        else:
++            upper = middle
++    require(lower < 2**53 and encode(lower) == value,
+             'source_seconds_not_exact_nanosecond_roundtrip')
+-    return ns
++    require(lower + 1 == 2**53 or encode(lower + 1) != value,
++            'source_seconds_ambiguous_nanosecond_inverse')
++    return lower
+ 
+ 
+ def stamp_ns(message):
+@@ -165,7 +189,7 @@
+     header, _, _, _ = native_key(native)
+     require(native_key(native) == diag_key(diagnostic), 'native_diagnostic_key_mismatch')
+     acquired = seconds_ns(diagnostic.get('output_measurement_source_s'))
+-    publication = seconds_ns(diagnostic.get('output_publication_s'))
++    publication = seconds_ns(diagnostic.get('output_publication_s'), conversion='nanoseconds_product')
+     require(0 < acquired <= header <= publication, 'invalid_measurement_header_publication_order')
+     age = diagnostic.get('measurement_age_s')
+     require(number(age) and age >= 0
+@@ -313,6 +337,8 @@
+                 require(len(native_rows) == 1, 'duplicate_native_navigation_state')
+             except (TypeError, ValueError, OverflowError) as error:
+                 pair['reason'] = str(error)
++                anomalies.append({'native_event_index': ni, 'diagnostic_event_indices': pair['diagnostic_event_indices'],
++                                  'reason': pair['reason']})
+             future_by_track[key[1]].append(pair)
+             if pair['acquisition_ns'] is None or pair['reason']:
+                 unindexable_tracks.add(key[1])
+--- revision01/test_control_tick_lineage.py
++++ fix02/test_control_tick_lineage.py
+@@ -39,7 +39,7 @@
+               'position_m': dict(x=1., y=2., z=3.), 'velocity_mps': dict(x=.1, y=.2, z=.3),
+               'covariance': [m.f32(.1)]*36, 'prediction_age_s': m.f32(age), 'target_visible': False}
+     diag = {'diagnostic_schema_version': 2, 'valid': True, 'output_s': source_seconds(header),
+-            'output_publication_s': source_seconds(header+1), 'output_track_id': track,
++            'output_publication_s': (header+1)*1e-9, 'output_track_id': track,
+             'output_target_uuid': uuid, 'output_state': 2,
+             'output_measurement_source_s': source_seconds(acquired),
+             'measurement_age_s': age, 'output_position_world_m': [1., 2., 3.],
+@@ -263,6 +263,31 @@
+     def test_incomplete_native_read_cannot_claim_known(self):
+         value = m.analyze_events(fixture(), {'native_bag_read_to_end': False})
+         self.assertEqual(value['known_commands'], 0)
++
++    def test_two_actual_source_stamps_with_same_seconds_cannot_be_false_unique(self):
++        acquired, alternative = 8_500_000_000_000_001, 8_500_000_000_000_002
++        header, tick = 8_500_000_250_000_000, 8_500_000_500_000_000
++        self.assertEqual(source_seconds(acquired), source_seconds(alternative))
++        native, diag = pair(acquired=acquired, header=header)
++        events = fixture()
++        of_kind(events, 'clock')['message']['clock'] = native_stamp(acquired-1_000_000_000)
++        detector = of_kind(events, 'detector')
++        detector['message'].update(acquisition_ns=acquired, acquisition_s=source_seconds(acquired))
++        second = copy.deepcopy(detector)
++        second['message'].update(acquisition_ns=alternative, acquisition_s=source_seconds(alternative))
++        events.insert(2, second)
++        of_kind(events, 'navigation_state')['message'] = native
++        of_kind(events, 'navigation_diagnostics')['message'] = diag
++        of_kind(events, 'controller_command')['message']['header'] = native_header(tick)
++        status = of_kind(events, 'controller_status')['message']
++        status['header'] = native_header(tick)
++        status['time_since_measurement_s'] = m.f32(native['prediction_age_s']+(tick-header)*1e-9)
++        events[-1]['message']['clock'] = native_stamp(tick+1)
++        result = self.assert_unknown(normalize(events))
++        self.assertEqual(result['original_command_denominator'], 1)
++        self.assertEqual(result['stream_opportunities']['detector'], 2)
++        self.assertTrue(any('ambiguous_nanosecond_inverse' in str(a) for a in result['anomalies'])
++                        or any('ambiguous_nanosecond_inverse' in r for r in result['commands'][0]['reasons']))
+ 
+ 
+ class ArithmeticOracleTests(unittest.TestCase):
+@@ -322,6 +347,61 @@
+                         self.assertGreaterEqual(upper, acquired, (query, acquired, header, wire_age, lower, upper))
+         self.assertGreater(tested, 10_000)
+         self.assertGreater(matched, 100)
++
++
++class ExactSourceInverseTests(unittest.TestCase):
++    def test_original_source_conversion_alias_is_explicitly_unknown(self):
++        a, b = 8_500_000_000_000_001, 8_500_000_000_000_002
++        self.assertEqual(source_seconds(a), source_seconds(b))
++        with self.assertRaisesRegex(ValueError, 'ambiguous_nanosecond_inverse'):
++            m.seconds_ns(source_seconds(a))
++
++    def test_exact_inverse_matches_independent_preimages_at_float_and_second_boundaries(self):
++        # Exhaust a local integer oracle about known original stamps. The
++        # production inverse searches its entire domain, not this oracle window.
++        limit = 2**53
++        origins = (0, 1_000_000_000, (2**23-1)*1_000_000_000,
++                   2**23*1_000_000_000, 8_500_000_000_000_000, limit-1_000_000_000)
++        conversions = {'stamp_parts': source_seconds, 'nanoseconds_product': lambda ns: ns*1e-9}
++        for origin in origins:
++            for offset in (-3, -2, -1, 0, 1, 2, 3, 999_999_998, 999_999_999):
++                ns = origin+offset
++                if not 0 <= ns < limit:
++                    continue
++                for name, encode in conversions.items():
++                    value = encode(ns)
++                    if not value < limit/1e9:
++                        continue
++                    preimages = [candidate for candidate in range(max(0, ns-8), min(limit, ns+9))
++                                 if encode(candidate) == value]
++                    with self.subTest(ns=ns, conversion=name, preimages=preimages):
++                        if len(preimages) == 1:
++                            self.assertEqual(m.seconds_ns(value, conversion=name), preimages[0])
++                        else:
++                            with self.assertRaisesRegex(ValueError, 'ambiguous_nanosecond_inverse'):
++                                m.seconds_ns(value, conversion=name)
++
++    def test_unique_large_source_stamp_is_supported_without_arbitrary_low_cutoff(self):
++        ns = 8_500_000_000_000_000
++        self.assertEqual(m.seconds_ns(source_seconds(ns)), ns)
++
++    def test_publication_uses_actual_product_not_stamp_parts(self):
++        native, diag = pair()
++        header = 10_250_000_000
++        ns = next(header+i for i in range(1, 1000)
++                  if (header+i)*1e-9 != source_seconds(header+i))
++        diag['output_publication_s'] = ns*1e-9
++        self.assertEqual(m.validate_pair(native, diag), 10_000_000_000)
++        diag['output_publication_s'] = source_seconds(ns)
++        with self.assertRaisesRegex(ValueError, 'not_exact_nanosecond_roundtrip'):
++            m.validate_pair(native, diag)
++
++    def test_inverse_rejects_negative_zero_nonfinite_and_out_of_domain(self):
++        for value in (-0.0, float('nan'), float('inf'), -1., True, 2**53/1e9):
++            with self.subTest(value=value), self.assertRaises(ValueError):
++                m.seconds_ns(value)
++        with self.assertRaisesRegex(ValueError, 'unsupported_source_seconds_conversion'):
++            m.seconds_ns(1., conversion='nearest')
+ 
+ 
+ class FileBoundaryTests(unittest.TestCase):
+--- revision01/README.md
++++ fix02/README.md
+@@ -50,7 +50,19 @@
+ and age serialization, and unique detector `(clock_epoch, acquisition_ns)`.
+ The accepted image comes only from `output_measurement_source_s`; the latest
+ processed `acquisition_s` can refer to a rejected measurement and is not used.
+-Source seconds must exactly round-trip a supported integer-nanosecond stamp.
++Source seconds must have exactly one supported integer-nanosecond preimage.
++The actual node conversion `float(sec) + float(nanosec) * 1e-9` is used for
++output, accepted-measurement and detector source stamps. The independently
++sampled `output_publication_s` uses its actual `ns * 1e-9` conversion. These
++conversions are checked separately; a value from another conversion is not
++silently substituted. The supported integer domain remains `0 <= ns < 2**53`.
++Both conversions are nondecreasing on that domain, including second boundaries.
++A full-domain lower-bound search finds the first exact preimage; the next
++integer mapping to the same value makes the sample UNKNOWN. This avoids
++assuming that a rounded centre or round trip proves a unique inverse. In
++particular, above `2**23` seconds some adjacent integer nanosecond stamps have
++the same binary64 seconds value. Unique large stamps remain supported, while
++ambiguous stamps, negative zero and nonfinite/out-of-domain inputs are rejected.
+ Native age must equal the exact implemented difference of diagnostic output
+ and accepted source seconds, followed by native binary32 serialization.
+ 

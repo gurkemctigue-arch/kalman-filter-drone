@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "kind": "INDEPENDENT_STATIC_LINEAGE_REVIEW_AND_NUMERIC_FIX02_NOT_NATIVE_OR_RESEARCH_RESULT",
+  "created_utc": "2026-11-02T21:52:08.546788+00:00",
+  "original_revision_archive": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\research_delivery_static_audit54_01\\control_tick_lineage_revision01_archive\\manifest.json",
+    "bytes": 2944,
+    "sha256": "fcb02021581ec3358e5cbe7996dee698de5d3912035cb5570f3824d905a05051"
+  },
+  "original_method_canonical_sha256": "9af12675786fe2e35a2ca1a8345448cbdb29a83a265a48cb0345fae4b4ac8615",
+  "finding": "Round-trip did not establish a unique integer nanosecond inverse; original complete synthetic example falsely chose the adjacent detector source.",
+  "fix": "Full-domain monotone lower_bound for the two actual field-specific binary64 conversions; ambiguous integer preimages remain UNKNOWN; preserve pair validation anomalies.",
+  "counterexample": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\research_delivery_static_audit54_01\\control_tick_lineage_fix02_counterexample01.json",
+    "bytes": 12186,
+    "sha256": "69b893cd9af9a16898b974a68019b69339fcbde72c28ec535c1e71c62a5e2241"
+  },
+  "source_diff": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\research_delivery_static_audit54_01\\control_tick_lineage_fix02_source_diff01.patch",
+    "bytes": 10985,
+    "sha256": "dfac5a579eb75480b22f50b254390c55135962dff8cc74f80624bff7bb01cd17"
+  },
+  "current_sources": {
+    "control_tick_lineage.py": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\offline_evaluation\\control_tick_lineage_v1\\control_tick_lineage.py",
+      "bytes": 33262,
+      "sha256": "61fe6a5e161795877bd93341a0599bd897f25a5a4e4a3e670e374a8de7d858dc"
+    },
+    "test_control_tick_lineage.py": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\offline_evaluation\\control_tick_lineage_v1\\test_control_tick_lineage.py",
+      "bytes": 25396,
+      "sha256": "4be188586f5e660437da49ba2df928ce4c7323fcd85eae5671937abff804235a"
+    },
+    "README.md": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\offline_evaluation\\control_tick_lineage_v1\\README.md",
+      "bytes": 6256,
+      "sha256": "eaf828d1a63fbf7e18a25deecaae286507b58d0b3945173a1ed2a7171415bc5e"
+    }
+  },
+  "current_method_canonical_sha256": "2d8c54fdf30086a556acfeb6ff1d2673447556caa059b3af815815dde5223590",
+  "actual_windows_describe": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\research_delivery_static_audit54_01\\control_tick_lineage_fix02_describe01.json",
+    "bytes": 1889,
+    "sha256": "965ecb31ad49dfce620ec825c85b57077f0fa364f9a7994baf3563f74481b6c1"
+  },
+  "actual_windows_describe_command": [
+    "C:\\Program Files\\Python312\\python.exe",
+    "-B",
+    "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\offline_evaluation\\control_tick_lineage_v1\\control_tick_lineage.py",
+    "describe"
+  ],
+  "actual_windows_describe_exit": 0,
+  "final_test_receipt": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\research_delivery_static_audit54_01\\control_tick_lineage_fix02_tests02.json",
+    "bytes": 1874,
+    "sha256": "a9c956d1937f332e826124927db01c4c2469e5242105bacae915c5eb6f0b65b8"
+  },
+  "retained_intermediate_failed_test_receipt": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\research_delivery_static_audit54_01\\control_tick_lineage_fix02_tests01.json",
+    "bytes": 1874,
+    "sha256": "784dad8e96bd862ddb4404c4a7ca246d51aa0e52c17e5ca67d3abc6843d98a13"
+  },
+  "final_tests": {
+    "total": 33,
+    "pass": 33,
+    "original27_regressions_retained": true,
+    "new_meaningful_cases": 6
+  },
+  "supported_semantic_sources_match_actual_small_files": {
+    "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/controller_node.py": true,
+    "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/state_estimator_node.py": true,
+    "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/navigation_estimator.py": true,
+    "ros2_ws/src/uav_tracking_interfaces/msg/TrackingCommand.msg": true,
+    "ros2_ws/src/uav_tracking_interfaces/msg/TrackingStatus.msg": true,
+    "ros2_ws/src/uav_tracking_interfaces/msg/TargetState.msg": true
+  },
+  "supported_exporter_files_match_actual_small_files": {
+    "offline_pipeline_timing.py": true,
+    "test_offline_pipeline_timing.py": true
+  },
+  "source_evidence": {
+    "controller_tick": "controller_node.py _step samples clock before update and publish; command/status use this header.",
+    "wire_age": "TargetState.prediction_age_s and TrackingStatus.time_since_measurement_s are float32, covariance[36] is float32, position/velocity are float64.",
+    "accepted_source": "state_estimator_node._publish_navigation uses NavigationEstimator.project measurement_age_s=output_s-accepted measured_timestamp_s, not latest rejected acquisition.",
+    "field_conversions": "Source/header/detector times use float(sec)+float(nanosec)*1e-9; output_publication_s uses clock.nanoseconds*1e-9.",
+    "actual_navigation_topic_route": "run_stage1_trial.py lines953..962 sets navigation_enabled and controller state_topic=/tracking/navigation_state when navigation reference is enabled; actual DEV run_config still needs inspection at scheduled native export."
+  },
+  "reviewed_boundaries": [
+    "F32 rounding window followed by exact bits formula; original independent 800 integer-stamp brute-force oracle retained.",
+    "Duplicate command/status/native/diagnostic/detector candidates remain UNKNOWN; no first/nearest selection.",
+    "Observed clock/detector source reset or future native evidence remains conservative UNKNOWN; no recorder callback causality assertion.",
+    "Every original command/decode error remains denominator; known-subset quantiles exclude UNKNOWN values.",
+    "Endpoint is tick start, not publication completion, PX4 execution or wall E2E."
+  ],
+  "real_events_schema_validation_completed": false,
+  "actual_bag_or_events_read": false,
+  "native_execution": false,
+  "formal_protocol_or_registration_created": false,
+  "post_core12_dev_validation": "Use existing public timing_v2 export CLI for actual DEV person1 only in separately scheduled single-heavy-job window; then analyze SHA-bound context/events with this method. Annotate external receipt DEVELOPMENT; create no FORMAL plans, protocol or fake sidecar."
+}
