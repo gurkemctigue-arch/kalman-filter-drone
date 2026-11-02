@@ -1,0 +1,197 @@
+[INFO] [1793658593.596652353] [stage1_flight_monitor]: flight phase: REQUEST_NATIVE_TAKEOFF: heartbeat prestream complete; phase_wall_monotonic_s=68442.798546285; native_diag={"scope":"ACTUAL_ONLINE_ANCHOR_NO_SETTLE_CHECK_YET","goal_enu_m":[0.012894649989902973,-0.0034525871742516756,2.973630040884018],"ground_anchor":{"position_enu_m":[0.012894649989902973,-0.0034525871742516756,-0.026369959115982056],"odom_header_stamp_ns":4644000000,"odom_callback_ros_s":4.644,"odom_callback_wall_s":68442.739525887,"captured_ros_s":4.652},"settle_started_source_s":null,"settle_timing_observed_source_s":null,"settle_elapsed_source_s":null,"settle_required_total_s":1.25,"native_handoff_guard_s":0.25}; source_sim_s=4.652000000
+[INFO] [1793658596.736091874] [stage1_flight_monitor]: flight phase: NATIVE_TAKEOFF: PX4 owns takeoff and initial in-flight magnetic alignment; phase_wall_monotonic_s=68445.998540848; native_started_source_s=5.052000000; native_started_wall_s=68445.998540848; native_elapsed_source_s=0.000000000; native_elapsed_wall_s=0.000000000; native_diag={"scope":"ACTUAL_ONLINE_ANCHOR_NO_SETTLE_CHECK_YET","goal_enu_m":[0.012894649989902973,-0.0034525871742516756,2.973630040884018],"ground_anchor":{"position_enu_m":[0.012894649989902973,-0.0034525871742516756,-0.026369959115982056],"odom_header_stamp_ns":4644000000,"odom_callback_ros_s":4.644,"odom_callback_wall_s":68442.739525887,"captured_ros_s":4.652},"settle_started_source_s":null,"settle_timing_observed_source_s":null,"settle_elapsed_source_s":null,"settle_required_total_s":1.25,"native_handoff_guard_s":0.25}; source_sim_s=5.052000000
+[INFO] [1793658693.535768260] [stage1_flight_monitor]: flight phase: REQUEST_OFFBOARD: native takeoff settled with final EKF yaw alignment; phase_wall_monotonic_s=68542.799033525; native_started_source_s=5.052000000; native_started_wall_s=68445.998540848; native_elapsed_source_s=12.100000000; native_elapsed_wall_s=96.800492677; native_diag={"scope":"ONLINE_CALLBACK_CACHE_ONLY_NOT_RECORDER_CAUSAL_REPLAY","check_ros_s":17.152,"check_wall_s":68542.799033525,"goal_enu_m":[0.012894649989902973,-0.0034525871742516756,2.973630040884018],"ground_anchor":{"position_enu_m":[0.012894649989902973,-0.0034525871742516756,-0.026369959115982056],"odom_header_stamp_ns":4644000000,"odom_callback_ros_s":4.644,"odom_callback_wall_s":68442.739525887,"captured_ros_s":4.652},"local":{"position_enu_m":[-0.01476968452334404,-0.032013121992349625,2.8762967586517334],"position_error_m":0.10514174900231674,"speed_mps":0.05736243084505657,"timestamp_sample_us":17124000,"timestamp_us":17124000,"callback_ros_s":17.132,"callback_wall_s":68542.63889757},"adapted":{"position_enu_m":[-0.014689207077026367,-0.030885135754942894,2.8771936893463135],"position_error_m":0.10398742130769704,"speed_mps":0.057591602175762556,"header_stamp_ns":17148000000,"callback_ros_s":17.148,"callback_wall_s":68542.770999051},"physical_settle_required":true,"issues":[],"checks_ready":true,"settle_started_source_s":15.852,"settle_timing_observed_source_s":17.152,"settle_elapsed_source_s":1.3000000000000007,"settle_required_total_s":1.25,"native_handoff_guard_s":0.25}; source_sim_s=17.152000000
+[INFO] [1793658694.335706551] [stage1_flight_monitor]: flight phase: HOLD: armed OFFBOARD confirmed by VehicleStatus; phase_wall_monotonic_s=68543.598800462; native_started_source_s=5.052000000; native_started_wall_s=68445.998540848; native_elapsed_source_s=12.100000000; native_elapsed_wall_s=96.800492677; source_sim_s=17.252000000
+[INFO] [1793658695.936893265] [stage1_flight_monitor]: flight phase: FOLLOW: forwarding fresh visual controller command; phase_wall_monotonic_s=68545.199884179; native_started_source_s=5.052000000; native_started_wall_s=68445.998540848; native_elapsed_source_s=12.100000000; native_elapsed_wall_s=96.800492677; source_sim_s=17.452000000
+[INFO] [1793658901.962901730] [stage1_flight_monitor]: flight phase: HOLD: visual command absent, invalid or stale; zero-velocity hover; phase_wall_monotonic_s=68751.225672188; native_started_source_s=5.052000000; native_started_wall_s=68445.998540848; native_elapsed_source_s=12.100000000; native_elapsed_wall_s=96.800492677; source_sim_s=43.200000000
+[INFO] [1793658952.782236228] [stage1_flight_monitor]: flight phase: FOLLOW: forwarding fresh visual controller command; phase_wall_monotonic_s=68802.045180121; native_started_source_s=5.052000000; native_started_wall_s=68445.998540848; native_elapsed_source_s=12.100000000; native_elapsed_wall_s=96.800492677; source_sim_s=49.552000000
+{
+  "source": "ONBOARD_RGBD_YOLO_PX4_FLIGHT",
+  "class_name": "car",
+  "start_sim_s": 0.02,
+  "end_sim_s": 92.44000000000001,
+  "follow_start_s": 17.452,
+  "wall_duration_s": 752.3747959799948,
+  "counts": {
+    "px4_setpoints": 4622,
+    "classified_px4_setpoints": 4622,
+    "position_only_setpoints": 0,
+    "velocity_only_setpoints": 4622,
+    "invalid_setpoints": 0,
+    "simultaneous_position_velocity_setpoints": 0,
+    "partial_position_setpoints": 0,
+    "partial_velocity_setpoints": 0,
+    "malformed_partial_setpoints": 0,
+    "malformed_dimension_setpoints": 0,
+    "infinite_setpoint_fields": 0,
+    "inactive_position_velocity_setpoints": 0,
+    "follow_setpoints": 3432,
+    "follow_position_setpoints": 0,
+    "follow_velocity_setpoints": 3432,
+    "follow_invalid_setpoints": 0,
+    "commands": 1848,
+    "valid_commands": 1374,
+    "video_frames": 462,
+    "detector_frames": 918,
+    "detector_frames_with_target": 884,
+    "observations": 714,
+    "valid_depth_observations": 714
+  },
+  "states": {
+    "1": 676,
+    "2": 3445,
+    "3": 379
+  },
+  "lifecycles": {
+    "6": 347,
+    "2": 213,
+    "3": 1161,
+    "4": 127
+  },
+  "setpoint_evidence": {
+    "counter_schema_version": 1,
+    "topic": "/fmu/in/trajectory_setpoint",
+    "classified_samples": 4622,
+    "required_counters_present": true
+  },
+  "armed_seen": true,
+  "offboard_seen": true,
+  "max_vehicle_altitude_m": 2.8833863735198975,
+  "horizontal_vehicle_span_m": 35.4692738330441,
+  "estimated_distance_error_rmse_m": 0.6575432883108976,
+  "estimated_height_error_rmse_m": 0.15845084371376364,
+  "median_detection_latency_s": 0.08400000000000318,
+  "p95_detection_latency_s": 0.12400000000000944,
+  "median_inference_wall_s": 0.3987013844962348,
+  "median_depth_valid_ratio": 1.0,
+  "shutter_events": [
+    {
+      "time_s": 29.46,
+      "request_id": 1,
+      "active": true,
+      "request_time_s": 29.46,
+      "refresh": false,
+      "cleanup": false,
+      "pose_source": "measured_camera_tf",
+      "camera_tf_stamp_s": 29.44,
+      "position_m": [
+        7.904338532529198,
+        0.5300024171531249,
+        1.8527241921546977
+      ],
+      "orientation_xyzw": [
+        0.0028192188331919166,
+        0.17549649002748433,
+        -0.020903624449845143,
+        0.9842540690685834
+      ]
+    },
+    {
+      "time_s": 29.740000000000002,
+      "request_id": 3,
+      "active": false,
+      "request_time_s": 29.740000000000002,
+      "refresh": false,
+      "cleanup": false,
+      "pose_source": "parked_below_world",
+      "camera_tf_stamp_s": null,
+      "position_m": [
+        0.0,
+        0.0,
+        -50.0
+      ],
+      "orientation_xyzw": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "time_s": 42.46,
+      "request_id": 4,
+      "active": true,
+      "request_time_s": 42.46,
+      "refresh": false,
+      "cleanup": false,
+      "pose_source": "measured_camera_tf",
+      "camera_tf_stamp_s": 42.44,
+      "position_m": [
+        13.246860973647198,
+        3.013012816471328,
+        1.8508936923184414
+      ],
+      "orientation_xyzw": [
+        0.0020594698365623276,
+        -0.17659387192999088,
+        -0.0011375601631244958,
+        -0.9842809908444039
+      ]
+    },
+    {
+      "time_s": 45.540000000000006,
+      "request_id": 19,
+      "active": false,
+      "request_time_s": 45.540000000000006,
+      "refresh": false,
+      "cleanup": false,
+      "pose_source": "parked_below_world",
+      "camera_tf_stamp_s": null,
+      "position_m": [
+        0.0,
+        0.0,
+        -50.0
+      ],
+      "orientation_xyzw": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    }
+  ],
+  "occlusion_schedule": [
+    {
+      "name": "short",
+      "start_offset_s": 12.0,
+      "duration_s": 0.2,
+      "render_margin_s": 0.05,
+      "state": "complete",
+      "close_request_id": 1,
+      "close_ack_s": 29.48,
+      "open_not_before_s": 29.73,
+      "open_request_id": 3,
+      "open_request_s": 29.740000000000002,
+      "open_ack_s": 29.76
+    },
+    {
+      "name": "long",
+      "start_offset_s": 25.0,
+      "duration_s": 3.0,
+      "render_margin_s": 0.05,
+      "state": "complete",
+      "close_request_id": 4,
+      "close_ack_s": 42.480000000000004,
+      "open_not_before_s": 45.53,
+      "open_request_id": 19,
+      "open_request_s": 45.540000000000006,
+      "open_ack_s": 45.56
+    }
+  ],
+  "explicit_reselection": {
+    "enabled": true,
+    "requested_target_uuid": "b2e63b1c-fc34-481f-8fc1-2ffb5f213798",
+    "measured_confirmation": true
+  },
+  "initial_selection": {
+    "rule": "none",
+    "requested_target_uuid": null,
+    "measured_confirmation": false
+  },
+  "basic_flight_passed": true,
+  "termination_reason": "follow_duration_reached",
+  "completion_criteria": "basic_visual_follow_flight",
+  "monitor_success": true,
+  "monitor_exit_code": 0,
+  "offline_evaluation_required": true
+}

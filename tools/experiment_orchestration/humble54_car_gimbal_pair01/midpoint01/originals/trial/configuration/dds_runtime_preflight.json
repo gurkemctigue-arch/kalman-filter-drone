@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "scope": "HUMBLE_FASTDDS_LISTENER_LIFECYCLE_A01",
+  "status": "PASS",
+  "fixture_only": false,
+  "checked_utc": "2026-11-02T22:28:53.687475+00:00",
+  "elf_files": {
+    "flight_tf_fastdds": {
+      "path": "/root/uav_humble22/fastdds_listener_A01/install/lib/libfastrtps.so.2.6.12",
+      "realpath": "/root/uav_humble22/fastdds_listener_A01/install/lib/libfastrtps.so.2.6.12",
+      "bytes": 197433472,
+      "sha256": "e6397d6362f687f071c346600c643599710a5ae817d72f07fa503b75c66b4af6",
+      "inode": 373375,
+      "device_major": 8,
+      "device_minor": 48
+    },
+    "flight_tf_fastcdr": {
+      "path": "/opt/ros/humble/lib/libfastcdr.so.1.0.29",
+      "realpath": "/opt/ros/humble/lib/libfastcdr.so.1.0.29",
+      "bytes": 76760,
+      "sha256": "ae755da75d58c90c2db06398beff0b08b382e19c72ac223a9a57cb782d9a5575",
+      "inode": 125057,
+      "device_major": 8,
+      "device_minor": 48
+    },
+    "rmw_fastrtps_cpp": {
+      "path": "/opt/ros/humble/lib/librmw_fastrtps_cpp.so",
+      "realpath": "/opt/ros/humble/lib/librmw_fastrtps_cpp.so",
+      "bytes": 258160,
+      "sha256": "94edab1842a8421f4fb072878698cdc303f7893dbd53f0a5d79273210faa1cae",
+      "inode": 133828,
+      "device_major": 8,
+      "device_minor": 48
+    },
+    "rmw_fastrtps_shared_cpp": {
+      "path": "/opt/ros/humble/lib/librmw_fastrtps_shared_cpp.so",
+      "realpath": "/opt/ros/humble/lib/librmw_fastrtps_shared_cpp.so",
+      "bytes": 426992,
+      "sha256": "d514f3473ca3f2c543ae7f3e33eb1fbed00195a040d5cc36b713c45d725505fb",
+      "inode": 133776,
+      "device_major": 8,
+      "device_minor": 48
+    },
+    "agent_fastdds": {
+      "path": "/root/uav_humble22/agent_install/lib/libfastrtps.so.2.14.7",
+      "realpath": "/root/uav_humble22/agent_install/lib/libfastrtps.so.2.14.7",
+      "bytes": 13997024,
+      "sha256": "9b48751409c8a3fc06bc54052b19048ef013364f1e99eecc2659c1fa0e3363d9",
+      "inode": 237444,
+      "device_major": 8,
+      "device_minor": 48
+    },
+    "agent_fastcdr": {
+      "path": "/root/uav_humble22/agent_install/lib/libfastcdr.so.2.2.8",
+      "realpath": "/root/uav_humble22/agent_install/lib/libfastcdr.so.2.2.8",
+      "bytes": 133912,
+      "sha256": "da56365446a913d00177d5a9e4a6f93bbe832b5955e3d87f77dd22a32bb80abb",
+      "inode": 237405,
+      "device_major": 8,
+      "device_minor": 48
+    }
+  },
+  "build_inputs": {
+    "path": "/root/uav_humble22/fastdds_listener_A01/build_inputs.json",
+    "realpath": "/root/uav_humble22/fastdds_listener_A01/build_inputs.json",
+    "bytes": 1255,
+    "sha256": "5d4ed6a06f8e84bcaeeaa764a7fc3b9c4aa4ba3bdd066e2a5656dd2809dd6c65",
+    "inode": 372226,
+    "device_major": 8,
+    "device_minor": 48
+  },
+  "environment": {
+    "RMW_IMPLEMENTATION": "rmw_fastrtps_cpp",
+    "LD_LIBRARY_PATH": "/root/uav_humble22/agent_install/lib:/root/uav_humble22/fastdds_listener_A01/install/lib:/root/uav_tracking_fullplan_v4_humble54/ros2_ws/install/lib:/root/uav_humble22/px4_msgs_ws/install/px4_msgs/lib:/root/uav_humble22/ros_gz_shutdown_A01_ws/install/lib:/root/uav_humble22/ros_gz_ws/install/ros_gz_sim/lib:/root/uav_humble22/ros_gz_ws/install/ros_gz_bridge/lib:/root/uav_humble22/ros_gz_ws/install/ros_gz_interfaces/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib",
+    "ros_distros": [
+      "humble"
+    ]
+  },
+  "claim_limit": "Pinned dependency/environment contract only; live processes and flight remain separately verified.",
+  "registration_path": "/root/uav_tracking_fullplan_v4_humble54/config/dds_runtime_humble22.json",
+  "registration_sha256": "4e517b62e823585b53dd2ac503f65eaf9bc3fd4c59d9d8fdb900d985f99d030d"
+}

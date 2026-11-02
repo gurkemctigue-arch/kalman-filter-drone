@@ -1,0 +1,761 @@
+{
+  "schema_version": 1,
+  "kind": "ROS_GZ_RUNTIME_REGISTRATION",
+  "status": "CANDIDATE_REQUIRES_INDEPENDENT_REVIEW",
+  "created_utc": "2026-10-29T20:43:18.726701+00:00",
+  "fixture_only": false,
+  "evidence_scope": "LINUX_ROS_GZ_SOURCE_AND_ELF",
+  "overlay_root": "/root/uav_humble22/ros_gz_shutdown_A01_ws",
+  "source": {
+    "repo_root": "/root/uav_humble22/ros_gz_shutdown_A01_ws/src/ros_gz",
+    "commit": "856e319ee4da713609b3f6e58c74ac8db7662482",
+    "tracked_diff_sha256": "8ca111d52a35fc70833e4dbf470fcb4157347dae7a24b849a66689aa1f75c887",
+    "tracked_diff_bytes": 2827,
+    "staged_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tracked_status_sha256": "fafe3bf3de2a03ceae501df7100bf20a4cab6c7f5d6d10c86828b8da0c3fcf5c",
+    "submodule_status_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "patch": {
+    "path": "/mnt/d/基于yolo和卡尔曼滤波/patches/ros_gz_bridge_ownership_shutdown_A01.patch",
+    "real_path": "/mnt/d/基于yolo和卡尔曼滤波/patches/ros_gz_bridge_ownership_shutdown_A01.patch",
+    "bytes": 2255,
+    "sha256": "1cec98304620e06f4b9b283abb904620a94132623f874c0d9dbde0f92e62239e",
+    "device_major": 0,
+    "device_minor": 70,
+    "inode": 5066549581814608
+  },
+  "executable": {
+    "path": "/root/uav_humble22/ros_gz_shutdown_A01_ws/install/lib/ros_gz_bridge/parameter_bridge",
+    "real_path": "/root/uav_humble22/ros_gz_shutdown_A01_ws/install/lib/ros_gz_bridge/parameter_bridge",
+    "bytes": 1037464,
+    "sha256": "e5aabd45b7223eae7da518874d7e71800a9b230f7867e43e60f1d717f619d636",
+    "device_major": 8,
+    "device_minor": 48,
+    "inode": 309128
+  },
+  "dependencies": [
+    {
+      "soname": "ld-linux-x86-64.so.2",
+      "path": "/lib64/ld-linux-x86-64.so.2",
+      "real_path": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+      "bytes": 240936,
+      "sha256": "41daf7836f7fce21a40ca63a00c5caf21b05a35a76ccc075d86f1716212cdf01",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 50961
+    },
+    {
+      "soname": "libaction_msgs__rosidl_typesupport_cpp.so",
+      "path": "/opt/ros/humble/lib/libaction_msgs__rosidl_typesupport_cpp.so",
+      "real_path": "/opt/ros/humble/lib/libaction_msgs__rosidl_typesupport_cpp.so",
+      "bytes": 18688,
+      "sha256": "f4ab3b53117d0475ca17e1015b59ada152ff375a2e1a8d77dc9e7fed93e27019",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 127332
+    },
+    {
+      "soname": "libactuator_msgs__rosidl_typesupport_cpp.so",
+      "path": "/opt/ros/humble/lib/libactuator_msgs__rosidl_typesupport_cpp.so",
+      "real_path": "/opt/ros/humble/lib/libactuator_msgs__rosidl_typesupport_cpp.so",
+      "bytes": 18768,
+      "sha256": "e4f7540a7a07eab5ec4dade9fcd69353547a5a1a5c48306dd48cab734884cc12",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 190809
+    },
+    {
+      "soname": "libament_index_cpp.so",
+      "path": "/opt/ros/humble/lib/libament_index_cpp.so",
+      "real_path": "/opt/ros/humble/lib/libament_index_cpp.so",
+      "bytes": 39624,
+      "sha256": "512d31ee3ace65980c2daefbf529289179b8324da00b5c3d89dc3e93998d95bf",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 128971
+    },
+    {
+      "soname": "libbsd.so.0",
+      "path": "/lib/x86_64-linux-gnu/libbsd.so.0",
+      "real_path": "/usr/lib/x86_64-linux-gnu/libbsd.so.0.11.5",
+      "bytes": 89096,
+      "sha256": "e4ad21c203d8e8b9b7f49071311339af6b438026e1ad236403e3b379b022f23d",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 11669
+    },
+    {
+      "soname": "libbuiltin_interfaces__rosidl_generator_c.so",
+      "path": "/opt/ros/humble/lib/libbuiltin_interfaces__rosidl_generator_c.so",
+      "real_path": "/opt/ros/humble/lib/libbuiltin_interfaces__rosidl_generator_c.so",
+      "bytes": 14544,
+      "sha256": "df0d194edccde639a7419d86bc8d51a018246a1cd0a474959a843938645a3d01",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 127030
+    },
+    {
+      "soname": "libbuiltin_interfaces__rosidl_typesupport_cpp.so",
+      "path": "/opt/ros/humble/lib/libbuiltin_interfaces__rosidl_typesupport_cpp.so",
+      "real_path": "/opt/ros/humble/lib/libbuiltin_interfaces__rosidl_typesupport_cpp.so",
+      "bytes": 14432,
+      "sha256": "a636d0a35e3d376027e17dbc8e0772e0c5049df948642b38f1f31dae85e4b2a7",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 127033
+    },
+    {
+      "soname": "libbuiltin_interfaces__rosidl_typesupport_fastrtps_cpp.so",
+      "path": "/opt/ros/humble/lib/libbuiltin_interfaces__rosidl_typesupport_fastrtps_cpp.so",
+      "real_path": "/opt/ros/humble/lib/libbuiltin_interfaces__rosidl_typesupport_fastrtps_cpp.so",
+      "bytes": 18816,
+      "sha256": "616ef89002d42751ca5613e6a778c6aecb9ae7c76b76e9b94761abe4bc0d06bb",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 127035
+    },
+    {
+      "soname": "libc.so.6",
+      "path": "/lib/x86_64-linux-gnu/libc.so.6",
+      "real_path": "/usr/lib/x86_64-linux-gnu/libc.so.6",
+      "bytes": 2220400,
+      "sha256": "b2cf6c33b74d2f22543b7a469a75b538911e690f769d0b238843a49465b83793",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 50980
+    },
+    {
+      "soname": "libclass_loader.so",
+      "path": "/opt/ros/humble/lib/libclass_loader.so",
+      "real_path": "/opt/ros/humble/lib/libclass_loader.so",
+      "bytes": 72992,
+      "sha256": "7750ddeb943b22596709fef19d33c9cba6809fa0a48b17791a46c9cacdf0c66d",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 129113
+    },
+    {
+      "soname": "libcom_err.so.2",
+      "path": "/lib/x86_64-linux-gnu/libcom_err.so.2",
+      "real_path": "/usr/lib/x86_64-linux-gnu/libcom_err.so.2.1",
+      "bytes": 18504,
+      "sha256": "f196091d8ec9790b4cd203ecdb0eab3b242d35ae8625ead7962d0a944a8fdfa5",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 11690
+    },
+    {
+      "soname": "libconsole_bridge.so.1.0",
+      "path": "/lib/x86_64-linux-gnu/libconsole_bridge.so.1.0",
+      "real_path": "/usr/lib/x86_64-linux-gnu/libconsole_bridge.so.1.0",
+      "bytes": 18600,
+      "sha256": "e5c857beaaa32a74078a1192b37fba8e299fee1e893f2091f29ca246018517a7",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 121180
+    },
+    {
+      "soname": "libfastcdr.so.1",
+      "path": "/opt/ros/humble/lib/libfastcdr.so.1",
+      "real_path": "/opt/ros/humble/lib/libfastcdr.so.1.0.29",
+      "bytes": 76760,
+      "sha256": "ae755da75d58c90c2db06398beff0b08b382e19c72ac223a9a57cb782d9a5575",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 125057
+    },
+    {
+      "soname": "libfmt.so.8",
+      "path": "/lib/x86_64-linux-gnu/libfmt.so.8",
+      "real_path": "/usr/lib/x86_64-linux-gnu/libfmt.so.8.1.1",
+      "bytes": 133816,
+      "sha256": "d463bedd51d449b2346d329fad8080e0900120ad0aeab8bf93e325b6cff4a587",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 121271
+    },
+    {
+      "soname": "libgcc_s.so.1",
+      "path": "/lib/x86_64-linux-gnu/libgcc_s.so.1",
+      "real_path": "/usr/lib/x86_64-linux-gnu/libgcc_s.so.1",
+      "bytes": 125488,
+      "sha256": "fc9d43b2f6c20e53b009238f767c5b949d202389e20de9e202ea684b4ba3729a",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 50969
+    },
+    {
+      "soname": "libgeometry_msgs__rosidl_typesupport_cpp.so",
+      "path": "/opt/ros/humble/lib/libgeometry_msgs__rosidl_typesupport_cpp.so",
+      "real_path": "/opt/ros/humble/lib/libgeometry_msgs__rosidl_typesupport_cpp.so",
+      "bytes": 44336,
+      "sha256": "be6b629b249a9999cf11cb54657b69d4de9d952f3993275016240bc168578b6e",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 129689
+    },
+    {
+      "soname": "libgeometry_msgs__rosidl_typesupport_fastrtps_cpp.so",
+      "path": "/opt/ros/humble/lib/libgeometry_msgs__rosidl_typesupport_fastrtps_cpp.so",
+      "real_path": "/opt/ros/humble/lib/libgeometry_msgs__rosidl_typesupport_fastrtps_cpp.so",
+      "bytes": 96704,
+      "sha256": "78f8da0259ee097848e2e15697a5a172587f8513a3b40991e9ca700742d69844",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 129691
+    },
+    {
+      "soname": "libgps_msgs__rosidl_typesupport_cpp.so",
+      "path": "/opt/ros/humble/lib/libgps_msgs__rosidl_typesupport_cpp.so",
+      "real_path": "/opt/ros/humble/lib/libgps_msgs__rosidl_typesupport_cpp.so",
+      "bytes": 14432,
+      "sha256": "6c257d3cb0c04a9ddfc30a5265bd999ffaba12b33dc615ab23922eaeb89ffca9",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 190973
+    },
+    {
+      "soname": "libgssapi_krb5.so.2",
+      "path": "/lib/x86_64-linux-gnu/libgssapi_krb5.so.2",
+      "real_path": "/usr/lib/x86_64-linux-gnu/libgssapi_krb5.so.2.2",
+      "bytes": 338648,
+      "sha256": "a8c1a62a7b925e198c5fb8f8123bb2900c235dd678d6dbf0c1e0b5f06175e84b",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 48614
+    },
+    {
+      "soname": "libgz-msgs10.so.10",
+      "path": "/lib/x86_64-linux-gnu/libgz-msgs10.so.10",
+      "real_path": "/usr/lib/x86_64-linux-gnu/libgz-msgs10.so.10.4.0",
+      "bytes": 3759024,
+      "sha256": "7080f6443bdff124e9f59d20e0159a10bc89b4e7fb23c686a57798f87a9a4f88",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 103958
+    },
+    {
+      "soname": "libgz-transport13.so.13",
+      "path": "/lib/x86_64-linux-gnu/libgz-transport13.so.13",
+      "real_path": "/usr/lib/x86_64-linux-gnu/libgz-transport13.so.13.6.0",
+      "bytes": 446120,
+      "sha256": "b8627a5f30b8008bcb82e37e6c538f7fddcc72ae303a194e5ab611bacab5168b",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 108005
+    },
+    {
+      "soname": "libgz-utils2.so.2",
+      "path": "/lib/x86_64-linux-gnu/libgz-utils2.so.2",
+      "real_path": "/usr/lib/x86_64-linux-gnu/libgz-utils2.so.2.2.1",
+      "bytes": 35248,
+      "sha256": "79224bdbc92289616fb59fc368c6abf9235e8ffd847010ea6a4df76be4a7079c",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 97996
+    },
+    {
+      "soname": "libk5crypto.so.3",
+      "path": "/lib/x86_64-linux-gnu/libk5crypto.so.3",
+      "real_path": "/usr/lib/x86_64-linux-gnu/libk5crypto.so.3.1",
+      "bytes": 182864,
+      "sha256": "d3c3d1c5415f09918c67a5bb23cf5004aa9524b916003655af4a2bb15627760a",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 94854
+    },
+    {
+      "soname": "libkeyutils.so.1",
+      "path": "/lib/x86_64-linux-gnu/libkeyutils.so.1",
+      "real_path": "/usr/lib/x86_64-linux-gnu/libkeyutils.so.1.9",
+      "bytes": 22600,
+      "sha256": "ad20d5fb89df5297073b46373c65bfbb01f33a00b4949894055d29a7fcf00900",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 11867
+    },
+    {
+      "soname": "libkrb5.so.3",
+      "path": "/lib/x86_64-linux-gnu/libkrb5.so.3",
+      "real_path": "/usr/lib/x86_64-linux-gnu/libkrb5.so.3.3",
+      "bytes": 827936,
+      "sha256": "ecc1a3b592c3685e330499aba8eac3b635e9be80b99fa65b2ef3e4f0b2d8a166",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 18361
+    },
+    {
+      "soname": "libkrb5support.so.0",
+      "path": "/lib/x86_64-linux-gnu/libkrb5support.so.0",
+      "real_path": "/usr/lib/x86_64-linux-gnu/libkrb5support.so.0.1",
+      "bytes": 52016,
+      "sha256": "add5050d2a960ab105b568c714849d1e771cf2bd67a46dbfcc068a99de80eeec",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 12002
+    },
+    {
+      "soname": "liblibstatistics_collector.so",
+      "path": "/opt/ros/humble/lib/liblibstatistics_collector.so",
+      "real_path": "/opt/ros/humble/lib/liblibstatistics_collector.so",
+      "bytes": 23008,
+      "sha256": "39a9a1dd1a0388df3f8d77e77fad860de1e09f242f6ff157eb2c885341d67cf5",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 134156
+    },
+    {
+      "soname": "libm.so.6",
+      "path": "/lib/x86_64-linux-gnu/libm.so.6",
+      "real_path": "/usr/lib/x86_64-linux-gnu/libm.so.6",
+      "bytes": 940560,
+      "sha256": "3dd5511ae94785c9f921429b0f2b2f7aabb461b6f0e6de6dfdbef15f24bdfee6",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 50983
+    },
+    {
+      "soname": "libmd.so.0",
+      "path": "/lib/x86_64-linux-gnu/libmd.so.0",
+      "real_path": "/usr/lib/x86_64-linux-gnu/libmd.so.0.0.5",
+      "bytes": 47472,
+      "sha256": "bb376813876bb214535bbbdac70f2c0c4b00baecb81557dab78a79518248df06",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 11896
+    },
+    {
+      "soname": "libnav_msgs__rosidl_typesupport_cpp.so",
+      "path": "/opt/ros/humble/lib/libnav_msgs__rosidl_typesupport_cpp.so",
+      "real_path": "/opt/ros/humble/lib/libnav_msgs__rosidl_typesupport_cpp.so",
+      "bytes": 27360,
+      "sha256": "d3a115376fa3b2fd6ffe853da10ee0896a1795a01aef6845736bab12a0f89239",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 130299
+    },
+    {
+      "soname": "libnorm.so.1",
+      "path": "/lib/x86_64-linux-gnu/libnorm.so.1",
+      "real_path": "/usr/lib/x86_64-linux-gnu/libnorm.so.1",
+      "bytes": 497824,
+      "sha256": "cc5c631eb267f0159baee696a3fead708397ccc095ddbcde434f678582cb0481",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 59163
+    },
+    {
+      "soname": "libpgm-5.3.so.0",
+      "path": "/lib/x86_64-linux-gnu/libpgm-5.3.so.0",
+      "real_path": "/usr/lib/x86_64-linux-gnu/libpgm-5.3.so.0.0.128",
+      "bytes": 310264,
+      "sha256": "fcc27728d8db55fff51c782a665f37f1e5c54f3a37872a272688800e962e0dda",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 59175
+    },
+    {
+      "soname": "libprotobuf.so.23",
+      "path": "/lib/x86_64-linux-gnu/libprotobuf.so.23",
+      "real_path": "/usr/lib/x86_64-linux-gnu/libprotobuf.so.23.0.4",
+      "bytes": 2886336,
+      "sha256": "4698f37e13553d965c752239367336d048d803453a236cdbb04b683cbe42b590",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 76464
+    },
+    {
+      "soname": "libpthread.so.0",
+      "path": "/lib/x86_64-linux-gnu/libpthread.so.0",
+      "real_path": "/usr/lib/x86_64-linux-gnu/libpthread.so.0",
+      "bytes": 21448,
+      "sha256": "fbed9505adacada2abb37c6b43be2df6de81e742712c6025694ba48de62c7e78",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 50992
+    },
+    {
+      "soname": "librcl.so",
+      "path": "/opt/ros/humble/lib/librcl.so",
+      "real_path": "/opt/ros/humble/lib/librcl.so",
+      "bytes": 249504,
+      "sha256": "43f86a53ec1a6c75e7330b216253d8497cdee1fc1674fdd678166c804cf1921c",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 133942
+    },
+    {
+      "soname": "librcl_interfaces__rosidl_generator_c.so",
+      "path": "/opt/ros/humble/lib/librcl_interfaces__rosidl_generator_c.so",
+      "real_path": "/opt/ros/humble/lib/librcl_interfaces__rosidl_generator_c.so",
+      "bytes": 110112,
+      "sha256": "74c68263af27563641e8c84e131338c7ad4e83752a910fc86894125f996e84e2",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 132456
+    },
+    {
+      "soname": "librcl_interfaces__rosidl_typesupport_c.so",
+      "path": "/opt/ros/humble/lib/librcl_interfaces__rosidl_typesupport_c.so",
+      "real_path": "/opt/ros/humble/lib/librcl_interfaces__rosidl_typesupport_c.so",
+      "bytes": 31520,
+      "sha256": "10b46e8613961f592ffc1347c0a1676f90fe9669d47828fcbec30bf1ff19f531",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 132458
+    },
+    {
+      "soname": "librcl_interfaces__rosidl_typesupport_cpp.so",
+      "path": "/opt/ros/humble/lib/librcl_interfaces__rosidl_typesupport_cpp.so",
+      "real_path": "/opt/ros/humble/lib/librcl_interfaces__rosidl_typesupport_cpp.so",
+      "bytes": 40080,
+      "sha256": "0e0c094d9b39fe8757744dd653d6949a9a9749bdab067c259305a87e92742ab0",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 132459
+    },
+    {
+      "soname": "librcl_interfaces__rosidl_typesupport_fastrtps_cpp.so",
+      "path": "/opt/ros/humble/lib/librcl_interfaces__rosidl_typesupport_fastrtps_cpp.so",
+      "real_path": "/opt/ros/humble/lib/librcl_interfaces__rosidl_typesupport_fastrtps_cpp.so",
+      "bytes": 100288,
+      "sha256": "921695e877a53153a986953950a8efb312d143cc7af327e5d96132ba19dc4c34",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 132461
+    },
+    {
+      "soname": "librcl_logging_interface.so",
+      "path": "/opt/ros/humble/lib/librcl_logging_interface.so",
+      "real_path": "/opt/ros/humble/lib/librcl_logging_interface.so",
+      "bytes": 14480,
+      "sha256": "e671d1f9f84da3abcdce0390f923b08121e5da546980c23b5ef7a49025cc7341",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 133583
+    },
+    {
+      "soname": "librcl_logging_spdlog.so",
+      "path": "/opt/ros/humble/lib/librcl_logging_spdlog.so",
+      "real_path": "/opt/ros/humble/lib/librcl_logging_spdlog.so",
+      "bytes": 27272,
+      "sha256": "ead77d2b8a383d1ce310136f44ef9a8551fe9b966353a900e8ecd88f04d098cb",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 133641
+    },
+    {
+      "soname": "librcl_yaml_param_parser.so",
+      "path": "/opt/ros/humble/lib/librcl_yaml_param_parser.so",
+      "real_path": "/opt/ros/humble/lib/librcl_yaml_param_parser.so",
+      "bytes": 43600,
+      "sha256": "bc719bcbebc8ddec01e220229893f0b1e9dbae5d6331563952e211b702051207",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 133720
+    },
+    {
+      "soname": "librclcpp.so",
+      "path": "/opt/ros/humble/lib/librclcpp.so",
+      "real_path": "/opt/ros/humble/lib/librclcpp.so",
+      "bytes": 2057808,
+      "sha256": "cd2a15b5df569fd66e7c9d0c336bff58d92b39932a701a670b6e02611b4f4119",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 134661
+    },
+    {
+      "soname": "librcpputils.so",
+      "path": "/opt/ros/humble/lib/librcpputils.so",
+      "real_path": "/opt/ros/humble/lib/librcpputils.so",
+      "bytes": 52240,
+      "sha256": "27aecc8a30a6e309b1b36ae1620c9a226573b560b11dbc8544133ff36eed2cdf",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 126056
+    },
+    {
+      "soname": "librcutils.so",
+      "path": "/opt/ros/humble/lib/librcutils.so",
+      "real_path": "/opt/ros/humble/lib/librcutils.so",
+      "bytes": 93592,
+      "sha256": "0ffe97d7ca8b02edb2259a25992f135df6005b0bda4f20e327401a93411b0bed",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 124080
+    },
+    {
+      "soname": "libresolv.so.2",
+      "path": "/lib/x86_64-linux-gnu/libresolv.so.2",
+      "real_path": "/usr/lib/x86_64-linux-gnu/libresolv.so.2",
+      "bytes": 64456,
+      "sha256": "7230adfc1d3676f2485bec78f2d5c916d6becb15bc554ff95901f46800215194",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 50993
+    },
+    {
+      "soname": "librmw.so",
+      "path": "/opt/ros/humble/lib/librmw.so",
+      "real_path": "/opt/ros/humble/lib/librmw.so",
+      "bytes": 43472,
+      "sha256": "758059e7ab478777dd806b426b01eeaf1e5b77ebffa32a28bf977937aeffa24c",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 125727
+    },
+    {
+      "soname": "librmw_implementation.so",
+      "path": "/opt/ros/humble/lib/librmw_implementation.so",
+      "real_path": "/opt/ros/humble/lib/librmw_implementation.so",
+      "bytes": 47608,
+      "sha256": "10da394c1ba2fea1e16eaaf2193be3cfcc2c266ca77829147fd13fa4ae9a3c91",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 133867
+    },
+    {
+      "soname": "libros_gz_bridge.so",
+      "path": "/root/uav_humble22/ros_gz_shutdown_A01_ws/install/lib/libros_gz_bridge.so",
+      "real_path": "/root/uav_humble22/ros_gz_shutdown_A01_ws/install/lib/libros_gz_bridge.so",
+      "bytes": 538185560,
+      "sha256": "3748dc9b2e7b46f665e1741f1e415fcb2a6e4578a1d611a9dc73f2563532edb3",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 309003
+    },
+    {
+      "soname": "libros_gz_interfaces__rosidl_typesupport_cpp.so",
+      "path": "/root/uav_humble22/ros_gz_ws/install/ros_gz_interfaces/lib/libros_gz_interfaces__rosidl_typesupport_cpp.so",
+      "real_path": "/root/uav_humble22/ros_gz_ws/install/ros_gz_interfaces/lib/libros_gz_interfaces__rosidl_typesupport_cpp.so",
+      "bytes": 393512,
+      "sha256": "5fe2f5ba36efeca72e693fe0165471c94686046467842c9a4acb7f78d0261497",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 193581
+    },
+    {
+      "soname": "librosgraph_msgs__rosidl_typesupport_cpp.so",
+      "path": "/opt/ros/humble/lib/librosgraph_msgs__rosidl_typesupport_cpp.so",
+      "real_path": "/opt/ros/humble/lib/librosgraph_msgs__rosidl_typesupport_cpp.so",
+      "bytes": 18800,
+      "sha256": "ca605754eeb16788d731946b3d46ae5bf2dc1bc56f338cfbf44801886d15736a",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 134352
+    },
+    {
+      "soname": "librosidl_runtime_c.so",
+      "path": "/opt/ros/humble/lib/librosidl_runtime_c.so",
+      "real_path": "/opt/ros/humble/lib/librosidl_runtime_c.so",
+      "bytes": 39336,
+      "sha256": "3f445f190b04b6e96f167b7ffda0bd2455aea2bf7c9c0ff40c223538c3f82688",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 125143
+    },
+    {
+      "soname": "librosidl_typesupport_c.so",
+      "path": "/opt/ros/humble/lib/librosidl_typesupport_c.so",
+      "real_path": "/opt/ros/humble/lib/librosidl_typesupport_c.so",
+      "bytes": 18792,
+      "sha256": "ae872aaa9ca8d55153662d87c1f5bf66bddf103a03b809eb299ffeb87c9381f5",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 126098
+    },
+    {
+      "soname": "librosidl_typesupport_cpp.so",
+      "path": "/opt/ros/humble/lib/librosidl_typesupport_cpp.so",
+      "real_path": "/opt/ros/humble/lib/librosidl_typesupport_cpp.so",
+      "bytes": 18792,
+      "sha256": "42fca7631866947fba14c7569eb2953ecfb76d7cc52eda02184be28916da0ccf",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 126290
+    },
+    {
+      "soname": "librosidl_typesupport_fastrtps_cpp.so",
+      "path": "/opt/ros/humble/lib/librosidl_typesupport_fastrtps_cpp.so",
+      "real_path": "/opt/ros/humble/lib/librosidl_typesupport_fastrtps_cpp.so",
+      "bytes": 14608,
+      "sha256": "fa513d6a3607640c07a15020ab5da3e2d89429de504807fc66da3f4bdd77e6bd",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 126699
+    },
+    {
+      "soname": "libsensor_msgs__rosidl_typesupport_cpp.so",
+      "path": "/opt/ros/humble/lib/libsensor_msgs__rosidl_typesupport_cpp.so",
+      "real_path": "/opt/ros/humble/lib/libsensor_msgs__rosidl_typesupport_cpp.so",
+      "bytes": 40128,
+      "sha256": "74b18da1b785f747246c06613682a08ff74cad600d5751feb8cd8b1162a2d8cf",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 130913
+    },
+    {
+      "soname": "libsodium.so.23",
+      "path": "/lib/x86_64-linux-gnu/libsodium.so.23",
+      "real_path": "/usr/lib/x86_64-linux-gnu/libsodium.so.23.3.0",
+      "bytes": 350944,
+      "sha256": "f1e78ef8deb65b13d62873fab71546ccab06c77a0115891e55ce8fb108518f96",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 109495
+    },
+    {
+      "soname": "libspdlog.so.1",
+      "path": "/lib/x86_64-linux-gnu/libspdlog.so.1",
+      "real_path": "/usr/lib/x86_64-linux-gnu/libspdlog.so.1.9.2",
+      "bytes": 498040,
+      "sha256": "1de96ba8296808433bf3ad601f2410c179a3e422a05ad012b49e4ad364f72bc0",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 122835
+    },
+    {
+      "soname": "libstatistics_msgs__rosidl_typesupport_cpp.so",
+      "path": "/opt/ros/humble/lib/libstatistics_msgs__rosidl_typesupport_cpp.so",
+      "real_path": "/opt/ros/humble/lib/libstatistics_msgs__rosidl_typesupport_cpp.so",
+      "bytes": 14464,
+      "sha256": "cb7c2602e305d6b80005b8d33ceb6fb9381a71e858b5ef4a467b74146f8b4e59",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 134043
+    },
+    {
+      "soname": "libstd_msgs__rosidl_typesupport_cpp.so",
+      "path": "/opt/ros/humble/lib/libstd_msgs__rosidl_typesupport_cpp.so",
+      "real_path": "/opt/ros/humble/lib/libstd_msgs__rosidl_typesupport_cpp.so",
+      "bytes": 40128,
+      "sha256": "d8e584ed526e0d8e4d245560250c7c857cdeae2ef36c1fabfc0e21826a99e440",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 127937
+    },
+    {
+      "soname": "libstd_msgs__rosidl_typesupport_fastrtps_cpp.so",
+      "path": "/opt/ros/humble/lib/libstd_msgs__rosidl_typesupport_fastrtps_cpp.so",
+      "real_path": "/opt/ros/humble/lib/libstd_msgs__rosidl_typesupport_fastrtps_cpp.so",
+      "bytes": 96616,
+      "sha256": "52c8941e171016bdda4afa88de0cf9cc0e20b89226792a90fcab7a325f049607",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 127939
+    },
+    {
+      "soname": "libstdc++.so.6",
+      "path": "/lib/x86_64-linux-gnu/libstdc++.so.6",
+      "real_path": "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30",
+      "bytes": 2260296,
+      "sha256": "ff0825e113603c3866680d5d52216bc6d8eedf3a59f52a0aef67ff01994db128",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 50962
+    },
+    {
+      "soname": "libtf2_msgs__rosidl_typesupport_cpp.so",
+      "path": "/opt/ros/humble/lib/libtf2_msgs__rosidl_typesupport_cpp.so",
+      "real_path": "/opt/ros/humble/lib/libtf2_msgs__rosidl_typesupport_cpp.so",
+      "bytes": 27264,
+      "sha256": "578a52ff5a26154725f6ec36c3191b1091b5ead19cc57179ceb103f834cc251d",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 135433
+    },
+    {
+      "soname": "libtracetools.so",
+      "path": "/opt/ros/humble/lib/libtracetools.so",
+      "real_path": "/opt/ros/humble/lib/libtracetools.so",
+      "bytes": 14120,
+      "sha256": "2f1130f9099a313ce83e38911a17e67646a59fd78ad598f8c192487a5f52f34b",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 132139
+    },
+    {
+      "soname": "libtrajectory_msgs__rosidl_typesupport_cpp.so",
+      "path": "/opt/ros/humble/lib/libtrajectory_msgs__rosidl_typesupport_cpp.so",
+      "real_path": "/opt/ros/humble/lib/libtrajectory_msgs__rosidl_typesupport_cpp.so",
+      "bytes": 14512,
+      "sha256": "843be274a6d709d8bc18b43eb6dd46ecdfdba72cd684d6e757992f3faee1f65e",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 131669
+    },
+    {
+      "soname": "libuuid.so.1",
+      "path": "/lib/x86_64-linux-gnu/libuuid.so.1",
+      "real_path": "/usr/lib/x86_64-linux-gnu/libuuid.so.1.3.0",
+      "bytes": 30936,
+      "sha256": "4472cf91dbc01395761fb45d0f4b25f6241406fe54cbf540c13755a3706a7b17",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 48835
+    },
+    {
+      "soname": "libvision_msgs__rosidl_typesupport_cpp.so",
+      "path": "/opt/ros/humble/lib/libvision_msgs__rosidl_typesupport_cpp.so",
+      "real_path": "/opt/ros/humble/lib/libvision_msgs__rosidl_typesupport_cpp.so",
+      "bytes": 27280,
+      "sha256": "c7ca13420f2567004362eb742e6c5275e03f7f3c458b3701e879f531b4d883c4",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 191351
+    },
+    {
+      "soname": "libyaml-cpp.so.0.7",
+      "path": "/lib/x86_64-linux-gnu/libyaml-cpp.so.0.7",
+      "real_path": "/usr/lib/x86_64-linux-gnu/libyaml-cpp.so.0.7.0",
+      "bytes": 248728,
+      "sha256": "0ff4f6210a56b6c232c1497514a86424279f2250fe8d25ee26f600b3dab0a2b5",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 123037
+    },
+    {
+      "soname": "libyaml.so",
+      "path": "/opt/ros/humble/lib/libyaml.so",
+      "real_path": "/opt/ros/humble/lib/libyaml.so",
+      "bytes": 133480,
+      "sha256": "100d20b4cf923f304bc06876a7759a3e9a3db03afc06ac1b757379ba4118c206",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 133682
+    },
+    {
+      "soname": "libz.so.1",
+      "path": "/lib/x86_64-linux-gnu/libz.so.1",
+      "real_path": "/usr/lib/x86_64-linux-gnu/libz.so.1.2.11",
+      "bytes": 108936,
+      "sha256": "64c206f0146cc58bbddc4f22054436f4ff278f5a554aa3ce6921ddf7e9133370",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 12134
+    },
+    {
+      "soname": "libzmq.so.5",
+      "path": "/lib/x86_64-linux-gnu/libzmq.so.5",
+      "real_path": "/usr/lib/x86_64-linux-gnu/libzmq.so.5.2.4",
+      "bytes": 634936,
+      "sha256": "540a8defe7b1e1494ac553843a2bea88eaf5426bf367782b5ca6a5a01360989f",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 59188
+    }
+  ],
+  "plugins": [
+    {
+      "path": "/root/uav_humble22/ros_gz_ws/install/ros_gz_interfaces/lib/libros_gz_interfaces__rosidl_typesupport_fastrtps_cpp.so",
+      "real_path": "/root/uav_humble22/ros_gz_ws/install/ros_gz_interfaces/lib/libros_gz_interfaces__rosidl_typesupport_fastrtps_cpp.so",
+      "bytes": 2080352,
+      "sha256": "e3cd582aa190b989a69e4db85784eba96b23a51937e69c1a77116ef9c2af2c91",
+      "device_major": 8,
+      "device_minor": 48,
+      "inode": 193476
+    }
+  ],
+  "claim_limit": "Candidate source/ELF snapshot only. Bind its file SHA in independent review before use; no successful shutdown or flight is asserted.",
+  "registration_digest": "27cff803d620f625dfe32d2097b4df8e07025fe2a193b771b0cd47d723845fda"
+}

@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "policy": "ext4_sqlite_close_standard_zstd_verified_native_read",
+  "recorder_storage": "sqlite3",
+  "recorder_compression": "none",
+  "qos_overrides": {
+    "source": "/root/uav_tracking_fullplan_v4_humble54/config/recording_qos.yaml",
+    "snapshot": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_core12_probe01_car_stage3_active_seed004/configuration/recording_qos.yaml",
+    "bytes": 750,
+    "sha256": "ce16165db2b41d7a3b057cf202e6fdc32e4908e727808c10b14c5fc44ad5b3bc",
+    "requested_profiles": {
+      "/clock": {
+        "history": "keep_last",
+        "depth": 1,
+        "reliability": "reliable",
+        "durability": "volatile"
+      },
+      "/fmu/out/vehicle_odometry": {
+        "history": "keep_last",
+        "depth": 1024,
+        "reliability": "best_effort",
+        "durability": "transient_local"
+      },
+      "/vehicle/odometry_timing": {
+        "history": "keep_last",
+        "depth": 1024,
+        "reliability": "reliable",
+        "durability": "volatile"
+      },
+      "/vehicle/odometry": {
+        "history": "keep_last",
+        "depth": 1024,
+        "reliability": "reliable",
+        "durability": "volatile"
+      },
+      "/tracking/flight_phase": {
+        "history": "keep_last",
+        "depth": 256,
+        "reliability": "reliable",
+        "durability": "volatile"
+      }
+    },
+    "scope": "Requested recorder receive QoS; delivery and original evaluation gates remain independently verified"
+  },
+  "compression_profile": {
+    "name": "zstd19_long27",
+    "executable": "zstd",
+    "arguments": [
+      "-T4",
+      "-19",
+      "--long=27",
+      "--check"
+    ],
+    "threads": 4,
+    "level": 19,
+    "long_window_log": 27,
+    "checksum": true
+  },
+  "archive_phase": "after_all_flight_processes_stopped_and_recorder_closed",
+  "spool": "/root/uav_tracking_bag_spool/trial_1n4b3_4q",
+  "published_bag": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_core12_probe01_car_stage3_active_seed004/rosbag",
+  "checks": [
+    "recorder_exit_zero",
+    "sqlite_integrity",
+    "metadata_topic_counts",
+    "standard_zstd_complete_frame",
+    "exact_byte_roundtrip",
+    "native_reader_full_count",
+    "published_copy_sha256"
+  ],
+  "failure_policy": "Retain owned spool, report failure, and never publish an unchecked rosbag"
+}

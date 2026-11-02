@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "scope": "OWNED_PRECONSTRUCTED_RECORDING_CLOSURE_OBSERVER",
+  "status": "CLOSED",
+  "constructed_utc": "2026-11-02T22:48:24.631446+00:00",
+  "constructed_monotonic_s": 69553.897980396,
+  "owned_context": true,
+  "subscriptions": [
+    {
+      "topic": "/clock",
+      "created_utc": "2026-11-02T22:48:24.864485+00:00",
+      "created_monotonic_s": 69554.131016879
+    },
+    {
+      "topic": "/fmu/out/vehicle_odometry",
+      "created_utc": "2026-11-02T22:48:24.868283+00:00",
+      "created_monotonic_s": 69554.134815331
+    },
+    {
+      "topic": "/vehicle/odometry_timing",
+      "created_utc": "2026-11-02T22:48:24.870127+00:00",
+      "created_monotonic_s": 69554.13665489
+    },
+    {
+      "topic": "/vehicle/odometry",
+      "created_utc": "2026-11-02T22:48:24.884102+00:00",
+      "created_monotonic_s": 69554.150640927
+    },
+    {
+      "topic": "/ground_truth/poses",
+      "created_utc": "2026-11-02T22:48:24.886614+00:00",
+      "created_monotonic_s": 69554.153144564
+    },
+    {
+      "topic": "/ground_truth/vehicle_poses",
+      "created_utc": "2026-11-02T22:48:24.887072+00:00",
+      "created_monotonic_s": 69554.153599475
+    }
+  ],
+  "truth_scope": "Offline logging headers only; no pose, identity or association is returned to online tracking/control",
+  "start_requested_utc": "2026-11-02T22:48:24.631873+00:00",
+  "start_requested_monotonic_s": 69553.898377568,
+  "resources_created_utc": "2026-11-02T22:48:24.887094+00:00",
+  "resources_created_monotonic_s": 69554.153613536,
+  "spinning_utc": "2026-11-02T22:48:24.887549+00:00",
+  "spinning_monotonic_s": 69554.154086531,
+  "worker_finished_utc": "2026-11-02T23:01:04.196272+00:00",
+  "worker_finished_monotonic_s": 70313.462822568,
+  "stopped_utc": "2026-11-02T23:01:04.204905+00:00",
+  "stopped_monotonic_s": 70313.471448039,
+  "worker_error": null,
+  "final_observed_counts": {
+    "clock": 26800,
+    "raw": 9237,
+    "timing": 9237,
+    "adapted": 9237,
+    "truth_target": 23232,
+    "truth_vehicle": 23232
+  },
+  "startup_untimed_audit": {
+    "count": 0,
+    "diagnostics": [],
+    "timed_diagnostic_seen": true,
+    "scope": "Original startup diagnostics retained; audit-only, never pause-readiness pairs or positive-clock evidence"
+  },
+  "cleanup": {
+    "status": "PASS",
+    "healthy_cleanup": true,
+    "errors": [],
+    "shutdown_timeout_wall_s": 2.0,
+    "external_context_shutdown": false,
+    "force_kill": false,
+    "worker_still_alive": false,
+    "teardown_still_alive": false,
+    "worker_error": null,
+    "elapsed_wall_s": 0.00935597499483265
+  }
+}

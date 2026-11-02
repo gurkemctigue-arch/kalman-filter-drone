@@ -1,0 +1,292 @@
+{
+  "schema_version": 1,
+  "kind": "DESCRIPTIVE_ONE_SEED_CAR_GIMBAL_SAVED_REPORT_COMPARISON",
+  "created_utc": "2026-11-02T23:08:14.891356+00:00",
+  "script_sha256": "5225f4a427e56ca5043fece1eb31585bd59cd3e2169f399db18573c1bfcf945d",
+  "result": "RECORDED_DESCRIPTIVE_COMPARISON_NOT_STATISTICAL_ACCEPTANCE",
+  "plan_sha256": "ed88783162991c151ab3d537d4eb7d3546b3688339a06db6f35b7f2ef7c48d4b",
+  "plan_digest": "3e34bdfae710f7b518a5f5fd1506054b03d3275c89e2f827ae136bfa2f682a31",
+  "same_registered_trial_fields": {
+    "target_class": true,
+    "seed": true,
+    "gazebo_seed": true,
+    "stage": true,
+    "multi_target": true,
+    "target_mode": true,
+    "association_mode": true,
+    "initial_select": true,
+    "initial_min_candidates": true,
+    "command_mode": true,
+    "takeoff_mode": true,
+    "gazebo_render_driver": true,
+    "scenario_kind": true,
+    "duration_s": true,
+    "speed_mps": true,
+    "wall_timeout_s": true,
+    "model": true,
+    "inference_image_size": true,
+    "inference_threads": true,
+    "desired_distance_m": true,
+    "navigation_correlated_two_face_bound": true,
+    "navigation_exclusive_reference": true,
+    "car_surface_recovery": true,
+    "simulation_pacing_registration": true,
+    "px4_adapter_publish_rate_hz": true,
+    "split_clock_bridge": true,
+    "world_source": true
+  },
+  "midpoint": {
+    "receipt_sha256": "a0bbd0b698c908a8d10deb2abef6b0d5b7dcd61230fdbdf8b1b114efd7f84ad6",
+    "manifest_sha256": "1a1d492112a9e9009d16ec38e18fe55ebb59cd438ee1abdb4b282ba344cde517",
+    "id": "car_stage3_midpoint_seed004",
+    "original_finished_utc": "2026-11-02T22:47:42.578712+00:00",
+    "original_status": "PASS",
+    "navigation": {
+      "measured": {
+        "base_link_distance_rmse_m": 0.7331142104684872,
+        "base_link_height_rmse_m": 0.15118895916210773,
+        "valid_state_coverage": 0.914780292942743,
+        "truth_coverage": 1.0
+      },
+      "six_independently_compared_gates": {
+        "base_link_distance": true,
+        "base_link_height": true,
+        "navigation_coverage": true,
+        "truth_coverage": true,
+        "final_distance_settled": true,
+        "final_height_settled": true
+      },
+      "original_status": "RECORDED_WITH_CENSORED_FAILURES",
+      "interval": {
+        "start_s": 17.452,
+        "end_s": 92.544,
+        "navigation_evaluation_start_s": 17.452,
+        "sample_period_s": 0.1
+      },
+      "scheduled_samples": 751,
+      "matched_truth_samples": 751,
+      "valid_navigation_samples": 687,
+      "navigation_denominator": 751,
+      "final_transients": {
+        "distance": {
+          "band_m": 0.9,
+          "minimum_in_band_duration_s": 3.0,
+          "settled_through_interval_end": true,
+          "settling_right_censored": false,
+          "settling_time_s": 35.80000000000001,
+          "duplicate_source_times": false
+        },
+        "height": {
+          "band_m": 0.25,
+          "minimum_in_band_duration_s": 3.0,
+          "settled_through_interval_end": true,
+          "settling_right_censored": false,
+          "settling_time_s": 32.10000000000001,
+          "duplicate_source_times": false
+        }
+      }
+    },
+    "gimbal": {
+      "mode": "midpoint",
+      "result": "PASS",
+      "centering_source": "all_detections_in_single_target_world",
+      "interval": {
+        "metric_start_s": 19.452,
+        "recorded_end_s": 92.544
+      },
+      "metrics": {
+        "detected_center_normalized_error": {
+          "count": 693,
+          "mean": 0.16723608806562262,
+          "median": 0.16315260412566782,
+          "p95": 0.2155022327385339,
+          "max": 0.28864012831573793,
+          "rmse": 0.1693474733400942,
+          "mean_absolute": 0.16723608806562262,
+          "p95_absolute": 0.2155022327385339,
+          "max_absolute": 0.28864012831573793
+        },
+        "true_image_horizon_error_rad": {
+          "count": 18273,
+          "mean": 0.0010155959310916395,
+          "median": 0.0005219369227526963,
+          "p95": 0.007359901615612913,
+          "max": 0.0401568159594977,
+          "rmse": 0.00657292623575482,
+          "mean_absolute": 0.0038298232326212174,
+          "p95_absolute": 0.011986497543170157,
+          "max_absolute": 0.0401568159594977
+        },
+        "true_body_roll_rad": {
+          "count": 18273,
+          "mean": -0.001015654384142261,
+          "median": -0.0005202443247475885,
+          "p95": 0.008318671632879986,
+          "max": 0.037793339177880136,
+          "rmse": 0.006568235231791622,
+          "mean_absolute": 0.003829156728005634,
+          "p95_absolute": 0.012021432265324811,
+          "max_absolute": 0.04008017106115904
+        }
+      },
+      "image_timestamp_tf_coverage": 1.0
+    }
+  },
+  "active": {
+    "receipt_sha256": "d1ef033efefade312c2cc6ab78bc0040f69893b2bdc5b0f715991b3b0e37435e",
+    "manifest_sha256": "28baf44b632ee1d9828419a1b70b318f63271960c427adc4421fdf815b1f4bd2",
+    "id": "car_stage3_active_seed004",
+    "original_finished_utc": "2026-11-02T23:06:37.994882+00:00",
+    "original_status": "PASS",
+    "navigation": {
+      "measured": {
+        "base_link_distance_rmse_m": 0.7390920855399342,
+        "base_link_height_rmse_m": 0.15286066282424937,
+        "valid_state_coverage": 0.9148936170212766,
+        "truth_coverage": 1.0
+      },
+      "six_independently_compared_gates": {
+        "base_link_distance": true,
+        "base_link_height": true,
+        "navigation_coverage": true,
+        "truth_coverage": true,
+        "final_distance_settled": true,
+        "final_height_settled": true
+      },
+      "original_status": "RECORDED_WITH_CENSORED_FAILURES",
+      "interval": {
+        "start_s": 17.752,
+        "end_s": 92.928,
+        "navigation_evaluation_start_s": 17.752,
+        "sample_period_s": 0.1
+      },
+      "scheduled_samples": 752,
+      "matched_truth_samples": 752,
+      "valid_navigation_samples": 688,
+      "navigation_denominator": 752,
+      "final_transients": {
+        "distance": {
+          "band_m": 0.9,
+          "minimum_in_band_duration_s": 3.0,
+          "settled_through_interval_end": true,
+          "settling_right_censored": false,
+          "settling_time_s": 35.900000000000006,
+          "duplicate_source_times": false
+        },
+        "height": {
+          "band_m": 0.25,
+          "minimum_in_band_duration_s": 3.0,
+          "settled_through_interval_end": true,
+          "settling_right_censored": false,
+          "settling_time_s": 32.10000000000001,
+          "duplicate_source_times": false
+        }
+      }
+    },
+    "gimbal": {
+      "mode": "active",
+      "result": "PASS",
+      "centering_source": "all_detections_in_single_target_world",
+      "interval": {
+        "metric_start_s": 19.752,
+        "recorded_end_s": 92.928
+      },
+      "metrics": {
+        "detected_center_normalized_error": {
+          "count": 687,
+          "mean": 0.008927593348306215,
+          "median": 0.0034109497254530925,
+          "p95": 0.04911761449258392,
+          "max": 0.11416978170690535,
+          "rmse": 0.0206495929896426,
+          "mean_absolute": 0.008927593348306215,
+          "p95_absolute": 0.04911761449258392,
+          "max_absolute": 0.11416978170690535
+        },
+        "true_image_horizon_error_rad": {
+          "count": 18293,
+          "mean": -0.0007922973789390597,
+          "median": 2.0979624368856588e-05,
+          "p95": 0.0018533593437841166,
+          "max": 0.014213349618261255,
+          "rmse": 0.004484455404684084,
+          "mean_absolute": 0.0017986964240441744,
+          "p95_absolute": 0.0071125098290999115,
+          "max_absolute": 0.042772716650983394
+        },
+        "true_body_roll_rad": {
+          "count": 18293,
+          "mean": -0.0016407709832571243,
+          "median": -0.0010584911052128687,
+          "p95": 0.009450183888249846,
+          "max": 0.038768032368586156,
+          "rmse": 0.008052569894915294,
+          "mean_absolute": 0.004292514772069313,
+          "p95_absolute": 0.01343901255667661,
+          "max_absolute": 0.06297402062303492
+        }
+      },
+      "image_timestamp_tf_coverage": 1.0
+    }
+  },
+  "differences_active_minus_midpoint": {
+    "base_link_distance_rmse_m": {
+      "midpoint": 0.7331142104684872,
+      "active": 0.7390920855399342,
+      "active_minus_midpoint": 0.005977875071446981,
+      "active_minus_midpoint_percent_of_midpoint": 0.8154084296943168
+    },
+    "base_link_height_rmse_m": {
+      "midpoint": 0.15118895916210773,
+      "active": 0.15286066282424937,
+      "active_minus_midpoint": 0.0016717036621416437,
+      "active_minus_midpoint_percent_of_midpoint": 1.105704855305744
+    },
+    "valid_state_coverage": {
+      "midpoint": 0.914780292942743,
+      "active": 0.9148936170212766,
+      "active_minus_midpoint": 0.00011332407853359427,
+      "active_minus_midpoint_percent_of_midpoint": 0.012388119793119257
+    },
+    "truth_coverage": {
+      "midpoint": 1.0,
+      "active": 1.0,
+      "active_minus_midpoint": 0.0,
+      "active_minus_midpoint_percent_of_midpoint": 0.0
+    },
+    "detected_center_normalized_error_rmse": {
+      "midpoint": 0.1693474733400942,
+      "active": 0.0206495929896426,
+      "active_minus_midpoint": -0.14869788035045162,
+      "active_minus_midpoint_percent_of_midpoint": -87.80637668672341
+    },
+    "detected_center_normalized_error_p95_absolute": {
+      "midpoint": 0.2155022327385339,
+      "active": 0.04911761449258392,
+      "active_minus_midpoint": -0.16638461824594997,
+      "active_minus_midpoint_percent_of_midpoint": -77.20783962726841
+    },
+    "true_image_horizon_error_rad_rmse": {
+      "midpoint": 0.00657292623575482,
+      "active": 0.004484455404684084,
+      "active_minus_midpoint": -0.002088470831070736,
+      "active_minus_midpoint_percent_of_midpoint": -31.773836433916724
+    },
+    "true_image_horizon_error_rad_p95_absolute": {
+      "midpoint": 0.011986497543170157,
+      "active": 0.0071125098290999115,
+      "active_minus_midpoint": -0.004873987714070245,
+      "active_minus_midpoint_percent_of_midpoint": -40.66231771638261
+    }
+  },
+  "limitations": [
+    "One completed seed004 development trial per mode; no population reliability or significance/superiority claim.",
+    "Each navigation record preserves its own complete fixed-grid interval and valid/truth denominators.",
+    "Gimbal center errors are conditional on recorded detected boxes over each report's metric interval; missing detections are not silently counted as successful centering.",
+    "Detection counts are not full-task identity coverage, and these single-target auto-unique slots provide no full-task physical identity report.",
+    "The report intervals differ; these are original summary comparisons, not raw-frame aligned matched measurements.",
+    "Lower centering error alone does not establish improved physical distance/height or valid-navigation coverage.",
+    "No original reports, frozen sources, bags or live slots were changed; no native process, evaluator or raw-data reevaluation ran.",
+    "This does not establish complete core12, safety4, extension16 or formal acceptance."
+  ]
+}
