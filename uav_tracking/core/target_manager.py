@@ -93,6 +93,8 @@ class TargetManager:
         association_mode: str = "legacy",
         reject_ambiguous_associations: bool = False,
         supported_birth_confirmation_required: bool = False,
+        initialization_confidence_threshold: Optional[float] = None,
+        maintenance_confidence_threshold: Optional[float] = None,
         gate_threshold: float = 11.344866730144373,
         kf_kwargs: Optional[dict[str, Any]] = None,
         estimator_method: Optional[str] = None,
@@ -114,6 +116,21 @@ class TargetManager:
         if type(supported_birth_confirmation_required) is not bool:
             raise ValueError("supported_birth_confirmation_required must be boolean")
         self.supported_birth_confirmation_required = supported_birth_confirmation_required
+        if (initialization_confidence_threshold is None) != (maintenance_confidence_threshold is None):
+            raise ValueError("both confidence thresholds must be set, or both must be None")
+        self.initialization_confidence_threshold = initialization_confidence_threshold
+        self.maintenance_confidence_threshold = maintenance_confidence_threshold
+        self._confidence_tiers_enabled = initialization_confidence_threshold is not None
+        if self._confidence_tiers_enabled:
+            if (isinstance(initialization_confidence_threshold, bool)
+                    or isinstance(maintenance_confidence_threshold, bool)):
+                raise ValueError("confidence thresholds must be finite numbers, never bool")
+            high = float(initialization_confidence_threshold)
+            low = float(maintenance_confidence_threshold)
+            if not (isfinite(low) and isfinite(high) and 0.0 <= low <= high <= 1.0):
+                raise ValueError("confidence thresholds require 0 <= maintenance <= initialization <= 1")
+            self.initialization_confidence_threshold = high
+            self.maintenance_confidence_threshold = low
         if self.association_mode not in {"legacy", "iou_2d", "hybrid_3d"}:
             raise ValueError("association_mode must be legacy, iou_2d, or hybrid_3d")
         self.gate_threshold = float(gate_threshold)
@@ -163,6 +180,9 @@ class TargetManager:
         self._birth_evidence: list[_BirthEvidence] = []
         self._pending_target_index: Optional[int] = None
         self._pending_target_track_id: Optional[int] = None
+        # With confidence tiers, a box request has no identity side effects
+        # until the next acquisition verifies its initialization eligibility.
+        self._pending_detection_request: Optional[tuple[int, Optional[str]]] = None
         self._frame_index = 0
         self._timestamp: Optional[float] = None
         self._status = TargetStatus.UNINITIALIZED
@@ -213,6 +233,7 @@ class TargetManager:
         self._birth_evidence.clear()
         self._pending_target_index = None
         self._pending_target_track_id = None
+        self._pending_detection_request = None
         self._frame_index = 0
         self._timestamp = None
         self._status = TargetStatus.UNINITIALIZED
@@ -220,6 +241,7 @@ class TargetManager:
 
     def set_mode(self, mode: TargetMode | str, *, clear_target: bool = True) -> None:
         self.mode = TargetMode(mode)
+        self._pending_detection_request = None
         self._birth_evidence.clear()
         self._auto_unique_ambiguous = False
         self._locked_ambiguous = False
@@ -234,8 +256,15 @@ class TargetManager:
         """Lock an existing track ID; returns ``False`` if it is unavailable."""
 
         track_id = int(track_id)
-        self._birth_evidence.clear()
         normalized_uuid = None if target_uuid is None or not str(target_uuid).strip() else str(target_uuid).strip()
+        if self._confidence_tiers_enabled:
+            self._pending_detection_request = None
+            track = self._tracks.get(track_id)
+            if track is None or not self._track_can_initialize(track):
+                self._pending_target_track_id = track_id
+                self._pending_target_uuid = normalized_uuid
+                return False
+        self._birth_evidence.clear()
         self.mode = TargetMode.LOCKED_TARGET
         self._auto_unique_ambiguous = False
         self._locked_ambiguous = False
@@ -253,10 +282,23 @@ class TargetManager:
         return True
 
     def lock_detection(self, detection_index: int, *, target_uuid: Optional[str] = None) -> None:
-        """Select a detection in the next update as the locked target."""
+        """Select a detection in the next update as the locked target.
+
+        When confidence tiers are enabled, stage the request without clearing
+        an existing task. Only a high-confidence box in that next acquisition
+        may commit the selection; an ineligible/missing box consumes it once.
+        """
 
         if int(detection_index) < 0:
             raise ValueError("detection_index must be non-negative")
+        if self._confidence_tiers_enabled:
+            normalized_uuid = None if target_uuid is None or not str(target_uuid).strip() else str(target_uuid).strip()
+            self._pending_detection_request = (int(detection_index), normalized_uuid)
+            self._pending_target_track_id = None
+            return
+        self._commit_detection_lock(int(detection_index), target_uuid=target_uuid)
+
+    def _commit_detection_lock(self, detection_index: int, *, target_uuid: Optional[str]) -> None:
         self._birth_evidence.clear()
         self.mode = TargetMode.LOCKED_TARGET
         self._auto_unique_ambiguous = False
@@ -268,6 +310,28 @@ class TargetManager:
         self._target_uuid = None
         self._requires_reselection = False
         self._status = TargetStatus.UNINITIALIZED
+
+    def _can_initialize(self, detection: Detection) -> bool:
+        return (not self._confidence_tiers_enabled
+                or detection.confidence >= self.initialization_confidence_threshold)
+
+    def _is_maintenance_only(self, detection: Detection) -> bool:
+        return bool(self._confidence_tiers_enabled
+                    and self.maintenance_confidence_threshold <= detection.confidence
+                    < self.initialization_confidence_threshold)
+
+    def _track_can_initialize(self, track: Track) -> bool:
+        return bool(track.is_active and track._matched_this_frame
+                    and track.last_update_timestamp == self._timestamp
+                    and track.last_detection is not None
+                    and self._can_initialize(track.last_detection))
+
+    def _activate_detection_request(self, detections: Sequence[Detection]) -> None:
+        request, self._pending_detection_request = self._pending_detection_request, None
+        if request is not None:
+            index, target_uuid = request
+            if 0 <= index < len(detections) and self._can_initialize(detections[index]):
+                self._commit_detection_lock(index, target_uuid=target_uuid)
 
     def initialize_target(
         self,
@@ -290,6 +354,7 @@ class TargetManager:
         self._pending_target_uuid = None
         self._pending_target_index = None
         self._pending_target_track_id = None
+        self._pending_detection_request = None
         self._requires_reselection = False
         self._auto_unique_ambiguous = False
         self._locked_ambiguous = False
@@ -361,6 +426,10 @@ class TargetManager:
             surface_measurement_supported=detection.metadata.get("surface_measurement_supported") is True,
             acquisition_epoch=detection.metadata.get("acquisition_epoch", 0),
         )
+        if self._confidence_tiers_enabled:
+            diagnostics.update(maintenance_only=self._is_maintenance_only(detection),
+                               initialization_confidence_threshold=self.initialization_confidence_threshold,
+                               maintenance_confidence_threshold=self.maintenance_confidence_threshold)
         track.last_measurement_diagnostics = deepcopy(diagnostics)
 
     @staticmethod
@@ -433,15 +502,30 @@ class TargetManager:
     def _association_cost(self, track: Track, detection: Detection) -> Optional[float]:
         if track.class_id != detection.class_id:
             return None
+        maintenance_only = self._is_maintenance_only(detection)
+        if self._confidence_tiers_enabled and detection.confidence < self.maintenance_confidence_threshold:
+            return None
+        if maintenance_only:
+            # Weak image evidence can maintain an established 3-D identity,
+            # never confirm a tentative hypothesis or revive a lost one.
+            if (track.state not in {TrackState.CONFIRMED, TrackState.COASTING}
+                    or track.hits < self.min_hits or track._filter is None
+                    or not track._filter.initialized or track.last_measurement_timestamp is None
+                    or detection.position_3d is None
+                    or ((self.supported_birth_confirmation_required
+                         or detection.metadata.get("surface_recovery_enabled") is True)
+                        and (detection.metadata.get("surface_recovery_enabled") is not True
+                             or detection.metadata.get("surface_measurement_supported") is not True))):
+                return None
         iou = bbox_iou(track.bbox, detection.bbox)
-        if self.association_mode == "iou_2d":
+        if self.association_mode == "iou_2d" and not maintenance_only:
             return 1.0 - iou if iou >= self.association_iou_threshold else None
         track_position = None if track._filter is None or not track._filter.initialized else getattr(track._filter,"association_position",track._filter.position)
         detection_position = self._position_of_detection(detection)
         distance = None
         if track_position is not None and detection_position is not None:
             distance = float(np.linalg.norm(track_position - detection_position))
-            if self.association_mode == "hybrid_3d":
+            if self.association_mode == "hybrid_3d" or maintenance_only:
                 # Overlapping image boxes cannot bypass physically impossible
                 # depth jumps. Use the same quality-dependent R as KF fusion.
                 if distance > self.association_max_distance:
@@ -522,6 +606,8 @@ class TargetManager:
 
         edges: set[tuple[int, int]] = set()
         for index, detection in enumerate(detections):
+            if self._confidence_tiers_enabled and detection.confidence < self.maintenance_confidence_threshold:
+                continue
             if detection.position_3d is None or not merge_compatible(target, detection):
                 continue
             if self._association_cost(target, detection) is not None:
@@ -553,7 +639,9 @@ class TargetManager:
                 cost = self._association_cost(track, detection)
                 if cost is not None:
                     pairs.append((cost, track.track_id, index))
-        if self.reject_ambiguous_associations:
+        maintenance_indices = {index for _, _, index in pairs
+                               if self._is_maintenance_only(detections[index])}
+        if self.reject_ambiguous_associations or maintenance_indices:
             # A bipartite component is safe only when every involved track
             # and detection has one edge. In a many-to-one merge, or one-to-
             # many split, choosing the lowest cost would manufacture identity
@@ -566,19 +654,36 @@ class TargetManager:
                 by_detection.setdefault(index, set()).add(track_id)
             # These edges can only freeze a component. They are deliberately
             # absent from ``pairs`` and can never accept an observation.
-            for track_id, index in self._merged_box_uncertainty_edges(candidates, detections):
+            merge_edges = (self._merged_box_uncertainty_edges(candidates, detections)
+                           if self.reject_ambiguous_associations else ())
+            for track_id, index in merge_edges:
                 by_track.setdefault(track_id, set()).add(index)
                 by_detection.setdefault(index, set()).add(track_id)
             frontier = [track_id for track_id, indices in by_track.items() if len(indices) > 1]
             frontier.extend(track_id for ids in by_detection.values() if len(ids) > 1 for track_id in ids)
-            while frontier:
-                track_id = frontier.pop()
-                if track_id in self._ambiguous_track_ids:
+            visited: set[int] = set()
+            for seed in frontier:
+                if seed in visited:
                     continue
-                self._ambiguous_track_ids.add(track_id)
-                for index in by_track.get(track_id, ()):
-                    self._ambiguous_detection_indices.add(index)
-                    frontier.extend(by_detection[index] - self._ambiguous_track_ids)
+                component_tracks: set[int] = set()
+                component_detections: set[int] = set()
+                pending = [seed]
+                while pending:
+                    track_id = pending.pop()
+                    if track_id in component_tracks:
+                        continue
+                    component_tracks.add(track_id)
+                    for index in by_track.get(track_id, ()):
+                        component_detections.add(index)
+                        pending.extend(by_detection[index] - component_tracks)
+                visited.update(component_tracks)
+                # The legacy high-only assignment policy is unchanged. Any
+                # component involving a weak feasible edge is always frozen
+                # when ambiguous, including high/weak competition; there is
+                # no confidence-first assignment followed by weak backfill.
+                if self.reject_ambiguous_associations or component_detections & maintenance_indices:
+                    self._ambiguous_track_ids.update(component_tracks)
+                    self._ambiguous_detection_indices.update(component_detections)
             retired_tracks: set[int] = set()
             if self._pending_target_index in self._ambiguous_detection_indices:
                 # A new explicit task selection may resolve stale competing
@@ -662,7 +767,8 @@ class TargetManager:
         anchors = self._birth_anchor_indices(assignment, timestamp)
 
         for index, candidate in enumerate(detections):
-            if index in matched_detection_indices or index == self._pending_target_index:
+            if (index in matched_detection_indices or index == self._pending_target_index
+                    or index in self._spawn_deferred_reasons):
                 # Explicit user selection is fresh task evidence. It must be
                 # allowed to initialize the requested box and a new UUID.
                 continue
@@ -867,6 +973,11 @@ class TargetManager:
         assignment: dict[int, int],
         new_track_by_detection: Optional[dict[int, int]] = None,
     ) -> None:
+        if self._confidence_tiers_enabled and self._pending_target_track_id is not None:
+            track = self._tracks.get(self._pending_target_track_id)
+            if track is not None and self._track_can_initialize(track):
+                self.lock_target(track.track_id, target_uuid=self._pending_target_uuid)
+            return
         if self._target_track_id is not None:
             return
         if self._pending_target_track_id is not None:
@@ -880,11 +991,12 @@ class TargetManager:
         if self._pending_target_index is not None:
             index = self._pending_target_index
             self._pending_target_index = None
-            if 0 <= index < len(detections):
+            if 0 <= index < len(detections) and self._can_initialize(detections[index]):
                 for track_id, detection_index in assignment.items():
                     if detection_index == index:
                         track = self._tracks[track_id]
-                        if track.class_id == detections[index].class_id:
+                        if (track.class_id == detections[index].class_id
+                                and (not self._confidence_tiers_enabled or self._track_can_initialize(track))):
                             self._target_track_id = track_id
                             self._target_uuid = self._pending_target_uuid or self._target_uuid or str(uuid4())
                             self._pending_target_uuid = None
@@ -904,6 +1016,8 @@ class TargetManager:
         if self._target_track_id is not None:
             return
         candidates = [track for track in self._eligible_tracks() if self.target_class is None or track.class_id == self.target_class]
+        if self._confidence_tiers_enabled:
+            candidates = [track for track in candidates if self._track_can_initialize(track)]
         if len(candidates) == 1 and candidates[0].state == TrackState.CONFIRMED:
             self._target_track_id = candidates[0].track_id
             self._target_uuid = self._target_uuid or str(uuid4())
@@ -1035,6 +1149,8 @@ class TargetManager:
             raise ValueError("timestamps must be monotonic")
         self._timestamp = frame_timestamp if frame_timestamp is not None else self._timestamp
         filtered = [detection for detection in items if self.target_class is None or detection.class_id == self.target_class]
+        if self._confidence_tiers_enabled:
+            self._activate_detection_request(filtered)
         for track in self._tracks.values():
             track._matched_this_frame = False
             # Expire against acquisition time before association too, so a
@@ -1058,6 +1174,12 @@ class TargetManager:
         for track in list(self._tracks.values()):
             if track.track_id not in matched_track_ids and track.state != TrackState.REMOVED:
                 self._coast_track(track, frame_timestamp)
+        if self._confidence_tiers_enabled:
+            for index, detection in enumerate(filtered):
+                if index not in matched_detection_indices and not self._can_initialize(detection):
+                    self._spawn_deferred_reasons[index] = (
+                        "maintenance_only_no_birth" if self._is_maintenance_only(detection)
+                        else "below_maintenance_confidence_threshold")
         self._defer_nested_births(filtered, assignment, matched_detection_indices, frame_timestamp)
         self._confirm_supported_births(filtered, assignment, matched_detection_indices, frame_timestamp)
         new_track_by_detection: dict[int, int] = {}
@@ -1071,9 +1193,21 @@ class TargetManager:
             # Count detector candidates before track confirmation/depth
             # acceptance: a second object with missing or rejected depth
             # still makes the unique-instance task ambiguous.
-            if len(filtered) > 1:
+            candidate_count = len(filtered)
+            if self._confidence_tiers_enabled:
+                candidate_indices = {index for index, detection in enumerate(filtered)
+                                     if self._can_initialize(detection)}
+                candidate_indices.update(
+                    index for track_id, index in assignment.items()
+                    if self._tracks[track_id]._matched_this_frame
+                    and self._tracks[track_id].state == TrackState.CONFIRMED)
+                candidate_indices.update(self._ambiguous_detection_indices)
+                candidate_count = len(candidate_indices)
+                if self._target_track_id in self._ambiguous_track_ids:
+                    self._auto_unique_ambiguous = True
+            if candidate_count > 1:
                 self._auto_unique_ambiguous = True
-            elif len(filtered) == 1:
+            elif candidate_count == 1:
                 self._select_auto_unique()
                 target = self.target
                 # Preserve task identity: the sole remaining object must

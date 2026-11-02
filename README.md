@@ -1,5 +1,7 @@
 # RGB-D UAV target tracking and following
 
+**2026-11-02：Humble50 核心12场已完整闭合，11 PASS、1 FAIL，尚未进入正式280场。** 唯一失败是汽车多目标主动云台场景：短遮挡后原模型已有约0.34–0.41的目标框，被0.45阈值过滤，最终触发正确的LOST锁。原始图像、深度和同采集TF已复核；正在验证仅允许弱检测维护已有三维轨迹的修复，禁止弱框启动任务、自动换人或解除LOST锁。独立完整像素检查还解释了相邻车边缘造成的导航拒绝，原保护继续保留。详见[修复原理与验证边界](docs/CONFIDENCE_TIER_MAINTENANCE.md)。新版本仍须独立构建并重跑完整12场，下方均为有时间标记的历史快照。
+
 **2026-11-02 14:28（北京时间）快照：Humble50 核心验证已闭合8场，均为原始工程PASS；六个行人场景及汽车速度、位置跟随通过，第九场汽车交叉已开始。** 汽车速度/位置两场的真实机体距离RMSE为0.751574/0.715457米、高度RMSE为0.153512/0.169195米，末段距离和高度持续稳定检查均通过。它们属于同一个开发种子，不能据此认定汽车总体可靠性已解决；整批、安全4、扩展16和正式280次仍待完成。见[汽车两场原件与边界](tools/experiment_orchestration/humble50_car_pair_snapshot01/README.md)、[本轮执行记录](planning/reliability-v4-humble50-validation-20261102.md)和本机[实时进度](results/project_progress/humble50_core_slots01/index.html)。下方状态按时间作为历史快照阅读。
 
 **2026-11-02 13:41（北京时间）快照：核心验证已闭合5场，均PASS，第六场行人多目标主动云台正在离线评价。** 后续final-root-v2的DDS安装目录转换、CV2环境恢复及封存工具连接标识已完成三文件修复并实际应用；原生工具清单核验及独立复核通过，当前核心来源未变。真实final-root构建、适用专项测试和正式280次仍待执行，详见[修复源码与证据](tools/experiment_orchestration/humble50_finaltools_fix_snapshot01/README.md)。

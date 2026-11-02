@@ -89,9 +89,15 @@ def stamp_s(stamp) -> float:
     return float(stamp.sec) + float(stamp.nanosec) * 1e-9
 
 
+def visual_initialization_candidates(detections):
+    """Weak maintenance boxes cannot change scripted initial/reselection pools."""
+    return [d for d in detections if d.get("depth_valid") and len(d.get("bbox", [])) == 4
+            and not d.get("maintenance_only", False)]
+
+
 def select_visual_box(detections, rule):
     """Test/user selection by image geometry only, never simulator identity."""
-    valid = [d for d in detections if d.get("depth_valid") and len(d.get("bbox", [])) == 4]
+    valid = visual_initialization_candidates(detections)
     valid.sort(key=lambda item: (item["bbox"][0] + item["bbox"][2]) / 2)
     if not valid:
         return None
@@ -521,7 +527,8 @@ class FlightMonitor(Node):
         if (initial_rule != "none" and self.initial_selection_uuid is None and self.phase == "HOLD"
                 and self.diagnostics and self.diagnostics.get("tracking_active")
                 and 0 <= t - self.diagnostics["stamp_s"] <= 0.4
-                and len(self.diagnostics["detections"]) >= getattr(self.args, "initial_min_candidates", 2)):
+                and len(visual_initialization_candidates(self.diagnostics["detections"]))
+                    >= getattr(self.args, "initial_min_candidates", 2)):
             chosen = select_visual_box(self.diagnostics["detections"], initial_rule)
             if chosen is not None:
                 self.initial_selection_uuid = self.publish_visual_selection(chosen, "TEST_SCRIPT_INITIAL_SELECTION")

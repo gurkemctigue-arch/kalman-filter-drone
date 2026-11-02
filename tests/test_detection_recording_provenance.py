@@ -95,6 +95,34 @@ class DetectionRecordingProvenanceTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "disagree"):
             evaluator.inference_configuration(self.source, self.args("--settings-source", "recorded"), root=self.root)
 
+    def test_recorded_tiers_distinguish_initialization_retention_and_offline_ap_floor(self):
+        self.recorded()
+        runtime = self.trial / "configuration/runtime_parameters.yaml"
+        parameters = yaml.safe_load(runtime.read_text(encoding="utf-8"))
+        parameters["uav_tracking_detection"]["ros__parameters"]["maintenance_confidence_threshold"] = .25
+        runtime.write_text(yaml.safe_dump(parameters), encoding="utf-8")
+        config, evidence = evaluator.inference_configuration(self.source, self.args("--settings-source", "recorded"), root=self.root)
+        self.assertEqual(evidence["recorded_online_confidence_threshold"], .45)
+        self.assertEqual(evidence["recorded_initialization_confidence_threshold"], .45)
+        self.assertEqual(evidence["recorded_maintenance_confidence_threshold"], .25)
+        self.assertEqual(evidence["recorded_retained_confidence_floor"], .25)
+        self.assertEqual(config["confidence_floor"], .001)
+
+    def test_recorded_disabled_or_invalid_maintenance_floor_is_not_silently_enabled(self):
+        self.recorded()
+        runtime = self.trial / "configuration/runtime_parameters.yaml"
+        parameters = yaml.safe_load(runtime.read_text(encoding="utf-8"))
+        for floor in (-1., .6, True):
+            with self.subTest(floor=floor):
+                parameters["uav_tracking_detection"]["ros__parameters"]["maintenance_confidence_threshold"] = floor
+                runtime.write_text(yaml.safe_dump(parameters), encoding="utf-8")
+                if floor == -1.:
+                    _, evidence = evaluator.inference_configuration(self.source, self.args("--settings-source", "recorded"), root=self.root)
+                    self.assertNotIn("recorded_retained_confidence_floor", evidence)
+                else:
+                    with self.assertRaisesRegex(ValueError, "confidence thresholds"):
+                        evaluator.inference_configuration(self.source, self.args("--settings-source", "recorded"), root=self.root)
+
     def test_recorded_model_relocation_requires_identical_bytes(self):
         self.recorded()
         relocated = self.root / "relocated.pt"

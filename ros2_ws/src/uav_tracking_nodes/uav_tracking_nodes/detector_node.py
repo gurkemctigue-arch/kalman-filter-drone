@@ -183,6 +183,14 @@ class DetectorNode(Node):
         self.declare_parameter("class_name", "person")
         self.declare_parameter("class_id", 0)
         self.declare_parameter("confidence_threshold", 0.45)
+        # Optional lower floor for existing-track maintenance. The estimator
+        # independently prevents these candidates from starting a new task.
+        self.declare_parameter("maintenance_confidence_threshold", -1.0)
+        maintenance = float(self.get_parameter("maintenance_confidence_threshold").value)
+        high = float(self.get_parameter("confidence_threshold").value)
+        if maintenance != -1.0 and not (math.isfinite(maintenance) and 0 <= maintenance <= high <= 1):
+            raise ValueError("maintenance confidence must be between zero and initialization confidence")
+        self._maintenance_confidence_threshold = None if maintenance == -1.0 else maintenance
         self.declare_parameter("depth_scale", 0.001)
         self.declare_parameter("min_depth_m", 0.2)
         self.declare_parameter("max_depth_m", 30.0)
@@ -455,6 +463,9 @@ class DetectorNode(Node):
                 "inference_image_size", "inference_device", "class_id", "class_name", "confidence_threshold",
                 "depth_scale", "min_depth_m", "max_depth_m", "min_depth_valid_ratio",
             )}
+            maintenance = getattr(self, "_maintenance_confidence_threshold", None)
+            if maintenance is not None:
+                parameters["maintenance_confidence_threshold"] = maintenance
             parameters.update(getattr(self, "_surface_settings", {}))
             snapshot = InferenceSnapshot(
                 message, depth_message, intrinsics, camera_size, sync_error, parameters,
@@ -634,9 +645,13 @@ class DetectorNode(Node):
             requested_imgsz=int(parameters["inference_image_size"]),
             effective_threads=getattr(self, "_effective_inference_threads", None))
         with timing.stage("yolo_predict"):
+            predict_options = {}
+            if "maintenance_confidence_threshold" in parameters:
+                predict_options["conf"] = min(.25, float(parameters["maintenance_confidence_threshold"]))
             result = self._model.predict(
                 image, imgsz=int(parameters["inference_image_size"]),
                 device=str(parameters["inference_device"]), verbose=False,
+                **predict_options,
             )[0]
         outcome["predict_details"] = predict_timing_details(result, image_shape=image.shape,
             requested_imgsz=int(parameters["inference_image_size"]),
@@ -644,6 +659,9 @@ class DetectorNode(Node):
         class_id = int(parameters["class_id"])
         class_name = str(parameters["class_name"])
         threshold = float(parameters["confidence_threshold"])
+        maintenance_threshold = float(parameters.get("maintenance_confidence_threshold", threshold))
+        if not 0 <= maintenance_threshold <= threshold <= 1:
+            raise ValueError("invalid confidence thresholds")
         with timing.input_lock(self._input_lock, "post_predict"):
             if getattr(self, "_stopping", False):
                 outcome["reason"] = "stopping_after_predict"
@@ -659,7 +677,10 @@ class DetectorNode(Node):
         for candidate_id, box in enumerate(result.boxes):
             score = float(box.conf[0])
             detected_class = int(box.cls[0])
-            if score < threshold:
+            # Keep weak same-class candidates and their raw geometry visible.
+            # Other classes retain the original confidence operating point.
+            floor = maintenance_threshold if detected_class == class_id else threshold
+            if score < floor:
                 continue
             bounds = tuple(float(value) for value in box.xyxy[0].tolist())
             if (len(bounds) != 4 or not all(math.isfinite(value) and abs(value) <= np.finfo(np.float32).max for value in bounds)
@@ -801,6 +822,7 @@ class DetectorNode(Node):
                 "candidate_id": int(candidate_id),
                 "class_id": detected_class,
                 "confidence": score,
+                "maintenance_only": score < threshold,
                 "bbox": [x1, y1, x2, y2],
                 "depth_valid": bool(observation.depth_valid),
                 "depth_m": float(observation.depth_m),
@@ -888,6 +910,8 @@ class DetectorNode(Node):
                 "inference_wall_s": time.perf_counter() - started,
                 "rgb_depth_sync_error_s": snapshot.sync_error_s,
                 "class_name": class_name,
+                "initialization_confidence_threshold": threshold,
+                "maintenance_confidence_threshold": maintenance_threshold,
                 "tracking_active": tracking_active,
                 "inference_backend": type(self._model).__name__,
                 "inference_threads": getattr(self, "_effective_inference_threads", None),

@@ -60,6 +60,8 @@ class StateEstimatorNode(Node):
         self.declare_parameter("association_max_distance_m", 2.0)
         self.declare_parameter("reject_ambiguous_associations", False)
         self.declare_parameter("supported_birth_confirmation_required", False)
+        self.declare_parameter("initialization_confidence_threshold", -1.0)
+        self.declare_parameter("maintenance_confidence_threshold", -1.0)
         self.declare_parameter("buffer_delay_s", 0.02)
         self.declare_parameter("min_depth_valid_ratio", 0.35)
         self.declare_parameter("max_prediction_duration_s", 0.75)
@@ -134,6 +136,10 @@ class StateEstimatorNode(Node):
             association_max_distance=float(self.get_parameter("association_max_distance_m").value),
             reject_ambiguous_associations=bool(self.get_parameter("reject_ambiguous_associations").value),
             supported_birth_confirmation_required=self.get_parameter("supported_birth_confirmation_required").value,
+            initialization_confidence_threshold=(None if self.get_parameter("initialization_confidence_threshold").value == -1.0
+                else float(self.get_parameter("initialization_confidence_threshold").value)),
+            maintenance_confidence_threshold=(None if self.get_parameter("maintenance_confidence_threshold").value == -1.0
+                else float(self.get_parameter("maintenance_confidence_threshold").value)),
             kf_kwargs={
                 "process_acceleration_std": float(self.get_parameter("process_noise_accel_mps2").value),
                 "measurement_noise_std": self.get_parameter("measurement_noise_position_m").value,
@@ -277,7 +283,8 @@ class StateEstimatorNode(Node):
             self._pending_selection = message
 
     @staticmethod
-    def _selection_index(selection: TargetSelection, observations: list[TargetObservation]) -> int | None:
+    def _selection_index(selection: TargetSelection, observations: list[TargetObservation],
+                         initialization_confidence_threshold: float | None = None) -> int | None:
         """Return the unique observation overlapping an initial selection box."""
 
         if selection.width_px <= 0.0 or selection.height_px <= 0.0:
@@ -288,6 +295,9 @@ class StateEstimatorNode(Node):
         sy2 = float(selection.center_v_px + selection.height_px / 2.0)
         scored: list[tuple[float, int]] = []
         for index, observation in enumerate(observations):
+            if initialization_confidence_threshold is not None and not (
+                    float(observation.confidence) >= initialization_confidence_threshold):
+                continue
             if selection.class_name and observation.class_name != selection.class_name:
                 continue
             ix1 = max(sx1, float(observation.bbox_x_min_px))
@@ -375,7 +385,8 @@ class StateEstimatorNode(Node):
         ]
         acquisition_epochs = self._acquisition_epochs(observations)
         if self._pending_selection is not None:
-            selection_index = self._selection_index(self._pending_selection, observations)
+            selection_index = self._selection_index(self._pending_selection, observations,
+                getattr(self._manager, "initialization_confidence_threshold", None))
             if selection_index is not None:
                 self._manager.lock_detection(
                     selection_index,

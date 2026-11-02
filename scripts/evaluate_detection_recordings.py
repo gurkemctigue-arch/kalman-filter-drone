@@ -104,6 +104,18 @@ def inference_configuration(source, args, *, root=ROOT):
         evidence = {key: {"path": str(path.resolve()), "sha256": file_sha256(path)} for key, path in paths.items()}
         evidence["saved_model"] = {"path": str(model), "manifest_key": model_key, "sha256": expected_model_sha}
         evidence["recorded_online_confidence_threshold"] = parameters.get("confidence_threshold")
+        maintenance = parameters.get("maintenance_confidence_threshold", -1.)
+        if maintenance != -1.:
+            high = parameters.get("confidence_threshold")
+            if (any(type(value) not in {int, float} or not math.isfinite(value)
+                    for value in (maintenance, high)) or not 0 <= maintenance <= high <= 1):
+                raise ValueError("Invalid recorded maintenance/initialization confidence thresholds")
+            # Preserve the historical primary-threshold field while making
+            # the lower online retention floor explicit. Offline AP inference
+            # still uses its separately declared confidence_floor.
+            evidence["recorded_initialization_confidence_threshold"] = high
+            evidence["recorded_maintenance_confidence_threshold"] = maintenance
+            evidence["recorded_retained_confidence_floor"] = maintenance
     elif args.settings_source == "explicit":
         if model_override is None or size_override is None or threads_override is None:
             raise ValueError("Explicit settings require model path, image size and threads for each supplied category")

@@ -5,6 +5,8 @@ uav_tracking_detection:
     class_name: car
     class_id: 2
     confidence_threshold: 0.45
+    # Weak boxes can maintain a supported existing track, never initialize one.
+    maintenance_confidence_threshold: 0.25
     model_path: models/yolo11s.pt
     depth_scale: 1.0
     min_depth_m: 0.2
@@ -24,6 +26,8 @@ uav_tracking_state_estimator:
     use_sim_time: true
     target_mode: auto_unique
     target_class: car
+    initialization_confidence_threshold: 0.45
+    maintenance_confidence_threshold: 0.25
     observation_topic: /tracking/observations
     selection_topic: /tracking/selection
     state_topic: /tracking/state
