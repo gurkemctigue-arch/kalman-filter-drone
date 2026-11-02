@@ -1,0 +1,78 @@
+test_car_surface_recovery_is_explicitly_archived_and_reaches_launched_graph (tests.test_simulation_seed.SeedRunnerTests.test_car_surface_recovery_is_explicitly_archived_and_reaches_launched_graph) ... started gazebo pid=731
+started agent pid=731
+started px4 pid=731
+started monitor pid=731
+started ros pid=731
+monitor exited 0; evidence: D:\WSL\UAVHumble22-validation\clock_isolation_candidate01\test_tmp\tmp1m5gcwvk\results\seed_trial
+ok
+test_closure_failure_still_closes_and_archives_failed_trial (tests.test_simulation_seed.SeedRunnerTests.test_closure_failure_still_closes_and_archives_failed_trial) ... started gazebo pid=731
+started agent pid=731
+started px4 pid=731
+started bag pid=731
+started monitor pid=731
+started ros pid=731
+monitor exited 0; evidence: D:\WSL\UAVHumble22-validation\clock_isolation_candidate01\test_tmp\tmpstc4mp1m\results\seed_trial
+ok
+test_copied_yaml_cannot_enable_recovery_without_the_cli_opt_in (tests.test_simulation_seed.SeedRunnerTests.test_copied_yaml_cannot_enable_recovery_without_the_cli_opt_in) ... started gazebo pid=731
+started agent pid=731
+started px4 pid=731
+started monitor pid=731
+started ros pid=731
+monitor exited 0; evidence: D:\WSL\UAVHumble22-validation\clock_isolation_candidate01\test_tmp\tmpx4unth5y\results\seed_trial
+ok
+test_full_runner_records_seed_and_passes_it_to_the_gazebo_process_environment (tests.test_simulation_seed.SeedRunnerTests.test_full_runner_records_seed_and_passes_it_to_the_gazebo_process_environment) ... started gazebo pid=731
+started agent pid=731
+started px4 pid=731
+started monitor pid=731
+started ros pid=731
+monitor exited 0; evidence: D:\WSL\UAVHumble22-validation\clock_isolation_candidate01\test_tmp\tmpjhxh981q\results\seed_trial
+started gazebo pid=731
+started agent pid=731
+started px4 pid=731
+started monitor pid=731
+started ros pid=731
+monitor exited 0; evidence: D:\WSL\UAVHumble22-validation\clock_isolation_candidate01\test_tmp\tmpglz3v3ge\results\seed_trial
+ok
+test_observer_cleanup_reporting_fault_still_preserves_and_archives_failed_trial (tests.test_simulation_seed.SeedRunnerTests.test_observer_cleanup_reporting_fault_still_preserves_and_archives_failed_trial) ... started gazebo pid=731
+started agent pid=731
+started px4 pid=731
+started bag pid=731
+started monitor pid=731
+started ros pid=731
+monitor exited 0; evidence: D:\WSL\UAVHumble22-validation\clock_isolation_candidate01\test_tmp\tmp8nr7lgod\results\seed_trial
+ok
+test_recording_closure_precedes_recorder_stop_and_archive (tests.test_simulation_seed.SeedRunnerTests.test_recording_closure_precedes_recorder_stop_and_archive) ... started gazebo pid=731
+started agent pid=731
+started px4 pid=731
+started bag pid=731
+started monitor pid=731
+started ros pid=731
+monitor exited 0; evidence: D:\WSL\UAVHumble22-validation\clock_isolation_candidate01\test_tmp\tmpkg09jc7q\results\seed_trial
+ok
+test_both_render_branches_pass_the_exact_registered_seed_as_one_argument (tests.test_simulation_seed.SeedShellTests.test_both_render_branches_pass_the_exact_registered_seed_as_one_argument) ... skipped 'POSIX shell integration; run this test in WSL'
+test_invalid_seeds_fail_before_fake_simulator_can_execute (tests.test_simulation_seed.SeedShellTests.test_invalid_seeds_fail_before_fake_simulator_can_execute) ... skipped 'POSIX shell integration; run this test in WSL'
+test_unpaused_start_preserves_seed_and_adds_run_flag (tests.test_simulation_seed.SeedShellTests.test_unpaused_start_preserves_seed_and_adds_run_flag) ... skipped 'POSIX shell integration; run this test in WSL'
+test_actual_runner_archive_retains_confidence_policy_in_launched_runtime_yaml (tests.test_confidence_tier_adapters.ConfidenceTierConfigurationTests.test_actual_runner_archive_retains_confidence_policy_in_launched_runtime_yaml) ... started gazebo pid=731
+started agent pid=731
+started px4 pid=731
+started monitor pid=731
+started ros pid=731
+monitor exited 0; evidence: D:\WSL\UAVHumble22-validation\clock_isolation_candidate01\test_tmp\tmp96hbguoy\results\seed_trial
+ok
+test_all_three_car_configs_agree_while_person_keeps_disabled_default (tests.test_confidence_tier_adapters.ConfidenceTierConfigurationTests.test_all_three_car_configs_agree_while_person_keeps_disabled_default) ... ok
+test_disabled_keeps_old_prediction_options_and_high_confidence_only (tests.test_confidence_tier_adapters.DetectorConfidenceTierAdapterTests.test_disabled_keeps_old_prediction_options_and_high_confidence_only) ... ok
+test_enabled_retains_weak_same_class_and_keeps_other_class_high_floor (tests.test_confidence_tier_adapters.DetectorConfidenceTierAdapterTests.test_enabled_retains_weak_same_class_and_keeps_other_class_high_floor) ... ok
+test_prediction_floor_below_ultralytics_default_is_explicit (tests.test_confidence_tier_adapters.DetectorConfidenceTierAdapterTests.test_prediction_floor_below_ultralytics_default_is_explicit) ... ok
+test_high_confidence_ties_wrong_class_and_nonfinite_score_remain_rejected (tests.test_confidence_tier_adapters.EstimatorConfidenceSelectionTests.test_high_confidence_ties_wrong_class_and_nonfinite_score_remain_rejected) ... ok
+test_processing_forwards_manager_floor_and_original_filtered_index (tests.test_confidence_tier_adapters.EstimatorConfidenceSelectionTests.test_processing_forwards_manager_floor_and_original_filtered_index) ... ok
+test_weak_only_selection_is_rejected_without_changing_default_api (tests.test_confidence_tier_adapters.EstimatorConfidenceSelectionTests.test_weak_only_selection_is_rejected_without_changing_default_api) ... ok
+test_weaker_better_overlap_cannot_steal_explicit_selection (tests.test_confidence_tier_adapters.EstimatorConfidenceSelectionTests.test_weaker_better_overlap_cannot_steal_explicit_selection) ... ok
+test_explicit_reselection_uses_same_high_pool_and_never_weak_box (tests.test_confidence_tier_adapters.MonitorConfidenceSelectionTests.test_explicit_reselection_uses_same_high_pool_and_never_weak_box) ... ok
+test_initial_minimum_uses_high_valid_candidates_and_not_weak_count (tests.test_confidence_tier_adapters.MonitorConfidenceSelectionTests.test_initial_minimum_uses_high_valid_candidates_and_not_weak_count) ... ok
+test_inserting_weak_box_cannot_shift_middle_or_extreme_selection (tests.test_confidence_tier_adapters.MonitorConfidenceSelectionTests.test_inserting_weak_box_cannot_shift_middle_or_extreme_selection) ... ok
+test_unique_selection_pool_keeps_legacy_boxes_and_excludes_bad_depth (tests.test_confidence_tier_adapters.MonitorConfidenceSelectionTests.test_unique_selection_pool_keeps_legacy_boxes_and_excludes_bad_depth) ... ok
+
+----------------------------------------------------------------------
+Ran 22 tests in 1.156s
+
+OK (skipped=3)

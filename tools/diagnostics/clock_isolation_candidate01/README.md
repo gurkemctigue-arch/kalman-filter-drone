@@ -9,3 +9,5 @@
 `runtime_capture01/` 保存此前的单独时钟进程检查。真实 ROS-GZ/DDS 映射和正常退出通过，但原总结果为 FAIL：诊断脚本误要求 RMW 图接口暴露 history/depth；实际 Humble 返回 UNKNOWN history、depth=0。原 FAIL 未修改；`standalone_capture_interpretation01.json` 只解释证据范围。新时钟注册使用真实的 65 项依赖和空插件列表，未借用数据桥的 SetEntityPose 插件证据。
 
 `split_targeted_tests01.log` 保留第一轮测试中发现的一个测试语法错误。修正后，第二轮 `split_targeted_tests02.log` 的 54 项新增测试全部通过。组件检查脚本及所有副本均按原字节保存，来源、大小和 SHA-256 见 `manifest.json`。这些脚本固定了本次诊断路径，后续候选必须使用新的输出目录。
+
+完整 Windows 回归原记录为 1924 项：1902 通过、7 错误、15 跳过（910.680 秒）。七项错误均来自同一旧测试夹具没有显式声明单桥模式，因新默认预检被拒绝。只将该夹具的命令改为显式 `--no-split-clock-bridge` 后，受影响两模块的 22 项中 19 通过、3 平台跳过。原完整错误日志和修正后回归日志均保留，不将该结果写成修正后全量通过。外部双桥证据检查器另有 19 项 fixture 通过。完整 Linux 测试仍待新冷构建后执行。

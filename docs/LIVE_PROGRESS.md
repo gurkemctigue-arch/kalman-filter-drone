@@ -1,6 +1,6 @@
 # 查看当前实验
 
-**2026-11-02 20:10（北京时间）修复进展：时钟桥与数据桥分离候选已通过生产 RGB-D 组件检查，新增 54 项测试通过。** 20 秒仿真时间取得 202 组同步 RGB-D，时钟最大接收间隔约 33.7 ms，三进程正常退出。完整回归测试正在执行；新冷构建和 75 秒飞行复验待完成。原 Humble51 仍为 **3 PASS / 1 FAIL / 8 PENDING**，正式 **0/280**，项目尚未全部验收。详见[候选与真实证据](../planning/reliability-v4-clock-isolation-20261102.md)。
+**2026-11-02 20:10（北京时间）修复进展：时钟桥与数据桥分离候选已通过生产 RGB-D 组件检查，新增 54 项测试通过。** 20 秒仿真时间取得 202 组同步 RGB-D，时钟最大接收间隔约 33.7 ms，三进程正常退出。Windows 完整回归发现的旧夹具模式错误已修正，受影响两模块回归通过；新冷构建和 75 秒飞行复验待完成。原 Humble51 仍为 **3 PASS / 1 FAIL / 8 PENDING**，正式 **0/280**，项目尚未全部验收。详见[候选与真实证据](../planning/reliability-v4-clock-isolation-20261102.md)。
 
 **2026-11-02 19:10:29（北京时间）监控终态：Humble51原核心命令已退出2、STOPPED_FAULT；原始结果3 PASS、1 FAIL、8 PENDING，正式0/280。** 第四场行人云台中位的source-clock/native-startup未通过独立硬门，当前不能把下方18:58的“运行中”当作实时状态。4次未来源时刻拒绝、1次诊断交付越界和2条raw/timing缺配对，以及1次phase时间越界均保留；起飞、模式序列和handoff检查通过。84.028秒附近的聚集只是诊断线索，共同根因仍待原包核实。查看[停止说明与后续诊断](../planning/reliability-v4-humble51-clock-stop-20261102.md)、[最小原件](../tools/diagnostics/humble51_clock_stop01/README.md)和本机[命令终态](../results/project_progress/humble51_core_run01/index.html)。后续新的只读诊断不等于该原核心批次仍在飞行，下方历史快照原样保留。
 

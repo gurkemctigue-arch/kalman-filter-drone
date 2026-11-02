@@ -1,6 +1,6 @@
 # RGB-D UAV target tracking and following
 
-**2026-11-02 20:10（北京时间）修复进展：时钟桥与数据桥分离候选已通过生产 RGB-D 组件检查，新增 54 项测试通过。** 20 秒仿真时间取得 202 组同步 RGB-D，时钟最大接收间隔约 33.7 ms，三进程正常退出。完整回归测试正在执行；新冷构建和 75 秒飞行复验待完成。原 Humble51 仍为 **3 PASS / 1 FAIL / 8 PENDING**，正式 **0/280**，项目尚未全部验收。详见[候选与真实证据](planning/reliability-v4-clock-isolation-20261102.md)。
+**2026-11-02 20:10（北京时间）修复进展：时钟桥与数据桥分离候选已通过生产 RGB-D 组件检查，新增 54 项测试通过。** 20 秒仿真时间取得 202 组同步 RGB-D，时钟最大接收间隔约 33.7 ms，三进程正常退出。Windows 完整回归发现的旧夹具模式错误已修正，受影响两模块回归通过；新冷构建和 75 秒飞行复验待完成。原 Humble51 仍为 **3 PASS / 1 FAIL / 8 PENDING**，正式 **0/280**，项目尚未全部验收。详见[候选与真实证据](planning/reliability-v4-clock-isolation-20261102.md)。
 
 **2026-11-02 19:10:29（北京时间）停止记录：Humble51核心批次已STOPPED，原始结果为3 PASS、1 FAIL、8 PENDING，正式仍0/280。** 第四场行人云台中位完成飞行，但独立source-clock记录4次未来源时刻拒绝、1次诊断交付越界及2条raw/timing缺配对；native-startup另有1次phase时间越界，硬门因此停止后续。起飞、模式序列与交接稳定检查均通过。已有侧车把5个source-clock异常定位到84.028秒附近，尚不能确定共同根因，正在继续原包只读诊断。owner异常路径的原始归档已保留；最终失败状态与较早copy候选的差异不代表原件被篡改。详见[停止原因、证据与最短下一步](planning/reliability-v4-humble51-clock-stop-20261102.md)及[小原件快照](tools/diagnostics/humble51_clock_stop01/README.md)。下方18:58及更早运行中描述均为历史快照。
 

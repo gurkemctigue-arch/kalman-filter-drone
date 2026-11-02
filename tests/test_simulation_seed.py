@@ -133,7 +133,9 @@ class SeedRunnerTests(unittest.TestCase):
             def archive(*args):
                 lifecycle.append("archive")
                 return {"status":"PASS","evidence_scope":"ORCHESTRATION_FIXTURE_ONLY"}
-            argv=["trial","--name","seed_trial","--seed",str(registered),
+            # This mocked seed/archive fixture retains the historical single
+            # bridge. Split process/registration behavior has separate fixtures.
+            argv=["trial","--no-split-clock-bridge","--name","seed_trial","--seed",str(registered),
                   "--model-path","models/yolo11n.pt","--class",target_class]
             if recovery:argv.append("--car-surface-recovery")
             if not with_bag:argv.append("--no-bag")

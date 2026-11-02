@@ -181,9 +181,27 @@
       "copy": "split_targeted_tests02.log",
       "bytes": 10655,
       "sha256": "76ba1a88dedaa49fa90652ff59d48e0da8f03841e58fa11d804217fcecf66615"
+    },
+    {
+      "source": "D:\\WSL\\UAVHumble22-validation\\clock_isolation_candidate01\\portable_full_tests01.log",
+      "copy": "portable_full_tests01.log",
+      "bytes": 377333,
+      "sha256": "ff0d2f97ef89685da02571c4c7f84cb42ff90b3b59645050b93f9b3508a1bb50"
+    },
+    {
+      "source": "D:\\WSL\\UAVHumble22-validation\\clock_isolation_candidate01\\seed_confidence_regression02.log",
+      "copy": "seed_confidence_regression02.log",
+      "bytes": 6725,
+      "sha256": "d353aefdd863b4bdb91c62669b61157bfda800ab1fe7d63abbb661761701420d"
+    },
+    {
+      "source": "D:\\WSL\\UAVHumble22-validation\\clock_isolation_candidate01\\split_checks_adapter_tests01.log",
+      "copy": "split_checks_adapter_tests01.log",
+      "bytes": 3494,
+      "sha256": "297d47e8cf01b4e1646c2bf305bf1ca86651092d32ac4c45807c1f11a84bfe7c"
     }
   ],
-  "copied_bytes": 171958,
+  "copied_bytes": 559510,
   "standalone_receipt_status": "FAIL_PRESERVED_DIAGNOSTIC_GRAPH_DEPTH_ASSERTION",
   "rgbd_component_receipt_status": "PASS",
   "core51_status_counts": {
@@ -193,5 +211,27 @@
   },
   "formal_completed": 0,
   "formal_planned": 280,
-  "large_bag_or_image_payloads_included": false
+  "large_bag_or_image_payloads_included": false,
+  "validation_update": {
+    "full_windows_before_fixture_fix": {
+      "tests": 1924,
+      "passed": 1902,
+      "errors": 7,
+      "skipped": 15,
+      "wall_s": 910.68
+    },
+    "shared_legacy_fixture_fix": "test_simulation_seed.run_registered_seed explicitly selects --no-split-clock-bridge",
+    "affected_module_rerun": {
+      "tests": 22,
+      "passed": 19,
+      "skipped": 3,
+      "errors": 0
+    },
+    "external_adapter_fixtures": {
+      "tests": 19,
+      "passed": 19
+    },
+    "post_fix_full_native_suite": "NOT_RUN_YET",
+    "whole_project_acceptance": false
+  }
 }
