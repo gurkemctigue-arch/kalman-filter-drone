@@ -1,5 +1,7 @@
 # RGB-D UAV target tracking and following
 
+**2026-11-02 14:28（北京时间）快照：Humble50 核心验证已闭合8场，均为原始工程PASS；六个行人场景及汽车速度、位置跟随通过，第九场汽车交叉已开始。** 汽车速度/位置两场的真实机体距离RMSE为0.751574/0.715457米、高度RMSE为0.153512/0.169195米，末段距离和高度持续稳定检查均通过。它们属于同一个开发种子，不能据此认定汽车总体可靠性已解决；整批、安全4、扩展16和正式280次仍待完成。见[汽车两场原件与边界](tools/experiment_orchestration/humble50_car_pair_snapshot01/README.md)、[本轮执行记录](planning/reliability-v4-humble50-validation-20261102.md)和本机[实时进度](results/project_progress/humble50_core_slots01/index.html)。下方状态按时间作为历史快照阅读。
+
 **2026-11-02 13:41（北京时间）快照：核心验证已闭合5场，均PASS，第六场行人多目标主动云台正在离线评价。** 后续final-root-v2的DDS安装目录转换、CV2环境恢复及封存工具连接标识已完成三文件修复并实际应用；原生工具清单核验及独立复核通过，当前核心来源未变。真实final-root构建、适用专项测试和正式280次仍待执行，详见[修复源码与证据](tools/experiment_orchestration/humble50_finaltools_fix_snapshot01/README.md)。
 
 **2026-11-02 12:46（北京时间）快照：Humble50 四包冷构建和完整 Linux 测试通过，新的核心12批次正在执行，前三场行人场景均为原始 PASS 且外层核验已闭合。** Linux 1819项检查为1814通过、5项平台跳过。行人速度/位置跟随与多目标交叉属于同一个开发种子，不代表正式重复结论；本轮汽车及云台场景仍待实际完成，正式仍0/280。请打开本机[当前核心进度页](results/project_progress/humble50_core_slots01/index.html)和[命令进程监控](results/project_progress/humble50_core_run01/index.html)，或阅读[本轮证据与后续步骤](planning/reliability-v4-humble50-validation-20261102.md)。下方较早状态均按其时间作为历史快照阅读。

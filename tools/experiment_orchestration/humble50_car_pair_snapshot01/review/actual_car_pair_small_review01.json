@@ -1,0 +1,989 @@
+{
+  "schema_version": 1,
+  "review_kind": "INDEPENDENT_WINDOWS_SMALL_JSON_ORIGINAL_ARTIFACT_REVIEW",
+  "reviewed_utc": "2026-11-02T06:36:50.630814+00:00",
+  "scope": {
+    "source_file_count": 12,
+    "operations": [
+      "Read exact twelve original small JSON files on Windows",
+      "Compute SHA-256 of those twelve raw files",
+      "Verify slot canonical digest, attempt bindings and available report digests",
+      "Summarize existing recorded metrics, behavioral evaluations and archive receipts"
+    ],
+    "not_performed": [
+      "No telemetry, rosbag, log or frame payload read",
+      "No large-file hash scan",
+      "No WSL command, native reader, build, test or simulation",
+      "No production code, main branch, frozen flight source or source result mutation",
+      "No independent started-marker or plan-file read"
+    ],
+    "frozen_flight_commit_preserved": "5aa188f4eacdc7d2d3a8c637ae726bf120160c3b",
+    "snapshot_copy_comparison": "Original raw digests below are provided for publisher copy comparison; snapshot copies were not read in this review."
+  },
+  "cases": [
+    {
+      "slot_id": "car_stage1_velocity_seed004",
+      "inputs": {
+        "slot": {
+          "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble50\\reliability_v4_humble50_probe01_seed004_matrix\\slots\\car_stage1_velocity_seed004.json",
+          "bytes": 54358,
+          "sha256": "5273d80609b7f7d2d2e157d641c7fbba90214931afac2bac2ad0708b70a90da0"
+        },
+        "attempt_terminal": {
+          "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble50\\reliability_v4_humble50_probe01_seed004_matrix\\observed_driver01\\07_car_stage1_velocity_seed004.attempt_terminal.json",
+          "bytes": 31831,
+          "sha256": "a8c56a14cf92617d2d6c6ca81e206548ae693890a8e4d91d35b5ff08c355a7a2"
+        },
+        "navigation_reference_evaluation.json": {
+          "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble50\\reliability_v4_humble50_probe01_car_stage1_velocity_seed004\\navigation_reference_evaluation.json",
+          "bytes": 147104,
+          "sha256": "f42b0e64084dbcc632a6d1c074c740a38f70eb2cd4d738fcd5a779540e0fcdd1"
+        },
+        "flight_evaluation.json": {
+          "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble50\\reliability_v4_humble50_probe01_car_stage1_velocity_seed004\\flight_evaluation.json",
+          "bytes": 24455,
+          "sha256": "b7ef10d17b78f92232475285f09cb869ec6c513fd5c826b065734a06a060463d"
+        },
+        "summary.json": {
+          "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble50\\reliability_v4_humble50_probe01_car_stage1_velocity_seed004\\summary.json",
+          "bytes": 4868,
+          "sha256": "079a517894310de26b328d65090717ac7b8f7dfa30cfbf770e11b6cb86c811c4"
+        },
+        "bag_integrity.json": {
+          "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble50\\reliability_v4_humble50_probe01_car_stage1_velocity_seed004\\bag_integrity.json",
+          "bytes": 4969,
+          "sha256": "b299362e776a0265e1c3ad0e1e5c59c365500d34bd33db6cd29032633bbafba9"
+        }
+      },
+      "binding_checks": {
+        "slot_canonical_digest_matches": true,
+        "record_and_audit_bindings_identical": true,
+        "binding_raw_digest_matches_original_slot": true,
+        "binding_internal_digest_matches_original_slot": true,
+        "binding_path_suffix_matches_slot": true,
+        "binding_plan_digest_matches_slot": true,
+        "binding_start_time_matches_slot": true,
+        "all_four_report_raw_digests_match_slot_map": true,
+        "available_closed_archive_report_digests_match": true,
+        "whole_interval_all_truth_samples_matched": true,
+        "whole_interval_distance_metric_count_matches_full_denominator": true,
+        "whole_interval_height_metric_count_matches_full_denominator": true,
+        "slot_measured_distance_matches_original_nav": true,
+        "slot_measured_height_matches_original_nav": true,
+        "slot_measured_valid_coverage_matches_original_nav": true,
+        "bag_recorded_raw_and_native_message_counts_equal": true,
+        "bag_recorded_raw_and_native_topic_counts_equal": true
+      },
+      "slot_record_sha256": "c492e8e65042f1c121075a8a95ee29527c7253598f506ba35180b8b156d6a049",
+      "plan_sha256_recorded_only": "95122b994f26b8cab254ec6cfe58e5fa4549aed4b1e658df2965890176913e72",
+      "started_marker_binding_recorded_only": {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble50/reliability_v4_humble50_probe01_seed004_matrix/slots/car_stage1_velocity_seed004.started.json",
+        "sha256": "299ec590552cd6da259e15663592188975a24b83d9e7f27f5e1aff883aca278f"
+      },
+      "slot_result": {
+        "execution_status": "COMPLETED",
+        "status": "PASS",
+        "engineering_result": "PASS",
+        "infrastructure_stop": false,
+        "flight_exit_code": 0,
+        "started_utc": "2026-11-02T05:50:31.602507+00:00",
+        "finished_utc": "2026-11-02T06:07:52.059541+00:00"
+      },
+      "slot_engineering_checks": {
+        "base_link_distance": true,
+        "base_link_height": true,
+        "navigation_coverage": true,
+        "truth_coverage": true,
+        "final_distance_settled": true,
+        "final_height_settled": true
+      },
+      "recorded_cleanup": {
+        "residual_processes": [],
+        "process_exit_codes": {
+          "gazebo": 0,
+          "agent": -2,
+          "px4": 0,
+          "bag": 0,
+          "monitor": 0,
+          "ros": 0
+        }
+      },
+      "recorded_attempt": {
+        "error": null,
+        "started_this_invocation": 1,
+        "stop": null,
+        "runtime_errors": [],
+        "bridge_status": "PASS",
+        "process_status": "PASS",
+        "process_errors": [],
+        "full75s_source_clock": true,
+        "native_archive_closed": true
+      },
+      "summary": {
+        "basic_flight_passed": true,
+        "termination_reason": "follow_duration_reached",
+        "monitor_success": true,
+        "monitor_exit_code": 0
+      },
+      "navigation": {
+        "evaluation_status": "RECORDED_WITH_CENSORED_FAILURES",
+        "incomplete_reasons": [],
+        "interval": {
+          "start_s": 19.2,
+          "end_s": 94.32400000000001,
+          "navigation_evaluation_start_s": 19.2,
+          "sample_period_s": 0.1
+        },
+        "reference": {
+          "kind": "ground_footprint_center",
+          "target_truth": "Independent target model origin on ground",
+          "controlled_vehicle_point": "base_link",
+          "vehicle_control_point_offset_flu_m": [
+            0.0,
+            0.0,
+            0.24
+          ],
+          "offset_scope": "Explicit declared vehicle geometry applied to offline GT only; never target-derived or runtime compensation",
+          "desired_horizontal_distance_m": 9.0,
+          "desired_height_m": 2.0,
+          "multi_target_mapping": "Unique target model"
+        },
+        "whole_interval": {
+          "scheduled_samples": 752,
+          "matched_truth_samples": 752,
+          "inactive_control_samples": 63,
+          "truth_missing_reasons": {},
+          "base_link_distance_error_m": {
+            "count": 752,
+            "mean": 0.2881123176960643,
+            "median": 0.006234366934776858,
+            "p95": 2.0608971218937038,
+            "max": 2.7949092545835725,
+            "rmse": 0.7515739773645226,
+            "mean_absolute": 0.30900351914757057,
+            "p95_absolute": 2.0608971218937038,
+            "max_absolute": 2.7949092545835725
+          },
+          "base_link_height_error_m": {
+            "count": 752,
+            "mean": 0.041812414407698915,
+            "median": 0.012541270414251349,
+            "p95": 0.12740515596972105,
+            "max": 1.1039400663724779,
+            "rmse": 0.15351234556675622,
+            "mean_absolute": 0.046323937475376636,
+            "p95_absolute": 0.12740515596972105,
+            "max_absolute": 1.1039400663724779
+          },
+          "base_link_transients": {
+            "distance": {
+              "scheduled_samples": 752,
+              "valid_truth_samples": 752,
+              "truth_coverage": 1.0,
+              "band_m": 0.9,
+              "minimum_in_band_duration_s": 3.0,
+              "first_sustained_in_band_time_s": 3.3000000000000007,
+              "settled_through_interval_end": true,
+              "settling_time_s": 35.8,
+              "settling_right_censored": false,
+              "observed_interval_s": 75.12400000000001,
+              "duplicate_source_times": false,
+              "definition": "Absolute opposite-side crossing relative to initial error sign; no percent step normalization. Settling is the start of the final active, in-band, continuously evidenced suffix lasting >=3 s through the interval end. Missing truth, inactive control and gaps interrupt the suffix; null settling is right-censored, never zero."
+            },
+            "height": {
+              "scheduled_samples": 752,
+              "valid_truth_samples": 752,
+              "truth_coverage": 1.0,
+              "band_m": 0.25,
+              "minimum_in_band_duration_s": 3.0,
+              "first_sustained_in_band_time_s": 2.8000000000000007,
+              "settled_through_interval_end": true,
+              "settling_time_s": 32.099999999999994,
+              "settling_right_censored": false,
+              "observed_interval_s": 75.12400000000001,
+              "duplicate_source_times": false,
+              "definition": "Absolute opposite-side crossing relative to initial error sign; no percent step normalization. Settling is the start of the final active, in-band, continuously evidenced suffix lasting >=3 s through the interval end. Missing truth, inactive control and gaps interrupt the suffix; null settling is right-censored, never zero."
+            }
+          },
+          "model_origin_transients": {
+            "distance": {
+              "scheduled_samples": 752,
+              "valid_truth_samples": 752,
+              "truth_coverage": 1.0,
+              "band_m": 0.9,
+              "minimum_in_band_duration_s": 3.0,
+              "first_sustained_in_band_time_s": 3.3000000000000007,
+              "settled_through_interval_end": true,
+              "settling_time_s": 35.8,
+              "settling_right_censored": false,
+              "observed_interval_s": 75.12400000000001,
+              "duplicate_source_times": false,
+              "definition": "Absolute opposite-side crossing relative to initial error sign; no percent step normalization. Settling is the start of the final active, in-band, continuously evidenced suffix lasting >=3 s through the interval end. Missing truth, inactive control and gaps interrupt the suffix; null settling is right-censored, never zero."
+            },
+            "height": {
+              "scheduled_samples": 752,
+              "valid_truth_samples": 752,
+              "truth_coverage": 1.0,
+              "band_m": 0.25,
+              "minimum_in_band_duration_s": 3.0,
+              "first_sustained_in_band_time_s": 2.0,
+              "settled_through_interval_end": true,
+              "settling_time_s": 36.599999999999994,
+              "settling_right_censored": false,
+              "observed_interval_s": 75.12400000000001,
+              "duplicate_source_times": false,
+              "definition": "Absolute opposite-side crossing relative to initial error sign; no percent step normalization. Settling is the start of the final active, in-band, continuously evidenced suffix lasting >=3 s through the interval end. Missing truth, inactive control and gaps interrupt the suffix; null settling is right-censored, never zero."
+            }
+          }
+        },
+        "valid_state_coverage": 0.9162234042553191,
+        "truth_coverage": 1.0,
+        "windows": [
+          {
+            "kind": "initial_follow_before_first_shutter",
+            "start_s": 19.2,
+            "end_s": 31.200000000000003,
+            "base_link": {
+              "distance": {
+                "scheduled_samples": 121,
+                "valid_truth_samples": 121,
+                "truth_coverage": 1.0,
+                "band_m": 0.9,
+                "minimum_in_band_duration_s": 3.0,
+                "first_sustained_in_band_time_s": 3.3000000000000007,
+                "settled_through_interval_end": true,
+                "settling_time_s": 3.3000000000000007,
+                "settling_right_censored": false,
+                "observed_interval_s": 12.000000000000004,
+                "duplicate_source_times": false,
+                "definition": "Absolute opposite-side crossing relative to initial error sign; no percent step normalization. Settling is the start of the final active, in-band, continuously evidenced suffix lasting >=3 s through the interval end. Missing truth, inactive control and gaps interrupt the suffix; null settling is right-censored, never zero."
+              },
+              "height": {
+                "scheduled_samples": 121,
+                "valid_truth_samples": 121,
+                "truth_coverage": 1.0,
+                "band_m": 0.25,
+                "minimum_in_band_duration_s": 3.0,
+                "first_sustained_in_band_time_s": 2.8000000000000007,
+                "settled_through_interval_end": true,
+                "settling_time_s": 2.8000000000000007,
+                "settling_right_censored": false,
+                "observed_interval_s": 12.000000000000004,
+                "duplicate_source_times": false,
+                "definition": "Absolute opposite-side crossing relative to initial error sign; no percent step normalization. Settling is the start of the final active, in-band, continuously evidenced suffix lasting >=3 s through the interval end. Missing truth, inactive control and gaps interrupt the suffix; null settling is right-censored, never zero."
+              }
+            },
+            "model_origin": {
+              "distance": {
+                "scheduled_samples": 121,
+                "valid_truth_samples": 121,
+                "truth_coverage": 1.0,
+                "band_m": 0.9,
+                "minimum_in_band_duration_s": 3.0,
+                "first_sustained_in_band_time_s": 3.3000000000000007,
+                "settled_through_interval_end": true,
+                "settling_time_s": 3.3000000000000007,
+                "settling_right_censored": false,
+                "observed_interval_s": 12.000000000000004,
+                "duplicate_source_times": false,
+                "definition": "Absolute opposite-side crossing relative to initial error sign; no percent step normalization. Settling is the start of the final active, in-band, continuously evidenced suffix lasting >=3 s through the interval end. Missing truth, inactive control and gaps interrupt the suffix; null settling is right-censored, never zero."
+              },
+              "height": {
+                "scheduled_samples": 121,
+                "valid_truth_samples": 121,
+                "truth_coverage": 1.0,
+                "band_m": 0.25,
+                "minimum_in_band_duration_s": 3.0,
+                "first_sustained_in_band_time_s": 2.0,
+                "settled_through_interval_end": false,
+                "settling_time_s": null,
+                "settling_right_censored": true,
+                "observed_interval_s": 12.000000000000004,
+                "duplicate_source_times": false,
+                "definition": "Absolute opposite-side crossing relative to initial error sign; no percent step normalization. Settling is the start of the final active, in-band, continuously evidenced suffix lasting >=3 s through the interval end. Missing truth, inactive control and gaps interrupt the suffix; null settling is right-censored, never zero."
+              }
+            }
+          },
+          {
+            "kind": "explicit_selection",
+            "start_s": 51.2,
+            "end_s": 94.32400000000001,
+            "target_uuid": "9106db00-78eb-4b27-a5dc-1c0da9fc824f",
+            "first_measured_confirmation_after_request_s": 0.047999999999994714,
+            "confirmation_censored": false,
+            "base_link": {
+              "distance": {
+                "scheduled_samples": 432,
+                "valid_truth_samples": 432,
+                "truth_coverage": 1.0,
+                "band_m": 0.9,
+                "minimum_in_band_duration_s": 3.0,
+                "first_sustained_in_band_time_s": 3.799999999999997,
+                "settled_through_interval_end": true,
+                "settling_time_s": 3.799999999999997,
+                "settling_right_censored": false,
+                "observed_interval_s": 43.12400000000001,
+                "duplicate_source_times": false,
+                "definition": "Absolute opposite-side crossing relative to initial error sign; no percent step normalization. Settling is the start of the final active, in-band, continuously evidenced suffix lasting >=3 s through the interval end. Missing truth, inactive control and gaps interrupt the suffix; null settling is right-censored, never zero."
+              },
+              "height": {
+                "scheduled_samples": 432,
+                "valid_truth_samples": 432,
+                "truth_coverage": 1.0,
+                "band_m": 0.25,
+                "minimum_in_band_duration_s": 3.0,
+                "first_sustained_in_band_time_s": 0.09999999999999432,
+                "settled_through_interval_end": true,
+                "settling_time_s": 0.09999999999999432,
+                "settling_right_censored": false,
+                "observed_interval_s": 43.12400000000001,
+                "duplicate_source_times": false,
+                "definition": "Absolute opposite-side crossing relative to initial error sign; no percent step normalization. Settling is the start of the final active, in-band, continuously evidenced suffix lasting >=3 s through the interval end. Missing truth, inactive control and gaps interrupt the suffix; null settling is right-censored, never zero."
+              }
+            },
+            "model_origin": {
+              "distance": {
+                "scheduled_samples": 432,
+                "valid_truth_samples": 432,
+                "truth_coverage": 1.0,
+                "band_m": 0.9,
+                "minimum_in_band_duration_s": 3.0,
+                "first_sustained_in_band_time_s": 3.799999999999997,
+                "settled_through_interval_end": true,
+                "settling_time_s": 3.799999999999997,
+                "settling_right_censored": false,
+                "observed_interval_s": 43.12400000000001,
+                "duplicate_source_times": false,
+                "definition": "Absolute opposite-side crossing relative to initial error sign; no percent step normalization. Settling is the start of the final active, in-band, continuously evidenced suffix lasting >=3 s through the interval end. Missing truth, inactive control and gaps interrupt the suffix; null settling is right-censored, never zero."
+              },
+              "height": {
+                "scheduled_samples": 432,
+                "valid_truth_samples": 432,
+                "truth_coverage": 1.0,
+                "band_m": 0.25,
+                "minimum_in_band_duration_s": 3.0,
+                "first_sustained_in_band_time_s": 4.599999999999994,
+                "settled_through_interval_end": true,
+                "settling_time_s": 4.599999999999994,
+                "settling_right_censored": false,
+                "observed_interval_s": 43.12400000000001,
+                "duplicate_source_times": false,
+                "definition": "Absolute opposite-side crossing relative to initial error sign; no percent step normalization. Settling is the start of the final active, in-band, continuously evidenced suffix lasting >=3 s through the interval end. Missing truth, inactive control and gaps interrupt the suffix; null settling is right-censored, never zero."
+              }
+            }
+          }
+        ],
+        "interpretation": [
+          "Whole-interval physical metrics include inactive-control samples; no success-only segment was substituted.",
+          "Settling time is the start of the final continuously evidenced active in-band suffix lasting at least 3 seconds through interval end; it is not first in-band time.",
+          "base_link primary reference is distinct from vehicle model_origin. The 0.24 m FLU offset is declared offline vehicle geometry, not target-derived runtime compensation.",
+          "Physical truth coverage of 1.0 does not imply navigation valid-state coverage of 1.0."
+        ]
+      },
+      "flight": {
+        "acceptance": {
+          "result": "PASS",
+          "scope": "Observed flight/occlusion behavior only; no ground-truth accuracy threshold is asserted",
+          "short_occlusion_recorded": true,
+          "long_occlusion_recorded": true,
+          "clock_timebase_available": true,
+          "missing_topics": [],
+          "input_read_error_count": 0,
+          "failed_events_retained": true
+        },
+        "occlusion_events": [
+          {
+            "kind": "short",
+            "start_s": 31.200000000000003,
+            "end_s": 31.48,
+            "duration_s": 0.2799999999999976,
+            "result": "PASS",
+            "event_semantics": "requested shutter pose interval, not an independently measured occluder state",
+            "recovery_after_open_s": 0.15200000000000102,
+            "first_lost_s": null,
+            "first_hover_s": null,
+            "braking_from_motion_demonstrated": false,
+            "time_to_sustained_low_speed_after_hover_s": null,
+            "first_unrequested_measured_after_loss_s": null,
+            "first_unrequested_predicted_after_loss_s": null,
+            "first_unrequested_tracking_control_after_loss_s": null,
+            "checks": {
+              "recorded_close_event": true,
+              "shutter_close_service_succeeded": true,
+              "shutter_open_service_succeeded": true,
+              "shutter_close_ack_before_open_request": true,
+              "detector_interruption_observed": true,
+              "prediction_observed": true,
+              "lost_observed_for_long_occlusion": null,
+              "hover_observed_for_long_occlusion": null,
+              "sustained_low_speed_after_hover": null,
+              "no_automatic_recovery_after_long_loss": null,
+              "no_tracking_control_before_reselection_after_long_loss": null,
+              "sustained_tracking_after_reselection": null,
+              "no_loss_during_short_occlusion": true,
+              "identity_preserved_on_observed_recovery": true
+            }
+          },
+          {
+            "kind": "long",
+            "start_s": 44.2,
+            "end_s": 47.28,
+            "duration_s": 3.0799999999999983,
+            "result": "PASS",
+            "event_semantics": "requested shutter pose interval, not an independently measured occluder state",
+            "recovery_after_open_s": null,
+            "first_lost_s": 44.96,
+            "first_hover_s": 44.952,
+            "braking_from_motion_demonstrated": true,
+            "time_to_sustained_low_speed_after_hover_s": 0.5320000000000036,
+            "first_unrequested_measured_after_loss_s": null,
+            "first_unrequested_predicted_after_loss_s": null,
+            "first_unrequested_tracking_control_after_loss_s": null,
+            "checks": {
+              "recorded_close_event": true,
+              "shutter_close_service_succeeded": true,
+              "shutter_open_service_succeeded": true,
+              "shutter_close_ack_before_open_request": true,
+              "detector_interruption_observed": true,
+              "prediction_observed": true,
+              "lost_observed_for_long_occlusion": true,
+              "hover_observed_for_long_occlusion": true,
+              "sustained_low_speed_after_hover": true,
+              "no_automatic_recovery_after_long_loss": true,
+              "no_tracking_control_before_reselection_after_long_loss": true,
+              "sustained_tracking_after_reselection": true,
+              "no_loss_during_short_occlusion": null,
+              "identity_preserved_on_observed_recovery": null
+            },
+            "post_reselection_tracking": {
+              "result": "PASS",
+              "observed_duration_s": 43.076000000000015,
+              "state_span_s": 43.076,
+              "control_span_s": 43.047999999999995,
+              "checks": {
+                "minimum_recording_duration": true,
+                "minimum_state_span": true,
+                "minimum_control_span": true,
+                "same_target_active_states_only": true,
+                "tracking_control_only_after_grace": true,
+                "continuous_state_evidence": true,
+                "continuous_control_evidence": true,
+                "fresh_state_at_trial_end": true,
+                "tracking_control_at_trial_end": true,
+                "chronological_state_and_control_evidence": true
+              }
+            }
+          }
+        ],
+        "limitation": "Existing report validates observed flight/occlusion behavior only; no ground-truth accuracy threshold is asserted by flight_evaluation."
+      },
+      "archive_receipt_recorded_only": {
+        "status": "PASS",
+        "recorder_exit_code": 0,
+        "raw_status": "PASS",
+        "native_reader_status": "PASS",
+        "native_reader_full_stream_read": true,
+        "message_count": 156431,
+        "compressed_file_zstd_tests": [
+          "PASS"
+        ],
+        "spool_retained": false,
+        "limitation": "These are pre-existing recorded archive validation facts; this review did not reopen or revalidate any bag payload."
+      }
+    },
+    {
+      "slot_id": "car_stage1_position_seed004",
+      "inputs": {
+        "slot": {
+          "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble50\\reliability_v4_humble50_probe01_seed004_matrix\\slots\\car_stage1_position_seed004.json",
+          "bytes": 54342,
+          "sha256": "ebc49abaf715a083643113ec0860cb6a00aa6521ee73141f9ff2866e71c44a76"
+        },
+        "attempt_terminal": {
+          "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble50\\reliability_v4_humble50_probe01_seed004_matrix\\observed_driver01\\08_car_stage1_position_seed004.attempt_terminal.json",
+          "bytes": 31794,
+          "sha256": "af05143a873ce15b2f6817765666bfbd67ace29e6b0b77ef715bf5d1434863d6"
+        },
+        "navigation_reference_evaluation.json": {
+          "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble50\\reliability_v4_humble50_probe01_car_stage1_position_seed004\\navigation_reference_evaluation.json",
+          "bytes": 145303,
+          "sha256": "7e0e12fedfc4fc5c562216a778ed6501814e533225667f5090237fe0e9a89696"
+        },
+        "flight_evaluation.json": {
+          "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble50\\reliability_v4_humble50_probe01_car_stage1_position_seed004\\flight_evaluation.json",
+          "bytes": 24309,
+          "sha256": "91e09a8a917d8d5fed0746b3885ec9c3ed208f2766c9423ac4b1f7ccbd44b720"
+        },
+        "summary.json": {
+          "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble50\\reliability_v4_humble50_probe01_car_stage1_position_seed004\\summary.json",
+          "bytes": 4869,
+          "sha256": "2efff516af317549d4be420cf72f221c093cd735752afd99c9e1bbbb4435357e"
+        },
+        "bag_integrity.json": {
+          "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble50\\reliability_v4_humble50_probe01_car_stage1_position_seed004\\bag_integrity.json",
+          "bytes": 4971,
+          "sha256": "d369f1243883f15caf646a6dc62875e683e328453ccea7072d1144f25b936318"
+        }
+      },
+      "binding_checks": {
+        "slot_canonical_digest_matches": true,
+        "record_and_audit_bindings_identical": true,
+        "binding_raw_digest_matches_original_slot": true,
+        "binding_internal_digest_matches_original_slot": true,
+        "binding_path_suffix_matches_slot": true,
+        "binding_plan_digest_matches_slot": true,
+        "binding_start_time_matches_slot": true,
+        "all_four_report_raw_digests_match_slot_map": true,
+        "available_closed_archive_report_digests_match": true,
+        "whole_interval_all_truth_samples_matched": true,
+        "whole_interval_distance_metric_count_matches_full_denominator": true,
+        "whole_interval_height_metric_count_matches_full_denominator": true,
+        "slot_measured_distance_matches_original_nav": true,
+        "slot_measured_height_matches_original_nav": true,
+        "slot_measured_valid_coverage_matches_original_nav": true,
+        "bag_recorded_raw_and_native_message_counts_equal": true,
+        "bag_recorded_raw_and_native_topic_counts_equal": true
+      },
+      "slot_record_sha256": "9d82210487e2dda744dc0b9d49100a215a1b31dfbe46085ff6c557f1f1cd8822",
+      "plan_sha256_recorded_only": "95122b994f26b8cab254ec6cfe58e5fa4549aed4b1e658df2965890176913e72",
+      "started_marker_binding_recorded_only": {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble50/reliability_v4_humble50_probe01_seed004_matrix/slots/car_stage1_position_seed004.started.json",
+        "sha256": "e430d8d553f10350f4eebfea0d43fbe333649199110aaeba20e678599a66aa1c"
+      },
+      "slot_result": {
+        "execution_status": "COMPLETED",
+        "status": "PASS",
+        "engineering_result": "PASS",
+        "infrastructure_stop": false,
+        "flight_exit_code": 0,
+        "started_utc": "2026-11-02T06:09:36.626301+00:00",
+        "finished_utc": "2026-11-02T06:26:33.084826+00:00"
+      },
+      "slot_engineering_checks": {
+        "base_link_distance": true,
+        "base_link_height": true,
+        "navigation_coverage": true,
+        "truth_coverage": true,
+        "final_distance_settled": true,
+        "final_height_settled": true
+      },
+      "recorded_cleanup": {
+        "residual_processes": [],
+        "process_exit_codes": {
+          "gazebo": 0,
+          "agent": -2,
+          "px4": 0,
+          "bag": 0,
+          "monitor": 0,
+          "ros": 0
+        }
+      },
+      "recorded_attempt": {
+        "error": null,
+        "started_this_invocation": 1,
+        "stop": null,
+        "runtime_errors": [],
+        "bridge_status": "PASS",
+        "process_status": "PASS",
+        "process_errors": [],
+        "full75s_source_clock": true,
+        "native_archive_closed": true
+      },
+      "summary": {
+        "basic_flight_passed": true,
+        "termination_reason": "follow_duration_reached",
+        "monitor_success": true,
+        "monitor_exit_code": 0
+      },
+      "navigation": {
+        "evaluation_status": "RECORDED_WITH_CENSORED_FAILURES",
+        "incomplete_reasons": [],
+        "interval": {
+          "start_s": 17.952,
+          "end_s": 93.024,
+          "navigation_evaluation_start_s": 17.952,
+          "sample_period_s": 0.1
+        },
+        "reference": {
+          "kind": "ground_footprint_center",
+          "target_truth": "Independent target model origin on ground",
+          "controlled_vehicle_point": "base_link",
+          "vehicle_control_point_offset_flu_m": [
+            0.0,
+            0.0,
+            0.24
+          ],
+          "offset_scope": "Explicit declared vehicle geometry applied to offline GT only; never target-derived or runtime compensation",
+          "desired_horizontal_distance_m": 9.0,
+          "desired_height_m": 2.0,
+          "multi_target_mapping": "Unique target model"
+        },
+        "whole_interval": {
+          "scheduled_samples": 751,
+          "matched_truth_samples": 751,
+          "inactive_control_samples": 64,
+          "truth_missing_reasons": {},
+          "base_link_distance_error_m": {
+            "count": 751,
+            "mean": 0.26124555561713675,
+            "median": 0.040278566241934044,
+            "p95": 2.0246730307853866,
+            "max": 2.7631734887168005,
+            "rmse": 0.7154566404557916,
+            "mean_absolute": 0.3414960485100681,
+            "p95_absolute": 2.0246730307853866,
+            "max_absolute": 2.7631734887168005
+          },
+          "base_link_height_error_m": {
+            "count": 751,
+            "mean": 0.040614509980712754,
+            "median": 0.009341516980662767,
+            "p95": 0.06883829750485249,
+            "max": 1.1336855529300651,
+            "rmse": 0.16919465571400955,
+            "mean_absolute": 0.04678811024741564,
+            "p95_absolute": 0.06883829750485249,
+            "max_absolute": 1.1336855529300651
+          },
+          "base_link_transients": {
+            "distance": {
+              "scheduled_samples": 751,
+              "valid_truth_samples": 751,
+              "truth_coverage": 1.0,
+              "band_m": 0.9,
+              "minimum_in_band_duration_s": 3.0,
+              "first_sustained_in_band_time_s": 3.0,
+              "settled_through_interval_end": true,
+              "settling_time_s": 35.2,
+              "settling_right_censored": false,
+              "observed_interval_s": 75.072,
+              "duplicate_source_times": false,
+              "definition": "Absolute opposite-side crossing relative to initial error sign; no percent step normalization. Settling is the start of the final active, in-band, continuously evidenced suffix lasting >=3 s through the interval end. Missing truth, inactive control and gaps interrupt the suffix; null settling is right-censored, never zero."
+            },
+            "height": {
+              "scheduled_samples": 751,
+              "valid_truth_samples": 751,
+              "truth_coverage": 1.0,
+              "band_m": 0.25,
+              "minimum_in_band_duration_s": 3.0,
+              "first_sustained_in_band_time_s": 3.1000000000000014,
+              "settled_through_interval_end": true,
+              "settling_time_s": 32.10000000000001,
+              "settling_right_censored": false,
+              "observed_interval_s": 75.072,
+              "duplicate_source_times": false,
+              "definition": "Absolute opposite-side crossing relative to initial error sign; no percent step normalization. Settling is the start of the final active, in-band, continuously evidenced suffix lasting >=3 s through the interval end. Missing truth, inactive control and gaps interrupt the suffix; null settling is right-censored, never zero."
+            }
+          },
+          "model_origin_transients": {
+            "distance": {
+              "scheduled_samples": 751,
+              "valid_truth_samples": 751,
+              "truth_coverage": 1.0,
+              "band_m": 0.9,
+              "minimum_in_band_duration_s": 3.0,
+              "first_sustained_in_band_time_s": 3.0,
+              "settled_through_interval_end": true,
+              "settling_time_s": 35.2,
+              "settling_right_censored": false,
+              "observed_interval_s": 75.072,
+              "duplicate_source_times": false,
+              "definition": "Absolute opposite-side crossing relative to initial error sign; no percent step normalization. Settling is the start of the final active, in-band, continuously evidenced suffix lasting >=3 s through the interval end. Missing truth, inactive control and gaps interrupt the suffix; null settling is right-censored, never zero."
+            },
+            "height": {
+              "scheduled_samples": 751,
+              "valid_truth_samples": 751,
+              "truth_coverage": 1.0,
+              "band_m": 0.25,
+              "minimum_in_band_duration_s": 3.0,
+              "first_sustained_in_band_time_s": 7.300000000000001,
+              "settled_through_interval_end": true,
+              "settling_time_s": 44.400000000000006,
+              "settling_right_censored": false,
+              "observed_interval_s": 75.072,
+              "duplicate_source_times": false,
+              "definition": "Absolute opposite-side crossing relative to initial error sign; no percent step normalization. Settling is the start of the final active, in-band, continuously evidenced suffix lasting >=3 s through the interval end. Missing truth, inactive control and gaps interrupt the suffix; null settling is right-censored, never zero."
+            }
+          }
+        },
+        "valid_state_coverage": 0.914780292942743,
+        "truth_coverage": 1.0,
+        "windows": [
+          {
+            "kind": "initial_follow_before_first_shutter",
+            "start_s": 17.952,
+            "end_s": 29.96,
+            "base_link": {
+              "distance": {
+                "scheduled_samples": 121,
+                "valid_truth_samples": 121,
+                "truth_coverage": 1.0,
+                "band_m": 0.9,
+                "minimum_in_band_duration_s": 3.0,
+                "first_sustained_in_band_time_s": 3.0,
+                "settled_through_interval_end": true,
+                "settling_time_s": 3.0,
+                "settling_right_censored": false,
+                "observed_interval_s": 12.008,
+                "duplicate_source_times": false,
+                "definition": "Absolute opposite-side crossing relative to initial error sign; no percent step normalization. Settling is the start of the final active, in-band, continuously evidenced suffix lasting >=3 s through the interval end. Missing truth, inactive control and gaps interrupt the suffix; null settling is right-censored, never zero."
+              },
+              "height": {
+                "scheduled_samples": 121,
+                "valid_truth_samples": 121,
+                "truth_coverage": 1.0,
+                "band_m": 0.25,
+                "minimum_in_band_duration_s": 3.0,
+                "first_sustained_in_band_time_s": 3.1000000000000014,
+                "settled_through_interval_end": true,
+                "settling_time_s": 3.1000000000000014,
+                "settling_right_censored": false,
+                "observed_interval_s": 12.008,
+                "duplicate_source_times": false,
+                "definition": "Absolute opposite-side crossing relative to initial error sign; no percent step normalization. Settling is the start of the final active, in-band, continuously evidenced suffix lasting >=3 s through the interval end. Missing truth, inactive control and gaps interrupt the suffix; null settling is right-censored, never zero."
+              }
+            },
+            "model_origin": {
+              "distance": {
+                "scheduled_samples": 121,
+                "valid_truth_samples": 121,
+                "truth_coverage": 1.0,
+                "band_m": 0.9,
+                "minimum_in_band_duration_s": 3.0,
+                "first_sustained_in_band_time_s": 3.0,
+                "settled_through_interval_end": true,
+                "settling_time_s": 3.0,
+                "settling_right_censored": false,
+                "observed_interval_s": 12.008,
+                "duplicate_source_times": false,
+                "definition": "Absolute opposite-side crossing relative to initial error sign; no percent step normalization. Settling is the start of the final active, in-band, continuously evidenced suffix lasting >=3 s through the interval end. Missing truth, inactive control and gaps interrupt the suffix; null settling is right-censored, never zero."
+              },
+              "height": {
+                "scheduled_samples": 121,
+                "valid_truth_samples": 121,
+                "truth_coverage": 1.0,
+                "band_m": 0.25,
+                "minimum_in_band_duration_s": 3.0,
+                "first_sustained_in_band_time_s": 7.300000000000001,
+                "settled_through_interval_end": true,
+                "settling_time_s": 7.300000000000001,
+                "settling_right_censored": false,
+                "observed_interval_s": 12.008,
+                "duplicate_source_times": false,
+                "definition": "Absolute opposite-side crossing relative to initial error sign; no percent step normalization. Settling is the start of the final active, in-band, continuously evidenced suffix lasting >=3 s through the interval end. Missing truth, inactive control and gaps interrupt the suffix; null settling is right-censored, never zero."
+              }
+            }
+          },
+          {
+            "kind": "explicit_selection",
+            "start_s": 49.96,
+            "end_s": 93.024,
+            "target_uuid": "ac9d3b07-2988-4ab8-8bd0-06e126621b21",
+            "first_measured_confirmation_after_request_s": 0.02400000000000091,
+            "confirmation_censored": false,
+            "base_link": {
+              "distance": {
+                "scheduled_samples": 430,
+                "valid_truth_samples": 430,
+                "truth_coverage": 1.0,
+                "band_m": 0.9,
+                "minimum_in_band_duration_s": 3.0,
+                "first_sustained_in_band_time_s": 3.192,
+                "settled_through_interval_end": true,
+                "settling_time_s": 3.192,
+                "settling_right_censored": false,
+                "observed_interval_s": 43.064,
+                "duplicate_source_times": false,
+                "definition": "Absolute opposite-side crossing relative to initial error sign; no percent step normalization. Settling is the start of the final active, in-band, continuously evidenced suffix lasting >=3 s through the interval end. Missing truth, inactive control and gaps interrupt the suffix; null settling is right-censored, never zero."
+              },
+              "height": {
+                "scheduled_samples": 430,
+                "valid_truth_samples": 430,
+                "truth_coverage": 1.0,
+                "band_m": 0.25,
+                "minimum_in_band_duration_s": 3.0,
+                "first_sustained_in_band_time_s": 0.09200000000000585,
+                "settled_through_interval_end": true,
+                "settling_time_s": 0.09200000000000585,
+                "settling_right_censored": false,
+                "observed_interval_s": 43.064,
+                "duplicate_source_times": false,
+                "definition": "Absolute opposite-side crossing relative to initial error sign; no percent step normalization. Settling is the start of the final active, in-band, continuously evidenced suffix lasting >=3 s through the interval end. Missing truth, inactive control and gaps interrupt the suffix; null settling is right-censored, never zero."
+              }
+            },
+            "model_origin": {
+              "distance": {
+                "scheduled_samples": 430,
+                "valid_truth_samples": 430,
+                "truth_coverage": 1.0,
+                "band_m": 0.9,
+                "minimum_in_band_duration_s": 3.0,
+                "first_sustained_in_band_time_s": 3.192,
+                "settled_through_interval_end": true,
+                "settling_time_s": 3.192,
+                "settling_right_censored": false,
+                "observed_interval_s": 43.064,
+                "duplicate_source_times": false,
+                "definition": "Absolute opposite-side crossing relative to initial error sign; no percent step normalization. Settling is the start of the final active, in-band, continuously evidenced suffix lasting >=3 s through the interval end. Missing truth, inactive control and gaps interrupt the suffix; null settling is right-censored, never zero."
+              },
+              "height": {
+                "scheduled_samples": 430,
+                "valid_truth_samples": 430,
+                "truth_coverage": 1.0,
+                "band_m": 0.25,
+                "minimum_in_band_duration_s": 3.0,
+                "first_sustained_in_band_time_s": 5.192,
+                "settled_through_interval_end": true,
+                "settling_time_s": 12.392000000000003,
+                "settling_right_censored": false,
+                "observed_interval_s": 43.064,
+                "duplicate_source_times": false,
+                "definition": "Absolute opposite-side crossing relative to initial error sign; no percent step normalization. Settling is the start of the final active, in-band, continuously evidenced suffix lasting >=3 s through the interval end. Missing truth, inactive control and gaps interrupt the suffix; null settling is right-censored, never zero."
+              }
+            }
+          }
+        ],
+        "interpretation": [
+          "Whole-interval physical metrics include inactive-control samples; no success-only segment was substituted.",
+          "Settling time is the start of the final continuously evidenced active in-band suffix lasting at least 3 seconds through interval end; it is not first in-band time.",
+          "base_link primary reference is distinct from vehicle model_origin. The 0.24 m FLU offset is declared offline vehicle geometry, not target-derived runtime compensation.",
+          "Physical truth coverage of 1.0 does not imply navigation valid-state coverage of 1.0."
+        ]
+      },
+      "flight": {
+        "acceptance": {
+          "result": "PASS",
+          "scope": "Observed flight/occlusion behavior only; no ground-truth accuracy threshold is asserted",
+          "short_occlusion_recorded": true,
+          "long_occlusion_recorded": true,
+          "clock_timebase_available": true,
+          "missing_topics": [],
+          "input_read_error_count": 0,
+          "failed_events_retained": true
+        },
+        "occlusion_events": [
+          {
+            "kind": "short",
+            "start_s": 29.96,
+            "end_s": 30.240000000000002,
+            "duration_s": 0.28000000000000114,
+            "result": "PASS",
+            "event_semantics": "requested shutter pose interval, not an independently measured occluder state",
+            "recovery_after_open_s": 0.13999999999999702,
+            "first_lost_s": null,
+            "first_hover_s": null,
+            "braking_from_motion_demonstrated": false,
+            "time_to_sustained_low_speed_after_hover_s": null,
+            "first_unrequested_measured_after_loss_s": null,
+            "first_unrequested_predicted_after_loss_s": null,
+            "first_unrequested_tracking_control_after_loss_s": null,
+            "checks": {
+              "recorded_close_event": true,
+              "shutter_close_service_succeeded": true,
+              "shutter_open_service_succeeded": true,
+              "shutter_close_ack_before_open_request": true,
+              "detector_interruption_observed": true,
+              "prediction_observed": true,
+              "lost_observed_for_long_occlusion": null,
+              "hover_observed_for_long_occlusion": null,
+              "sustained_low_speed_after_hover": null,
+              "no_automatic_recovery_after_long_loss": null,
+              "no_tracking_control_before_reselection_after_long_loss": null,
+              "sustained_tracking_after_reselection": null,
+              "no_loss_during_short_occlusion": true,
+              "identity_preserved_on_observed_recovery": true
+            }
+          },
+          {
+            "kind": "long",
+            "start_s": 42.96,
+            "end_s": 46.040000000000006,
+            "duration_s": 3.0800000000000054,
+            "result": "PASS",
+            "event_semantics": "requested shutter pose interval, not an independently measured occluder state",
+            "recovery_after_open_s": null,
+            "first_lost_s": 43.66,
+            "first_hover_s": 43.652,
+            "braking_from_motion_demonstrated": true,
+            "time_to_sustained_low_speed_after_hover_s": 0.5120000000000005,
+            "first_unrequested_measured_after_loss_s": null,
+            "first_unrequested_predicted_after_loss_s": null,
+            "first_unrequested_tracking_control_after_loss_s": null,
+            "checks": {
+              "recorded_close_event": true,
+              "shutter_close_service_succeeded": true,
+              "shutter_open_service_succeeded": true,
+              "shutter_close_ack_before_open_request": true,
+              "detector_interruption_observed": true,
+              "prediction_observed": true,
+              "lost_observed_for_long_occlusion": true,
+              "hover_observed_for_long_occlusion": true,
+              "sustained_low_speed_after_hover": true,
+              "no_automatic_recovery_after_long_loss": true,
+              "no_tracking_control_before_reselection_after_long_loss": true,
+              "sustained_tracking_after_reselection": true,
+              "no_loss_during_short_occlusion": null,
+              "identity_preserved_on_observed_recovery": null
+            },
+            "post_reselection_tracking": {
+              "result": "PASS",
+              "observed_duration_s": 43.04,
+              "state_span_s": 43.035999999999994,
+              "control_span_s": 43.0,
+              "checks": {
+                "minimum_recording_duration": true,
+                "minimum_state_span": true,
+                "minimum_control_span": true,
+                "same_target_active_states_only": true,
+                "tracking_control_only_after_grace": true,
+                "continuous_state_evidence": true,
+                "continuous_control_evidence": true,
+                "fresh_state_at_trial_end": true,
+                "tracking_control_at_trial_end": true,
+                "chronological_state_and_control_evidence": true
+              }
+            }
+          }
+        ],
+        "limitation": "Existing report validates observed flight/occlusion behavior only; no ground-truth accuracy threshold is asserted by flight_evaluation."
+      },
+      "archive_receipt_recorded_only": {
+        "status": "PASS",
+        "recorder_exit_code": 0,
+        "raw_status": "PASS",
+        "native_reader_status": "PASS",
+        "native_reader_full_stream_read": true,
+        "message_count": 155140,
+        "compressed_file_zstd_tests": [
+          "PASS"
+        ],
+        "spool_retained": false,
+        "limitation": "These are pre-existing recorded archive validation facts; this review did not reopen or revalidate any bag payload."
+      }
+    }
+  ],
+  "conclusion": {
+    "supports": "Both completed seed004 stage1 car development slots have internally consistent small-original evidence for engineering PASS, complete scheduled physical truth denominators and final base_link settling.",
+    "does_not_support": [
+      "All diagnostic windows settled",
+      "All 12 core slots complete",
+      "Formal 280-trial reliability acceptance",
+      "Overall project completion",
+      "Control-mode superiority",
+      "Statistical algorithm superiority or universal adaptive-KF improvement",
+      "Full navigation-state validity from full physical-truth coverage"
+    ],
+    "preserved_boundary": "Both navigation evaluations retain RECORDED_WITH_CENSORED_FAILURES. Engineering PASS does not remove censored diagnostic windows or inactive-control samples."
+  },
+  "preserved_censored_windows": [
+    {
+      "slot_id": "car_stage1_velocity_seed004",
+      "window_kind": "initial_follow_before_first_shutter",
+      "reference": "model_origin",
+      "axis": "height",
+      "start_s": 19.2,
+      "end_s": 31.200000000000003,
+      "settling_time_s": null
+    }
+  ]
+}
