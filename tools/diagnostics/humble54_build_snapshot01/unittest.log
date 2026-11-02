@@ -1,0 +1,125 @@
+/root/uav_humble22/venv/lib/python3.10/site-packages/matplotlib/projections/__init__.py:63: UserWarning: Unable to import Axes3D. This may be due to multiple versions of Matplotlib being installed (e.g. as a system package and as a pip package). As a result, the 3D projection is not available.
+  warnings.warn("Unable to import Axes3D. This may be due to multiple versions of "
+started gazebo pid=731
+started agent pid=731
+started px4 pid=731
+started monitor pid=731
+started ros pid=731
+monitor exited 0; evidence: /tmp/tmpyo9s5rzb/results/seed_trial
+trial_car: offline YOLO 1/2
+Saved /tmp/tmplsow4f7x/main_output/detection_report.json
+trial_car: offline YOLO 1/2
+Saved /tmp/tmplsow4f7x/main_output/detection_report.json
+{
+  "report": "/tmp/tmpzkf1jm9b/legacy.json",
+  "input_mode": "bag",
+  "follow_start_s": 10.0,
+  "window": {
+    "source_time_window_s": [
+      9.0,
+      15.0
+    ],
+    "sequence_window_inclusive": [
+      null,
+      null
+    ],
+    "selection": "INCLUSIVE_INTERSECTION_IN_ORIGINAL_RECORD_ORDER",
+    "unstamped_event_policy": "Arrival ROS clock only, explicitly marked; never invented acquisition time",
+    "default_first_follow_window": true
+  },
+  "window_counts": {
+    "records": 4,
+    "navigation_publications": 0,
+    "distinct_navigation_reference_evaluations": 0,
+    "new_accepted_navigation_measurements": 0,
+    "cached_navigation_publications": 0
+  }
+}
+Downloading official node-v24.15.0-linux-x64.tar.xz
+{"status": "INCOMPLETE_EVIDENCE", "native_startup_pass": false, "output": "/tmp/tmpra9at62x/new_native_audit.json"}
+{"status": "INCOMPLETE", "source_clock_pass": false, "output": "/tmp/tmpeuwa_kdh/report.json"}
+Wrote /tmp/tmp16z0_xae/export/recording.json: 1 detector frame opportunities, 1 selected images, 1 eligible
+{
+  "plan": "/tmp/tmp3wclkw2h/results/default_resources/plan.json",
+  "plan_sha256": "85514bb15d040e436245b01bb4e88879a5e152db45fa045908da1224c66d0bd0",
+  "mode": "PROBE",
+  "planned_count": 1,
+  "status_counts": {
+    "PENDING": 1
+  },
+  "terminal_count": 0,
+  "all_engineering_pass": false,
+  "exit_code_semantics": "Run exit zero means no orchestration/infrastructure stop; inspect all_engineering_pass and every terminal result separately.",
+  "pending_ids": [
+    "person_stage1_velocity_seed004"
+  ],
+  "scope": "New post-repair engineering slots; navigation/base_link evidence and unknown identity are retained. This is not a new v3 four-estimator comparison."
+}
+Infrastructure stop: first; all remaining matrices deferred
+[1/2] infra_person_velocity_adaptive_kf_seed00
+infra_person_velocity_adaptive_kf_seed00: infrastructure stop after evaluation; remaining planned slots stay pending
+[1/2] infra_person_velocity_adaptive_kf_seed00
+infra_person_velocity_adaptive_kf_seed00: infrastructure stop; remaining planned slots stay pending
+started gazebo pid=731
+started agent pid=731
+started px4 pid=731
+started monitor pid=731
+started ros pid=731
+monitor exited 0; evidence: /tmp/tmpjcl2zqzz/results/seed_trial
+started gazebo pid=731
+started agent pid=731
+started px4 pid=731
+started bag pid=731
+started monitor pid=731
+started ros pid=731
+monitor exited 0; evidence: /tmp/tmpe2vcpput/results/seed_trial
+started gazebo pid=731
+started agent pid=731
+started px4 pid=731
+started monitor pid=731
+started ros pid=731
+monitor exited 0; evidence: /tmp/tmph9b728vg/results/seed_trial
+started gazebo pid=731
+started agent pid=731
+started px4 pid=731
+started monitor pid=731
+started ros pid=731
+monitor exited 0; evidence: /tmp/tmpyalg37bb/results/seed_trial
+started gazebo pid=731
+started agent pid=731
+started px4 pid=731
+started monitor pid=731
+started ros pid=731
+monitor exited 0; evidence: /tmp/tmp7x81a95q/results/seed_trial
+started gazebo pid=731
+started agent pid=731
+started px4 pid=731
+started bag pid=731
+started monitor pid=731
+started ros pid=731
+monitor exited 0; evidence: /tmp/tmp02_0pakm/results/seed_trial
+started gazebo pid=731
+started agent pid=731
+started px4 pid=731
+started bag pid=731
+started monitor pid=731
+started ros pid=731
+monitor exited 0; evidence: /tmp/tmpee39ofai/results/seed_trial
+[1/1] firstcrash_person_velocity_adaptive_kf_seed00
+[1/1] firstcrash_person_velocity_adaptive_kf_seed00
+usage: python -m unittest [-h] --mode {auto_unique,specified}
+                          --navigation-report NAVIGATION_REPORT
+                          --navigation-frames NAVIGATION_FRAMES
+                          [--identity-report IDENTITY_REPORT]
+                          [--identity-frames IDENTITY_FRAMES]
+                          [--raw-frames RAW_FRAMES] [--summary SUMMARY]
+                          [--telemetry TELEMETRY]
+                          [--occlusions {expected,none,unknown}] --output-dir
+                          OUTPUT_DIR
+python -m unittest: error: Output directory already exists; no overwrite or resume
+----------------------------------------------------------------------
+Ran 2021 tests in 121.793s
+
+OK (skipped=5)
+{"status": "COMPLETE_AUXILIARY_ANALYSIS", "output": "/tmp/tmpkfrf3vog/inputs/appendix", "manifest_sha256": "ee40d62e57634785008850f01f6dcf8f1542e8d16af7e67fb3643f4a952ee282"}
+{"status": "INCOMPLETE_EVIDENCE", "output": "/tmp/tmp0_f1s6q9/inputs/appendix", "manifest_sha256": "d97f6495099bae55bcd5139195f3fc44357684cc5db6761cf68c3146fecf7d6a"}

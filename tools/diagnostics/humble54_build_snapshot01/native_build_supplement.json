@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "created_utc": "2026-11-02T19:14:24.074419+00:00",
+  "scope": "ACTUAL_COLD_BUILD_COMPILER_ISOLATION_AND_GENERATED_CDR_NOT_FLIGHT_ACCEPTANCE",
+  "root": "/root/uav_tracking_fullplan_v4_humble54",
+  "reference": "/root/uav_tracking_fullplan_v4_humble53",
+  "status": "FAIL",
+  "runtime_registration_bytes": {
+    "config/dds_runtime_humble22.json": {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/config/dds_runtime_humble22.json",
+      "reference_path": "/root/uav_tracking_fullplan_v4_humble53/config/dds_runtime_humble22.json",
+      "sha256": "4e517b62e823585b53dd2ac503f65eaf9bc3fd4c59d9d8fdb900d985f99d030d"
+    },
+    "config/ros_gz_runtime_humble22.json": {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/config/ros_gz_runtime_humble22.json",
+      "reference_path": "/root/uav_tracking_fullplan_v4_humble53/config/ros_gz_runtime_humble22.json",
+      "sha256": "08cbc9ea8a2b6e50b71efc4910e5adef7c309b742fb0e9177cd803e934a028af"
+    },
+    "config/ros_gz_clock_runtime_humble22.json": {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/config/ros_gz_clock_runtime_humble22.json",
+      "reference_path": "/root/uav_tracking_fullplan_v4_humble53/config/ros_gz_clock_runtime_humble22.json",
+      "sha256": "908f8b7e18154377e57ce6f92922b63b36f7d4fb90ac79e61cc1b8dd95d3e4e4"
+    },
+    "config/px4_magnetic_runtime.json": {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/config/px4_magnetic_runtime.json",
+      "reference_path": "/root/uav_tracking_fullplan_v4_humble53/config/px4_magnetic_runtime.json",
+      "sha256": "3c4f9693cfab51c6b2049af619bfb6e3edbd22a8328468b7e84f75053485c66b"
+    },
+    "config/gazebo_magnetic_runtime_humble22.json": {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/config/gazebo_magnetic_runtime_humble22.json",
+      "reference_path": "/root/uav_tracking_fullplan_v4_humble53/config/gazebo_magnetic_runtime_humble22.json",
+      "sha256": "0e80e51994948b5186c3a76c7e5c9651d27cf3d9acf63109f3f66544de801e6a"
+    }
+  },
+  "compiler_fastcdr": {
+    "cmake_cache": "/root/uav_tracking_fullplan_v4_humble54/ros2_ws/build/uav_tracking_interfaces/CMakeCache.txt",
+    "cache_sha256": "52e707103781cc70f5e48455db5a1f12ba29247ea6a7e62a765dfd99e93c8acc",
+    "selected_directory": "/opt/ros/humble/lib/cmake/fastcdr",
+    "config_sha256": "e3e07a1a52406c8c473e295dc187d9c57ab0cb138290bce265b3c6067706e8a4"
+  },
+  "public_import_isolation": {
+    "path": "/root/uav_tracking_fullplan_v4_humble54/results/freeze_validation/import_isolation.json",
+    "sha256": "a8f43e840275763b83f8f8794fd5882d2d2ec02cec397a2bf5e4ed6d570c8576",
+    "isolated": true
+  },
+  "actual_generated_cdr": {
+    "status": "PASS",
+    "wire_bytes": 480,
+    "generated_message_file": "/root/uav_tracking_fullplan_v4_humble54/ros2_ws/install/lib/python3.10/site-packages/uav_tracking_interfaces/msg/_target_observation.py",
+    "fields": [
+      "uint64_epoch_max",
+      "surface_flags",
+      "exclusive_native_points",
+      "independent_default_candidate"
+    ]
+  },
+  "error": "ValueError: Full native unittest log does not end with a successful suite result"
+}

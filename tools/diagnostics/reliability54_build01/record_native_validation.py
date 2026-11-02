@@ -3,6 +3,7 @@ import argparse
 from datetime import datetime, timezone
 import hashlib
 import importlib
+import importlib.util
 import json
 import os
 from pathlib import Path
@@ -25,23 +26,68 @@ def compiler_selection(text, expected):
 
 
 def successful_suite(text):
-    match = re.search(r"(?:^|\n)Ran ([1-9][0-9]*) tests? in [^\r\n]+\r?\n\r?\nOK(?: \(skipped=([0-9]+)\))?\s*\Z", text)
-    if match is None:
-        raise ValueError("Full native unittest log does not end with a successful suite result")
-    return {"tests": int(match.group(1)), "skipped": int(match.group(2) or 0)}
+    # unittest writes its summary to stderr. Buffered stdout from the tests can
+    # arrive afterwards in a merged pipe, despite a successful process exit.
+    summaries = re.findall(r"^Ran ([0-9]+) tests? in [^\r\n]+\r?\n\r?\n([^\r\n]+)", text, re.MULTILINE)
+    if len(summaries) != 1 or int(summaries[0][0]) <= 0:
+        raise ValueError("Full native unittest log must contain one successful suite result")
+    result = re.fullmatch(r"OK(?: \(skipped=([0-9]+)\))?", summaries[0][1])
+    if result is None:
+        raise ValueError("Full native unittest log must contain one successful suite result")
+    return {"tests": int(summaries[0][0]), "skipped": int(result.group(1) or 0)}
 
 
-def record(root, reference):
+def verify_original_freeze(root):
+    """Bind the actual zero build exit and recheck unchanged frozen bytes."""
+    directory = root / "results/freeze_validation/source_integrity"
+    report_path = directory / "source_frozen_integrity.json"
+    report = json.loads(report_path.read_text())
+    if not (report.get("status") == "PASS" and report.get("build_returncode") == 0
+            and report.get("source_unchanged") is True and report.get("copy_identical") is True
+            and Path(report["frozen"]).resolve() == root):
+        raise ValueError("Original public freeze did not pass its source maps with a zero build/test exit")
+    actual_path = directory / "frozen_actual.json"
+    if digest(actual_path) != report["maps"]["frozen_actual.json"]["sha256"]:
+        raise ValueError("Original frozen file map changed")
+    expected = json.loads(actual_path.read_text())
+    if Path(expected["frozen"]).resolve() != root:
+        raise ValueError("Original file map belongs to another frozen root")
+    helper_relative = "tools/diagnostics/reliability54_build01/source_integrity.py"
+    helper_path = root / helper_relative
+    if digest(helper_path) != expected["entries"][helper_relative]["sha256"]:
+        raise ValueError("Original frozen integrity helper changed")
+    specification = importlib.util.spec_from_file_location("original_frozen_source_integrity", helper_path)
+    module = importlib.util.module_from_spec(specification)
+    specification.loader.exec_module(module)
+    current = module.file_map(root)
+    link = root / "results"
+    if not link.is_symlink() or link.resolve(strict=True) != Path(report["generated_results_link"]["expected_store"]).resolve(strict=True):
+        raise ValueError("Original results link changed")
+    current.pop("results")
+    difference = module.differences(expected["entries"], current)
+    if any(difference.values()):
+        raise ValueError("Frozen bytes changed after original tests: " + json.dumps(difference))
+    return {"report": str(report_path), "report_sha256": digest(report_path),
+            "original_build_and_full_suite_returncode": 0, "current_frozen_bytes_unchanged": True,
+            "complete_file_entries": len(current), "original_map_sha256": digest(actual_path)}
+
+
+def record(root, reference, output=None):
     root, reference = root.resolve(strict=True), reference.resolve(strict=True)
     if root == reference or not re.fullmatch(r"/root/uav_tracking_fullplan_[a-zA-Z0-9_]+", str(root)):
         raise ValueError("Expected a new dedicated frozen root distinct from reference")
-    output = root / "results/freeze_validation/native_build_supplement.json"
+    validation_directory = root / "results/freeze_validation"
+    output = validation_directory / "native_build_supplement.json" if output is None else output.resolve()
+    if output.parent.resolve() != validation_directory.resolve() or output.suffix != ".json":
+        raise ValueError("Supplement must be a new JSON in the original validation directory")
     if output.exists() or output.is_symlink():
         raise FileExistsError("Native build supplement already exists")
     evidence = {"schema_version": 1, "created_utc": datetime.now(timezone.utc).isoformat(),
                 "scope": "ACTUAL_COLD_BUILD_COMPILER_ISOLATION_AND_GENERATED_CDR_NOT_FLIGHT_ACCEPTANCE",
-                "root": str(root), "reference": str(reference), "status": "FAIL"}
+                "root": str(root), "reference": str(reference), "status": "FAIL",
+                "validator": {"path": str(Path(__file__).resolve()), "sha256": digest(__file__)}}
     try:
+        evidence["original_freeze_and_current_bytes"] = verify_original_freeze(root)
         registrations = {}
         for name in REGISTRATIONS:
             current, previous = root / name, reference / name
@@ -119,5 +165,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, required=True)
     parser.add_argument("--reference", type=Path, required=True)
+    parser.add_argument("--output", type=Path, help="New independent supplement; existing reports are never overwritten")
     args = parser.parse_args()
-    record(args.root, args.reference)
+    record(args.root, args.reference, args.output)

@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "created_utc": "2026-11-02T19:18:47.043010+00:00",
+  "scope": "ACTUAL_COLD_BUILD_COMPILER_ISOLATION_AND_GENERATED_CDR_NOT_FLIGHT_ACCEPTANCE",
+  "root": "/root/uav_tracking_fullplan_v4_humble54",
+  "reference": "/root/uav_tracking_fullplan_v4_humble53",
+  "status": "PASS",
+  "validator": {
+    "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/diagnostics/reliability54_build01/record_native_validation.py",
+    "sha256": "a3f177546432f698b8d7acabf0c4e2229fe42db524e7ff9da7cf0791bd5b33a6"
+  },
+  "original_freeze_and_current_bytes": {
+    "report": "/root/uav_tracking_fullplan_v4_humble54/results/freeze_validation/source_integrity/source_frozen_integrity.json",
+    "report_sha256": "2d845e262201c6264b9f466b4f77eef4e30c9ec19e17a178e0a65c2db0b940f8",
+    "original_build_and_full_suite_returncode": 0,
+    "current_frozen_bytes_unchanged": true,
+    "complete_file_entries": 1585,
+    "original_map_sha256": "7c81219e94b774723e135fa0a696cab603811b298e24900de158f199a414a102"
+  },
+  "runtime_registration_bytes": {
+    "config/dds_runtime_humble22.json": {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/config/dds_runtime_humble22.json",
+      "reference_path": "/root/uav_tracking_fullplan_v4_humble53/config/dds_runtime_humble22.json",
+      "sha256": "4e517b62e823585b53dd2ac503f65eaf9bc3fd4c59d9d8fdb900d985f99d030d"
+    },
+    "config/ros_gz_runtime_humble22.json": {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/config/ros_gz_runtime_humble22.json",
+      "reference_path": "/root/uav_tracking_fullplan_v4_humble53/config/ros_gz_runtime_humble22.json",
+      "sha256": "08cbc9ea8a2b6e50b71efc4910e5adef7c309b742fb0e9177cd803e934a028af"
+    },
+    "config/ros_gz_clock_runtime_humble22.json": {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/config/ros_gz_clock_runtime_humble22.json",
+      "reference_path": "/root/uav_tracking_fullplan_v4_humble53/config/ros_gz_clock_runtime_humble22.json",
+      "sha256": "908f8b7e18154377e57ce6f92922b63b36f7d4fb90ac79e61cc1b8dd95d3e4e4"
+    },
+    "config/px4_magnetic_runtime.json": {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/config/px4_magnetic_runtime.json",
+      "reference_path": "/root/uav_tracking_fullplan_v4_humble53/config/px4_magnetic_runtime.json",
+      "sha256": "3c4f9693cfab51c6b2049af619bfb6e3edbd22a8328468b7e84f75053485c66b"
+    },
+    "config/gazebo_magnetic_runtime_humble22.json": {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/config/gazebo_magnetic_runtime_humble22.json",
+      "reference_path": "/root/uav_tracking_fullplan_v4_humble53/config/gazebo_magnetic_runtime_humble22.json",
+      "sha256": "0e80e51994948b5186c3a76c7e5c9651d27cf3d9acf63109f3f66544de801e6a"
+    }
+  },
+  "compiler_fastcdr": {
+    "cmake_cache": "/root/uav_tracking_fullplan_v4_humble54/ros2_ws/build/uav_tracking_interfaces/CMakeCache.txt",
+    "cache_sha256": "52e707103781cc70f5e48455db5a1f12ba29247ea6a7e62a765dfd99e93c8acc",
+    "selected_directory": "/opt/ros/humble/lib/cmake/fastcdr",
+    "config_sha256": "e3e07a1a52406c8c473e295dc187d9c57ab0cb138290bce265b3c6067706e8a4"
+  },
+  "public_import_isolation": {
+    "path": "/root/uav_tracking_fullplan_v4_humble54/results/freeze_validation/import_isolation.json",
+    "sha256": "a8f43e840275763b83f8f8794fd5882d2d2ec02cec397a2bf5e4ed6d570c8576",
+    "isolated": true
+  },
+  "actual_generated_cdr": {
+    "status": "PASS",
+    "wire_bytes": 480,
+    "generated_message_file": "/root/uav_tracking_fullplan_v4_humble54/ros2_ws/install/lib/python3.10/site-packages/uav_tracking_interfaces/msg/_target_observation.py",
+    "fields": [
+      "uint64_epoch_max",
+      "surface_flags",
+      "exclusive_native_points",
+      "independent_default_candidate"
+    ]
+  },
+  "full_suite": {
+    "path": "/root/uav_tracking_fullplan_v4_humble54/results/freeze_validation/unittest.log",
+    "sha256": "1bf69e19046b16638856856f25620960c2ae4906ff669cd3fcd5ab7eb1bec411",
+    "tests": 2021,
+    "skipped": 5,
+    "scope": "Public freeze reached supplement only after its full-suite exit code zero"
+  },
+  "full_suite_environment": {
+    "path": "/root/uav_tracking_fullplan_v4_humble54/results/freeze_validation/full_suite_environment.json",
+    "sha256": "8b612fed13ad8668874565708b3412e70e157b64207e038b91c5bc3fd7f3728c",
+    "receipt": {
+      "python": "/root/uav_humble22/venv/bin/python",
+      "environment": {
+        "ROS_DISTRO": "humble",
+        "TMPDIR": "/tmp",
+        "STAGE1_FASTCDR_CMAKE_DIR": "/opt/ros/humble/lib/cmake/fastcdr",
+        "UAV_TRACKING_DDS_RUNTIME_CONFIG": "/root/uav_tracking_fullplan_v4_humble54/config/dds_runtime_humble22.json",
+        "RMW_IMPLEMENTATION": "rmw_fastrtps_cpp",
+        "LD_LIBRARY_PATH": "/root/uav_humble22/agent_install/lib:/root/uav_humble22/fastdds_listener_A01/install/lib:/root/uav_tracking_fullplan_v4_humble54/ros2_ws/install/lib:/root/uav_humble22/px4_msgs_ws/install/px4_msgs/lib:/root/uav_humble22/ros_gz_shutdown_A01_ws/install/lib:/root/uav_humble22/ros_gz_ws/install/ros_gz_sim/lib:/root/uav_humble22/ros_gz_ws/install/ros_gz_bridge/lib:/root/uav_humble22/ros_gz_ws/install/ros_gz_interfaces/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib",
+        "AMENT_PREFIX_PATH": "/root/uav_tracking_fullplan_v4_humble54/ros2_ws/install:/root/uav_humble22/px4_msgs_ws/install/px4_msgs:/root/uav_humble22/ros_gz_shutdown_A01_ws/install:/root/uav_humble22/ros_gz_ws/install/ros_gz_sim:/root/uav_humble22/ros_gz_ws/install/ros_gz_bridge:/root/uav_humble22/ros_gz_ws/install/ros_gz_interfaces:/opt/ros/humble",
+        "CMAKE_PREFIX_PATH": "/root/uav_tracking_fullplan_v4_humble54/ros2_ws/install:/root/uav_humble22/px4_msgs_ws/install/px4_msgs:/root/uav_humble22/ros_gz_shutdown_A01_ws/install:/root/uav_humble22/ros_gz_ws/install/ros_gz_sim:/root/uav_humble22/ros_gz_ws/install/ros_gz_bridge:/root/uav_humble22/ros_gz_ws/install/ros_gz_interfaces",
+        "PYTHONPATH": "/root/uav_tracking_fullplan_v4_humble54:/root/uav_tracking_fullplan_v4_humble54/ros2_ws/build/uav_tracking_bringup:/root/uav_tracking_fullplan_v4_humble54/ros2_ws/build/uav_tracking_px4_adapter:/root/uav_tracking_fullplan_v4_humble54/ros2_ws/build/uav_tracking_nodes:/root/uav_tracking_fullplan_v4_humble54/ros2_ws/install/lib/python3.10/site-packages:/root/uav_tracking_fullplan_v4_humble54:/root/uav_humble22/px4_msgs_ws/install/px4_msgs/lib/python3.10/site-packages:/root/uav_humble22/ros_gz_ws/install/ros_gz_interfaces/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages"
+      }
+    }
+  },
+  "environment": {
+    "ROS_DISTRO": "humble",
+    "TMPDIR": "/tmp",
+    "STAGE1_FASTCDR_CMAKE_DIR": null,
+    "UAV_TRACKING_DDS_RUNTIME_CONFIG": "/root/uav_tracking_fullplan_v4_humble54/config/dds_runtime_humble22.json",
+    "AMENT_PREFIX_PATH": "/root/uav_tracking_fullplan_v4_humble54/ros2_ws/install:/root/uav_humble22/px4_msgs_ws/install/px4_msgs:/root/uav_humble22/ros_gz_shutdown_A01_ws/install:/root/uav_humble22/ros_gz_ws/install/ros_gz_sim:/root/uav_humble22/ros_gz_ws/install/ros_gz_bridge:/root/uav_humble22/ros_gz_ws/install/ros_gz_interfaces:/opt/ros/humble",
+    "CMAKE_PREFIX_PATH": "/root/uav_tracking_fullplan_v4_humble54/ros2_ws/install:/root/uav_humble22/px4_msgs_ws/install/px4_msgs:/root/uav_humble22/ros_gz_shutdown_A01_ws/install:/root/uav_humble22/ros_gz_ws/install/ros_gz_sim:/root/uav_humble22/ros_gz_ws/install/ros_gz_bridge:/root/uav_humble22/ros_gz_ws/install/ros_gz_interfaces",
+    "PYTHONPATH": "/root/uav_tracking_fullplan_v4_humble54:/root/uav_tracking_fullplan_v4_humble54/ros2_ws/build/uav_tracking_bringup:/root/uav_tracking_fullplan_v4_humble54/ros2_ws/build/uav_tracking_px4_adapter:/root/uav_tracking_fullplan_v4_humble54/ros2_ws/build/uav_tracking_nodes:/root/uav_tracking_fullplan_v4_humble54/ros2_ws/install/lib/python3.10/site-packages:/root/uav_humble22/px4_msgs_ws/install/px4_msgs/lib/python3.10/site-packages:/root/uav_humble22/ros_gz_ws/install/ros_gz_interfaces/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages",
+    "LD_LIBRARY_PATH": "/root/uav_humble22/agent_install/lib:/root/uav_humble22/fastdds_listener_A01/install/lib:/root/uav_tracking_fullplan_v4_humble54/ros2_ws/install/lib:/root/uav_humble22/px4_msgs_ws/install/px4_msgs/lib:/root/uav_humble22/ros_gz_shutdown_A01_ws/install/lib:/root/uav_humble22/ros_gz_ws/install/ros_gz_sim/lib:/root/uav_humble22/ros_gz_ws/install/ros_gz_bridge/lib:/root/uav_humble22/ros_gz_ws/install/ros_gz_interfaces/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib"
+  }
+}

@@ -24,9 +24,13 @@ class NativeBuildReceiptTests(unittest.TestCase):
         self.assertEqual(successful_suite("warnings\nRan 1950 tests in 34.12s\n\nOK (skipped=5)\n"),
                          {"tests": 1950, "skipped": 5})
         self.assertEqual(successful_suite("Ran 2 tests in 0.1s\n\nOK\n"), {"tests": 2, "skipped": 0})
+        self.assertEqual(successful_suite('Ran 2021 tests in 121.793s\n\nOK (skipped=5)\n{"status":"COMPLETE_AUXILIARY_ANALYSIS"}\n'),
+                         {"tests": 2021, "skipped": 5})
         for text in ("Ran 2 tests in 0.1s\n\nFAILED (errors=1)\n", "Running tests", "Ran 0 tests in 0.0s\n\nOK\n"):
             with self.subTest(text=text), self.assertRaisesRegex(ValueError, "successful suite"):
                 successful_suite(text)
+        with self.assertRaisesRegex(ValueError, "one successful suite"):
+            successful_suite("Ran 2 tests in 0.1s\n\nOK\nRan 2 tests in 0.2s\n\nOK\n")
 
 
 @unittest.skipUnless(os.name == "posix" and shutil.which("bash"), "POSIX shell integration; no WSL launched on Windows")
