@@ -6,7 +6,7 @@
 
 `scripts/run_reliability_v4.py` 的 `source_hashes()` 扫描 `scripts`、`uav_tracking`、`ros2_ws/src`、`config`、`launch`、`models`、`patches` 中规定后缀的文件，以及少量根目录文件。`flight_source_hashes()` 实际为该完整 map 减去离线白名单和 runner；它不等同于“飞行进程实际 import 的模块”。54 开发证据与55 target 的 flight map 要求字典精确相等。
 
-当前新 `scripts/build_acceptance_dashboard.py` 不在 `OFFLINE_HELPERS`，因此修改它会触发 flight map 不匹配。`scripts/build_reliability_v4_report.py` 在离线白名单内，但本次选择更简单的策略：55 staging 保留54完整308项 source map，所有新交付、lineage、图表、报告及 publication 工具外置，不改白名单或放宽 gate。
+当前新 `scripts/build_acceptance_dashboard.py` 不在 `OFFLINE_HELPERS`，因此修改它会触发 flight map 不匹配。`scripts/build_reliability_v4_report.py` 在离线白名单内，但本次选择更简单的策略：55 staging 保留54完整308项 source map，所有新交付、lineage、图表、报告及 publication 工具外置，不改白名单或放宽 gate。唯一的构建审计修补是在冷构建前覆盖后文具名的 native-validation helper 和其定向测试；两者均不属于308项。
 
 `tools/**`、`README.md` 和 `docs/**` 不进入该计划 map，但会进入完整 rsync 源复制证明。冷构建以后再把它们写入55，同样会破坏最终全树闭合。replay 注册绑定的是最终55的完整 source map；开发导出则另外核验指定在线、export 与 replay helper，不能混用这些 map 的含义。
 
@@ -70,6 +70,8 @@ done
 test -d "$(dirname -- "$tracking_results")"
 mkdir -- "$tracking_stage"
 rsync -a --exclude='/results' \
+  --exclude='/ros2_ws/src/uav_tracking_nodes/build/' \
+  --exclude='/ros2_ws/src/uav_tracking_px4_adapter/build/' \
   --exclude='__pycache__' --exclude='.pytest_cache' --exclude='results/' \
   --exclude='.git/' --exclude='node_modules/' --exclude='.test_temp/' --exclude='*.egg-info/' \
   --exclude='ros2_ws/build/' --exclude='ros2_ws/install/' --exclude='ros2_ws/log/' \
@@ -85,9 +87,80 @@ test -d "$tracking_stage/results"
 test ! -L "$tracking_stage/results"
 ```
 
-这里额外的 `--exclude='/results'` 锚定 rsync 传输根，不带尾斜杠，因此跳过54顶层名为 `results` 的符号链接本身。其余排除项与实际公开 freeze/source-integrity 的规则相同。公开规则中的 `results/` 只按目录排除，不能单独用于跳过54已有的符号链接。staging 的普通 results 目录会在后续公开 freeze 中被正常排除；其真实 `research_report.json` 由公开 freeze 的显式 `cp` 读取。不要修改54的链接，不复制旧 recordings、slot、gate 或结果树。
+这里额外的 `--exclude='/results'` 锚定 rsync 传输根，不带尾斜杠，因此跳过54顶层名为 `results` 的符号链接本身。另两项只排除具名 nested generated build 目录：原54完整map中 nodes/build 下恰有15个 `.py`、px4_adapter/build 下恰有2个 `.py`，无其他条目，全部不在308项中。保留54原17副本及8个stale事实，不清理54，不将其原快照改写成新55。其余排除项与实际公开 freeze/source-integrity 的规则相同；不修改公开脚本或它的过滤常量，也不增加笼统的全局 `build/` 忽略。
 
-## 2. 用原计划核验完整308项，不另建验证框架
+公开规则中的 `results/` 只按目录排除，不能单独用于跳过54已有的符号链接。staging 的普通 results 目录会在后续公开 freeze 中被正常排除；其真实 `research_report.json` 由公开 freeze 的显式 `cp` 读取。不要修改54的链接，不复制旧 recordings、slot、gate 或结果树。
+
+## 2. 冷构建前只覆盖两个已审构建审计文件
+
+不能把54的已知末行解析器缺陷带进55再重复补验：原helper要求 unittest 的 `OK` 为合并日志末行，缓冲stdout晚于stderr摘要时误拒绝。已审提交 `fdd7f033270a3799af2c63fe1d78c7049b8e6569` 改为只接受唯一、非零、成功的套件摘要，并增加尾随stdout及重复摘要的定向断言；另补充真实原freeze/当前完整树与零退出核验。
+
+原54 `native_build_supplement.json` 仍为FAIL；独立 `native_build_supplement02.json` 是新helper实际生成的PASS，文件SHA为 `cec4c86ed17c56c73f9e7ba0004d202e1cc829c1aa7bbcca7ebb38a75f215936`，其中 `validator.sha256` 精确为下表新helper SHA。它核原1585条未变、原2021项/5skip及真实CDR。既有原生5/5定向通过记录见 `planning/reliability-v4-humble54-native-validation-20261103.md` 和构建快照README；本说明没有重跑该测试，也不把新helper说成已纳入旧2021项全套。55须由自己的公开冷构建重新完整验证。
+
+| 唯一允许覆盖的相对路径 | 54原 bytes / SHA256 | staging新 bytes / SHA256 |
+|---|---|---|
+| `tools/diagnostics/reliability54_build01/record_native_validation.py` | 7622 / `9cfd2d181b943df7551c912813e674635a66cef06ec409141d4a6cba33f3b0e8` | 10873 / `a3f177546432f698b8d7acabf0c4e2229fe42db524e7ff9da7cf0791bd5b33a6` |
+| `tests/test_frozen_fastcdr_selection.py` | 3466 / `bee6e644f1e47554e31932afb2302c80c9a05d0d114011e19d4c9d0843f745c2` | 3817 / `ef36ab0e9055fb2eb74880756ab83a89b6bd4f023467aa0819b02a3217deb0c6` |
+
+两个文件均不在 canonical308中，也不属于185项在线保存scanner集合。本次只从已审Git/工作区取得这两个精确新字节；不覆盖整个 `tools` 或 `tests`。下列未来命令先验证所有before/source，再只写新staging的两个文件，最后写一个全新外部小receipt记录old/new pins。它不写54、不修改历史收据，不增加持久验证程序。
+
+```bash
+tracking_stage_overlay_receipt=/mnt/d/WSL/UAVHumble22-validation/final55_staging_native_fix01.json
+test ! -e "$tracking_stage_overlay_receipt"
+test ! -L "$tracking_stage_overlay_receipt"
+git -C "$tracking_project" diff --quiet HEAD -- \
+  tools/diagnostics/reliability54_build01/record_native_validation.py \
+  tests/test_frozen_fastcdr_selection.py
+"$tracking_python" -B - "$tracking_dev" "$tracking_stage" "$tracking_project" "$tracking_stage_overlay_receipt" <<'PY'
+from pathlib import Path
+from datetime import datetime, timezone
+import hashlib
+import json
+import sys
+
+dev, stage, project = (Path(value).resolve(strict=True) for value in sys.argv[1:4])
+receipt = Path(sys.argv[4])
+assert not receipt.exists() and not receipt.is_symlink() and receipt.parent.is_dir()
+assert not receipt.is_relative_to(dev) and not receipt.is_relative_to(stage)
+pins = (
+    ('tools/diagnostics/reliability54_build01/record_native_validation.py', 7622,
+     '9cfd2d181b943df7551c912813e674635a66cef06ec409141d4a6cba33f3b0e8', 10873,
+     'a3f177546432f698b8d7acabf0c4e2229fe42db524e7ff9da7cf0791bd5b33a6'),
+    ('tests/test_frozen_fastcdr_selection.py', 3466,
+     'bee6e644f1e47554e31932afb2302c80c9a05d0d114011e19d4c9d0843f745c2', 3817,
+     'ef36ab0e9055fb2eb74880756ab83a89b6bd4f023467aa0819b02a3217deb0c6'),
+)
+pending = []
+for name, old_bytes, old_sha, new_bytes, new_sha in pins:
+    old, staged, new = dev / name, stage / name, project / name
+    assert all(path.is_file() and not path.is_symlink() for path in (old, staged, new))
+    before, payload = old.read_bytes(), new.read_bytes()
+    assert len(before) == old_bytes and hashlib.sha256(before).hexdigest() == old_sha
+    assert staged.read_bytes() == before
+    assert len(payload) == new_bytes and hashlib.sha256(payload).hexdigest() == new_sha
+    pending.append((name, staged, payload, old_bytes, old_sha, new_bytes, new_sha))
+rows = []
+for name, staged, payload, old_bytes, old_sha, new_bytes, new_sha in pending:
+    staged.write_bytes(payload)
+    assert staged.read_bytes() == payload
+    rows.append({'path': name, 'before': {'bytes': old_bytes, 'sha256': old_sha},
+                 'after': {'bytes': new_bytes, 'sha256': new_sha}})
+with receipt.open('x', encoding='utf-8', newline='\n') as stream:
+    json.dump({'kind': 'PRE_COLD_STAGING_TWO_REVIEWED_NATIVE_VALIDATION_FILES',
+               'created_utc': datetime.now(timezone.utc).isoformat(),
+               'original_root_unchanged': str(dev), 'new_staging_root': str(stage),
+               'reviewed_fix_commit': 'fdd7f033270a3799af2c63fe1d78c7049b8e6569',
+               'source_root': str(project), 'files': rows,
+               'scope': 'Two staging overlays only; no cold build, flight, admission or new test result.'},
+              stream, indent=2, allow_nan=False)
+    stream.write('\n')
+print('PASS: two exact reviewed pre-cold staging overlays; new external receipt:', receipt)
+PY
+```
+
+必须在公开wrapper首次采集 `source_before` **之前**完成。该wrapper先对staging生成完整map，再复制、构建及比较，最后才调用55冻结副本内的helper；因此55自己的source_before/source_after/frozen_actual会如实以这两个新文件为基线。不得在冷构建以后覆盖helper或test，否则当前全树核验会拒绝；不能改54或旧receipt来掩盖差异。
+
+## 3. 用原计划核验完整308项及实际185项scanner
 
 下面直接调用 staging 内原字节 runner 的既有 `source_hashes()`，并先核对 runner 自身 SHA；不会调用实验入口。它核对名集和所有值，新增一个扫描可见文件也会拒绝。模型和 runtime 均包含在308项中，另核六模型子集及五runtime绑定以明确验收范围。失败后保留该 staging，调查并另选新路径，不修改54来迁就比较。
 
@@ -117,6 +190,14 @@ assert v4.source_hashes(dev) == expected, 'immutable54 actual source set/bytes d
 actual = v4.source_hashes(stage)
 assert actual == expected, 'staging source set/bytes differ from all 308 canonical entries'
 assert {name: digest for name, digest in actual.items() if name.endswith('.pt')} == plan['model_hashes']
+registered_scanner = {name: value for name, value in expected.items()
+                      if name.startswith(('scripts/', 'uav_tracking/', 'ros2_ws/src/'))
+                      and Path(name).suffix in {'.py', '.sh', '.msg'}}
+actual_scanner = {path.relative_to(stage).as_posix(): v4.sha(path)
+                  for folder in ('scripts', 'uav_tracking', 'ros2_ws/src')
+                  for path in (stage / folder).rglob('*')
+                  if path.is_file() and path.suffix in {'.py', '.sh', '.msg'}}
+assert len(registered_scanner) == 185 and actual_scanner == registered_scanner
 runtime = (
     'config/dds_runtime_humble22.json',
     'config/ros_gz_runtime_humble22.json',
@@ -143,26 +224,45 @@ assert plan['protocol']['navigation_acceptance']['status'] == 'REGISTERED'
 assert (stage / 'results').is_dir() and not (stage / 'results').is_symlink()
 report = Path('results/recorded_estimator_research/research_report.json')
 assert (stage / report).read_bytes() == (dev / report).read_bytes()
-print('PASS: original plan pins; exact 308 source entries; all 6 models; 5 runtime registrations; 3 original DRAFTs; ordinary staging results and real report bytes')
+print('PASS: original plan pins; exact 308 entries and 185 actual scanner sources; 6 models; 5 runtime registrations; 3 original DRAFTs; ordinary staging results and real report bytes')
 PY
 ```
 
-三个顶层协议仍为 DRAFT。原有数值 `navigation_acceptance` 已 REGISTERED，保持其原值和绑定，不把它重置为 DRAFT，也不提前发布顶层协议。不要在 staging 覆盖当前新 dashboard/report，不复制当前工作区的新 tests、planning 文档或其他交付工具进去。
+三个顶层协议仍为 DRAFT。原有数值 `navigation_acceptance` 已 REGISTERED，保持其原值和绑定，不把它重置为 DRAFT，也不提前发布顶层协议。除第2步唯一具名test外，保留54原测试；不要在 staging 覆盖当前新 dashboard/report，不复制当前工作区的其他新 tests、planning 文档或交付工具进去。
 
-## 3. 从 staging 自身调用既有公开冷构建入口
+## 4. 从 staging 自身调用既有公开冷构建入口
 
 ```bash
 /bin/bash "$tracking_stage/tools/diagnostics/reliability54_build01/prepare_and_validate.sh" \
   "$tracking_final" "$tracking_results" "$tracking_dev"
 test -L "$tracking_final/results"
 test "$(realpath -e -- "$tracking_final/results")" = "$(realpath -e -- "$tracking_results")"
+"$tracking_python" -B - "$tracking_final" "$tracking_core_dev" <<'PY'
+from pathlib import Path
+import hashlib
+import json
+import sys
+
+root, plan_path = (Path(value).resolve(strict=True) for value in sys.argv[1:])
+expected = {name: value for name, value in json.loads(plan_path.read_bytes())['source_hashes'].items()
+            if name.startswith(('scripts/', 'uav_tracking/', 'ros2_ws/src/'))
+            and Path(name).suffix in {'.py', '.sh', '.msg'}}
+actual = {path.relative_to(root).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
+          for folder in ('scripts', 'uav_tracking', 'ros2_ws/src')
+          for path in (root / folder).rglob('*')
+          if path.is_file() and path.suffix in {'.py', '.sh', '.msg'}}
+assert len(expected) == 185 and actual == expected, 'cold build introduced scanner-visible extras or changed sources'
+print('PASS: actual post-cold final55 scanner is exactly the original 185 registered sources')
+PY
 ```
 
 wrapper 的 source 从它自身所在位置推导，不能从当前工作区调用另一个 wrapper 并只传 staging 变量。它清理继承环境、核五份 runtime 与 reference54 相同，执行公开 freeze、cold colcon、import/ament isolation、完整原测试及原 native validation，并保存这次55自身的 `source_before.json`、`source_after.json`、`frozen_actual.json` 和原冷构建收据。公开 `source_sha256.txt` 只覆盖它声明的目录；完整树证明以 `source_integrity` 的 rsync-filtered 三份 map 为准。
 
-构建结果不得提前写 PASS。失败尝试的目录和收据保留，不覆盖同名路径重做。
+构建结果不得提前写 PASS。失败尝试的目录和收据保留，不覆盖同名路径重做。仅308项相等不能证明实际scanner无额外项，因为它原本就排除build目录；冷构建后的185项检查也不能省略。单模型+DDS模式的实际保存快照应有185项源码加所选权重和DDS共187项，不携带旧17副本。
 
-## 4. 新工具留在55之外，保持各自 import 根完整
+54仍保留原17额外项及原snapshot-audit合同。fixed guard验证原安全registry时，将原development54计划/root交给该合同；它不是对最终55根的全局例外。新55保持严格scanner集合与自身完整cold maps，不为55新增额外合同。若从固定外置安全driver另发起55安全批次，未带合同会触发其same-root检查；本路线复用54真实安全证据，不新增该批次，也不改变固定guard路径。
+
+## 5. 新工具留在55之外，保持各自 import 根完整
 
 新 publication 工具不要求出现在54或55源树。报告工具通过 `ROOT = parents[1]` 及同目录 imports 加载多个依赖，所以不应只孤立复制两个 `.py`。以下未来命令将**已审核并提交的交付 Git HEAD**归档成独立工具树；它不含 Git 忽略的模型、runtime 本机文件或 results，不可用作算法 staging。执行前必须已完成该工具提交的审核，不能把动态 HEAD 当作自动批准。
 
@@ -186,7 +286,7 @@ printf 'external_delivery_commit=%s\nexternal_delivery_root=%s\n' \
 
 后续使用原 normal execution card 的真实 CLI 和请求结构，令其 `tracking_publication` 指向这个外置工具文件，通过55的原 `scripts/ros_python.sh` 调用。新报告明确传入真实55的 `--core-plan`、`--extension-plan`、`--replay-configuration`、`--replay-source-root "$tracking_final"`、`--detection-source-root "$tracking_final"` 及各实际输入；新 dashboard 明确传入实际 `--v4-package`。lineage 的 context/source pins 绑定实际输入版本。输出进入新的独立结果目录，工具源码和输入哈希单独保留；外置工具不代替55原 gate evaluator，也不改写原 terminal report。不得以工具归档的默认 `ROOT` 冒充实际飞行源根。
 
-## 5. 冷构建后仅允许三个规范 planning 文件发生变化
+## 6. 冷构建后仅允许三个规范 planning 文件发生变化
 
 继续按原 normal card 执行：未飞的 target 定义 → core/extension gate → safety assembly → core/extension prospective publication → 正式120/160定义 → replay assembly/publication → 原 fixed guard admission → 新 final source sidecar。extension plan 的 `--probe-gate` 仍用 CORE_GATE，EXT_GATE 绑定 extension readiness。
 
@@ -196,7 +296,7 @@ printf 'external_delivery_commit=%s\nexternal_delivery_root=%s\n' \
 - `planning/reliability-v4-extension-preregistration.json`：只改 `status`、`registration_utc`、真实 `development_readiness`。
 - `planning/reliability-v4-estimator-replay-preregistration.json`：必须为真实 registrar 生成并验证的 replay candidate 字节。
 
-保留原冷构建 DRAFT map、native receipt 和三个原始 DRAFT archive；另建独立 final sidecar，不替换旧 map/report。不得在55添加本说明、新 README/docs、dashboard、lineage 工具或 tests；所有这类新文件继续留在外置工具树。registrar seal 是准入检查，不代替全树 sidecar。
+保留原冷构建 DRAFT map、native receipt 和三个原始 DRAFT archive；另建独立 final sidecar，不替换旧 map/report。第2步的两个已审helper/test已经包含在本次55冷构建基线中，不能在此时才补上或再次更改。不得在55添加本说明、新 README/docs、dashboard、lineage 工具或其他 tests；所有这类新文件继续留在外置工具树。registrar seal 是准入检查，不代替全树 sidecar。
 
 ## 实际源码依据
 
