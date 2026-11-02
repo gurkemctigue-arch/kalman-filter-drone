@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "verified": true,
+  "captured_monotonic_s": 66076.099603773,
+  "owned_leader_pid": 110154,
+  "owned_session": 110154,
+  "owned_process_group": 110154,
+  "scope": "bounded descendant walk via owned /proc/PID/task/TID/children; no global process enumeration",
+  "observed_processes": [
+    {
+      "pid": 110154,
+      "comm": "ruby",
+      "parent_pid": 109788,
+      "process_group": 110154,
+      "session": 110154,
+      "start_ticks": 6607073
+    }
+  ],
+  "excluded_descendants": [],
+  "actual_loaded_libraries": [
+    {
+      "kind": "gazebo_sim",
+      "mapped_path": "/usr/lib/x86_64-linux-gnu/gz-sim-8/plugins/libgz-sim8-magnetometer-system.so.8.15.0",
+      "inode": 119034,
+      "device_major": 8,
+      "device_minor": 48,
+      "bytes": 179656,
+      "sha256": "2503f8e1a13e04716085d9ece73d838b4a5c439b9f73322b945d536f61c9dcce",
+      "observed_pids": [
+        110154
+      ]
+    },
+    {
+      "kind": "gazebo_sensors",
+      "mapped_path": "/usr/lib/x86_64-linux-gnu/libgz-sensors8-magnetometer.so.8.3.0",
+      "inode": 118417,
+      "device_major": 8,
+      "device_minor": 48,
+      "bytes": 35616,
+      "sha256": "c1607e783ba02c2c6888ced461242bac47624a07d55843a80e3b679d5431ef39",
+      "observed_pids": [
+        110154
+      ]
+    }
+  ],
+  "registration_path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage1_position_seed004/configuration/gazebo_magnetic_runtime_registration.json",
+  "registration_sha256": "0e80e51994948b5186c3a76c7e5c9651d27cf3d9acf63109f3f66544de801e6a",
+  "environment_id": "UAVHumble22_ubuntu22_humble_osrf_harmonic",
+  "expected_source_registration": {
+    "gazebo_sim_version": "8.15.0",
+    "gazebo_sim_commit": "446a44335a45b704b4d36dabcc5508ee34eeb3d8",
+    "gazebo_sim_source_sha256": "4c2eab47814932a4df6b6255f46e379b1aa0feb41b248fd0ee13213d56a3016d",
+    "gazebo_sensors_version": "8.3.0",
+    "gazebo_sensors_commit": "6d74c1fe96d7277c7dec96a54bbc79d5c752e63c",
+    "gazebo_sensors_source_sha256": "c66d3dbf29d6d158eb010b22a44e8e06fb93c518ca00129bfb8ac3685be49592"
+  },
+  "source_vs_binary_limit": "Mapped ELF device/inode/hash matches the registered binary; release source provenance remains a separate declaration",
+  "capture_attempts": 1
+}

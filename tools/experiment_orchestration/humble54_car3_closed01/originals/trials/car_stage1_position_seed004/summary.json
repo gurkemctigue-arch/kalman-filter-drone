@@ -1,0 +1,190 @@
+{
+  "source": "ONBOARD_RGBD_YOLO_PX4_FLIGHT",
+  "class_name": "car",
+  "start_sim_s": 0.02,
+  "end_sim_s": 92.34,
+  "follow_start_s": 17.352,
+  "wall_duration_s": 750.7509786890005,
+  "counts": {
+    "px4_setpoints": 4617,
+    "classified_px4_setpoints": 4617,
+    "position_only_setpoints": 3428,
+    "velocity_only_setpoints": 1189,
+    "invalid_setpoints": 0,
+    "simultaneous_position_velocity_setpoints": 0,
+    "partial_position_setpoints": 0,
+    "partial_velocity_setpoints": 0,
+    "malformed_partial_setpoints": 0,
+    "malformed_dimension_setpoints": 0,
+    "infinite_setpoint_fields": 0,
+    "inactive_position_velocity_setpoints": 0,
+    "follow_setpoints": 3428,
+    "follow_position_setpoints": 3428,
+    "follow_velocity_setpoints": 0,
+    "follow_invalid_setpoints": 0,
+    "commands": 1846,
+    "valid_commands": 1372,
+    "video_frames": 462,
+    "detector_frames": 920,
+    "detector_frames_with_target": 885,
+    "observations": 716,
+    "valid_depth_observations": 716
+  },
+  "states": {
+    "1": 678,
+    "2": 3441,
+    "3": 384
+  },
+  "lifecycles": {
+    "6": 345,
+    "2": 203,
+    "3": 1169,
+    "4": 129
+  },
+  "setpoint_evidence": {
+    "counter_schema_version": 1,
+    "topic": "/fmu/in/trajectory_setpoint",
+    "classified_samples": 4617,
+    "required_counters_present": true
+  },
+  "armed_seen": true,
+  "offboard_seen": true,
+  "max_vehicle_altitude_m": 2.8575408458709717,
+  "horizontal_vehicle_span_m": 35.39710319614417,
+  "estimated_distance_error_rmse_m": 0.6252723140828498,
+  "estimated_height_error_rmse_m": 0.17444173030566995,
+  "median_detection_latency_s": 0.10800000000000409,
+  "p95_detection_latency_s": 0.15200000000000102,
+  "median_inference_wall_s": 0.39673464999941643,
+  "median_depth_valid_ratio": 1.0,
+  "shutter_events": [
+    {
+      "time_s": 29.360000000000003,
+      "request_id": 1,
+      "active": true,
+      "request_time_s": 29.360000000000003,
+      "refresh": false,
+      "cleanup": false,
+      "pose_source": "measured_camera_tf",
+      "camera_tf_stamp_s": 29.356,
+      "position_m": [
+        7.995711337210243,
+        0.42766263935362625,
+        1.798888088411291
+      ],
+      "orientation_xyzw": [
+        0.0004399863254407055,
+        0.1734257936306161,
+        -0.009175602253067017,
+        0.9848040966806129
+      ]
+    },
+    {
+      "time_s": 29.64,
+      "request_id": 3,
+      "active": false,
+      "request_time_s": 29.64,
+      "refresh": false,
+      "cleanup": false,
+      "pose_source": "parked_below_world",
+      "camera_tf_stamp_s": null,
+      "position_m": [
+        0.0,
+        0.0,
+        -50.0
+      ],
+      "orientation_xyzw": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "time_s": 42.36,
+      "request_id": 4,
+      "active": true,
+      "request_time_s": 42.36,
+      "refresh": false,
+      "cleanup": false,
+      "pose_source": "measured_camera_tf",
+      "camera_tf_stamp_s": 42.356,
+      "position_m": [
+        13.222940816762558,
+        2.7021248583085646,
+        1.779501899463127
+      ],
+      "orientation_xyzw": [
+        0.0029260111166944103,
+        -0.18052447365063634,
+        -0.02060807117035446,
+        -0.9833502225935291
+      ]
+    },
+    {
+      "time_s": 45.440000000000005,
+      "request_id": 19,
+      "active": false,
+      "request_time_s": 45.440000000000005,
+      "refresh": false,
+      "cleanup": false,
+      "pose_source": "parked_below_world",
+      "camera_tf_stamp_s": null,
+      "position_m": [
+        0.0,
+        0.0,
+        -50.0
+      ],
+      "orientation_xyzw": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    }
+  ],
+  "occlusion_schedule": [
+    {
+      "name": "short",
+      "start_offset_s": 12.0,
+      "duration_s": 0.2,
+      "render_margin_s": 0.05,
+      "state": "complete",
+      "close_request_id": 1,
+      "close_ack_s": 29.380000000000003,
+      "open_not_before_s": 29.630000000000003,
+      "open_request_id": 3,
+      "open_request_s": 29.64,
+      "open_ack_s": 29.66
+    },
+    {
+      "name": "long",
+      "start_offset_s": 25.0,
+      "duration_s": 3.0,
+      "render_margin_s": 0.05,
+      "state": "complete",
+      "close_request_id": 4,
+      "close_ack_s": 42.38,
+      "open_not_before_s": 45.43,
+      "open_request_id": 19,
+      "open_request_s": 45.440000000000005,
+      "open_ack_s": 45.46
+    }
+  ],
+  "explicit_reselection": {
+    "enabled": true,
+    "requested_target_uuid": "c717e8aa-a66d-4494-86fb-90466eed2288",
+    "measured_confirmation": true
+  },
+  "initial_selection": {
+    "rule": "none",
+    "requested_target_uuid": null,
+    "measured_confirmation": false
+  },
+  "basic_flight_passed": true,
+  "termination_reason": "follow_duration_reached",
+  "completion_criteria": "basic_visual_follow_flight",
+  "monitor_success": true,
+  "monitor_exit_code": 0,
+  "offline_evaluation_required": true
+}
