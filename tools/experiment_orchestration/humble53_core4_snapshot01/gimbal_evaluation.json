@@ -1,0 +1,250 @@
+{
+  "schema_version": 3,
+  "evaluator_version": "5_clock_boundary_terminal_redundancy",
+  "mode": "midpoint",
+  "result": "PASS",
+  "centering_source": "all_detections_in_single_target_world",
+  "checks": {
+    "no_bag_read_or_channel_errors": true,
+    "three_encoder_joints_recorded": true,
+    "all_three_commands_recorded": true,
+    "camera_tf_is_dynamic_feedback_only": true,
+    "tf_matches_source_feedback_geometry": true,
+    "physical_link_pose_matches_feedback_geometry": true,
+    "dynamic_tf_available_at_image_timestamps": true,
+    "diagnostic_feedback_matches_raw_encoders": true,
+    "follow_and_visual_metrics_recorded": true,
+    "midpoint_never_publishes_active_yaw": true,
+    "midpoint_setpoint_is_zero": true
+  },
+  "metadata": {
+    "bag": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble53/reliability_v4_humble53_probe01_person_stage3_midpoint_seed004/rosbag",
+    "storage_identifier": "sqlite3",
+    "compression_format": "zstd",
+    "compression_mode": "file",
+    "reader": "SequentialCompressionReader",
+    "source_bag_read_only": true,
+    "decompression_cache": "temporary directory, removed after reading",
+    "topic_types": {
+      "/gimbal/joint_states": "sensor_msgs/msg/JointState",
+      "/ground_truth/vehicle_poses": "tf2_msgs/msg/TFMessage",
+      "/tracking/tracks": "std_msgs/msg/String",
+      "/tf_static": "tf2_msgs/msg/TFMessage",
+      "/gimbal/diagnostics": "std_msgs/msg/String",
+      "/gimbal/roll/cmd_pos": "std_msgs/msg/Float64",
+      "/gimbal/yaw/cmd_pos": "std_msgs/msg/Float64",
+      "/tracking/observations": "uav_tracking_interfaces/msg/TargetObservation",
+      "/tracking/state": "uav_tracking_interfaces/msg/TargetState",
+      "/gimbal/pitch/cmd_pos": "std_msgs/msg/Float64",
+      "/tf": "tf2_msgs/msg/TFMessage",
+      "/gimbal/body_yaw_reference": "geometry_msgs/msg/Vector3Stamped",
+      "/vehicle/odometry": "nav_msgs/msg/Odometry",
+      "/tracking/flight_phase": "std_msgs/msg/String",
+      "/clock": "rosgraph_msgs/msg/Clock"
+    },
+    "unavailable_types": {},
+    "read_errors": {},
+    "time_sources": {
+      "header": 22623,
+      "transform_header": 37281,
+      "latest_clock": 25049
+    },
+    "clock_recorded": true,
+    "clock_samples_read": 27134,
+    "clock_records_preserved": true,
+    "startup_unclocked_messages": {},
+    "startup_unclocked_records": [],
+    "startup_unclocked_note": "Successfully decoded messages before the first recorded /clock remain here with original recorder timestamps and exact CDR bytes; no simulation timestamp is assigned and they are excluded from timed metrics",
+    "receive_time_note": "received_sim_s uses the latest recorded /clock; recorder wall timestamps are not compared with sim time",
+    "record_sequence_note": "Zero-based filtered reader order, including clock/unreadable entries; equal operational timestamps retain this order"
+  },
+  "channel_errors": {},
+  "not_ready_diagnostics": [
+    {
+      "time_s": 0.02,
+      "reason": "invalid source timestamp",
+      "feedback_angles_rad": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "command_angles_rad": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "interval": {
+    "metric_start_s": 20.2,
+    "recorded_end_s": 93.344
+  },
+  "physical_feedback": {
+    "samples": 4667,
+    "joint_order": [
+      "tracking_gimbal_yaw",
+      "tracking_gimbal_pitch",
+      "tracking_gimbal_roll"
+    ],
+    "span_rad": [
+      0.0008424586083112526,
+      0.0013488639537509223,
+      0.0009917579655529477
+    ],
+    "recorded_samples": 8109,
+    "startup_unready_samples": 3442,
+    "startup_unready_angles_rad": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "delivery_source_order_errors": [],
+    "duplicate_or_nonincreasing_source_stamps": 0,
+    "conflicting_duplicate_source_stamps": 0,
+    "effective_delivery_source_order_errors": [],
+    "effective_duplicate_or_nonincreasing_source_stamps": 0,
+    "effective_conflicting_duplicate_source_stamps": 0,
+    "terminal_redundant_message_audit": {
+      "enabled": true,
+      "valid_pause_evidence": true,
+      "failure_reasons": [],
+      "accepted_redundant_samples": 0,
+      "final_clock_s": 93.344,
+      "accepted_feedback_indices": [],
+      "complete_payload_sha256": null
+    },
+    "nonpositive_source_stamp_samples": 3442,
+    "duplicate_source_examples": [],
+    "max_command_encoder_difference_rad": [
+      0.0005018211377200943,
+      0.0009758870526293053,
+      0.0005542618510705685
+    ],
+    "diagnostic_encoder_error_rad": {
+      "count": 4666,
+      "mean": 0.0,
+      "median": 0.0,
+      "p95": 0.0,
+      "max": 0.0,
+      "rmse": 0.0,
+      "mean_absolute": 0.0,
+      "p95_absolute": 0.0,
+      "max_absolute": 0.0
+    }
+  },
+  "geometry": {
+    "tf_source_stamp_samples": 4667,
+    "static_camera_tf_count": 0,
+    "tf_angle_error_rad": {
+      "count": 4667,
+      "mean": 2.7687786268552003e-09,
+      "median": 0.0,
+      "p95": 2.9802322387695312e-08,
+      "max": 4.2146848510894035e-08,
+      "rmse": 8.724914979114032e-09,
+      "mean_absolute": 2.7687786268552003e-09,
+      "p95_absolute": 2.9802322387695312e-08,
+      "max_absolute": 4.2146848510894035e-08
+    },
+    "tf_translation_error_m": {
+      "count": 4667,
+      "mean": 0.0,
+      "median": 0.0,
+      "p95": 0.0,
+      "max": 0.0,
+      "rmse": 0.0,
+      "mean_absolute": 0.0,
+      "p95_absolute": 0.0,
+      "max_absolute": 0.0
+    },
+    "physics_link_angle_error_rad": {
+      "count": 23331,
+      "mean": 1.16386497144215e-06,
+      "median": 7.18662473665938e-07,
+      "p95": 3.738855140739891e-06,
+      "max": 0.00019783356300562572,
+      "rmse": 2.87445663292197e-06,
+      "mean_absolute": 1.16386497144215e-06,
+      "p95_absolute": 3.738855140739891e-06,
+      "max_absolute": 0.00019783356300562572
+    },
+    "physics_link_translation_error_m": {
+      "count": 23331,
+      "mean": 7.806720791126844e-09,
+      "median": 1.1970346188077032e-15,
+      "p95": 7.517816822456507e-15,
+      "max": 9.724841052182351e-07,
+      "rmse": 7.243386009253972e-08,
+      "mean_absolute": 7.806720791126844e-09,
+      "p95_absolute": 7.517816822456507e-15,
+      "max_absolute": 9.724841052182351e-07
+    },
+    "image_timestamp_tf_coverage": 1.0
+  },
+  "metrics": {
+    "detected_center_normalized_error": {
+      "count": 699,
+      "mean": 0.11184571727548148,
+      "median": 0.10357637664414754,
+      "p95": 0.20674439261055788,
+      "max": 0.274985491586638,
+      "rmse": 0.11864534704232685,
+      "mean_absolute": 0.11184571727548148,
+      "p95_absolute": 0.20674439261055788,
+      "max_absolute": 0.274985491586638
+    },
+    "true_image_horizon_error_rad": {
+      "count": 18286,
+      "mean": 0.0003852294418425814,
+      "median": -2.8692238483049114e-05,
+      "p95": 0.0056154166956058895,
+      "max": 0.03417398769677426,
+      "rmse": 0.005922729403092815,
+      "mean_absolute": 0.003409900153197303,
+      "p95_absolute": 0.011443358485236525,
+      "max_absolute": 0.03417398769677426
+    },
+    "true_body_roll_rad": {
+      "count": 18286,
+      "mean": -0.0003852086986935079,
+      "median": 2.6356806505881945e-05,
+      "p95": 0.006819942424651769,
+      "max": 0.029949696147571175,
+      "rmse": 0.005920806744134659,
+      "mean_absolute": 0.003410243703997956,
+      "p95_absolute": 0.0114782347042725,
+      "max_absolute": 0.03414388544964151
+    }
+  },
+  "metric_notes": [
+    "Centering uses detected box centers, not manually annotated target centers.",
+    "Horizon uses independent Gazebo physics link poses, never controller diagnostics.",
+    "Physics link pose comparison uses linear encoder interpolation across at most 0.10 s.",
+    "A physical lag check is evidence of distinct channels; it is not a calibrated servo bandwidth measurement.",
+    "Explicit inactive invalid-source diagnostics with frozen commands are audited as not-ready and excluded from source-aligned encoder/lag metrics; ready diagnostics remain strict.",
+    "Initial identical stamp-zero joint feedback from a paused world is audited without counting as timed evidence; conflicts, positive-time duplicates/backtracking, and later zero stamps remain failures.",
+    "Only a complete identical terminal JointState suffix at the global final source/receipt Clock may be audited as redundant after independent successful pause-ACK/recording-closure and complete nonregressing Clock/archive validation; raw errors remain recorded and redundant copies supply no timed evidence.",
+    "Hard yaw lead projection/reset takes precedence over reference derivative bounds during external body-yaw jumps."
+  ],
+  "trial": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble53/reliability_v4_humble53_probe01_person_stage3_midpoint_seed004",
+  "evaluation_source": {
+    "script": "/root/uav_tracking_fullplan_v4_humble53/scripts/evaluate_stage3_gimbal.py",
+    "script_sha256": "2152d67025846a6fd760c3556f9b6eb986658453a985b8e1a61cbc5398d38228",
+    "dependencies": {
+      "/root/uav_tracking_fullplan_v4_humble53/scripts/evaluate_stage1_flight.py": "655cf6fc7c0cc2a954db7d06d2fbb00a000f2fca80ba0930d153025e28efb7c1",
+      "/root/uav_tracking_fullplan_v4_humble53/uav_tracking/control/gimbal_geometry.py": "7d5cc18178c2e1db85ad5cb0e95a7114db1a6675be61d6705b3986a2f2353d08"
+    },
+    "scope": "Offline physical gimbal geometry and complete recorded Clock/closure-bound terminal redundant feedback audit"
+  },
+  "input_bindings": {
+    "recording_closure": {
+      "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble53/reliability_v4_humble53_probe01_person_stage3_midpoint_seed004/recording_closure.json",
+      "sha256": "d5f9ee28da602f324c7f8bd8cfcb3aab63000e2c5655e345c9e59ead7e84dad6"
+    },
+    "bag_integrity": {
+      "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble53/reliability_v4_humble53_probe01_person_stage3_midpoint_seed004/bag_integrity.json",
+      "sha256": "341bc05f1fcd3d3ae609c478dfa07f542700cee9a80d06f091292ddac4047ddc"
+    }
+  },
+  "created_utc": "2026-11-02T16:12:54.668801+00:00"
+}

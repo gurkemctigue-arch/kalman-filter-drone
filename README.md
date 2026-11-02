@@ -1,5 +1,7 @@
 # RGB-D UAV target tracking and following
 
+**2026-11-03 00:16（北京时间）检查点：Humble53 新核心 12 场已有前 4 场原始工程 PASS，4 个原 attempt 审计均已闭合；第 5 场行人主动云台已开始，余 7 场待执行，正式仍 0/280。** 第四场行人云台中位的距离/高度 RMSE 为 0.7732/0.1630 米，末段两项持续稳定、来源时钟、原生起飞和中位云台检查均通过；旧 Humble51 对应失败完整保留。行人交叉的固定身份时间格为 753 格：648 正确、0 已知错误、105 未知，已知覆盖 86.06%，未知继续计入分母。本轮汽车及主动云台尚无通过结论，不能据此认定整体可靠性已解决。见[本轮四场结果与边界](planning/reliability-v4-humble53-core-checkpoint-20261103.md)、[原件快照](tools/experiment_orchestration/humble53_core4_snapshot01/README.md)及本机[核心进度](results/project_progress/humble53_core_slots01/index.html)。下方均为历史检查点。
+
 **2026-11-02 22:31（北京时间）检查点：Humble53 已完成原失败场景的完整 75 秒复验，1/1 原始工程 PASS。** 本场为行人云台中位，距离/高度 RMSE 为 0.7722/0.1540 米，末段两项持续稳定通过；来源时钟、原生起飞及完整外层核验均通过。它只证明这一场复验通过，不能代表汽车、核心 12 场或整体可靠性已通过。新同源核心 12 场计划已生成，**计划生成时为 0/12 完成、12 PENDING**；正式仍 **0/280**。后续路线保持核心 12、安全 4、扩展 16、容量与定标、最终准入及正式重复研究。见[本轮结果与后续关口](planning/reliability-v4-humble53-native-validation-20261102.md)及[75 秒原件小文件快照](tools/experiment_orchestration/humble53_equivalent_snapshot01/README.md)。下方均为历史检查点。
 
 **2026-11-02 21:35（北京时间）检查点：双桥候选已通过 Ubuntu 22.04/Humble 四包冷构建和完整 Linux 测试，1924 项中 1919 项通过、5 项按明确平台条件跳过。** 原 Humble52 测试因临时目录位于 Windows 挂载文件系统而超时，原始超时与不完整日志全部保留；新 Humble53 使用相同源码，将临时目录恢复为原生 `/tmp` 后完成独立验证。75 秒飞行复验仍待执行，正式 **0/280**，项目尚未全部验收。详见[本轮原生验证与后续关口](planning/reliability-v4-humble53-native-validation-20261102.md)。下方均为历史检查点。
