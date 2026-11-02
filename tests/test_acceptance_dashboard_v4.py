@@ -147,6 +147,85 @@ class V4DeliveryDashboardTests(unittest.TestCase):
         self.write_json(path, report)
         return path, report
 
+    def control_tick_lineage(self):
+        _, old = self.timing()
+        context_path = Path(old["inputs"]["context"]["path"])
+        context = json.loads(context_path.read_text(encoding="utf-8"))
+        context["selected_topic_counts"] = {"/tracking/command": 3}
+        context_pin = self.write_json(context_path, context)
+        report = {"schema_version": 1, "kind": dashboard.V4_ATTACHMENT_KINDS["control_tick_lineage"],
+            "inputs": {"context": context_pin, "events": context["events"]},
+            "endpoint_label": dashboard.V4_CONTROL_TICK_ENDPOINT, "time_domain": "RECORDED_ROS_SOURCE_SIM_CLOCK",
+            "original_command_denominator": 3, "known_commands": 1, "unknown_commands": 2,
+            "known_command_coverage": 1/3, "statistics_s_known_subset_only": dict.fromkeys(("mean", "median", "p95", "max"), .777),
+            "not_observed": ["complete_callback_causality", "controller_publish_completion",
+                             "px4_receipt_or_execution", "wall_capture_to_effect_e2e", "worker_wall_fps"],
+            "commands": [{"command_event_index": 1, "status": "UNIQUE_RECORDED_CONSTRAINT_SOLUTION", "reasons": [], "value_s": .777},
+                         {"command_event_index": 2, "status": "UNKNOWN", "reasons": ["duplicate_native_candidate"], "value_s": None},
+                         {"command_event_index": 3, "status": "UNKNOWN", "reasons": ["command_decode_error"], "value_s": None}]}
+        path = self.inputs / "timing" / "control_tick_lineage.json"
+        self.write_json(path, report)
+        return path, report
+
+    def test_control_tick_retains_unknown_denominator_without_reading_events_or_claiming_e2e(self):
+        path, _ = self.control_tick_lineage()
+        result = dashboard.build_v4_dashboard(self.package, self.output, control_tick_lineage=[path])
+        self.assertIn("SAVED_REPORT_SMALL_BINDINGS_CHECKED_NOT_REVERIFIED", result["attachment_statuses"])
+        page = self.output.read_text(encoding="utf-8")
+        for phrase in ("tick开始", "update/publish之前", "不等于完整回调因果", "已知子集p95", "UNKNOWN"):
+            self.assertIn(phrase, page)
+        index = json.loads(Path(result["source_index"]).read_text(encoding="utf-8"))
+        self.assertTrue(any(row["validation"] == "NOT_REREAD" for row in index["deferred_bindings_not_reread"]))
+        self.assertFalse(index["project_acceptance_claimed"])
+
+    def test_control_tick_rejects_wrong_original_trial_and_dropped_unknown_commands(self):
+        for mutation in ("trial", "denominator", "unknown_zero", "duplicate_index", "endpoint"):
+            with self.subTest(mutation=mutation):
+                path, data = self.control_tick_lineage()
+                if mutation == "trial":
+                    context = json.loads(Path(data["inputs"]["context"]["path"]).read_text(encoding="utf-8"))
+                    context["trial"] += "_different_batch"
+                    data["inputs"]["context"] = self.write_json(Path(data["inputs"]["context"]["path"]), context)
+                elif mutation == "denominator":
+                    data.update(original_command_denominator=1, unknown_commands=0, known_command_coverage=1.)
+                    data["commands"] = data["commands"][:1]
+                elif mutation == "unknown_zero":
+                    data["commands"][1]["value_s"] = 0.
+                elif mutation == "duplicate_index":
+                    data["commands"][1]["command_event_index"] = 1
+                else:
+                    data["endpoint_label"] = "capture to PX4 execution wall E2E"
+                self.write_json(path, data)
+                result = dashboard.build_v4_dashboard(self.package, self.root / mutation / "index.html", control_tick_lineage=[path])
+                self.assertIn("REJECTED_OR_MISSING", result["attachment_statuses"])
+                self.assertNotIn("0.777", Path(result["output"]).read_text(encoding="utf-8"))
+
+    def test_timing_matches_canonical_directory_aliases_but_not_same_basename(self):
+        path, report = self.control_tick_lineage()
+        context_path = Path(report["inputs"]["context"]["path"])
+        context = json.loads(context_path.read_text(encoding="utf-8"))
+        real_root, real_trial = Path(context["source_root"]), Path(context["trial"])
+        alias_root, alias_trial = self.inputs / "frozen_alias", self.inputs / "trial_alias"
+        for directory in (real_root, real_trial, alias_root, alias_trial):
+            directory.mkdir(parents=True, exist_ok=True)
+        context.update(source_root=str(alias_root), trial=str(alias_trial))
+        report["inputs"]["context"] = self.write_json(context_path, context)
+        self.write_json(path, report)
+        original = Path.resolve
+        aliases = {str(alias_root): real_root, str(alias_trial): real_trial}
+        def resolve(current, *args, **kwargs):
+            return original(aliases.get(str(current), current), *args, **kwargs)
+        with patch.object(Path, "resolve", resolve):
+            result = dashboard.build_v4_dashboard(self.package, self.output, control_tick_lineage=[path])
+        self.assertIn("SAVED_REPORT_SMALL_BINDINGS_CHECKED_NOT_REVERIFIED", result["attachment_statuses"])
+        different = self.root / "different_batch" / real_trial.name
+        different.mkdir(parents=True)
+        context.update(source_root=str(real_root), trial=str(different))
+        report["inputs"]["context"] = self.write_json(context_path, context)
+        self.write_json(path, report)
+        result = dashboard.build_v4_dashboard(self.package, self.root / "wrong_batch" / "index.html", control_tick_lineage=[path])
+        self.assertIn("REJECTED_OR_MISSING", result["attachment_statuses"])
+
     def test_original_280_retains_failed_unknown_and_missing_without_legacy_verdicts(self):
         with patch.object(dashboard, "discover_trials", side_effect=AssertionError("legacy discovery forbidden")), \
              patch.object(dashboard, "evidence_status", side_effect=AssertionError("legacy verdict forbidden")):

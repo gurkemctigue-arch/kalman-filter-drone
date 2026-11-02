@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "kind": "WORDING_ONLY_IDENTITY_BOUNDARY_FOLLOWUP_TO_38_SYNTHETIC_PASS_NOT_ACTUAL_RESEARCH",
+  "created_utc": "2026-11-02T22:16:31.799763+00:00",
+  "previous_author_receipt": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\report_attachment_integration54_01\\author_receipt01.json",
+    "sha256": "69bdb6d9d3fc05af74174de0e867836ce406c580b5fae177c40065630b85a61d"
+  },
+  "change": "One added paragraph: aggregate identity coverage is not proof of each requested target_uuid task; per-task missing remains unverified. No logic change.",
+  "sources_before": {
+    "scripts/build_acceptance_dashboard.py": {
+      "path": "D:\\基于yolo和卡尔曼滤波\\scripts\\build_acceptance_dashboard.py",
+      "sha256": "3059886d4445270d23f79c492176f3ae8559992f61fd0864254b5faa5bac6f32",
+      "bytes": 88248
+    },
+    "scripts/build_reliability_v4_report.py": {
+      "path": "D:\\基于yolo和卡尔曼滤波\\scripts\\build_reliability_v4_report.py",
+      "sha256": "29b78a3158b707acbe9acfffc7c6f58a12772252373874df0fa32978ddf5a901",
+      "bytes": 65514
+    },
+    "tests/test_acceptance_dashboard_v4.py": {
+      "path": "D:\\基于yolo和卡尔曼滤波\\tests\\test_acceptance_dashboard_v4.py",
+      "sha256": "ca67c5791d51f73658f0d4ff004ae39ea00efbbf51df7dc6ac8e7b6869663342",
+      "bytes": 22033
+    },
+    "tests/test_reliability_v4_report.py": {
+      "path": "D:\\基于yolo和卡尔曼滤波\\tests\\test_reliability_v4_report.py",
+      "sha256": "7802cc8be899bd7ae06e322b5be7c858abf83a3753b0a7aa887372ef491b49bd",
+      "bytes": 25254
+    }
+  },
+  "sources_after": {
+    "scripts/build_acceptance_dashboard.py": {
+      "path": "D:\\基于yolo和卡尔曼滤波\\scripts\\build_acceptance_dashboard.py",
+      "sha256": "3059886d4445270d23f79c492176f3ae8559992f61fd0864254b5faa5bac6f32",
+      "bytes": 88248
+    },
+    "scripts/build_reliability_v4_report.py": {
+      "path": "D:\\基于yolo和卡尔曼滤波\\scripts\\build_reliability_v4_report.py",
+      "sha256": "29b78a3158b707acbe9acfffc7c6f58a12772252373874df0fa32978ddf5a901",
+      "bytes": 65514
+    },
+    "tests/test_acceptance_dashboard_v4.py": {
+      "path": "D:\\基于yolo和卡尔曼滤波\\tests\\test_acceptance_dashboard_v4.py",
+      "sha256": "ca67c5791d51f73658f0d4ff004ae39ea00efbbf51df7dc6ac8e7b6869663342",
+      "bytes": 22033
+    },
+    "tests/test_reliability_v4_report.py": {
+      "path": "D:\\基于yolo和卡尔曼滤波\\tests\\test_reliability_v4_report.py",
+      "sha256": "7802cc8be899bd7ae06e322b5be7c858abf83a3753b0a7aa887372ef491b49bd",
+      "bytes": 25254
+    }
+  },
+  "sources_unchanged": true,
+  "ast_checked": true,
+  "test_command": [
+    "C:\\Program Files\\Python312\\python.exe",
+    "-B",
+    "-m",
+    "unittest",
+    "tests.test_reliability_v4_report.ReliabilityReportTests.test_four_missing_supplementary_annexes_reach_word_blocks_as_pending",
+    "tests.test_reliability_v4_report.ReliabilityReportTests.test_saved_four_annexes_are_referenced_with_hashes_and_small_binding_authority",
+    "-v"
+  ],
+  "test_exit_code": 0,
+  "test_log": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\report_attachment_integration54_01\\author_tests02_identity_wording.log",
+    "sha256": "fd9649c73a258e7ac863ca851e888ada241eec891599ec2cac1a2dae81516908",
+    "bytes": 531
+  },
+  "diff": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\report_attachment_integration54_01\\author_source_diff02.patch",
+    "sha256": "560bf462ec969294717dec3101ed35f15a5828cf187c4ee5095255ab21abdd43",
+    "bytes": 42889
+  },
+  "word_renderer_source_changed": false,
+  "actual_reports_or_raw_events_read": false,
+  "native_simulation_started": false,
+  "docx_generated": false
+}

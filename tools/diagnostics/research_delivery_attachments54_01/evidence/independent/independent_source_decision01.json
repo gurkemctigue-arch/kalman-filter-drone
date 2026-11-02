@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "kind": "INDEPENDENT_MINIMAL_OFFLINE_ANNEX_SOURCE_REVIEW",
+  "created_utc": "2026-11-02T22:15:12.532812+00:00",
+  "result": "ACCEPTED_FOR_MINIMAL_OFFLINE_ANNEX_WIRING_NOT_PROJECT_ACCEPTANCE",
+  "author_receipt": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\report_attachment_integration54_01\\author_receipt01.json",
+    "bytes": 3215,
+    "sha256": "69bdb6d9d3fc05af74174de0e867836ce406c580b5fae177c40065630b85a61d"
+  },
+  "independent_regression_receipt": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\research_delivery_attachments_review54_01\\independent_review01.json",
+    "bytes": 3505,
+    "sha256": "d6ae935e5f16ebd40bf40bae8364bb1038fb88e142b42e0cb1e8794207db37fa"
+  },
+  "reviewed_source_pins": {
+    "scripts/build_acceptance_dashboard.py": {
+      "path": "D:\\基于yolo和卡尔曼滤波\\scripts\\build_acceptance_dashboard.py",
+      "bytes": 88248,
+      "sha256": "3059886d4445270d23f79c492176f3ae8559992f61fd0864254b5faa5bac6f32"
+    },
+    "scripts/build_reliability_v4_report.py": {
+      "path": "D:\\基于yolo和卡尔曼滤波\\scripts\\build_reliability_v4_report.py",
+      "bytes": 65201,
+      "sha256": "54298ef43a60aa405e5a8ba388e7a8e943151db0840ef1e39e87488307d8b811"
+    },
+    "tests/test_acceptance_dashboard_v4.py": {
+      "path": "D:\\基于yolo和卡尔曼滤波\\tests\\test_acceptance_dashboard_v4.py",
+      "bytes": 22033,
+      "sha256": "ca67c5791d51f73658f0d4ff004ae39ea00efbbf51df7dc6ac8e7b6869663342"
+    },
+    "tests/test_reliability_v4_report.py": {
+      "path": "D:\\基于yolo和卡尔曼滤波\\tests\\test_reliability_v4_report.py",
+      "bytes": 25254,
+      "sha256": "7802cc8be899bd7ae06e322b5be7c858abf83a3753b0a7aa887372ef491b49bd"
+    }
+  },
+  "actual_regression": {
+    "tests_run": 38,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "elapsed_unittest_s": 65.338,
+    "exit_code": 0,
+    "source_unchanged": true,
+    "python310_ast": "PASS",
+    "diff_whitespace_check": "PASS"
+  },
+  "resolved_findings": [
+    {
+      "finding": "Main report could hash an oversized attachment after the bounded dashboard reader refused it.",
+      "resolution": "Before attachment reading or Sources.add, require a JSON reference and reject an existing file above the bounded-reader cap. Synthetic reduced-cap test proves the report SHA function is not called."
+    },
+    {
+      "finding": "Timing exporter canonicalizes the actual trial path while the plan retains the results symlink path; exact string comparison rejects a legitimate saved annex.",
+      "resolution": "Permit identical paths or two real absolute directories whose strict resolutions agree, retain a unique formal slot match, and reject a different batch with the same basename. Synthetic canonical-alias regression covers both directions."
+    }
+  ],
+  "accepted_boundaries": [
+    "All four saved annex types retain SAVED_REPORT_SMALL_BINDINGS_CHECKED_NOT_REVERIFIED; no semantic analyzer is executed.",
+    "Absent annexes remain PENDING_NOT_PROVIDED; an explicitly missing or rejected file has no saved metric summary and remains source-availability bound.",
+    "Only bound FORMAL120 plus EXTENSION_FORMAL160 identities can contribute annex summaries; development contexts or a different trial are rejected.",
+    "Tick endpoint remains acquisition to control-loop tick-start source_sim, before update/publish; callback causality, publish completion, PX4 receipt/execution, physical wall E2E and worker-wall FPS remain unobserved.",
+    "Every original control command remains in known plus UNKNOWN; unknown values remain null, unique indices and original export counts are checked, and quantiles describe only the known subset.",
+    "Original 280 statuses, 80 recovery opportunities, missing detector slots, engineering PASS/FAIL and project_acceptance_claimed=false remain unchanged.",
+    "Main report uses existing generic heading, paragraph and table blocks; no Word renderer source change is needed."
+  ],
+  "remaining_validation": [
+    "No actual formal report/protocol or timing events were semantically re-evaluated.",
+    "No real Linux results symlink was resolved in this Windows-only review; canonical-alias regression uses controlled temporary paths and a mocked resolution boundary.",
+    "Actual DOCX/PDF generation, visual page review and final delivery link checks remain future work."
+  ],
+  "original_results_changed": false,
+  "formal_metadata_created": false,
+  "native_started": false,
+  "raw_experiment_data_read": false
+}

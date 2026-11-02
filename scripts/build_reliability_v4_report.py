@@ -23,6 +23,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 import summarize_reliability_v4 as snapshot  # noqa: E402
 import run_estimator_replay_v4 as replay_cli  # noqa: E402
 import evaluate_detection_recordings as detection_cli  # noqa: E402
+import build_acceptance_dashboard as delivery_cli  # noqa: E402
 from uav_tracking.research_metrics import detection_metrics  # noqa: E402
 from uav_tracking.replay_comparison import (  # noqa: E402
     EXPORT_SIDECARS, canonical_sha256, paired_trial_summary, replay_trial,
@@ -443,6 +444,123 @@ def markdown_blocks(text):
     return blocks
 
 
+ATTACHMENT_LABELS = {
+    "detection": "前瞻动态相机全物体检测附件",
+    "recovery": "独立物理恢复描述附件",
+    "timing": "可观测时序附件",
+    "control_tick_lineage": "控制tick唯一记录约束附件",
+}
+ATTACHMENT_BOUNDARIES = {
+    "detection": "仅引用独立批准的可见仿真子集；缺图、遮挡、缺失槽与未审核机会保留，不代表全部280飞行检测准确率。",
+    "recovery": "80个原登记机会保留未知、缺失和右删失。显式重选由用户/脚本辅助，不是自动ReID，也不替代原工程裁决；此工具没有verify-report。",
+    "timing": "source仿真时钟、wall处理耗时分开解释；worker墙时FPS、完整因果端到端与PX4生效时延保持未观察。",
+    "control_tick_lineage": "采集→控制循环取时（tick开始）source_sim：端点在update/publish之前；唯一记录约束解不等于完整回调因果、发布完成、PX4执行或物理墙时端到端。已知子集分位数不能外推全任务。",
+}
+
+
+def attachment_references(summary_path, core_path, extension_path, summary, sources, paths_by_kind):
+    """Reference bounded saved annexes; never run their semantic evaluators."""
+    inputs = delivery_cli._V4Inputs()
+    provided = any(paths for paths in paths_by_kind.values())
+    engineering = {"status": "MISSING_OR_REJECTED_FORMAL_ENGINEERING"}
+    if provided:
+        package = {"request": {"core_path": str(Path(core_path).resolve()),
+                    "extension_path": str(Path(extension_path).resolve()) if extension_path else None,
+                    "summary_path": str(Path(summary_path).resolve())},
+                   "cohorts": summary["cohorts"], "sources": sources.records}
+        try:
+            engineering = delivery_cli._v4_engineering(package, inputs)
+        except (OSError, ValueError, KeyError, TypeError, AttributeError) as error:
+            engineering["error"] = str(error)
+    references = []
+    for kind in ATTACHMENT_LABELS:
+        paths = paths_by_kind[kind]
+        if not paths:
+            references.append({"type": kind, "status": "PENDING_NOT_PROVIDED", "path": None,
+                               "binding": None, "saved_summary": None})
+        for path in paths:
+            path = Path(path)
+            if path.suffix.lower() != ".json" or (path.is_file() and path.stat().st_size > delivery_cli.V4_JSON_LIMIT):
+                raise ValueError("Supplementary references require bounded saved report JSON, not raw data")
+            result = delivery_cli._v4_attachment(path, kind, engineering, inputs)
+            record = sources.add(path, "supplementary_" + kind + "_report", required=False)
+            item = {key: value for key, value in result.items() if key != "data"}
+            item["binding"] = {key: record[key] for key in ("path", "sha256", "bytes", "exists")}
+            item["saved_summary"] = None
+            data = result["data"]
+            if data is not None:
+                if kind == "detection":
+                    aggregate = data.get("reviewed_aggregate") or {}
+                    item["saved_summary"] = {"original_slots": 280,
+                        "recording_slots_supplied": data["recording_slots_supplied"],
+                        "missing_original_slots": len(data["missing_original_slot_ids"]),
+                        "scheduled_opportunities": data.get("scheduled_opportunities"),
+                        "reviewed_visible_subset_map50_95": aggregate.get("map50_95")}
+                elif kind == "recovery":
+                    item["saved_summary"] = data["summary"]["all"]
+                elif kind == "timing":
+                    item["saved_summary"] = {key: data[key] for key in (
+                        "detector_acquisition_to_prepublication_source_s", "detector_processing_prefix_wall_s",
+                        "completed_job_yolo_predict_wall_s", "controller_reported_measurement_age_source_s")}
+                else:
+                    item["saved_summary"] = {key: data[key] for key in (
+                        "original_command_denominator", "known_commands", "unknown_commands",
+                        "known_command_coverage", "statistics_s_known_subset_only")}
+            references.append(item)
+    for record in inputs.records.values():
+        actual = sources.add(record["path"], "supplementary_small_binding")
+        if any(actual[key] != record[key] for key in ("bytes", "sha256")):
+            raise ValueError("Supplementary small source changed during reference build")
+    inputs.unchanged()
+    sources.add(ROOT / "scripts/build_acceptance_dashboard.py", "attachment_reference_implementation")
+    return {"status": "SAVED_ANNEX_REFERENCES_NOT_SEMANTIC_REVERIFICATION", "items": references,
+            "deferred_bindings_not_reread": inputs.deferred, "raw_data_reanalyzed": False,
+            "changes_original_verdicts": False}
+
+
+def attachment_blocks(attachments):
+    blocks = [heading("独立附件引用与已保存摘要"), paragraph(
+        "下列附件只补充来源与保存的结果，不改变原280槽裁决、正式完成或工程通过状态。这里只核对小报告、协议及明确绑定；没有重读events、录包、图片、模型或完整原始数据，也没有执行附件的独立语义复验。语义复验收据必须另行保留。未提供、拒绝、未知和null均不等于PASS或零值。"),
+        paragraph("汇总身份覆盖不证明每个target_uuid任务均达到门槛；不同请求任务可能有不同分母和较弱覆盖。逐任务计数、未知和未确认任务应查所引用原报告中的对应记录；未提供逐任务证据时保持未核验，不能声称全程身份保持。")]
+    for kind, label in ATTACHMENT_LABELS.items():
+        blocks += [heading(label, 2), paragraph(ATTACHMENT_BOUNDARIES[kind])]
+        for item in (row for row in attachments["items"] if row["type"] == kind):
+            blocks.append(paragraph("引用状态：" + item["status"]))
+            if item["path"] is None:
+                blocks.append(paragraph("尚未提供实际报告；本节不生成指标或验收结论。"))
+                continue
+            pin = item["binding"]
+            blocks.append(table(["原报告路径", "SHA-256", "字节数"], [[item["path"], pin["sha256"], pin["bytes"]]]))
+            if item.get("error"):
+                blocks.append(paragraph("缺失或拒绝原因：" + item["error"]))
+            elif item["saved_summary"] is not None:
+                if item.get("bound_slot_id"):
+                    blocks.append(paragraph("绑定原槽：" + item["bound_cohort"] + "/" + item["bound_slot_id"]))
+                blocks.append(paragraph("以下数值来自保存报告，未在本入口重算；仅为已声明范围的描述。"))
+                saved = item["saved_summary"]
+                if kind == "detection":
+                    blocks.append(table(["原槽分母", "提供录制槽", "缺失原槽", "采样机会", "批准可见子集mAP50:95"],
+                        [[saved[key] for key in ("original_slots", "recording_slots_supplied", "missing_original_slots",
+                                                "scheduled_opportunities", "reviewed_visible_subset_map50_95")]]))
+                elif kind == "recovery":
+                    blocks.append(table(["原机会分母", "支持原个体且未见不同", "描述下界", "右删失", "缺失/无效事件", "已确认均时/s"],
+                        [[saved.get(key) for key in ("registered_opportunities", "supported_original_without_observed_different",
+                            "descriptive_lower_bound", "right_censored", "missing_or_invalid_events")]
+                         + [saved.get("original_confirmation_delay_s", {}).get("mean")]]))
+                elif kind == "timing":
+                    labels = ("采集到发布前/source", "检测处理及发布前缀/wall", "完成job的YOLO predict/wall", "控制器报告测量年龄/source")
+                    blocks.append(table(["保存的观测量", "已知", "未知", "完整机会", "均值/s", "p95/s"],
+                        [[label, value["known"], value["unknown"], value["total"],
+                          value["statistics_s"].get("mean"), value["statistics_s"].get("p95")]
+                         for label, value in zip(labels, saved.values())]))
+                else:
+                    stats = saved["statistics_s_known_subset_only"]
+                    blocks.append(table(["原命令分母", "唯一记录解", "UNKNOWN", "已知覆盖", "已知子集均值/s", "已知子集p95/s"],
+                        [[saved["original_command_denominator"], saved["known_commands"], saved["unknown_commands"],
+                          saved["known_command_coverage"], stats["mean"], stats["p95"]]]))
+    return blocks
+
+
 def report_blocks(summary, replay, outcomes, *, final=False, detection=None):
     blocks = [heading("结果适用范围"), paragraph(
         "本报告记录v4仿真研究。" + ("120个核心槽与160个独立扩展槽已记入终态，全部失败和缺证均保留；执行台账齐备不等于工程全部通过。" if final else
@@ -620,7 +738,8 @@ def render_html(document, base=None):
 def build(summary_path, core_path, extension_path=None, *, mode="draft", replay_summary=None,
           replay_manifest=None, replay_configuration=None, figures_manifest=None,
           plan_path=ROOT / "docs/FINAL_PLAN_V4.md", replay_source_root=ROOT,
-          detection_report=None, detection_review=None, detection_source_root=ROOT):
+          detection_report=None, detection_review=None, detection_source_root=ROOT,
+          prospective_detection=(), physical_recovery=(), timing=(), control_tick_lineage=()):
     if mode not in {"draft", "final"}:
         raise ValueError("Unknown document mode")
     sources = Sources()
@@ -639,6 +758,12 @@ def build(summary_path, core_path, extension_path=None, *, mode="draft", replay_
         if detection_report is None or detection_review is None:
             raise ValueError("Detection report and actual review file are required together")
         detection = verify_detection(detection_report, detection_review, sources, source_root=detection_source_root)
+    attachment_paths = {"detection": prospective_detection, "recovery": physical_recovery,
+                        "timing": timing, "control_tick_lineage": control_tick_lineage}
+    for paths in attachment_paths.values():
+        if not isinstance(paths, (tuple, list)):
+            raise ValueError("Supplementary report arguments must be path lists")
+    attachments = attachment_references(summary_path, core_path, extension_path, summary, sources, attachment_paths)
     sources.add(plan_path, "final_plan_content")
     plan_blocks = markdown_blocks(Path(plan_path).read_text(encoding="utf-8-sig"))
     label = "FINAL_EXECUTION_REPORT：280槽执行台账齐备；失败与证据局限保留，不等于工程全部通过。" if mode == "final" else "DEVELOPMENT_ONLY：开发草稿；不作为正式实验完成证明。"
@@ -646,7 +771,8 @@ def build(summary_path, core_path, extension_path=None, *, mode="draft", replay_
         "plan": {"title": "基于YOLO11与卡尔曼滤波的RGB-D云台无人机目标跟踪与自主跟随——最终方案（v4）",
                  "status_label": label, "blocks": plan_blocks},
         "report": {"title": "RGB-D云台无人机目标跟踪与自主跟随仿真研究报告（v4）",
-                   "status_label": label, "blocks": report_blocks(summary, replay, outcomes, final=mode == "final", detection=detection) + figures},
+                   "status_label": label, "blocks": report_blocks(summary, replay, outcomes, final=mode == "final", detection=detection)
+                   + attachment_blocks(attachments) + figures},
     }
     source_rows = [[record["role"], record["path"], record["sha256"] or "缺失"] for record in sources.records
                    if record["role"] in {"engineering_summary", "engineering_plan", "replay_summary", "replay_registration", "replay_input_manifest", "figures_manifest", "final_plan_content", "detection_report", "detection_review"}]
@@ -663,6 +789,7 @@ def build(summary_path, core_path, extension_path=None, *, mode="draft", replay_
                              "project_acceptance_claimed": False},
               "cohorts": summary["cohorts"], "replay_outcomes": outcomes,
               "detection_status": detection["status"] if detection else "PENDING_NOT_PROVIDED",
+              "supplementary_attachments": attachments,
               "request": {"summary_path": str(Path(summary_path).resolve()), "core_path": str(Path(core_path).resolve()),
                           "extension_path": str(Path(extension_path).resolve()) if extension_path else None,
                           "mode": mode, "replay_summary": str(Path(replay_summary).resolve()) if replay_summary else None,
@@ -672,7 +799,10 @@ def build(summary_path, core_path, extension_path=None, *, mode="draft", replay_
                           "plan_path": str(Path(plan_path).resolve()), "replay_source_root": str(Path(replay_source_root).resolve()),
                           "detection_report": str(Path(detection_report).resolve()) if detection_report else None,
                           "detection_review": str(Path(detection_review).resolve()) if detection_review else None,
-                          "detection_source_root": str(Path(detection_source_root).resolve())},
+                          "detection_source_root": str(Path(detection_source_root).resolve()),
+                          **{name: [str(Path(path).resolve()) for path in paths] for name, paths in (
+                              ("prospective_detection", prospective_detection), ("physical_recovery", physical_recovery),
+                              ("timing", timing), ("control_tick_lineage", control_tick_lineage))}},
               "pending_figures": pending, "documents": documents, "sources": sources.records,
               "validation": "SOURCES_RECONSTRUCTED_NO_ROS_BAG_OR_MODEL_INFERENCE",
               "rendering": "NOT_RENDERED: final DOCX/PDF and per-page visual review remain required"}
@@ -747,6 +877,10 @@ def main(argv=None):
     parser.add_argument("--detection-report", type=Path)
     parser.add_argument("--detection-review-file", type=Path)
     parser.add_argument("--detection-source-root", type=Path, default=ROOT)
+    parser.add_argument("--prospective-detection", type=Path, action="append", default=[])
+    parser.add_argument("--physical-recovery", type=Path, action="append", default=[])
+    parser.add_argument("--timing", type=Path, action="append", default=[])
+    parser.add_argument("--control-tick-lineage", type=Path, action="append", default=[])
     parser.add_argument("--plan-content", type=Path, default=ROOT / "docs/FINAL_PLAN_V4.md")
     parser.add_argument("--output", type=Path)
     args = parser.parse_args(argv)
@@ -762,7 +896,9 @@ def main(argv=None):
             replay_summary=args.replay_summary, replay_manifest=args.replay_input_manifest,
             replay_configuration=args.replay_configuration, replay_source_root=args.replay_source_root,
             figures_manifest=args.figures_manifest, plan_path=args.plan_content, detection_report=args.detection_report,
-            detection_review=args.detection_review_file, detection_source_root=args.detection_source_root)
+            detection_review=args.detection_review_file, detection_source_root=args.detection_source_root,
+            prospective_detection=args.prospective_detection, physical_recovery=args.physical_recovery,
+            timing=args.timing, control_tick_lineage=args.control_tick_lineage)
         write_package(package, sources, args.output)
     except (OSError, ValueError, KeyError, TypeError) as error:
         parser.error(str(error))

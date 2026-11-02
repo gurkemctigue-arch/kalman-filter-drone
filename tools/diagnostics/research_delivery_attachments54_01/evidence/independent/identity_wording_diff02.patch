@@ -1,0 +1,12 @@
+--- previous_38_test_report_54298ef4.py
++++ identity_wording_report_29b78a31.py
+@@ -520,7 +520,8 @@
+ 
+ def attachment_blocks(attachments):
+     blocks = [heading("独立附件引用与已保存摘要"), paragraph(
+-        "下列附件只补充来源与保存的结果，不改变原280槽裁决、正式完成或工程通过状态。这里只核对小报告、协议及明确绑定；没有重读events、录包、图片、模型或完整原始数据，也没有执行附件的独立语义复验。语义复验收据必须另行保留。未提供、拒绝、未知和null均不等于PASS或零值。")]
++        "下列附件只补充来源与保存的结果，不改变原280槽裁决、正式完成或工程通过状态。这里只核对小报告、协议及明确绑定；没有重读events、录包、图片、模型或完整原始数据，也没有执行附件的独立语义复验。语义复验收据必须另行保留。未提供、拒绝、未知和null均不等于PASS或零值。"),
++        paragraph("汇总身份覆盖不证明每个target_uuid任务均达到门槛；不同请求任务可能有不同分母和较弱覆盖。逐任务计数、未知和未确认任务应查所引用原报告中的对应记录；未提供逐任务证据时保持未核验，不能声称全程身份保持。")]
+     for kind, label in ATTACHMENT_LABELS.items():
+         blocks += [heading(label, 2), paragraph(ATTACHMENT_BOUNDARIES[kind])]
+         for item in (row for row in attachments["items"] if row["type"] == kind):

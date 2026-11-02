@@ -652,7 +652,9 @@ V4_ATTACHMENT_KINDS = {
     "detection": "PROSPECTIVE_ALL_ACTOR_DYNAMIC_DETECTION_REPORT_V1",
     "recovery": "PROSPECTIVE_PHYSICAL_RECOVERY_APPENDIX_V1",
     "timing": "OFFLINE_OBSERVED_PIPELINE_TIMING_NOT_CAUSAL_E2E",
+    "control_tick_lineage": "OFFLINE_UNIQUE_RECORDED_CONTROL_TICK_LINEAGE_V1_NOT_CALLBACK_CAUSALITY",
 }
+V4_CONTROL_TICK_ENDPOINT = "采集→控制循环取时（tick开始）source_sim"
 
 
 def _v4_require(condition, message):
@@ -845,6 +847,81 @@ def _v4_same_plan(binding, engineering, cohort, inputs):
                 "附件绑定了不同的原始计划：" + cohort)
 
 
+def _v4_same_directory(first, second):
+    if not all(isinstance(value, str) and value for value in (first, second)):
+        return False
+    if first == second:
+        return True
+    try:
+        a, b = Path(first), Path(second)
+        return a.is_absolute() and b.is_absolute() and a.is_dir() and b.is_dir() \
+            and a.resolve(strict=True) == b.resolve(strict=True)
+    except OSError:
+        return False
+
+
+def _v4_timing_context(data, engineering, inputs, result):
+    context = inputs.bound(data.get("inputs", {}).get("context"), "timing_export_context")
+    _v4_require(type(context.get("schema_version")) is int and context["schema_version"] == 1
+                and context.get("kind") == "NATIVE_PIPELINE_TIMING_EXPORT_CONTEXT_NOT_ACCEPTANCE"
+                and context.get("events") == data.get("inputs", {}).get("events"),
+                "时延原始context/events绑定不一致")
+    matches = [(cohort, trial) for cohort, plan in engineering["plans"].items()
+               for trial in plan["trials"] if _v4_same_directory(context.get("source_root"), plan.get("frozen_root"))
+               and _v4_same_directory(context.get("trial"), trial.get("directory"))]
+    _v4_require(len(matches) == 1, "时延context不是本轮原始120+160计划中的唯一冻结来源/试验")
+    result["bound_cohort"], matched_trial = matches[0]
+    result["bound_slot_id"] = matched_trial["id"]
+    inputs.defer(context.get("events"), "timing_events_not_reread")
+    for name in ("source_root", "trial", "source_results_root"):
+        if isinstance(context.get(name), str):
+            inputs.protect(context[name])
+    for root in context.get("protected_roots", []):
+        inputs.protect(root)
+    return context
+
+
+def _v4_control_tick_counts(data, context):
+    _v4_require(data.get("endpoint_label") == V4_CONTROL_TICK_ENDPOINT
+                and data.get("time_domain") == "RECORDED_ROS_SOURCE_SIM_CLOCK",
+                "控制tick附件端点/时钟域不符")
+    required_unobserved = {"complete_callback_causality", "controller_publish_completion",
+                          "px4_receipt_or_execution", "wall_capture_to_effect_e2e", "worker_wall_fps"}
+    _v4_require(isinstance(data.get("not_observed"), list)
+                and required_unobserved <= set(data["not_observed"]), "控制tick附件越过未观测边界")
+    names = ("original_command_denominator", "known_commands", "unknown_commands")
+    _v4_require(all(type(data.get(name)) is int and data[name] >= 0 for name in names)
+                and data[names[1]] + data[names[2]] == data[names[0]], "控制tick原命令分母不一致")
+    total, known = data[names[0]], data[names[1]]
+    _v4_require(context.get("selected_topic_counts", {}).get("/tracking/command", 0) == total,
+                "控制tick分母不等于原export控制命令数")
+    coverage = data.get("known_command_coverage")
+    _v4_require((total == 0 and coverage is None) or (total > 0 and finite(coverage)
+                and math.isclose(coverage, known / total, rel_tol=0., abs_tol=1e-12)),
+                "控制tick覆盖率与原命令分母不一致")
+    rows = data.get("commands")
+    _v4_require(isinstance(rows, list) and len(rows) == total and all(isinstance(row, dict) for row in rows),
+                "控制tick逐命令台账不完整")
+    indices = [row.get("command_event_index") for row in rows]
+    _v4_require(all(type(index) is int and index >= 0 for index in indices)
+                and len(set(indices)) == total, "控制tick原命令索引缺失或重复")
+    observed = 0
+    for row in rows:
+        _v4_require(isinstance(row.get("reasons"), list), "控制tick缺少逐命令原因")
+        if row.get("status") == "UNIQUE_RECORDED_CONSTRAINT_SOLUTION":
+            _v4_require(finite(row.get("value_s")) and row["value_s"] >= 0 and not row["reasons"],
+                        "控制tick已知命令缺少有限数值或仍有未知原因")
+            observed += 1
+        else:
+            _v4_require(row.get("status") == "UNKNOWN" and row.get("value_s") is None and row["reasons"],
+                        "控制tick未知命令不能当零值或省略原因")
+    _v4_require(observed == known, "控制tick已知计数与逐命令台账不符")
+    stats = data.get("statistics_s_known_subset_only")
+    _v4_require(isinstance(stats, dict) and set(stats) == {"mean", "median", "p95", "max"}
+                and all(value is None if known == 0 else finite(value) and value >= 0 for value in stats.values()),
+                "控制tick已知子集统计必须保留null/有限值边界")
+
+
 def _v4_attachment(path, kind, engineering, inputs):
     path = Path(path).resolve()
     result = {"type": kind, "path": str(path), "status": "REJECTED_OR_MISSING", "data": None}
@@ -936,25 +1013,12 @@ def _v4_attachment(path, kind, engineering, inputs):
                 lower_bound = entry.get("descriptive_lower_bound")
                 _v4_require(type(supported) is int and 0 <= supported <= count and finite(lower_bound)
                             and math.isclose(lower_bound, supported / count, abs_tol=1e-12), "恢复描述下界与完整机会计数不一致")
+        elif kind == "control_tick_lineage":
+            context = _v4_timing_context(data, engineering, inputs, result)
+            _v4_control_tick_counts(data, context)
         else:
             _v4_require(data.get("scope") == "OBSERVABLE_TIMING_ONLY_NOT_ACCEPTANCE", "时延附件范围不符")
-            context = inputs.bound(data.get("inputs", {}).get("context"), "timing_export_context")
-            _v4_require(type(context.get("schema_version")) is int and context["schema_version"] == 1
-                        and context.get("kind") == "NATIVE_PIPELINE_TIMING_EXPORT_CONTEXT_NOT_ACCEPTANCE"
-                        and context.get("events") == data.get("inputs", {}).get("events"), "时延原始context/events绑定不一致")
-            matches = [(cohort, trial) for cohort, plan in engineering["plans"].items()
-                       for trial in plan["trials"] if context.get("source_root") == plan.get("frozen_root")
-                       and isinstance(context.get("source_root"), str)
-                       and context.get("trial") == trial.get("directory") and isinstance(context.get("trial"), str)]
-            _v4_require(len(matches) == 1, "时延context不是本轮原始120+160计划中的唯一冻结来源/试验")
-            result["bound_cohort"], matched_trial = matches[0]
-            result["bound_slot_id"] = matched_trial["id"]
-            inputs.defer(context.get("events"), "timing_events_not_reread")
-            for name in ("source_root", "trial", "source_results_root"):
-                if isinstance(context.get(name), str):
-                    inputs.protect(context[name])
-            for root in context.get("protected_roots", []):
-                inputs.protect(root)
+            _v4_timing_context(data, engineering, inputs, result)
             for key in ("actual_worker_processed_wall_fps", "capture_to_controller_causal_source_s",
                         "capture_to_px4_setpoint_causal_source_s", "physical_capture_to_px4_effect_wall_s"):
                 _v4_require(isinstance(data.get(key), dict) and data[key].get("status") == "NOT_OBSERVED",
@@ -985,7 +1049,8 @@ def _v4_table(headers, rows):
 
 
 def _v4_attachment_html(item, output):
-    names = {"detection": "动态相机全物体检测附件", "recovery": "独立物理恢复描述附件", "timing": "可观测时序附件"}
+    names = {"detection": "动态相机全物体检测附件", "recovery": "独立物理恢复描述附件", "timing": "可观测时序附件",
+             "control_tick_lineage": "独立控制tick记录链附件"}
     body = ['<section class="panel"><h2>' + names[item["type"]] + '</h2><p>' + esc(item["status"]) + '</p>']
     if item["data"] is None:
         return "".join(body + ['<p class="notice">缺失或拒绝：' + esc(item.get("error", "未提供")) + '</p></section>'])
@@ -1007,6 +1072,15 @@ def _v4_attachment_html(item, output):
              entry.get("original_confirmation_delay_s", {}).get("mean")]
             for name, entry in data["summary"].items() if name in {"short", "long_explicit_reselection", "all"}]))
         body.append('<p>未知与未恢复机会保留在80机会分母中；未观察到确认的时延保持null。原个体恢复与重选后是否跟对新请求对象分开解释。</p>')
+    elif item["type"] == "control_tick_lineage":
+        body.append('<p>精确绑定原计划槽：' + esc(item["bound_cohort"] + " / " + item["bound_slot_id"]) + '</p>')
+        body.append('<p class="notice">' + V4_CONTROL_TICK_ENDPOINT
+                    + '；端点在update/publish之前。唯一记录约束解不等于完整回调因果、发布完成、PX4执行或物理墙时端到端。</p>')
+        stats = data["statistics_s_known_subset_only"]
+        body.append(_v4_table(["原命令分母", "唯一记录解", "UNKNOWN", "已知覆盖", "已知子集均值/s", "已知子集p95/s"],
+            [[data["original_command_denominator"], data["known_commands"], data["unknown_commands"],
+              data["known_command_coverage"], stats["mean"], stats["p95"]]]))
+        body.append('<p>未知值保持null；分位数仅描述已知子集，不能外推全任务。原events及完整原始证据未在此重读，未在此重算链匹配。</p>')
     else:
         body.append('<p>精确绑定原计划槽：' + esc(item["bound_cohort"] + " / " + item["bound_slot_id"]) + '</p>')
         body.append('<p class="notice">实际worker墙时FPS、图像到控制器/设定值的因果端到端时延、物理采集到PX4生效时延：NOT_OBSERVED（未观察）。不得跨时钟相减或按RTF换算。</p>')
@@ -1022,7 +1096,7 @@ def _v4_attachment_html(item, output):
     return "".join(body + ['</section>'])
 
 
-def build_v4_dashboard(package_path, output, *, prospective_detection=(), physical_recovery=(), timing=()):
+def build_v4_dashboard(package_path, output, *, prospective_detection=(), physical_recovery=(), timing=(), control_tick_lineage=()):
     """Independent saved-v4 presentation; not the reporter's verify_package."""
     inputs = _V4Inputs()
     package_path, package = _v4_package(package_path, inputs)
@@ -1032,7 +1106,8 @@ def build_v4_dashboard(package_path, output, *, prospective_detection=(), physic
         engineering = {"status": "MISSING_OR_REJECTED_FORMAL_ENGINEERING", "error": str(error),
                        "rows": [], "slot_counts": {"MISSING_FORMAL_EVIDENCE": 280}}
     attachments = []
-    for kind, paths in (("detection", prospective_detection), ("recovery", physical_recovery), ("timing", timing)):
+    for kind, paths in (("detection", prospective_detection), ("recovery", physical_recovery), ("timing", timing),
+                        ("control_tick_lineage", control_tick_lineage)):
         attachments.extend(_v4_attachment(path, kind, engineering, inputs) for path in paths)
         if not paths:
             attachments.append({"type": kind, "status": "MISSING_NOT_PROVIDED", "data": None})
@@ -1102,6 +1177,7 @@ def main():
     parser.add_argument("--v4-prospective-detection", type=Path, action="append", default=[])
     parser.add_argument("--v4-physical-recovery", type=Path, action="append", default=[])
     parser.add_argument("--v4-timing", type=Path, action="append", default=[])
+    parser.add_argument("--v4-control-tick-lineage", type=Path, action="append", default=[])
     args=parser.parse_args()
     if args.v4_package is not None:
         if (args.output is None or args.results_dir != ROOT/"results" or args.additional_results_dir
@@ -1109,9 +1185,10 @@ def main():
             parser.error("v4分支需要显式--output，不能混用历史发现/检查点选项")
         result = build_v4_dashboard(args.v4_package, args.output,
                     prospective_detection=args.v4_prospective_detection,
-                    physical_recovery=args.v4_physical_recovery, timing=args.v4_timing)
+                    physical_recovery=args.v4_physical_recovery, timing=args.v4_timing,
+                    control_tick_lineage=args.v4_control_tick_lineage)
     else:
-        if args.v4_prospective_detection or args.v4_physical_recovery or args.v4_timing:
+        if args.v4_prospective_detection or args.v4_physical_recovery or args.v4_timing or args.v4_control_tick_lineage:
             parser.error("v4附件需要--v4-package；不能交给历史166槽分支")
         result=build_dashboard([args.results_dir,*args.additional_results_dir],args.output or args.results_dir/"验收总览.html",
                                checkpoint_title=args.checkpoint_title,checkpoint_note=args.checkpoint_note,highlight_frames=args.highlight_frame)

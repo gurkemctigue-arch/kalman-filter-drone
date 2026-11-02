@@ -15,6 +15,8 @@ from tests.test_reliability_v4_summary import summarizer, terminal
 from tests.test_replay_comparison import cli_fixture, write
 from tests.test_replay_evidence import fixture as evidence_fixture
 from tests import test_detection_recording_provenance as detection_fixtures
+from tests import test_acceptance_dashboard_v4 as saved_dashboard_fixtures
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location("v4_document_report_fixture", ROOT / "scripts/build_reliability_v4_report.py")
@@ -87,6 +89,77 @@ class ReliabilityReportTests(unittest.TestCase):
             self.assertIn(text, report)
         self.assertIn("| 1/2 | 0 |", report)
         self.assertTrue(sources.records)
+
+    def test_four_missing_supplementary_annexes_reach_word_blocks_as_pending(self):
+        package, _ = self.build()
+        annexes = package["supplementary_attachments"]
+        self.assertEqual(len(annexes["items"]), 4)
+        self.assertTrue(all(row["status"] == "PENDING_NOT_PROVIDED" and row["saved_summary"] is None for row in annexes["items"]))
+        text = builder.render_markdown(package["documents"]["report"])
+        for phrase in (*builder.ATTACHMENT_LABELS.values(), "未提供", "不等于PASS或零值", "tick开始", "语义复验收据"):
+            self.assertIn(phrase, text)
+        self.assertFalse(annexes["raw_data_reanalyzed"])
+        self.assertFalse(annexes["changes_original_verdicts"])
+
+    def supplementary_fixture(self):
+        fixture = saved_dashboard_fixtures.V4DeliveryDashboardTests()
+        fixture.setUp()
+        self.addCleanup(fixture.tearDown)
+        sources = builder.Sources()
+        for pin in fixture.plan_pins.values():
+            sources.add(pin["path"], "engineering_plan")
+        sources.add(fixture.inputs / "summary.json", "engineering_summary")
+        return fixture, sources
+
+    def test_saved_four_annexes_are_referenced_with_hashes_and_small_binding_authority(self):
+        fixture, sources = self.supplementary_fixture()
+        paths = {"detection": [fixture.detection()[0]], "recovery": [fixture.recovery()[0]],
+                 "timing": [fixture.timing()[0]], "control_tick_lineage": [fixture.control_tick_lineage()[0]]}
+        # Both reports share the export context; keep timing bound to its final
+        # small context, exactly as independently generated saved annexes would.
+        timing_path = paths["timing"][0]
+        timing = json.loads(timing_path.read_text(encoding="utf-8"))
+        timing["inputs"]["context"] = fixture.pin(Path(timing["inputs"]["context"]["path"]))
+        fixture.write_json(timing_path, timing)
+        annexes = builder.attachment_references(fixture.inputs / "summary.json", fixture.plan_pins["core"]["path"],
+            fixture.plan_pins["extension"]["path"], fixture.summary, sources, paths)
+        self.assertTrue(all(row["status"] == "SAVED_REPORT_SMALL_BINDINGS_CHECKED_NOT_REVERIFIED" for row in annexes["items"]))
+        self.assertTrue(all(row["binding"]["sha256"] == builder.sha(row["path"]) for row in annexes["items"]))
+        blocks = builder.attachment_blocks(annexes)
+        text = builder.render_markdown({"title": "Synthetic annex fixture", "status_label": "DEVELOPMENT_ONLY", "blocks": blocks})
+        self.assertIn("| 3 | 1 | 2 |", text)
+        self.assertIn("80", text)
+        self.assertIn("279", text)
+        self.assertIn("不是自动ReID", text)
+        self.assertTrue(annexes["deferred_bindings_not_reread"])
+        paths["control_tick_lineage"][0].write_text("changed", encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "changed during"):
+            sources.unchanged()
+
+    def test_missing_requested_annex_stays_rejected_and_package_cannot_gain_it_later(self):
+        missing = self.root / "not_supplied.json"
+        package, sources = self.build(control_tick_lineage=[missing])
+        row = next(row for row in package["supplementary_attachments"]["items"] if row["type"] == "control_tick_lineage")
+        self.assertEqual(row["status"], "REJECTED_OR_MISSING")
+        self.assertIsNone(row["saved_summary"])
+        output = self.root / "missing_annex_package"
+        builder.write_package(package, sources, output)
+        builder.verify_package(output / "documents.json")
+        write(missing, {"schema_version": 1})
+        with self.assertRaisesRegex(ValueError, "original bound evidence"):
+            builder.verify_package(output / "documents.json")
+
+    def test_oversized_or_raw_attachment_cannot_trigger_unbounded_report_hash(self):
+        fixture, sources = self.supplementary_fixture()
+        path = fixture.inputs / "oversized.json"
+        path.write_text("{}", encoding="utf-8")
+        paths = {kind: [] for kind in builder.ATTACHMENT_LABELS}
+        paths["timing"] = [path]
+        with patch.object(builder.delivery_cli, "V4_JSON_LIMIT", 1), \
+             patch.object(builder, "sha", side_effect=AssertionError("unbounded SHA forbidden")):
+            with self.assertRaisesRegex(ValueError, "bounded saved report JSON"):
+                builder.attachment_references(fixture.inputs / "summary.json", fixture.plan_pins["core"]["path"],
+                    fixture.plan_pins["extension"]["path"], fixture.summary, sources, paths)
 
     def test_edited_summary_metrics_or_counts_cannot_bypass_sources(self):
         for change in (lambda value: value["cohorts"]["core"].update(terminal_slots=2),

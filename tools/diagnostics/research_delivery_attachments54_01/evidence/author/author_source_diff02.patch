@@ -1,0 +1,584 @@
+diff --git a/scripts/build_acceptance_dashboard.py b/scripts/build_acceptance_dashboard.py
+index 41542e2..9ee01c8 100644
+--- a/scripts/build_acceptance_dashboard.py
++++ b/scripts/build_acceptance_dashboard.py
+@@ -652,7 +652,9 @@ V4_ATTACHMENT_KINDS = {
+     "detection": "PROSPECTIVE_ALL_ACTOR_DYNAMIC_DETECTION_REPORT_V1",
+     "recovery": "PROSPECTIVE_PHYSICAL_RECOVERY_APPENDIX_V1",
+     "timing": "OFFLINE_OBSERVED_PIPELINE_TIMING_NOT_CAUSAL_E2E",
++    "control_tick_lineage": "OFFLINE_UNIQUE_RECORDED_CONTROL_TICK_LINEAGE_V1_NOT_CALLBACK_CAUSALITY",
+ }
++V4_CONTROL_TICK_ENDPOINT = "采集→控制循环取时（tick开始）source_sim"
+ 
+ 
+ def _v4_require(condition, message):
+@@ -845,6 +847,81 @@ def _v4_same_plan(binding, engineering, cohort, inputs):
+                 "附件绑定了不同的原始计划：" + cohort)
+ 
+ 
++def _v4_same_directory(first, second):
++    if not all(isinstance(value, str) and value for value in (first, second)):
++        return False
++    if first == second:
++        return True
++    try:
++        a, b = Path(first), Path(second)
++        return a.is_absolute() and b.is_absolute() and a.is_dir() and b.is_dir() \
++            and a.resolve(strict=True) == b.resolve(strict=True)
++    except OSError:
++        return False
++
++
++def _v4_timing_context(data, engineering, inputs, result):
++    context = inputs.bound(data.get("inputs", {}).get("context"), "timing_export_context")
++    _v4_require(type(context.get("schema_version")) is int and context["schema_version"] == 1
++                and context.get("kind") == "NATIVE_PIPELINE_TIMING_EXPORT_CONTEXT_NOT_ACCEPTANCE"
++                and context.get("events") == data.get("inputs", {}).get("events"),
++                "时延原始context/events绑定不一致")
++    matches = [(cohort, trial) for cohort, plan in engineering["plans"].items()
++               for trial in plan["trials"] if _v4_same_directory(context.get("source_root"), plan.get("frozen_root"))
++               and _v4_same_directory(context.get("trial"), trial.get("directory"))]
++    _v4_require(len(matches) == 1, "时延context不是本轮原始120+160计划中的唯一冻结来源/试验")
++    result["bound_cohort"], matched_trial = matches[0]
++    result["bound_slot_id"] = matched_trial["id"]
++    inputs.defer(context.get("events"), "timing_events_not_reread")
++    for name in ("source_root", "trial", "source_results_root"):
++        if isinstance(context.get(name), str):
++            inputs.protect(context[name])
++    for root in context.get("protected_roots", []):
++        inputs.protect(root)
++    return context
++
++
++def _v4_control_tick_counts(data, context):
++    _v4_require(data.get("endpoint_label") == V4_CONTROL_TICK_ENDPOINT
++                and data.get("time_domain") == "RECORDED_ROS_SOURCE_SIM_CLOCK",
++                "控制tick附件端点/时钟域不符")
++    required_unobserved = {"complete_callback_causality", "controller_publish_completion",
++                          "px4_receipt_or_execution", "wall_capture_to_effect_e2e", "worker_wall_fps"}
++    _v4_require(isinstance(data.get("not_observed"), list)
++                and required_unobserved <= set(data["not_observed"]), "控制tick附件越过未观测边界")
++    names = ("original_command_denominator", "known_commands", "unknown_commands")
++    _v4_require(all(type(data.get(name)) is int and data[name] >= 0 for name in names)
++                and data[names[1]] + data[names[2]] == data[names[0]], "控制tick原命令分母不一致")
++    total, known = data[names[0]], data[names[1]]
++    _v4_require(context.get("selected_topic_counts", {}).get("/tracking/command", 0) == total,
++                "控制tick分母不等于原export控制命令数")
++    coverage = data.get("known_command_coverage")
++    _v4_require((total == 0 and coverage is None) or (total > 0 and finite(coverage)
++                and math.isclose(coverage, known / total, rel_tol=0., abs_tol=1e-12)),
++                "控制tick覆盖率与原命令分母不一致")
++    rows = data.get("commands")
++    _v4_require(isinstance(rows, list) and len(rows) == total and all(isinstance(row, dict) for row in rows),
++                "控制tick逐命令台账不完整")
++    indices = [row.get("command_event_index") for row in rows]
++    _v4_require(all(type(index) is int and index >= 0 for index in indices)
++                and len(set(indices)) == total, "控制tick原命令索引缺失或重复")
++    observed = 0
++    for row in rows:
++        _v4_require(isinstance(row.get("reasons"), list), "控制tick缺少逐命令原因")
++        if row.get("status") == "UNIQUE_RECORDED_CONSTRAINT_SOLUTION":
++            _v4_require(finite(row.get("value_s")) and row["value_s"] >= 0 and not row["reasons"],
++                        "控制tick已知命令缺少有限数值或仍有未知原因")
++            observed += 1
++        else:
++            _v4_require(row.get("status") == "UNKNOWN" and row.get("value_s") is None and row["reasons"],
++                        "控制tick未知命令不能当零值或省略原因")
++    _v4_require(observed == known, "控制tick已知计数与逐命令台账不符")
++    stats = data.get("statistics_s_known_subset_only")
++    _v4_require(isinstance(stats, dict) and set(stats) == {"mean", "median", "p95", "max"}
++                and all(value is None if known == 0 else finite(value) and value >= 0 for value in stats.values()),
++                "控制tick已知子集统计必须保留null/有限值边界")
++
++
+ def _v4_attachment(path, kind, engineering, inputs):
+     path = Path(path).resolve()
+     result = {"type": kind, "path": str(path), "status": "REJECTED_OR_MISSING", "data": None}
+@@ -936,25 +1013,12 @@ def _v4_attachment(path, kind, engineering, inputs):
+                 lower_bound = entry.get("descriptive_lower_bound")
+                 _v4_require(type(supported) is int and 0 <= supported <= count and finite(lower_bound)
+                             and math.isclose(lower_bound, supported / count, abs_tol=1e-12), "恢复描述下界与完整机会计数不一致")
++        elif kind == "control_tick_lineage":
++            context = _v4_timing_context(data, engineering, inputs, result)
++            _v4_control_tick_counts(data, context)
+         else:
+             _v4_require(data.get("scope") == "OBSERVABLE_TIMING_ONLY_NOT_ACCEPTANCE", "时延附件范围不符")
+-            context = inputs.bound(data.get("inputs", {}).get("context"), "timing_export_context")
+-            _v4_require(type(context.get("schema_version")) is int and context["schema_version"] == 1
+-                        and context.get("kind") == "NATIVE_PIPELINE_TIMING_EXPORT_CONTEXT_NOT_ACCEPTANCE"
+-                        and context.get("events") == data.get("inputs", {}).get("events"), "时延原始context/events绑定不一致")
+-            matches = [(cohort, trial) for cohort, plan in engineering["plans"].items()
+-                       for trial in plan["trials"] if context.get("source_root") == plan.get("frozen_root")
+-                       and isinstance(context.get("source_root"), str)
+-                       and context.get("trial") == trial.get("directory") and isinstance(context.get("trial"), str)]
+-            _v4_require(len(matches) == 1, "时延context不是本轮原始120+160计划中的唯一冻结来源/试验")
+-            result["bound_cohort"], matched_trial = matches[0]
+-            result["bound_slot_id"] = matched_trial["id"]
+-            inputs.defer(context.get("events"), "timing_events_not_reread")
+-            for name in ("source_root", "trial", "source_results_root"):
+-                if isinstance(context.get(name), str):
+-                    inputs.protect(context[name])
+-            for root in context.get("protected_roots", []):
+-                inputs.protect(root)
++            _v4_timing_context(data, engineering, inputs, result)
+             for key in ("actual_worker_processed_wall_fps", "capture_to_controller_causal_source_s",
+                         "capture_to_px4_setpoint_causal_source_s", "physical_capture_to_px4_effect_wall_s"):
+                 _v4_require(isinstance(data.get(key), dict) and data[key].get("status") == "NOT_OBSERVED",
+@@ -985,7 +1049,8 @@ def _v4_table(headers, rows):
+ 
+ 
+ def _v4_attachment_html(item, output):
+-    names = {"detection": "动态相机全物体检测附件", "recovery": "独立物理恢复描述附件", "timing": "可观测时序附件"}
++    names = {"detection": "动态相机全物体检测附件", "recovery": "独立物理恢复描述附件", "timing": "可观测时序附件",
++             "control_tick_lineage": "独立控制tick记录链附件"}
+     body = ['<section class="panel"><h2>' + names[item["type"]] + '</h2><p>' + esc(item["status"]) + '</p>']
+     if item["data"] is None:
+         return "".join(body + ['<p class="notice">缺失或拒绝：' + esc(item.get("error", "未提供")) + '</p></section>'])
+@@ -1007,6 +1072,15 @@ def _v4_attachment_html(item, output):
+              entry.get("original_confirmation_delay_s", {}).get("mean")]
+             for name, entry in data["summary"].items() if name in {"short", "long_explicit_reselection", "all"}]))
+         body.append('<p>未知与未恢复机会保留在80机会分母中；未观察到确认的时延保持null。原个体恢复与重选后是否跟对新请求对象分开解释。</p>')
++    elif item["type"] == "control_tick_lineage":
++        body.append('<p>精确绑定原计划槽：' + esc(item["bound_cohort"] + " / " + item["bound_slot_id"]) + '</p>')
++        body.append('<p class="notice">' + V4_CONTROL_TICK_ENDPOINT
++                    + '；端点在update/publish之前。唯一记录约束解不等于完整回调因果、发布完成、PX4执行或物理墙时端到端。</p>')
++        stats = data["statistics_s_known_subset_only"]
++        body.append(_v4_table(["原命令分母", "唯一记录解", "UNKNOWN", "已知覆盖", "已知子集均值/s", "已知子集p95/s"],
++            [[data["original_command_denominator"], data["known_commands"], data["unknown_commands"],
++              data["known_command_coverage"], stats["mean"], stats["p95"]]]))
++        body.append('<p>未知值保持null；分位数仅描述已知子集，不能外推全任务。原events及完整原始证据未在此重读，未在此重算链匹配。</p>')
+     else:
+         body.append('<p>精确绑定原计划槽：' + esc(item["bound_cohort"] + " / " + item["bound_slot_id"]) + '</p>')
+         body.append('<p class="notice">实际worker墙时FPS、图像到控制器/设定值的因果端到端时延、物理采集到PX4生效时延：NOT_OBSERVED（未观察）。不得跨时钟相减或按RTF换算。</p>')
+@@ -1022,7 +1096,7 @@ def _v4_attachment_html(item, output):
+     return "".join(body + ['</section>'])
+ 
+ 
+-def build_v4_dashboard(package_path, output, *, prospective_detection=(), physical_recovery=(), timing=()):
++def build_v4_dashboard(package_path, output, *, prospective_detection=(), physical_recovery=(), timing=(), control_tick_lineage=()):
+     """Independent saved-v4 presentation; not the reporter's verify_package."""
+     inputs = _V4Inputs()
+     package_path, package = _v4_package(package_path, inputs)
+@@ -1032,7 +1106,8 @@ def build_v4_dashboard(package_path, output, *, prospective_detection=(), physic
+         engineering = {"status": "MISSING_OR_REJECTED_FORMAL_ENGINEERING", "error": str(error),
+                        "rows": [], "slot_counts": {"MISSING_FORMAL_EVIDENCE": 280}}
+     attachments = []
+-    for kind, paths in (("detection", prospective_detection), ("recovery", physical_recovery), ("timing", timing)):
++    for kind, paths in (("detection", prospective_detection), ("recovery", physical_recovery), ("timing", timing),
++                        ("control_tick_lineage", control_tick_lineage)):
+         attachments.extend(_v4_attachment(path, kind, engineering, inputs) for path in paths)
+         if not paths:
+             attachments.append({"type": kind, "status": "MISSING_NOT_PROVIDED", "data": None})
+@@ -1102,6 +1177,7 @@ def main():
+     parser.add_argument("--v4-prospective-detection", type=Path, action="append", default=[])
+     parser.add_argument("--v4-physical-recovery", type=Path, action="append", default=[])
+     parser.add_argument("--v4-timing", type=Path, action="append", default=[])
++    parser.add_argument("--v4-control-tick-lineage", type=Path, action="append", default=[])
+     args=parser.parse_args()
+     if args.v4_package is not None:
+         if (args.output is None or args.results_dir != ROOT/"results" or args.additional_results_dir
+@@ -1109,9 +1185,10 @@ def main():
+             parser.error("v4分支需要显式--output，不能混用历史发现/检查点选项")
+         result = build_v4_dashboard(args.v4_package, args.output,
+                     prospective_detection=args.v4_prospective_detection,
+-                    physical_recovery=args.v4_physical_recovery, timing=args.v4_timing)
++                    physical_recovery=args.v4_physical_recovery, timing=args.v4_timing,
++                    control_tick_lineage=args.v4_control_tick_lineage)
+     else:
+-        if args.v4_prospective_detection or args.v4_physical_recovery or args.v4_timing:
++        if args.v4_prospective_detection or args.v4_physical_recovery or args.v4_timing or args.v4_control_tick_lineage:
+             parser.error("v4附件需要--v4-package；不能交给历史166槽分支")
+         result=build_dashboard([args.results_dir,*args.additional_results_dir],args.output or args.results_dir/"验收总览.html",
+                                checkpoint_title=args.checkpoint_title,checkpoint_note=args.checkpoint_note,highlight_frames=args.highlight_frame)
+diff --git a/scripts/build_reliability_v4_report.py b/scripts/build_reliability_v4_report.py
+index fb2ef66..b802364 100644
+--- a/scripts/build_reliability_v4_report.py
++++ b/scripts/build_reliability_v4_report.py
+@@ -23,6 +23,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
+ import summarize_reliability_v4 as snapshot  # noqa: E402
+ import run_estimator_replay_v4 as replay_cli  # noqa: E402
+ import evaluate_detection_recordings as detection_cli  # noqa: E402
++import build_acceptance_dashboard as delivery_cli  # noqa: E402
+ from uav_tracking.research_metrics import detection_metrics  # noqa: E402
+ from uav_tracking.replay_comparison import (  # noqa: E402
+     EXPORT_SIDECARS, canonical_sha256, paired_trial_summary, replay_trial,
+@@ -443,6 +444,123 @@ def markdown_blocks(text):
+     return blocks
+ 
+ 
++ATTACHMENT_LABELS = {
++    "detection": "前瞻动态相机全物体检测附件",
++    "recovery": "独立物理恢复描述附件",
++    "timing": "可观测时序附件",
++    "control_tick_lineage": "控制tick唯一记录约束附件",
++}
++ATTACHMENT_BOUNDARIES = {
++    "detection": "仅引用独立批准的可见仿真子集；缺图、遮挡、缺失槽与未审核机会保留，不代表全部280飞行检测准确率。",
++    "recovery": "80个原登记机会保留未知、缺失和右删失。显式重选由用户/脚本辅助，不是自动ReID，也不替代原工程裁决；此工具没有verify-report。",
++    "timing": "source仿真时钟、wall处理耗时分开解释；worker墙时FPS、完整因果端到端与PX4生效时延保持未观察。",
++    "control_tick_lineage": "采集→控制循环取时（tick开始）source_sim：端点在update/publish之前；唯一记录约束解不等于完整回调因果、发布完成、PX4执行或物理墙时端到端。已知子集分位数不能外推全任务。",
++}
++
++
++def attachment_references(summary_path, core_path, extension_path, summary, sources, paths_by_kind):
++    """Reference bounded saved annexes; never run their semantic evaluators."""
++    inputs = delivery_cli._V4Inputs()
++    provided = any(paths for paths in paths_by_kind.values())
++    engineering = {"status": "MISSING_OR_REJECTED_FORMAL_ENGINEERING"}
++    if provided:
++        package = {"request": {"core_path": str(Path(core_path).resolve()),
++                    "extension_path": str(Path(extension_path).resolve()) if extension_path else None,
++                    "summary_path": str(Path(summary_path).resolve())},
++                   "cohorts": summary["cohorts"], "sources": sources.records}
++        try:
++            engineering = delivery_cli._v4_engineering(package, inputs)
++        except (OSError, ValueError, KeyError, TypeError, AttributeError) as error:
++            engineering["error"] = str(error)
++    references = []
++    for kind in ATTACHMENT_LABELS:
++        paths = paths_by_kind[kind]
++        if not paths:
++            references.append({"type": kind, "status": "PENDING_NOT_PROVIDED", "path": None,
++                               "binding": None, "saved_summary": None})
++        for path in paths:
++            path = Path(path)
++            if path.suffix.lower() != ".json" or (path.is_file() and path.stat().st_size > delivery_cli.V4_JSON_LIMIT):
++                raise ValueError("Supplementary references require bounded saved report JSON, not raw data")
++            result = delivery_cli._v4_attachment(path, kind, engineering, inputs)
++            record = sources.add(path, "supplementary_" + kind + "_report", required=False)
++            item = {key: value for key, value in result.items() if key != "data"}
++            item["binding"] = {key: record[key] for key in ("path", "sha256", "bytes", "exists")}
++            item["saved_summary"] = None
++            data = result["data"]
++            if data is not None:
++                if kind == "detection":
++                    aggregate = data.get("reviewed_aggregate") or {}
++                    item["saved_summary"] = {"original_slots": 280,
++                        "recording_slots_supplied": data["recording_slots_supplied"],
++                        "missing_original_slots": len(data["missing_original_slot_ids"]),
++                        "scheduled_opportunities": data.get("scheduled_opportunities"),
++                        "reviewed_visible_subset_map50_95": aggregate.get("map50_95")}
++                elif kind == "recovery":
++                    item["saved_summary"] = data["summary"]["all"]
++                elif kind == "timing":
++                    item["saved_summary"] = {key: data[key] for key in (
++                        "detector_acquisition_to_prepublication_source_s", "detector_processing_prefix_wall_s",
++                        "completed_job_yolo_predict_wall_s", "controller_reported_measurement_age_source_s")}
++                else:
++                    item["saved_summary"] = {key: data[key] for key in (
++                        "original_command_denominator", "known_commands", "unknown_commands",
++                        "known_command_coverage", "statistics_s_known_subset_only")}
++            references.append(item)
++    for record in inputs.records.values():
++        actual = sources.add(record["path"], "supplementary_small_binding")
++        if any(actual[key] != record[key] for key in ("bytes", "sha256")):
++            raise ValueError("Supplementary small source changed during reference build")
++    inputs.unchanged()
++    sources.add(ROOT / "scripts/build_acceptance_dashboard.py", "attachment_reference_implementation")
++    return {"status": "SAVED_ANNEX_REFERENCES_NOT_SEMANTIC_REVERIFICATION", "items": references,
++            "deferred_bindings_not_reread": inputs.deferred, "raw_data_reanalyzed": False,
++            "changes_original_verdicts": False}
++
++
++def attachment_blocks(attachments):
++    blocks = [heading("独立附件引用与已保存摘要"), paragraph(
++        "下列附件只补充来源与保存的结果，不改变原280槽裁决、正式完成或工程通过状态。这里只核对小报告、协议及明确绑定；没有重读events、录包、图片、模型或完整原始数据，也没有执行附件的独立语义复验。语义复验收据必须另行保留。未提供、拒绝、未知和null均不等于PASS或零值。"),
++        paragraph("汇总身份覆盖不证明每个target_uuid任务均达到门槛；不同请求任务可能有不同分母和较弱覆盖。逐任务计数、未知和未确认任务应查所引用原报告中的对应记录；未提供逐任务证据时保持未核验，不能声称全程身份保持。")]
++    for kind, label in ATTACHMENT_LABELS.items():
++        blocks += [heading(label, 2), paragraph(ATTACHMENT_BOUNDARIES[kind])]
++        for item in (row for row in attachments["items"] if row["type"] == kind):
++            blocks.append(paragraph("引用状态：" + item["status"]))
++            if item["path"] is None:
++                blocks.append(paragraph("尚未提供实际报告；本节不生成指标或验收结论。"))
++                continue
++            pin = item["binding"]
++            blocks.append(table(["原报告路径", "SHA-256", "字节数"], [[item["path"], pin["sha256"], pin["bytes"]]]))
++            if item.get("error"):
++                blocks.append(paragraph("缺失或拒绝原因：" + item["error"]))
++            elif item["saved_summary"] is not None:
++                if item.get("bound_slot_id"):
++                    blocks.append(paragraph("绑定原槽：" + item["bound_cohort"] + "/" + item["bound_slot_id"]))
++                blocks.append(paragraph("以下数值来自保存报告，未在本入口重算；仅为已声明范围的描述。"))
++                saved = item["saved_summary"]
++                if kind == "detection":
++                    blocks.append(table(["原槽分母", "提供录制槽", "缺失原槽", "采样机会", "批准可见子集mAP50:95"],
++                        [[saved[key] for key in ("original_slots", "recording_slots_supplied", "missing_original_slots",
++                                                "scheduled_opportunities", "reviewed_visible_subset_map50_95")]]))
++                elif kind == "recovery":
++                    blocks.append(table(["原机会分母", "支持原个体且未见不同", "描述下界", "右删失", "缺失/无效事件", "已确认均时/s"],
++                        [[saved.get(key) for key in ("registered_opportunities", "supported_original_without_observed_different",
++                            "descriptive_lower_bound", "right_censored", "missing_or_invalid_events")]
++                         + [saved.get("original_confirmation_delay_s", {}).get("mean")]]))
++                elif kind == "timing":
++                    labels = ("采集到发布前/source", "检测处理及发布前缀/wall", "完成job的YOLO predict/wall", "控制器报告测量年龄/source")
++                    blocks.append(table(["保存的观测量", "已知", "未知", "完整机会", "均值/s", "p95/s"],
++                        [[label, value["known"], value["unknown"], value["total"],
++                          value["statistics_s"].get("mean"), value["statistics_s"].get("p95")]
++                         for label, value in zip(labels, saved.values())]))
++                else:
++                    stats = saved["statistics_s_known_subset_only"]
++                    blocks.append(table(["原命令分母", "唯一记录解", "UNKNOWN", "已知覆盖", "已知子集均值/s", "已知子集p95/s"],
++                        [[saved["original_command_denominator"], saved["known_commands"], saved["unknown_commands"],
++                          saved["known_command_coverage"], stats["mean"], stats["p95"]]]))
++    return blocks
++
++
+ def report_blocks(summary, replay, outcomes, *, final=False, detection=None):
+     blocks = [heading("结果适用范围"), paragraph(
+         "本报告记录v4仿真研究。" + ("120个核心槽与160个独立扩展槽已记入终态，全部失败和缺证均保留；执行台账齐备不等于工程全部通过。" if final else
+@@ -620,7 +738,8 @@ def render_html(document, base=None):
+ def build(summary_path, core_path, extension_path=None, *, mode="draft", replay_summary=None,
+           replay_manifest=None, replay_configuration=None, figures_manifest=None,
+           plan_path=ROOT / "docs/FINAL_PLAN_V4.md", replay_source_root=ROOT,
+-          detection_report=None, detection_review=None, detection_source_root=ROOT):
++          detection_report=None, detection_review=None, detection_source_root=ROOT,
++          prospective_detection=(), physical_recovery=(), timing=(), control_tick_lineage=()):
+     if mode not in {"draft", "final"}:
+         raise ValueError("Unknown document mode")
+     sources = Sources()
+@@ -639,6 +758,12 @@ def build(summary_path, core_path, extension_path=None, *, mode="draft", replay_
+         if detection_report is None or detection_review is None:
+             raise ValueError("Detection report and actual review file are required together")
+         detection = verify_detection(detection_report, detection_review, sources, source_root=detection_source_root)
++    attachment_paths = {"detection": prospective_detection, "recovery": physical_recovery,
++                        "timing": timing, "control_tick_lineage": control_tick_lineage}
++    for paths in attachment_paths.values():
++        if not isinstance(paths, (tuple, list)):
++            raise ValueError("Supplementary report arguments must be path lists")
++    attachments = attachment_references(summary_path, core_path, extension_path, summary, sources, attachment_paths)
+     sources.add(plan_path, "final_plan_content")
+     plan_blocks = markdown_blocks(Path(plan_path).read_text(encoding="utf-8-sig"))
+     label = "FINAL_EXECUTION_REPORT：280槽执行台账齐备；失败与证据局限保留，不等于工程全部通过。" if mode == "final" else "DEVELOPMENT_ONLY：开发草稿；不作为正式实验完成证明。"
+@@ -646,7 +771,8 @@ def build(summary_path, core_path, extension_path=None, *, mode="draft", replay_
+         "plan": {"title": "基于YOLO11与卡尔曼滤波的RGB-D云台无人机目标跟踪与自主跟随——最终方案（v4）",
+                  "status_label": label, "blocks": plan_blocks},
+         "report": {"title": "RGB-D云台无人机目标跟踪与自主跟随仿真研究报告（v4）",
+-                   "status_label": label, "blocks": report_blocks(summary, replay, outcomes, final=mode == "final", detection=detection) + figures},
++                   "status_label": label, "blocks": report_blocks(summary, replay, outcomes, final=mode == "final", detection=detection)
++                   + attachment_blocks(attachments) + figures},
+     }
+     source_rows = [[record["role"], record["path"], record["sha256"] or "缺失"] for record in sources.records
+                    if record["role"] in {"engineering_summary", "engineering_plan", "replay_summary", "replay_registration", "replay_input_manifest", "figures_manifest", "final_plan_content", "detection_report", "detection_review"}]
+@@ -663,6 +789,7 @@ def build(summary_path, core_path, extension_path=None, *, mode="draft", replay_
+                              "project_acceptance_claimed": False},
+               "cohorts": summary["cohorts"], "replay_outcomes": outcomes,
+               "detection_status": detection["status"] if detection else "PENDING_NOT_PROVIDED",
++              "supplementary_attachments": attachments,
+               "request": {"summary_path": str(Path(summary_path).resolve()), "core_path": str(Path(core_path).resolve()),
+                           "extension_path": str(Path(extension_path).resolve()) if extension_path else None,
+                           "mode": mode, "replay_summary": str(Path(replay_summary).resolve()) if replay_summary else None,
+@@ -672,7 +799,10 @@ def build(summary_path, core_path, extension_path=None, *, mode="draft", replay_
+                           "plan_path": str(Path(plan_path).resolve()), "replay_source_root": str(Path(replay_source_root).resolve()),
+                           "detection_report": str(Path(detection_report).resolve()) if detection_report else None,
+                           "detection_review": str(Path(detection_review).resolve()) if detection_review else None,
+-                          "detection_source_root": str(Path(detection_source_root).resolve())},
++                          "detection_source_root": str(Path(detection_source_root).resolve()),
++                          **{name: [str(Path(path).resolve()) for path in paths] for name, paths in (
++                              ("prospective_detection", prospective_detection), ("physical_recovery", physical_recovery),
++                              ("timing", timing), ("control_tick_lineage", control_tick_lineage))}},
+               "pending_figures": pending, "documents": documents, "sources": sources.records,
+               "validation": "SOURCES_RECONSTRUCTED_NO_ROS_BAG_OR_MODEL_INFERENCE",
+               "rendering": "NOT_RENDERED: final DOCX/PDF and per-page visual review remain required"}
+@@ -747,6 +877,10 @@ def main(argv=None):
+     parser.add_argument("--detection-report", type=Path)
+     parser.add_argument("--detection-review-file", type=Path)
+     parser.add_argument("--detection-source-root", type=Path, default=ROOT)
++    parser.add_argument("--prospective-detection", type=Path, action="append", default=[])
++    parser.add_argument("--physical-recovery", type=Path, action="append", default=[])
++    parser.add_argument("--timing", type=Path, action="append", default=[])
++    parser.add_argument("--control-tick-lineage", type=Path, action="append", default=[])
+     parser.add_argument("--plan-content", type=Path, default=ROOT / "docs/FINAL_PLAN_V4.md")
+     parser.add_argument("--output", type=Path)
+     args = parser.parse_args(argv)
+@@ -762,7 +896,9 @@ def main(argv=None):
+             replay_summary=args.replay_summary, replay_manifest=args.replay_input_manifest,
+             replay_configuration=args.replay_configuration, replay_source_root=args.replay_source_root,
+             figures_manifest=args.figures_manifest, plan_path=args.plan_content, detection_report=args.detection_report,
+-            detection_review=args.detection_review_file, detection_source_root=args.detection_source_root)
++            detection_review=args.detection_review_file, detection_source_root=args.detection_source_root,
++            prospective_detection=args.prospective_detection, physical_recovery=args.physical_recovery,
++            timing=args.timing, control_tick_lineage=args.control_tick_lineage)
+         write_package(package, sources, args.output)
+     except (OSError, ValueError, KeyError, TypeError) as error:
+         parser.error(str(error))
+diff --git a/tests/test_acceptance_dashboard_v4.py b/tests/test_acceptance_dashboard_v4.py
+index 20f79e5..1b7ca14 100644
+--- a/tests/test_acceptance_dashboard_v4.py
++++ b/tests/test_acceptance_dashboard_v4.py
+@@ -147,6 +147,85 @@ class V4DeliveryDashboardTests(unittest.TestCase):
+         self.write_json(path, report)
+         return path, report
+ 
++    def control_tick_lineage(self):
++        _, old = self.timing()
++        context_path = Path(old["inputs"]["context"]["path"])
++        context = json.loads(context_path.read_text(encoding="utf-8"))
++        context["selected_topic_counts"] = {"/tracking/command": 3}
++        context_pin = self.write_json(context_path, context)
++        report = {"schema_version": 1, "kind": dashboard.V4_ATTACHMENT_KINDS["control_tick_lineage"],
++            "inputs": {"context": context_pin, "events": context["events"]},
++            "endpoint_label": dashboard.V4_CONTROL_TICK_ENDPOINT, "time_domain": "RECORDED_ROS_SOURCE_SIM_CLOCK",
++            "original_command_denominator": 3, "known_commands": 1, "unknown_commands": 2,
++            "known_command_coverage": 1/3, "statistics_s_known_subset_only": dict.fromkeys(("mean", "median", "p95", "max"), .777),
++            "not_observed": ["complete_callback_causality", "controller_publish_completion",
++                             "px4_receipt_or_execution", "wall_capture_to_effect_e2e", "worker_wall_fps"],
++            "commands": [{"command_event_index": 1, "status": "UNIQUE_RECORDED_CONSTRAINT_SOLUTION", "reasons": [], "value_s": .777},
++                         {"command_event_index": 2, "status": "UNKNOWN", "reasons": ["duplicate_native_candidate"], "value_s": None},
++                         {"command_event_index": 3, "status": "UNKNOWN", "reasons": ["command_decode_error"], "value_s": None}]}
++        path = self.inputs / "timing" / "control_tick_lineage.json"
++        self.write_json(path, report)
++        return path, report
++
++    def test_control_tick_retains_unknown_denominator_without_reading_events_or_claiming_e2e(self):
++        path, _ = self.control_tick_lineage()
++        result = dashboard.build_v4_dashboard(self.package, self.output, control_tick_lineage=[path])
++        self.assertIn("SAVED_REPORT_SMALL_BINDINGS_CHECKED_NOT_REVERIFIED", result["attachment_statuses"])
++        page = self.output.read_text(encoding="utf-8")
++        for phrase in ("tick开始", "update/publish之前", "不等于完整回调因果", "已知子集p95", "UNKNOWN"):
++            self.assertIn(phrase, page)
++        index = json.loads(Path(result["source_index"]).read_text(encoding="utf-8"))
++        self.assertTrue(any(row["validation"] == "NOT_REREAD" for row in index["deferred_bindings_not_reread"]))
++        self.assertFalse(index["project_acceptance_claimed"])
++
++    def test_control_tick_rejects_wrong_original_trial_and_dropped_unknown_commands(self):
++        for mutation in ("trial", "denominator", "unknown_zero", "duplicate_index", "endpoint"):
++            with self.subTest(mutation=mutation):
++                path, data = self.control_tick_lineage()
++                if mutation == "trial":
++                    context = json.loads(Path(data["inputs"]["context"]["path"]).read_text(encoding="utf-8"))
++                    context["trial"] += "_different_batch"
++                    data["inputs"]["context"] = self.write_json(Path(data["inputs"]["context"]["path"]), context)
++                elif mutation == "denominator":
++                    data.update(original_command_denominator=1, unknown_commands=0, known_command_coverage=1.)
++                    data["commands"] = data["commands"][:1]
++                elif mutation == "unknown_zero":
++                    data["commands"][1]["value_s"] = 0.
++                elif mutation == "duplicate_index":
++                    data["commands"][1]["command_event_index"] = 1
++                else:
++                    data["endpoint_label"] = "capture to PX4 execution wall E2E"
++                self.write_json(path, data)
++                result = dashboard.build_v4_dashboard(self.package, self.root / mutation / "index.html", control_tick_lineage=[path])
++                self.assertIn("REJECTED_OR_MISSING", result["attachment_statuses"])
++                self.assertNotIn("0.777", Path(result["output"]).read_text(encoding="utf-8"))
++
++    def test_timing_matches_canonical_directory_aliases_but_not_same_basename(self):
++        path, report = self.control_tick_lineage()
++        context_path = Path(report["inputs"]["context"]["path"])
++        context = json.loads(context_path.read_text(encoding="utf-8"))
++        real_root, real_trial = Path(context["source_root"]), Path(context["trial"])
++        alias_root, alias_trial = self.inputs / "frozen_alias", self.inputs / "trial_alias"
++        for directory in (real_root, real_trial, alias_root, alias_trial):
++            directory.mkdir(parents=True, exist_ok=True)
++        context.update(source_root=str(alias_root), trial=str(alias_trial))
++        report["inputs"]["context"] = self.write_json(context_path, context)
++        self.write_json(path, report)
++        original = Path.resolve
++        aliases = {str(alias_root): real_root, str(alias_trial): real_trial}
++        def resolve(current, *args, **kwargs):
++            return original(aliases.get(str(current), current), *args, **kwargs)
++        with patch.object(Path, "resolve", resolve):
++            result = dashboard.build_v4_dashboard(self.package, self.output, control_tick_lineage=[path])
++        self.assertIn("SAVED_REPORT_SMALL_BINDINGS_CHECKED_NOT_REVERIFIED", result["attachment_statuses"])
++        different = self.root / "different_batch" / real_trial.name
++        different.mkdir(parents=True)
++        context.update(source_root=str(real_root), trial=str(different))
++        report["inputs"]["context"] = self.write_json(context_path, context)
++        self.write_json(path, report)
++        result = dashboard.build_v4_dashboard(self.package, self.root / "wrong_batch" / "index.html", control_tick_lineage=[path])
++        self.assertIn("REJECTED_OR_MISSING", result["attachment_statuses"])
++
+     def test_original_280_retains_failed_unknown_and_missing_without_legacy_verdicts(self):
+         with patch.object(dashboard, "discover_trials", side_effect=AssertionError("legacy discovery forbidden")), \
+              patch.object(dashboard, "evidence_status", side_effect=AssertionError("legacy verdict forbidden")):
+diff --git a/tests/test_reliability_v4_report.py b/tests/test_reliability_v4_report.py
+index b00d943..e835ae6 100644
+--- a/tests/test_reliability_v4_report.py
++++ b/tests/test_reliability_v4_report.py
+@@ -15,6 +15,8 @@ from tests.test_reliability_v4_summary import summarizer, terminal
+ from tests.test_replay_comparison import cli_fixture, write
+ from tests.test_replay_evidence import fixture as evidence_fixture
+ from tests import test_detection_recording_provenance as detection_fixtures
++from tests import test_acceptance_dashboard_v4 as saved_dashboard_fixtures
++from unittest.mock import patch
+ 
+ ROOT = Path(__file__).resolve().parents[1]
+ SPEC = importlib.util.spec_from_file_location("v4_document_report_fixture", ROOT / "scripts/build_reliability_v4_report.py")
+@@ -88,6 +90,77 @@ class ReliabilityReportTests(unittest.TestCase):
+         self.assertIn("| 1/2 | 0 |", report)
+         self.assertTrue(sources.records)
+ 
++    def test_four_missing_supplementary_annexes_reach_word_blocks_as_pending(self):
++        package, _ = self.build()
++        annexes = package["supplementary_attachments"]
++        self.assertEqual(len(annexes["items"]), 4)
++        self.assertTrue(all(row["status"] == "PENDING_NOT_PROVIDED" and row["saved_summary"] is None for row in annexes["items"]))
++        text = builder.render_markdown(package["documents"]["report"])
++        for phrase in (*builder.ATTACHMENT_LABELS.values(), "未提供", "不等于PASS或零值", "tick开始", "语义复验收据"):
++            self.assertIn(phrase, text)
++        self.assertFalse(annexes["raw_data_reanalyzed"])
++        self.assertFalse(annexes["changes_original_verdicts"])
++
++    def supplementary_fixture(self):
++        fixture = saved_dashboard_fixtures.V4DeliveryDashboardTests()
++        fixture.setUp()
++        self.addCleanup(fixture.tearDown)
++        sources = builder.Sources()
++        for pin in fixture.plan_pins.values():
++            sources.add(pin["path"], "engineering_plan")
++        sources.add(fixture.inputs / "summary.json", "engineering_summary")
++        return fixture, sources
++
++    def test_saved_four_annexes_are_referenced_with_hashes_and_small_binding_authority(self):
++        fixture, sources = self.supplementary_fixture()
++        paths = {"detection": [fixture.detection()[0]], "recovery": [fixture.recovery()[0]],
++                 "timing": [fixture.timing()[0]], "control_tick_lineage": [fixture.control_tick_lineage()[0]]}
++        # Both reports share the export context; keep timing bound to its final
++        # small context, exactly as independently generated saved annexes would.
++        timing_path = paths["timing"][0]
++        timing = json.loads(timing_path.read_text(encoding="utf-8"))
++        timing["inputs"]["context"] = fixture.pin(Path(timing["inputs"]["context"]["path"]))
++        fixture.write_json(timing_path, timing)
++        annexes = builder.attachment_references(fixture.inputs / "summary.json", fixture.plan_pins["core"]["path"],
++            fixture.plan_pins["extension"]["path"], fixture.summary, sources, paths)
++        self.assertTrue(all(row["status"] == "SAVED_REPORT_SMALL_BINDINGS_CHECKED_NOT_REVERIFIED" for row in annexes["items"]))
++        self.assertTrue(all(row["binding"]["sha256"] == builder.sha(row["path"]) for row in annexes["items"]))
++        blocks = builder.attachment_blocks(annexes)
++        text = builder.render_markdown({"title": "Synthetic annex fixture", "status_label": "DEVELOPMENT_ONLY", "blocks": blocks})
++        self.assertIn("| 3 | 1 | 2 |", text)
++        self.assertIn("80", text)
++        self.assertIn("279", text)
++        self.assertIn("不是自动ReID", text)
++        self.assertTrue(annexes["deferred_bindings_not_reread"])
++        paths["control_tick_lineage"][0].write_text("changed", encoding="utf-8")
++        with self.assertRaisesRegex(ValueError, "changed during"):
++            sources.unchanged()
++
++    def test_missing_requested_annex_stays_rejected_and_package_cannot_gain_it_later(self):
++        missing = self.root / "not_supplied.json"
++        package, sources = self.build(control_tick_lineage=[missing])
++        row = next(row for row in package["supplementary_attachments"]["items"] if row["type"] == "control_tick_lineage")
++        self.assertEqual(row["status"], "REJECTED_OR_MISSING")
++        self.assertIsNone(row["saved_summary"])
++        output = self.root / "missing_annex_package"
++        builder.write_package(package, sources, output)
++        builder.verify_package(output / "documents.json")
++        write(missing, {"schema_version": 1})
++        with self.assertRaisesRegex(ValueError, "original bound evidence"):
++            builder.verify_package(output / "documents.json")
++
++    def test_oversized_or_raw_attachment_cannot_trigger_unbounded_report_hash(self):
++        fixture, sources = self.supplementary_fixture()
++        path = fixture.inputs / "oversized.json"
++        path.write_text("{}", encoding="utf-8")
++        paths = {kind: [] for kind in builder.ATTACHMENT_LABELS}
++        paths["timing"] = [path]
++        with patch.object(builder.delivery_cli, "V4_JSON_LIMIT", 1), \
++             patch.object(builder, "sha", side_effect=AssertionError("unbounded SHA forbidden")):
++            with self.assertRaisesRegex(ValueError, "bounded saved report JSON"):
++                builder.attachment_references(fixture.inputs / "summary.json", fixture.plan_pins["core"]["path"],
++                    fixture.plan_pins["extension"]["path"], fixture.summary, sources, paths)
++
+     def test_edited_summary_metrics_or_counts_cannot_bypass_sources(self):
+         for change in (lambda value: value["cohorts"]["core"].update(terminal_slots=2),
+                        lambda value: value["trials"][0]["metrics"].update(base_link_distance_rmse_m=999.)):

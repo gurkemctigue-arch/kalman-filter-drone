@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "kind": "INDEPENDENT_LITERAL_IDENTITY_WORDING_FOLLOWUP_NOT_FULL_REGRESSION",
+  "created_utc": "2026-11-02T22:24:13.967860+00:00",
+  "result": "ACCEPTED_WORDING_ONLY_FOLLOWUP",
+  "previous_38_test_receipt": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\research_delivery_attachments_review54_01\\independent_review01.json",
+    "bytes": 3505,
+    "sha256": "d6ae935e5f16ebd40bf40bae8364bb1038fb88e142b42e0cb1e8794207db37fa"
+  },
+  "previous_source_decision": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\research_delivery_attachments_review54_01\\independent_source_decision01.json",
+    "bytes": 4521,
+    "sha256": "6f24ee11950a899c9ac7a52e3c7df5a9893800d574603551aaf591a69b307179"
+  },
+  "author_followup_receipt": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\report_attachment_integration54_01\\author_receipt02_identity_wording.json",
+    "bytes": 3770,
+    "sha256": "037be3cdedac8478c6a485174ad0b5261484b050d29b0d89d373406efebbf8a1"
+  },
+  "current_sources": {
+    "scripts/build_acceptance_dashboard.py": {
+      "path": "D:\\基于yolo和卡尔曼滤波\\scripts\\build_acceptance_dashboard.py",
+      "bytes": 88248,
+      "sha256": "3059886d4445270d23f79c492176f3ae8559992f61fd0864254b5faa5bac6f32"
+    },
+    "scripts/build_reliability_v4_report.py": {
+      "path": "D:\\基于yolo和卡尔曼滤波\\scripts\\build_reliability_v4_report.py",
+      "bytes": 65514,
+      "sha256": "29b78a3158b707acbe9acfffc7c6f58a12772252373874df0fa32978ddf5a901"
+    },
+    "tests/test_acceptance_dashboard_v4.py": {
+      "path": "D:\\基于yolo和卡尔曼滤波\\tests\\test_acceptance_dashboard_v4.py",
+      "bytes": 22033,
+      "sha256": "ca67c5791d51f73658f0d4ff004ae39ea00efbbf51df7dc6ac8e7b6869663342"
+    },
+    "tests/test_reliability_v4_report.py": {
+      "path": "D:\\基于yolo和卡尔曼滤波\\tests\\test_reliability_v4_report.py",
+      "bytes": 25254,
+      "sha256": "7802cc8be899bd7ae06e322b5be7c858abf83a3753b0a7aa887372ef491b49bd"
+    }
+  },
+  "previous_report_sha256": "54298ef43a60aa405e5a8ba388e7a8e943151db0840ef1e39e87488307d8b811",
+  "current_report_sha256": "29b78a3158b707acbe9acfffc7c6f58a12772252373874df0fa32978ddf5a901",
+  "precise_wording_diff": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\research_delivery_attachments_review54_01\\identity_wording_diff02.patch",
+    "bytes": 1523,
+    "sha256": "480dd22cb7f0c9fb2bda6e10220be41a1673bee36386fe04054e0eaadea61853"
+  },
+  "added_literal_paragraph": "汇总身份覆盖不证明每个target_uuid任务均达到门槛；不同请求任务可能有不同分母和较弱覆盖。逐任务计数、未知和未确认任务应查所引用原报告中的对应记录；未提供逐任务证据时保持未核验，不能声称全程身份保持。",
+  "checks": {
+    "all_other_three_sources_equal_previous_38_test_pins": true,
+    "removing_only_literal_paragraph_reconstructs_previous_report_exact_bytes": true,
+    "python310_ast_pass": true,
+    "ast_equal_to_previous_after_removing_one_literal_paragraph": true,
+    "author_two_target_tests_log_and_source_bindings_checked": true
+  },
+  "test_boundaries": {
+    "previous_38_test_suite_predates_current_report_sha": true,
+    "full_38_suite_rerun_for_current_report_sha": false,
+    "independent_tests_executed_in_this_followup": 0,
+    "author_target_tests_for_current_report_sha": 2,
+    "author_target_test_exit_code": 0
+  },
+  "scope": "One displayed paragraph clarifies that aggregate identity coverage does not establish each target_uuid task coverage; missing per-task evidence stays unverified. No evaluator, denominator, identity binding or engineering verdict logic changed.",
+  "native_or_raw_actions": false,
+  "actual_docx_or_report_generation": false
+}
