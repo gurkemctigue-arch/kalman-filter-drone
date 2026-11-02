@@ -179,7 +179,7 @@ def archive_sizes(archive, directory, files, metadata):
     return sum(row["bytes"] for row in raw), sum(row["bytes"] for row in compressed), mapping
 
 
-def read_cell(key, plan, trial, runner, failures, inputs):
+def read_cell(key, plan, trial, runner, failures, inputs, *, snapshot_audit=None):
     original_directory = Path(trial["directory"])
     guard.require(original_directory.is_dir() and not original_directory.is_symlink(),
                   "Original unlinked trial directory required")
@@ -219,9 +219,14 @@ def read_cell(key, plan, trial, runner, failures, inputs):
                         if name.startswith(("scripts/", "uav_tracking/", "ros2_ws/src/"))
                         and Path(name).suffix in {".py", ".sh", ".msg"}}
     required_sources[trial["model"]] = plan["model_hashes"][trial["model"]]
-    guard.require(all(actual_sources.get(name) == value for name, value in required_sources.items())
-                  and all(plan["source_hashes"].get(name) == value for name, value in actual_sources.items()),
-                  "Actual flight source/model snapshot differs from its frozen plan")
+    snapshot_evidence = None
+    if snapshot_audit is None:
+        guard.require(all(actual_sources.get(name) == value for name, value in required_sources.items())
+                      and all(plan["source_hashes"].get(name) == value for name, value in actual_sources.items()),
+                      "Actual flight source/model snapshot differs from its frozen plan")
+    else:
+        module, context = snapshot_audit
+        snapshot_evidence = module.snapshot_evidence(context, actual_sources, plan, trial)
     exits = reports["process_exit_codes.json"]
     guard.require({"gazebo", "agent", "px4", "bag", "monitor", "ros"} <= exits.keys()
                   and all(type(code) is int and code in ({0, -2} if name == "agent" else {0})
@@ -279,7 +284,7 @@ def read_cell(key, plan, trial, runner, failures, inputs):
                     "telemetry_and_sidecars" if Path(name).suffix in {".jsonl", ".bson"} else
                     "runtime_logs" if Path(name).suffix == ".log" else "other_trial_files")
         components[category] += size
-    return {"schema_version": 1, "created_utc": guard.now().isoformat(),
+    result = {"schema_version": 1, "created_utc": guard.now().isoformat(),
         "scope": "FILE_SIZE_ACCOUNTING_ONLY_NO_VERDICT_CHANGE", "trial": trial["directory"],
         "cell": list(key), "total_trial_bytes": sum(files.values()), "bag_bytes": bag_bytes,
         "auxiliary_bytes": sum(files.values()) - bag_bytes, "raw_sqlite_bytes": raw_bytes,
@@ -296,6 +301,9 @@ def read_cell(key, plan, trial, runner, failures, inputs):
             "archive_component_bound_without_growth_or_margin_bytes": 3 * raw_bytes + 2 * compressed_bytes},
         "inventory_payload_content_reads": False, "capacity_admission_performed": False,
         "claim_boundary": "All original persisted configuration/source, evaluation, telemetry, sidecar, log and archive files are included. Native validation/losslessness refer to the bound original recording report, not a repeated payload read. Temporary coexistence is an explicit component formula, not a sampled peak or a capacity admission."}
+    if snapshot_evidence is not None:
+        result["source_snapshot_validation"] = snapshot_evidence
+    return result
 
 
 def checked_output(output, plans):
@@ -311,8 +319,14 @@ def checked_output(output, plans):
     return actual
 
 
-def measure(core_path, extension_path, output, *, physical_inventory=None):
+def measure(core_path, extension_path, output, *, physical_inventory=None,
+            snapshot_audit_registry=None, snapshot_audit_registry_sha256=None,
+            snapshot_audit_native_receipt=None, snapshot_audit_native_receipt_sha256=None):
     inputs, plans, paths, cells, bindings = {}, {}, {}, {}, {}
+    audit_options = (snapshot_audit_registry, snapshot_audit_registry_sha256,
+                     snapshot_audit_native_receipt, snapshot_audit_native_receipt_sha256)
+    guard.require(all(value is None for value in audit_options) or all(value is not None for value in audit_options),
+                  "Snapshot audit requires all four explicit registry/native receipt path/SHA options")
     tools = {name: small_binding(path, inputs) for name, path in (
         ("measurement", Path(__file__)), ("budget_schema", Path(budget.__file__)),
         ("guard_helpers", Path(guard.__file__)))}
@@ -325,9 +339,25 @@ def measure(core_path, extension_path, output, *, physical_inventory=None):
     guard.require(len(cells) == len({Path(trial["directory"]).resolve() for trial in cells.values()}) == 28,
                   "Exactly 28 distinct original physical development cells required")
     runner, failures, sources = source_context(plans, paths, inputs)
+    snapshot_audit = None
+    if snapshot_audit_registry is not None:
+        path = Path(__file__).with_name("reliability_v4_storage_snapshot_audit.py")
+        tools["snapshot_audit_metadata_adapter"] = small_binding(path, inputs)
+        original = sys.dont_write_bytecode
+        try:
+            sys.dont_write_bytecode = True
+            module = guard.import_file("measurement_saved_snapshot_audit", path)
+        finally:
+            sys.dont_write_bytecode = original
+        context = module.prepare(
+            {"path": str(snapshot_audit_registry), "sha256": snapshot_audit_registry_sha256},
+            {"path": str(snapshot_audit_native_receipt), "sha256": snapshot_audit_native_receipt_sha256},
+            plans["core"], paths["core"], guard=guard, bind=lambda item: small_binding(item, inputs), runner=runner)
+        snapshot_audit = module, context
     receipts = {}
     for key, trial in sorted(cells.items()):
-        receipts[trial["name"] + ".json"] = read_cell(key, plans[key[0]], trial, runner, failures, inputs)
+        receipts[trial["name"] + ".json"] = read_cell(key, plans[key[0]], trial, runner, failures, inputs,
+                                                   snapshot_audit=snapshot_audit)
     free = [{"role": role, "path": str(path), "free_bytes": shutil.disk_usage(path).free,
              "sampled_utc": guard.now().isoformat(),
              "device_id": path.stat().st_dev, "scope": "CURRENT_FILESYSTEM_FREE_BYTES_NOT_HOST_PHYSICAL_ADMISSION"}
@@ -346,6 +376,8 @@ def measure(core_path, extension_path, output, *, physical_inventory=None):
                 "scope": "ORIGINAL_HOST_SNAPSHOT_RETAINED_NOT_CURRENT_CAPACITY_RECHECK"}
     for item in receipts.values():
         guard.require(inventory(item["trial"]) == item["files"], "Original trial file sizes changed during measurement")
+    if snapshot_audit is not None:
+        module.verify_current(context, plans["core"])
     for path, original in tuple(inputs.items()):
         actual = small_binding(path, {}, bag_metadata=original["bag_metadata"])
         guard.require(actual["sha256"] == original["sha256"], "Small evidence/source changed during measurement: " + path)
@@ -358,6 +390,8 @@ def measure(core_path, extension_path, output, *, physical_inventory=None):
         "total_original_trial_bytes": sum(item["total_trial_bytes"] for item in receipts.values()),
         "receipts": [], "payload_content_reads": False, "capacity_admission_performed": False,
         "claim_boundary": "Size evidence keeps all 28 cells and original failures. Filesystem free amounts are separate observations, never summed as independent physical volumes. WSL ext4 free space cannot replace host-volume capacity. New source freezes/builds, future evaluations/replay/video/document/log deliveries and conservative temporary-growth margins still require explicit reservations in the separate storage budget and per-slot outer guard."}
+    if snapshot_audit is not None:
+        summary["source_snapshot_validation"] = context["summary"]
     output.mkdir(exist_ok=False)
     for name, receipt in receipts.items():
         guard.write_new(output / name, receipt)
@@ -372,10 +406,18 @@ def main(argv=None):
     parser.add_argument("--extension-development-plan", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True, help="One independent new directory under actual results")
     parser.add_argument("--physical-inventory", type=Path, help="Optional original storage-probe snapshot, retained with its actual sample time")
+    parser.add_argument("--snapshot-audit-registry", type=Path, help="Explicit completed original safety4 registry; requires all four snapshot-audit options")
+    parser.add_argument("--snapshot-audit-registry-sha256")
+    parser.add_argument("--snapshot-audit-native-receipt", type=Path, help="Completed original native helper audit receipt, retained as prior evidence only")
+    parser.add_argument("--snapshot-audit-native-receipt-sha256")
     args = parser.parse_args(argv)
     try:
         result = measure(args.core_development_plan, args.extension_development_plan, args.output,
-                         physical_inventory=args.physical_inventory)
+                         physical_inventory=args.physical_inventory,
+                         snapshot_audit_registry=args.snapshot_audit_registry,
+                         snapshot_audit_registry_sha256=args.snapshot_audit_registry_sha256,
+                         snapshot_audit_native_receipt=args.snapshot_audit_native_receipt,
+                         snapshot_audit_native_receipt_sha256=args.snapshot_audit_native_receipt_sha256)
         print(json.dumps({"kind": KIND, "output": str(args.output.resolve()), "measured_count": result["measured_count"],
                           "capacity_admission_performed": False}, indent=2))
         return 0
