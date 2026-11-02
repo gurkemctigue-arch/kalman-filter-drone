@@ -1,0 +1,96 @@
+{
+  "scope": "ACTUAL_ISOLATED_BUILD_ARTIFACTS_NOT_RUNTIME_ACCEPTANCE",
+  "registration": {
+    "schema_version": 1,
+    "scope": "HUMBLE_FASTDDS_LISTENER_LIFECYCLE_A01",
+    "prefix": "/root/uav_humble22/fastdds_listener_A01/install",
+    "agent_library_directory": "/root/uav_humble22/agent_install/lib",
+    "rmw_implementation": "rmw_fastrtps_cpp",
+    "build_inputs": {
+      "path": "/root/uav_humble22/fastdds_listener_A01/build_inputs.json",
+      "realpath": "/root/uav_humble22/fastdds_listener_A01/build_inputs.json",
+      "sha256": "5d4ed6a06f8e84bcaeeaa764a7fc3b9c4aa4ba3bdd066e2a5656dd2809dd6c65",
+      "bytes": 1255
+    },
+    "elf_files": {
+      "flight_tf_fastdds": {
+        "path": "/root/uav_humble22/fastdds_listener_A01/install/lib/libfastrtps.so.2.6.12",
+        "realpath": "/root/uav_humble22/fastdds_listener_A01/install/lib/libfastrtps.so.2.6.12",
+        "sha256": "e6397d6362f687f071c346600c643599710a5ae817d72f07fa503b75c66b4af6",
+        "bytes": 197433472
+      },
+      "flight_tf_fastcdr": {
+        "path": "/opt/ros/humble/lib/libfastcdr.so.1.0.29",
+        "realpath": "/opt/ros/humble/lib/libfastcdr.so.1.0.29",
+        "sha256": "ae755da75d58c90c2db06398beff0b08b382e19c72ac223a9a57cb782d9a5575",
+        "bytes": 76760
+      },
+      "rmw_fastrtps_cpp": {
+        "path": "/opt/ros/humble/lib/librmw_fastrtps_cpp.so",
+        "realpath": "/opt/ros/humble/lib/librmw_fastrtps_cpp.so",
+        "sha256": "94edab1842a8421f4fb072878698cdc303f7893dbd53f0a5d79273210faa1cae",
+        "bytes": 258160
+      },
+      "rmw_fastrtps_shared_cpp": {
+        "path": "/opt/ros/humble/lib/librmw_fastrtps_shared_cpp.so",
+        "realpath": "/opt/ros/humble/lib/librmw_fastrtps_shared_cpp.so",
+        "sha256": "d514f3473ca3f2c543ae7f3e33eb1fbed00195a040d5cc36b713c45d725505fb",
+        "bytes": 426992
+      },
+      "agent_fastdds": {
+        "path": "/root/uav_humble22/agent_install/lib/libfastrtps.so.2.14.7",
+        "realpath": "/root/uav_humble22/agent_install/lib/libfastrtps.so.2.14.7",
+        "sha256": "9b48751409c8a3fc06bc54052b19048ef013364f1e99eecc2659c1fa0e3363d9",
+        "bytes": 13997024
+      },
+      "agent_fastcdr": {
+        "path": "/root/uav_humble22/agent_install/lib/libfastcdr.so.2.2.8",
+        "realpath": "/root/uav_humble22/agent_install/lib/libfastcdr.so.2.2.8",
+        "sha256": "da56365446a913d00177d5a9e4a6f93bbe832b5955e3d87f77dd22a32bb80abb",
+        "bytes": 133912
+      }
+    }
+  },
+  "commands": {
+    "dds_ldd": {
+      "argv": [
+        "ldd",
+        "/root/uav_humble22/fastdds_listener_A01/install/lib/libfastrtps.so.2.6.12"
+      ],
+      "returncode": 0,
+      "stdout": "\tlinux-vdso.so.1 (0x00007fff1f1ae000)\n\tlibfastcdr.so.1 => /opt/ros/humble/lib/libfastcdr.so.1 (0x0000770a3a5ac000)\n\tlibtinyxml2.so.9 => /lib/x86_64-linux-gnu/libtinyxml2.so.9 (0x0000770a3a57b000)\n\tlibssl.so.3 => /lib/x86_64-linux-gnu/libssl.so.3 (0x0000770a3a4d6000)\n\tlibcrypto.so.3 => /lib/x86_64-linux-gnu/libcrypto.so.3 (0x0000770a39400000)\n\tlibstdc++.so.6 => /lib/x86_64-linux-gnu/libstdc++.so.6 (0x0000770a39000000)\n\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x0000770a3a3ed000)\n\tlibgcc_s.so.1 => /lib/x86_64-linux-gnu/libgcc_s.so.1 (0x0000770a399e0000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x0000770a38c00000)\n\t/lib64/ld-linux-x86-64.so.2 (0x0000770a3a5c2000)\n",
+      "stderr": ""
+    },
+    "dds_dynamic": {
+      "argv": [
+        "readelf",
+        "-d",
+        "/root/uav_humble22/fastdds_listener_A01/install/lib/libfastrtps.so.2.6.12"
+      ],
+      "returncode": 0,
+      "stdout": "\nDynamic section at offset 0x95d0d0 contains 35 entries:\n  Tag        Type                         Name/Value\n 0x0000000000000001 (NEEDED)             Shared library: [libfastcdr.so.1]\n 0x0000000000000001 (NEEDED)             Shared library: [libtinyxml2.so.9]\n 0x0000000000000001 (NEEDED)             Shared library: [libssl.so.3]\n 0x0000000000000001 (NEEDED)             Shared library: [libcrypto.so.3]\n 0x0000000000000001 (NEEDED)             Shared library: [libstdc++.so.6]\n 0x0000000000000001 (NEEDED)             Shared library: [libm.so.6]\n 0x0000000000000001 (NEEDED)             Shared library: [libgcc_s.so.1]\n 0x0000000000000001 (NEEDED)             Shared library: [libc.so.6]\n 0x0000000000000001 (NEEDED)             Shared library: [ld-linux-x86-64.so.2]\n 0x000000000000000e (SONAME)             Library soname: [libfastrtps.so.2.6]\n 0x000000000000000c (INIT)               0x1ac000\n 0x000000000000000d (FINI)               0x8071ec\n 0x0000000000000019 (INIT_ARRAY)         0x94daa8\n 0x000000000000001b (INIT_ARRAYSZ)       1808 (bytes)\n 0x000000000000001a (FINI_ARRAY)         0x94e1b8\n 0x000000000000001c (FINI_ARRAYSZ)       8 (bytes)\n 0x000000006ffffef5 (GNU_HASH)           0x328\n 0x0000000000000005 (STRTAB)             0x58640\n 0x0000000000000006 (SYMTAB)             0x14ca8\n 0x000000000000000a (STRSZ)              1013746 (bytes)\n 0x000000000000000b (SYMENT)             24 (bytes)\n 0x0000000000000003 (PLTGOT)             0x961000\n 0x0000000000000002 (PLTRELSZ)           119688 (bytes)\n 0x0000000000000014 (PLTREL)             RELA\n 0x0000000000000017 (JMPREL)             0x18e880\n 0x0000000000000007 (RELA)               0x155b80\n 0x0000000000000008 (RELASZ)             232704 (bytes)\n 0x0000000000000009 (RELAENT)            24 (bytes)\n 0x000000006ffffffc (VERDEF)             0x155858\n 0x000000006ffffffd (VERDEFNUM)          2\n 0x000000006ffffffe (VERNEED)            0x155890\n 0x000000006fffffff (VERNEEDNUM)         7\n 0x000000006ffffff0 (VERSYM)             0x14fe32\n 0x000000006ffffff9 (RELACOUNT)          3084\n 0x0000000000000000 (NULL)               0x0\n",
+      "stderr": ""
+    },
+    "compiler": {
+      "argv": [
+        "c++",
+        "--version"
+      ],
+      "returncode": 0,
+      "stdout": "c++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0\nCopyright (C) 2021 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+      "stderr": ""
+    },
+    "cmake": {
+      "argv": [
+        "cmake",
+        "--version"
+      ],
+      "returncode": 0,
+      "stdout": "cmake version 3.22.1\n\nCMake suite maintained and supported by Kitware (kitware.com/cmake).\n",
+      "stderr": ""
+    }
+  },
+  "linker_probe_environment": {
+    "LD_LIBRARY_PATH": "/root/uav_humble22/agent_install/lib:/root/uav_humble22/fastdds_listener_A01/install/lib:/opt/ros/humble/lib"
+  }
+}

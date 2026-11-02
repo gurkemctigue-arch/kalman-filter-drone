@@ -1,0 +1,56 @@
+{
+  "scope": "PROPOSED_EXACT_DEBIAN_SOURCE_BACKPORT_NOT_BUILT_OR_INSTALLED",
+  "upstream_commits": [
+    "0014b017b3cd1f001b0b39b759120073b37ed283",
+    "2078f7f7e7068651b003b83a2f4713342bf51e6b"
+  ],
+  "source_original": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\upstream_fastdds_readonly01\\source-original\\ros-humble-fastrtps-2.6.12",
+  "orig_tar_sha256": "34384c79ad4902d5555a811956596b83c7da190bfa6142f2f09044f10cd2becb",
+  "patch": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\upstream_fastdds_readonly01\\fastdds-2.6.12-reader-listener-lifecycle-family.backport01.patch",
+    "bytes": 8840,
+    "sha256": "a1de559704415dd11045cc30b7b51720c2740bcf4baf23f44fd4da382f17bddc"
+  },
+  "files": [
+    {
+      "path": "src/cpp/rtps/reader/StatefulReader.cpp",
+      "original_sha256": "fec6d7bad36dd29d4f6cede01471ba5583270c59ff34e061214cafac8abcbd5f",
+      "proposed_sha256": "72d297322657b8338834bb6a4af803c931f7a56150ee3f635f741a72e973a3d4"
+    },
+    {
+      "path": "src/cpp/rtps/reader/StatelessReader.cpp",
+      "original_sha256": "c526380b5631d71411bc54d0f202e283fb8a4745683cc7cb3803e6071504ac77",
+      "proposed_sha256": "12bad6f5269fbb02e0318e85a9c36dd770e5995102dea947207d50db8e711789"
+    },
+    {
+      "path": "src/cpp/rtps/builtin/discovery/endpoint/EDP.cpp",
+      "original_sha256": "c98c42fd227b5e0e7bd7ce7a093a611e234c31e4d5e06b1ed88a1c2d83d41a1d",
+      "proposed_sha256": "b24410702dedbffd5f0311a737879ef1883930519b08141c3e2e442c85753274"
+    },
+    {
+      "path": "src/cpp/fastdds/subscriber/DataReaderImpl.cpp",
+      "original_sha256": "65268b30cc62875f8ae6eb2cdce840ae0056f7725d98e4f5bde6c6ec19dd9510",
+      "proposed_sha256": "394f554885fcd96089853a531ef2ff01c0c2afe1b414c625ed6d6126f2278279"
+    },
+    {
+      "path": "src/cpp/fastdds/subscriber/DataReaderImpl.hpp",
+      "original_sha256": "d312e8f26f3df0a2c98d0f65a551be5f724ee92721e78a99ed9562a233eb909a",
+      "proposed_sha256": "28c6272f9c77c864b552b17a2af733fa242d7440577647f9bb59ab4d30a9a7e2"
+    }
+  ],
+  "adaptation": "Only hunk context and retained existing line wrapping changed; semantic upstream listener snapshots and private listener mutex reused. Original 2022 patches fail two contexts on exact2.6.12. No source-original file changed.",
+  "build_or_install_performed": false,
+  "git_apply_check": {
+    "command": "git apply --check fastdds-2.6.12-reader-listener-lifecycle-family.backport01.patch",
+    "cwd": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\upstream_fastdds_readonly01\\source-original\\ros-humble-fastrtps-2.6.12",
+    "returncode": 0,
+    "applies_to_original_source": true,
+    "actual_apply_or_build_performed": false
+  },
+  "private_header_install_audit": {
+    "definition": "src/cpp/fastdds/subscriber/DataReaderImpl.hpp",
+    "installed_public_definition": false,
+    "public_forward_declaration_and_opaque_pointer": "include/fastdds/dds/subscriber/DataReader.hpp",
+    "install_rules": "src/cpp/CMakeLists.txt:576-598; only source include/fastrtps, include/fastdds and generated config.h"
+  }
+}

@@ -1,0 +1,178 @@
+  Id   Target Id                         Frame 
+* 1    Thread 0x73be9a7fa640 (LWP 24943) 0x000073be9d283557 in eprosima::fastrtps::rtps::StatefulReader::matched_writer_remove(eprosima::fastrtps::rtps::GUID_t const&, bool) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+  2    Thread 0x73be99ff9640 (LWP 24970) 0x000073bea2e91280 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+  3    Thread 0x73be9affb640 (LWP 24942) 0x000073bea2f27814 in recvfrom () from /lib/x86_64-linux-gnu/libc.so.6
+  4    Thread 0x73be997f8640 (LWP 24971) 0x000073bea2f27814 in recvfrom () from /lib/x86_64-linux-gnu/libc.so.6
+  5    Thread 0x73be9cfff640 (LWP 24938) 0x000073bea2e910d7 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+  6    Thread 0x73be9bffd640 (LWP 24940) 0x000073bea2e910d7 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+  7    Thread 0x73be98f37640 (LWP 24975) 0x000073bea2e910d7 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+  8    Thread 0x73bea3158740 (LWP 24805) 0x000073bea2e910d7 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+  9    Thread 0x73be9c7fe640 (LWP 24939) 0x000073bea2e910d7 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+  10   Thread 0x73be9b7fc640 (LWP 24941) 0x000073bea2e910d7 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+eprosima::fastrtps::rtps::StatefulReader::matched_writer_remove(eprosima::fastrtps::rtps::GUID_t const&, bool) + 503 in section .text of /opt/ros/humble/lib/libfastrtps.so.2.6
+rax            0x0                 0
+rbx            0x73be9a7f90b0      127262473031856
+rcx            0x73bea2e912f7      127262614164215
+rdx            0x1                 1
+rsi            0x81                129
+rdi            0x0                 0
+rbp            0x62b6540f7ee8      0x62b6540f7ee8
+rsp            0x73be9a7f8d10      0x73be9a7f8d10
+r8             0x62b6540f7d70      108535233871216
+r9             0x62b6547d7fc0      108535241080768
+r10            0x0                 0
+r11            0x246               582
+r12            0x62b6540f7c40      108535233870912
+r13            0x1                 1
+r14            0x73be8407b190      127262096077200
+r15            0x73be9d304900      127262518167808
+rip            0x73be9d283557      0x73be9d283557 <eprosima::fastrtps::rtps::StatefulReader::matched_writer_remove(eprosima::fastrtps::rtps::GUID_t const&, bool)+503>
+eflags         0x10202             [ IF RF ]
+cs             0x33                51
+ss             0x2b                43
+ds             0x0                 0
+es             0x0                 0
+fs             0x0                 0
+gs             0x0                 0
+   0x73be9d283537 <_ZN8eprosima8fastrtps4rtps14StatefulReader21matched_writer_removeERKNS1_6GUID_tEb+471>:	add    %cl,0x44(%rbx,%rcx,4)
+   0x73be9d28353b <_ZN8eprosima8fastrtps4rtps14StatefulReader21matched_writer_removeERKNS1_6GUID_tEb+475>:	and    $0x10,%al
+   0x73be9d28353d <_ZN8eprosima8fastrtps4rtps14StatefulReader21matched_writer_removeERKNS1_6GUID_tEb+477>:	test   %r8,%r8
+   0x73be9d283540 <_ZN8eprosima8fastrtps4rtps14StatefulReader21matched_writer_removeERKNS1_6GUID_tEb+480>:	je     0x73be9d283557 <_ZN8eprosima8fastrtps4rtps14StatefulReader21matched_writer_removeERKNS1_6GUID_tEb+503>
+   0x73be9d283542 <_ZN8eprosima8fastrtps4rtps14StatefulReader21matched_writer_removeERKNS1_6GUID_tEb+482>:	mov    %r8,%rdi
+   0x73be9d283545 <_ZN8eprosima8fastrtps4rtps14StatefulReader21matched_writer_removeERKNS1_6GUID_tEb+485>:	call   0x73be9d144be0 <pthread_mutex_unlock@plt>
+   0x73be9d28354a <_ZN8eprosima8fastrtps4rtps14StatefulReader21matched_writer_removeERKNS1_6GUID_tEb+490>:	movb   $0x0,0x18(%rsp)
+   0x73be9d28354f <_ZN8eprosima8fastrtps4rtps14StatefulReader21matched_writer_removeERKNS1_6GUID_tEb+495>:	mov    0x1b0(%r12),%rdi
+=> 0x73be9d283557 <_ZN8eprosima8fastrtps4rtps14StatefulReader21matched_writer_removeERKNS1_6GUID_tEb+503>:	mov    (%rdi),%rax
+   0x73be9d28355a <_ZN8eprosima8fastrtps4rtps14StatefulReader21matched_writer_removeERKNS1_6GUID_tEb+506>:	lea    -0x2fe71(%rip),%rdx        # 0x73be9d2536f0
+   0x73be9d283561 <_ZN8eprosima8fastrtps4rtps14StatefulReader21matched_writer_removeERKNS1_6GUID_tEb+513>:	mov    0x40(%rax),%rax
+   0x73be9d283565 <_ZN8eprosima8fastrtps4rtps14StatefulReader21matched_writer_removeERKNS1_6GUID_tEb+517>:	cmp    %rdx,%rax
+   0x73be9d283568 <_ZN8eprosima8fastrtps4rtps14StatefulReader21matched_writer_removeERKNS1_6GUID_tEb+520>:	jne    0x73be9d283640 <_ZN8eprosima8fastrtps4rtps14StatefulReader21matched_writer_removeERKNS1_6GUID_tEb+736>
+   0x73be9d28356e <_ZN8eprosima8fastrtps4rtps14StatefulReader21matched_writer_removeERKNS1_6GUID_tEb+526>:	cmpq   $0x0,(%rsp)
+   0x73be9d283573 <_ZN8eprosima8fastrtps4rtps14StatefulReader21matched_writer_removeERKNS1_6GUID_tEb+531>:	je     0x73be9d28385d <_ZN8eprosima8fastrtps4rtps14StatefulReader21matched_writer_removeERKNS1_6GUID_tEb+1277>
+   0x73be9d283579 <_ZN8eprosima8fastrtps4rtps14StatefulReader21matched_writer_removeERKNS1_6GUID_tEb+537>:	mov    0x548339(%rip),%eax        # 0x73be9d7cb8b8
+
+Thread 10 (Thread 0x73be9b7fc640 (LWP 24941)):
+#0  0x000073bea2e910d7 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+#1  0x000073bea2e9429d in pthread_cond_clockwait () from /lib/x86_64-linux-gnu/libc.so.6
+#2  0x000073be9d246f61 in eprosima::fastrtps::rtps::ResourceEvent::event_service() () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#3  0x000073be9dcdc253 in ?? () from /lib/x86_64-linux-gnu/libstdc++.so.6
+#4  0x000073bea2e94a83 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+#5  0x000073bea2f268e0 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+
+Thread 9 (Thread 0x73be9c7fe640 (LWP 24939)):
+#0  0x000073bea2e910d7 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+#1  0x000073bea2e9cc38 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+#2  0x000073be9e7afe52 in ?? () from /opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/_rclpy_pybind11.cpython-310-x86_64-linux-gnu.so
+#3  0x000073be9dcdc253 in ?? () from /lib/x86_64-linux-gnu/libstdc++.so.6
+#4  0x000073bea2e94a83 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+#5  0x000073bea2f268e0 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+
+Thread 8 (Thread 0x73bea3158740 (LWP 24805)):
+#0  0x000073bea2e910d7 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+#1  0x000073bea2e93a01 in pthread_cond_wait () from /lib/x86_64-linux-gnu/libc.so.6
+#2  0x000073be9d2a9a8f in eprosima::fastrtps::rtps::RTPSParticipantImpl::deleteUserEndpoint(eprosima::fastrtps::rtps::GUID_t const&) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#3  0x000073be9d2b6cec in eprosima::fastrtps::rtps::RTPSDomain::removeRTPSReader(eprosima::fastrtps::rtps::RTPSReader*) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#4  0x000073be9d2fd95e in eprosima::fastdds::dds::DataReaderImpl::stop() () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#5  0x000073be9d2fda86 in eprosima::fastdds::dds::DataReaderImpl::~DataReaderImpl() () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#6  0x000073be9d2fe2cc in eprosima::fastdds::dds::SubscriberImpl::delete_datareader(eprosima::fastdds::dds::DataReader const*) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#7  0x000073be9d9d30e3 in rmw_fastrtps_shared_cpp::destroy_subscription(char const*, CustomParticipantInfo*, rmw_subscription_s*, bool) () from /opt/ros/humble/lib/librmw_fastrtps_shared_cpp.so
+#8  0x000073be9d9be8fb in rmw_fastrtps_shared_cpp::decrement_context_impl_ref_count(rmw_context_s*) () from /opt/ros/humble/lib/librmw_fastrtps_shared_cpp.so
+#9  0x000073be9debd497 in rmw_destroy_node () from /opt/ros/humble/lib/librmw_fastrtps_cpp.so
+#10 0x000073be9eeadc48 in rcl_node_fini () from /opt/ros/humble/lib/librcl.so
+#11 0x000073be9e7b9119 in ?? () from /opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/_rclpy_pybind11.cpython-310-x86_64-linux-gnu.so
+#12 0x000073be9e798e41 in ?? () from /opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/_rclpy_pybind11.cpython-310-x86_64-linux-gnu.so
+#13 0x000073be9e78c9fa in ?? () from /opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/_rclpy_pybind11.cpython-310-x86_64-linux-gnu.so
+#14 0x000073be9e78002b in ?? () from /opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/_rclpy_pybind11.cpython-310-x86_64-linux-gnu.so
+#15 0x000073be9e758639 in ?? () from /opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/_rclpy_pybind11.cpython-310-x86_64-linux-gnu.so
+#16 0x000062b645991292 in ?? ()
+#17 0x000062b645987bab in _PyObject_MakeTpCall ()
+#18 0x000062b64599eedb in ?? ()
+#19 0x000062b645980cd3 in _PyEval_EvalFrameDefault ()
+#20 0x000062b645991aec in _PyFunction_Vectorcall ()
+#21 0x000062b64597be07 in _PyEval_EvalFrameDefault ()
+#22 0x000062b645991aec in _PyFunction_Vectorcall ()
+#23 0x000062b64597bcc0 in _PyEval_EvalFrameDefault ()
+#24 0x000062b645a61036 in ?? ()
+#25 0x000062b645a60f06 in PyEval_EvalCode ()
+#26 0x000062b645a87a88 in ?? ()
+#27 0x000062b645a820df in ?? ()
+#28 0x000062b645a87825 in ?? ()
+#29 0x000062b645a86d68 in _PyRun_SimpleFileObject ()
+#30 0x000062b645a86a47 in _PyRun_AnyFileObject ()
+#31 0x000062b645a7aeae in Py_RunMain ()
+#32 0x000062b645a54f4d in Py_BytesMain ()
+#33 0x000073bea2e29d90 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+#34 0x000073bea2e29e40 in __libc_start_main () from /lib/x86_64-linux-gnu/libc.so.6
+#35 0x000062b645a54e45 in _start ()
+
+Thread 7 (Thread 0x73be98f37640 (LWP 24975)):
+#0  0x000073bea2e910d7 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+#1  0x000073bea2e93a01 in pthread_cond_wait () from /lib/x86_64-linux-gnu/libc.so.6
+#2  0x000073be9d453e45 in eprosima::fastdds::rtps::FlowControllerImpl<eprosima::fastdds::rtps::FlowControllerSyncPublishMode, eprosima::fastdds::rtps::FlowControllerFifoSchedule>::run() () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#3  0x000073be9dcdc253 in ?? () from /lib/x86_64-linux-gnu/libstdc++.so.6
+#4  0x000073bea2e94a83 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+#5  0x000073bea2f268e0 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+
+Thread 6 (Thread 0x73be9bffd640 (LWP 24940)):
+#0  0x000073bea2e910d7 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+#1  0x000073bea2e9429d in pthread_cond_clockwait () from /lib/x86_64-linux-gnu/libc.so.6
+#2  0x000073be9d4e1701 in eprosima::fastdds::rtps::SharedMemWatchdog::run() () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#3  0x000073be9dcdc253 in ?? () from /lib/x86_64-linux-gnu/libstdc++.so.6
+#4  0x000073bea2e94a83 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+#5  0x000073bea2f268e0 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+
+Thread 5 (Thread 0x73be9cfff640 (LWP 24938)):
+#0  0x000073bea2e910d7 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+#1  0x000073bea2e9429d in pthread_cond_clockwait () from /lib/x86_64-linux-gnu/libc.so.6
+#2  0x000073be9e683839 in ?? () from /lib/x86_64-linux-gnu/libspdlog.so.1
+#3  0x000073be9dcdc253 in ?? () from /lib/x86_64-linux-gnu/libstdc++.so.6
+#4  0x000073bea2e94a83 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+#5  0x000073bea2f268e0 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+
+Thread 4 (Thread 0x73be997f8640 (LWP 24971)):
+#0  0x000073bea2f27814 in recvfrom () from /lib/x86_64-linux-gnu/libc.so.6
+#1  0x000073be9d334040 in eprosima::fastdds::rtps::UDPChannelResource::Receive(unsigned char*, unsigned int, unsigned int&, eprosima::fastrtps::rtps::Locator_t&) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#2  0x000073be9d334406 in eprosima::fastdds::rtps::UDPChannelResource::perform_listen_operation(eprosima::fastrtps::rtps::Locator_t) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#3  0x000073be9d32f13b in ?? () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#4  0x000073be9dcdc253 in ?? () from /lib/x86_64-linux-gnu/libstdc++.so.6
+#5  0x000073bea2e94a83 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+#6  0x000073bea2f268e0 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+
+Thread 3 (Thread 0x73be9affb640 (LWP 24942)):
+#0  0x000073bea2f27814 in recvfrom () from /lib/x86_64-linux-gnu/libc.so.6
+#1  0x000073be9d334040 in eprosima::fastdds::rtps::UDPChannelResource::Receive(unsigned char*, unsigned int, unsigned int&, eprosima::fastrtps::rtps::Locator_t&) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#2  0x000073be9d334406 in eprosima::fastdds::rtps::UDPChannelResource::perform_listen_operation(eprosima::fastrtps::rtps::Locator_t) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#3  0x000073be9d32f13b in ?? () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#4  0x000073be9dcdc253 in ?? () from /lib/x86_64-linux-gnu/libstdc++.so.6
+#5  0x000073bea2e94a83 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+#6  0x000073bea2f268e0 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+
+Thread 2 (Thread 0x73be99ff9640 (LWP 24970)):
+#0  0x000073bea2e91280 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+#1  0x000073bea2e9801d in pthread_mutex_lock () from /lib/x86_64-linux-gnu/libc.so.6
+#2  0x000073be9d40561d in eprosima::fastrtps::rtps::PDP::assert_remote_participant_liveliness(eprosima::fastrtps::rtps::GuidPrefix_t const&) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#3  0x000073be9d29dade in eprosima::fastrtps::rtps::MessageReceiver::processCDRMsg(eprosima::fastrtps::rtps::Locator_t const&, eprosima::fastrtps::rtps::Locator_t const&, eprosima::fastrtps::rtps::CDRMessage_t*) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#4  0x000073be9d2a472f in eprosima::fastrtps::rtps::ReceiverResource::OnDataReceived(unsigned char const*, unsigned int, eprosima::fastrtps::rtps::Locator_t const&, eprosima::fastrtps::rtps::Locator_t const&) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#5  0x000073be9d4ec8d8 in eprosima::fastdds::rtps::SharedMemChannelResource::perform_listen_operation(eprosima::fastrtps::rtps::Locator_t) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#6  0x000073be9d4ef98b in ?? () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#7  0x000073be9dcdc253 in ?? () from /lib/x86_64-linux-gnu/libstdc++.so.6
+#8  0x000073bea2e94a83 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+#9  0x000073bea2f268e0 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+
+Thread 1 (Thread 0x73be9a7fa640 (LWP 24943)):
+#0  0x000073be9d283557 in eprosima::fastrtps::rtps::StatefulReader::matched_writer_remove(eprosima::fastrtps::rtps::GUID_t const&, bool) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#1  0x000073be9d40d512 in eprosima::fastrtps::rtps::EDP::unpairWriterProxy(eprosima::fastrtps::rtps::GUID_t const&, eprosima::fastrtps::rtps::GUID_t const&, bool) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#2  0x000073be9d404647 in eprosima::fastrtps::rtps::PDP::removeWriterProxyData(eprosima::fastrtps::rtps::GUID_t const&) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#3  0x000073be9d4234d5 in eprosima::fastrtps::rtps::EDPSimplePUBListener::onNewCacheChangeAdded(eprosima::fastrtps::rtps::RTPSReader*, eprosima::fastrtps::rtps::CacheChange_t const*) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#4  0x000073be9d283aa3 in eprosima::fastrtps::rtps::StatefulReader::NotifyChanges(eprosima::fastrtps::rtps::WriterProxy*) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#5  0x000073be9d2844bb in eprosima::fastrtps::rtps::StatefulReader::change_received(eprosima::fastrtps::rtps::CacheChange_t*, eprosima::fastrtps::rtps::WriterProxy*, unsigned long) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#6  0x000073be9d2849d9 in eprosima::fastrtps::rtps::StatefulReader::processDataMsg(eprosima::fastrtps::rtps::CacheChange_t*) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#7  0x000073be9d291f30 in eprosima::fastrtps::rtps::MessageReceiver::process_data_message_without_security(eprosima::fastrtps::rtps::EntityId_t const&, eprosima::fastrtps::rtps::CacheChange_t&, bool) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#8  0x000073be9d29b90d in eprosima::fastrtps::rtps::MessageReceiver::proc_Submsg_Data(eprosima::fastrtps::rtps::CDRMessage_t*, eprosima::fastrtps::rtps::SubmessageHeader_t*, bool) const () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#9  0x000073be9d29db75 in eprosima::fastrtps::rtps::MessageReceiver::processCDRMsg(eprosima::fastrtps::rtps::Locator_t const&, eprosima::fastrtps::rtps::Locator_t const&, eprosima::fastrtps::rtps::CDRMessage_t*) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#10 0x000073be9d2a472f in eprosima::fastrtps::rtps::ReceiverResource::OnDataReceived(unsigned char const*, unsigned int, eprosima::fastrtps::rtps::Locator_t const&, eprosima::fastrtps::rtps::Locator_t const&) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#11 0x000073be9d334426 in eprosima::fastdds::rtps::UDPChannelResource::perform_listen_operation(eprosima::fastrtps::rtps::Locator_t) () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#12 0x000073be9d32f13b in ?? () from /opt/ros/humble/lib/libfastrtps.so.2.6
+#13 0x000073be9dcdc253 in ?? () from /lib/x86_64-linux-gnu/libstdc++.so.6
+#14 0x000073bea2e94a83 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+#15 0x000073bea2f268e0 in ?? () from /lib/x86_64-linux-gnu/libc.so.6

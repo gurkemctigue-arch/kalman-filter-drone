@@ -1,0 +1,94 @@
+{
+  "scope": "READ_ONLY_HUMBLE47_FLIGHT_TF_EXIT_DIAGNOSIS",
+  "files": {
+    "/proc/sys/kernel/core_pattern": "|/wsl-capture-crash %t %E %p %s\n",
+    "/proc/sys/kernel/core_uses_pid": "1\n",
+    "/proc/sys/kernel/random/boot_id": "01d6248c-c4c5-4cd4-9b79-dae0642e7abc\n",
+    "/etc/default/apport": "# set this to 0 to disable apport, or to 1 to enable it\n# you can temporarily override this with\n# sudo service apport start force_start=1\nenabled=1\n"
+  },
+  "directories": {
+    "/var/crash": [],
+    "/var/lib/apport/coredump": [],
+    "/root/uav_tracking_fullplan_v4_humble47": [],
+    "/root/uav_tracking_fullplan_v4_humble47/results/runtime": []
+  },
+  "tools": {
+    "gdb": "/usr/bin/gdb",
+    "apport-unpack": "/usr/bin/apport-unpack",
+    "coredumpctl": null,
+    "journalctl": "/usr/bin/journalctl"
+  },
+  "original_stop_journal": {
+    "argv": [
+      "/usr/bin/journalctl",
+      "--no-pager",
+      "--since",
+      "2026-11-01 23:43:00 UTC",
+      "--until",
+      "2026-11-01 23:44:10 UTC",
+      "-n",
+      "100",
+      "-o",
+      "short-iso"
+    ],
+    "returncode": 0,
+    "stdout": "2026-11-02T07:43:41+0800 localhost kernel: flight_tf[25375]: segfault at 0 ip 000073be9d283557 sp 000073be9a7f8d10 error 4 in libfastrtps.so.2.6.12[73be9d132000+559000] likely on CPU 1 (core 0, socket 0)\n2026-11-02T07:43:41+0800 localhost kernel: Code: 00 00 48 85 ff 0f 84 18 01 00 00 4c 8b 44 24 10 4d 85 c0 74 15 4c 89 c7 e8 96 16 ec ff c6 44 24 18 00 49 8b bc 24 b0 01 00 00 <48> 8b 07 48 8d 15 8f 01 fd ff 48 8b 40 40 48 39 d0 0f 85 d2 00 00\n2026-11-02T07:43:41+0800 localhost kernel: python3.10: flight_tf: potentially unexpected fatal signal 11.\n2026-11-02T07:43:41+0800 localhost kernel: CPU: 1 PID: 25375 Comm: flight_tf Not tainted 6.6.114.1-microsoft-standard-WSL2 #1\n2026-11-02T07:43:41+0800 localhost kernel: RIP: 0033:0x73be9d283557\n2026-11-02T07:43:41+0800 localhost kernel: Code: 00 00 48 85 ff 0f 84 18 01 00 00 4c 8b 44 24 10 4d 85 c0 74 15 4c 89 c7 e8 96 16 ec ff c6 44 24 18 00 49 8b bc 24 b0 01 00 00 <48> 8b 07 48 8d 15 8f 01 fd ff 48 8b 40 40 48 39 d0 0f 85 d2 00 00\n2026-11-02T07:43:41+0800 localhost kernel: RSP: 002b:000073be9a7f8d10 EFLAGS: 00010202\n2026-11-02T07:43:41+0800 localhost kernel: RAX: 0000000000000000 RBX: 000073be9a7f90b0 RCX: 000073bea2e912f7\n2026-11-02T07:43:41+0800 localhost kernel: RDX: 0000000000000001 RSI: 0000000000000081 RDI: 0000000000000000\n2026-11-02T07:43:41+0800 localhost kernel: RBP: 000062b6540f7ee8 R08: 000062b6540f7d70 R09: 000062b6547d7fc0\n2026-11-02T07:43:41+0800 localhost kernel: R10: 0000000000000000 R11: 0000000000000246 R12: 000062b6540f7c40\n2026-11-02T07:43:41+0800 localhost kernel: R13: 0000000000000001 R14: 000073be8407b190 R15: 000073be9d304900\n2026-11-02T07:43:41+0800 localhost kernel: FS:  000073be9a7fa640 GS:  0000000000000000\n2026-11-02T07:43:41+0800 localhost unknown: WSL (25669 - CaptureCrash): Capturing crash for pid: 24805, executable: !usr!bin!python3.10, signal: 11, port: 50005\n",
+    "stderr": ""
+  },
+  "copied_installed_sources": [
+    {
+      "module": "rclpy/node.py",
+      "source": "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py",
+      "copy": "/mnt/d/WSL/UAVHumble22-validation/humble47_tf_exit_diagnosis01/installed_sources/rclpy/node.py",
+      "bytes": 84248,
+      "sha256": "164d761d2251e749804d3f12a8539f99c6c8ca42bff790d64405b78bcb724243"
+    },
+    {
+      "module": "rclpy/time_source.py",
+      "source": "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/time_source.py",
+      "copy": "/mnt/d/WSL/UAVHumble22-validation/humble47_tf_exit_diagnosis01/installed_sources/rclpy/time_source.py",
+      "bytes": 5395,
+      "sha256": "51bae97c90c35d37c88ff9f009bcbcc76eba282e81474c37db026311042ced51"
+    },
+    {
+      "module": "rclpy/clock.py",
+      "source": "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/clock.py",
+      "copy": "/mnt/d/WSL/UAVHumble22-validation/humble47_tf_exit_diagnosis01/installed_sources/rclpy/clock.py",
+      "bytes": 11057,
+      "sha256": "ba274434a37b4b73ef91ea84f90d7d0f13e1d216ff5d98356ed8e566145a9d04"
+    },
+    {
+      "module": "rclpy/context.py",
+      "source": "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/context.py",
+      "copy": "/mnt/d/WSL/UAVHumble22-validation/humble47_tf_exit_diagnosis01/installed_sources/rclpy/context.py",
+      "bytes": 5465,
+      "sha256": "86e20ae19dd112a043d496aa6596927f7043b22f06f38d6251414a23c329a9bb"
+    },
+    {
+      "module": "rclpy/executors.py",
+      "source": "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py",
+      "copy": "/mnt/d/WSL/UAVHumble22-validation/humble47_tf_exit_diagnosis01/installed_sources/rclpy/executors.py",
+      "bytes": 32834,
+      "sha256": "cfd24d4952d061299d395820bfffae3afb95a87ac186ca131194be349846e7fd"
+    },
+    {
+      "module": "tf2_ros/transform_broadcaster.py",
+      "source": "/opt/ros/humble/lib/python3.10/site-packages/tf2_ros/transform_broadcaster.py",
+      "copy": "/mnt/d/WSL/UAVHumble22-validation/humble47_tf_exit_diagnosis01/installed_sources/tf2_ros/transform_broadcaster.py",
+      "bytes": 3034,
+      "sha256": "cfc078538f975df3d4be6d47319bee540de04c7d203ff75544c9d4604fe25456"
+    },
+    {
+      "module": "tf2_ros/static_transform_broadcaster.py",
+      "source": "/opt/ros/humble/lib/python3.10/site-packages/tf2_ros/static_transform_broadcaster.py",
+      "copy": "/mnt/d/WSL/UAVHumble22-validation/humble47_tf_exit_diagnosis01/installed_sources/tf2_ros/static_transform_broadcaster.py",
+      "bytes": 2964,
+      "sha256": "2ec281a9193be32c0b87741b7d67e00ec89c810037b7a31841afd34934a447fd"
+    }
+  ],
+  "installed_versions": {
+    "returncode": 0,
+    "stdout": "ros-humble-fastcdr=1.0.29-1jammy.20260226.010952\nros-humble-fastrtps=2.6.12-1jammy.20260723.233918\nros-humble-rclpy=3.3.22-1jammy.20260907.213431\nros-humble-rmw-fastrtps-cpp=6.2.10-1jammy.20260907.210327\nros-humble-rmw-fastrtps-shared-cpp=6.2.10-1jammy.20260907.205244\nros-humble-tf2-ros-py=0.25.24-1jammy.20260915.204621\n",
+    "stderr": ""
+  }
+}

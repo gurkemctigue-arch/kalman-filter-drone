@@ -160,6 +160,186 @@ def snapshot_px4_parameters(px4_root: Path, destination: Path, phase: str) -> di
 
 ROS_GZ_CONFIG = "config/ros_gz_runtime_humble22.json"
 ROS_GZ_PATCH = "patches/ros_gz_bridge_ownership_shutdown_A01.patch"
+DDS_CONFIG = "config/dds_runtime_humble22.json"
+
+
+def prepare_dds_runtime(root, requested=None, *, environ=None, backend=None):
+    """Humble opt-in is strict; unrelated historical/Jazzy roots stay usable."""
+    from uav_tracking.dds_runtime import preflight
+    env = os.environ if environ is None else environ
+    root = Path(root).resolve()
+    default = (root / DDS_CONFIG).resolve()
+    configured = env.get("UAV_TRACKING_DDS_RUNTIME_CONFIG")
+    distros = {env[name] for name in ("ROS_DISTRO", "STAGE1_ROS_DISTRO") if env.get(name)}
+    if requested or configured:
+        if distros != {"humble"}:
+            raise ValueError("An explicit DDS runtime registration requires Humble")
+    elif distros != {"humble"} or not default.exists():
+        return None
+    if requested:
+        path = Path(requested)
+        path = path if path.is_absolute() else root / path
+        path = path.resolve()
+        if configured and Path(configured).resolve() != path:
+            raise ValueError("Explicit DDS registration conflicts with environment registration")
+    else:
+        path = Path(configured).resolve() if configured else default
+        if path != default:
+            raise ValueError("Environment DDS registration must match this root's default; use explicit CLI for another path")
+    report = preflight(path, environ=env, backend=backend)
+    raw = path.read_bytes()
+    if hashlib.sha256(raw).hexdigest() != report["registration_sha256"]:
+        raise ValueError("DDS registration changed before snapshot")
+    return {"path": path, "raw": raw, "sha256": report["registration_sha256"], "preflight": report, "root": root}
+
+
+def snapshot_dds_runtime(context, destination):
+    destination = Path(destination)
+    (destination / "dds_runtime_registration.json").write_bytes(context["raw"])
+    (destination / "dds_runtime_preflight.json").write_text(json.dumps(context["preflight"], indent=2), encoding="utf-8")
+    context["summary"] = {"schema_version": 1, "scope": context["preflight"]["scope"],
+        "status": "PREFLIGHT_ONLY", "registration_sha256": context["sha256"],
+        "configured_registration": str(context["path"]),
+        "registration_snapshot": "dds_runtime_registration.json", "preflight": "dds_runtime_preflight.json",
+        "actual": None, "after": None,
+        "claim_limit": "Dependency contract evidence; original flight, child-exit, recording and owner gates remain separate."}
+    _write_dds_summary(context, destination)
+
+
+def _write_dds_summary(context, destination):
+    (Path(destination) / "dds_runtime_summary.json").write_text(json.dumps(context["summary"], indent=2), encoding="utf-8")
+
+
+def find_owned_dds_process(context, leader_pid, role, *, expected_leader=None, backend=None,
+                           process_limit=64, thread_limit=512):
+    """Use kernel child ownership and explicit production entrypoint identity."""
+    from uav_tracking.ros_gz_runtime import ProcessNotAliveError, RuntimeBackend, parse_process_stat
+    backend = backend or RuntimeBackend()
+    if role not in {"flight_tf", "agent"}:
+        raise ValueError("Unknown owned DDS process role")
+    leader = parse_process_stat(backend.proc_text(leader_pid, "stat"), leader_pid)
+    if expected_leader is not None and leader != expected_leader:
+        raise RuntimeError("Owned DDS launch creation identity changed")
+    registration = context["preflight"]
+    target = (context["root"] / "ros2_ws/install/lib/uav_tracking_bringup/flight_tf" if role == "flight_tf"
+              else Path(registration["elf_files"]["agent_fastdds"]["path"]).parent.parent / "bin/MicroXRCEAgent")
+    queue, seen, candidates, threads = [(leader_pid, None, [])], set(), [], 0
+    while queue:
+        pid, parent, chain = queue.pop(0)
+        if pid in seen:
+            continue
+        seen.add(pid)
+        if len(seen) > process_limit:
+            raise RuntimeError("Owned DDS discovery exceeded its process bound")
+        candidate = False
+        try:
+            identity = parse_process_stat(backend.proc_text(pid, "stat"), pid)
+            if parent is not None and identity["parent_pid"] != parent:
+                raise RuntimeError("Owned DDS child parent identity changed")
+            executable = backend.exe_path(pid)
+            command = [item for item in backend.proc_text(pid, "cmdline").split("\0") if item]
+            candidate = ((Path(executable).name.startswith("python") and str(target) in command[:2]) if role == "flight_tf"
+                         else str(Path(executable.removesuffix(" (deleted)")).resolve()) == str(target.resolve()))
+            if candidate and executable.endswith(" (deleted)"):
+                raise RuntimeError("Owned DDS executable is deleted")
+            children, count = _ros_gz_children(pid, backend, thread_limit - threads)
+        except ProcessNotAliveError as error:
+            if pid == leader_pid or candidate:
+                raise
+            if parent is not None and error.process["parent_pid"] != parent:
+                raise RuntimeError("Owned dead DDS child parent identity changed") from error
+            continue
+        except (FileNotFoundError, ProcessLookupError):
+            if pid == leader_pid or candidate:
+                raise
+            continue
+        threads += count
+        chain = [*chain, identity]
+        if candidate:
+            candidates.append({"leader": leader, "process": identity, "ancestor_chain": chain,
+                               "executable": executable, "command": command})
+        queue.extend((child, pid, chain) for child in children)
+    if parse_process_stat(backend.proc_text(leader_pid, "stat"), leader_pid) != leader:
+        raise RuntimeError("Owned DDS launch identity changed during discovery")
+    if len(candidates) > 1:
+        raise RuntimeError("Multiple owned DDS processes match role: " + role)
+    return candidates[0] if candidates else None
+
+
+def capture_owned_dds_runtime(context, destination, ros_pid, agent_pid, *, check_alive=lambda: None,
+                              timeout_s=8., backend=None):
+    """Bind owned TF, bridge and Agent middleware before unpausing physics."""
+    from uav_tracking.dds_runtime import MappingsNotReadyError, verify_loaded_process
+    from uav_tracking.ros_gz_runtime import RuntimeBackend, parse_process_stat
+    backend = backend or RuntimeBackend()
+    if not math.isfinite(timeout_s) or timeout_s <= 0:
+        raise ValueError("DDS startup wait must be positive and finite")
+    leaders = {role: parse_process_stat(backend.proc_text(pid, "stat"), pid)
+               for role, pid in (("flight_tf", ros_pid), ("bridge", ros_pid), ("agent", agent_pid))}
+    deadline, reports, owners = time.monotonic() + timeout_s, {}, {}
+    try:
+        while len(reports) != len(leaders):
+            check_alive()
+            for role, leader in leaders.items():
+                def find_owned():
+                    if role == "bridge":
+                        return find_owned_parameter_bridge(leader["pid"], expected_leader=leader, backend=backend)
+                    return find_owned_dds_process(context, leader["pid"], role,
+                                                  expected_leader=leader, backend=backend)
+                owned = find_owned()
+                if role in owners and owned != owners[role]:
+                    raise RuntimeError("Owned DDS process changed during startup")
+                if owned is None or role in reports:
+                    continue
+                owners[role] = owned
+                try:
+                    report = verify_loaded_process(context["path"], owned["process"]["pid"], role=role,
+                        expected_process=owned["process"], expected_config_sha256=context["sha256"], backend=backend)
+                except MappingsNotReadyError:
+                    continue
+                after = find_owned()
+                if after != owned:
+                    raise RuntimeError("Owned DDS ancestry changed during mapping verification")
+                reports[role] = {**report, "owned_launch": owned}
+            remaining = deadline - time.monotonic()
+            if len(reports) != len(leaders):
+                if remaining <= 0:
+                    raise RuntimeError("Owned flight_tf/bridge/Agent mappings were not ready within the DDS startup bound")
+                time.sleep(min(.05, remaining))
+        report = {"schema_version": 1, "scope": context["preflight"]["scope"], "status": "PASS",
+                  "registration_sha256": context["sha256"], "processes": reports}
+        (Path(destination) / "dds_runtime_actual.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
+        context["summary"].update(status="LIVE_PROCESSES_VERIFIED", actual="dds_runtime_actual.json")
+        _write_dds_summary(context, destination)
+        return report
+    except (OSError, ValueError, RuntimeError) as error:
+        (Path(destination) / "dds_runtime_actual_error.json").write_text(json.dumps({"status": "FAIL",
+            "registration_sha256": context["sha256"], "error": str(error), "leaders": leaders}, indent=2), encoding="utf-8")
+        context["summary"].update(status="FAIL", actual_error="dds_runtime_actual_error.json")
+        _write_dds_summary(context, destination)
+        raise RuntimeError("Owned DDS runtime could not be verified before unpause") from error
+
+
+def verify_dds_runtime_after(context, destination, *, ros_exit_code, agent_exit_code, ros_log, backend=None):
+    from uav_tracking.dds_runtime import revalidate_files
+    try:
+        report = revalidate_files(context["path"], expected_config_sha256=context["sha256"], backend=backend)
+        if context["summary"].get("actual") is None:
+            raise RuntimeError("No verified owned DDS runtime capture was retained")
+        if ros_exit_code != 0 or "process has died" in ros_log:
+            raise RuntimeError("ROS launch/child shutdown failed; original exit and child audit gates remain in force")
+        report.update(ros_exit_code=ros_exit_code, agent_exit_code=agent_exit_code)
+        (Path(destination) / "dds_runtime_after.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
+        context["summary"].update(status="PASS", after="dds_runtime_after.json")
+        _write_dds_summary(context, destination)
+        return None
+    except (OSError, ValueError, RuntimeError) as error:
+        (Path(destination) / "dds_runtime_after_error.json").write_text(json.dumps({"status": "FAIL",
+            "registration_sha256": context["sha256"], "error": str(error),
+            "ros_exit_code": ros_exit_code, "agent_exit_code": agent_exit_code}, indent=2), encoding="utf-8")
+        context["summary"].update(status="FAIL", after_error="dds_runtime_after_error.json")
+        _write_dds_summary(context, destination)
+        return error
 
 
 def prepare_ros_gz_runtime(root, requested=None, *, backend=None):
@@ -414,6 +594,8 @@ def main() -> None:
                         help="Pre-audited per-environment Gazebo ELF registration; gazebo_enu defaults to config/gazebo_magnetic_runtime.json (Jazzy)")
     parser.add_argument("--ros-gz-runtime-registration", default=None,
                         help="Optional reviewed ros_gz registration; defaults to final-root config when present")
+    parser.add_argument("--dds-runtime-registration", default=None,
+                        help="Explicit Humble DDS registration override; otherwise use this root's strict default config")
     parser.add_argument("--propagate-vehicle-uncertainty", action="store_true")
     parser.add_argument("--px4-time-mode", choices=["receipt", "source_sim"], default="receipt",
                         help="source_sim disables XRCE wall-time mapping before client startup and validates PX4 source time against /clock")
@@ -494,6 +676,13 @@ def main() -> None:
     ros_gz_runtime = prepare_ros_gz_runtime(root, args.ros_gz_runtime_registration)
     if ros_gz_runtime is not None:
         args.ros_gz_runtime_registration = str(ros_gz_runtime["path"])
+    dds_runtime = prepare_dds_runtime(root, args.dds_runtime_registration)
+    if dds_runtime is not None:
+        args.dds_runtime_registration = str(dds_runtime["path"])
+        args.dds_runtime_evidence = {"registration_sha256": dds_runtime["sha256"],
+            "registration_snapshot": "configuration/dds_runtime_registration.json",
+            "preflight": "configuration/dds_runtime_preflight.json",
+            "summary": "configuration/dds_runtime_summary.json"}
     output = root / "results" / args.name
     output.mkdir(parents=True, exist_ok=False)
     env = dict(os.environ, STAGE1_AUTO_START="true", STAGE1_PROJECT_ROOT=str(root),
@@ -521,6 +710,8 @@ def main() -> None:
     snapshot.mkdir()
     if ros_gz_runtime is not None:
         snapshot_ros_gz_runtime(ros_gz_runtime, snapshot)
+    if dds_runtime is not None:
+        snapshot_dds_runtime(dds_runtime, snapshot)
     if magnetic_runtime is not None:
         shutil.copy2(args.magnetic_runtime_manifest, snapshot / "px4_magnetic_runtime.json")
         shutil.copy2(args.magnetic_library_registration,
@@ -553,6 +744,8 @@ def main() -> None:
     source_hashes = {str(path.relative_to(root)): hashlib.sha256(path.read_bytes()).hexdigest()
                      for folder in [root / "uav_tracking", root / "ros2_ws" / "src", root / "scripts"]
                      for path in folder.rglob("*") if path.is_file() and path.suffix in {".py", ".sh", ".msg"}}
+    if dds_runtime is not None and dds_runtime["path"].is_relative_to(root):
+        source_hashes[str(dds_runtime["path"].relative_to(root))] = dds_runtime["sha256"]
     parameters = yaml.safe_load(config_path.read_text())
     # Only the explicitly opted-in simulation supervisor separates stream
     # source ages from planned host liveness. Target/filter gates stay fixed.
@@ -808,6 +1001,11 @@ def main() -> None:
         if ros_gz_runtime is not None:
             capture_owned_ros_gz_runtime(ros_gz_runtime, snapshot, processes["ros"].pid,
                                         check_alive=check_startup_processes)
+        if dds_runtime is not None:
+            capture_owned_dds_runtime(dds_runtime, snapshot, processes["ros"].pid, processes["agent"].pid,
+                                      check_alive=check_startup_processes)
+            args.dds_runtime_evidence["actual"] = "configuration/dds_runtime_actual.json"
+            (output / "run_config.json").write_text(json.dumps(vars(args), indent=2), encoding="utf-8")
         from wait_stage1_graph import wait_ready as wait_ready_graph
         wait_ready_graph(output / "graph_startup_readiness.json", require_recorder=not args.no_bag,
                          check_alive=check_startup_processes)
@@ -846,6 +1044,7 @@ def main() -> None:
         active_error = sys.exc_info()[1]
         closure_error = None
         ros_gz_error = None
+        dds_error = None
         if recording_spool is not None and simulation_resumed:
             def check_recording_processes():
                 if recording_observer is not None:
@@ -894,6 +1093,17 @@ def main() -> None:
                     ros_exit_code=processes["ros"].poll(), ros_log=(output / "ros.log").read_text(errors="replace"))
             except (OSError, ValueError, RuntimeError) as error:
                 ros_gz_error = error  # Recording finalization still runs.
+        if dds_runtime is not None:
+            try:
+                dds_error = verify_dds_runtime_after(dds_runtime, snapshot,
+                    ros_exit_code=processes["ros"].poll() if "ros" in processes else None,
+                    agent_exit_code=processes["agent"].poll() if "agent" in processes else None,
+                    ros_log=(output / "ros.log").read_text(errors="replace") if "ros" in processes else "")
+                args.dds_runtime_evidence["after"] = ("configuration/dds_runtime_after.json" if dds_error is None
+                                                       else "configuration/dds_runtime_after_error.json")
+                (output / "run_config.json").write_text(json.dumps(vars(args), indent=2), encoding="utf-8")
+            except (OSError, ValueError, RuntimeError) as error:
+                dds_error = error  # Preserve recording finalization and the original exception.
         parameter_evidence["after"]=snapshot_px4_parameters(px4_root,snapshot,"after")
         parameter_manifest.write_text(json.dumps(parameter_evidence,indent=2),encoding="utf-8")
         if magnetic_runtime is not None:
@@ -924,6 +1134,8 @@ def main() -> None:
             raise RuntimeError("Recording closed without proved source-stream drain; see recording_closure.json") from closure_error
         if ros_gz_error is not None and active_error is None:
             raise RuntimeError("Trial ended without verified ros_gz runtime/shutdown provenance") from ros_gz_error
+        if dds_error is not None and active_error is None:
+            raise RuntimeError("Trial ended without verified DDS runtime/file provenance") from dds_error
 
 
 if __name__ == "__main__":

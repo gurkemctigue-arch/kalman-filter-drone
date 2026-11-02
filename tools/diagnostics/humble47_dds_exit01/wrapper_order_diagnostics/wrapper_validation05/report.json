@@ -1,0 +1,96 @@
+{
+  "scope": "NATIVE_BASH_FIXTURE_TESTS_AND_SHELL_SYNTAX_NOT_FLIGHT",
+  "status": "PASS",
+  "cases": [
+    {
+      "argv": [
+        "/usr/bin/python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tests",
+        "-p",
+        "test_dds_environment_wrappers.py",
+        "-v"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "bash",
+        "-n",
+        "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/scripts/ros_python.sh"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "bash",
+        "-n",
+        "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/scripts/run_stage1_flight.sh"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "bash",
+        "-n",
+        "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/scripts/run_stage1_trial.sh"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "bash",
+        "-n",
+        "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/scripts/research_env.sh"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "bash",
+        "-n",
+        "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/scripts/verify_stage1.sh"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "bash",
+        "-n",
+        "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/scripts/evaluate_stage1_flight.sh"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "bash",
+        "-n",
+        "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/scripts/humble22_env.sh"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "bash",
+        "-n",
+        "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/scripts/apply_humble22_dds_runtime.sh"
+      ],
+      "returncode": 0
+    }
+  ],
+  "inputs": {
+    "scripts/ros_python.sh": "17a7029b6622946a6eaac25534732be4ff521b8cdf099f1e9214ae4906670f41",
+    "scripts/run_stage1_flight.sh": "0f4ca1a334d62f42debb159d5da075e90085921426b1dbf10f2ac77a56168175",
+    "scripts/run_stage1_trial.sh": "54e86c7a3c9ef2b8570ea9650d3d9b140fc5c48d2186159a74054332000cba25",
+    "scripts/research_env.sh": "dd319ac8e369de4215d2b8f29d6de7f67741f6ceec1ebe833540bb331c39fb18",
+    "scripts/verify_stage1.sh": "ec7ac2894b75ea0bfd97cb3ea6ff8070a911475400f366c2b2a582b74ca1bca8",
+    "scripts/evaluate_stage1_flight.sh": "0cde3ee11724a5f092f0a32c23c377cc2ad198a36672a33f414dcf03da93c057",
+    "scripts/humble22_env.sh": "f4e5d0db8f4a4d46debafdfe52ffdb69aa6970ad3d79e77bd23b81afa795cf1a",
+    "scripts/apply_humble22_dds_runtime.sh": "db4cf741ddda918727793496f7831cf0a3e6b51d7078a48876758cd517e721cb",
+    "tests/test_dds_environment_wrappers.py": "0e79f92ac2dff59dd88b96555a23d1049b6c42bfc2720843cafe9e4c936c29c8"
+  }
+}

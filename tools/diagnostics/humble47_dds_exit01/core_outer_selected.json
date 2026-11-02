@@ -1,0 +1,513 @@
+{
+  "scope": "EXPLICIT_FIELD_PROJECTION_NOT_REPLACEMENT_TERMINAL",
+  "original_source": {
+    "path": "results/frozen_fullplan_v4_humble47/reliability_v4_humble47_probe01_seed004_matrix/observed_driver01/execution_terminal.json",
+    "bytes": 843844,
+    "sha256": "b719ab60cc62c345e1ddb0fd6a15ddb89d63335202a92f5db51887ce485fa634"
+  },
+  "selected_fields": {
+    "schema_version": 1,
+    "scope": "PARAMETERIZED_CORE12_NORMAL_RUNNER_DEVELOPMENT_ONLY",
+    "action": "run-core",
+    "finished_utc": "2026-11-01T23:47:32.772885+00:00",
+    "returncode": 2,
+    "error": "ValueError:Incomplete/infrastructure attempt requires diagnosis: car_stage3_multi_active_seed004",
+    "status": "STOPPED_ORIGINAL_ATTEMPTS_RETAINED",
+    "contract": {
+      "path": "/mnt/d/WSL/UAVHumble22-validation/development_contract_core_reliability_v4_humble47_probe01_01.json",
+      "sha256": "13e11f61efa69b7b79f546b397261ff49aa2c7cd7f108bd8a74e14122d037442"
+    },
+    "plan": {
+      "plan": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble47/reliability_v4_humble47_probe01_seed004_matrix/plan.json",
+        "sha256": "1f6f14d4cd0c2a729326c037f3aac91460c7a8e02dfd970ae3e48e87bc4f8927"
+      },
+      "plan_sha256": "1bbdc086462704dbb4ee711bd26eb84bf02cb8ea3955ebb5220ac5fe2da67376",
+      "slot_ids": [
+        "person_stage1_velocity_seed004",
+        "person_stage1_position_seed004",
+        "person_stage2_crossing_seed004",
+        "person_stage3_midpoint_seed004",
+        "person_stage3_active_seed004",
+        "person_stage3_multi_active_seed004",
+        "car_stage1_velocity_seed004",
+        "car_stage1_position_seed004",
+        "car_stage2_crossing_seed004",
+        "car_stage3_midpoint_seed004",
+        "car_stage3_active_seed004",
+        "car_stage3_multi_active_seed004"
+      ],
+      "initial_status_counts": {
+        "PENDING": 12
+      }
+    },
+    "planned_count": 12,
+    "attempt_count": 12,
+    "terminal_count": 11,
+    "actual_slot_statuses": {
+      "person_stage1_velocity_seed004": {
+        "status": "PASS",
+        "record_sha256": "440de6d40280c7049eb13187a4482bb17490f97ada0538c532ecec2726f172ba"
+      },
+      "person_stage1_position_seed004": {
+        "status": "PASS",
+        "record_sha256": "dc6277d1feaaec0b111464e419ba8991be1fe3863e79fac901b7dd14915b348c"
+      },
+      "person_stage2_crossing_seed004": {
+        "status": "PASS",
+        "record_sha256": "504003a8e62847c01d45f021f0c195d7165f1bec03fcdddf5d3d541e6f797f97"
+      },
+      "person_stage3_midpoint_seed004": {
+        "status": "PASS",
+        "record_sha256": "ff0c023c28911a8306dac3a46ebe2ea13ccf47a65ba693ef2208a04dff1b86f7"
+      },
+      "person_stage3_active_seed004": {
+        "status": "PASS",
+        "record_sha256": "857cac8b9500cf9f192654946b5f5b409423a2f1ceffc02595da6be12fb81e1e"
+      },
+      "person_stage3_multi_active_seed004": {
+        "status": "PASS",
+        "record_sha256": "bc93b3519b23a43fa220ee63ca957ad0b47eac1bcf46dbcae7718c9bc12625dd"
+      },
+      "car_stage1_velocity_seed004": {
+        "status": "PASS",
+        "record_sha256": "1e6efff01e34ae451f979aa0fd4566c1913c3f84b20d7bf3beca6ae85f82de49"
+      },
+      "car_stage1_position_seed004": {
+        "status": "PASS",
+        "record_sha256": "23a092ae68b0c12bc3a4556446a1a294995a5de7c77fd62c84ea3c42ba96f33d"
+      },
+      "car_stage2_crossing_seed004": {
+        "status": "PASS",
+        "record_sha256": "267b681f68a504a91b13b4b579f61e27f3a90bc2caeed253abd4466333e5ba3d"
+      },
+      "car_stage3_midpoint_seed004": {
+        "status": "PASS",
+        "record_sha256": "a1d6d64f6f5a9749b7dadb74433b766b18aea47196fdc26cc238352cd8d1c6c8"
+      },
+      "car_stage3_active_seed004": {
+        "status": "PASS",
+        "record_sha256": "7c054a6668faa4e75df697c701fe5533d85ffe32751487471869369213d81890"
+      },
+      "car_stage3_multi_active_seed004": {
+        "status": "INFRASTRUCTURE_ERROR",
+        "record_sha256": "f4e539dec00bd42c704010db8339cae806ad0524888e6c61e2760d459638e92c"
+      }
+    },
+    "slot_read_error": null,
+    "status_counts": {
+      "PASS": 11,
+      "INFRASTRUCTURE_ERROR": 1
+    },
+    "cleanup": {
+      "residual_processes": []
+    },
+    "final_errors": [
+      "observer:ValueError:Owner outcome differs from original immutable D copy candidate"
+    ],
+    "formal_seed_use_authorized": false,
+    "readiness_claimed": false,
+    "automatic_retry": false,
+    "automatic_next_action": false,
+    "resume_or_recovery_authorized": false,
+    "claim_boundary": "Complete original development attempts retain algorithm FAIL; no safety4, extension16 or formal acceptance is granted.",
+    "entry_binding_before_equals_after": true,
+    "selected_entry_binding_before": {
+      "candidate_manifest": {
+        "path": "/mnt/d/WSL/UAVHumble22-validation/development_candidate_humble47_01.json",
+        "sha256": "171bedf663fad7af6e45a051d2e8c23d67e96d4b5f850e3be8e86993d242ffd6"
+      },
+      "source_review": {
+        "path": "/mnt/d/WSL/UAVHumble22-validation/reviewed_freeze_review_v4_humble47_01.json",
+        "sha256": "e1c4dcb5c1a7db937827c7ccf7effd202a9cc1f5c7344deac381a7d48ccffbb1"
+      },
+      "source": {
+        "manifest_sha256": "d609598b1aec721e1d5453dce733a2f68504aaf8c5fd7080dbd9b96f73123ac3",
+        "freeze_source_sha256": "853ea3195c7d1a984f2b1dc8c3af7b1a9a080d836554191b755dc3b39f81c717",
+        "verified_file_count": 1201
+      },
+      "protocol": {
+        "path": "/root/uav_tracking_fullplan_v4_humble47/planning/reliability-v4-preregistration.json",
+        "sha256": "a5f7412dd239d5452bdc725c825cd0b744aa5448acd15af9ebc7d6b6a9064d5b"
+      },
+      "tools_canonical_sha256": "4e5614388567b60ff5ab925390a37e254c8b8940f3092aa892579cf5cbd6359f"
+    },
+    "attempts_selected": [
+      {
+        "slot": "person_stage1_velocity_seed004",
+        "number": 1,
+        "started_utc": "2026-11-01T19:40:04.106250+00:00",
+        "finished_utc": "2026-11-01T19:59:58.203699+00:00",
+        "record": {
+          "status": "PASS",
+          "engineering_result": "PASS",
+          "record_binding": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble47/reliability_v4_humble47_probe01_seed004_matrix/slots/person_stage1_velocity_seed004.json",
+            "sha256": "f1220005a4c326294e130fb9e7ff0181bb90765c554555e0820c0e17dcea2bc1",
+            "record_sha256": "440de6d40280c7049eb13187a4482bb17490f97ada0538c532ecec2726f172ba",
+            "started_marker": {
+              "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble47/reliability_v4_humble47_probe01_seed004_matrix/slots/person_stage1_velocity_seed004.started.json",
+              "sha256": "3e492bf67819d9d31d9e4dbc21ac6dcff1803bf47565ed11678294a7f921d029"
+            },
+            "plan_sha256": "1bbdc086462704dbb4ee711bd26eb84bf02cb8ea3955ebb5220ac5fe2da67376",
+            "started_utc": "2026-11-01T19:40:05.247985+00:00"
+          }
+        },
+        "error": null,
+        "started_marker": {
+          "path": "/root/uav_tracking_fullplan_v4_humble47/results/reliability_v4_humble47_probe01_seed004_matrix/observed_driver01/01_person_stage1_velocity_seed004.started.json",
+          "sha256": "960bdd4080baad3055e9c51780288b0de0c66f59419d1e1842624188ee2b0294"
+        }
+      },
+      {
+        "slot": "person_stage1_position_seed004",
+        "number": 2,
+        "started_utc": "2026-11-01T20:00:52.576160+00:00",
+        "finished_utc": "2026-11-01T20:20:37.461240+00:00",
+        "record": {
+          "status": "PASS",
+          "engineering_result": "PASS",
+          "record_binding": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble47/reliability_v4_humble47_probe01_seed004_matrix/slots/person_stage1_position_seed004.json",
+            "sha256": "3ec947ccf3bb08a1bc260b4932659f5622e6f654c9eb4ac8649aaa4d14a19475",
+            "record_sha256": "dc6277d1feaaec0b111464e419ba8991be1fe3863e79fac901b7dd14915b348c",
+            "started_marker": {
+              "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble47/reliability_v4_humble47_probe01_seed004_matrix/slots/person_stage1_position_seed004.started.json",
+              "sha256": "95899b0797ecfae037de4c4581fab0e8bd20520e31337840f37253604ac13bf4"
+            },
+            "plan_sha256": "1bbdc086462704dbb4ee711bd26eb84bf02cb8ea3955ebb5220ac5fe2da67376",
+            "started_utc": "2026-11-01T20:00:54.505877+00:00"
+          }
+        },
+        "error": null,
+        "started_marker": {
+          "path": "/root/uav_tracking_fullplan_v4_humble47/results/reliability_v4_humble47_probe01_seed004_matrix/observed_driver01/02_person_stage1_position_seed004.started.json",
+          "sha256": "5f84799a120a1d175de6380a75ba8ac2bdc256db2b49ebc7eb51c0c48e6fe551"
+        }
+      },
+      {
+        "slot": "person_stage2_crossing_seed004",
+        "number": 3,
+        "started_utc": "2026-11-01T20:21:29.174538+00:00",
+        "finished_utc": "2026-11-01T20:44:48.965684+00:00",
+        "record": {
+          "status": "PASS",
+          "engineering_result": "PASS",
+          "record_binding": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble47/reliability_v4_humble47_probe01_seed004_matrix/slots/person_stage2_crossing_seed004.json",
+            "sha256": "fd25836178d5b60db3142bd3266e6bfe8042b5d96a173cdbf87f4be5d33c50a4",
+            "record_sha256": "504003a8e62847c01d45f021f0c195d7165f1bec03fcdddf5d3d541e6f797f97",
+            "started_marker": {
+              "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble47/reliability_v4_humble47_probe01_seed004_matrix/slots/person_stage2_crossing_seed004.started.json",
+              "sha256": "b67b61de50776b15e24626b5ac366323125817e30bc9cc8ff49d40fc240362f1"
+            },
+            "plan_sha256": "1bbdc086462704dbb4ee711bd26eb84bf02cb8ea3955ebb5220ac5fe2da67376",
+            "started_utc": "2026-11-01T20:21:32.651314+00:00"
+          }
+        },
+        "error": null,
+        "started_marker": {
+          "path": "/root/uav_tracking_fullplan_v4_humble47/results/reliability_v4_humble47_probe01_seed004_matrix/observed_driver01/03_person_stage2_crossing_seed004.started.json",
+          "sha256": "ed9abb96ca914c1a78b1ccf22cac025e5f5d3d8372a038a9232497b87523d23e"
+        }
+      },
+      {
+        "slot": "person_stage3_midpoint_seed004",
+        "number": 4,
+        "started_utc": "2026-11-01T20:45:49.716905+00:00",
+        "finished_utc": "2026-11-01T21:05:30.928833+00:00",
+        "record": {
+          "status": "PASS",
+          "engineering_result": "PASS",
+          "record_binding": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble47/reliability_v4_humble47_probe01_seed004_matrix/slots/person_stage3_midpoint_seed004.json",
+            "sha256": "26868e2676d7990df30856a8d23c4819f55f6b55e77d66a2ab65802dc0964483",
+            "record_sha256": "ff0c023c28911a8306dac3a46ebe2ea13ccf47a65ba693ef2208a04dff1b86f7",
+            "started_marker": {
+              "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble47/reliability_v4_humble47_probe01_seed004_matrix/slots/person_stage3_midpoint_seed004.started.json",
+              "sha256": "426b88da95d99b4baaa06d06f2a065264ad36f5bacf425e549d8ca733eb38db7"
+            },
+            "plan_sha256": "1bbdc086462704dbb4ee711bd26eb84bf02cb8ea3955ebb5220ac5fe2da67376",
+            "started_utc": "2026-11-01T20:45:54.474875+00:00"
+          }
+        },
+        "error": null,
+        "started_marker": {
+          "path": "/root/uav_tracking_fullplan_v4_humble47/results/reliability_v4_humble47_probe01_seed004_matrix/observed_driver01/04_person_stage3_midpoint_seed004.started.json",
+          "sha256": "69c40d11a2d525eaf57d36c10774d8e59d553b4dc95bcd486c6f366bde07a1f6"
+        }
+      },
+      {
+        "slot": "person_stage3_active_seed004",
+        "number": 5,
+        "started_utc": "2026-11-01T21:06:08.573347+00:00",
+        "finished_utc": "2026-11-01T21:25:34.809186+00:00",
+        "record": {
+          "status": "PASS",
+          "engineering_result": "PASS",
+          "record_binding": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble47/reliability_v4_humble47_probe01_seed004_matrix/slots/person_stage3_active_seed004.json",
+            "sha256": "33bb9c7da32bcb91eb71b95f1fb44b6ee8a8121a54dc451d47bad27eaeafec74",
+            "record_sha256": "857cac8b9500cf9f192654946b5f5b409423a2f1ceffc02595da6be12fb81e1e",
+            "started_marker": {
+              "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble47/reliability_v4_humble47_probe01_seed004_matrix/slots/person_stage3_active_seed004.started.json",
+              "sha256": "033213c69ccbb98f1b632954e37414ab5c6fa8d67d05779529862cc3afe5cf99"
+            },
+            "plan_sha256": "1bbdc086462704dbb4ee711bd26eb84bf02cb8ea3955ebb5220ac5fe2da67376",
+            "started_utc": "2026-11-01T21:06:12.892131+00:00"
+          }
+        },
+        "error": null,
+        "started_marker": {
+          "path": "/root/uav_tracking_fullplan_v4_humble47/results/reliability_v4_humble47_probe01_seed004_matrix/observed_driver01/05_person_stage3_active_seed004.started.json",
+          "sha256": "4a3a3254c74cacefc9a73c68d8b69f6ee7e51df57f33027fa877f77d238dcfe3"
+        }
+      },
+      {
+        "slot": "person_stage3_multi_active_seed004",
+        "number": 6,
+        "started_utc": "2026-11-01T21:26:14.475689+00:00",
+        "finished_utc": "2026-11-01T21:48:52.259374+00:00",
+        "record": {
+          "status": "PASS",
+          "engineering_result": "PASS",
+          "record_binding": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble47/reliability_v4_humble47_probe01_seed004_matrix/slots/person_stage3_multi_active_seed004.json",
+            "sha256": "b56c436147b5ff28d3abf6d5d0c782a37b1234d9d19175fece3a33dbf37c3da2",
+            "record_sha256": "bc93b3519b23a43fa220ee63ca957ad0b47eac1bcf46dbcae7718c9bc12625dd",
+            "started_marker": {
+              "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble47/reliability_v4_humble47_probe01_seed004_matrix/slots/person_stage3_multi_active_seed004.started.json",
+              "sha256": "34d45ea9674c3363c1e886bd471b5f35c7353735b7f50a6ebd3cb02e202f0bbb"
+            },
+            "plan_sha256": "1bbdc086462704dbb4ee711bd26eb84bf02cb8ea3955ebb5220ac5fe2da67376",
+            "started_utc": "2026-11-01T21:26:19.858851+00:00"
+          }
+        },
+        "error": null,
+        "started_marker": {
+          "path": "/root/uav_tracking_fullplan_v4_humble47/results/reliability_v4_humble47_probe01_seed004_matrix/observed_driver01/06_person_stage3_multi_active_seed004.started.json",
+          "sha256": "4b38efdf4c824a60516036bbc26abdbcc7e0c883d4e343e25de0c122148779fa"
+        }
+      },
+      {
+        "slot": "car_stage1_velocity_seed004",
+        "number": 7,
+        "started_utc": "2026-11-01T21:49:31.865252+00:00",
+        "finished_utc": "2026-11-01T22:07:56.863722+00:00",
+        "record": {
+          "status": "PASS",
+          "engineering_result": "PASS",
+          "record_binding": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble47/reliability_v4_humble47_probe01_seed004_matrix/slots/car_stage1_velocity_seed004.json",
+            "sha256": "d42125aab29f74f49b89677b0ee100e4ea6754ccb109b07486770cfef306e30b",
+            "record_sha256": "1e6efff01e34ae451f979aa0fd4566c1913c3f84b20d7bf3beca6ae85f82de49",
+            "started_marker": {
+              "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble47/reliability_v4_humble47_probe01_seed004_matrix/slots/car_stage1_velocity_seed004.started.json",
+              "sha256": "9dcc46d568dece8496706e5ee565a7187596a7ca0a16618adf975a79d60c5673"
+            },
+            "plan_sha256": "1bbdc086462704dbb4ee711bd26eb84bf02cb8ea3955ebb5220ac5fe2da67376",
+            "started_utc": "2026-11-01T21:49:38.269578+00:00"
+          }
+        },
+        "error": null,
+        "started_marker": {
+          "path": "/root/uav_tracking_fullplan_v4_humble47/results/reliability_v4_humble47_probe01_seed004_matrix/observed_driver01/07_car_stage1_velocity_seed004.started.json",
+          "sha256": "63e061c26aa929d40c28a3c864e42a846103d7a8038d8823e305a4bd576f2d2e"
+        }
+      },
+      {
+        "slot": "car_stage1_position_seed004",
+        "number": 8,
+        "started_utc": "2026-11-01T22:08:37.162645+00:00",
+        "finished_utc": "2026-11-01T22:27:01.502492+00:00",
+        "record": {
+          "status": "PASS",
+          "engineering_result": "PASS",
+          "record_binding": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble47/reliability_v4_humble47_probe01_seed004_matrix/slots/car_stage1_position_seed004.json",
+            "sha256": "14be53be0109c0725e0ed89bec93f4f29d42820fbebbaaf08e4834c877990f42",
+            "record_sha256": "23a092ae68b0c12bc3a4556446a1a294995a5de7c77fd62c84ea3c42ba96f33d",
+            "started_marker": {
+              "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble47/reliability_v4_humble47_probe01_seed004_matrix/slots/car_stage1_position_seed004.started.json",
+              "sha256": "dc447ff9a9c84f3f70aa28c3ea01a849bb1afaa751e79153a0996169c39d048a"
+            },
+            "plan_sha256": "1bbdc086462704dbb4ee711bd26eb84bf02cb8ea3955ebb5220ac5fe2da67376",
+            "started_utc": "2026-11-01T22:08:44.143201+00:00"
+          }
+        },
+        "error": null,
+        "started_marker": {
+          "path": "/root/uav_tracking_fullplan_v4_humble47/results/reliability_v4_humble47_probe01_seed004_matrix/observed_driver01/08_car_stage1_position_seed004.started.json",
+          "sha256": "bd0e18f66fd399231c96f14bc3596037ae78aee44a5b5a94dae08a6ee44153b9"
+        }
+      },
+      {
+        "slot": "car_stage2_crossing_seed004",
+        "number": 9,
+        "started_utc": "2026-11-01T22:27:43.040638+00:00",
+        "finished_utc": "2026-11-01T22:48:56.550174+00:00",
+        "record": {
+          "status": "PASS",
+          "engineering_result": "PASS",
+          "record_binding": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble47/reliability_v4_humble47_probe01_seed004_matrix/slots/car_stage2_crossing_seed004.json",
+            "sha256": "63eef94bd6086e209a191202cf1972c951428e77e48258970ee0918d60d61beb",
+            "record_sha256": "267b681f68a504a91b13b4b579f61e27f3a90bc2caeed253abd4466333e5ba3d",
+            "started_marker": {
+              "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble47/reliability_v4_humble47_probe01_seed004_matrix/slots/car_stage2_crossing_seed004.started.json",
+              "sha256": "0897ced3b4b33fc8dc1cfe2b4fca5c92582bf695ba41b1dccd2637126e8d4564"
+            },
+            "plan_sha256": "1bbdc086462704dbb4ee711bd26eb84bf02cb8ea3955ebb5220ac5fe2da67376",
+            "started_utc": "2026-11-01T22:27:50.751611+00:00"
+          }
+        },
+        "error": null,
+        "started_marker": {
+          "path": "/root/uav_tracking_fullplan_v4_humble47/results/reliability_v4_humble47_probe01_seed004_matrix/observed_driver01/09_car_stage2_crossing_seed004.started.json",
+          "sha256": "677c148190c61249b73fe3642284debca792c0a73a0a12fd62d92596f5eba7bb"
+        }
+      },
+      {
+        "slot": "car_stage3_midpoint_seed004",
+        "number": 10,
+        "started_utc": "2026-11-01T22:49:39.347529+00:00",
+        "finished_utc": "2026-11-01T23:09:38.498967+00:00",
+        "record": {
+          "status": "PASS",
+          "engineering_result": "PASS",
+          "record_binding": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble47/reliability_v4_humble47_probe01_seed004_matrix/slots/car_stage3_midpoint_seed004.json",
+            "sha256": "a38a0d0df2a47ff1364389a4a288bd2798c253863c1470af96e7f83069822ecb",
+            "record_sha256": "a1d6d64f6f5a9749b7dadb74433b766b18aea47196fdc26cc238352cd8d1c6c8",
+            "started_marker": {
+              "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble47/reliability_v4_humble47_probe01_seed004_matrix/slots/car_stage3_midpoint_seed004.started.json",
+              "sha256": "c1695c47b296495046b5d63dae13f2808010e720e6ecc9f7dba520a0ad27822d"
+            },
+            "plan_sha256": "1bbdc086462704dbb4ee711bd26eb84bf02cb8ea3955ebb5220ac5fe2da67376",
+            "started_utc": "2026-11-01T22:49:48.339903+00:00"
+          }
+        },
+        "error": null,
+        "started_marker": {
+          "path": "/root/uav_tracking_fullplan_v4_humble47/results/reliability_v4_humble47_probe01_seed004_matrix/observed_driver01/10_car_stage3_midpoint_seed004.started.json",
+          "sha256": "62b30957cfd31aa2f37934c9893280cad20f852851ec0cb5b4f82ce0ed36e5f2"
+        }
+      },
+      {
+        "slot": "car_stage3_active_seed004",
+        "number": 11,
+        "started_utc": "2026-11-01T23:10:22.074420+00:00",
+        "finished_utc": "2026-11-01T23:30:02.024548+00:00",
+        "record": {
+          "status": "PASS",
+          "engineering_result": "PASS",
+          "record_binding": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble47/reliability_v4_humble47_probe01_seed004_matrix/slots/car_stage3_active_seed004.json",
+            "sha256": "0108943f067983123be112d298e926b38b9d420bf01fdbff96930f6050b40939",
+            "record_sha256": "7c054a6668faa4e75df697c701fe5533d85ffe32751487471869369213d81890",
+            "started_marker": {
+              "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble47/reliability_v4_humble47_probe01_seed004_matrix/slots/car_stage3_active_seed004.started.json",
+              "sha256": "91c5bf799704e926a1bf0e75fe8f8a94c350166fa4982f8e6c16c4e90972b4e1"
+            },
+            "plan_sha256": "1bbdc086462704dbb4ee711bd26eb84bf02cb8ea3955ebb5220ac5fe2da67376",
+            "started_utc": "2026-11-01T23:10:31.868204+00:00"
+          }
+        },
+        "error": null,
+        "started_marker": {
+          "path": "/root/uav_tracking_fullplan_v4_humble47/results/reliability_v4_humble47_probe01_seed004_matrix/observed_driver01/11_car_stage3_active_seed004.started.json",
+          "sha256": "23669be3720dbbd766046855905b17d0eaade6331ec0d186f1c297c382b66c1b"
+        }
+      },
+      {
+        "slot": "car_stage3_multi_active_seed004",
+        "number": 12,
+        "started_utc": "2026-11-01T23:30:47.066835+00:00",
+        "finished_utc": "2026-11-01T23:46:42.349265+00:00",
+        "record": {
+          "status": "INFRASTRUCTURE_ERROR",
+          "engineering_result": "FAIL",
+          "record_binding": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble47/reliability_v4_humble47_probe01_seed004_matrix/slots/car_stage3_multi_active_seed004.json",
+            "sha256": "48e07d58d27af3a9d87bd71b34ca4d5f5b11003fd50e65beb182c52d7dd3485c",
+            "record_sha256": "f4e539dec00bd42c704010db8339cae806ad0524888e6c61e2760d459638e92c",
+            "started_marker": {
+              "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble47/reliability_v4_humble47_probe01_seed004_matrix/slots/car_stage3_multi_active_seed004.started.json",
+              "sha256": "30e1c4f7973fd1be4d7cf7e3c16357ca56cc6830d554eee18648046cd94502be"
+            },
+            "plan_sha256": "1bbdc086462704dbb4ee711bd26eb84bf02cb8ea3955ebb5220ac5fe2da67376",
+            "started_utc": "2026-11-01T23:30:57.826433+00:00"
+          }
+        },
+        "error": "ValueError:Incomplete/infrastructure attempt requires diagnosis: car_stage3_multi_active_seed004",
+        "started_marker": {
+          "path": "/root/uav_tracking_fullplan_v4_humble47/results/reliability_v4_humble47_probe01_seed004_matrix/observed_driver01/12_car_stage3_multi_active_seed004.started.json",
+          "sha256": "808aeeb5958dba0f4c7a8c9e30e0c9219e410b7f22a8bf527ab6ed5813682127"
+        }
+      }
+    ],
+    "observer_owner_terminal_selected": {
+      "schema_version": 1,
+      "scope": "HUMBLE41_TMPFS_RUNTIME_OBSERVER_NATIVE_AND_ARCHIVE_SEPARATE",
+      "source_root": "/root/uav_tracking_fullplan_v4_humble47",
+      "healthy_cleanup": false,
+      "status": "NATIVE_FAILED_RAW_ARCHIVED",
+      "archive_process": {
+        "command": [
+          "/root/uav_humble22/venv/bin/python",
+          "-B",
+          "/mnt/d/WSL/UAVHumble22-validation/local_runtime_observer41.py",
+          "_archive-worker",
+          "--manifest",
+          "/dev/shm/uav_tracking_runtime_health/owner41_3ded85b82327425bb60f61a517fa5252/archive_manifest.json",
+          "--manifest-sha256",
+          "dc860a606514e4a2a206ca4b9c40db22837feff9bb6fc390668033c6d461d7ce"
+        ],
+        "returncode": 0,
+        "forced_stop": false,
+        "error": null,
+        "elapsed_wall_s": 2.4204533730007824,
+        "wall_budget_s": 1800.0
+      },
+      "copy_terminal": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble47/reliability_v4_humble47_probe01_seed004_matrix/observed_driver01/observer_driver/execution_terminal.json",
+        "bytes": 20390,
+        "sha256": "0e95cdebaf2d5b7895995ef7b4d9338e911e9af43d5052aa9df3e6e6a44d9343"
+      },
+      "native_selected": {
+        "driver_exception": true,
+        "healthy_cleanup": false,
+        "native_finished_utc": "2026-11-01T23:46:43.137833+00:00"
+      },
+      "sessions_selected": [
+        {
+          "index": 1,
+          "driver_exception": false,
+          "healthy_cleanup": true,
+          "observer_exit_code": 0,
+          "observer_forced_stop": false,
+          "ended_before_requested_stop": false,
+          "errors": []
+        },
+        {
+          "index": 2,
+          "driver_exception": false,
+          "healthy_cleanup": true,
+          "observer_exit_code": 0,
+          "observer_forced_stop": false,
+          "ended_before_requested_stop": false,
+          "errors": []
+        },
+        {
+          "index": 3,
+          "driver_exception": true,
+          "healthy_cleanup": false,
+          "observer_exit_code": 0,
+          "observer_forced_stop": false,
+          "ended_before_requested_stop": false,
+          "errors": []
+        }
+      ]
+    }
+  }
+}

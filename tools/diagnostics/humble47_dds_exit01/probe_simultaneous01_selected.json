@@ -1,0 +1,60 @@
+{
+  "scope": "EXPLICIT_DIAGNOSTIC_FIELD_PROJECTION_NOT_FLIGHT_VERDICT",
+  "original_source": {
+    "path": "D:/WSL/UAVHumble22-validation/humble47_tf_exit_diagnosis01/probe_simultaneous01/summary.json",
+    "bytes": 6264,
+    "sha256": "52e161cb674253620ad5d4249be65e62e9342dfe99e38fd68abca73d80c06198"
+  },
+  "selected_fields": {
+    "scope": "NARROW_PRODUCTION_FLIGHT_TF_DDS_TEARDOWN_DIAGNOSTIC_NOT_FLIGHT_ACCEPTANCE",
+    "created_utc": "2026-11-02T00:02:30.613516+00:00",
+    "metadata": {
+      "production_entrypoint": "/root/uav_tracking_fullplan_v4_humble47/ros2_ws/install/lib/uav_tracking_bringup/flight_tf",
+      "entrypoint_sha256": "f46de1272b3a0583ec19340632ba838cb7516bc9a5396c067d6ec64453c8a516",
+      "entrypoint_shebang": "#!/root/uav_humble22/venv/bin/python",
+      "imported_production_source": "/root/uav_tracking_fullplan_v4_humble47/ros2_ws/src/uav_tracking_bringup/uav_tracking_bringup/flight_tf_node.py",
+      "production_source_sha256": "a46326d65cacfba4ed460f27343236a35d52d8331a4bff0c60462c615979a25e",
+      "resolved_rmw": "rmw_fastrtps_cpp",
+      "rmw_environment": "rmw_fastrtps_cpp",
+      "ros_domain_id": "74",
+      "python_executable": "/root/uav_humble22/venv/bin/python"
+    },
+    "configuration": {
+      "action": "run",
+      "project_root": "/root/uav_tracking_fullplan_v4_humble47",
+      "output": "/mnt/d/WSL/UAVHumble22-validation/humble47_tf_exit_diagnosis01/probe_simultaneous01",
+      "repetitions": 20,
+      "peer_count": 4,
+      "peer_index": 0,
+      "stop_order": "simultaneous",
+      "clock_factor": 0.125,
+      "clock_source_hz": 250.0,
+      "data_source_hz": 50.0,
+      "min_tf_count": 5,
+      "active_wall_s": 1.0,
+      "ready_timeout_s": 20.0,
+      "stop_timeout_s": 5.0
+    },
+    "claim_limit": "Raw production-node diagnostic exits; no flight/core/formal PASS claim.",
+    "status": "FAULT_OBSERVED_OR_INCOMPLETE",
+    "finished_utc": "2026-11-02T00:02:33.126744+00:00",
+    "cases_selected": [
+      {
+        "index": 0,
+        "stop_order": "simultaneous",
+        "readiness_observed": true,
+        "forced_kills": [],
+        "errors": [],
+        "raw_exit_codes": {
+          "feeder": 0,
+          "graph_peer_0": -2,
+          "graph_peer_1": -2,
+          "graph_peer_2": -2,
+          "graph_peer_3": -2,
+          "flight_tf": 0
+        },
+        "diagnostic_clean_exit": false
+      }
+    ]
+  }
+}

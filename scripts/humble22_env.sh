@@ -40,5 +40,6 @@ export GZ_VERSION=harmonic
 export IGNITION_VERSION=''
 export PATH="$humble22_prefix/agent_install/bin:$PATH"
 export LD_LIBRARY_PATH="$humble22_prefix/agent_install/lib:${LD_LIBRARY_PATH:-}"
+source "$humble22_project/scripts/apply_humble22_dds_runtime.sh" "$humble22_project" || { return 2 2>/dev/null || exit 2; }
 if "$humble22_restore_nounset"; then set -u; fi
 unset humble22_restore_nounset

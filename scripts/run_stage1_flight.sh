@@ -12,6 +12,7 @@ stage1_px4="${STAGE1_PX4_ROOT:-/root/PX4-Autopilot}"
 set +u
 source "$stage1_project/scripts/source_ros_environment.sh"
 source "$stage1_project/ros2_ws/install/setup.bash"
+source "$stage1_project/scripts/apply_humble22_dds_runtime.sh" "$stage1_project"
 set -u
 stage1_share="$(ros2 pkg prefix uav_tracking_bringup)/share/uav_tracking_bringup"
 stage1_world="${STAGE_WORLD:-stage1_flight}"

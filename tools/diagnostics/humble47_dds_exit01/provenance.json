@@ -1,0 +1,334 @@
+{
+  "schema_version": 1,
+  "scope": "PUBLIC_DIAGNOSTIC_EXCERPT_INDEX_NOT_ACCEPTANCE_OR_SEAL",
+  "created_utc": "2026-11-02T00:14:33.363152+00:00",
+  "facts_at_recording": {
+    "original_core47": {
+      "status_counts": {
+        "PASS": 11,
+        "INFRASTRUCTURE_ERROR": 1
+      },
+      "returncode": 2,
+      "planned_count": 12,
+      "attempt_count": 12,
+      "accepted_audited_terminal_count": 11
+    },
+    "formal_flights_started": 0,
+    "formal_flights_planned": 280,
+    "replacement_library": "INDEPENDENT_PREFIX_WHOLE_LIBRARY_BUILD_COMPLETED_NOT_ACTIVATED_NO_REPAIRED_RUNTIME_OR_FLIGHT_VALIDATION",
+    "new_flight_after_repair": false,
+    "replacement_build": {
+      "status": "COMPLETED",
+      "completion_scope": "monitored_command",
+      "returncode": 0,
+      "started_utc": "2026-11-02T00:09:02.034571+00:00",
+      "finished_utc": "2026-11-02T00:14:54.275481+00:00",
+      "progress_receipt": "build_progress_terminal.json",
+      "native_artifact_receipt": "native_build_artifacts01.json",
+      "elf": {
+        "path": "/root/uav_humble22/fastdds_listener_A01/install/lib/libfastrtps.so.2.6.12",
+        "realpath": "/root/uav_humble22/fastdds_listener_A01/install/lib/libfastrtps.so.2.6.12",
+        "sha256": "e6397d6362f687f071c346600c643599710a5ae817d72f07fa503b75c66b4af6",
+        "bytes": 197433472
+      },
+      "observed_production_process_mapping": false,
+      "repaired_library_shutdown_diagnostics_completed": false,
+      "flight_validation_completed": false,
+      "limits": "Only the build command completed; ldd/readelf record static dependency resolution and ELF metadata, not production process library mapping or engineering acceptance."
+    }
+  },
+  "files": [
+    {
+      "archived": "core_outer_selected.json",
+      "bytes": 26550,
+      "sha256": "f80e2cec3357a42eb65b2ea78e3346e43f2a39f092d83c9bbd447d064307004f",
+      "source": {
+        "path": "results/frozen_fullplan_v4_humble47/reliability_v4_humble47_probe01_seed004_matrix/observed_driver01/execution_terminal.json",
+        "bytes": 843844,
+        "sha256": "b719ab60cc62c345e1ddb0fd6a15ddb89d63335202a92f5db51887ce485fa634"
+      },
+      "transformation": "Explicit original field projection; added source binding and named equality observation; no original verdict changed"
+    },
+    {
+      "archived": "core_last_slot.json",
+      "bytes": 37550,
+      "sha256": "48e07d58d27af3a9d87bd71b34ca4d5f5b11003fd50e65beb182c52d7dd3485c",
+      "source": {
+        "path": "results/frozen_fullplan_v4_humble47/reliability_v4_humble47_probe01_seed004_matrix/slots/car_stage3_multi_active_seed004.json",
+        "bytes": 37550,
+        "sha256": "48e07d58d27af3a9d87bd71b34ca4d5f5b11003fd50e65beb182c52d7dd3485c"
+      },
+      "transformation": "byte-for-byte copy"
+    },
+    {
+      "archived": "observer_copy_candidate.json",
+      "bytes": 20390,
+      "sha256": "0e95cdebaf2d5b7895995ef7b4d9338e911e9af43d5052aa9df3e6e6a44d9343",
+      "source": {
+        "path": "results/frozen_fullplan_v4_humble47/reliability_v4_humble47_probe01_seed004_matrix/observed_driver01/observer_driver/execution_terminal.json",
+        "bytes": 20390,
+        "sha256": "0e95cdebaf2d5b7895995ef7b4d9338e911e9af43d5052aa9df3e6e6a44d9343"
+      },
+      "transformation": "byte-for-byte copy"
+    },
+    {
+      "archived": "observer_native_terminal.json",
+      "bytes": 10566,
+      "sha256": "453982bc39b5ff0dc62fd8546a2c604c19a725ad9ccce76d2a323530c271bf4c",
+      "source": {
+        "path": "results/frozen_fullplan_v4_humble47/reliability_v4_humble47_probe01_seed004_matrix/observed_driver01/observer_driver/native_exit_terminal.json",
+        "bytes": 10566,
+        "sha256": "453982bc39b5ff0dc62fd8546a2c604c19a725ad9ccce76d2a323530c271bf4c"
+      },
+      "transformation": "byte-for-byte copy"
+    },
+    {
+      "archived": "native_metadata.json",
+      "bytes": 6064,
+      "sha256": "2d7b913178f8cb9bb2a7f33c7a079b0eb23d4728fcecbfd9084c118a363f409d",
+      "source": {
+        "path": "D:/WSL/UAVHumble22-validation/humble47_tf_exit_diagnosis01/native_metadata.json",
+        "bytes": 6064,
+        "sha256": "2d7b913178f8cb9bb2a7f33c7a079b0eb23d4728fcecbfd9084c118a363f409d"
+      },
+      "transformation": "byte-for-byte copy"
+    },
+    {
+      "archived": "original_core_backtrace.key_excerpt.log",
+      "bytes": 16705,
+      "sha256": "7d69c071e8d1fe3b0282cc2c2ec387d6934c1cece8c095ed1494b3fbaf1e5b8b",
+      "source": {
+        "path": "D:/WSL/UAVHumble22-validation/humble47_tf_exit_diagnosis01/original_core_backtrace.log",
+        "bytes": 124252,
+        "sha256": "5d3ab63bb1c831bced7d50fd4eba9fa0cfb47738be41145ac168e449800da652"
+      },
+      "transformation": "Original lines 1-178 inclusive; stop before shared-library inventory; text encoded UTF-8"
+    },
+    {
+      "archived": "probe_simultaneous01_selected.json",
+      "bytes": 2391,
+      "sha256": "40ef75972c3b2dbc2f040b2b0d7ef77458d942c87bb61962c2fd45a1e36d100a",
+      "source": {
+        "path": "D:/WSL/UAVHumble22-validation/humble47_tf_exit_diagnosis01/probe_simultaneous01/summary.json",
+        "bytes": 6264,
+        "sha256": "52e161cb674253620ad5d4249be65e62e9342dfe99e38fd68abca73d80c06198"
+      },
+      "transformation": "Explicit metadata/configuration and each original raw exit/readiness/error field; verbose event/log repeats omitted"
+    },
+    {
+      "archived": "probe_simultaneous02_selected.json",
+      "bytes": 12407,
+      "sha256": "d36df06504abbdbd0513e9571820fd95c7e05e50d67b1aa5f370cebb1ab37775",
+      "source": {
+        "path": "D:/WSL/UAVHumble22-validation/humble47_tf_exit_diagnosis01/probe_simultaneous02/summary.json",
+        "bytes": 312380,
+        "sha256": "6210a82a8fa3d316ad6552e207243c5fdb6c16bae8147c0ff4ad789dfef24f53"
+      },
+      "transformation": "Explicit metadata/configuration and each original raw exit/readiness/error field; verbose event/log repeats omitted"
+    },
+    {
+      "archived": "upstream/0014b017_edp_listener_snapshot.patch",
+      "bytes": 2776,
+      "sha256": "5c53eab342d58e502e933edca4b11ffbd784e3e07217e7c357efb696556d9a40",
+      "source": {
+        "path": "D:/WSL/UAVHumble22-validation/humble47_tf_exit_diagnosis01/upstream_fastdds_readonly01/0014b017_edp_listener_snapshot.patch",
+        "bytes": 2776,
+        "sha256": "5c53eab342d58e502e933edca4b11ffbd784e3e07217e7c357efb696556d9a40"
+      },
+      "transformation": "byte-for-byte copy"
+    },
+    {
+      "archived": "upstream/2078f7f7_protect_reader_listeners.patch",
+      "bytes": 7363,
+      "sha256": "f96cc4b9d2f6f1d57511fe015756abda53cea58dec1a24d37623a95796fd3fca",
+      "source": {
+        "path": "D:/WSL/UAVHumble22-validation/humble47_tf_exit_diagnosis01/upstream_fastdds_readonly01/2078f7f7_protect_reader_listeners.patch",
+        "bytes": 7363,
+        "sha256": "f96cc4b9d2f6f1d57511fe015756abda53cea58dec1a24d37623a95796fd3fca"
+      },
+      "transformation": "byte-for-byte copy"
+    },
+    {
+      "archived": "upstream/fastdds-2.6.12-reader-listener-lifecycle-family.backport01.patch",
+      "bytes": 8840,
+      "sha256": "a1de559704415dd11045cc30b7b51720c2740bcf4baf23f44fd4da382f17bddc",
+      "source": {
+        "path": "D:/WSL/UAVHumble22-validation/humble47_tf_exit_diagnosis01/upstream_fastdds_readonly01/fastdds-2.6.12-reader-listener-lifecycle-family.backport01.patch",
+        "bytes": 8840,
+        "sha256": "a1de559704415dd11045cc30b7b51720c2740bcf4baf23f44fd4da382f17bddc"
+      },
+      "transformation": "byte-for-byte copy"
+    },
+    {
+      "archived": "upstream/exact_debian_backport_preparation01.json",
+      "bytes": 3149,
+      "sha256": "2e65cc49753630e6da00748b992ec7eacf89a81107d70b84d39ca98f2fbdfced",
+      "source": {
+        "path": "D:/WSL/UAVHumble22-validation/humble47_tf_exit_diagnosis01/upstream_fastdds_readonly01/exact_debian_backport_preparation01.json",
+        "bytes": 3149,
+        "sha256": "2e65cc49753630e6da00748b992ec7eacf89a81107d70b84d39ca98f2fbdfced"
+      },
+      "transformation": "byte-for-byte copy"
+    },
+    {
+      "archived": "upstream/git_refs01.txt",
+      "bytes": 242,
+      "sha256": "ab7d34b2fabc4d498b25d1ad79061283b6b6b5fcf6624576001a7906be8adaff",
+      "source": {
+        "path": "D:/WSL/UAVHumble22-validation/humble47_tf_exit_diagnosis01/upstream_fastdds_readonly01/git_refs01.txt",
+        "bytes": 242,
+        "sha256": "ab7d34b2fabc4d498b25d1ad79061283b6b6b5fcf6624576001a7906be8adaff"
+      },
+      "transformation": "byte-for-byte copy"
+    },
+    {
+      "archived": "package_source/repo_ros2_jammy_InRelease",
+      "bytes": 4682,
+      "sha256": "36bd2bc2ed916fe3d43238ff2d74559de5bbff82c2a4d9dde22d3daf49bb0082",
+      "source": {
+        "path": "D:/WSL/UAVHumble22-validation/humble47_tf_exit_diagnosis01/upstream_fastdds_readonly01/repo_ros2_jammy_InRelease",
+        "bytes": 4682,
+        "sha256": "36bd2bc2ed916fe3d43238ff2d74559de5bbff82c2a4d9dde22d3daf49bb0082"
+      },
+      "transformation": "byte-for-byte copy"
+    },
+    {
+      "archived": "package_source/repo_ros2_jammy_binary_Packages_fastrtps_stanza1.txt",
+      "bytes": 1426,
+      "sha256": "8e7bd426dafce2b7f2df44a6dd08371a8ddb9f7f6f76623842dcfb3ec248627a",
+      "source": {
+        "path": "D:/WSL/UAVHumble22-validation/humble47_tf_exit_diagnosis01/upstream_fastdds_readonly01/repo_ros2_jammy_binary_Packages_fastrtps_stanza1.txt",
+        "bytes": 1426,
+        "sha256": "8e7bd426dafce2b7f2df44a6dd08371a8ddb9f7f6f76623842dcfb3ec248627a"
+      },
+      "transformation": "byte-for-byte copy"
+    },
+    {
+      "archived": "package_source/repo_ros2_jammy_source_Sources_fastrtps_stanza1.txt",
+      "bytes": 1492,
+      "sha256": "b31bc0e83fd43b99862385a404fe87a658bce0ce9143ccee7667a6c04f40f951",
+      "source": {
+        "path": "D:/WSL/UAVHumble22-validation/humble47_tf_exit_diagnosis01/upstream_fastdds_readonly01/repo_ros2_jammy_source_Sources_fastrtps_stanza1.txt",
+        "bytes": 1492,
+        "sha256": "b31bc0e83fd43b99862385a404fe87a658bce0ce9143ccee7667a6c04f40f951"
+      },
+      "transformation": "byte-for-byte copy"
+    },
+    {
+      "archived": "package_source/ros-humble-fastrtps_2.6.12-1jammy.dsc",
+      "bytes": 1115,
+      "sha256": "b6da16983b71eb5cf55fa229984ce87ba092c1402908425f5ddebd0928b0ad55",
+      "source": {
+        "path": "D:/WSL/UAVHumble22-validation/humble47_tf_exit_diagnosis01/upstream_fastdds_readonly01/ros-humble-fastrtps_2.6.12-1jammy.dsc",
+        "bytes": 1115,
+        "sha256": "b6da16983b71eb5cf55fa229984ce87ba092c1402908425f5ddebd0928b0ad55"
+      },
+      "transformation": "byte-for-byte copy"
+    },
+    {
+      "archived": "package_source/ros_release_rules.txt",
+      "bytes": 3215,
+      "sha256": "ccb0a88953c26e11048f24f588b3acceb124c7bf48878c8278305868c6ed476f",
+      "source": {
+        "path": "D:/WSL/UAVHumble22-validation/humble47_tf_exit_diagnosis01/upstream_fastdds_readonly01/ros_release_rules.txt",
+        "bytes": 3215,
+        "sha256": "ccb0a88953c26e11048f24f588b3acceb124c7bf48878c8278305868c6ed476f"
+      },
+      "transformation": "byte-for-byte copy"
+    },
+    {
+      "archived": "package_source/ros_release_control.txt",
+      "bytes": 1227,
+      "sha256": "085e1c44254cebb2b66591b62c195896d8d112ff3c06b7e945e4468a9e738851",
+      "source": {
+        "path": "D:/WSL/UAVHumble22-validation/humble47_tf_exit_diagnosis01/upstream_fastdds_readonly01/ros_release_control.txt",
+        "bytes": 1227,
+        "sha256": "085e1c44254cebb2b66591b62c195896d8d112ff3c06b7e945e4468a9e738851"
+      },
+      "transformation": "byte-for-byte copy"
+    },
+    {
+      "archived": "build_progress_terminal.json",
+      "bytes": 3077,
+      "sha256": "f150e0fbca93b03dee371f2882723ca35427d33573f473369f18ed579706a886",
+      "source": {
+        "path": "results/project_progress/fastdds_listener_A01_build01/progress.json",
+        "bytes": 3077,
+        "sha256": "f150e0fbca93b03dee371f2882723ca35427d33573f473369f18ed579706a886"
+      },
+      "transformation": "byte-for-byte copy"
+    },
+    {
+      "archived": "native_build_artifacts01.json",
+      "bytes": 6562,
+      "sha256": "e96078566c444248a39c1580370a3a1498acd9a6f9a3abfa0c7048159c1877f1",
+      "source": {
+        "path": "D:/WSL/UAVHumble22-validation/humble47_tf_exit_diagnosis01/native_build_artifacts01.json",
+        "bytes": 6562,
+        "sha256": "e96078566c444248a39c1580370a3a1498acd9a6f9a3abfa0c7048159c1877f1"
+      },
+      "transformation": "byte-for-byte copy"
+    }
+  ],
+  "upstream": {
+    "repository": "https://github.com/eProsima/Fast-DDS",
+    "base_tag": "v2.6.12",
+    "base_tag_commit": "ac5c7b9014cd5b2bebf9c4b04dc229ca5a0a4338",
+    "fix_commits": [
+      {
+        "sha": "0014b017b3cd1f001b0b39b759120073b37ed283",
+        "url": "https://github.com/eProsima/Fast-DDS/commit/0014b017b3cd1f001b0b39b759120073b37ed283",
+        "subject": "Store EDP listener pointers before being used (#2857)"
+      },
+      {
+        "sha": "2078f7f7e7068651b003b83a2f4713342bf51e6b",
+        "url": "https://github.com/eProsima/Fast-DDS/commit/2078f7f7e7068651b003b83a2f4713342bf51e6b",
+        "subject": "Protect access to reader listeners (#2898)"
+      }
+    ]
+  },
+  "ros_package_provenance": {
+    "repository_base": "https://repo.ros2.org/ubuntu/main/",
+    "binary_index": {
+      "path": "dists/jammy/main/binary-amd64/Packages.gz",
+      "bytes": 1867154,
+      "sha256": "4160d55cfc4974f3166b5f8eca8a593431b936d19fb593a02c09cb510e83da64"
+    },
+    "source_index": {
+      "path": "dists/jammy/main/source/Sources.gz",
+      "bytes": 1899992,
+      "sha256": "c8e2f93247c323f7e29919d2699be84fbbbfb37f246bed7241028fa001661f7f"
+    },
+    "index_checksums_match_archived_inrelease": true,
+    "source_orig": {
+      "filename": "pool/main/r/ros-humble-fastrtps/ros-humble-fastrtps_2.6.12.orig.tar.gz",
+      "bytes": 13326377,
+      "sha256": "34384c79ad4902d5555a811956596b83c7da190bfa6142f2f09044f10cd2becb",
+      "downloaded_and_hash_verified": true,
+      "not_copied_into_public_subset": true
+    },
+    "native_gpgv": {
+      "execution_source": "Actual root-agent execution record in this task; separate stdout log binding pending if provided",
+      "argv": [
+        "gpgv",
+        "--keyring",
+        "/usr/share/keyrings/ros-archive-keyring.gpg",
+        "/mnt/d/WSL/UAVHumble22-validation/humble47_tf_exit_diagnosis01/upstream_fastdds_readonly01/repo_ros2_jammy_InRelease"
+      ],
+      "returncode": 0,
+      "signature_time_reported": "Tue Oct 13 00:43:23 2026 CST",
+      "rsa_fingerprint": "C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654",
+      "reported_identity": "Open Robotics <info@osrfoundation.org>",
+      "reported_result": "Good signature"
+    }
+  },
+  "exclusions": [
+    "125153280-byte original process core",
+    "rosbag/model/VHD payloads",
+    "verbose GitHub search responses",
+    "complete source tar and source tree",
+    "full raw telemetry/health logs"
+  ],
+  "limits": "Original full evidence remains in its original locations. Field projections and static patch checks do not replace terminals, certify the repaired library, authorize formal seeds, or prove whole-project acceptance.",
+  "updated_utc": "2026-11-02T00:17:40.127842+00:00"
+}

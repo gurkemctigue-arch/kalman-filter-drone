@@ -4,6 +4,7 @@ set -eo pipefail
 tracking_project="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
 source "$tracking_project/scripts/source_ros_environment.sh"
 source "$tracking_project/ros2_ws/install/setup.bash"
+source "$tracking_project/scripts/apply_humble22_dds_runtime.sh" "$tracking_project"
 export PYTHONPATH="$tracking_project:${PYTHONPATH:-}"
 cd "$tracking_project"
 exec "${STAGE1_PYTHON_EXECUTABLE:-/usr/bin/python3}" "$@"

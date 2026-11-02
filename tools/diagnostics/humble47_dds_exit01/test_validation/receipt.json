@@ -1,0 +1,21 @@
+{
+  "scope": "WINDOWS_FULL_SUITE_BEFORE_FINAL_SHELL_ORDER_FIX_PLUS_TARGETED_NATIVE_WRAPPER_VERIFICATION",
+  "windows": {
+    "status": "PASS",
+    "tests": 1815,
+    "skipped": 11,
+    "elapsed_s": 529.36,
+    "returncode": 0,
+    "original_log": "windows_suite_original.log",
+    "source_limit": "Completed before the six-wrapper DDS hook relocation and before the four new wrapper tests; does not validate those later shell edits."
+  },
+  "native_targeted": {
+    "status": "PASS",
+    "test_count": 4,
+    "shell_syntax_count": 8,
+    "report": "../wrapper_order_diagnostics/wrapper_validation05/report.json",
+    "real_wrapper_preflight_report": "../wrapper_order_diagnostics/wrapper_order_actual03/report.json",
+    "flight_tested": false
+  },
+  "next_required": "Fresh frozen Linux complete suite, then fresh complete core12."
+}

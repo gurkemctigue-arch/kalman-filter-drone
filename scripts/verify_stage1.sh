@@ -4,6 +4,7 @@ set -eo pipefail
 stage1_project="${STAGE1_PROJECT_ROOT:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)}"
 source "$stage1_project/scripts/source_ros_environment.sh"
 source "$stage1_project/ros2_ws/install/setup.bash"
+source "$stage1_project/scripts/apply_humble22_dds_runtime.sh" "$stage1_project"
 export PYTHONPATH="$stage1_project:${PYTHONPATH:-}"
 cd "$stage1_project"
 python3 -m unittest discover -s tests -p 'test*.py' -v

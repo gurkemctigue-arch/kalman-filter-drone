@@ -1,0 +1,250 @@
+--- a/src/cpp/rtps/reader/StatefulReader.cpp
++++ b/src/cpp/rtps/reader/StatefulReader.cpp
+@@ -192,19 +192,21 @@
+ 
+ bool StatefulReader::matched_writer_add(
+         const WriterProxyData& wdata)
+ {
+     assert(wdata.guid() != c_Guid_Unknown);
++    ReaderListener* listener = nullptr;
+ 
+     {
+         std::unique_lock<RecursiveTimedMutex> guard(mp_mutex);
+ 
+         if (!is_alive_)
+         {
+             return false;
+         }
+ 
++        listener = mp_listener;
+         bool is_same_process = RTPSDomainImpl::should_intraprocess_between(m_guid, wdata.guid());
+         bool is_datasharing = is_datasharing_compatible_with(wdata);
+ 
+         for (WriterProxy* it : matched_writers_)
+         {
+@@ -218,15 +220,15 @@
+                     {
+                         getRTPSParticipant()->createSenderResources(locator);
+                     }
+                 }
+ 
+-                if (nullptr != mp_listener)
++                if (nullptr != listener)
+                 {
+                     // call the listener without the lock taken
+                     guard.unlock();
+-                    mp_listener->on_writer_discovery(this, WriterDiscoveryInfo::CHANGED_QOS_WRITER, wdata.guid(),
++                    listener->on_writer_discovery(this, WriterDiscoveryInfo::CHANGED_QOS_WRITER, wdata.guid(),
+                             &wdata);
+                 }
+                 return false;
+             }
+         }
+@@ -326,13 +328,13 @@
+         {
+             logError(RTPS_LIVELINESS, "Finite liveliness lease duration but WLP not enabled, cannot add writer");
+         }
+     }
+ 
+-    if (nullptr != mp_listener)
+-    {
+-        mp_listener->on_writer_discovery(this, WriterDiscoveryInfo::DISCOVERED_WRITER, wdata.guid(), &wdata);
++    if (nullptr != listener)
++    {
++        listener->on_writer_discovery(this, WriterDiscoveryInfo::DISCOVERED_WRITER, wdata.guid(), &wdata);
+     }
+ 
+     return true;
+ }
+ 
+@@ -376,12 +378,13 @@
+             wproxy->stop();
+             matched_writers_pool_.push_back(wproxy);
+             if (nullptr != mp_listener)
+             {
+                 // call the listener without the lock taken
++                ReaderListener* listener = mp_listener;
+                 lock.unlock();
+-                mp_listener->on_writer_discovery(this, WriterDiscoveryInfo::REMOVED_WRITER, writer_guid, nullptr);
++                listener->on_writer_discovery(this, WriterDiscoveryInfo::REMOVED_WRITER, writer_guid, nullptr);
+             }
+         }
+         else
+         {
+             logInfo(RTPS_READER,
+--- a/src/cpp/rtps/reader/StatelessReader.cpp
++++ b/src/cpp/rtps/reader/StatelessReader.cpp
+@@ -89,22 +89,26 @@
+ }
+ 
+ bool StatelessReader::matched_writer_add(
+         const WriterProxyData& wdata)
+ {
++    ReaderListener* listener = nullptr;
++
+     {
+         std::unique_lock<RecursiveTimedMutex> guard(mp_mutex);
++        listener = mp_listener;
++
+         for (const RemoteWriterInfo_t& writer : matched_writers_)
+         {
+             if (writer.guid == wdata.guid())
+             {
+                 logWarning(RTPS_READER, "Attempting to add existing writer");
+-                if (nullptr != mp_listener)
++                if (nullptr != listener)
+                 {
+                     // call the listener without the lock taken
+                     guard.unlock();
+-                    mp_listener->on_writer_discovery(this, WriterDiscoveryInfo::CHANGED_QOS_WRITER, wdata.guid(),
++                    listener->on_writer_discovery(this, WriterDiscoveryInfo::CHANGED_QOS_WRITER, wdata.guid(),
+                             &wdata);
+                 }
+                 return false;
+             }
+         }
+@@ -175,13 +179,13 @@
+         {
+             logError(RTPS_LIVELINESS, "Finite liveliness lease duration but WLP not enabled");
+         }
+     }
+ 
+-    if (nullptr != mp_listener)
+-    {
+-        mp_listener->on_writer_discovery(this, WriterDiscoveryInfo::DISCOVERED_WRITER, wdata.guid(), &wdata);
++    if (nullptr != listener)
++    {
++        listener->on_writer_discovery(this, WriterDiscoveryInfo::DISCOVERED_WRITER, wdata.guid(), &wdata);
+     }
+ 
+     return true;
+ }
+ 
+@@ -213,12 +217,13 @@
+                 remove_persistence_guid(it->guid, it->persistence_guid, removed_by_lease);
+                 matched_writers_.erase(it);
+                 if (nullptr != mp_listener)
+                 {
+                     // call the listener without lock
++                    ReaderListener* listener = mp_listener;
+                     guard.unlock();
+-                    mp_listener->on_writer_discovery(this, WriterDiscoveryInfo::REMOVED_WRITER, writer_guid, nullptr);
++                    listener->on_writer_discovery(this, WriterDiscoveryInfo::REMOVED_WRITER, writer_guid, nullptr);
+                 }
+                 ret_val = true;
+                 break;
+             }
+         }
+--- a/src/cpp/rtps/builtin/discovery/endpoint/EDP.cpp
++++ b/src/cpp/rtps/builtin/discovery/endpoint/EDP.cpp
+@@ -569,20 +569,21 @@
+                     mp_RTPSParticipant->security_manager().remove_writer(reader_guid,
+                     participant_guid, writer_guid);
+ #endif // if HAVE_SECURITY
+ 
+                     //MATCHED AND ADDED CORRECTLY:
+-                    if (r.getListener() != nullptr)
++                    ReaderListener* listener = nullptr;
++                    if (nullptr != (listener = r.getListener()))
+                     {
+                         MatchingInfo info;
+                         info.status = REMOVED_MATCHING;
+                         info.remoteEndpointGuid = writer_guid;
+-                        r.getListener()->onReaderMatched(&r, info);
++                        listener->onReaderMatched(&r, info);
+ 
+                         const SubscriptionMatchedStatus& sub_info =
+                         update_subscription_matched_status(reader_guid, writer_guid, -1);
+-                        r.getListener()->onReaderMatched(&r, sub_info);
++                        listener->onReaderMatched(&r, sub_info);
+                     }
+                 }
+ 
+                 // traverse all
+                 return true;
+@@ -607,20 +608,21 @@
+ #if HAVE_SECURITY
+                     mp_RTPSParticipant->security_manager().remove_reader(writer_guid,
+                     participant_guid, reader_guid);
+ #endif // if HAVE_SECURITY
+                     //MATCHED AND ADDED CORRECTLY:
+-                    if (w.getListener() != nullptr)
++                    WriterListener* listener = nullptr;
++                    if (nullptr != (listener = w.getListener()))
+                     {
+                         MatchingInfo info;
+                         info.status = REMOVED_MATCHING;
+                         info.remoteEndpointGuid = reader_guid;
+-                        w.getListener()->onWriterMatched(&w, info);
++                        listener->onWriterMatched(&w, info);
+ 
+                         const PublicationMatchedStatus& pub_info =
+                         update_publication_matched_status(reader_guid, writer_guid, -1);
+-                        w.getListener()->onWriterMatched(&w, pub_info);
++                        listener->onWriterMatched(&w, pub_info);
+                     }
+                 }
+ 
+                 // traverse all
+                 return true;
+--- a/src/cpp/fastdds/subscriber/DataReaderImpl.cpp
++++ b/src/cpp/fastdds/subscriber/DataReaderImpl.cpp
+@@ -1136,16 +1136,18 @@
+ }
+ 
+ ReturnCode_t DataReaderImpl::set_listener(
+         DataReaderListener* listener)
+ {
++    std::lock_guard<std::mutex> _(listener_mutex_);
+     listener_ = listener;
+     return ReturnCode_t::RETCODE_OK;
+ }
+ 
+ const DataReaderListener* DataReaderImpl::get_listener() const
+ {
++    std::lock_guard<std::mutex> _(listener_mutex_);
+     return listener_;
+ }
+ 
+ /* TODO
+    bool DataReaderImpl::get_key_value(
+@@ -1587,15 +1589,20 @@
+ }
+ 
+ DataReaderListener* DataReaderImpl::get_listener_for(
+         const StatusMask& status)
+ {
+-    if (listener_ != nullptr &&
+-            user_datareader_->get_status_mask().is_active(status))
+-    {
+-        return listener_;
+-    }
++    {
++        std::lock_guard<std::mutex> _(listener_mutex_);
++
++        if (listener_ != nullptr &&
++                user_datareader_->get_status_mask().is_active(status))
++        {
++            return listener_;
++        }
++    }
++
+     return subscriber_->get_listener_for(status);
+ }
+ 
+ std::shared_ptr<IPayloadPool> DataReaderImpl::get_payload_pool()
+ {
+--- a/src/cpp/fastdds/subscriber/DataReaderImpl.hpp
++++ b/src/cpp/fastdds/subscriber/DataReaderImpl.hpp
+@@ -350,10 +350,11 @@
+     //!History
+     detail::DataReaderHistory history_;
+ 
+     //!Listener
+     DataReaderListener* listener_ = nullptr;
++    mutable std::mutex listener_mutex_;
+ 
+     fastrtps::rtps::GUID_t guid_;
+ 
+     class InnerDataReaderListener : public fastrtps::rtps::ReaderListener
+     {

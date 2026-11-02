@@ -1,0 +1,378 @@
+{
+  "scope": "EXPLICIT_DIAGNOSTIC_FIELD_PROJECTION_NOT_FLIGHT_VERDICT",
+  "original_source": {
+    "path": "D:/WSL/UAVHumble22-validation/humble47_tf_exit_diagnosis01/probe_simultaneous02/summary.json",
+    "bytes": 312380,
+    "sha256": "6210a82a8fa3d316ad6552e207243c5fdb6c16bae8147c0ff4ad789dfef24f53"
+  },
+  "selected_fields": {
+    "scope": "NARROW_PRODUCTION_FLIGHT_TF_DDS_TEARDOWN_DIAGNOSTIC_NOT_FLIGHT_ACCEPTANCE",
+    "created_utc": "2026-11-02T00:06:20.651175+00:00",
+    "metadata": {
+      "harness_source": "/mnt/d/WSL/UAVHumble22-validation/humble47_tf_exit_diagnosis01/probe_actual_flight_tf_teardown02.py",
+      "harness_sha256": "58341254e3ddbdc9057021187db6b3ab03d8d7ffadee2ea78cbc478dda64ca50",
+      "environment_script": "/mnt/d/WSL/UAVHumble22-validation/humble47_tf_exit_diagnosis01/run_actual_tf_probe02.sh",
+      "environment_script_sha256": "9b66d88751352bbfcdfe2f00201c761b79ba7774ccd744c2bce49cd6b7371b28",
+      "environment_script_claim": "Recorded script content; root execution command must bind actual sourcing.",
+      "production_entrypoint": "/root/uav_tracking_fullplan_v4_humble47/ros2_ws/install/lib/uav_tracking_bringup/flight_tf",
+      "entrypoint_sha256": "f46de1272b3a0583ec19340632ba838cb7516bc9a5396c067d6ec64453c8a516",
+      "entrypoint_shebang": "#!/root/uav_humble22/venv/bin/python",
+      "imported_production_source": "/root/uav_tracking_fullplan_v4_humble47/ros2_ws/src/uav_tracking_bringup/uav_tracking_bringup/flight_tf_node.py",
+      "production_source_sha256": "a46326d65cacfba4ed460f27343236a35d52d8331a4bff0c60462c615979a25e",
+      "resolved_rmw": "rmw_fastrtps_cpp",
+      "rmw_environment": "rmw_fastrtps_cpp",
+      "ros_domain_id": "74",
+      "python_executable": "/root/uav_humble22/venv/bin/python",
+      "environment": {
+        "ROS_DISTRO": "humble",
+        "STAGE1_PROJECT_ROOT": "/root/uav_tracking_fullplan_v4_humble47",
+        "AMENT_PREFIX_PATH": "/root/uav_tracking_fullplan_v4_humble47/ros2_ws/install:/root/uav_humble22/px4_msgs_ws/install/px4_msgs:/root/uav_humble22/ros_gz_shutdown_A01_ws/install:/root/uav_humble22/ros_gz_ws/install/ros_gz_sim:/root/uav_humble22/ros_gz_ws/install/ros_gz_bridge:/root/uav_humble22/ros_gz_ws/install/ros_gz_interfaces:/opt/ros/humble",
+        "LD_LIBRARY_PATH": "/root/uav_tracking_fullplan_v4_humble47/ros2_ws/install/lib:/root/uav_humble22/px4_msgs_ws/install/px4_msgs/lib:/root/uav_humble22/ros_gz_shutdown_A01_ws/install/lib:/root/uav_humble22/ros_gz_ws/install/ros_gz_sim/lib:/root/uav_humble22/ros_gz_ws/install/ros_gz_bridge/lib:/root/uav_humble22/ros_gz_ws/install/ros_gz_interfaces/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib",
+        "PYTHONPATH": "/root/uav_tracking_fullplan_v4_humble47:/root/uav_tracking_fullplan_v4_humble47/ros2_ws/build/uav_tracking_bringup:/root/uav_tracking_fullplan_v4_humble47/ros2_ws/build/uav_tracking_px4_adapter:/root/uav_tracking_fullplan_v4_humble47/ros2_ws/build/uav_tracking_nodes:/root/uav_tracking_fullplan_v4_humble47/ros2_ws/install/lib/python3.10/site-packages:/root/uav_humble22/px4_msgs_ws/install/px4_msgs/lib/python3.10/site-packages:/root/uav_humble22/ros_gz_ws/install/ros_gz_interfaces/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages"
+      },
+      "harness_snapshot": "/mnt/d/WSL/UAVHumble22-validation/humble47_tf_exit_diagnosis01/probe_simultaneous02/diagnostic_source_snapshot.py"
+    },
+    "configuration": {
+      "action": "run",
+      "project_root": "/root/uav_tracking_fullplan_v4_humble47",
+      "environment_script": "/mnt/d/WSL/UAVHumble22-validation/humble47_tf_exit_diagnosis01/run_actual_tf_probe02.sh",
+      "output": "/mnt/d/WSL/UAVHumble22-validation/humble47_tf_exit_diagnosis01/probe_simultaneous02",
+      "repetitions": 20,
+      "peer_count": 4,
+      "peer_index": 0,
+      "stop_order": "simultaneous",
+      "clock_factor": 0.125,
+      "clock_source_hz": 250.0,
+      "data_source_hz": 50.0,
+      "min_tf_count": 5,
+      "active_wall_s": 1.0,
+      "ready_timeout_s": 20.0,
+      "stop_timeout_s": 5.0
+    },
+    "claim_limit": "Raw production-node diagnostic exits; no flight/core/formal PASS claim.",
+    "status": "NO_CRASH_OBSERVED_IN_FINITE_DIAGNOSTIC",
+    "finished_utc": "2026-11-02T00:07:09.670368+00:00",
+    "cases_selected": [
+      {
+        "index": 0,
+        "stop_order": "simultaneous",
+        "readiness_observed": true,
+        "forced_kills": [],
+        "errors": [],
+        "raw_exit_codes": {
+          "feeder": 0,
+          "graph_peer_0": 0,
+          "graph_peer_1": 0,
+          "graph_peer_2": 0,
+          "graph_peer_3": 0,
+          "flight_tf": 0
+        },
+        "diagnostic_clean_exit": true
+      },
+      {
+        "index": 1,
+        "stop_order": "simultaneous",
+        "readiness_observed": true,
+        "forced_kills": [],
+        "errors": [],
+        "raw_exit_codes": {
+          "feeder": 0,
+          "graph_peer_0": 0,
+          "graph_peer_1": 0,
+          "graph_peer_2": 0,
+          "graph_peer_3": 0,
+          "flight_tf": 0
+        },
+        "diagnostic_clean_exit": true
+      },
+      {
+        "index": 2,
+        "stop_order": "simultaneous",
+        "readiness_observed": true,
+        "forced_kills": [],
+        "errors": [],
+        "raw_exit_codes": {
+          "feeder": 0,
+          "graph_peer_0": 0,
+          "graph_peer_1": 0,
+          "graph_peer_2": 0,
+          "graph_peer_3": 0,
+          "flight_tf": 0
+        },
+        "diagnostic_clean_exit": true
+      },
+      {
+        "index": 3,
+        "stop_order": "simultaneous",
+        "readiness_observed": true,
+        "forced_kills": [],
+        "errors": [],
+        "raw_exit_codes": {
+          "feeder": 0,
+          "graph_peer_0": 0,
+          "graph_peer_1": 0,
+          "graph_peer_2": 0,
+          "graph_peer_3": 0,
+          "flight_tf": 0
+        },
+        "diagnostic_clean_exit": true
+      },
+      {
+        "index": 4,
+        "stop_order": "simultaneous",
+        "readiness_observed": true,
+        "forced_kills": [],
+        "errors": [],
+        "raw_exit_codes": {
+          "feeder": 0,
+          "graph_peer_0": 0,
+          "graph_peer_1": 0,
+          "graph_peer_2": 0,
+          "graph_peer_3": 0,
+          "flight_tf": 0
+        },
+        "diagnostic_clean_exit": true
+      },
+      {
+        "index": 5,
+        "stop_order": "simultaneous",
+        "readiness_observed": true,
+        "forced_kills": [],
+        "errors": [],
+        "raw_exit_codes": {
+          "feeder": 0,
+          "graph_peer_0": 0,
+          "graph_peer_1": 0,
+          "graph_peer_2": 0,
+          "graph_peer_3": 0,
+          "flight_tf": 0
+        },
+        "diagnostic_clean_exit": true
+      },
+      {
+        "index": 6,
+        "stop_order": "simultaneous",
+        "readiness_observed": true,
+        "forced_kills": [],
+        "errors": [],
+        "raw_exit_codes": {
+          "feeder": 0,
+          "graph_peer_0": 0,
+          "graph_peer_1": 0,
+          "graph_peer_2": 0,
+          "graph_peer_3": 0,
+          "flight_tf": 0
+        },
+        "diagnostic_clean_exit": true
+      },
+      {
+        "index": 7,
+        "stop_order": "simultaneous",
+        "readiness_observed": true,
+        "forced_kills": [],
+        "errors": [],
+        "raw_exit_codes": {
+          "feeder": 0,
+          "graph_peer_0": 0,
+          "graph_peer_1": 0,
+          "graph_peer_2": 0,
+          "graph_peer_3": 0,
+          "flight_tf": 0
+        },
+        "diagnostic_clean_exit": true
+      },
+      {
+        "index": 8,
+        "stop_order": "simultaneous",
+        "readiness_observed": true,
+        "forced_kills": [],
+        "errors": [],
+        "raw_exit_codes": {
+          "feeder": 0,
+          "graph_peer_0": 0,
+          "graph_peer_1": 0,
+          "graph_peer_2": 0,
+          "graph_peer_3": 0,
+          "flight_tf": 0
+        },
+        "diagnostic_clean_exit": true
+      },
+      {
+        "index": 9,
+        "stop_order": "simultaneous",
+        "readiness_observed": true,
+        "forced_kills": [],
+        "errors": [],
+        "raw_exit_codes": {
+          "feeder": 0,
+          "graph_peer_0": 0,
+          "graph_peer_1": 0,
+          "graph_peer_2": 0,
+          "graph_peer_3": 0,
+          "flight_tf": 0
+        },
+        "diagnostic_clean_exit": true
+      },
+      {
+        "index": 10,
+        "stop_order": "simultaneous",
+        "readiness_observed": true,
+        "forced_kills": [],
+        "errors": [],
+        "raw_exit_codes": {
+          "feeder": 0,
+          "graph_peer_0": 0,
+          "graph_peer_1": 0,
+          "graph_peer_2": 0,
+          "graph_peer_3": 0,
+          "flight_tf": 0
+        },
+        "diagnostic_clean_exit": true
+      },
+      {
+        "index": 11,
+        "stop_order": "simultaneous",
+        "readiness_observed": true,
+        "forced_kills": [],
+        "errors": [],
+        "raw_exit_codes": {
+          "feeder": 0,
+          "graph_peer_0": 0,
+          "graph_peer_1": 0,
+          "graph_peer_2": 0,
+          "graph_peer_3": 0,
+          "flight_tf": 0
+        },
+        "diagnostic_clean_exit": true
+      },
+      {
+        "index": 12,
+        "stop_order": "simultaneous",
+        "readiness_observed": true,
+        "forced_kills": [],
+        "errors": [],
+        "raw_exit_codes": {
+          "feeder": 0,
+          "graph_peer_0": 0,
+          "graph_peer_1": 0,
+          "graph_peer_2": 0,
+          "graph_peer_3": 0,
+          "flight_tf": 0
+        },
+        "diagnostic_clean_exit": true
+      },
+      {
+        "index": 13,
+        "stop_order": "simultaneous",
+        "readiness_observed": true,
+        "forced_kills": [],
+        "errors": [],
+        "raw_exit_codes": {
+          "feeder": 0,
+          "graph_peer_0": 0,
+          "graph_peer_1": 0,
+          "graph_peer_2": 0,
+          "graph_peer_3": 0,
+          "flight_tf": 0
+        },
+        "diagnostic_clean_exit": true
+      },
+      {
+        "index": 14,
+        "stop_order": "simultaneous",
+        "readiness_observed": true,
+        "forced_kills": [],
+        "errors": [],
+        "raw_exit_codes": {
+          "feeder": 0,
+          "graph_peer_0": 0,
+          "graph_peer_1": 0,
+          "graph_peer_2": 0,
+          "graph_peer_3": 0,
+          "flight_tf": 0
+        },
+        "diagnostic_clean_exit": true
+      },
+      {
+        "index": 15,
+        "stop_order": "simultaneous",
+        "readiness_observed": true,
+        "forced_kills": [],
+        "errors": [],
+        "raw_exit_codes": {
+          "feeder": 0,
+          "graph_peer_0": 0,
+          "graph_peer_1": 0,
+          "graph_peer_2": 0,
+          "graph_peer_3": 0,
+          "flight_tf": 0
+        },
+        "diagnostic_clean_exit": true
+      },
+      {
+        "index": 16,
+        "stop_order": "simultaneous",
+        "readiness_observed": true,
+        "forced_kills": [],
+        "errors": [],
+        "raw_exit_codes": {
+          "feeder": 0,
+          "graph_peer_0": 0,
+          "graph_peer_1": 0,
+          "graph_peer_2": 0,
+          "graph_peer_3": 0,
+          "flight_tf": 0
+        },
+        "diagnostic_clean_exit": true
+      },
+      {
+        "index": 17,
+        "stop_order": "simultaneous",
+        "readiness_observed": true,
+        "forced_kills": [],
+        "errors": [],
+        "raw_exit_codes": {
+          "feeder": 0,
+          "graph_peer_0": 0,
+          "graph_peer_1": 0,
+          "graph_peer_2": 0,
+          "graph_peer_3": 0,
+          "flight_tf": 0
+        },
+        "diagnostic_clean_exit": true
+      },
+      {
+        "index": 18,
+        "stop_order": "simultaneous",
+        "readiness_observed": true,
+        "forced_kills": [],
+        "errors": [],
+        "raw_exit_codes": {
+          "feeder": 0,
+          "graph_peer_0": 0,
+          "graph_peer_1": 0,
+          "graph_peer_2": 0,
+          "graph_peer_3": 0,
+          "flight_tf": 0
+        },
+        "diagnostic_clean_exit": true
+      },
+      {
+        "index": 19,
+        "stop_order": "simultaneous",
+        "readiness_observed": true,
+        "forced_kills": [],
+        "errors": [],
+        "raw_exit_codes": {
+          "feeder": 0,
+          "graph_peer_0": 0,
+          "graph_peer_1": 0,
+          "graph_peer_2": 0,
+          "graph_peer_3": 0,
+          "flight_tf": 0
+        },
+        "diagnostic_clean_exit": true
+      }
+    ]
+  }
+}

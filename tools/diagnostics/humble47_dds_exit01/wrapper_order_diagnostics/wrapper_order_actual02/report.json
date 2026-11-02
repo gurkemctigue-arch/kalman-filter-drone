@@ -1,0 +1,44 @@
+{
+  "scope": "REAL_WRAPPERS_REAL_DDS_PREFLIGHT_WITH_EXISTING_MERGE_INSTALL_AND_FAKE_ENDPOINT_NOT_FLIGHT",
+  "input_source_sha256": {
+    "scripts/ros_python.sh": "17a7029b6622946a6eaac25534732be4ff521b8cdf099f1e9214ae4906670f41",
+    "scripts/run_stage1_flight.sh": "0f4ca1a334d62f42debb159d5da075e90085921426b1dbf10f2ac77a56168175",
+    "scripts/source_ros_environment.sh": "17ccc095fbd90a9d38526782554ade1db8181f112e455e7ab8f539c348a55b0c",
+    "scripts/apply_humble22_dds_runtime.sh": "db4cf741ddda918727793496f7831cf0a3e6b51d7078a48876758cd517e721cb",
+    "scripts/dds_runtime.py": "d10bebf10f3e1e6ba91d4cdb4304b1ab80c5cedc2c8626c09c9f60bf5afcad5e",
+    "uav_tracking/__init__.py": "9662d07f49e633c6fa87127566a06ec928b227efe706ac6f5183e7c1e77fe5dd",
+    "uav_tracking/dds_runtime.py": "f89c73293d6dad8405a0f3a61c3cbce000d8af94a715566e5f09f9f3072342c2",
+    "uav_tracking/ros_gz_runtime.py": "8edc809b1db6da0929269facc9650468b8458f0d5fd6eaca5ba3db5b01185cc0",
+    "config/dds_runtime_humble22.json": "4e517b62e823585b53dd2ac503f65eaf9bc3fd4c59d9d8fdb900d985f99d030d"
+  },
+  "cases": [
+    {
+      "name": "parent_ros_python",
+      "argv": [
+        "bash",
+        "/root/uav_humble22/dds_wrapper_order_actual02/scripts/ros_python.sh",
+        "-B",
+        "/root/uav_humble22/dds_wrapper_order_actual02/check_real_preflight.py"
+      ],
+      "returncode": 2,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/root/uav_humble22/dds_wrapper_order_actual02/scripts/dds_runtime.py\", line 12, in <module>\n    from uav_tracking.dds_runtime import environment, preflight\n  File \"/root/uav_humble22/dds_wrapper_order_actual02/uav_tracking/__init__.py\", line 3, in <module>\n    from .core import *\nModuleNotFoundError: No module named 'uav_tracking.core'\n",
+      "actual_real_preflight_passed": false
+    },
+    {
+      "name": "component_wrapper_fake_agent",
+      "argv": [
+        "bash",
+        "/root/uav_humble22/dds_wrapper_order_actual02/scripts/run_stage1_flight.sh",
+        "agent",
+        "person"
+      ],
+      "returncode": 2,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/root/uav_humble22/dds_wrapper_order_actual02/scripts/dds_runtime.py\", line 12, in <module>\n    from uav_tracking.dds_runtime import environment, preflight\n  File \"/root/uav_humble22/dds_wrapper_order_actual02/uav_tracking/__init__.py\", line 3, in <module>\n    from .core import *\nModuleNotFoundError: No module named 'uav_tracking.core'\n",
+      "actual_real_preflight_passed": false
+    }
+  ],
+  "status": "FAIL",
+  "claim_limit": "The actual production wrapper bytes are copied into a thin fixture. Existing immutable47 setup provides real colcon prepend behavior. The Agent executable is replaced by a real library-file preflight; no Agent, Gazebo, PX4 or flight starts."
+}

@@ -1,0 +1,188 @@
+From 2078f7f7e7068651b003b83a2f4713342bf51e6b Mon Sep 17 00:00:00 2001
+From: Miguel Company <miguelcompany@eprosima.com>
+Date: Wed, 3 Aug 2022 07:08:50 +0200
+Subject: [PATCH] Protect access to reader listeners (#2898)
+
+* Refs #15339. Fixed StatefulReader access to mp_listener.
+
+Signed-off-by: Miguel Company <MiguelCompany@eprosima.com>
+
+* Refs #15339. Fixed StatelessReader access to mp_listener.
+
+Signed-off-by: Miguel Company <MiguelCompany@eprosima.com>
+
+* Refs #15338. Protecting access to DataReaderImpl::listener_ with specific mutex.
+
+Signed-off-by: Miguel Company <MiguelCompany@eprosima.com>
+
+* Refs #15341. Addresed review suggestions.
+
+Signed-off-by: Miguel Company <MiguelCompany@eprosima.com>
+---
+ src/cpp/fastdds/subscriber/DataReaderImpl.cpp | 13 ++++++++++---
+ src/cpp/fastdds/subscriber/DataReaderImpl.hpp |  1 +
+ src/cpp/rtps/reader/StatefulReader.cpp        | 14 ++++++++------
+ src/cpp/rtps/reader/StatelessReader.cpp       | 15 ++++++++++-----
+ 4 files changed, 29 insertions(+), 14 deletions(-)
+
+diff --git a/src/cpp/fastdds/subscriber/DataReaderImpl.cpp b/src/cpp/fastdds/subscriber/DataReaderImpl.cpp
+index cb8df01dc64..7a8a3c70184 100644
+--- a/src/cpp/fastdds/subscriber/DataReaderImpl.cpp
++++ b/src/cpp/fastdds/subscriber/DataReaderImpl.cpp
+@@ -1227,12 +1227,14 @@ bool DataReaderImpl::lifespan_expired()
+ ReturnCode_t DataReaderImpl::set_listener(
+         DataReaderListener* listener)
+ {
++    std::lock_guard<std::mutex> _(listener_mutex_);
+     listener_ = listener;
+     return ReturnCode_t::RETCODE_OK;
+ }
+ 
+ const DataReaderListener* DataReaderImpl::get_listener() const
+ {
++    std::lock_guard<std::mutex> _(listener_mutex_);
+     return listener_;
+ }
+ 
+@@ -1637,11 +1639,16 @@ fastrtps::TopicAttributes DataReaderImpl::topic_attributes() const
+ DataReaderListener* DataReaderImpl::get_listener_for(
+         const StatusMask& status)
+ {
+-    if (listener_ != nullptr &&
+-            user_datareader_->get_status_mask().is_active(status))
+     {
+-        return listener_;
++        std::lock_guard<std::mutex> _(listener_mutex_);
++
++        if (listener_ != nullptr &&
++                user_datareader_->get_status_mask().is_active(status))
++        {
++            return listener_;
++        }
+     }
++
+     return subscriber_->get_listener_for(status);
+ }
+ 
+diff --git a/src/cpp/fastdds/subscriber/DataReaderImpl.hpp b/src/cpp/fastdds/subscriber/DataReaderImpl.hpp
+index f7f3da29bad..5960ab05007 100644
+--- a/src/cpp/fastdds/subscriber/DataReaderImpl.hpp
++++ b/src/cpp/fastdds/subscriber/DataReaderImpl.hpp
+@@ -380,6 +380,7 @@ class DataReaderImpl
+ 
+     //!Listener
+     DataReaderListener* listener_ = nullptr;
++    mutable std::mutex listener_mutex_;
+ 
+     fastrtps::rtps::GUID_t guid_;
+ 
+diff --git a/src/cpp/rtps/reader/StatefulReader.cpp b/src/cpp/rtps/reader/StatefulReader.cpp
+index d0a44ff887e..93101becf66 100644
+--- a/src/cpp/rtps/reader/StatefulReader.cpp
++++ b/src/cpp/rtps/reader/StatefulReader.cpp
+@@ -184,6 +184,7 @@ bool StatefulReader::matched_writer_add(
+         const WriterProxyData& wdata)
+ {
+     assert(wdata.guid() != c_Guid_Unknown);
++    ReaderListener* listener = nullptr;
+ 
+     {
+         std::unique_lock<RecursiveTimedMutex> guard(mp_mutex);
+@@ -193,6 +194,7 @@ bool StatefulReader::matched_writer_add(
+             return false;
+         }
+ 
++        listener = mp_listener;
+         bool is_same_process = RTPSDomainImpl::should_intraprocess_between(m_guid, wdata.guid());
+         bool is_datasharing = !is_same_process && is_datasharing_compatible_with(wdata);
+ 
+@@ -210,12 +212,11 @@ bool StatefulReader::matched_writer_add(
+                     }
+                 }
+ 
+-                if (nullptr != mp_listener)
++                if (nullptr != listener)
+                 {
+                     // call the listener without the lock taken
+                     guard.unlock();
+-                    mp_listener->on_writer_discovery(this, WriterDiscoveryInfo::CHANGED_QOS_WRITER, wdata.guid(),
+-                            &wdata);
++                    listener->on_writer_discovery(this, WriterDiscoveryInfo::CHANGED_QOS_WRITER, wdata.guid(), &wdata);
+                 }
+                 return false;
+             }
+@@ -318,9 +319,9 @@ bool StatefulReader::matched_writer_add(
+         }
+     }
+ 
+-    if (nullptr != mp_listener)
++    if (nullptr != listener)
+     {
+-        mp_listener->on_writer_discovery(this, WriterDiscoveryInfo::DISCOVERED_WRITER, wdata.guid(), &wdata);
++        listener->on_writer_discovery(this, WriterDiscoveryInfo::DISCOVERED_WRITER, wdata.guid(), &wdata);
+     }
+ 
+     return true;
+@@ -385,8 +386,9 @@ bool StatefulReader::matched_writer_remove(
+             if (nullptr != mp_listener)
+             {
+                 // call the listener without the lock taken
++                ReaderListener* listener = mp_listener;
+                 lock.unlock();
+-                mp_listener->on_writer_discovery(this, WriterDiscoveryInfo::REMOVED_WRITER, writer_guid, nullptr);
++                listener->on_writer_discovery(this, WriterDiscoveryInfo::REMOVED_WRITER, writer_guid, nullptr);
+             }
+         }
+         else
+diff --git a/src/cpp/rtps/reader/StatelessReader.cpp b/src/cpp/rtps/reader/StatelessReader.cpp
+index b63c01a6be0..f3c57ea3269 100644
+--- a/src/cpp/rtps/reader/StatelessReader.cpp
++++ b/src/cpp/rtps/reader/StatelessReader.cpp
+@@ -91,18 +91,22 @@ StatelessReader::StatelessReader(
+ bool StatelessReader::matched_writer_add(
+         const WriterProxyData& wdata)
+ {
++    ReaderListener* listener = nullptr;
++
+     {
+         std::unique_lock<RecursiveTimedMutex> guard(mp_mutex);
++        listener = mp_listener;
++
+         for (const RemoteWriterInfo_t& writer : matched_writers_)
+         {
+             if (writer.guid == wdata.guid())
+             {
+                 logWarning(RTPS_READER, "Attempting to add existing writer");
+-                if (nullptr != mp_listener)
++                if (nullptr != listener)
+                 {
+                     // call the listener without the lock taken
+                     guard.unlock();
+-                    mp_listener->on_writer_discovery(this, WriterDiscoveryInfo::CHANGED_QOS_WRITER, wdata.guid(),
++                    listener->on_writer_discovery(this, WriterDiscoveryInfo::CHANGED_QOS_WRITER, wdata.guid(),
+                             &wdata);
+                 }
+                 return false;
+@@ -177,9 +181,9 @@ bool StatelessReader::matched_writer_add(
+         }
+     }
+ 
+-    if (nullptr != mp_listener)
++    if (nullptr != listener)
+     {
+-        mp_listener->on_writer_discovery(this, WriterDiscoveryInfo::DISCOVERED_WRITER, wdata.guid(), &wdata);
++        listener->on_writer_discovery(this, WriterDiscoveryInfo::DISCOVERED_WRITER, wdata.guid(), &wdata);
+     }
+ 
+     return true;
+@@ -229,8 +233,9 @@ bool StatelessReader::matched_writer_remove(
+                 if (nullptr != mp_listener)
+                 {
+                     // call the listener without lock
++                    ReaderListener* listener = mp_listener;
+                     guard.unlock();
+-                    mp_listener->on_writer_discovery(this, WriterDiscoveryInfo::REMOVED_WRITER, writer_guid, nullptr);
++                    listener->on_writer_discovery(this, WriterDiscoveryInfo::REMOVED_WRITER, writer_guid, nullptr);
+                 }
+                 return true;
+             }

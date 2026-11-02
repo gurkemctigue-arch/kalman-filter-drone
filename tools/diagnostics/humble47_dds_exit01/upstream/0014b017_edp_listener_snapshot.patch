@@ -1,0 +1,59 @@
+From 0014b017b3cd1f001b0b39b759120073b37ed283 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Ricardo=20Gonz=C3=A1lez?= <ricardo@richiware.dev>
+Date: Thu, 21 Jul 2022 07:21:54 +0200
+Subject: [PATCH] Store EDP listener pointers before being used (#2857)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Ricardo González Moreno <ricardo@richiware.dev>
+---
+ src/cpp/rtps/builtin/discovery/endpoint/EDP.cpp | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
+
+diff --git a/src/cpp/rtps/builtin/discovery/endpoint/EDP.cpp b/src/cpp/rtps/builtin/discovery/endpoint/EDP.cpp
+index f3d6a9b2b0c..ce9667f129b 100644
+--- a/src/cpp/rtps/builtin/discovery/endpoint/EDP.cpp
++++ b/src/cpp/rtps/builtin/discovery/endpoint/EDP.cpp
+@@ -571,16 +571,17 @@ bool EDP::unpairWriterProxy(
+ #endif // if HAVE_SECURITY
+ 
+                     //MATCHED AND ADDED CORRECTLY:
+-                    if (r.getListener() != nullptr)
++                    ReaderListener* listener = nullptr;
++                    if (nullptr != (listener = r.getListener()))
+                     {
+                         MatchingInfo info;
+                         info.status = REMOVED_MATCHING;
+                         info.remoteEndpointGuid = writer_guid;
+-                        r.getListener()->onReaderMatched(&r, info);
++                        listener->onReaderMatched(&r, info);
+ 
+                         const SubscriptionMatchedStatus& sub_info =
+                         update_subscription_matched_status(reader_guid, writer_guid, -1);
+-                        r.getListener()->onReaderMatched(&r, sub_info);
++                        listener->onReaderMatched(&r, sub_info);
+                     }
+                 }
+ 
+@@ -609,16 +610,17 @@ bool EDP::unpairReaderProxy(
+                     participant_guid, reader_guid);
+ #endif // if HAVE_SECURITY
+                     //MATCHED AND ADDED CORRECTLY:
+-                    if (w.getListener() != nullptr)
++                    WriterListener* listener = nullptr;
++                    if (nullptr != (listener = w.getListener()))
+                     {
+                         MatchingInfo info;
+                         info.status = REMOVED_MATCHING;
+                         info.remoteEndpointGuid = reader_guid;
+-                        w.getListener()->onWriterMatched(&w, info);
++                        listener->onWriterMatched(&w, info);
+ 
+                         const PublicationMatchedStatus& pub_info =
+                         update_publication_matched_status(reader_guid, writer_guid, -1);
+-                        w.getListener()->onWriterMatched(&w, pub_info);
++                        listener->onWriterMatched(&w, pub_info);
+                     }
+                 }
+ 

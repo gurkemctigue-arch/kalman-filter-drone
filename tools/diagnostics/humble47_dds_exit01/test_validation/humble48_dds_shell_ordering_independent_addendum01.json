@@ -1,0 +1,250 @@
+{
+  "schema_version": 1,
+  "scope": "HUMBLE48_SHELL_ORDERING_REVIEW_ADDENDUM_NOT_FROZEN_BUILD_OR_FLIGHT_ACCEPTANCE",
+  "created_utc": "2026-11-02T00:56:04.667963+00:00",
+  "result": "PASS_ADDENDUM_REVIEW_SCOPE_ONLY",
+  "blocking_findings": [],
+  "prior_receipt_unchanged": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\source48_preparation01\\humble48_main_dds_independent_review01.json",
+    "bytes": 12632,
+    "sha256": "5621baf6f4a249c5751bd41be6d3d27a319793c556717b2269ec8caa04a00647"
+  },
+  "initial_review_gap": "The initial review missed that real runtime wrappers sourced the project merge-install after the early DDS hook. That setup can prepend project/install/lib and invalidate the required first two loader entries. The earlier three-actor smoke applied the helper after every setup and did not test that wrapper path.",
+  "actual_detection_provenance": "Root native setup-order execution record; no separate stdout file hash is invented. The later failed wrapper02 fixture had a missing uav_tracking.core import and is not evidence of a production wrapper failure.",
+  "reviewed_production_fix": {
+    "source_ros_environment_restored_exact47_bytes": true,
+    "six_wrappers_add_only_one_helper_source_after_project_setup": [
+      "scripts/ros_python.sh",
+      "scripts/run_stage1_flight.sh",
+      "scripts/run_stage1_trial.sh",
+      "scripts/research_env.sh",
+      "scripts/verify_stage1.sh",
+      "scripts/evaluate_stage1_flight.sh"
+    ],
+    "humble22_environment_existing_tail_hook_retained": true,
+    "helper_dds_module_registration_unchanged_from_initial_review": true,
+    "existing_recording_child_crash_owner_and_gate_policies_relaxed": false,
+    "legacy_ros_gz_registry_unchanged": true
+  },
+  "current_source": {
+    "scripts/ros_python.sh": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\scripts\\ros_python.sh",
+      "bytes": 522,
+      "sha256": "17a7029b6622946a6eaac25534732be4ff521b8cdf099f1e9214ae4906670f41"
+    },
+    "scripts/run_stage1_flight.sh": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\scripts\\run_stage1_flight.sh",
+      "bytes": 6548,
+      "sha256": "0f4ca1a334d62f42debb159d5da075e90085921426b1dbf10f2ac77a56168175"
+    },
+    "scripts/run_stage1_trial.sh": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\scripts\\run_stage1_trial.sh",
+      "bytes": 457,
+      "sha256": "54e86c7a3c9ef2b8570ea9650d3d9b140fc5c48d2186159a74054332000cba25"
+    },
+    "scripts/research_env.sh": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\scripts\\research_env.sh",
+      "bytes": 729,
+      "sha256": "dd319ac8e369de4215d2b8f29d6de7f67741f6ceec1ebe833540bb331c39fb18"
+    },
+    "scripts/verify_stage1.sh": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\scripts\\verify_stage1.sh",
+      "bytes": 614,
+      "sha256": "ec7ac2894b75ea0bfd97cb3ea6ff8070a911475400f366c2b2a582b74ca1bca8"
+    },
+    "scripts/evaluate_stage1_flight.sh": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\scripts\\evaluate_stage1_flight.sh",
+      "bytes": 918,
+      "sha256": "0cde3ee11724a5f092f0a32c23c377cc2ad198a36672a33f414dcf03da93c057"
+    },
+    "scripts/source_ros_environment.sh": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\scripts\\source_ros_environment.sh",
+      "bytes": 376,
+      "sha256": "17ccc095fbd90a9d38526782554ade1db8181f112e455e7ab8f539c348a55b0c"
+    },
+    "scripts/humble22_env.sh": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\scripts\\humble22_env.sh",
+      "bytes": 2340,
+      "sha256": "f4e5d0db8f4a4d46debafdfe52ffdb69aa6970ad3d79e77bd23b81afa795cf1a"
+    },
+    "scripts/apply_humble22_dds_runtime.sh": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\scripts\\apply_humble22_dds_runtime.sh",
+      "bytes": 1849,
+      "sha256": "db4cf741ddda918727793496f7831cf0a3e6b51d7078a48876758cd517e721cb"
+    },
+    "scripts/dds_runtime.py": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\scripts\\dds_runtime.py",
+      "bytes": 1045,
+      "sha256": "d10bebf10f3e1e6ba91d4cdb4304b1ab80c5cedc2c8626c09c9f60bf5afcad5e"
+    },
+    "uav_tracking/dds_runtime.py": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\uav_tracking\\dds_runtime.py",
+      "bytes": 15854,
+      "sha256": "f89c73293d6dad8405a0f3a61c3cbce000d8af94a715566e5f09f9f3072342c2"
+    },
+    "config/dds_runtime_humble22.json": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\config\\dds_runtime_humble22.json",
+      "bytes": 2267,
+      "sha256": "4e517b62e823585b53dd2ac503f65eaf9bc3fd4c59d9d8fdb900d985f99d030d"
+    },
+    "tests/test_dds_environment_wrappers.py": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tests\\test_dds_environment_wrappers.py",
+      "bytes": 11083,
+      "sha256": "0e79f92ac2dff59dd88b96555a23d1049b6c42bfc2720843cafe9e4c936c29c8"
+    }
+  },
+  "native_real_wrapper_preflight": {
+    "report": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\wrapper_order_actual03\\report.json",
+      "bytes": 6038,
+      "sha256": "ea3e9a477855f350122ef4ca4bf0466ab625162576cdca367f6932fa40344b89"
+    },
+    "harness": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\verify_actual_wrapper_order03.py",
+      "bytes": 4317,
+      "sha256": "d732fac8ae617fcfd24bfe4aa45f470ca69303fe07fc03eb21040fe5d77e13ce"
+    },
+    "input_source_hashes_all_equal_current_files": true,
+    "case_count": 2,
+    "case_names": [
+      "parent_ros_python",
+      "component_wrapper_fake_agent"
+    ],
+    "existing_immutable47_merge_install_setup_used": true,
+    "production_wrapper_bytes_copied_unchanged": true,
+    "real_dependency_file_hash_preflight_used": true,
+    "agent_endpoint_replaced_with_real_preflight": true,
+    "both_returncode_zero_and_actual_preflight_pass": true,
+    "observed_loader_prefix": [
+      "/root/uav_humble22/agent_install/lib",
+      "/root/uav_humble22/fastdds_listener_A01/install/lib"
+    ]
+  },
+  "native_fixture_and_syntax_validation": {
+    "files": [
+      {
+        "path": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\wrapper_validation05\\report.json",
+        "bytes": 2886,
+        "sha256": "7c11c4fd5cbad96f45e0dfd950a87f5f89b06b4e50442df10d6d612a1caf9d5d"
+      },
+      {
+        "path": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\run_wrapper_validation05.py",
+        "bytes": 1429,
+        "sha256": "4082eea05b3739e181e52e4dafde546231030c84aa8e8a863f87a1d3fa1ac7b1"
+      },
+      {
+        "path": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\wrapper_validation05\\0.stderr.log",
+        "bytes": 629,
+        "sha256": "4c979102887034c26b2d75bfcc84001096d162f2a74bc91fdfeda5c2d26dd4ce"
+      },
+      {
+        "path": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\wrapper_validation05\\0.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\wrapper_validation05\\1.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\wrapper_validation05\\1.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\wrapper_validation05\\2.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\wrapper_validation05\\2.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\wrapper_validation05\\3.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\wrapper_validation05\\3.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\wrapper_validation05\\4.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\wrapper_validation05\\4.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\wrapper_validation05\\5.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\wrapper_validation05\\5.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\wrapper_validation05\\6.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\wrapper_validation05\\6.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\wrapper_validation05\\7.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\wrapper_validation05\\7.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\wrapper_validation05\\8.stdout.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\wrapper_validation05\\8.stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "input_source_hashes_all_equal_current_files": true,
+    "fixture_tests": 4,
+    "fixture_tests_passed": 4,
+    "fixture_tests_skipped": 0,
+    "actual_log_duration_s": 1.429,
+    "shell_syntax_checks": 8,
+    "all_returncode_zero": true,
+    "coverage": [
+      "All six actual runtime wrapper scripts with fixture setup that genuinely prepends project/lib",
+      "The unchanged production helper, using a fake CLI that reads a small fixture config and never hashes an ELF",
+      "Reapply after an active DDS environment restores prefix order and removes duplicate loader entries",
+      "Bad payload or conflicting configured root stops before every fake endpoint",
+      "Jazzy does not call the Humble CLI and preserves its own loader environment"
+    ],
+    "test_authorship_disclosure": "This reviewer authored tests/test_dds_environment_wrappers.py; root executed it natively. Production shell fixes were authored by root and independently reviewed here."
+  },
+  "main_archive_copies_match_external_native_evidence": true,
+  "limits": [
+    "No WSL, native execution, complete suite or large ELF reads were performed by this reviewer; native results are bound to actual root-created files.",
+    "The two actual-wrapper probes use the real existing merge-install setup and real DDS file preflight but replace the Agent endpoint; they do not start Agent, Gazebo, PX4, ROS flight nodes or a flight.",
+    "Four lightweight Bash fixtures validate all six wrapper paths without ROS or native library hashing; they complement the two real-wrapper preflight probes.",
+    "The original complete Windows suite preceded this shell placement fix and the new four tests. This addendum does not relabel it as a complete post-fix suite.",
+    "No repaired core12, frozen48 build, formal admission or whole-project acceptance is asserted."
+  ]
+}

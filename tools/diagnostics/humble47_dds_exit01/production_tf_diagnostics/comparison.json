@@ -1,0 +1,64 @@
+{
+  "scope": "FINITE_NATIVE_PRODUCTION_TF_DDS_TEARDOWN_DIAGNOSTICS_NOT_FLIGHT_ACCEPTANCE",
+  "original_core47_unchanged": "11_PASS_PLUS_1_INFRASTRUCTURE_ERROR",
+  "formal_trials_completed": 0,
+  "reports": [
+    {
+      "name": "probe_simultaneous02",
+      "source": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\probe_simultaneous02\\summary.json",
+      "archived": "tools\\diagnostics\\humble47_dds_exit01\\production_tf_diagnostics\\probe_simultaneous02.json",
+      "sha256": "6210a82a8fa3d316ad6552e207243c5fdb6c16bae8147c0ff4ad789dfef24f53",
+      "bytes": 312380,
+      "harness_sha256": "58341254e3ddbdc9057021187db6b3ab03d8d7ffadee2ea78cbc478dda64ca50",
+      "stop_order": "simultaneous",
+      "repetitions": 20,
+      "clean_exit_count": 20,
+      "expected_dds_mapping": "/opt/ros/humble/lib/libfastrtps.so.2.6.12",
+      "all_expected_mapping": true,
+      "forced_kill_count": 0
+    },
+    {
+      "name": "probe_A01_simultaneous01",
+      "source": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\probe_A01_simultaneous01\\summary.json",
+      "archived": "tools\\diagnostics\\humble47_dds_exit01\\production_tf_diagnostics\\probe_A01_simultaneous01.json",
+      "sha256": "14bc9bd15de6896af8935a71a2fe578cf0e0f0453754ed3b0e747bbc7c567b93",
+      "bytes": 315163,
+      "harness_sha256": "58341254e3ddbdc9057021187db6b3ab03d8d7ffadee2ea78cbc478dda64ca50",
+      "stop_order": "simultaneous",
+      "repetitions": 20,
+      "clean_exit_count": 20,
+      "expected_dds_mapping": "/root/uav_humble22/fastdds_listener_A01/install/lib/libfastrtps.so.2.6.12",
+      "all_expected_mapping": true,
+      "forced_kill_count": 0
+    },
+    {
+      "name": "probe_A01_childfirst01",
+      "source": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\probe_A01_childfirst01\\summary.json",
+      "archived": "tools\\diagnostics\\humble47_dds_exit01\\production_tf_diagnostics\\probe_A01_childfirst01.json",
+      "sha256": "e6194d132a043e608e9d2c664e500eda439228180b90a47431ccd77f1150c2c7",
+      "bytes": 315312,
+      "harness_sha256": "58341254e3ddbdc9057021187db6b3ab03d8d7ffadee2ea78cbc478dda64ca50",
+      "stop_order": "child-first",
+      "repetitions": 20,
+      "clean_exit_count": 20,
+      "expected_dds_mapping": "/root/uav_humble22/fastdds_listener_A01/install/lib/libfastrtps.so.2.6.12",
+      "all_expected_mapping": true,
+      "forced_kill_count": 0
+    },
+    {
+      "name": "probe_A01_peersfirst01",
+      "source": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\probe_A01_peersfirst01\\summary.json",
+      "archived": "tools\\diagnostics\\humble47_dds_exit01\\production_tf_diagnostics\\probe_A01_peersfirst01.json",
+      "sha256": "87ca0802636458c1c5abd87e626cb4affc2c0a70e73587972f4f0831c8f5d4bc",
+      "bytes": 315328,
+      "harness_sha256": "58341254e3ddbdc9057021187db6b3ab03d8d7ffadee2ea78cbc478dda64ca50",
+      "stop_order": "peers-first",
+      "repetitions": 20,
+      "clean_exit_count": 20,
+      "expected_dds_mapping": "/root/uav_humble22/fastdds_listener_A01/install/lib/libfastrtps.so.2.6.12",
+      "all_expected_mapping": true,
+      "forced_kill_count": 0
+    }
+  ],
+  "claim_limit": "The original core identifies the null-listener race. Baseline20 and patched60 did not reproduce it; finite clean exits are not proof of absence or new flight/core acceptance."
+}

@@ -9,5 +9,6 @@ if [ -n "${STAGE1_PROJECT_ROOT:-}" ] && \
 fi
 source "$research_root/scripts/source_ros_environment.sh"
 source "$research_root/ros2_ws/install/setup.bash"
+source "$research_root/scripts/apply_humble22_dds_runtime.sh" "$research_root"
 export PYTHONPATH="$research_root:$research_root/scripts:${PYTHONPATH:-}"
 exec "${STAGE1_PYTHON_EXECUTABLE:-/usr/bin/python3}" "$@"

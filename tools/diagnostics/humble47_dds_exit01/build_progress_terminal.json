@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "owner": "uav-project-progress-v1",
+  "generated_utc": "2026-11-02T00:14:54.277994+00:00",
+  "status": "COMPLETED",
+  "reason": "Monitored command ended; this is not project acceptance",
+  "completion_scope": "monitored_command",
+  "phase": "evaluation",
+  "task": {
+    "id": "fastdds-listener-A01-build01",
+    "phase": "evaluation",
+    "started_utc": "2026-11-02T00:09:02.034571+00:00",
+    "process": {
+      "pid": 34844,
+      "alive": true,
+      "start_token": "windows_filetime:134380517420301559",
+      "created_utc": "2026-11-02T00:09:02.030156+00:00"
+    },
+    "finished_utc": "2026-11-02T00:14:54.275481+00:00",
+    "returncode": 0,
+    "monitor_kind": "owned_child",
+    "label": "Build_isolated_FastDDS_2_6_12_listener_backport"
+  },
+  "process_check": {
+    "verified_alive": false,
+    "identity_matches": true,
+    "observation": {
+      "pid": 34844,
+      "alive": false,
+      "start_token": "windows_filetime:134380517420301559",
+      "created_utc": "2026-11-02T00:09:02.030156+00:00"
+    },
+    "reason": "PID creation identity checked; PID reuse is not accepted"
+  },
+  "monitor_check": {
+    "verified_alive": true,
+    "identity_matches": true,
+    "observation": {
+      "pid": 35820,
+      "alive": true,
+      "start_token": "windows_filetime:134380517418859604",
+      "created_utc": "2026-11-02T00:09:01.885960+00:00"
+    },
+    "reason": "PID creation identity checked; PID reuse is not accepted"
+  },
+  "heartbeat_utc": "2026-11-02T00:14:54.275481+00:00",
+  "heartbeat_age_s": 0.002513408660888672,
+  "stale_after_s": 20.0,
+  "evidence_sources": {},
+  "evidence": {
+    "state": "UNVERIFIED",
+    "current_slot": null,
+    "last_slot": null,
+    "planned_slots": null,
+    "attempted_slots": 0,
+    "recorded_terminal_slots": 0,
+    "unattempted_slots": null,
+    "attempted_without_terminal": [],
+    "status_counts": {},
+    "last_event": null,
+    "last_event_utc": null,
+    "terminal_utc": null,
+    "ledger_step": null,
+    "ledger_finished_utc": null,
+    "ledger_returncode": null,
+    "latest_execution": null,
+    "errors": [],
+    "claim_boundary": "Execution records and counts only; engineering FAIL/PENDING are never counted as PASS"
+  },
+  "tasks": [
+    {
+      "id": "fastdds-listener-A01-build01",
+      "phase": "evaluation",
+      "started_utc": "2026-11-02T00:09:02.034571+00:00",
+      "process": {
+        "pid": 34844,
+        "alive": true,
+        "start_token": "windows_filetime:134380517420301559",
+        "created_utc": "2026-11-02T00:09:02.030156+00:00"
+      },
+      "finished_utc": "2026-11-02T00:14:54.275481+00:00",
+      "returncode": 0,
+      "monitor_kind": "owned_child",
+      "label": "Build_isolated_FastDDS_2_6_12_listener_backport"
+    }
+  ],
+  "notification": {
+    "requested": false,
+    "submitted": false,
+    "user_observed": null
+  },
+  "claim_boundary": "No ROS/WSL/simulator is started, no bag is read. No automatic chat wake-up or engineering PASS is promised."
+}

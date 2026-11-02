@@ -1,0 +1,100 @@
+{
+  "scope": "ROOT_REVIEW_OF_CLOSED_THREE_ACTOR_DDS_GUARD_DIAGNOSTIC_NOT_FLIGHT_ACCEPTANCE",
+  "checks": {
+    "all_three_role_mappings_passed": true,
+    "after_and_summary_passed": true,
+    "ros_launch_and_feeder_zero_exit": true,
+    "no_forced_kills": true,
+    "ros_children_clean_log": true
+  },
+  "raw_agent_exit_code": -2,
+  "agent_exit_explanation": "Owned Agent received one SIGINT and exited -2 under the existing Agent shutdown policy. It is retained as raw evidence, not rewritten as exit0.",
+  "files": [
+    {
+      "source": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\native_guard_smoke01\\agent.log",
+      "archive": "tools\\diagnostics\\humble47_dds_exit01\\native_guard_smoke01\\agent.log",
+      "bytes": 301,
+      "sha256": "4b76033bf0d6763bf4cc70d533fd98a7bd3e1e8e35ebbcaed3c81e2ed4f90221"
+    },
+    {
+      "source": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\native_guard_smoke01\\dds_runtime_actual.json",
+      "archive": "tools\\diagnostics\\humble47_dds_exit01\\native_guard_smoke01\\dds_runtime_actual.json",
+      "bytes": 26295,
+      "sha256": "1b97a069a42c876ba55f527e60b313b4b68e97c862f3c25716e5e6ee053636ab"
+    },
+    {
+      "source": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\native_guard_smoke01\\dds_runtime_after.json",
+      "archive": "tools\\diagnostics\\humble47_dds_exit01\\native_guard_smoke01\\dds_runtime_after.json",
+      "bytes": 2982,
+      "sha256": "d6ee574a1f8da941efd1dc11601961f64e0d6ddefca09ad081c497d771796eed"
+    },
+    {
+      "source": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\native_guard_smoke01\\dds_runtime_preflight.json",
+      "archive": "tools\\diagnostics\\humble47_dds_exit01\\native_guard_smoke01\\dds_runtime_preflight.json",
+      "bytes": 3647,
+      "sha256": "a11bcafa385ff02022238a96e604d93946db11444926b01ceb6def9b81faab34"
+    },
+    {
+      "source": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\native_guard_smoke01\\dds_runtime_registration.json",
+      "archive": "tools\\diagnostics\\humble47_dds_exit01\\native_guard_smoke01\\dds_runtime_registration.json",
+      "bytes": 2267,
+      "sha256": "4e517b62e823585b53dd2ac503f65eaf9bc3fd4c59d9d8fdb900d985f99d030d"
+    },
+    {
+      "source": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\native_guard_smoke01\\dds_runtime_summary.json",
+      "archive": "tools\\diagnostics\\humble47_dds_exit01\\native_guard_smoke01\\dds_runtime_summary.json",
+      "bytes": 618,
+      "sha256": "d5f09e82d0896285000c272f73b6761a59b7eeaf57e8c69e4878ea48041c7ae6"
+    },
+    {
+      "source": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\native_guard_smoke01\\diagnostic.json",
+      "archive": "tools\\diagnostics\\humble47_dds_exit01\\native_guard_smoke01\\diagnostic.json",
+      "bytes": 52233,
+      "sha256": "fb74f40ccb5d2562c5b10a55912d83d8a023e65374fdc0cbe0c1c8dceb7955c8"
+    },
+    {
+      "source": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\native_guard_smoke01\\feeder.log",
+      "archive": "tools\\diagnostics\\humble47_dds_exit01\\native_guard_smoke01\\feeder.log",
+      "bytes": 1087,
+      "sha256": "0d2e62131c4fd32dfab9a5f880f03e75aa437b6d329e8ef03d6bd6cadb516de3"
+    },
+    {
+      "source": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\native_guard_smoke01\\ros.log",
+      "archive": "tools\\diagnostics\\humble47_dds_exit01\\native_guard_smoke01\\ros.log",
+      "bytes": 950,
+      "sha256": "ac9969eceafda91eb33999d123d8203bbf329ec38f2783c6ab180f72f5fda508"
+    },
+    {
+      "source": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\native_guard_smoke01\\ros_gz_runtime_actual.json",
+      "archive": "tools\\diagnostics\\humble47_dds_exit01\\native_guard_smoke01\\ros_gz_runtime_actual.json",
+      "bytes": 22358,
+      "sha256": "59b01d6d98f4b9c82458abe1292d9946ffe61e2c853a7c3689c7387e8df97b0d"
+    },
+    {
+      "source": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\native_guard_smoke01\\ros_gz_runtime_preflight.json",
+      "archive": "tools\\diagnostics\\humble47_dds_exit01\\native_guard_smoke01\\ros_gz_runtime_preflight.json",
+      "bytes": 597,
+      "sha256": "d986ab5b9c1f77c4ca7ca6922d177acb5995ff4ea89c5e7b868d08c450c14038"
+    },
+    {
+      "source": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\native_guard_smoke01\\ros_gz_runtime_registration.json",
+      "archive": "tools\\diagnostics\\humble47_dds_exit01\\native_guard_smoke01\\ros_gz_runtime_registration.json",
+      "bytes": 29086,
+      "sha256": "08cbc9ea8a2b6e50b71efc4910e5adef7c309b742fb0e9177cd803e934a028af"
+    },
+    {
+      "source": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\native_dds_guard_smoke01.py",
+      "archive": "tools\\diagnostics\\humble47_dds_exit01\\native_guard_smoke01\\native_dds_guard_smoke01.py",
+      "bytes": 5101,
+      "sha256": "08e4fa9d6ab9ee133b21cc6973bd7cb6549faf1e80e105f474358759732317ba"
+    },
+    {
+      "source": "D:\\WSL\\UAVHumble22-validation\\humble47_tf_exit_diagnosis01\\run_native_dds_guard_smoke01.sh",
+      "archive": "tools\\diagnostics\\humble47_dds_exit01\\native_guard_smoke01\\run_native_dds_guard_smoke01.sh",
+      "bytes": 1196,
+      "sha256": "5ab4e1f1bba42b21432c6d7402e6e1f6d89a0b3f0d73eee9c594af7ed56a6284"
+    }
+  ],
+  "source_snapshot_limit": "Diagnostic source copied after closure; primary DDS source was frozen by its author before execution. The real mapped ELFs were hashed during capture.",
+  "claim_limit": "No Gazebo, PX4, recording or flight/core acceptance. The native after report and summary were independently checked because the small diagnostic driver does not itself raise a returned after-error object."
+}
