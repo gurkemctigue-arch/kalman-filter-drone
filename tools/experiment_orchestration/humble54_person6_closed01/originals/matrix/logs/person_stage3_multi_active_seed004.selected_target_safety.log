@@ -1,0 +1,26 @@
+[INFO] [1793654930.734625096] [rosbag2_compression]: Decompressing /tmp/stage1_bag_read_tz1amhdl/rosbag_0.db3.zstd
+[INFO] [1793654936.225192858] [rosbag2_storage]: Opened database '/tmp/stage1_bag_read_tz1amhdl/rosbag_0.db3' for READ_ONLY.
+{
+  "result": "PASS",
+  "checks": {
+    "clock_recorded": true,
+    "input_decodes_without_errors": true,
+    "armed_and_offboard_observed": true,
+    "initial_explicit_box_confirmed_fresh": true,
+    "initial_box_matches_selected_track_snapshot": true,
+    "no_tracking_before_initial_selection": true,
+    "multiple_same_class_fresh_tracks_observed": true,
+    "all_tracks_snapshots_present_and_valid": true,
+    "task_uuid_changes_require_explicit_selection": true,
+    "long_loss_cannot_reactivate_without_explicit_selection": true,
+    "long_loss_cannot_control_before_explicit_selection": true,
+    "active_states_remain_fresh": true,
+    "selected_geometric_ambiguity_observed_if_required": true,
+    "observed_ambiguities_suspend_control": true,
+    "required_short_and_long_occlusions_present": true,
+    "recorded_occlusions_pass": true,
+    "detection_diagnostics_valid": true,
+    "final_sustained_tracking": true
+  },
+  "report": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004/stage2_evaluation.json"
+}

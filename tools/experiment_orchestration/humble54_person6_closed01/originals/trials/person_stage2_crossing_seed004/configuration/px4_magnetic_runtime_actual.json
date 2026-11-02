@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "contract": "gazebo_enu_flu_to_frd_v1",
+  "operation": "RUNTIME_ARTIFACT_VERIFIED",
+  "source_root": "/root/uav_humble22/PX4-Autopilot-v4mag",
+  "px4_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+  "bridge_source_sha256": "7d4ab7c529421865c86d5e463e5ec15eb66f580dbcc6e091ad99704815faa19d",
+  "patch_sha256": "28ed1dd9a46d4470e782e606bf7d2ce3c7b86b905c9b4c67ef486868c184d871",
+  "dependencies": {
+    "Tools/simulation/flightgear/flightgear_bridge": {
+      "commit": "f47ce7b5fbbb3aa43d33d2be1f6cd3746b13d5bf",
+      "initialized": false
+    },
+    "Tools/simulation/gazebo-classic/sitl_gazebo-classic": {
+      "commit": "6697ab169ceab512dc706acea63df4c882662c60",
+      "initialized": false
+    },
+    "Tools/simulation/gz": {
+      "commit": "b6127f4ec20de867e215fb5f78ae88b80f371909",
+      "initialized": true
+    },
+    "Tools/simulation/jmavsim/jMAVSim": {
+      "commit": "66b764ada522893c05224950aa6268c809f8e48a",
+      "initialized": false
+    },
+    "Tools/simulation/jsbsim/jsbsim_bridge": {
+      "commit": "f37ec259bd7a43565fe0ff4722465b7a303200f6",
+      "initialized": false
+    },
+    "boards/modalai/voxl2/libfc-sensor-api": {
+      "commit": "85151aaf6ba8b24ce82b387e088452c63f7e2096",
+      "initialized": false
+    },
+    "platforms/nuttx/NuttX/apps": {
+      "commit": "e37940d8535f603a16b8f6f21c21edaf584218aa",
+      "initialized": false
+    },
+    "platforms/nuttx/NuttX/nuttx": {
+      "commit": "fb2fadf6f599c1406f052db013efd00a2518e72c",
+      "initialized": false
+    },
+    "src/drivers/actuators/vertiq_io/iq-module-communication-cpp": {
+      "commit": "c488af4e8807de80739aa48efd2ea51614dd8195",
+      "initialized": false
+    },
+    "src/drivers/cyphal/legacy_data_types": {
+      "commit": "36a01e428b110ff84c8babe5b65667b5e3037d5e",
+      "initialized": false
+    },
+    "src/drivers/cyphal/libcanard": {
+      "commit": "5c69d451ab0787a81dcb615692d707f2a286f5e5",
+      "initialized": false
+    },
+    "src/drivers/cyphal/public_regulated_data_types": {
+      "commit": "d0bd6516dac8ff61287fe49a9f2c75e7d4dc1b8e",
+      "initialized": false
+    },
+    "src/drivers/gps/devices": {
+      "commit": "0b9695881bd1e8f830ab4538ab3acc0050019eba",
+      "initialized": true
+    },
+    "src/drivers/ins/microstrain/mip_sdk": {
+      "commit": "35596994b60ba89fe02f71ce5127baa5e7ff2bbf",
+      "initialized": false
+    },
+    "src/drivers/ins/sbgecom/sbgECom": {
+      "commit": "80b121c7714083cc4868c0fdb8c41623c7ef9c93",
+      "initialized": false
+    },
+    "src/drivers/uavcan/libdronecan/dsdl": {
+      "commit": "993be80a62ec957c01fb41115b83663959a49f46",
+      "initialized": false
+    },
+    "src/drivers/uavcan/libdronecan/libuavcan/dsdl_compiler/pydronecan": {
+      "commit": "19fdf2e5b383243ccdb1094edae0603cf11469e8",
+      "initialized": false
+    },
+    "src/lib/cdrstream/cyclonedds": {
+      "commit": "314887ca403c2fb0a0316add22672102936ed36c",
+      "initialized": false
+    },
+    "src/lib/cdrstream/rosidl": {
+      "commit": "bf5682e4747843d1d5133b9a2b54ce6f12f166c7",
+      "initialized": false
+    },
+    "src/lib/crypto/libtomcrypt": {
+      "commit": "673f5ce29015a9bba3c96792920a10601b5b0718",
+      "initialized": false
+    },
+    "src/lib/crypto/libtommath": {
+      "commit": "fd73d7630b9d3ed5a79d613ff680a549e9780de7",
+      "initialized": false
+    },
+    "src/lib/crypto/monocypher": {
+      "commit": "baca5d31259c598540e4d1284bc8d8f793abf83a",
+      "initialized": false
+    },
+    "src/lib/events/libevents": {
+      "commit": "9ef591c447fe0386d698bf6fb9a6d27e43988ee4",
+      "initialized": true
+    },
+    "src/lib/heatshrink/heatshrink": {
+      "commit": "052e6de72f67f1777198bce98f3de62f7f3c16a0",
+      "initialized": true
+    },
+    "src/lib/tensorflow_lite_micro/tflite_micro": {
+      "commit": "3c0b1e3091e4ea423e1bf9da89d41d09517eb0c9",
+      "initialized": false
+    },
+    "src/modules/mavlink/mavlink": {
+      "commit": "33af200d25ec6f0925b49b1ba82bbf1294ea5f72",
+      "initialized": true
+    },
+    "src/modules/mavlink/mavlink/pymavlink": {
+      "commit": "fcaa2c7d25e3169dc66155929c338487941555e9",
+      "initialized": true
+    },
+    "src/modules/uxrce_dds_client/Micro-XRCE-DDS-Client": {
+      "commit": "711aef423edd1820347b866d1e4164832df35d04",
+      "initialized": true
+    },
+    "src/modules/zenoh/zenoh-pico": {
+      "commit": "6ec4dc1995f185330e4f6faa8c719eb86f180deb",
+      "initialized": false
+    },
+    "test/fuzztest": {
+      "commit": "1e47f9d7437de5c3ee4cb0ac860d5ec875478059",
+      "initialized": false
+    }
+  },
+  "tracked_dirty_paths": [
+    "src/modules/simulation/gz_bridge/GZBridge.cpp"
+  ],
+  "binary_path": "/root/uav_humble22/PX4-Autopilot-v4mag/build/px4_sitl_default/bin/px4",
+  "binary_sha256": "6cf784c1cb4de2945b4291aa9391a2301c78315a1462ef3f51f541e119fd7ce7",
+  "binary_bytes": 56970272,
+  "expected_startup_log_marker": "magnetic frame contract: gazebo_enu_flu_to_frd_v1",
+  "actual_startup_log_verified": true,
+  "verification_limit": "ELF/source provenance does not replace actual flight/log checks",
+  "actual_startup_log_path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage2_crossing_seed004/px4.log",
+  "actual_startup_log_sha256": "aa823bfe27e0ee711082edae64fc6b7e6cbaa4d74227b8d72ffa686e76768b9b"
+}

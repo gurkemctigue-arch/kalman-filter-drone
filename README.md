@@ -1,6 +1,6 @@
 # RGB-D UAV target tracking and following
 
-**2026-11-03 05:12（北京时间）检查点：Humble54 核心批次已有 5 个原始 PASS，第 6 场多行人主动云台正在运行，其余 6 场汽车尚未开始；正式仍为 0/280。** 行人主动云台的距离/高度 RMSE 为 0.7458/0.1613 米，导航覆盖 91.62%，源时钟、原生起飞及 13 项云台检查通过。该开发样本的画面中心归一化 RMSE 为 0.0290，中位模式为 0.1196，尚不能推广为整体优势。交叉场景仍保留 104/753 个身份未知样本，且第一任务单独覆盖仅 68.01%。见[前三场独立复核](tools/diagnostics/humble54_core12_first3_review01/README.md)、[登记工具与未来顺序](tools/experiment_orchestration/final55_registration_card01/README.md)及本机[当前批次进度](results/project_progress/humble54_core12_run01/index.html)。下方均为历史检查点，原失败不变。
+**2026-11-03 05:34（北京时间）检查点：Humble54 六个行人核心场景均为原始 PASS，第 7 场汽车速度跟随正在运行；正式仍为 0/280。** 多行人主动云台的距离/高度 RMSE 为 0.8713/0.1604 米，导航覆盖 88.83%，多目标行为 18 项及云台 13 项检查通过；完整任务身份为 648 正确、0 已知错误、106 未知，共 754 格，不能用诊断帧分母替代。六场来自同一开发种子，尚不能代表汽车、整体可靠性或算法普遍优势。见[六场原件与独立复核](tools/experiment_orchestration/humble54_person6_closed01/README.md)、[正式启动路径修复](tools/experiment_orchestration/formal55_supplementary01/SNAPSHOT.md)及本机[当前批次进度](results/project_progress/humble54_core12_run01/index.html)。下方均为历史检查点，原失败不变。
 
 **Historical checkpoint, 2026-11-03 03:37 CST: the separate Humble54 car-position failure-equivalent trial recorded original PASS; formal remains 0/280.** Distance/height RMSE were 0.704/0.170 m. This one trial is independent of the canonical12 and is not spliced into it. Humble53 remains 7 PASS / 1 FAIL / 4 PENDING. See the [original car evidence](tools/experiment_orchestration/humble54_car_position_closed01/README.md).
 

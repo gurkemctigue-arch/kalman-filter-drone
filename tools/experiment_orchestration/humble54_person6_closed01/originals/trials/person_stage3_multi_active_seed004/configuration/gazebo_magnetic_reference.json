@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "contract": "gazebo_enu_flu_to_frd_v1",
+  "gazebo_sim_version": "8.15.0",
+  "gazebo_sim_commit": "446a44335a45b704b4d36dabcc5508ee34eeb3d8",
+  "gazebo_sim_source": "src/systems/magnetometer/Magnetometer.cc",
+  "gazebo_sim_source_sha256": "4c2eab47814932a4df6b6255f46e379b1aa0feb41b248fd0ee13213d56a3016d",
+  "gazebo_sensors_version": "8.2.2",
+  "gazebo_sensors_commit": "9348f9fe8a11b9d50381819f51e17e136aedab8a",
+  "gazebo_sensors_source": "src/MagnetometerSensor.cc",
+  "gazebo_sensors_source_sha256": "c66d3dbf29d6d158eb010b22a44e8e06fb93c518ca00129bfb8ac3685be49592",
+  "reference_latitude_deg": 47.397971,
+  "reference_longitude_deg": 8.546164,
+  "lookup_method": "float32 transcription of pinned Gazebo bilinear source, at world origin; not a recorded runtime magnetometer sample",
+  "declination_corner_deg_sw_se_nw_ne": [
+    0,
+    3,
+    0,
+    3
+  ],
+  "inclination_corner_deg_sw_se_nw_ne": [
+    55,
+    56,
+    65,
+    66
+  ],
+  "strength_corner_centi_gauss_sw_se_nw_ne": [
+    45,
+    46,
+    48,
+    49
+  ],
+  "lookup_declination_deg": 2.5638489723205566,
+  "lookup_inclination_deg": 63.252586364746094,
+  "lookup_strength_centi_gauss": 48.07400894165039,
+  "px4_lookup_declination_deg": 3.40576529503,
+  "px4_minus_gazebo_declination_deg": 0.8419163227094435,
+  "world_magnetic_field_role": "Initialization only; the pinned Gazebo Update overwrites it using its own spherical-coordinate lookup",
+  "runtime_options": {
+    "use_earth_frame_ned": false,
+    "use_units_gauss": true
+  },
+  "required_px4_magnetometer_input_frame": "body FRD, gauss",
+  "required_sensor_mount": "identity orientation relative to base_link FLU",
+  "claim_limit": "Corrects the sensor/bridge coordinate contract; does not make the Gazebo and PX4 lookup tables identical or establish flight success",
+  "audited_source_variants": [
+    {
+      "gazebo_sim_version": "8.15.0",
+      "gazebo_sim_commit": "446a44335a45b704b4d36dabcc5508ee34eeb3d8",
+      "gazebo_sim_source_sha256": "4c2eab47814932a4df6b6255f46e379b1aa0feb41b248fd0ee13213d56a3016d",
+      "gazebo_sensors_version": "8.2.2",
+      "gazebo_sensors_commit": "9348f9fe8a11b9d50381819f51e17e136aedab8a",
+      "gazebo_sensors_source_sha256": "c66d3dbf29d6d158eb010b22a44e8e06fb93c518ca00129bfb8ac3685be49592"
+    },
+    {
+      "gazebo_sim_version": "8.15.0",
+      "gazebo_sim_commit": "446a44335a45b704b4d36dabcc5508ee34eeb3d8",
+      "gazebo_sim_source_sha256": "4c2eab47814932a4df6b6255f46e379b1aa0feb41b248fd0ee13213d56a3016d",
+      "gazebo_sensors_version": "8.3.0",
+      "gazebo_sensors_commit": "6d74c1fe96d7277c7dec96a54bbc79d5c752e63c",
+      "gazebo_sensors_source_sha256": "c66d3dbf29d6d158eb010b22a44e8e06fb93c518ca00129bfb8ac3685be49592"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "before": {
+    "source": "/root/uav_humble22/PX4-Autopilot-v4mag/build/px4_sitl_default/rootfs/parameters.bson",
+    "exists": true,
+    "phase": "before",
+    "scope": "Persisted nondefault PX4 parameters; firmware/airframe defaults and startup overrides remain separate evidence",
+    "artifact": "px4_parameters_before.bson",
+    "bytes": 440,
+    "sha256": "9c1944156c69efb06601d94a80088a4df7b98ee357e41d8bb29259ce1e221ab8"
+  },
+  "startup_wrapper": "scripts/px4_stage1_startup.sh",
+  "explicit_environment_overrides": {
+    "COM_RC_IN_MODE": 4,
+    "NAV_DLL_ACT": 0,
+    "UXRCE_DDS_SYNCT": 0,
+    "SENS_EN_MAGSIM": 0,
+    "MIS_TAKEOFF_ALT": 3.0,
+    "COM_TAKEOFF_ACT": 0,
+    "SENS_IMU_MODE": 1
+  },
+  "policy": "Archive only; no reset/import/overwrite of rootfs parameters",
+  "after": {
+    "source": "/root/uav_humble22/PX4-Autopilot-v4mag/build/px4_sitl_default/rootfs/parameters.bson",
+    "exists": true,
+    "phase": "after",
+    "scope": "Persisted nondefault PX4 parameters; firmware/airframe defaults and startup overrides remain separate evidence",
+    "artifact": "px4_parameters_after.bson",
+    "bytes": 440,
+    "sha256": "d2baaae210ed61067c912169a7dc50e1cadfad3d0f047b91de7eafc5eb9415cc"
+  }
+}

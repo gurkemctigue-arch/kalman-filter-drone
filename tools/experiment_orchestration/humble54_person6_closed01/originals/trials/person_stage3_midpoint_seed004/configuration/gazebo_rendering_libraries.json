@@ -1,0 +1,207 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "owned_pid": 99553,
+  "expected_driver": "llvmpipe",
+  "actual_process_environment": {
+    "MESA_LOADER_DRIVER_OVERRIDE": "swrast",
+    "GALLIUM_DRIVER": "llvmpipe",
+    "LP_NUM_THREADS": "4",
+    "DISPLAY": ":0",
+    "LIBGL_ALWAYS_SOFTWARE": "1",
+    "OMP_NUM_THREADS": "2"
+  },
+  "actual_mappings": [
+    "7f0ebee00000-7f0ec5512000 r-xp 00000000 08:30 11593                      /usr/lib/x86_64-linux-gnu/libLLVM-15.so.1",
+    "7f0ec5512000-7f0ec5d30000 r--p 06711000 08:30 11593                      /usr/lib/x86_64-linux-gnu/libLLVM-15.so.1",
+    "7f0ec5d30000-7f0ec5d76000 rw-p 06f2f000 08:30 11593                      /usr/lib/x86_64-linux-gnu/libLLVM-15.so.1",
+    "7f0ec5e00000-7f0ec5e96000 r--p 00000000 08:30 48557                      /usr/lib/x86_64-linux-gnu/dri/swrast_dri.so",
+    "7f0ec5e96000-7f0ec7196000 r-xp 00096000 08:30 48557                      /usr/lib/x86_64-linux-gnu/dri/swrast_dri.so",
+    "7f0ec7196000-7f0ec7c82000 r--p 01396000 08:30 48557                      /usr/lib/x86_64-linux-gnu/dri/swrast_dri.so",
+    "7f0ec7c82000-7f0ec7d09000 r--p 01e81000 08:30 48557                      /usr/lib/x86_64-linux-gnu/dri/swrast_dri.so",
+    "7f0ec7d09000-7f0ec7d1b000 rw-p 01f08000 08:30 48557                      /usr/lib/x86_64-linux-gnu/dri/swrast_dri.so",
+    "7f0eda200000-7f0eda318000 r--p 00000000 08:30 116816                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextMain.so.2.3.1",
+    "7f0eda318000-7f0eda647000 r-xp 00118000 08:30 116816                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextMain.so.2.3.1",
+    "7f0eda647000-7f0eda73f000 r--p 00447000 08:30 116816                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextMain.so.2.3.1",
+    "7f0eda73f000-7f0eda757000 r--p 0053e000 08:30 116816                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextMain.so.2.3.1",
+    "7f0eda757000-7f0eda758000 rw-p 00556000 08:30 116816                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextMain.so.2.3.1",
+    "7f0ef418e000-7f0ef42cf000 rw-s 00000000 08:30 252077                     /root/.cache/mesa_shader_cache/index",
+    "7f0ef42cf000-7f0ef42e3000 r--p 00000000 08:30 116810                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/OGRE/Plugin_ParticleFX.so.2.3.1",
+    "7f0ef42e3000-7f0ef42f3000 r-xp 00014000 08:30 116810                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/OGRE/Plugin_ParticleFX.so.2.3.1",
+    "7f0ef42f3000-7f0ef42fa000 r--p 00024000 08:30 116810                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/OGRE/Plugin_ParticleFX.so.2.3.1",
+    "7f0ef42fa000-7f0ef42fd000 r--p 0002a000 08:30 116810                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/OGRE/Plugin_ParticleFX.so.2.3.1",
+    "7f0ef42fd000-7f0ef42fe000 rw-p 0002d000 08:30 116810                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/OGRE/Plugin_ParticleFX.so.2.3.1",
+    "7f0ef4325000-7f0ef432f000 r--p 00000000 08:30 74835                      /usr/lib/x86_64-linux-gnu/libEGL_mesa.so.0.0.0",
+    "7f0ef432f000-7f0ef435a000 r-xp 0000a000 08:30 74835                      /usr/lib/x86_64-linux-gnu/libEGL_mesa.so.0.0.0",
+    "7f0ef435a000-7f0ef436a000 r--p 00035000 08:30 74835                      /usr/lib/x86_64-linux-gnu/libEGL_mesa.so.0.0.0",
+    "7f0ef436a000-7f0ef436d000 r--p 00044000 08:30 74835                      /usr/lib/x86_64-linux-gnu/libEGL_mesa.so.0.0.0",
+    "7f0ef436d000-7f0ef436e000 rw-p 00047000 08:30 74835                      /usr/lib/x86_64-linux-gnu/libEGL_mesa.so.0.0.0",
+    "7f0ef4400000-7f0ef452f000 r--p 00000000 08:30 117789                     /usr/lib/x86_64-linux-gnu/gz-rendering-8/engine-plugins/libgz-rendering8-ogre2.so.8.3.0",
+    "7f0ef452f000-7f0ef4647000 r-xp 0012f000 08:30 117789                     /usr/lib/x86_64-linux-gnu/gz-rendering-8/engine-plugins/libgz-rendering8-ogre2.so.8.3.0",
+    "7f0ef4647000-7f0ef4693000 r--p 00247000 08:30 117789                     /usr/lib/x86_64-linux-gnu/gz-rendering-8/engine-plugins/libgz-rendering8-ogre2.so.8.3.0",
+    "7f0ef4693000-7f0ef4694000 ---p 00293000 08:30 117789                     /usr/lib/x86_64-linux-gnu/gz-rendering-8/engine-plugins/libgz-rendering8-ogre2.so.8.3.0",
+    "7f0ef4694000-7f0ef472e000 r--p 00293000 08:30 117789                     /usr/lib/x86_64-linux-gnu/gz-rendering-8/engine-plugins/libgz-rendering8-ogre2.so.8.3.0",
+    "7f0ef472e000-7f0ef4730000 rw-p 0032d000 08:30 117789                     /usr/lib/x86_64-linux-gnu/gz-rendering-8/engine-plugins/libgz-rendering8-ogre2.so.8.3.0",
+    "7f0efc035000-7f0efc042000 r--p 00000000 08:30 48630                      /usr/lib/x86_64-linux-gnu/libglapi.so.0.0.0",
+    "7f0efc042000-7f0efc050000 r-xp 0000d000 08:30 48630                      /usr/lib/x86_64-linux-gnu/libglapi.so.0.0.0",
+    "7f0efc050000-7f0efc064000 r--p 0001b000 08:30 48630                      /usr/lib/x86_64-linux-gnu/libglapi.so.0.0.0",
+    "7f0efc064000-7f0efc065000 ---p 0002f000 08:30 48630                      /usr/lib/x86_64-linux-gnu/libglapi.so.0.0.0",
+    "7f0efc065000-7f0efc069000 r--p 0002f000 08:30 48630                      /usr/lib/x86_64-linux-gnu/libglapi.so.0.0.0",
+    "7f0efc069000-7f0efc06a000 rw-p 00033000 08:30 48630                      /usr/lib/x86_64-linux-gnu/libglapi.so.0.0.0",
+    "7f0efc06a000-7f0efc083000 r--p 00000000 08:30 48600                      /usr/lib/x86_64-linux-gnu/libGLX_mesa.so.0.0.0",
+    "7f0efc083000-7f0efc0c2000 r-xp 00019000 08:30 48600                      /usr/lib/x86_64-linux-gnu/libGLX_mesa.so.0.0.0",
+    "7f0efc0c2000-7f0efc0d8000 r--p 00058000 08:30 48600                      /usr/lib/x86_64-linux-gnu/libGLX_mesa.so.0.0.0",
+    "7f0efc0d8000-7f0efc0db000 r--p 0006d000 08:30 48600                      /usr/lib/x86_64-linux-gnu/libGLX_mesa.so.0.0.0",
+    "7f0efc0db000-7f0efc0dc000 rw-p 00070000 08:30 48600                      /usr/lib/x86_64-linux-gnu/libGLX_mesa.so.0.0.0",
+    "7f0efc0dd000-7f0efc10f000 r--p 00000000 08:30 116811                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/OGRE/RenderSystem_GL3Plus.so.2.3.1",
+    "7f0efc10f000-7f0efc165000 r-xp 00032000 08:30 116811                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/OGRE/RenderSystem_GL3Plus.so.2.3.1",
+    "7f0efc165000-7f0efc185000 r--p 00088000 08:30 116811                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/OGRE/RenderSystem_GL3Plus.so.2.3.1",
+    "7f0efc185000-7f0efc186000 ---p 000a8000 08:30 116811                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/OGRE/RenderSystem_GL3Plus.so.2.3.1",
+    "7f0efc186000-7f0efc18c000 r--p 000a8000 08:30 116811                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/OGRE/RenderSystem_GL3Plus.so.2.3.1",
+    "7f0efc18c000-7f0efc18d000 rw-p 000ae000 08:30 116811                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/OGRE/RenderSystem_GL3Plus.so.2.3.1",
+    "7f0efc2fb000-7f0efc2ff000 r--p 00000000 08:30 116819                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextPlanarReflections.so.2.3.1",
+    "7f0efc2ff000-7f0efc305000 r-xp 00004000 08:30 116819                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextPlanarReflections.so.2.3.1",
+    "7f0efc305000-7f0efc307000 r--p 0000a000 08:30 116819                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextPlanarReflections.so.2.3.1",
+    "7f0efc307000-7f0efc308000 r--p 0000b000 08:30 116819                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextPlanarReflections.so.2.3.1",
+    "7f0efc308000-7f0efc309000 rw-p 0000c000 08:30 116819                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextPlanarReflections.so.2.3.1",
+    "7f0efc309000-7f0efc321000 r--p 00000000 08:30 116818                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextOverlay.so.2.3.1",
+    "7f0efc321000-7f0efc342000 r-xp 00018000 08:30 116818                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextOverlay.so.2.3.1",
+    "7f0efc342000-7f0efc34e000 r--p 00039000 08:30 116818                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextOverlay.so.2.3.1",
+    "7f0efc34e000-7f0efc34f000 ---p 00045000 08:30 116818                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextOverlay.so.2.3.1",
+    "7f0efc34f000-7f0efc352000 r--p 00045000 08:30 116818                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextOverlay.so.2.3.1",
+    "7f0efc352000-7f0efc353000 rw-p 00048000 08:30 116818                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextOverlay.so.2.3.1",
+    "7f0efc353000-7f0efc360000 r--p 00000000 08:30 116815                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextHlmsUnlit.so.2.3.1",
+    "7f0efc360000-7f0efc372000 r-xp 0000d000 08:30 116815                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextHlmsUnlit.so.2.3.1",
+    "7f0efc372000-7f0efc378000 r--p 0001f000 08:30 116815                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextHlmsUnlit.so.2.3.1",
+    "7f0efc378000-7f0efc37a000 r--p 00024000 08:30 116815                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextHlmsUnlit.so.2.3.1",
+    "7f0efc37a000-7f0efc37b000 rw-p 00026000 08:30 116815                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextHlmsUnlit.so.2.3.1",
+    "7f0efc37b000-7f0efc3a2000 r--p 00000000 08:30 116814                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextHlmsPbs.so.2.3.1",
+    "7f0efc3a2000-7f0efc404000 r-xp 00027000 08:30 116814                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextHlmsPbs.so.2.3.1",
+    "7f0efc404000-7f0efc41a000 r--p 00089000 08:30 116814                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextHlmsPbs.so.2.3.1",
+    "7f0efc41a000-7f0efc41d000 r--p 0009e000 08:30 116814                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextHlmsPbs.so.2.3.1",
+    "7f0efc41d000-7f0efc41e000 rw-p 000a1000 08:30 116814                     /usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextHlmsPbs.so.2.3.1",
+    "7f0efc41e000-7f0efc421000 r--p 00000000 08:30 11580                      /usr/lib/x86_64-linux-gnu/libEGL.so.1.1.0",
+    "7f0efc421000-7f0efc42b000 r-xp 00003000 08:30 11580                      /usr/lib/x86_64-linux-gnu/libEGL.so.1.1.0",
+    "7f0efc42b000-7f0efc42f000 r--p 0000d000 08:30 11580                      /usr/lib/x86_64-linux-gnu/libEGL.so.1.1.0",
+    "7f0efc42f000-7f0efc430000 r--p 00010000 08:30 11580                      /usr/lib/x86_64-linux-gnu/libEGL.so.1.1.0",
+    "7f0efc430000-7f0efc431000 rw-p 00011000 08:30 11580                      /usr/lib/x86_64-linux-gnu/libEGL.so.1.1.0",
+    "7f0efcdf3000-7f0efce33000 r--p 00000000 08:30 107993                     /usr/lib/x86_64-linux-gnu/libgz-rendering8.so.8.3.0",
+    "7f0efce33000-7f0efce6e000 r-xp 00040000 08:30 107993                     /usr/lib/x86_64-linux-gnu/libgz-rendering8.so.8.3.0",
+    "7f0efce6e000-7f0efce85000 r--p 0007b000 08:30 107993                     /usr/lib/x86_64-linux-gnu/libgz-rendering8.so.8.3.0",
+    "7f0efce85000-7f0efce96000 r--p 00091000 08:30 107993                     /usr/lib/x86_64-linux-gnu/libgz-rendering8.so.8.3.0",
+    "7f0efce96000-7f0efce97000 rw-p 000a2000 08:30 107993                     /usr/lib/x86_64-linux-gnu/libgz-rendering8.so.8.3.0",
+    "7f0f1fae5000-7f0f1fae8000 r--p 00000000 08:30 11586                      /usr/lib/x86_64-linux-gnu/libGLX.so.0.0.0",
+    "7f0f1fae8000-7f0f1fb03000 r-xp 00003000 08:30 11586                      /usr/lib/x86_64-linux-gnu/libGLX.so.0.0.0",
+    "7f0f1fb03000-7f0f1fb06000 r--p 0001e000 08:30 11586                      /usr/lib/x86_64-linux-gnu/libGLX.so.0.0.0",
+    "7f0f1fb06000-7f0f1fb07000 ---p 00021000 08:30 11586                      /usr/lib/x86_64-linux-gnu/libGLX.so.0.0.0",
+    "7f0f1fb07000-7f0f1fb08000 r--p 00021000 08:30 11586                      /usr/lib/x86_64-linux-gnu/libGLX.so.0.0.0",
+    "7f0f1fb08000-7f0f1fb09000 rw-p 00022000 08:30 11586                      /usr/lib/x86_64-linux-gnu/libGLX.so.0.0.0"
+  ],
+  "actual_libraries": {
+    "/usr/lib/x86_64-linux-gnu/libLLVM-15.so.1": {
+      "sha256": "de2e35a4f9b3f6a06d2a8a3342b3f62a3842b1923b8dfc2a6ce48e0cc2d1e85d",
+      "inode": 11593,
+      "device_major": 8,
+      "device_minor": 48
+    },
+    "/usr/lib/x86_64-linux-gnu/dri/swrast_dri.so": {
+      "sha256": "1a274eaf6b7a9453256367af11f24deb858425df3336f7779a36b7644f3f425f",
+      "inode": 48557,
+      "device_major": 8,
+      "device_minor": 48
+    },
+    "/usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextMain.so.2.3.1": {
+      "sha256": "5c7093ecc7d2d4fcdcc5707f21feafe7351177176c07a30502ae8141c9c82ff5",
+      "inode": 116816,
+      "device_major": 8,
+      "device_minor": 48
+    },
+    "/root/.cache/mesa_shader_cache/index": {
+      "sha256": "1b00ff9592b92efa44e5692edf344d873fee3d3dbfe52f20a462e9a26e817b0d",
+      "inode": 252077,
+      "device_major": 8,
+      "device_minor": 48
+    },
+    "/usr/lib/x86_64-linux-gnu/OGRE-2.3/OGRE/Plugin_ParticleFX.so.2.3.1": {
+      "sha256": "b85636f016a424369bfe91c6ff8638789c4ea1609e327df3854846c509d326a1",
+      "inode": 116810,
+      "device_major": 8,
+      "device_minor": 48
+    },
+    "/usr/lib/x86_64-linux-gnu/libEGL_mesa.so.0.0.0": {
+      "sha256": "267172b546de46e94e0ce1318327b7cd68e791cf1c7e70b8c86c032a8e6430a8",
+      "inode": 74835,
+      "device_major": 8,
+      "device_minor": 48
+    },
+    "/usr/lib/x86_64-linux-gnu/gz-rendering-8/engine-plugins/libgz-rendering8-ogre2.so.8.3.0": {
+      "sha256": "b4fd576d6746ad10e79256c010c7f5e3b731f9ed128afbf5de22f9d76e007dba",
+      "inode": 117789,
+      "device_major": 8,
+      "device_minor": 48
+    },
+    "/usr/lib/x86_64-linux-gnu/libglapi.so.0.0.0": {
+      "sha256": "6b0b3d9623ca09ae7d16d3320d8866dc0557d67e9cbb63c12752fe723444a0a1",
+      "inode": 48630,
+      "device_major": 8,
+      "device_minor": 48
+    },
+    "/usr/lib/x86_64-linux-gnu/libGLX_mesa.so.0.0.0": {
+      "sha256": "75aa70461b471d69f95a48a29e8fb06bb919921f305799609132128a3f3942e9",
+      "inode": 48600,
+      "device_major": 8,
+      "device_minor": 48
+    },
+    "/usr/lib/x86_64-linux-gnu/OGRE-2.3/OGRE/RenderSystem_GL3Plus.so.2.3.1": {
+      "sha256": "1a5245cba34b42307e2f1fd143e9b661c65fe5df0e3cd52c717aa2a4c6c65d79",
+      "inode": 116811,
+      "device_major": 8,
+      "device_minor": 48
+    },
+    "/usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextPlanarReflections.so.2.3.1": {
+      "sha256": "4514bf77c5f27a8bcbf16009515edf912ce85fd3d0eac4c476126d9ea72ffa5b",
+      "inode": 116819,
+      "device_major": 8,
+      "device_minor": 48
+    },
+    "/usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextOverlay.so.2.3.1": {
+      "sha256": "f87e9025fe0a22534cdc91a90b45be77e43bd83b44e42f76226e03738c8a99d3",
+      "inode": 116818,
+      "device_major": 8,
+      "device_minor": 48
+    },
+    "/usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextHlmsUnlit.so.2.3.1": {
+      "sha256": "ae01873345966b348d91ac391dbd99a1a8562f0a9d6d3dcca22ed376e04e07e6",
+      "inode": 116815,
+      "device_major": 8,
+      "device_minor": 48
+    },
+    "/usr/lib/x86_64-linux-gnu/OGRE-2.3/libOgreNextHlmsPbs.so.2.3.1": {
+      "sha256": "cb9160e9bc1b3e34685d4a9963d4a22404349860595de9e0e08b62c1f044e189",
+      "inode": 116814,
+      "device_major": 8,
+      "device_minor": 48
+    },
+    "/usr/lib/x86_64-linux-gnu/libEGL.so.1.1.0": {
+      "sha256": "69816a7062d7d624144472f5ef71f5b23732b9003df7472662920602e62805db",
+      "inode": 11580,
+      "device_major": 8,
+      "device_minor": 48
+    },
+    "/usr/lib/x86_64-linux-gnu/libgz-rendering8.so.8.3.0": {
+      "sha256": "e9128f0a23a4c077e86b95f33b83a5924267eaa7ff95c281134b92cf8f270b46",
+      "inode": 107993,
+      "device_major": 8,
+      "device_minor": 48
+    },
+    "/usr/lib/x86_64-linux-gnu/libGLX.so.0.0.0": {
+      "sha256": "19ad2625b20a3afe6f5e55f9acd1e18e0dfc81b0965d7d3f2181a05b6d48edbf",
+      "inode": 11586,
+      "device_major": 8,
+      "device_minor": 48
+    }
+  },
+  "contract_issues": [],
+  "evidence_scope": "actual Gazebo process ELF mapping and selected environment; renderer performance is measured separately",
+  "attempts": 1
+}

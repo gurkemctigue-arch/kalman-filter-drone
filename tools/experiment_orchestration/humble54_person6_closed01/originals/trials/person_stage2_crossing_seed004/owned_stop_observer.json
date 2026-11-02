@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "scope": "STOP_OBSERVATION_ONLY",
+  "status": "EVIDENCE_COMPLETE",
+  "runtime_acceptance": "NOT_EVALUATED_EXISTING_PROCESS_AUDIT_REMAINS_REQUIRED",
+  "errors": [],
+  "events": 48,
+  "started_processes": {
+    "gazebo": {
+      "pid": 97174,
+      "ppid": 96808,
+      "pgid": 97174,
+      "session": 97174,
+      "start_ticks": 6038760,
+      "boot_id": "f79204a4-99cd-42cf-b886-aa905b1cac6a",
+      "clock_ticks_per_s": 100,
+      "observed_utc": "2026-11-02T20:15:38.334476+00:00"
+    },
+    "agent": {
+      "pid": 97180,
+      "ppid": 96808,
+      "pgid": 97180,
+      "session": 97180,
+      "start_ticks": 6038760,
+      "boot_id": "f79204a4-99cd-42cf-b886-aa905b1cac6a",
+      "clock_ticks_per_s": 100,
+      "observed_utc": "2026-11-02T20:15:38.341609+00:00"
+    },
+    "px4": {
+      "pid": 97313,
+      "ppid": 96808,
+      "pgid": 97313,
+      "session": 97313,
+      "start_ticks": 6039290,
+      "boot_id": "f79204a4-99cd-42cf-b886-aa905b1cac6a",
+      "clock_ticks_per_s": 100,
+      "observed_utc": "2026-11-02T20:15:43.637458+00:00"
+    },
+    "bag": {
+      "pid": 97521,
+      "ppid": 96808,
+      "pgid": 97521,
+      "session": 97521,
+      "start_ticks": 6039592,
+      "boot_id": "f79204a4-99cd-42cf-b886-aa905b1cac6a",
+      "clock_ticks_per_s": 100,
+      "observed_utc": "2026-11-02T20:15:46.663986+00:00"
+    },
+    "monitor": {
+      "pid": 97522,
+      "ppid": 96808,
+      "pgid": 97522,
+      "session": 97522,
+      "start_ticks": 6039593,
+      "boot_id": "f79204a4-99cd-42cf-b886-aa905b1cac6a",
+      "clock_ticks_per_s": 100,
+      "observed_utc": "2026-11-02T20:15:46.673234+00:00"
+    },
+    "ros": {
+      "pid": 97523,
+      "ppid": 96808,
+      "pgid": 97523,
+      "session": 97523,
+      "start_ticks": 6039594,
+      "boot_id": "f79204a4-99cd-42cf-b886-aa905b1cac6a",
+      "clock_ticks_per_s": 100,
+      "observed_utc": "2026-11-02T20:15:46.683602+00:00"
+    }
+  },
+  "stop_invocations": [
+    {
+      "component": "monitor",
+      "requested_timeout_s": 8,
+      "creation_identity": {
+        "pid": 97522,
+        "ppid": 96808,
+        "pgid": 97522,
+        "session": 97522,
+        "start_ticks": 6039593,
+        "boot_id": "f79204a4-99cd-42cf-b886-aa905b1cac6a",
+        "clock_ticks_per_s": 100,
+        "observed_utc": "2026-11-02T20:15:46.673234+00:00"
+      },
+      "signals": [],
+      "initial_poll_exit_code": 0,
+      "native_exit_code": 0,
+      "invocation_closed": true
+    },
+    {
+      "component": "bag",
+      "requested_timeout_s": 180,
+      "creation_identity": {
+        "pid": 97521,
+        "ppid": 96808,
+        "pgid": 97521,
+        "session": 97521,
+        "start_ticks": 6039592,
+        "boot_id": "f79204a4-99cd-42cf-b886-aa905b1cac6a",
+        "clock_ticks_per_s": 100,
+        "observed_utc": "2026-11-02T20:15:46.663986+00:00"
+      },
+      "signals": [
+        "SIGINT"
+      ],
+      "initial_poll_exit_code": null,
+      "native_exit_code": 0,
+      "invocation_closed": true
+    },
+    {
+      "component": "ros",
+      "requested_timeout_s": 8,
+      "creation_identity": {
+        "pid": 97523,
+        "ppid": 96808,
+        "pgid": 97523,
+        "session": 97523,
+        "start_ticks": 6039594,
+        "boot_id": "f79204a4-99cd-42cf-b886-aa905b1cac6a",
+        "clock_ticks_per_s": 100,
+        "observed_utc": "2026-11-02T20:15:46.683602+00:00"
+      },
+      "signals": [
+        "SIGINT"
+      ],
+      "initial_poll_exit_code": null,
+      "native_exit_code": 0,
+      "invocation_closed": true
+    },
+    {
+      "component": "sensor_faults",
+      "requested_timeout_s": 8,
+      "creation_identity": null,
+      "signals": [],
+      "missing_process": true,
+      "invocation_closed": true
+    },
+    {
+      "component": "px4",
+      "requested_timeout_s": 8,
+      "creation_identity": {
+        "pid": 97313,
+        "ppid": 96808,
+        "pgid": 97313,
+        "session": 97313,
+        "start_ticks": 6039290,
+        "boot_id": "f79204a4-99cd-42cf-b886-aa905b1cac6a",
+        "clock_ticks_per_s": 100,
+        "observed_utc": "2026-11-02T20:15:43.637458+00:00"
+      },
+      "signals": [
+        "SIGINT"
+      ],
+      "initial_poll_exit_code": null,
+      "native_exit_code": 0,
+      "invocation_closed": true
+    },
+    {
+      "component": "gazebo",
+      "requested_timeout_s": 8,
+      "creation_identity": {
+        "pid": 97174,
+        "ppid": 96808,
+        "pgid": 97174,
+        "session": 97174,
+        "start_ticks": 6038760,
+        "boot_id": "f79204a4-99cd-42cf-b886-aa905b1cac6a",
+        "clock_ticks_per_s": 100,
+        "observed_utc": "2026-11-02T20:15:38.334476+00:00"
+      },
+      "signals": [
+        "SIGINT"
+      ],
+      "initial_poll_exit_code": null,
+      "native_exit_code": 0,
+      "invocation_closed": true
+    },
+    {
+      "component": "agent",
+      "requested_timeout_s": 8,
+      "creation_identity": {
+        "pid": 97180,
+        "ppid": 96808,
+        "pgid": 97180,
+        "session": 97180,
+        "start_ticks": 6038760,
+        "boot_id": "f79204a4-99cd-42cf-b886-aa905b1cac6a",
+        "clock_ticks_per_s": 100,
+        "observed_utc": "2026-11-02T20:15:38.341609+00:00"
+      },
+      "signals": [
+        "SIGINT"
+      ],
+      "initial_poll_exit_code": null,
+      "native_exit_code": -2,
+      "invocation_closed": true
+    }
+  ],
+  "finished_utc": "2026-11-02T20:28:27.151692+00:00",
+  "limitations": [
+    "Observer timestamps surround original calls; instrumentation adds small I/O overhead.",
+    "Signal return is not process exit; only original Popen.wait/poll results are native exit observations.",
+    "No stack capture, cleanup action, retry or acceptance upgrade is added by this sidecar."
+  ]
+}

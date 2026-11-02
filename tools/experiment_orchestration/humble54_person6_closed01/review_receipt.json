@@ -1,0 +1,2032 @@
+{
+  "schema_version": 1,
+  "kind": "PERSON_FIRST6_SAVED_SMALL_EVIDENCE_CLOSURE_NOT_FORMAL_ACCEPTANCE",
+  "started_utc": "2026-11-02T21:41:34.366024+00:00",
+  "collector": {
+    "path": "D:\\基于yolo和卡尔曼滤波\\tools\\experiment_orchestration\\humble54_person6_closed01\\collect_snapshot.py",
+    "bytes": 19904,
+    "sha256": "670269d573c95765ff99d0bfd71965e8e957d69993a55480f8e17e32df219e1e"
+  },
+  "plan": {
+    "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\plan.json",
+    "bytes": 207807,
+    "sha256": "ed88783162991c151ab3d537d4eb7d3546b3688339a06db6f35b7f2ef7c48d4b"
+  },
+  "plan_digest": "3e34bdfae710f7b518a5f5fd1506054b03d3275c89e2f827ae136bfa2f682a31",
+  "plan_digest_valid": true,
+  "original_plan_denominator": 12,
+  "scope": "Six person development slots at seed004; full small-artifact review is new only for slots 4--6",
+  "prior_first3": {
+    "receipt": {
+      "path": "D:\\基于yolo和卡尔曼滤波\\tools\\diagnostics\\humble54_core12_first3_review01\\review_receipt.json",
+      "bytes": 107385,
+      "sha256": "edfd8ceb84b7d66c805d961c3986debfeca62ac08aa8c54da517add9e07a9019"
+    },
+    "reused_checked_small_artifact_count": 127,
+    "complete_127_artifact_set_rehashed": false
+  },
+  "registered_engineering_gates": {
+    "status": "REGISTERED",
+    "registered_utc": "2026-10-29T19:40:23.479593+00:00",
+    "maximum_base_link_distance_rmse_m": 1.0,
+    "maximum_base_link_height_rmse_m": 0.4,
+    "minimum_valid_state_coverage": 0.8,
+    "minimum_truth_coverage": 0.99,
+    "minimum_physical_identity_coverage": 0.8,
+    "require_final_window_settled": true,
+    "requirements_source": "planning/reliability-v4-engineering-requirements-decision-20261030.md",
+    "requirements_source_sha256": "1a31cd93b47991489ea57ea11ae3ee98a5f5a53e5eba9c52cc3e03f48868c2c6",
+    "physical_identity_required_groups": [
+      "stage2_crossing",
+      "stage3_multi_active"
+    ],
+    "note": "Prospective project engineering requirements selected before held-out outcomes, for complete 75 s tasks. Full denominators, unknowns, original safety gates and final active settled suffix are retained. Numeric registration alone does not authorize formal flights: full final-source 12-core and 16-extension development readiness, calibration, protocol sealing and actual capacity admission remain mandatory. No adaptive-KF superiority or real-flight claim."
+  },
+  "slots": [
+    {
+      "id": "person_stage1_velocity_seed004",
+      "original_slot": {
+        "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\slots\\person_stage1_velocity_seed004.json",
+        "bytes": 54283,
+        "sha256": "77d22a38c34ffae598063fd14d5520824d20c7ac9194f691ab051d26b6967291"
+      },
+      "status": "PASS",
+      "flight_exit_code": 0,
+      "infrastructure_stop": false,
+      "slot_digest_and_plan_binding_valid": true,
+      "navigation": {
+        "measured": {
+          "base_link_distance_rmse_m": 0.7729926019934313,
+          "base_link_height_rmse_m": 0.14961608584594116,
+          "valid_state_coverage": 0.9148936170212766,
+          "truth_coverage": 1.0
+        },
+        "six_independently_compared_gates": {
+          "base_link_distance": true,
+          "base_link_height": true,
+          "navigation_coverage": true,
+          "truth_coverage": true,
+          "final_distance_settled": true,
+          "final_height_settled": true
+        },
+        "original_status": "RECORDED_WITH_CENSORED_FAILURES",
+        "interval": {
+          "start_s": 17.752,
+          "end_s": 92.86,
+          "navigation_evaluation_start_s": 17.752,
+          "sample_period_s": 0.1
+        },
+        "scheduled_samples": 752,
+        "matched_truth_samples": 752,
+        "valid_navigation_samples": 688,
+        "navigation_denominator": 752,
+        "final_transients": {
+          "distance": {
+            "band_m": 0.5,
+            "minimum_in_band_duration_s": 3.0,
+            "settled_through_interval_end": true,
+            "settling_right_censored": false,
+            "settling_time_s": 36.400000000000006,
+            "duplicate_source_times": false
+          },
+          "height": {
+            "band_m": 0.25,
+            "minimum_in_band_duration_s": 3.0,
+            "settled_through_interval_end": true,
+            "settling_right_censored": false,
+            "settling_time_s": 32.10000000000001,
+            "duplicate_source_times": false
+          }
+        }
+      },
+      "detailed_small_artifact_review": {
+        "reused_from_pinned_first3_receipt": true,
+        "checked_small_artifact_count": 42,
+        "original_evaluation_statuses": {
+          "source_clock": "PASS",
+          "native_startup": "PASS",
+          "surface_flight": "PASS",
+          "navigation": "RECORDED_WITH_CENSORED_FAILURES"
+        },
+        "cleanup": {
+          "residual_processes": [],
+          "process_exit_codes": {
+            "gazebo": 0,
+            "agent": -2,
+            "px4": 0,
+            "bag": 0,
+            "monitor": 0,
+            "ros": 0
+          }
+        }
+      }
+    },
+    {
+      "id": "person_stage1_position_seed004",
+      "original_slot": {
+        "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\slots\\person_stage1_position_seed004.json",
+        "bytes": 54232,
+        "sha256": "f822f423fc00c29f390aea11f73bcbd88f9194ee56e4714eadf4e66cd448fb6a"
+      },
+      "status": "PASS",
+      "flight_exit_code": 0,
+      "infrastructure_stop": false,
+      "slot_digest_and_plan_binding_valid": true,
+      "navigation": {
+        "measured": {
+          "base_link_distance_rmse_m": 0.7584642060273573,
+          "base_link_height_rmse_m": 0.16642718435607692,
+          "valid_state_coverage": 0.9162234042553191,
+          "truth_coverage": 1.0
+        },
+        "six_independently_compared_gates": {
+          "base_link_distance": true,
+          "base_link_height": true,
+          "navigation_coverage": true,
+          "truth_coverage": true,
+          "final_distance_settled": true,
+          "final_height_settled": true
+        },
+        "original_status": "RECORDED_WITH_CENSORED_FAILURES",
+        "interval": {
+          "start_s": 19.0,
+          "end_s": 94.176,
+          "navigation_evaluation_start_s": 19.0,
+          "sample_period_s": 0.1
+        },
+        "scheduled_samples": 752,
+        "matched_truth_samples": 752,
+        "valid_navigation_samples": 689,
+        "navigation_denominator": 752,
+        "final_transients": {
+          "distance": {
+            "band_m": 0.5,
+            "minimum_in_band_duration_s": 3.0,
+            "settled_through_interval_end": true,
+            "settling_right_censored": false,
+            "settling_time_s": 42.400000000000006,
+            "duplicate_source_times": false
+          },
+          "height": {
+            "band_m": 0.25,
+            "minimum_in_band_duration_s": 3.0,
+            "settled_through_interval_end": true,
+            "settling_right_censored": false,
+            "settling_time_s": 32.1,
+            "duplicate_source_times": false
+          }
+        }
+      },
+      "detailed_small_artifact_review": {
+        "reused_from_pinned_first3_receipt": true,
+        "checked_small_artifact_count": 42,
+        "original_evaluation_statuses": {
+          "source_clock": "PASS",
+          "native_startup": "PASS",
+          "surface_flight": "PASS",
+          "navigation": "RECORDED_WITH_CENSORED_FAILURES"
+        },
+        "cleanup": {
+          "residual_processes": [],
+          "process_exit_codes": {
+            "gazebo": 0,
+            "agent": -2,
+            "px4": 0,
+            "bag": 0,
+            "monitor": 0,
+            "ros": 0
+          }
+        }
+      }
+    },
+    {
+      "id": "person_stage2_crossing_seed004",
+      "original_slot": {
+        "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\slots\\person_stage2_crossing_seed004.json",
+        "bytes": 64056,
+        "sha256": "992fe8eb0fe57740f338be22af827e7bf2e7468cf1e01cf69c7b334679ba5bb3"
+      },
+      "status": "PASS",
+      "flight_exit_code": 0,
+      "infrastructure_stop": false,
+      "slot_digest_and_plan_binding_valid": true,
+      "navigation": {
+        "measured": {
+          "base_link_distance_rmse_m": 0.8859598169520588,
+          "base_link_height_rmse_m": 0.17384178063954558,
+          "valid_state_coverage": 0.8909574468085106,
+          "truth_coverage": 1.0
+        },
+        "six_independently_compared_gates": {
+          "base_link_distance": true,
+          "base_link_height": true,
+          "navigation_coverage": true,
+          "truth_coverage": true,
+          "final_distance_settled": true,
+          "final_height_settled": true
+        },
+        "original_status": "RECORDED_WITH_CENSORED_FAILURES",
+        "interval": {
+          "start_s": 17.9,
+          "end_s": 93.02,
+          "navigation_evaluation_start_s": 17.9,
+          "sample_period_s": 0.1
+        },
+        "scheduled_samples": 752,
+        "matched_truth_samples": 752,
+        "valid_navigation_samples": 670,
+        "navigation_denominator": 752,
+        "final_transients": {
+          "distance": {
+            "band_m": 0.5,
+            "minimum_in_band_duration_s": 3.0,
+            "settled_through_interval_end": true,
+            "settling_right_censored": false,
+            "settling_time_s": 36.6,
+            "duplicate_source_times": false
+          },
+          "height": {
+            "band_m": 0.25,
+            "minimum_in_band_duration_s": 3.0,
+            "settled_through_interval_end": true,
+            "settling_right_censored": false,
+            "settling_time_s": 32.1,
+            "duplicate_source_times": false
+          }
+        }
+      },
+      "detailed_small_artifact_review": {
+        "reused_from_pinned_first3_receipt": true,
+        "checked_small_artifact_count": 43,
+        "original_evaluation_statuses": {
+          "source_clock": "PASS",
+          "native_startup": "PASS",
+          "surface_flight": "PASS",
+          "selected_target_safety": "PASS",
+          "physical_identity": "RECORDED_WITH_EXPLICIT_UNKNOWN_INTERVALS",
+          "navigation": "RECORDED_WITH_CENSORED_FAILURES"
+        },
+        "cleanup": {
+          "residual_processes": [],
+          "process_exit_codes": {
+            "gazebo": 0,
+            "agent": -2,
+            "px4": 0,
+            "bag": 0,
+            "monitor": 0,
+            "ros": 0
+          }
+        }
+      },
+      "full_task_identity_from_original_small_slot_only": {
+        "coverage_basis": "fixed_10hz_request_to_recorded_clock_end",
+        "sample_period_s": 0.1,
+        "interval": {
+          "start_s": 17.76,
+          "end_s": 93.02
+        },
+        "scheduled_samples": 753,
+        "correct": 649,
+        "wrong": 0,
+        "unknown": 104,
+        "known_coverage": 0.8618857901726428,
+        "retention_lower_bound": 0.8618857901726428,
+        "requested_task_count": 2,
+        "unconfirmed_requested_tasks": []
+      },
+      "diagnostic_identity_different_denominator_not_substituted": {
+        "frames": 752,
+        "correct": 651,
+        "wrong": 0,
+        "unknown": 101,
+        "known_coverage": 0.8656914893617021,
+        "retention_lower_bound": 0.8656914893617021
+      },
+      "oversized_identity_report_and_per_task_independently_reviewed": false
+    },
+    {
+      "id": "person_stage3_midpoint_seed004",
+      "original_slot": {
+        "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\slots\\person_stage3_midpoint_seed004.json",
+        "bytes": 58281,
+        "sha256": "f2eb8e3048004a257bdd5f6240a2ae9344921a0f24cf4dbb44a924d4b3d1418d"
+      },
+      "status": "PASS",
+      "flight_exit_code": 0,
+      "infrastructure_stop": false,
+      "slot_digest_and_plan_binding_valid": true,
+      "navigation": {
+        "measured": {
+          "base_link_distance_rmse_m": 0.7509361601494484,
+          "base_link_height_rmse_m": 0.15545504034364868,
+          "valid_state_coverage": 0.9148936170212766,
+          "truth_coverage": 1.0
+        },
+        "six_independently_compared_gates": {
+          "base_link_distance": true,
+          "base_link_height": true,
+          "navigation_coverage": true,
+          "truth_coverage": true,
+          "final_distance_settled": true,
+          "final_height_settled": true
+        },
+        "original_status": "RECORDED_WITH_CENSORED_FAILURES",
+        "interval": {
+          "start_s": 17.752,
+          "end_s": 92.916,
+          "navigation_evaluation_start_s": 17.752,
+          "sample_period_s": 0.1
+        },
+        "scheduled_samples": 752,
+        "matched_truth_samples": 752,
+        "valid_navigation_samples": 688,
+        "navigation_denominator": 752,
+        "final_transients": {
+          "distance": {
+            "band_m": 0.5,
+            "minimum_in_band_duration_s": 3.0,
+            "settled_through_interval_end": true,
+            "settling_right_censored": false,
+            "settling_time_s": 36.400000000000006,
+            "duplicate_source_times": false
+          },
+          "height": {
+            "band_m": 0.25,
+            "minimum_in_band_duration_s": 3.0,
+            "settled_through_interval_end": true,
+            "settling_right_censored": false,
+            "settling_time_s": 32.10000000000001,
+            "duplicate_source_times": false
+          }
+        }
+      },
+      "new_small_artifact_review": {
+        "small_artifact_bindings": [
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\agent.log",
+            "bytes": 41563,
+            "sha256": "eabde6fcff97ab7c1e48ef31f665d511b540575a05aa7201547e0791ac85fcec",
+            "expected_sha256": "eabde6fcff97ab7c1e48ef31f665d511b540575a05aa7201547e0791ac85fcec",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\bag.log",
+            "bytes": 4846,
+            "sha256": "3d97a826b96126965cff96a90c99c51c9dfe69d93f0afa31fd6c5fb63b8c57c8",
+            "expected_sha256": "3d97a826b96126965cff96a90c99c51c9dfe69d93f0afa31fd6c5fb63b8c57c8",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\bag_integrity.json",
+            "bytes": 5418,
+            "sha256": "556a0332d35e65b6e10bfc8b932d08e204e2a45cb6285dda2e3d8bc9ecf7477c",
+            "expected_sha256": "556a0332d35e65b6e10bfc8b932d08e204e2a45cb6285dda2e3d8bc9ecf7477c",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\configuration\\dds_runtime_actual.json",
+            "bytes": 38513,
+            "sha256": "095b92821eee87a08e78c6d8bdba5cfa0041b3feacce77aa198d71e174c86574",
+            "expected_sha256": "095b92821eee87a08e78c6d8bdba5cfa0041b3feacce77aa198d71e174c86574",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\configuration\\dds_runtime_after.json",
+            "bytes": 2982,
+            "sha256": "a1d70787298b9d77e06078c570cfc56cf2ef0d5be6d606fcf264b6c903755571",
+            "expected_sha256": "a1d70787298b9d77e06078c570cfc56cf2ef0d5be6d606fcf264b6c903755571",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\configuration\\dds_runtime_preflight.json",
+            "bytes": 3627,
+            "sha256": "87b780f02290762e554a8a02198f72f67f597a7a45d6b1be10cfa6d3571a4a17",
+            "expected_sha256": "87b780f02290762e554a8a02198f72f67f597a7a45d6b1be10cfa6d3571a4a17",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\configuration\\dds_runtime_registration.json",
+            "bytes": 2267,
+            "sha256": "4e517b62e823585b53dd2ac503f65eaf9bc3fd4c59d9d8fdb900d985f99d030d",
+            "expected_sha256": "4e517b62e823585b53dd2ac503f65eaf9bc3fd4c59d9d8fdb900d985f99d030d",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\configuration\\dds_runtime_summary.json",
+            "bytes": 598,
+            "sha256": "135800915788fcbe8d5f3df07bc9aa8147853c9d9dc90c312e052684d995cdb0",
+            "expected_sha256": "135800915788fcbe8d5f3df07bc9aa8147853c9d9dc90c312e052684d995cdb0",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\configuration\\gazebo_loaded_magnetic_libraries.json",
+            "bytes": 2318,
+            "sha256": "4f35f51b51165ec6f4568bef31e5b9a4869ad9c39a4e46316219570fdcb51d6a",
+            "expected_sha256": "4f35f51b51165ec6f4568bef31e5b9a4869ad9c39a4e46316219570fdcb51d6a",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\configuration\\gazebo_magnetic_reference.json",
+            "bytes": 2811,
+            "sha256": "e53bf39273da3af8acd82ca63831be1ba4854db2732797ceac137e7bb693c058",
+            "expected_sha256": "e53bf39273da3af8acd82ca63831be1ba4854db2732797ceac137e7bb693c058",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\configuration\\gazebo_magnetic_runtime_registration.json",
+            "bytes": 3597,
+            "sha256": "0e80e51994948b5186c3a76c7e5c9651d27cf3d9acf63109f3f66544de801e6a",
+            "expected_sha256": "0e80e51994948b5186c3a76c7e5c9651d27cf3d9acf63109f3f66544de801e6a",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\configuration\\gazebo_rendering_libraries.json",
+            "bytes": 15956,
+            "sha256": "0c11ec19a578b4c435ca29e700ce71924fde49984ccc92df6563f8d2bd844e7d",
+            "expected_sha256": "0c11ec19a578b4c435ca29e700ce71924fde49984ccc92df6563f8d2bd844e7d",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\configuration\\magnetic_environment.json",
+            "bytes": 11130,
+            "sha256": "9db1607c49fe336fa3d4df1ca384654ce554f66558d4e3edf934914edc82c7f5",
+            "expected_sha256": "9db1607c49fe336fa3d4df1ca384654ce554f66558d4e3edf934914edc82c7f5",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\configuration\\px4_magnetic_runtime.json",
+            "bytes": 5064,
+            "sha256": "3c4f9693cfab51c6b2049af619bfb6e3edbd22a8328468b7e84f75053485c66b",
+            "expected_sha256": "3c4f9693cfab51c6b2049af619bfb6e3edbd22a8328468b7e84f75053485c66b",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\configuration\\px4_magnetic_runtime_actual.json",
+            "bytes": 5367,
+            "sha256": "75a43baad16696c74b998e077a10b989572932fbd3281d8389d92da977724e33",
+            "expected_sha256": "75a43baad16696c74b998e077a10b989572932fbd3281d8389d92da977724e33",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\configuration\\px4_parameters.json",
+            "bytes": 1219,
+            "sha256": "1a338169536e6afdf81d25ed831660a0876c6f80aa77fa9338836d34884c00b2",
+            "expected_sha256": "1a338169536e6afdf81d25ed831660a0876c6f80aa77fa9338836d34884c00b2",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\configuration\\recording_policy.json",
+            "bytes": 2367,
+            "sha256": "7b4ef460f1bdbdca30685f822e850cb58ce5e68cb5f3ed986dc3f75afec22b38",
+            "expected_sha256": "7b4ef460f1bdbdca30685f822e850cb58ce5e68cb5f3ed986dc3f75afec22b38",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\configuration\\ros_gz_clock_runtime_actual.json",
+            "bytes": 21197,
+            "sha256": "5177ed103db48586dc9c87b338dc020c5008eb61d55062050e6370d12997b850",
+            "expected_sha256": "5177ed103db48586dc9c87b338dc020c5008eb61d55062050e6370d12997b850",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\configuration\\ros_gz_clock_runtime_after.json",
+            "bytes": 506,
+            "sha256": "045e75a07a6fd0e21a70026727f2298b686b1d4005ec6d3d1c5b86e617aa389d",
+            "expected_sha256": "045e75a07a6fd0e21a70026727f2298b686b1d4005ec6d3d1c5b86e617aa389d",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\configuration\\ros_gz_clock_runtime_preflight.json",
+            "bytes": 603,
+            "sha256": "8843672c9217024f788267db1826299f94d32492d316ed1664f56fbb3008c4c8",
+            "expected_sha256": "8843672c9217024f788267db1826299f94d32492d316ed1664f56fbb3008c4c8",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\configuration\\ros_gz_clock_runtime_registration.json",
+            "bytes": 26070,
+            "sha256": "908f8b7e18154377e57ce6f92922b63b36f7d4fb90ac79e61cc1b8dd95d3e4e4",
+            "expected_sha256": "908f8b7e18154377e57ce6f92922b63b36f7d4fb90ac79e61cc1b8dd95d3e4e4",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\configuration\\ros_gz_runtime_actual.json",
+            "bytes": 23425,
+            "sha256": "bf892552c0645710f34a869a9ba4e0c4d68dbeec7854b9826a1ce5dd046d99d8",
+            "expected_sha256": "bf892552c0645710f34a869a9ba4e0c4d68dbeec7854b9826a1ce5dd046d99d8",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\configuration\\ros_gz_runtime_after.json",
+            "bytes": 506,
+            "sha256": "1b6f6cbbe1f0b1b3e297c0429b57cdba63dfbf3293f6acc32653ccc297965778",
+            "expected_sha256": "1b6f6cbbe1f0b1b3e297c0429b57cdba63dfbf3293f6acc32653ccc297965778",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\configuration\\ros_gz_runtime_preflight.json",
+            "bytes": 597,
+            "sha256": "4e61cb57921277d8bca992c53b3a57c61a886c13767886a1b05f95d7b8c5cf44",
+            "expected_sha256": "4e61cb57921277d8bca992c53b3a57c61a886c13767886a1b05f95d7b8c5cf44",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\configuration\\ros_gz_runtime_registration.json",
+            "bytes": 29086,
+            "sha256": "08cbc9ea8a2b6e50b71efc4910e5adef7c309b742fb0e9177cd803e934a028af",
+            "expected_sha256": "08cbc9ea8a2b6e50b71efc4910e5adef7c309b742fb0e9177cd803e934a028af",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\configuration\\sensor_faults.json",
+            "bytes": 15,
+            "sha256": "de3a8816921f4512bf08dfef0a8881918d70dcde992f5109fa0078e029afd6c3",
+            "expected_sha256": "de3a8816921f4512bf08dfef0a8881918d70dcde992f5109fa0078e029afd6c3",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\configuration\\source_sha256.json",
+            "bytes": 23847,
+            "sha256": "0094a5013801e67fb6ae692cef785b190272708d71bfb0cd4a3349a0eb09ee46",
+            "expected_sha256": "0094a5013801e67fb6ae692cef785b190272708d71bfb0cd4a3349a0eb09ee46",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\flight_evaluation.json",
+            "bytes": 24383,
+            "sha256": "a38b27b88656ecd5a7e0497251bfaad4fb06ff5cc404a90f56801aa6513c4633",
+            "expected_sha256": "a38b27b88656ecd5a7e0497251bfaad4fb06ff5cc404a90f56801aa6513c4633",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\gazebo.log",
+            "bytes": 1417,
+            "sha256": "91386e5fcea587bfd64af5c573c650a3578f660243f692d671d1905d06d34053",
+            "expected_sha256": "91386e5fcea587bfd64af5c573c650a3578f660243f692d671d1905d06d34053",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\gimbal_evaluation.json",
+            "bytes": 9884,
+            "sha256": "191f0553756a8af6c590a220ba509f72e6839bad632dfae10d36aadbdd3a12a9",
+            "expected_sha256": "191f0553756a8af6c590a220ba509f72e6839bad632dfae10d36aadbdd3a12a9",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\graph_startup_readiness.json",
+            "bytes": 450799,
+            "sha256": "3149a648ada8e15c167aee59726ec98cb64fbb6093f2cb1de1c510fe1c640c06",
+            "expected_sha256": "3149a648ada8e15c167aee59726ec98cb64fbb6093f2cb1de1c510fe1c640c06",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\monitor.log",
+            "bytes": 9425,
+            "sha256": "7be0a0fd2a7101481596a90ad4eaef56634ef0fca03b9bbc000074b1a0bd1472",
+            "expected_sha256": "7be0a0fd2a7101481596a90ad4eaef56634ef0fca03b9bbc000074b1a0bd1472",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\native_startup_report.json",
+            "bytes": 9161,
+            "sha256": "e8ec5995bcb5343566e9217816803c40a8599f828bc63517ff0c739ca776d735",
+            "expected_sha256": "e8ec5995bcb5343566e9217816803c40a8599f828bc63517ff0c739ca776d735",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\navigation_reference_evaluation.json",
+            "bytes": 145328,
+            "sha256": "8bb22ab8e137755cbdab7f6f958904aae16acdd848e9bbd2a95a4c8237699348",
+            "expected_sha256": "8bb22ab8e137755cbdab7f6f958904aae16acdd848e9bbd2a95a4c8237699348",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\owned_stop_observer.json",
+            "bytes": 5709,
+            "sha256": "aa9987841ae8f4aa2704a7147c3196d396e63267983f2d3632c1bfeffea272dc",
+            "expected_sha256": "aa9987841ae8f4aa2704a7147c3196d396e63267983f2d3632c1bfeffea272dc",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\process_exit_codes.json",
+            "bytes": 84,
+            "sha256": "71bb8487608afe6c28385f5b082d043d0d055cdff8adfb6a6746ada18049954f",
+            "expected_sha256": "71bb8487608afe6c28385f5b082d043d0d055cdff8adfb6a6746ada18049954f",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\px4.log",
+            "bytes": 5541,
+            "sha256": "572191ec37f983acccefd046d4b89eada3994c28df281ea7c2982d31d5a84ac3",
+            "expected_sha256": "572191ec37f983acccefd046d4b89eada3994c28df281ea7c2982d31d5a84ac3",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\px4_source_clock_report.json",
+            "bytes": 7556,
+            "sha256": "6d82fe2dbf5c0620b5e0ca3c5b289794f07eb78efb3d4115258fff30c827be1a",
+            "expected_sha256": "6d82fe2dbf5c0620b5e0ca3c5b289794f07eb78efb3d4115258fff30c827be1a",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\recording_closure.json",
+            "bytes": 25800,
+            "sha256": "1c80c02b0beca351252cb114106457fbb48a0bb0151e06bc36f2af658c6ec760",
+            "expected_sha256": "1c80c02b0beca351252cb114106457fbb48a0bb0151e06bc36f2af658c6ec760",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\recording_closure_observer.json",
+            "bytes": 2581,
+            "sha256": "3008b565d5cb4390d9f56fa77536d60a50d2e4902afc09b12f1a8b8cd6b6dc7d",
+            "expected_sha256": "3008b565d5cb4390d9f56fa77536d60a50d2e4902afc09b12f1a8b8cd6b6dc7d",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\run_config.json",
+            "bytes": 4443,
+            "sha256": "d8327006c416af3841a43351ff320c219c06c84f2a7c4f9ac4e19717794b1ef2",
+            "expected_sha256": "d8327006c416af3841a43351ff320c219c06c84f2a7c4f9ac4e19717794b1ef2",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\summary.json",
+            "bytes": 4875,
+            "sha256": "c2aa37bc28f05815a6552ae65890701a10cef935a3e42885930535e149a152d5",
+            "expected_sha256": "c2aa37bc28f05815a6552ae65890701a10cef935a3e42885930535e149a152d5",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\unpause.log",
+            "bytes": 12,
+            "sha256": "46eeeedc969f106320d874ff0cb0c5c1ea169952665865f64b8f5318d626c8a3",
+            "expected_sha256": "46eeeedc969f106320d874ff0cb0c5c1ea169952665865f64b8f5318d626c8a3",
+            "matches": true
+          }
+        ],
+        "oversized_json_logs_not_read_or_hashed": [
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\ros.log",
+            "bytes": 2459748
+          }
+        ],
+        "original_evaluations": [
+          {
+            "kind": "source_clock",
+            "slot_result": "PASS",
+            "execution_code": 0,
+            "execution_error": null,
+            "report": {
+              "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\px4_source_clock_report.json",
+              "bytes": 7556,
+              "sha256": "6d82fe2dbf5c0620b5e0ca3c5b289794f07eb78efb3d4115258fff30c827be1a"
+            },
+            "report_matches_slot": true,
+            "recorded_status": "PASS",
+            "saved_script_sha_matches_plan": true,
+            "saved_dependencies_match_plan": true,
+            "counts": {
+              "raw_px4": 9236,
+              "timing_diagnostics": 9236,
+              "adapted_odometry": 9236,
+              "claimed_accepted": 9236,
+              "claimed_rejected": 0,
+              "independently_matched_triplets": 9236
+            },
+            "failures": {},
+            "incomplete": {}
+          },
+          {
+            "kind": "native_startup",
+            "slot_result": "PASS",
+            "execution_code": 0,
+            "execution_error": null,
+            "report": {
+              "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\native_startup_report.json",
+              "bytes": 9161,
+              "sha256": "e8ec5995bcb5343566e9217816803c40a8599f828bc63517ff0c739ca776d735"
+            },
+            "report_matches_slot": true,
+            "recorded_status": "PASS",
+            "saved_script_sha_matches_plan": true,
+            "saved_dependencies_match_plan": true,
+            "all_saved_checks_true": {
+              "configuration_registered": true,
+              "startup_parameter_values": true,
+              "native_takeoff_command": true,
+              "command_sequence": true,
+              "px4_mode_sequence": true,
+              "pre_offboard_ground_readiness": true,
+              "handoff_readiness_and_settle": true,
+              "visual_task_after_handoff": true,
+              "full_recording_coverage": true
+            }
+          },
+          {
+            "kind": "surface_flight",
+            "slot_result": "PASS",
+            "execution_code": 0,
+            "execution_error": null,
+            "report": {
+              "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\flight_evaluation.json",
+              "bytes": 24383,
+              "sha256": "a38b27b88656ecd5a7e0497251bfaad4fb06ff5cc404a90f56801aa6513c4633"
+            },
+            "report_matches_slot": true,
+            "recorded_status": "PASS"
+          },
+          {
+            "kind": "gimbal",
+            "slot_result": "PASS",
+            "execution_code": 0,
+            "execution_error": null,
+            "report": {
+              "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\gimbal_evaluation.json",
+              "bytes": 9884,
+              "sha256": "191f0553756a8af6c590a220ba509f72e6839bad632dfae10d36aadbdd3a12a9"
+            },
+            "report_matches_slot": true,
+            "recorded_status": "PASS",
+            "saved_script_sha_matches_plan": true,
+            "saved_dependencies_match_plan": true,
+            "all_saved_checks_true": {
+              "no_bag_read_or_channel_errors": true,
+              "three_encoder_joints_recorded": true,
+              "all_three_commands_recorded": true,
+              "camera_tf_is_dynamic_feedback_only": true,
+              "tf_matches_source_feedback_geometry": true,
+              "physical_link_pose_matches_feedback_geometry": true,
+              "dynamic_tf_available_at_image_timestamps": true,
+              "diagnostic_feedback_matches_raw_encoders": true,
+              "follow_and_visual_metrics_recorded": true,
+              "midpoint_never_publishes_active_yaw": true,
+              "midpoint_setpoint_is_zero": true
+            }
+          },
+          {
+            "kind": "navigation",
+            "slot_result": "RECORDED_WITH_CENSORED_FAILURES",
+            "execution_code": 0,
+            "execution_error": null,
+            "report": {
+              "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004\\navigation_reference_evaluation.json",
+              "bytes": 145328,
+              "sha256": "8bb22ab8e137755cbdab7f6f958904aae16acdd848e9bbd2a95a4c8237699348"
+            },
+            "report_matches_slot": true,
+            "recorded_status": "RECORDED_WITH_CENSORED_FAILURES",
+            "saved_script_sha_matches_plan": true,
+            "saved_dependencies_match_plan": true
+          }
+        ],
+        "runtime_plan_comparisons": {
+          "name": true,
+          "target_class": true,
+          "stage": true,
+          "seed": true,
+          "speed_mps": true,
+          "command_mode": true,
+          "takeoff_mode": true,
+          "gimbal_mode": true,
+          "target_mode": true,
+          "association_mode": true,
+          "initial_select": true,
+          "initial_min_candidates": true,
+          "scenario_kind": true,
+          "multi_target": true,
+          "inference_image_size": true,
+          "inference_threads": true,
+          "desired_distance_m": true,
+          "gazebo_render_driver": true,
+          "split_clock_bridge": true,
+          "px4_adapter_publish_rate_hz": true,
+          "duration": true,
+          "wall_timeout": true,
+          "model": true,
+          "real_time_factor": true,
+          "flight_argv": true,
+          "stream_source_ages": true,
+          "stream_wall_timeouts": true
+        },
+        "saved_runtime_subsystem_errors": {
+          "simulation_pacing": [],
+          "exclusive_navigation": [],
+          "magnetic_environment": [],
+          "gazebo_rendering": []
+        },
+        "saved_runtime_and_archive_statuses": {
+          "recording_closure.json": "PASS",
+          "recording_closure_observer.json": "CLOSED",
+          "bag_integrity.json": "PASS",
+          "configuration/dds_runtime_summary.json": "PASS",
+          "configuration/dds_runtime_after.json": "PASS",
+          "configuration/ros_gz_runtime_after.json": "PASS",
+          "configuration/ros_gz_clock_runtime_after.json": "PASS"
+        },
+        "cleanup": {
+          "residual_processes": [],
+          "process_exit_codes": {
+            "gazebo": 0,
+            "agent": -2,
+            "px4": 0,
+            "bag": 0,
+            "monitor": 0,
+            "ros": 0
+          }
+        },
+        "owned_stop_observer": {
+          "status": "EVIDENCE_COMPLETE",
+          "runtime_acceptance": "NOT_EVALUATED_EXISTING_PROCESS_AUDIT_REMAINS_REQUIRED",
+          "errors": []
+        },
+        "source_snapshot": {
+          "count": 204,
+          "original_scanner_plus_model_dds_exact_match": true,
+          "extra_count": 17
+        }
+      }
+    },
+    {
+      "id": "person_stage3_active_seed004",
+      "original_slot": {
+        "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\slots\\person_stage3_active_seed004.json",
+        "bytes": 58111,
+        "sha256": "73f178cb86407207f6356a17d2ad7520f30d1b958e2e60bdd5c202b0e759e122"
+      },
+      "status": "PASS",
+      "flight_exit_code": 0,
+      "infrastructure_stop": false,
+      "slot_digest_and_plan_binding_valid": true,
+      "navigation": {
+        "measured": {
+          "base_link_distance_rmse_m": 0.7458109165857431,
+          "base_link_height_rmse_m": 0.1613065523286682,
+          "valid_state_coverage": 0.9162234042553191,
+          "truth_coverage": 1.0
+        },
+        "six_independently_compared_gates": {
+          "base_link_distance": true,
+          "base_link_height": true,
+          "navigation_coverage": true,
+          "truth_coverage": true,
+          "final_distance_settled": true,
+          "final_height_settled": true
+        },
+        "original_status": "RECORDED_WITH_CENSORED_FAILURES",
+        "interval": {
+          "start_s": 17.8,
+          "end_s": 92.948,
+          "navigation_evaluation_start_s": 17.8,
+          "sample_period_s": 0.1
+        },
+        "scheduled_samples": 752,
+        "matched_truth_samples": 752,
+        "valid_navigation_samples": 689,
+        "navigation_denominator": 752,
+        "final_transients": {
+          "distance": {
+            "band_m": 0.5,
+            "minimum_in_band_duration_s": 3.0,
+            "settled_through_interval_end": true,
+            "settling_right_censored": false,
+            "settling_time_s": 36.30000000000001,
+            "duplicate_source_times": false
+          },
+          "height": {
+            "band_m": 0.25,
+            "minimum_in_band_duration_s": 3.0,
+            "settled_through_interval_end": true,
+            "settling_right_censored": false,
+            "settling_time_s": 32.10000000000001,
+            "duplicate_source_times": false
+          }
+        }
+      },
+      "new_small_artifact_review": {
+        "small_artifact_bindings": [
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\agent.log",
+            "bytes": 41562,
+            "sha256": "684f0897e87bfe0b40bcdd592ccf810e55a28f22f96f8abdfc960397805855e0",
+            "expected_sha256": "684f0897e87bfe0b40bcdd592ccf810e55a28f22f96f8abdfc960397805855e0",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\bag.log",
+            "bytes": 4846,
+            "sha256": "414f5396c090117280d973a1e2f798e6a9a7af818bb8216e85fc2a021300982c",
+            "expected_sha256": "414f5396c090117280d973a1e2f798e6a9a7af818bb8216e85fc2a021300982c",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\bag_integrity.json",
+            "bytes": 5422,
+            "sha256": "761aaf03bd25338c7447af261985d5810c609a85b2b78d24da1741974d1bd8bc",
+            "expected_sha256": "761aaf03bd25338c7447af261985d5810c609a85b2b78d24da1741974d1bd8bc",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\configuration\\dds_runtime_actual.json",
+            "bytes": 38582,
+            "sha256": "f334117aebd4926f9d0f2c0bbc8290254d6a131b06dacb656c2690a7145786fe",
+            "expected_sha256": "f334117aebd4926f9d0f2c0bbc8290254d6a131b06dacb656c2690a7145786fe",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\configuration\\dds_runtime_after.json",
+            "bytes": 2982,
+            "sha256": "eed0e63e67189194563ac070b69d082f0a19eccf61fab98750e48ee975f5d6ca",
+            "expected_sha256": "eed0e63e67189194563ac070b69d082f0a19eccf61fab98750e48ee975f5d6ca",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\configuration\\dds_runtime_preflight.json",
+            "bytes": 3627,
+            "sha256": "1d7b0268bad06b79b2d931a4e58076de93c038f79b3ee7778e992ecfda6f911f",
+            "expected_sha256": "1d7b0268bad06b79b2d931a4e58076de93c038f79b3ee7778e992ecfda6f911f",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\configuration\\dds_runtime_registration.json",
+            "bytes": 2267,
+            "sha256": "4e517b62e823585b53dd2ac503f65eaf9bc3fd4c59d9d8fdb900d985f99d030d",
+            "expected_sha256": "4e517b62e823585b53dd2ac503f65eaf9bc3fd4c59d9d8fdb900d985f99d030d",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\configuration\\dds_runtime_summary.json",
+            "bytes": 598,
+            "sha256": "135800915788fcbe8d5f3df07bc9aa8147853c9d9dc90c312e052684d995cdb0",
+            "expected_sha256": "135800915788fcbe8d5f3df07bc9aa8147853c9d9dc90c312e052684d995cdb0",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\configuration\\gazebo_loaded_magnetic_libraries.json",
+            "bytes": 2325,
+            "sha256": "022c3d8dbc2901969348ca5b699b38429c51ccd5d34a557f107a97a21ded15fb",
+            "expected_sha256": "022c3d8dbc2901969348ca5b699b38429c51ccd5d34a557f107a97a21ded15fb",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\configuration\\gazebo_magnetic_reference.json",
+            "bytes": 2811,
+            "sha256": "e53bf39273da3af8acd82ca63831be1ba4854db2732797ceac137e7bb693c058",
+            "expected_sha256": "e53bf39273da3af8acd82ca63831be1ba4854db2732797ceac137e7bb693c058",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\configuration\\gazebo_magnetic_runtime_registration.json",
+            "bytes": 3597,
+            "sha256": "0e80e51994948b5186c3a76c7e5c9651d27cf3d9acf63109f3f66544de801e6a",
+            "expected_sha256": "0e80e51994948b5186c3a76c7e5c9651d27cf3d9acf63109f3f66544de801e6a",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\configuration\\gazebo_rendering_libraries.json",
+            "bytes": 15957,
+            "sha256": "7ad3a38c085614ce888bee304e970b6108f469749dfca099daef43e28da64253",
+            "expected_sha256": "7ad3a38c085614ce888bee304e970b6108f469749dfca099daef43e28da64253",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\configuration\\magnetic_environment.json",
+            "bytes": 11126,
+            "sha256": "9fa1c95518cd0982a9779483307772c609220023536fbc4d19ee6fd5d0380766",
+            "expected_sha256": "9fa1c95518cd0982a9779483307772c609220023536fbc4d19ee6fd5d0380766",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\configuration\\px4_magnetic_runtime.json",
+            "bytes": 5064,
+            "sha256": "3c4f9693cfab51c6b2049af619bfb6e3edbd22a8328468b7e84f75053485c66b",
+            "expected_sha256": "3c4f9693cfab51c6b2049af619bfb6e3edbd22a8328468b7e84f75053485c66b",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\configuration\\px4_magnetic_runtime_actual.json",
+            "bytes": 5365,
+            "sha256": "b885cef5377f6b85be2e18c89799eda37da43adf7fe3c5b060fce976da3e73d8",
+            "expected_sha256": "b885cef5377f6b85be2e18c89799eda37da43adf7fe3c5b060fce976da3e73d8",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\configuration\\px4_parameters.json",
+            "bytes": 1219,
+            "sha256": "cea9d84e05bdb10d97123e4d6ffc7835c03d3f78016bbecad6ed2930bf8ea1d2",
+            "expected_sha256": "cea9d84e05bdb10d97123e4d6ffc7835c03d3f78016bbecad6ed2930bf8ea1d2",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\configuration\\recording_policy.json",
+            "bytes": 2363,
+            "sha256": "3954ff54593e38cf2680ce505b71eb7e80f64a45cf5e8f2102875b1074941b10",
+            "expected_sha256": "3954ff54593e38cf2680ce505b71eb7e80f64a45cf5e8f2102875b1074941b10",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\configuration\\ros_gz_clock_runtime_actual.json",
+            "bytes": 21214,
+            "sha256": "195141eeda8c308617b682018b03a5ca8913e3727cd122d158db1ecf0a003401",
+            "expected_sha256": "195141eeda8c308617b682018b03a5ca8913e3727cd122d158db1ecf0a003401",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\configuration\\ros_gz_clock_runtime_after.json",
+            "bytes": 506,
+            "sha256": "045e75a07a6fd0e21a70026727f2298b686b1d4005ec6d3d1c5b86e617aa389d",
+            "expected_sha256": "045e75a07a6fd0e21a70026727f2298b686b1d4005ec6d3d1c5b86e617aa389d",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\configuration\\ros_gz_clock_runtime_preflight.json",
+            "bytes": 603,
+            "sha256": "8843672c9217024f788267db1826299f94d32492d316ed1664f56fbb3008c4c8",
+            "expected_sha256": "8843672c9217024f788267db1826299f94d32492d316ed1664f56fbb3008c4c8",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\configuration\\ros_gz_clock_runtime_registration.json",
+            "bytes": 26070,
+            "sha256": "908f8b7e18154377e57ce6f92922b63b36f7d4fb90ac79e61cc1b8dd95d3e4e4",
+            "expected_sha256": "908f8b7e18154377e57ce6f92922b63b36f7d4fb90ac79e61cc1b8dd95d3e4e4",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\configuration\\ros_gz_runtime_actual.json",
+            "bytes": 23442,
+            "sha256": "55e171acd93313503828c33db3dee7ecc38a233f089ddf9d2dd1ff88e9844b9c",
+            "expected_sha256": "55e171acd93313503828c33db3dee7ecc38a233f089ddf9d2dd1ff88e9844b9c",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\configuration\\ros_gz_runtime_after.json",
+            "bytes": 506,
+            "sha256": "1b6f6cbbe1f0b1b3e297c0429b57cdba63dfbf3293f6acc32653ccc297965778",
+            "expected_sha256": "1b6f6cbbe1f0b1b3e297c0429b57cdba63dfbf3293f6acc32653ccc297965778",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\configuration\\ros_gz_runtime_preflight.json",
+            "bytes": 597,
+            "sha256": "4e61cb57921277d8bca992c53b3a57c61a886c13767886a1b05f95d7b8c5cf44",
+            "expected_sha256": "4e61cb57921277d8bca992c53b3a57c61a886c13767886a1b05f95d7b8c5cf44",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\configuration\\ros_gz_runtime_registration.json",
+            "bytes": 29086,
+            "sha256": "08cbc9ea8a2b6e50b71efc4910e5adef7c309b742fb0e9177cd803e934a028af",
+            "expected_sha256": "08cbc9ea8a2b6e50b71efc4910e5adef7c309b742fb0e9177cd803e934a028af",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\configuration\\sensor_faults.json",
+            "bytes": 15,
+            "sha256": "de3a8816921f4512bf08dfef0a8881918d70dcde992f5109fa0078e029afd6c3",
+            "expected_sha256": "de3a8816921f4512bf08dfef0a8881918d70dcde992f5109fa0078e029afd6c3",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\configuration\\source_sha256.json",
+            "bytes": 23847,
+            "sha256": "0094a5013801e67fb6ae692cef785b190272708d71bfb0cd4a3349a0eb09ee46",
+            "expected_sha256": "0094a5013801e67fb6ae692cef785b190272708d71bfb0cd4a3349a0eb09ee46",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\flight_evaluation.json",
+            "bytes": 24226,
+            "sha256": "2b81b7cd01e77b1f2efb075d8f7bc42d79ddeab99a9c2b0308025f1477cd2fbb",
+            "expected_sha256": "2b81b7cd01e77b1f2efb075d8f7bc42d79ddeab99a9c2b0308025f1477cd2fbb",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\gazebo.log",
+            "bytes": 1417,
+            "sha256": "91386e5fcea587bfd64af5c573c650a3578f660243f692d671d1905d06d34053",
+            "expected_sha256": "91386e5fcea587bfd64af5c573c650a3578f660243f692d671d1905d06d34053",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\gimbal_evaluation.json",
+            "bytes": 10197,
+            "sha256": "a4e3c3cc9bf1b04cec08cbfd681e4951e3ede49bf8b5004b659c77c0d4a984c1",
+            "expected_sha256": "a4e3c3cc9bf1b04cec08cbfd681e4951e3ede49bf8b5004b659c77c0d4a984c1",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\graph_startup_readiness.json",
+            "bytes": 462370,
+            "sha256": "961ffad6de19b55528bdce18703ed36efeff0d1ea3fca559187c16fa0927d399",
+            "expected_sha256": "961ffad6de19b55528bdce18703ed36efeff0d1ea3fca559187c16fa0927d399",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\monitor.log",
+            "bytes": 9371,
+            "sha256": "bcdebadf3a4320109a6466513ac24662f86f0f8d1f94953843ee0bdf6c9947d8",
+            "expected_sha256": "bcdebadf3a4320109a6466513ac24662f86f0f8d1f94953843ee0bdf6c9947d8",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\native_startup_report.json",
+            "bytes": 9142,
+            "sha256": "84131033b91480818205ff1ac7de23d2d9d587bd7fd46ad06bc963f962491176",
+            "expected_sha256": "84131033b91480818205ff1ac7de23d2d9d587bd7fd46ad06bc963f962491176",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\navigation_reference_evaluation.json",
+            "bytes": 145311,
+            "sha256": "6d0d54495e3c29efb0797dab94bade66a6429b372808f10c4c0ecfb09c19c2a3",
+            "expected_sha256": "6d0d54495e3c29efb0797dab94bade66a6429b372808f10c4c0ecfb09c19c2a3",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\owned_stop_observer.json",
+            "bytes": 5757,
+            "sha256": "6f76c592f14aa72ddb9416b0e128c8d5aaf398a6111bad7c3db177c4c9187d7d",
+            "expected_sha256": "6f76c592f14aa72ddb9416b0e128c8d5aaf398a6111bad7c3db177c4c9187d7d",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\process_exit_codes.json",
+            "bytes": 84,
+            "sha256": "71bb8487608afe6c28385f5b082d043d0d055cdff8adfb6a6746ada18049954f",
+            "expected_sha256": "71bb8487608afe6c28385f5b082d043d0d055cdff8adfb6a6746ada18049954f",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\px4.log",
+            "bytes": 5541,
+            "sha256": "dd9ea787896c2d08104cf749953626036b04fbbb2b9927ae488a22c491fc17e8",
+            "expected_sha256": "dd9ea787896c2d08104cf749953626036b04fbbb2b9927ae488a22c491fc17e8",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\px4_source_clock_report.json",
+            "bytes": 7553,
+            "sha256": "869584a311541d9aa048ff7891737ef68bade050a696832297d50539d7a23563",
+            "expected_sha256": "869584a311541d9aa048ff7891737ef68bade050a696832297d50539d7a23563",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\recording_closure.json",
+            "bytes": 25802,
+            "sha256": "dc2a4f66a37e9bb1e5507569efef5bfcc9649cab7693869130bb4f2f352dbe8a",
+            "expected_sha256": "dc2a4f66a37e9bb1e5507569efef5bfcc9649cab7693869130bb4f2f352dbe8a",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\recording_closure_observer.json",
+            "bytes": 2582,
+            "sha256": "8eb2a667e9a0a52ba760a8647bac53b4741121a72f5b1febe2e65f86d025b46b",
+            "expected_sha256": "8eb2a667e9a0a52ba760a8647bac53b4741121a72f5b1febe2e65f86d025b46b",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\run_config.json",
+            "bytes": 4439,
+            "sha256": "68e25686afebed5e256afab7a22a319ddc01100dd1070c7ba5fdf8108b88604a",
+            "expected_sha256": "68e25686afebed5e256afab7a22a319ddc01100dd1070c7ba5fdf8108b88604a",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\summary.json",
+            "bytes": 4831,
+            "sha256": "81acbcf03dd5c404d4ccc6ac1daf57419ff27d92fe6cf6d7aedf825446b427d7",
+            "expected_sha256": "81acbcf03dd5c404d4ccc6ac1daf57419ff27d92fe6cf6d7aedf825446b427d7",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\unpause.log",
+            "bytes": 12,
+            "sha256": "46eeeedc969f106320d874ff0cb0c5c1ea169952665865f64b8f5318d626c8a3",
+            "expected_sha256": "46eeeedc969f106320d874ff0cb0c5c1ea169952665865f64b8f5318d626c8a3",
+            "matches": true
+          }
+        ],
+        "oversized_json_logs_not_read_or_hashed": [
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\ros.log",
+            "bytes": 2456018
+          }
+        ],
+        "original_evaluations": [
+          {
+            "kind": "source_clock",
+            "slot_result": "PASS",
+            "execution_code": 0,
+            "execution_error": null,
+            "report": {
+              "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\px4_source_clock_report.json",
+              "bytes": 7553,
+              "sha256": "869584a311541d9aa048ff7891737ef68bade050a696832297d50539d7a23563"
+            },
+            "report_matches_slot": true,
+            "recorded_status": "PASS",
+            "saved_script_sha_matches_plan": true,
+            "saved_dependencies_match_plan": true,
+            "counts": {
+              "raw_px4": 9239,
+              "timing_diagnostics": 9239,
+              "adapted_odometry": 9239,
+              "claimed_accepted": 9239,
+              "claimed_rejected": 0,
+              "independently_matched_triplets": 9239
+            },
+            "failures": {},
+            "incomplete": {}
+          },
+          {
+            "kind": "native_startup",
+            "slot_result": "PASS",
+            "execution_code": 0,
+            "execution_error": null,
+            "report": {
+              "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\native_startup_report.json",
+              "bytes": 9142,
+              "sha256": "84131033b91480818205ff1ac7de23d2d9d587bd7fd46ad06bc963f962491176"
+            },
+            "report_matches_slot": true,
+            "recorded_status": "PASS",
+            "saved_script_sha_matches_plan": true,
+            "saved_dependencies_match_plan": true,
+            "all_saved_checks_true": {
+              "configuration_registered": true,
+              "startup_parameter_values": true,
+              "native_takeoff_command": true,
+              "command_sequence": true,
+              "px4_mode_sequence": true,
+              "pre_offboard_ground_readiness": true,
+              "handoff_readiness_and_settle": true,
+              "visual_task_after_handoff": true,
+              "full_recording_coverage": true
+            }
+          },
+          {
+            "kind": "surface_flight",
+            "slot_result": "PASS",
+            "execution_code": 0,
+            "execution_error": null,
+            "report": {
+              "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\flight_evaluation.json",
+              "bytes": 24226,
+              "sha256": "2b81b7cd01e77b1f2efb075d8f7bc42d79ddeab99a9c2b0308025f1477cd2fbb"
+            },
+            "report_matches_slot": true,
+            "recorded_status": "PASS"
+          },
+          {
+            "kind": "gimbal",
+            "slot_result": "PASS",
+            "execution_code": 0,
+            "execution_error": null,
+            "report": {
+              "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\gimbal_evaluation.json",
+              "bytes": 10197,
+              "sha256": "a4e3c3cc9bf1b04cec08cbfd681e4951e3ede49bf8b5004b659c77c0d4a984c1"
+            },
+            "report_matches_slot": true,
+            "recorded_status": "PASS",
+            "saved_script_sha_matches_plan": true,
+            "saved_dependencies_match_plan": true,
+            "all_saved_checks_true": {
+              "no_bag_read_or_channel_errors": true,
+              "three_encoder_joints_recorded": true,
+              "all_three_commands_recorded": true,
+              "camera_tf_is_dynamic_feedback_only": true,
+              "tf_matches_source_feedback_geometry": true,
+              "physical_link_pose_matches_feedback_geometry": true,
+              "dynamic_tf_available_at_image_timestamps": true,
+              "diagnostic_feedback_matches_raw_encoders": true,
+              "follow_and_visual_metrics_recorded": true,
+              "active_tracking_is_sustained": true,
+              "all_three_real_joints_move": true,
+              "commands_and_encoders_have_physical_lag": true,
+              "body_yaw_reference_recorded": true
+            }
+          },
+          {
+            "kind": "navigation",
+            "slot_result": "RECORDED_WITH_CENSORED_FAILURES",
+            "execution_code": 0,
+            "execution_error": null,
+            "report": {
+              "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_active_seed004\\navigation_reference_evaluation.json",
+              "bytes": 145311,
+              "sha256": "6d0d54495e3c29efb0797dab94bade66a6429b372808f10c4c0ecfb09c19c2a3"
+            },
+            "report_matches_slot": true,
+            "recorded_status": "RECORDED_WITH_CENSORED_FAILURES",
+            "saved_script_sha_matches_plan": true,
+            "saved_dependencies_match_plan": true
+          }
+        ],
+        "runtime_plan_comparisons": {
+          "name": true,
+          "target_class": true,
+          "stage": true,
+          "seed": true,
+          "speed_mps": true,
+          "command_mode": true,
+          "takeoff_mode": true,
+          "gimbal_mode": true,
+          "target_mode": true,
+          "association_mode": true,
+          "initial_select": true,
+          "initial_min_candidates": true,
+          "scenario_kind": true,
+          "multi_target": true,
+          "inference_image_size": true,
+          "inference_threads": true,
+          "desired_distance_m": true,
+          "gazebo_render_driver": true,
+          "split_clock_bridge": true,
+          "px4_adapter_publish_rate_hz": true,
+          "duration": true,
+          "wall_timeout": true,
+          "model": true,
+          "real_time_factor": true,
+          "flight_argv": true,
+          "stream_source_ages": true,
+          "stream_wall_timeouts": true
+        },
+        "saved_runtime_subsystem_errors": {
+          "simulation_pacing": [],
+          "exclusive_navigation": [],
+          "magnetic_environment": [],
+          "gazebo_rendering": []
+        },
+        "saved_runtime_and_archive_statuses": {
+          "recording_closure.json": "PASS",
+          "recording_closure_observer.json": "CLOSED",
+          "bag_integrity.json": "PASS",
+          "configuration/dds_runtime_summary.json": "PASS",
+          "configuration/dds_runtime_after.json": "PASS",
+          "configuration/ros_gz_runtime_after.json": "PASS",
+          "configuration/ros_gz_clock_runtime_after.json": "PASS"
+        },
+        "cleanup": {
+          "residual_processes": [],
+          "process_exit_codes": {
+            "gazebo": 0,
+            "agent": -2,
+            "px4": 0,
+            "bag": 0,
+            "monitor": 0,
+            "ros": 0
+          }
+        },
+        "owned_stop_observer": {
+          "status": "EVIDENCE_COMPLETE",
+          "runtime_acceptance": "NOT_EVALUATED_EXISTING_PROCESS_AUDIT_REMAINS_REQUIRED",
+          "errors": []
+        },
+        "source_snapshot": {
+          "count": 204,
+          "original_scanner_plus_model_dds_exact_match": true,
+          "extra_count": 17
+        }
+      }
+    },
+    {
+      "id": "person_stage3_multi_active_seed004",
+      "original_slot": {
+        "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\slots\\person_stage3_multi_active_seed004.json",
+        "bytes": 68606,
+        "sha256": "42de6664d65f530f261d1ed337e0eaa645a679117324c5b73b2bbbd7712e2d71"
+      },
+      "status": "PASS",
+      "flight_exit_code": 0,
+      "infrastructure_stop": false,
+      "slot_digest_and_plan_binding_valid": true,
+      "navigation": {
+        "measured": {
+          "base_link_distance_rmse_m": 0.8712586941022478,
+          "base_link_height_rmse_m": 0.1603554353007691,
+          "valid_state_coverage": 0.8882978723404256,
+          "truth_coverage": 1.0
+        },
+        "six_independently_compared_gates": {
+          "base_link_distance": true,
+          "base_link_height": true,
+          "navigation_coverage": true,
+          "truth_coverage": true,
+          "final_distance_settled": true,
+          "final_height_settled": true
+        },
+        "original_status": "RECORDED_WITH_CENSORED_FAILURES",
+        "interval": {
+          "start_s": 17.2,
+          "end_s": 92.388,
+          "navigation_evaluation_start_s": 17.2,
+          "sample_period_s": 0.1
+        },
+        "scheduled_samples": 752,
+        "matched_truth_samples": 752,
+        "valid_navigation_samples": 668,
+        "navigation_denominator": 752,
+        "final_transients": {
+          "distance": {
+            "band_m": 0.5,
+            "minimum_in_band_duration_s": 3.0,
+            "settled_through_interval_end": true,
+            "settling_right_censored": false,
+            "settling_time_s": 36.599999999999994,
+            "duplicate_source_times": false
+          },
+          "height": {
+            "band_m": 0.25,
+            "minimum_in_band_duration_s": 3.0,
+            "settled_through_interval_end": true,
+            "settling_right_censored": false,
+            "settling_time_s": 32.099999999999994,
+            "duplicate_source_times": false
+          }
+        }
+      },
+      "new_small_artifact_review": {
+        "small_artifact_bindings": [
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\agent.log",
+            "bytes": 41563,
+            "sha256": "e032438be4e65439f202ef9bc5534c8840f2599e9a79f252108e6716b09cc4b8",
+            "expected_sha256": "e032438be4e65439f202ef9bc5534c8840f2599e9a79f252108e6716b09cc4b8",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\bag.log",
+            "bytes": 4943,
+            "sha256": "dfe81936eae69d558d7985637a3971c62dfcb3952425c386469bbdb23dcd54d8",
+            "expected_sha256": "dfe81936eae69d558d7985637a3971c62dfcb3952425c386469bbdb23dcd54d8",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\bag_integrity.json",
+            "bytes": 5511,
+            "sha256": "28d6ca1370e5787a4b7cf656e40642a3445b0ab5b34bd4d1090ab350f95874d1",
+            "expected_sha256": "28d6ca1370e5787a4b7cf656e40642a3445b0ab5b34bd4d1090ab350f95874d1",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\configuration\\dds_runtime_actual.json",
+            "bytes": 38582,
+            "sha256": "b70ff89746e65272e4793e41b4deb8faa6241c3b4aec24c195f2436b7a37a8ab",
+            "expected_sha256": "b70ff89746e65272e4793e41b4deb8faa6241c3b4aec24c195f2436b7a37a8ab",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\configuration\\dds_runtime_after.json",
+            "bytes": 2982,
+            "sha256": "3efe06c91260810cf1ef65034a68acb65da0dc5cb419d19942df4e451b8deb83",
+            "expected_sha256": "3efe06c91260810cf1ef65034a68acb65da0dc5cb419d19942df4e451b8deb83",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\configuration\\dds_runtime_preflight.json",
+            "bytes": 3627,
+            "sha256": "36d8f5bfe0b442fb1cf97eba228d74bfdc807dcfb07d47197d60cfa2b41c7bca",
+            "expected_sha256": "36d8f5bfe0b442fb1cf97eba228d74bfdc807dcfb07d47197d60cfa2b41c7bca",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\configuration\\dds_runtime_registration.json",
+            "bytes": 2267,
+            "sha256": "4e517b62e823585b53dd2ac503f65eaf9bc3fd4c59d9d8fdb900d985f99d030d",
+            "expected_sha256": "4e517b62e823585b53dd2ac503f65eaf9bc3fd4c59d9d8fdb900d985f99d030d",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\configuration\\dds_runtime_summary.json",
+            "bytes": 598,
+            "sha256": "135800915788fcbe8d5f3df07bc9aa8147853c9d9dc90c312e052684d995cdb0",
+            "expected_sha256": "135800915788fcbe8d5f3df07bc9aa8147853c9d9dc90c312e052684d995cdb0",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\configuration\\gazebo_loaded_magnetic_libraries.json",
+            "bytes": 2331,
+            "sha256": "eb7d02dea9b3bbc9ce763cc4cc3efdaed277baf6c64f54335afcd9d4d3b462b4",
+            "expected_sha256": "eb7d02dea9b3bbc9ce763cc4cc3efdaed277baf6c64f54335afcd9d4d3b462b4",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\configuration\\gazebo_magnetic_reference.json",
+            "bytes": 2811,
+            "sha256": "e53bf39273da3af8acd82ca63831be1ba4854db2732797ceac137e7bb693c058",
+            "expected_sha256": "e53bf39273da3af8acd82ca63831be1ba4854db2732797ceac137e7bb693c058",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\configuration\\gazebo_magnetic_runtime_registration.json",
+            "bytes": 3597,
+            "sha256": "0e80e51994948b5186c3a76c7e5c9651d27cf3d9acf63109f3f66544de801e6a",
+            "expected_sha256": "0e80e51994948b5186c3a76c7e5c9651d27cf3d9acf63109f3f66544de801e6a",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\configuration\\gazebo_rendering_libraries.json",
+            "bytes": 15957,
+            "sha256": "fb56ffae06eccc7809b10ca7bcd605b6c10748ab7a94c13573bfb5d356cc4155",
+            "expected_sha256": "fb56ffae06eccc7809b10ca7bcd605b6c10748ab7a94c13573bfb5d356cc4155",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\configuration\\magnetic_environment.json",
+            "bytes": 11137,
+            "sha256": "b631e8889997c3e350a28f04c7525fdb23e6351be7ce292263e3e1cea4df7423",
+            "expected_sha256": "b631e8889997c3e350a28f04c7525fdb23e6351be7ce292263e3e1cea4df7423",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\configuration\\px4_magnetic_runtime.json",
+            "bytes": 5064,
+            "sha256": "3c4f9693cfab51c6b2049af619bfb6e3edbd22a8328468b7e84f75053485c66b",
+            "expected_sha256": "3c4f9693cfab51c6b2049af619bfb6e3edbd22a8328468b7e84f75053485c66b",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\configuration\\px4_magnetic_runtime_actual.json",
+            "bytes": 5371,
+            "sha256": "cd311e283fe0c3be16d280e02929188ccd332194dad4a0ce0259973df4b5d8ce",
+            "expected_sha256": "cd311e283fe0c3be16d280e02929188ccd332194dad4a0ce0259973df4b5d8ce",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\configuration\\px4_parameters.json",
+            "bytes": 1219,
+            "sha256": "6b4bca49ba1065a17b5962efee0f1f75cfab4a1d80394c519fedf2199d32a8dc",
+            "expected_sha256": "6b4bca49ba1065a17b5962efee0f1f75cfab4a1d80394c519fedf2199d32a8dc",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\configuration\\recording_policy.json",
+            "bytes": 2375,
+            "sha256": "a9359f2179fece09fb47635ec3e14816685470c9838a8339034dbc7e25d4aacb",
+            "expected_sha256": "a9359f2179fece09fb47635ec3e14816685470c9838a8339034dbc7e25d4aacb",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\configuration\\ros_gz_clock_runtime_actual.json",
+            "bytes": 21214,
+            "sha256": "dfebf1fc017d50deb092dff65329ad002279f1ab55a48b05e9521f488fa51428",
+            "expected_sha256": "dfebf1fc017d50deb092dff65329ad002279f1ab55a48b05e9521f488fa51428",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\configuration\\ros_gz_clock_runtime_after.json",
+            "bytes": 506,
+            "sha256": "045e75a07a6fd0e21a70026727f2298b686b1d4005ec6d3d1c5b86e617aa389d",
+            "expected_sha256": "045e75a07a6fd0e21a70026727f2298b686b1d4005ec6d3d1c5b86e617aa389d",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\configuration\\ros_gz_clock_runtime_preflight.json",
+            "bytes": 603,
+            "sha256": "8843672c9217024f788267db1826299f94d32492d316ed1664f56fbb3008c4c8",
+            "expected_sha256": "8843672c9217024f788267db1826299f94d32492d316ed1664f56fbb3008c4c8",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\configuration\\ros_gz_clock_runtime_registration.json",
+            "bytes": 26070,
+            "sha256": "908f8b7e18154377e57ce6f92922b63b36f7d4fb90ac79e61cc1b8dd95d3e4e4",
+            "expected_sha256": "908f8b7e18154377e57ce6f92922b63b36f7d4fb90ac79e61cc1b8dd95d3e4e4",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\configuration\\ros_gz_runtime_actual.json",
+            "bytes": 23442,
+            "sha256": "1eeedf6adfaffa31d5d7c24cb32411ca35e276e4de8288460b9146bbc59e8304",
+            "expected_sha256": "1eeedf6adfaffa31d5d7c24cb32411ca35e276e4de8288460b9146bbc59e8304",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\configuration\\ros_gz_runtime_after.json",
+            "bytes": 506,
+            "sha256": "1b6f6cbbe1f0b1b3e297c0429b57cdba63dfbf3293f6acc32653ccc297965778",
+            "expected_sha256": "1b6f6cbbe1f0b1b3e297c0429b57cdba63dfbf3293f6acc32653ccc297965778",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\configuration\\ros_gz_runtime_preflight.json",
+            "bytes": 597,
+            "sha256": "4e61cb57921277d8bca992c53b3a57c61a886c13767886a1b05f95d7b8c5cf44",
+            "expected_sha256": "4e61cb57921277d8bca992c53b3a57c61a886c13767886a1b05f95d7b8c5cf44",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\configuration\\ros_gz_runtime_registration.json",
+            "bytes": 29086,
+            "sha256": "08cbc9ea8a2b6e50b71efc4910e5adef7c309b742fb0e9177cd803e934a028af",
+            "expected_sha256": "08cbc9ea8a2b6e50b71efc4910e5adef7c309b742fb0e9177cd803e934a028af",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\configuration\\sensor_faults.json",
+            "bytes": 15,
+            "sha256": "de3a8816921f4512bf08dfef0a8881918d70dcde992f5109fa0078e029afd6c3",
+            "expected_sha256": "de3a8816921f4512bf08dfef0a8881918d70dcde992f5109fa0078e029afd6c3",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\configuration\\source_sha256.json",
+            "bytes": 23847,
+            "sha256": "0094a5013801e67fb6ae692cef785b190272708d71bfb0cd4a3349a0eb09ee46",
+            "expected_sha256": "0094a5013801e67fb6ae692cef785b190272708d71bfb0cd4a3349a0eb09ee46",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\flight_evaluation.json",
+            "bytes": 24327,
+            "sha256": "e2f7c03be0d4220e5e79f8b2b2cc6376e2539906a6a4841904cccd18133bcb10",
+            "expected_sha256": "e2f7c03be0d4220e5e79f8b2b2cc6376e2539906a6a4841904cccd18133bcb10",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\gazebo.log",
+            "bytes": 1417,
+            "sha256": "91386e5fcea587bfd64af5c573c650a3578f660243f692d671d1905d06d34053",
+            "expected_sha256": "91386e5fcea587bfd64af5c573c650a3578f660243f692d671d1905d06d34053",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\gimbal_evaluation.json",
+            "bytes": 10223,
+            "sha256": "0cbf0adbdc55a1ca77750921fe3db3a8ea977c5891afebd7b68f5a56879c5291",
+            "expected_sha256": "0cbf0adbdc55a1ca77750921fe3db3a8ea977c5891afebd7b68f5a56879c5291",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\graph_startup_readiness.json",
+            "bytes": 616996,
+            "sha256": "b20eff807d223e4acc06ff7d85a1ceeb9d36f6e004fea355aa265a5c07ce1c0f",
+            "expected_sha256": "b20eff807d223e4acc06ff7d85a1ceeb9d36f6e004fea355aa265a5c07ce1c0f",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\monitor.log",
+            "bytes": 10840,
+            "sha256": "d39627d04e33d096c3708eb2cc6e232f457fda65fc0fe9a6b6fab6f9df11dd2f",
+            "expected_sha256": "d39627d04e33d096c3708eb2cc6e232f457fda65fc0fe9a6b6fab6f9df11dd2f",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\native_startup_report.json",
+            "bytes": 9179,
+            "sha256": "9c66c67e52738bea428b14dfc5bec58910573a4df2cd26d3bc3ee09f4f753b88",
+            "expected_sha256": "9c66c67e52738bea428b14dfc5bec58910573a4df2cd26d3bc3ee09f4f753b88",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\navigation_reference_evaluation.json",
+            "bytes": 146197,
+            "sha256": "2658fb3a4597c2a8e45528b1665427a59e371779474ea34bf40753a51e40ad7c",
+            "expected_sha256": "2658fb3a4597c2a8e45528b1665427a59e371779474ea34bf40753a51e40ad7c",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\owned_stop_observer.json",
+            "bytes": 5757,
+            "sha256": "0fda048b9ae997b7bdfeb072a8eac73d6772375a547ffee5fbc1ff414592fdee",
+            "expected_sha256": "0fda048b9ae997b7bdfeb072a8eac73d6772375a547ffee5fbc1ff414592fdee",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\process_exit_codes.json",
+            "bytes": 84,
+            "sha256": "71bb8487608afe6c28385f5b082d043d0d055cdff8adfb6a6746ada18049954f",
+            "expected_sha256": "71bb8487608afe6c28385f5b082d043d0d055cdff8adfb6a6746ada18049954f",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\px4.log",
+            "bytes": 5541,
+            "sha256": "8348377077ea63bc7e53a7c39688a3396612994e3950bfddf6fd3fcceebc8635",
+            "expected_sha256": "8348377077ea63bc7e53a7c39688a3396612994e3950bfddf6fd3fcceebc8635",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\px4_source_clock_report.json",
+            "bytes": 7591,
+            "sha256": "dbe615c6fb9ac2ad786d15da2410f0b677a64235ed7f72141051424cbfe80abf",
+            "expected_sha256": "dbe615c6fb9ac2ad786d15da2410f0b677a64235ed7f72141051424cbfe80abf",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\recording_closure.json",
+            "bytes": 27145,
+            "sha256": "6413909f0bd3c0ac0d0fa5ad323083434a82ce3207645bde600284fa1a064573",
+            "expected_sha256": "6413909f0bd3c0ac0d0fa5ad323083434a82ce3207645bde600284fa1a064573",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\recording_closure_observer.json",
+            "bytes": 2582,
+            "sha256": "75ee2156f8871dcf6e3bcce922d7b5bcd26686d05f86382189498e67b42f1a4f",
+            "expected_sha256": "75ee2156f8871dcf6e3bcce922d7b5bcd26686d05f86382189498e67b42f1a4f",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\run_config.json",
+            "bytes": 4451,
+            "sha256": "cca4ba2985a1098afc33be88176cdedb75e8f4ff9cd6efe1d05e6e885d9b2b70",
+            "expected_sha256": "cca4ba2985a1098afc33be88176cdedb75e8f4ff9cd6efe1d05e6e885d9b2b70",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\stage2_evaluation.json",
+            "bytes": 18290,
+            "sha256": "fda1a8649f0a9533d2cdaa428bd1e9d22a221c32f24dda44a6b1cb2e77e2e4e7",
+            "expected_sha256": "fda1a8649f0a9533d2cdaa428bd1e9d22a221c32f24dda44a6b1cb2e77e2e4e7",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\summary.json",
+            "bytes": 4932,
+            "sha256": "b61b9f116d83a661c9680941947692768f7159d34567f4a3882807df406a9b7d",
+            "expected_sha256": "b61b9f116d83a661c9680941947692768f7159d34567f4a3882807df406a9b7d",
+            "matches": true
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\unpause.log",
+            "bytes": 12,
+            "sha256": "46eeeedc969f106320d874ff0cb0c5c1ea169952665865f64b8f5318d626c8a3",
+            "expected_sha256": "46eeeedc969f106320d874ff0cb0c5c1ea169952665865f64b8f5318d626c8a3",
+            "matches": true
+          }
+        ],
+        "oversized_json_logs_not_read_or_hashed": [
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\physical_identity.json",
+            "bytes": 1692013
+          },
+          {
+            "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\ros.log",
+            "bytes": 2442806
+          }
+        ],
+        "original_evaluations": [
+          {
+            "kind": "source_clock",
+            "slot_result": "PASS",
+            "execution_code": 0,
+            "execution_error": null,
+            "report": {
+              "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\px4_source_clock_report.json",
+              "bytes": 7591,
+              "sha256": "dbe615c6fb9ac2ad786d15da2410f0b677a64235ed7f72141051424cbfe80abf"
+            },
+            "report_matches_slot": true,
+            "recorded_status": "PASS",
+            "saved_script_sha_matches_plan": true,
+            "saved_dependencies_match_plan": true,
+            "counts": {
+              "raw_px4": 9183,
+              "timing_diagnostics": 9183,
+              "adapted_odometry": 9183,
+              "claimed_accepted": 9183,
+              "claimed_rejected": 0,
+              "independently_matched_triplets": 9183
+            },
+            "failures": {},
+            "incomplete": {}
+          },
+          {
+            "kind": "native_startup",
+            "slot_result": "PASS",
+            "execution_code": 0,
+            "execution_error": null,
+            "report": {
+              "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\native_startup_report.json",
+              "bytes": 9179,
+              "sha256": "9c66c67e52738bea428b14dfc5bec58910573a4df2cd26d3bc3ee09f4f753b88"
+            },
+            "report_matches_slot": true,
+            "recorded_status": "PASS",
+            "saved_script_sha_matches_plan": true,
+            "saved_dependencies_match_plan": true,
+            "all_saved_checks_true": {
+              "configuration_registered": true,
+              "startup_parameter_values": true,
+              "native_takeoff_command": true,
+              "command_sequence": true,
+              "px4_mode_sequence": true,
+              "pre_offboard_ground_readiness": true,
+              "handoff_readiness_and_settle": true,
+              "visual_task_after_handoff": true,
+              "full_recording_coverage": true
+            }
+          },
+          {
+            "kind": "surface_flight",
+            "slot_result": "PASS",
+            "execution_code": 0,
+            "execution_error": null,
+            "report": {
+              "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\flight_evaluation.json",
+              "bytes": 24327,
+              "sha256": "e2f7c03be0d4220e5e79f8b2b2cc6376e2539906a6a4841904cccd18133bcb10"
+            },
+            "report_matches_slot": true,
+            "recorded_status": "PASS"
+          },
+          {
+            "kind": "selected_target_safety",
+            "slot_result": "PASS",
+            "execution_code": 0,
+            "execution_error": null,
+            "report": {
+              "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\stage2_evaluation.json",
+              "bytes": 18290,
+              "sha256": "fda1a8649f0a9533d2cdaa428bd1e9d22a221c32f24dda44a6b1cb2e77e2e4e7"
+            },
+            "report_matches_slot": true,
+            "recorded_status": "PASS",
+            "all_saved_checks_true": {
+              "clock_recorded": true,
+              "input_decodes_without_errors": true,
+              "armed_and_offboard_observed": true,
+              "initial_explicit_box_confirmed_fresh": true,
+              "initial_box_matches_selected_track_snapshot": true,
+              "no_tracking_before_initial_selection": true,
+              "multiple_same_class_fresh_tracks_observed": true,
+              "all_tracks_snapshots_present_and_valid": true,
+              "task_uuid_changes_require_explicit_selection": true,
+              "long_loss_cannot_reactivate_without_explicit_selection": true,
+              "long_loss_cannot_control_before_explicit_selection": true,
+              "active_states_remain_fresh": true,
+              "selected_geometric_ambiguity_observed_if_required": true,
+              "observed_ambiguities_suspend_control": true,
+              "required_short_and_long_occlusions_present": true,
+              "recorded_occlusions_pass": true,
+              "detection_diagnostics_valid": true,
+              "final_sustained_tracking": true
+            },
+            "physical_identity_scope": {
+              "evaluated": false,
+              "reason": "Requires independently validated visible GT/image labels; unchanged task UUID is not evidence of physical identity"
+            }
+          },
+          {
+            "kind": "gimbal",
+            "slot_result": "PASS",
+            "execution_code": 0,
+            "execution_error": null,
+            "report": {
+              "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\gimbal_evaluation.json",
+              "bytes": 10223,
+              "sha256": "0cbf0adbdc55a1ca77750921fe3db3a8ea977c5891afebd7b68f5a56879c5291"
+            },
+            "report_matches_slot": true,
+            "recorded_status": "PASS",
+            "saved_script_sha_matches_plan": true,
+            "saved_dependencies_match_plan": true,
+            "all_saved_checks_true": {
+              "no_bag_read_or_channel_errors": true,
+              "three_encoder_joints_recorded": true,
+              "all_three_commands_recorded": true,
+              "camera_tf_is_dynamic_feedback_only": true,
+              "tf_matches_source_feedback_geometry": true,
+              "physical_link_pose_matches_feedback_geometry": true,
+              "dynamic_tf_available_at_image_timestamps": true,
+              "diagnostic_feedback_matches_raw_encoders": true,
+              "follow_and_visual_metrics_recorded": true,
+              "active_tracking_is_sustained": true,
+              "all_three_real_joints_move": true,
+              "commands_and_encoders_have_physical_lag": true,
+              "body_yaw_reference_recorded": true
+            }
+          },
+          {
+            "kind": "physical_identity",
+            "slot_result": "RECORDED_WITH_EXPLICIT_UNKNOWN_INTERVALS",
+            "execution_code": 0,
+            "execution_error": null,
+            "report_read_or_hashed": false,
+            "reason": "Above 1 MiB; only small slot summary and log inspected"
+          },
+          {
+            "kind": "navigation",
+            "slot_result": "RECORDED_WITH_CENSORED_FAILURES",
+            "execution_code": 0,
+            "execution_error": null,
+            "report": {
+              "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004\\navigation_reference_evaluation.json",
+              "bytes": 146197,
+              "sha256": "2658fb3a4597c2a8e45528b1665427a59e371779474ea34bf40753a51e40ad7c"
+            },
+            "report_matches_slot": true,
+            "recorded_status": "RECORDED_WITH_CENSORED_FAILURES",
+            "saved_script_sha_matches_plan": true,
+            "saved_dependencies_match_plan": true
+          }
+        ],
+        "runtime_plan_comparisons": {
+          "name": true,
+          "target_class": true,
+          "stage": true,
+          "seed": true,
+          "speed_mps": true,
+          "command_mode": true,
+          "takeoff_mode": true,
+          "gimbal_mode": true,
+          "target_mode": true,
+          "association_mode": true,
+          "initial_select": true,
+          "initial_min_candidates": true,
+          "scenario_kind": true,
+          "multi_target": true,
+          "inference_image_size": true,
+          "inference_threads": true,
+          "desired_distance_m": true,
+          "gazebo_render_driver": true,
+          "split_clock_bridge": true,
+          "px4_adapter_publish_rate_hz": true,
+          "duration": true,
+          "wall_timeout": true,
+          "model": true,
+          "real_time_factor": true,
+          "flight_argv": true,
+          "stream_source_ages": true,
+          "stream_wall_timeouts": true
+        },
+        "saved_runtime_subsystem_errors": {
+          "simulation_pacing": [],
+          "exclusive_navigation": [],
+          "magnetic_environment": [],
+          "gazebo_rendering": []
+        },
+        "saved_runtime_and_archive_statuses": {
+          "recording_closure.json": "PASS",
+          "recording_closure_observer.json": "CLOSED",
+          "bag_integrity.json": "PASS",
+          "configuration/dds_runtime_summary.json": "PASS",
+          "configuration/dds_runtime_after.json": "PASS",
+          "configuration/ros_gz_runtime_after.json": "PASS",
+          "configuration/ros_gz_clock_runtime_after.json": "PASS"
+        },
+        "cleanup": {
+          "residual_processes": [],
+          "process_exit_codes": {
+            "gazebo": 0,
+            "agent": -2,
+            "px4": 0,
+            "bag": 0,
+            "monitor": 0,
+            "ros": 0
+          }
+        },
+        "owned_stop_observer": {
+          "status": "EVIDENCE_COMPLETE",
+          "runtime_acceptance": "NOT_EVALUATED_EXISTING_PROCESS_AUDIT_REMAINS_REQUIRED",
+          "errors": []
+        },
+        "source_snapshot": {
+          "count": 204,
+          "original_scanner_plus_model_dds_exact_match": true,
+          "extra_count": 17
+        }
+      },
+      "full_task_identity_from_original_small_slot_only": {
+        "coverage_basis": "fixed_10hz_request_to_recorded_clock_end",
+        "sample_period_s": 0.1,
+        "interval": {
+          "start_s": 17.06,
+          "end_s": 92.388
+        },
+        "scheduled_samples": 754,
+        "correct": 648,
+        "wrong": 0,
+        "unknown": 106,
+        "known_coverage": 0.8594164456233422,
+        "retention_lower_bound": 0.8594164456233422,
+        "requested_task_count": 2,
+        "unconfirmed_requested_tasks": []
+      },
+      "diagnostic_identity_different_denominator_not_substituted": {
+        "frames": 753,
+        "correct": 650,
+        "wrong": 0,
+        "unknown": 103,
+        "known_coverage": 0.8632138114209827,
+        "retention_lower_bound": 0.8632138114209827
+      },
+      "oversized_identity_report_and_per_task_independently_reviewed": false
+    }
+  ],
+  "limitations": [
+    "No WSL, ROS, native process, evaluator or project module was started/imported.",
+    "No bag, JSONL, telemetry, model, VHD, oversized ROS log or oversized physical-identity report was read or hashed.",
+    "Full-task physical identity is copied only from small original slot summaries; neither oversized report nor per-task identity was independently reviewed here.",
+    "The root's separate third-slot per-task documentation remains separate; these six-slot findings do not absorb it.",
+    "Saved source manifests are not proof of each historical flight process's actual import location.",
+    "Cleanup, source/native, gimbal, behavior and archive findings audit saved original reports, without raw bag re-evaluation.",
+    "Six same-seed person development PASS slots do not establish car reliability, all 12-core completion, safety4, extension16, formal admission or algorithm superiority.",
+    "The independent car-position probe is not included. No original record was modified."
+  ],
+  "new_slots_4_to_6_checked_small_artifact_count": 130,
+  "result": "SIX_PERSON_DEVELOPMENT_SLOTS_CONSISTENT_WITH_ORIGINAL_ENGINEERING_PASS",
+  "finished_utc": "2026-11-02T21:41:36.631493+00:00"
+}
