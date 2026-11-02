@@ -1,5 +1,7 @@
 # RGB-D UAV target tracking and following
 
+**2026-11-02 12:46（北京时间）快照：Humble50 四包冷构建和完整 Linux 测试通过，新的核心12批次正在执行，前三场行人场景均为原始 PASS 且外层核验已闭合。** Linux 1819项检查为1814通过、5项平台跳过。行人速度/位置跟随与多目标交叉属于同一个开发种子，不代表正式重复结论；本轮汽车及云台场景仍待实际完成，正式仍0/280。请打开本机[当前核心进度页](results/project_progress/humble50_core_slots01/index.html)和[命令进程监控](results/project_progress/humble50_core_run01/index.html)，或阅读[本轮证据与后续步骤](planning/reliability-v4-humble50-validation-20261102.md)。下方较早状态均按其时间作为历史快照阅读。
+
 **2026-11-02：旧协议兼容断言已修复，完整Windows套件1789项、11项平台跳过、无失败；正在冻结新的Humble47来源。** 原46的冷构建通过与完整Linux测试失败保留，尚未47原生验证或飞行，正式0/280。见[验证记录与后续修复](planning/reliability-v4-humble46-validation-20261102.md)。
 
 **2026-11-02（北京时间）：Humble45核心批次停止后，已完成时序取证和时钟修复候选；145项相关测试及22项补充复验通过，最终独审通过。** 原结果1 PASS、1基础设施错误、10未开始保持，正式仍0/280；接下来准备新Humble46隔离构建、完整原生测试和新核心批次。见[故障、修复与后续工作](planning/reliability-v4-humble45-position-abort-20261102.md)。

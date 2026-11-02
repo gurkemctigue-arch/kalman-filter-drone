@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "scope": "PARAMETERIZED_CORE12_NORMAL_RUNNER_DEVELOPMENT_ONLY",
+  "status": "FINAL_DEVELOPMENT_CANDIDATE_INDEPENDENTLY_REVIEWED",
+  "created_utc": "2026-11-02T03:25:16.756381+00:00",
+  "frozen_root": "/root/uav_tracking_fullplan_v4_humble50",
+  "prefix": "reliability_v4_humble50_probe01",
+  "source_review": {
+    "path": "/mnt/d/WSL/UAVHumble22-validation/dds48_tools01/reviewed_freeze_review_v4_humble50_01.json",
+    "sha256": "f465e83875784b001211e9cf2a971bf8814032ac8b54d7f2b9ff3c1113862d85"
+  },
+  "protocol": {
+    "path": "/root/uav_tracking_fullplan_v4_humble50/planning/reliability-v4-preregistration.json",
+    "sha256": "a5f7412dd239d5452bdc725c825cd0b744aa5448acd15af9ebc7d6b6a9064d5b"
+  },
+  "tools_canonical_sha256": "2129fd88ec6f55625acaa1455919d516a364075394bd2e18efed3f108316a11a",
+  "development_build_driver_tools_canonical_sha256": "919a4483554c73cfbabb1efda910c2dd831e79b963443545bece5307fe51077e",
+  "build_evidence": {
+    "summary": {
+      "path": "/root/uav_tracking_fullplan_v4_humble50/results/freeze_validation/build_validation_summary.json",
+      "sha256": "d6890edfce898ed9a457f720c328aa3f1005ca7b2aac79e9a9332c223355a93d"
+    },
+    "build_terminal": {
+      "path": "/mnt/d/WSL/UAVHumble22-validation/dds48_tools01/reviewed_freeze_actions_v4_humble50/build/action.terminal.json",
+      "sha256": "26d7da8253753cb2c018df046db172a012584e27f67f74eddd83edcd0d690890"
+    },
+    "validate_terminal": {
+      "path": "/mnt/d/WSL/UAVHumble22-validation/dds48_tools01/reviewed_freeze_actions_v4_humble50/validate/action.terminal.json",
+      "sha256": "d456b3032ce36defc618f5e0194cd18c59b3a964b5cddd8e42e69c351c544936"
+    }
+  },
+  "original41_closure": {
+    "path": "/mnt/d/WSL/UAVHumble22-validation/root_core41_original_closure_verification01.json",
+    "sha256": "cf3bf657ae3127c5db58d6f69cc7546314de16faf316708056580f7c59292aed"
+  },
+  "pressure_reuse": {
+    "scope": "ORIGINAL41_IDENTICAL_INFRASTRUCTURE_ONLY_NOT_CANDIDATE_SAME_SOURCE",
+    "implementation_hashes": {
+      "scripts/observe_runtime_health.py": "f174ec21ebf962f156d76f8d35f802eebf318163555815527a3e2227b914f180",
+      "uav_tracking/recording_archive.py": "a68686d09109fcb8599160b862f5ad563b7261c988c6557056b2e3e5be0287a4",
+      "uav_tracking/__init__.py": "9662d07f49e633c6fa87127566a06ec928b227efe706ac6f5183e7c1e77fe5dd"
+    },
+    "original_execution_terminal": {
+      "path": "/root/uav_tracking_fullplan_v4_humble41/results/freeze_validation/observer_archive_pressure01/execution_terminal.json",
+      "sha256": "a60e271660923c76814b92773a1d7e57d121ff8013820b3c83fdcadeaf23e03f"
+    }
+  },
+  "core_classes": [
+    "person",
+    "car"
+  ],
+  "core_groups": [
+    "stage1_velocity",
+    "stage1_position",
+    "stage2_crossing",
+    "stage3_midpoint",
+    "stage3_active",
+    "stage3_multi_active"
+  ],
+  "authorized_actions": [
+    "plan-core",
+    "run-core"
+  ],
+  "formal_seed_use_authorized": false,
+  "readiness_claimed": false,
+  "automatic_retry": false,
+  "automatic_next_action": false,
+  "resume_or_recovery_authorized": false,
+  "experiment": {
+    "classes": [
+      "person",
+      "car"
+    ],
+    "groups": [
+      "stage1_velocity",
+      "stage1_position",
+      "stage2_crossing",
+      "stage3_midpoint",
+      "stage3_active",
+      "stage3_multi_active"
+    ],
+    "seed": 4,
+    "duration_s": 75.0,
+    "flight_count": 12
+  },
+  "independent_review": {
+    "path": "/mnt/d/WSL/UAVHumble22-validation/dds48_tools01/development_candidate_humble50_transition_root_peer01.json",
+    "sha256": "47011148501c9c48bf5454d76fa67d8849434279fb8e6210c5f0fc20fdaef6c6"
+  }
+}

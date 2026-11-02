@@ -1,5 +1,7 @@
 # v4 开发与验证状态
 
+**2026-11-02 12:46（北京时间）快照：当前Humble50已通过四包冷构建及完整Linux测试，核心12已完成前三场行人原始PASS和外层核验；整个项目仍未完成最终验收，正式0/280。** 本轮Linux为1819项、1814通过、5项平台跳过；开发种子004的三场结果不替代汽车/云台验证或十种子重复。[当前场景与录像](../results/project_progress/humble50_core_slots01/index.html)、[真实命令监控](../results/project_progress/humble50_core_run01/index.html)及[验证证据与后续关口](../planning/reliability-v4-humble50-validation-20261102.md)是最新入口。下方较早的“当前”描述保留为带时间的历史快照。
+
 **2026-11-02：旧协议兼容断言已修复，完整Windows套件1789项、11项平台跳过、无失败；正在冻结新的Humble47来源。** 原46的冷构建通过与完整Linux测试失败保留，尚未47原生验证或飞行，正式0/280。见[验证记录与后续修复](../planning/reliability-v4-humble46-validation-20261102.md)。
 
 **2026-11-02（北京时间）：Humble45核心批次停止后，已完成时序取证和时钟修复候选；145项相关测试及22项补充复验通过，最终独审通过。** 原结果1 PASS、1基础设施错误、10未开始保持，正式仍0/280；接下来准备新Humble46隔离构建、完整原生测试和新核心批次。见[故障、修复与后续工作](../planning/reliability-v4-humble45-position-abort-20261102.md)。
