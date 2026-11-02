@@ -147,6 +147,10 @@ class SeedRunnerTests(unittest.TestCase):
                                             "wait_stage1_graph":graph_wait,
                                             "close_stage1_recording":closing}), \
                     patch.dict(os.environ,{"STAGE1_PX4_ROOT":str(px4)}):
+                # This temporary project has no DDS registration. Keep the
+                # active real project's opt-in outside this mocked fixture;
+                # patch.dict restores the inherited value when its scope ends.
+                os.environ.pop("UAV_TRACKING_DDS_RUNTIME_CONFIG",None)
                 if closure_fails or observer_close_fails:
                     with self.assertRaisesRegex(RuntimeError,"without proved source-stream drain"):
                         runner.main()
