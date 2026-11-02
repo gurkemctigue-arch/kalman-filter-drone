@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "kind": "FORMAL55_SOURCE_IMPLEMENTATION_AND_WINDOWS_FIXTURE_HANDOFF_NOT_ADMISSION",
+  "created_utc": "2026-11-02T21:15:53.045983+00:00",
+  "status": "READY_FOR_INDEPENDENT_FINAL_REVIEW_SOURCE_AND_SYNTHETIC_FIXTURES_ONLY",
+  "current_source_canonical_sha256": "b8f75eccb143871130671a00ad5cf75fe0768e43bc46bb0a99c2586f207b0580",
+  "current_source_files": {
+    "formal_supplementary_preflight.py": "0953767edd2ba24e1996759ba5e806c146318d0c867953cdb5e22558ba6abf1f",
+    "formal_supplementary_preflight.sh": "91145e9524e9f6f7ab2114ed39c611fd02d024f9b5ca06521fa43150d896e6c2",
+    "test_formal_supplementary_preflight.py": "3bf899b5fa194bf092776eecd94c2dc273b101f5389f737a9917af8f122bf902",
+    "test_formal_supplementary_preflight_independent01.py": "3cca9d37f618212e0c515bee9a0733803952fa07e5ef9e82316394e8817b1fb0",
+    "test_formal54_adapter_binding.py": "40101c90e5b8483b647f6a0d3b160062d35892704e4cb7725c6dc8385126bc67",
+    "test_formal55_guard_binding.py": "aa149f223f46a97326f2fd9d89a04485a8163dbd40beeb7d23346d274098e634"
+  },
+  "original54_source_canonical_sha256": "b0c4f60b438455569f46f2160ac4bb0e46202fca311a57f9b25181fe7d4b680c",
+  "original54_all21_files_rechecked_unchanged": true,
+  "original54_own_source_archive_sha256": {
+    "formal_supplementary_preflight.py": "144e5ed0efe97a4d75ef46b420ab2c38a5df8d2b629b15fe99647ebd389e4b83",
+    "formal_supplementary_preflight.sh": "91145e9524e9f6f7ab2114ed39c611fd02d024f9b5ca06521fa43150d896e6c2",
+    "test_formal54_adapter_binding.py": "40101c90e5b8483b647f6a0d3b160062d35892704e4cb7725c6dc8385126bc67",
+    "test_formal_supplementary_preflight.py": "3bf899b5fa194bf092776eecd94c2dc273b101f5389f737a9917af8f122bf902",
+    "test_formal_supplementary_preflight_independent01.py": "3cca9d37f618212e0c515bee9a0733803952fa07e5ef9e82316394e8817b1fb0"
+  },
+  "production_behavior_changes": [
+    "Legacy physical same-root guard binding remains accepted",
+    "The single fixed external guard absolute path and exact SHA are additionally accepted after unchanged checked() physical-file pin validation",
+    "Unchanged input_pins recheck the same guard immediately before original adapter exec"
+  ],
+  "production_functions_added": [
+    "guard_source_binding"
+  ],
+  "production_existing_functions_changed": [
+    "tool_manifest",
+    "validate_contract"
+  ],
+  "contract_fields_and_original_metadata_semantics_unchanged": true,
+  "contract_and_audit_kinds_are_new55": true,
+  "actual_adapter_identity_remains_formal54": true,
+  "current_describe": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\formal55_supplementary01\\formal55_describe01.json",
+    "bytes": 1792,
+    "sha256": "98fb05595ffcd0aab9465fdc0fb3cbcaedcc1039cf469b09f02f8d3801bed55e"
+  },
+  "describe_execution_receipt": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\formal55_supplementary01\\formal55_describe01_receipt.json",
+    "bytes": 1005,
+    "sha256": "107f50346db66289efdb6b4afe7bd32cf12e38cd0dfca0036744738a0960c187"
+  },
+  "windows_test_receipt": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\formal55_supplementary01\\formal55_windows_tests01.json",
+    "bytes": 3333,
+    "sha256": "8e6f20fb45ad5e80717cbf73ae6060f18065aeba7509a3c5164cbc2085995144"
+  },
+  "windows_test_log": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\formal55_supplementary01\\formal55_windows_tests01.log",
+    "bytes": 12471,
+    "sha256": "305d0aaf056ad16b9f0eaf1cef150100493015c85d138404dee399c6717aac44"
+  },
+  "test_result": {
+    "run": 63,
+    "passed": 63,
+    "duration_s": 230.991,
+    "exit_code": 0,
+    "source_pins_unchanged": true,
+    "original55_fixtures_source_byte_identical": true,
+    "new_guard_policy_tests": 8
+  },
+  "test_boundary": "Windows physical fixtures relocate the fixed constant only inside test namespaces; the production native literal is separately asserted, not read or imported",
+  "source_diff": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\formal55_supplementary01\\formal55_source_diff01.patch",
+    "bytes": 9463,
+    "sha256": "08240560d0c9a9168e8c574a5932227eeb2cab8ec45b81df118d0246ef8a6730"
+  },
+  "original_copy_manifest": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\formal55_supplementary01\\original54_copy_manifest01.json",
+    "bytes": 7158,
+    "sha256": "8b4089179bb57dab599b5803774a037db328fb1c54a101f6ffe3bde4920130d4"
+  },
+  "native_validation": "NOT_PERFORMED",
+  "guard_or_adapter_actually_imported_or_executed": false,
+  "formal_or_supplementary_contract_or_selection_or_admission_created": false,
+  "wsl_native_simulation_or_model_bag_reads": false,
+  "pending": [
+    "Independent final source review",
+    "Real future native contract verification and original module binding remain separate tasks"
+  ]
+}

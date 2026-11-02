@@ -1,0 +1,45 @@
+{
+  "manifest": {
+    "schema_version": 1,
+    "scope": "FORMAL48_DDS_PREFLIGHT_ORIGINAL_GUARD_NATIVE_OWNER_NO_NEW_ADMISSION",
+    "files": {
+      "formal48_guard_adapter01.py": "3973a0590981abf578cbd174371d13c82207c717669298b6d7769c14a242444e",
+      "formal48_guard_adapter01.sh": "b1343b56e6effe488e3554b58fbae924aba26cfdc959e113d862ad9b14f9535b",
+      "test_formal48_guard_adapter01.py": "f3ad7e63ffea568db720e91b6fb449e9ef5e9d72d5f095333178c3f8f3430042"
+    },
+    "owner_tools_canonical_sha256": "e558bf367038a2bb3530d7e5a8ea3e3fae7eb84ac19d02acedecc7c5c2be3ea3",
+    "collector_sha256": "f174ec21ebf962f156d76f8d35f802eebf318163555815527a3e2227b914f180",
+    "actions": [
+      "describe",
+      "run-one"
+    ],
+    "default_manifest": null,
+    "guard_api": "actual manifest.tool execute_one(command_runner=observed_runner)",
+    "guard_argv_or_slot_or_capacity_modified": false,
+    "additional_sitl_lock": false,
+    "dds_files_bound_by_both_formal_plans": [
+      "config/dds_runtime_humble22.json",
+      "uav_tracking/dds_runtime.py",
+      "scripts/apply_humble22_dds_runtime.sh"
+    ],
+    "actual_final_root_preflight_before_original_guard": true,
+    "dds_actual_loaded_processes_claimed": false,
+    "historical_owner_directory": "/mnt/d/WSL/UAVHumble22-validation",
+    "owner_actual_terminal_persisted_before_command_return": true,
+    "sample_max_age_wall_s": 10.0,
+    "owner_archive_wall_budget_s": 1800.0,
+    "native_session_wall_s": 7200.0,
+    "rotation_wall_s": 5400.0,
+    "owned_child_cleanup_graces_s": [
+      240,
+      30,
+      10
+    ],
+    "automatic_retry": false,
+    "registration_or_seal_created": false,
+    "local_raw_evidence_removed": false,
+    "authorization_source": "Unchanged actual sealed guard only; adapter grants no admission"
+  },
+  "tools_canonical_sha256": "dbc9358db20d02e62c2963b868605b4e77f4d16a188f52c5e28e11e20f9f2d5a",
+  "actual_action_executed": false
+}

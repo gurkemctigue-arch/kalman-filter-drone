@@ -1,0 +1,338 @@
+--- original_byte_archive/formal_supplementary_preflight.py
++++ formal_supplementary_preflight.py
+@@ -17,16 +17,18 @@
+ import sys
+ 
+ HERE = Path(__file__).resolve().parent
+-OWN = ('formal_supplementary_preflight.py', 'formal_supplementary_preflight.sh', 'test_formal_supplementary_preflight.py')
+-KIND = 'FORMAL_SUPPLEMENTARY_BINDING_ONLY_NOT_ADMISSION'
+-AUDIT_KIND = 'SUPPLEMENTARY_PREFLIGHT_CHECK_ONLY_NOT_GUARD_ADMISSION'
++OWN = ('formal_supplementary_preflight.py', 'formal_supplementary_preflight.sh',
++       'test_formal_supplementary_preflight.py', 'test_formal_supplementary_preflight_independent01.py',
++       'test_formal54_adapter_binding.py')
++KIND = 'FORMAL54_SUPPLEMENTARY_BINDING_ONLY_NOT_ADMISSION'
++AUDIT_KIND = 'FORMAL54_SUPPLEMENTARY_PREFLIGHT_CHECK_ONLY_NOT_GUARD_ADMISSION'
+ MAX_SMALL = 8 * 1024**2
+ DETECTION_REVIEW_SHA = '0583f950a1557ece5988633d9c812f46b326f26c3bb15b4c5176303becd21a9e'
+-ADAPTER_TOOLS_SHA = 'dad2f80df700805f65b7bbb4cbcb80b6a1ca856527eb4eaa5f51e814ab2d6fbb'
+-ADAPTER_FILES = {'formal41_guard_adapter01.py': '139ac592e4ead129fc14b93019b4b5b0d7deba700babcb95f58d64dac3278435',
+-                 'formal41_guard_adapter01.sh': '302ce280d6f89e80fbc5ce8ec43ec92dcdb306400dd2116c53a2a6cb547a9fa5'}
++ADAPTER_KIND = 'FORMAL54_EXPLICIT_REVIEWED_ADAPTER_BINDING_NOT_ADMISSION'
++ADAPTER_SCOPE = 'FORMAL48_DDS_PREFLIGHT_ORIGINAL_GUARD_NATIVE_OWNER_NO_NEW_ADMISSION'
++ADAPTER_NAMES = {'shell': 'formal48_guard_adapter01.sh', 'python': 'formal48_guard_adapter01.py'}
+ FIELDS = {'schema_version', 'kind', 'created_utc', 'admission', 'plans', 'detection_protocol',
+-          'selection', 'selection_basis', 'detection_review', 'adapter', 'preflight_tools_sha256', 'audit_log'}
++          'selection', 'selection_basis', 'detection_review', 'adapter', 'adapter_binding', 'preflight_tools_sha256', 'audit_log'}
+ 
+ 
+ def require(value, message):
+@@ -96,7 +98,8 @@
+ 
+ def tool_manifest():
+     return {'schema_version': 1, 'kind': KIND, 'files': {name: pin(HERE / name)['sha256'] for name in OWN},
+-            'original_adapter_files': ADAPTER_FILES, 'original_adapter_tools_canonical_sha256': ADAPTER_TOOLS_SHA,
++            'adapter_binding_kind': ADAPTER_KIND, 'adapter_scope': ADAPTER_SCOPE,
++            'adapter_paths_and_bytes': 'explicit independently pinned adapter binding; no historical41 fallback',
+             'detection_independent_review_sha256': DETECTION_REVIEW_SHA,
+             'default_action': 'describe', 'actual_contract_or_admission_created': False,
+             'whole_tree_or_bag_or_weights_read': False, 'original_guard_schema_changed': False,
+@@ -135,13 +138,48 @@
+     return path
+ 
+ 
+-def adapter_prefix(value, admission_pin):
++def adapter_identity(binding, reviewed_sha, contract_time):
++    """Read actual describe bytes; never import, execute or recreate the adapter."""
++    require(valid_sha(reviewed_sha), 'Explicit independently reviewed adapter canonical SHA required')
++    identity = read(binding)
++    exact_schema(identity, {'schema_version', 'kind', 'created_utc', 'shell', 'python',
++                           'describe', 'manifest_canonical_sha256', 'reviewed_tools_sha256'}, 'explicit adapter identity')
++    require(integer(identity['schema_version'], 1) and identity['kind'] == ADAPTER_KIND
++            and stamp(identity['created_utc']) <= contract_time,
++            'Actual adapter binding must precede the new prospective supplementary contract')
++    description = read(identity['describe'])
++    exact_schema(description, {'manifest', 'tools_canonical_sha256', 'actual_action_executed'}, 'actual adapter describe result')
++    manifest = description['manifest']
++    require(isinstance(manifest, dict) and integer(manifest.get('schema_version'), 1)
++            and manifest.get('scope') == ADAPTER_SCOPE and description['actual_action_executed'] is False
++            and canonical(manifest) == description['tools_canonical_sha256']
++            == identity['manifest_canonical_sha256'] == identity['reviewed_tools_sha256'] == reviewed_sha,
++            'Actual describe bytes/internal canonical and independent reviewed canonical must agree')
++    files = manifest.get('files')
++    require(isinstance(files, dict)
++            and set(files) == {*ADAPTER_NAMES.values(), 'test_formal48_guard_adapter01.py'}
++            and all(valid_sha(digest) for digest in files.values()), 'Complete actual formal48 tool manifest required')
++    pins = [binding, identity['describe']]
++    parents = set()
++    for key, name in ADAPTER_NAMES.items():
++        path = checked(identity[key])
++        require(path.name == name and identity[key]['sha256'] == files[name],
++                'Actual adapter absolute path/bytes differ from the independently reviewed manifest')
++        parents.add(path.parent)
++        pins.append(identity[key])
++    require(len(parents) == 1, 'Actual adapter shell and Python must remain original siblings')
++    test_pin = pin(next(iter(parents)) / 'test_formal48_guard_adapter01.py')
++    require(test_pin['sha256'] == files['test_formal48_guard_adapter01.py'], 'Reviewed actual adapter test bytes changed')
++    pins.append(test_pin)
++    return identity, pins
++
++
++def adapter_prefix(value, admission_pin, identity):
+     exact_schema(value, {'shell', 'python', 'reviewed_tools_sha256', 'argv_prefix', 'resolutions'}, 'adapter binding')
+-    for key, name in (('shell', 'formal41_guard_adapter01.sh'), ('python', 'formal41_guard_adapter01.py')):
+-        path = checked(value[key])
+-        require(path == (HERE / name).resolve(strict=True) and value[key]['sha256'] == ADAPTER_FILES[name],
+-                'Only the unchanged reviewed original adapter may be delegated')
+-    require(value['reviewed_tools_sha256'] == ADAPTER_TOOLS_SHA, 'Original adapter tool approval differs')
++    for key in ADAPTER_NAMES:
++        checked(value[key])
++        require(value[key] == identity[key], 'Delegation differs from the separately pinned actual adapter')
++    require(value['reviewed_tools_sha256'] == identity['reviewed_tools_sha256'], 'Actual adapter tool approval differs')
+     prefix = value['argv_prefix']
+     require(isinstance(prefix, list) and len(prefix) >= 6 and all(isinstance(token, str) and token for token in prefix)
+             and prefix[:2] == ['bash', value['shell']['path']], 'Exact original adapter argv prefix required')
+@@ -150,7 +188,7 @@
+     for flag, argument in zip(prefix[2::2], prefix[3::2]):
+         require(flag not in options, 'Duplicate original adapter argument')
+         options[flag] = argument
+-    expected = {'--manifest-sha256': admission_pin['sha256'], '--reviewed-tools-sha256': ADAPTER_TOOLS_SHA}
++    expected = {'--manifest-sha256': admission_pin['sha256'], '--reviewed-tools-sha256': identity['reviewed_tools_sha256']}
+     resolutions = value['resolutions']
+     require(isinstance(resolutions, dict) and set(resolutions) <= {'core', 'extension'}, 'Only original explicit resolution pins allowed')
+     pins = [value['shell'], value['python']]
+@@ -230,7 +268,7 @@
+     return rows, original_pin
+ 
+ 
+-def validate_contract(contract_pin, manifest_path, tools_sha, *, now=None):
++def validate_contract(contract_pin, manifest_path, tools_sha, *, adapter_binding, adapter_reviewed_sha, now=None):
+     current_time = datetime.now(timezone.utc) if now is None else now
+     require(current_time.tzinfo is not None and valid_sha(tools_sha) and canonical(tool_manifest()) == tools_sha,
+             'Exact independently reviewed new tools and aware current time required')
+@@ -240,6 +278,9 @@
+             and contract['preflight_tools_sha256'] == tools_sha, 'Wrong external binding contract/new tool identity')
+     contract_time = stamp(contract['created_utc'])
+     require(contract_time <= current_time, 'Contract cannot be created in the future')
++    require(contract['adapter_binding'] == adapter_binding,
++            'Contract must bind the independently supplied actual adapter binding path/SHA')
++    identity, identity_pins = adapter_identity(adapter_binding, adapter_reviewed_sha, contract_time)
+     admission = read(contract['admission'])
+     require(str(Path(manifest_path).resolve(strict=True)) == str(manifest_path)
+             and pin(manifest_path) == contract['admission'], 'Serial admission argument differs from actual bound original manifest')
+@@ -309,13 +350,15 @@
+     selection, basis = read(contract['selection']), read(contract['selection_basis'])
+     selection_semantics(selection, basis, contract['selection_basis'], review, plans, dataset)
+     require(stamp(selection['created_utc']) <= contract_time, 'Selection is later than its explicit prestart binding')
+-    prefix, adapter_pins = adapter_prefix(contract['adapter'], contract['admission'])
++    prefix, adapter_pins = adapter_prefix(contract['adapter'], contract['admission'], identity)
+     contract_path = external_path(contract_pin['path'], root, results, plans, state, suffix='.json')
+     external_path(contract['detection_protocol']['path'], root, results, plans, state, suffix='.json')
++    external_path(adapter_binding['path'], root, results, plans, state, suffix='.json')
++    external_path(identity['describe']['path'], root, results, plans, state, suffix='.json')
+     audit_path = external_path(contract['audit_log'], root, results, plans, state, suffix='.jsonl')
+     input_pins = [contract_pin, contract['admission'], *contract['plans'].values(), contract['detection_protocol'],
+                   contract['selection'], contract['selection_basis'], contract['detection_review'], admission['tool'],
+-                  *producers.values(), *helper_pins, *adapter_pins, *attempt_pins]
++                  *producers.values(), *helper_pins, *adapter_pins, *identity_pins, *attempt_pins]
+     require(audit_path not in {Path(value['path']) for value in input_pins}, 'Audit cannot overwrite any bound input')
+     require(not state.exists() or state.is_dir(), 'Original guard state is not a directory')
+     initial_path = state / 'initial_admission.json'
+@@ -385,8 +428,9 @@
+         os.fsync(stream.fileno())
+ 
+ 
+-def run_one(contract_pin, manifest_path, tools_sha, *, now=None, exec_function=None):
+-    context = validate_contract(contract_pin, manifest_path, tools_sha, now=now)
++def run_one(contract_pin, manifest_path, tools_sha, *, adapter_binding, adapter_reviewed_sha, now=None, exec_function=None):
++    context = validate_contract(contract_pin, manifest_path, tools_sha, adapter_binding=adapter_binding,
++                                adapter_reviewed_sha=adapter_reviewed_sha, now=now)
+     append_audit(context)
+     for binding in context['input_pins']:
+         checked(binding)
+@@ -403,19 +447,26 @@
+     parser.add_argument('--contract-sha256')
+     parser.add_argument('--manifest', type=Path)
+     parser.add_argument('--reviewed-tools-sha256')
++    parser.add_argument('--adapter-binding', type=Path)
++    parser.add_argument('--adapter-binding-sha256')
++    parser.add_argument('--adapter-reviewed-tools-sha256')
+     args = parser.parse_args(argv)
+     try:
+         if args.action == 'describe':
+             value = tool_manifest()
+             print(json.dumps({'manifest': value, 'canonical_sha256': canonical(value), 'actual_action_executed': False}))
+             return 0
+-        require(args.contract is not None and valid_sha(args.contract_sha256) and args.manifest is not None,
+-                'Explicit original contract/SHA, original manifest and reviewed new tools required')
++        require(args.contract is not None and valid_sha(args.contract_sha256) and args.manifest is not None
++                and args.adapter_binding is not None and valid_sha(args.adapter_binding_sha256)
++                and valid_sha(args.adapter_reviewed_tools_sha256),
++                'Explicit original contract/SHA, actual manifest, reviewed new tools and adapter identity required')
+         binding = {'path': str(args.contract), 'sha256': args.contract_sha256}
++        adapter_args = {'adapter_binding': {'path': str(args.adapter_binding), 'sha256': args.adapter_binding_sha256},
++                        'adapter_reviewed_sha': args.adapter_reviewed_tools_sha256}
+         if args.action == 'run-one':
+-            run_one(binding, args.manifest, args.reviewed_tools_sha256)
++            run_one(binding, args.manifest, args.reviewed_tools_sha256, **adapter_args)
+         else:
+-            context = validate_contract(binding, args.manifest, args.reviewed_tools_sha256)
++            context = validate_contract(binding, args.manifest, args.reviewed_tools_sha256, **adapter_args)
+             print(json.dumps({'kind': KIND, 'status': 'METADATA_BINDINGS_VERIFIED_NOT_GUARD_ADMISSION',
+                               'contract': context['contract_pin'], 'prior_preflight_events': len(context['audit_rows']),
+                               'original_attempts_started': len(context['starts']), 'guard_or_flight_started': False}))
+--- original_byte_archive/test_formal_supplementary_preflight.py
++++ test_formal_supplementary_preflight.py
+@@ -34,9 +34,9 @@
+         self.producer_dir = self.base / 'approved_producers'
+         self.producer_dir.mkdir()
+         for name in ('prospective_detection_dataset.py', 'evaluate_prospective_detection.py'):
+-            (self.producer_dir / name).write_bytes((gate.HERE / name).read_bytes())
++            (self.producer_dir / name).write_bytes((gate.HERE.parent / name).read_bytes())
+         self.review_path = self.base / 'review.json'
+-        self.review_path.write_bytes((gate.HERE / 'prospective_detection_independent_review01.json').read_bytes())
++        self.review_path.write_bytes((gate.HERE.parent / 'prospective_detection_independent_review01.json').read_bytes())
+         self.dataset = gate.source_module(gate.pin(self.producer_dir / 'prospective_detection_dataset.py'))
+         self.sources = {}
+         for relative in self.dataset.HELPERS:
+@@ -106,15 +106,33 @@
+         self.save(self.selection_path, self.selection)
+         self.contract_path = self.base / 'contract.json'
+         self.audit_path = self.base / 'separate_audit.jsonl'
++        self.adapter_dir = self.base / 'synthetic_actual_adapter'
++        self.adapter_dir.mkdir()
++        for name in (*gate.ADAPTER_NAMES.values(), 'test_formal48_guard_adapter01.py'):
++            (self.adapter_dir / name).write_text('# synthetic named code; never imported or executed\n', encoding='utf-8')
++        adapter_manifest = {'schema_version': 1, 'scope': gate.ADAPTER_SCOPE,
++            'files': {path.name: gate.pin(path)['sha256'] for path in self.adapter_dir.iterdir()}}
++        self.adapter_reviewed_sha = gate.canonical(adapter_manifest)
++        self.adapter_describe_path = self.base / 'actual_describe.json'
++        self.save(self.adapter_describe_path, {'manifest': adapter_manifest,
++            'tools_canonical_sha256': self.adapter_reviewed_sha, 'actual_action_executed': False})
++        self.adapter_binding_path = self.base / 'adapter_binding.json'
++        self.adapter_identity = {'schema_version': 1, 'kind': gate.ADAPTER_KIND,
++            'created_utc': '2020-01-02T01:00:00+00:00',
++            'shell': gate.pin(self.adapter_dir / gate.ADAPTER_NAMES['shell']),
++            'python': gate.pin(self.adapter_dir / gate.ADAPTER_NAMES['python']),
++            'describe': gate.pin(self.adapter_describe_path), 'manifest_canonical_sha256': self.adapter_reviewed_sha,
++            'reviewed_tools_sha256': self.adapter_reviewed_sha}
++        self.save(self.adapter_binding_path, self.adapter_identity)
++        self.adapter_binding = gate.pin(self.adapter_binding_path)
+         self.contract = {'schema_version': 1, 'kind': gate.KIND, 'created_utc': '2020-01-03T00:00:00+00:00',
+             'admission': self.admission_pin, 'plans': deepcopy(self.plan_pins), 'detection_protocol': gate.pin(self.protocol_path),
+             'selection': gate.pin(self.selection_path), 'selection_basis': gate.pin(self.basis_path), 'detection_review': gate.pin(self.review_path),
+-            'preflight_tools_sha256': self.tools_sha, 'audit_log': str(self.audit_path),
+-            'adapter': {'shell': gate.pin(gate.HERE / 'formal41_guard_adapter01.sh'),
+-                        'python': gate.pin(gate.HERE / 'formal41_guard_adapter01.py'),
+-                        'reviewed_tools_sha256': gate.ADAPTER_TOOLS_SHA, 'resolutions': {},
+-                        'argv_prefix': ['bash', str(gate.HERE / 'formal41_guard_adapter01.sh'), '--manifest-sha256', self.admission_pin['sha256'],
+-                                        '--reviewed-tools-sha256', gate.ADAPTER_TOOLS_SHA]}}
++            'preflight_tools_sha256': self.tools_sha, 'audit_log': str(self.audit_path), 'adapter_binding': self.adapter_binding,
++            'adapter': {'shell': self.adapter_identity['shell'], 'python': self.adapter_identity['python'],
++                        'reviewed_tools_sha256': self.adapter_reviewed_sha, 'resolutions': {},
++                        'argv_prefix': ['bash', self.adapter_identity['shell']['path'], '--manifest-sha256', self.admission_pin['sha256'],
++                                        '--reviewed-tools-sha256', self.adapter_reviewed_sha]}}
+         self.save_contract()
+ 
+     @staticmethod
+@@ -171,14 +189,21 @@
+         self.save_contract()
+ 
+     def validate(self):
+-        return gate.validate_contract(self.contract_pin, self.admission_path, self.tools_sha, now=self.now)
++        return gate.validate_contract(self.contract_pin, self.admission_path, self.tools_sha, now=self.now, **self.adapter_args())
++
++    def adapter_args(self):
++        return {'adapter_binding': self.adapter_binding, 'adapter_reviewed_sha': self.adapter_reviewed_sha}
++
++    def adapter_cli(self):
++        return ['--adapter-binding', str(self.adapter_binding_path), '--adapter-binding-sha256', self.adapter_binding['sha256'],
++                '--adapter-reviewed-tools-sha256', self.adapter_reviewed_sha]
+ 
+     def fake_exec(self, executable, argv, env):
+         self.calls.append((executable, list(argv), dict(env)))
+         raise ExecObserved()
+ 
+     def run(self):
+-        gate.run_one(self.contract_pin, self.admission_path, self.tools_sha, now=self.now, exec_function=self.fake_exec)
++        gate.run_one(self.contract_pin, self.admission_path, self.tools_sha, now=self.now, exec_function=self.fake_exec, **self.adapter_args())
+ 
+     def original_start(self, *, initial=True, marker=True, terminal=True):
+         self.state.mkdir(exist_ok=True)
+@@ -254,7 +279,7 @@
+                     raise SystemExit(code)
+                 out, err = io.StringIO(), io.StringIO()
+                 with redirect_stdout(out), redirect_stderr(err), self.assertRaises(SystemExit) as caught:
+-                    gate.run_one(case.contract_pin, case.admission_path, case.tools_sha, now=case.now, exec_function=fake_exec)
++                    gate.run_one(case.contract_pin, case.admission_path, case.tools_sha, now=case.now, exec_function=fake_exec, **case.adapter_args())
+                 self.assertEqual(caught.exception.code, code)
+                 self.assertEqual(out.getvalue(), stdout)
+                 self.assertEqual(err.getvalue(), stderr)
+@@ -265,7 +290,7 @@
+         binding = gate.pin(path)
+         self.case.contract['adapter']['resolutions'] = {'core': binding}
+         self.case.contract['adapter']['argv_prefix'] = ['bash', self.case.contract['adapter']['shell']['path'],
+-            '--core-resolution-sha256', binding['sha256'], '--reviewed-tools-sha256', gate.ADAPTER_TOOLS_SHA,
++            '--core-resolution-sha256', binding['sha256'], '--reviewed-tools-sha256', self.case.adapter_reviewed_sha,
+             '--core-resolution', binding['path'], '--manifest-sha256', self.case.admission_pin['sha256']]
+         self.case.save_contract()
+         with self.assertRaises(ExecObserved):
+@@ -352,7 +377,7 @@
+         alias = self.case.base / 'other_admission.json'
+         alias.write_bytes(self.case.admission_path.read_bytes())
+         with self.assertRaises(ValueError):
+-            gate.validate_contract(self.case.contract_pin, alias, self.case.tools_sha, now=self.case.now)
++            gate.validate_contract(self.case.contract_pin, alias, self.case.tools_sha, now=self.case.now, **self.case.adapter_args())
+         self.case.admission['status'] = 'PASS'
+         self.case.admission['manifest_sha256'] = 'a' * 64
+         self.case.save(self.case.admission_path, self.case.admission)
+@@ -415,7 +440,7 @@
+         alias = dict(self.case.contract_pin)
+         alias['path'] = str(self.case.base / '..' / self.case.base.name / 'contract.json')
+         with self.assertRaises(ValueError):
+-            gate.validate_contract(alias, self.case.admission_path, self.case.tools_sha, now=self.case.now)
++            gate.validate_contract(alias, self.case.admission_path, self.case.tools_sha, now=self.case.now, **self.case.adapter_args())
+         self.case.selection_path.write_bytes(self.case.selection_path.read_bytes() + b' ')
+         self.refusal()
+ 
+@@ -502,10 +527,31 @@
+         out, err = io.StringIO(), io.StringIO()
+         with redirect_stdout(out), redirect_stderr(err), patch.object(gate.os, 'execvpe', side_effect=AssertionError('no delegation')):
+             code = gate.main(['run-one', '--contract', str(self.case.contract_path), '--contract-sha256', self.case.contract_pin['sha256'],
+-                              '--manifest', str(self.case.admission_path), '--reviewed-tools-sha256', self.case.tools_sha])
++                              '--manifest', str(self.case.admission_path), '--reviewed-tools-sha256', self.case.tools_sha] + self.case.adapter_cli())
+         self.assertEqual(code, 2)
+         self.assertEqual(out.getvalue(), '')
+         self.assertEqual(json.loads(err.getvalue())['status'], 'REFUSED_BEFORE_ORIGINAL_ADAPTER_EXEC')
++
++    def test_independent_adapter_binding_pin_cannot_be_substituted_by_contract(self):
++        self.case.adapter_binding = dict(self.case.adapter_binding, sha256='a' * 64)
++        self.refusal()
++
++    def test_actual_adapter_describe_drift_after_audit_preserves_event_and_refuses_exec(self):
++        original = gate.append_audit
++        def drift(context):
++            original(context)
++            path = self.case.adapter_describe_path
++            path.write_bytes(path.read_bytes() + b' ')
++        with patch.object(gate, 'append_audit', drift), self.assertRaises(ValueError):
++            self.case.run()
++        self.assertEqual(self.case.calls, [])
++        self.assertTrue(self.case.audit_path.is_file())
++        self.assertFalse(self.case.state.exists())
++
++    def test_old41_contract_is_archival_and_cannot_be_relabelled_as_new_binding(self):
++        self.case.contract['kind'] = 'FORMAL_SUPPLEMENTARY_BINDING_ONLY_NOT_ADMISSION'
++        self.case.save_contract()
++        self.refusal()
+ 
+     def test_default_and_verify_actions_cannot_exec_or_write_audit(self):
+         with patch.object(gate.os, 'execvpe', side_effect=AssertionError('inert action must not execute')), redirect_stdout(io.StringIO()) as output:
+@@ -513,7 +559,7 @@
+         self.assertFalse(json.loads(output.getvalue())['actual_action_executed'])
+         with redirect_stdout(io.StringIO()), patch.object(gate.os, 'execvpe', side_effect=AssertionError('must not execute')):
+             self.assertEqual(gate.main(['verify', '--contract', str(self.case.contract_path), '--contract-sha256', self.case.contract_pin['sha256'],
+-                                       '--manifest', str(self.case.admission_path), '--reviewed-tools-sha256', self.case.tools_sha]), 0)
++                                       '--manifest', str(self.case.admission_path), '--reviewed-tools-sha256', self.case.tools_sha] + self.case.adapter_cli()), 0)
+         self.assertFalse(self.case.audit_path.exists())
+ 
+ 
