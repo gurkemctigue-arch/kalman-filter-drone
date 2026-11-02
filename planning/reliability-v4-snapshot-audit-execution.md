@@ -9,7 +9,7 @@ Humble54 的实际飞行快照扫描包含 17 个原已冻结的历史 `build/li
 后续实际接线必须按这个顺序执行：
 
 1. 将最终四个审计工具（guard、driver、helper、原样 registrar）及包标记封存到专用、不可变的 native 审计根，记录源和目标 SHA。算法运行根仍独立保留。
-2. 在当前完整核心批次结束后的原生空闲窗口，验证八个具体模块的当前真实导入来源、审计工具实际路径和原件读取；这不能追认历史进程现场。
+2. 在当前完整核心批次结束后的原生空闲窗口，验证八个具体模块的当前真实导入来源、审计工具实际路径和原件读取；这不能追认历史进程现场。[只读审计脚本与未来命令](../tools/diagnostics/native_import54_audit01/README.md)已准备，尚未原生执行。
 3. 只有实际 canonical12 全部 PASS 且 owner 真正结束后，使用该固定工具根的 helper 创建新 contract；同根 driver 前瞻登记并执行安全四场。保留原报告和完整快照。
 4. 用同一工具根的 registrar 发布最终 seal，`manifest.tool` 始终绑定同一真实 guard 绝对路径和 SHA。不能安全试验后改指 final 算法根中的 guard 副本。
 5. 原 formal48 adapter 静态检查显示会加载真实 `manifest.tool`；实际双根接线仍须原生验证。继续使用原正式逐槽守卫及全部时钟、身份、控制和清理门槛。

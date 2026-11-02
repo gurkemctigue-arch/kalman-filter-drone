@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "created_utc": "2026-11-02T20:31:14.826101+00:00",
+  "scope": "WINDOWS_AST_PURE_MAP_PATH_AND_METADATA_ONLY_NO_TARGET_IMPORT_OR_NATIVE_VALIDATION",
+  "script": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\snapshot_audit_native_import01\\audit_frozen_module_imports.py",
+    "sha256": "c320baf29c6db720a9d9bd76442b1651d21b932482e82bb1985051094fbddb67",
+    "bytes": 14904
+  },
+  "derivation_receipt": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\snapshot_audit_native_import01\\windows_derivation04.json",
+    "sha256": "015a94965f51d58885330d7ab92a4a2b7d61673d345ada93739394f3c575c4f0"
+  },
+  "change_from_review03": {
+    "prior_script_sha256": "a1998fc5523d56af88fff4beafd4ecb14b7b39d62c8c4fb5fb3a3ddccdfa1ee0",
+    "reconstructed_prior_sha256": "a1998fc5523d56af88fff4beafd4ecb14b7b39d62c8c4fb5fb3a3ddccdfa1ee0",
+    "only_change": "Resolved canonical identity decides module path; reported lexical path remains evidence"
+  },
+  "stdlib_imports": [
+    "__future__",
+    "argparse",
+    "datetime",
+    "hashlib",
+    "importlib",
+    "json",
+    "os",
+    "pathlib",
+    "sys",
+    "traceback"
+  ],
+  "functions_containing_import_module": [
+    "audit_native"
+  ],
+  "original_extra_count": 17,
+  "differing_module_count": 8,
+  "package_initializer_count": 5,
+  "derived_modules": [
+    "uav_tracking.control.follow_controller",
+    "uav_tracking.core.kalman",
+    "uav_tracking.core.models",
+    "uav_tracking.core.target_manager",
+    "uav_tracking_nodes.controller_node",
+    "uav_tracking_nodes.detector_node",
+    "uav_tracking_nodes.state_estimator_node",
+    "uav_tracking_px4_adapter.adapter_node"
+  ],
+  "negative_map_cases": {
+    "wrong_root": {
+      "result": "REFUSED_AS_REQUIRED",
+      "reason": "Actual original Humble54 root required"
+    },
+    "canonical_hash_changed": {
+      "result": "REFUSED_AS_REQUIRED",
+      "reason": "Registered canonical hash differs from original full map: uav_tracking/control/follow_controller.py"
+    },
+    "unknown_extra": {
+      "result": "REFUSED_AS_REQUIRED",
+      "reason": "Original extra has no unique registered canonical counterpart: ros2_ws/src/unknown/build/lib/never_registered.py"
+    },
+    "nonunique_counterpart": {
+      "result": "REFUSED_AS_REQUIRED",
+      "reason": "Original extra has no unique registered canonical counterpart: ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/control/follow_controller.py"
+    }
+  },
+  "pure_path_cases": {
+    "canonical_reported_and_resolved": {
+      "reported_path": "/root/uav_tracking_fullplan_v4_humble54/uav_tracking/control/follow_controller.py",
+      "synthetic_resolved_path": "/root/uav_tracking_fullplan_v4_humble54/uav_tracking/control/follow_controller.py",
+      "accepted": true,
+      "expected": true,
+      "scope": "PURE_PATH_VALUES_ONLY_NO_OS_SYMLINK_OR_TARGET_IMPORT"
+    },
+    "synthetic_build_lib_alias_resolves_canonical": {
+      "reported_path": "/root/uav_tracking_fullplan_v4_humble54/ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/control/follow_controller.py",
+      "synthetic_resolved_path": "/root/uav_tracking_fullplan_v4_humble54/uav_tracking/control/follow_controller.py",
+      "accepted": true,
+      "expected": true,
+      "scope": "PURE_PATH_VALUES_ONLY_NO_OS_SYMLINK_OR_TARGET_IMPORT"
+    },
+    "stale_resolved_build_lib_copy": {
+      "reported_path": "/root/uav_tracking_fullplan_v4_humble54/ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/control/follow_controller.py",
+      "synthetic_resolved_path": "/root/uav_tracking_fullplan_v4_humble54/ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/control/follow_controller.py",
+      "accepted": false,
+      "expected": false,
+      "scope": "PURE_PATH_VALUES_ONLY_NO_OS_SYMLINK_OR_TARGET_IMPORT"
+    },
+    "wrong_resolved_root": {
+      "reported_path": "/root/uav_tracking_fullplan_v4_humble54/uav_tracking/control/follow_controller.py",
+      "synthetic_resolved_path": "/root/wrong/uav_tracking/control/follow_controller.py",
+      "accepted": false,
+      "expected": false,
+      "scope": "PURE_PATH_VALUES_ONLY_NO_OS_SYMLINK_OR_TARGET_IMPORT"
+    },
+    "wrong_canonical_source_in_same_root": {
+      "reported_path": "/root/uav_tracking_fullplan_v4_humble54/uav_tracking/core/kalman.py",
+      "synthetic_resolved_path": "/root/uav_tracking_fullplan_v4_humble54/uav_tracking/core/kalman.py",
+      "accepted": false,
+      "expected": false,
+      "scope": "PURE_PATH_VALUES_ONLY_NO_OS_SYMLINK_OR_TARGET_IMPORT"
+    }
+  },
+  "pure_byte_size_cases": {
+    "original_bytes_and_size": {
+      "matches_expected": true,
+      "scope": "PURE_METADATA_ONLY_NO_SOURCE_EXECUTION"
+    },
+    "changed_hash": {
+      "matches_expected": false,
+      "scope": "PURE_METADATA_ONLY_NO_SOURCE_EXECUTION"
+    },
+    "changed_size": {
+      "matches_expected": false,
+      "scope": "PURE_METADATA_ONLY_NO_SOURCE_EXECUTION"
+    }
+  },
+  "project_modules_before": [],
+  "project_modules_after": [],
+  "native_execution": "NOT_RUN"
+}

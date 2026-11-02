@@ -1,0 +1,14 @@
+Prepared command only. Native execution has NOT been run.
+Run only after the native experiment owner is idle, in UAVHumble22.
+This audits current posthoc imports; it cannot prove historical flight imports.
+
+Script SHA256: c320baf29c6db720a9d9bd76442b1651d21b932482e82bb1985051094fbddb67
+
+env HUMBLE22_PROJECT_ROOT=/root/uav_tracking_fullplan_v4_humble54 \
+    HUMBLE22_ROS_GZ_WS=/root/uav_humble22/ros_gz_shutdown_A01_ws \
+    HUMBLE22_PX4_ROOT=/root/uav_humble22/PX4-Autopilot-v4mag \
+    TMPDIR=/tmp STAGE1_TRANSIENT_DIR=/tmp PYTHONDONTWRITEBYTECODE=1 \
+    bash -c 'source /root/uav_tracking_fullplan_v4_humble54/scripts/humble22_env.sh && exec /root/uav_humble22/venv/bin/python -B /mnt/d/WSL/UAVHumble22-validation/snapshot_audit_native_import01/audit_frozen_module_imports.py --plan /root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_core12_probe01_matrix/plan.json --plan-sha256 ed88783162991c151ab3d537d4eb7d3546b3688339a06db6f35b7f2ef7c48d4b --frozen-map /root/uav_tracking_fullplan_v4_humble54/results/freeze_validation/source_integrity/frozen_actual.json --frozen-map-sha256 7c81219e94b774723e135fa0a696cab603811b298e24900de158f199a414a102 --output /mnt/d/WSL/UAVHumble22-validation/snapshot_audit_native_import01/native_import01.json'
+
+The output is created exclusively. Preserve an existing receipt and select a
+new output name if this path has already been used. Do not overwrite originals.

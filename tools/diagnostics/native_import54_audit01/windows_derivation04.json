@@ -1,0 +1,418 @@
+{
+  "schema_version": 1,
+  "kind": "FROZEN_MODULE_CURRENT_IMPORT_SOURCE_AUDIT",
+  "claim_boundary": "CURRENT_POSTHOC_IMPORT_PATH_AND_SOURCE_BYTES_ONLY_NOT_HISTORICAL_FLIGHT_PROOF",
+  "started_utc": "2026-11-02T20:30:24.365361+00:00",
+  "result": "DERIVATION_ONLY_NO_TARGET_IMPORT_OR_NATIVE_VALIDATION",
+  "derive_only": true,
+  "python": {
+    "executable": "C:\\Program Files\\Python312\\python.exe",
+    "version": "3.12.3 (tags/v3.12.3:f6650f9, Apr  9 2024, 14:05:25) [MSC v.1938 64 bit (AMD64)]",
+    "prefix": "C:\\Program Files\\Python312",
+    "dont_write_bytecode": true,
+    "flag_B": 1
+  },
+  "environment": {
+    "WSL_DISTRO_NAME": null,
+    "ROS_DISTRO": null,
+    "PYTHONPATH": null,
+    "AMENT_PREFIX_PATH": null,
+    "LD_LIBRARY_PATH": null
+  },
+  "sys_path": [
+    "D:\\WSL\\UAVHumble22-validation\\snapshot_audit_native_import01",
+    "C:\\Program Files\\Python312\\python312.zip",
+    "C:\\Program Files\\Python312\\DLLs",
+    "C:\\Program Files\\Python312\\Lib",
+    "C:\\Program Files\\Python312",
+    "C:\\Users\\\u674e\u4e1c\u6613\\AppData\\Roaming\\Python\\Python312\\site-packages",
+    "D:\\nlp\\NLP\\nlp2\\src",
+    "C:\\Program Files\\Python312\\Lib\\site-packages"
+  ],
+  "module_results": [],
+  "script": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\snapshot_audit_native_import01\\audit_frozen_module_imports.py",
+    "sha256": "c320baf29c6db720a9d9bd76442b1651d21b932482e82bb1985051094fbddb67",
+    "bytes": 14904
+  },
+  "argv": [
+    "D:/WSL/UAVHumble22-validation/snapshot_audit_native_import01/audit_frozen_module_imports.py",
+    "--plan",
+    "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/plan.json",
+    "--plan-sha256",
+    "ed88783162991c151ab3d537d4eb7d3546b3688339a06db6f35b7f2ef7c48d4b",
+    "--frozen-map",
+    "results/frozen_fullplan_v4_humble54/freeze_validation/source_integrity/frozen_actual.json",
+    "--frozen-map-sha256",
+    "7c81219e94b774723e135fa0a696cab603811b298e24900de158f199a414a102",
+    "--derive-only",
+    "--output",
+    "D:/WSL/UAVHumble22-validation/snapshot_audit_native_import01/windows_derivation04.json"
+  ],
+  "project_modules_before": [],
+  "inputs": {
+    "plan": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\plan.json",
+      "sha256": "ed88783162991c151ab3d537d4eb7d3546b3688339a06db6f35b7f2ef7c48d4b",
+      "bytes": 207807
+    },
+    "frozen_map": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\freeze_validation\\source_integrity\\frozen_actual.json",
+      "sha256": "7c81219e94b774723e135fa0a696cab603811b298e24900de158f199a414a102",
+      "bytes": 339262
+    }
+  },
+  "derivation": {
+    "original_extra_count": 17,
+    "differing_module_count": 8,
+    "comparisons": [
+      {
+        "original_extra": "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/__init__.py",
+        "canonical_source": "uav_tracking/__init__.py",
+        "original_extra_metadata": {
+          "bytes": 173,
+          "kind": "file",
+          "sha256": "9662d07f49e633c6fa87127566a06ec928b227efe706ac6f5183e7c1e77fe5dd"
+        },
+        "canonical_metadata": {
+          "bytes": 173,
+          "kind": "file",
+          "sha256": "9662d07f49e633c6fa87127566a06ec928b227efe706ac6f5183e7c1e77fe5dd"
+        },
+        "different_bytes": false
+      },
+      {
+        "original_extra": "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/control/__init__.py",
+        "canonical_source": "uav_tracking/control/__init__.py",
+        "original_extra_metadata": {
+          "bytes": 638,
+          "kind": "file",
+          "sha256": "3dd25f981ecbd1d24a5bebd47b878fe81c9e81215c0a2ca2c8b9437ed1e93b2b"
+        },
+        "canonical_metadata": {
+          "bytes": 638,
+          "kind": "file",
+          "sha256": "3dd25f981ecbd1d24a5bebd47b878fe81c9e81215c0a2ca2c8b9437ed1e93b2b"
+        },
+        "different_bytes": false
+      },
+      {
+        "original_extra": "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/control/follow_controller.py",
+        "canonical_source": "uav_tracking/control/follow_controller.py",
+        "original_extra_metadata": {
+          "bytes": 23305,
+          "kind": "file",
+          "sha256": "1804422a0c67459fc7e616108f0169d6965675d9c8c439ff86e18670c3a2ac89"
+        },
+        "canonical_metadata": {
+          "bytes": 25178,
+          "kind": "file",
+          "sha256": "ef7f6c634fc6c5cb0cf40149ed72b45d47d99aa1d8aeeebefb669ea51050f8aa"
+        },
+        "different_bytes": true,
+        "derived_module": "uav_tracking.control.follow_controller"
+      },
+      {
+        "original_extra": "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/control/gimbal_controller.py",
+        "canonical_source": "uav_tracking/control/gimbal_controller.py",
+        "original_extra_metadata": {
+          "bytes": 16671,
+          "kind": "file",
+          "sha256": "eb0e9219ed530ba0cca743680aeeb5a5b67e7277711902c759ef28db0862d492"
+        },
+        "canonical_metadata": {
+          "bytes": 16671,
+          "kind": "file",
+          "sha256": "eb0e9219ed530ba0cca743680aeeb5a5b67e7277711902c759ef28db0862d492"
+        },
+        "different_bytes": false
+      },
+      {
+        "original_extra": "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/core/__init__.py",
+        "canonical_source": "uav_tracking/core/__init__.py",
+        "original_extra_metadata": {
+          "bytes": 1160,
+          "kind": "file",
+          "sha256": "b9a309fb1e06013a931fa6a54c95c073b383834254744b73d44f389ecb8bc4fd"
+        },
+        "canonical_metadata": {
+          "bytes": 1160,
+          "kind": "file",
+          "sha256": "b9a309fb1e06013a931fa6a54c95c073b383834254744b73d44f389ecb8bc4fd"
+        },
+        "different_bytes": false
+      },
+      {
+        "original_extra": "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/core/geometry.py",
+        "canonical_source": "uav_tracking/core/geometry.py",
+        "original_extra_metadata": {
+          "bytes": 9228,
+          "kind": "file",
+          "sha256": "19f2c58901e4a13b8c4de46b14a99f4a3e5835d7fab1ad614d42efea5252c38c"
+        },
+        "canonical_metadata": {
+          "bytes": 9228,
+          "kind": "file",
+          "sha256": "19f2c58901e4a13b8c4de46b14a99f4a3e5835d7fab1ad614d42efea5252c38c"
+        },
+        "different_bytes": false
+      },
+      {
+        "original_extra": "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/core/kalman.py",
+        "canonical_source": "uav_tracking/core/kalman.py",
+        "original_extra_metadata": {
+          "bytes": 16586,
+          "kind": "file",
+          "sha256": "6d4ded5bba32ec9a2825d6520377aa55f68d9fecac1291fbcffd5626253d3194"
+        },
+        "canonical_metadata": {
+          "bytes": 21651,
+          "kind": "file",
+          "sha256": "815631741083071c8758db5079e83e9c0404724d21abbe8dc680d762a3e58d12"
+        },
+        "different_bytes": true,
+        "derived_module": "uav_tracking.core.kalman"
+      },
+      {
+        "original_extra": "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/core/models.py",
+        "canonical_source": "uav_tracking/core/models.py",
+        "original_extra_metadata": {
+          "bytes": 10012,
+          "kind": "file",
+          "sha256": "3460ead57f8071883429c9c9ea9687a3ea6920851eb478902b93b3d597645444"
+        },
+        "canonical_metadata": {
+          "bytes": 10432,
+          "kind": "file",
+          "sha256": "839056848001a7039656e21a4541fefb14c9d61237b2851f9a2f6f9c7ad303f2"
+        },
+        "different_bytes": true,
+        "derived_module": "uav_tracking.core.models"
+      },
+      {
+        "original_extra": "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/core/target_manager.py",
+        "canonical_source": "uav_tracking/core/target_manager.py",
+        "original_extra_metadata": {
+          "bytes": 23770,
+          "kind": "file",
+          "sha256": "bb9cc099a1ef7e6494d1c87b0bc28e1bbf907031ad05f1c4061c5c068f137c24"
+        },
+        "canonical_metadata": {
+          "bytes": 68121,
+          "kind": "file",
+          "sha256": "b5931d4d20dc025c60cda845aa4c8e151eb8d28e76a55e8c67ce227cd2edbf3b"
+        },
+        "different_bytes": true,
+        "derived_module": "uav_tracking.core.target_manager"
+      },
+      {
+        "original_extra": "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/experiments.py",
+        "canonical_source": "uav_tracking/experiments.py",
+        "original_extra_metadata": {
+          "bytes": 6804,
+          "kind": "file",
+          "sha256": "4382b64695124922115f57a455e7f48949891e4af3d705941fb1ce1d30cba588"
+        },
+        "canonical_metadata": {
+          "bytes": 6804,
+          "kind": "file",
+          "sha256": "4382b64695124922115f57a455e7f48949891e4af3d705941fb1ce1d30cba588"
+        },
+        "different_bytes": false
+      },
+      {
+        "original_extra": "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/simulation.py",
+        "canonical_source": "uav_tracking/simulation.py",
+        "original_extra_metadata": {
+          "bytes": 8376,
+          "kind": "file",
+          "sha256": "5e24586fc847aa557f076f7b3c5c4f529feb9175747b717e051f93276b068e07"
+        },
+        "canonical_metadata": {
+          "bytes": 8376,
+          "kind": "file",
+          "sha256": "5e24586fc847aa557f076f7b3c5c4f529feb9175747b717e051f93276b068e07"
+        },
+        "different_bytes": false
+      },
+      {
+        "original_extra": "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking_nodes/__init__.py",
+        "canonical_source": "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/__init__.py",
+        "original_extra_metadata": {
+          "bytes": 54,
+          "kind": "file",
+          "sha256": "9214ca3d6b02eac3bbdf6673e566b4a8c5aa067a7fa5e80d5fc771b2c3a9e627"
+        },
+        "canonical_metadata": {
+          "bytes": 54,
+          "kind": "file",
+          "sha256": "9214ca3d6b02eac3bbdf6673e566b4a8c5aa067a7fa5e80d5fc771b2c3a9e627"
+        },
+        "different_bytes": false
+      },
+      {
+        "original_extra": "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking_nodes/controller_node.py",
+        "canonical_source": "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/controller_node.py",
+        "original_extra_metadata": {
+          "bytes": 9942,
+          "kind": "file",
+          "sha256": "da80c43421fc1877ab04b69989779f3988f6dfb688b70fe69ab4f62237654dba"
+        },
+        "canonical_metadata": {
+          "bytes": 15149,
+          "kind": "file",
+          "sha256": "fa37a4de445896f8fd08b0bfa2c99a200623c39d98427ccedfe16cc9c6361959"
+        },
+        "different_bytes": true,
+        "derived_module": "uav_tracking_nodes.controller_node"
+      },
+      {
+        "original_extra": "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking_nodes/detector_node.py",
+        "canonical_source": "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/detector_node.py",
+        "original_extra_metadata": {
+          "bytes": 6932,
+          "kind": "file",
+          "sha256": "c5a9c9d4fa6f3bd4d1c65bd31152f9fba478d4c4eea59aa40c62f7dd71753d44"
+        },
+        "canonical_metadata": {
+          "bytes": 56810,
+          "kind": "file",
+          "sha256": "2316a7f331afec55844da65f6d6b4bb76de551e1bad262bd26ad3728a4636510"
+        },
+        "different_bytes": true,
+        "derived_module": "uav_tracking_nodes.detector_node"
+      },
+      {
+        "original_extra": "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking_nodes/state_estimator_node.py",
+        "canonical_source": "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/state_estimator_node.py",
+        "original_extra_metadata": {
+          "bytes": 14247,
+          "kind": "file",
+          "sha256": "7cdfed433ac823ba2fa441c1069eab8e5e0a96a9d4bdc79c489debd75eed29db"
+        },
+        "canonical_metadata": {
+          "bytes": 60365,
+          "kind": "file",
+          "sha256": "696184b13ebb21307f1091171f15f5f628e6b46b101c692f1dcacea77861fbd0"
+        },
+        "different_bytes": true,
+        "derived_module": "uav_tracking_nodes.state_estimator_node"
+      },
+      {
+        "original_extra": "ros2_ws/src/uav_tracking_px4_adapter/build/lib/uav_tracking_px4_adapter/__init__.py",
+        "canonical_source": "ros2_ws/src/uav_tracking_px4_adapter/uav_tracking_px4_adapter/__init__.py",
+        "original_extra_metadata": {
+          "bytes": 72,
+          "kind": "file",
+          "sha256": "eeb4bcf3619dc97c2bde8797b4ec0a0440496e07ce731d10be97d735801d48e5"
+        },
+        "canonical_metadata": {
+          "bytes": 72,
+          "kind": "file",
+          "sha256": "eeb4bcf3619dc97c2bde8797b4ec0a0440496e07ce731d10be97d735801d48e5"
+        },
+        "different_bytes": false
+      },
+      {
+        "original_extra": "ros2_ws/src/uav_tracking_px4_adapter/build/lib/uav_tracking_px4_adapter/adapter_node.py",
+        "canonical_source": "ros2_ws/src/uav_tracking_px4_adapter/uav_tracking_px4_adapter/adapter_node.py",
+        "original_extra_metadata": {
+          "bytes": 12670,
+          "kind": "file",
+          "sha256": "64a068bccb88fe2ad978cb256a7df9a9829724de7179436a629319328c79fa40"
+        },
+        "canonical_metadata": {
+          "bytes": 26477,
+          "kind": "file",
+          "sha256": "5de4d83c8b780bbcf4b6bcadfc76e3ba5b9dc3fe344c6f92cc5c7c2c16c31622"
+        },
+        "different_bytes": true,
+        "derived_module": "uav_tracking_px4_adapter.adapter_node"
+      }
+    ],
+    "modules": {
+      "uav_tracking.control.follow_controller": {
+        "canonical_source": "uav_tracking/control/follow_controller.py",
+        "expected": {
+          "bytes": 25178,
+          "kind": "file",
+          "sha256": "ef7f6c634fc6c5cb0cf40149ed72b45d47d99aa1d8aeeebefb669ea51050f8aa"
+        },
+        "original_extra": "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/control/follow_controller.py"
+      },
+      "uav_tracking.core.kalman": {
+        "canonical_source": "uav_tracking/core/kalman.py",
+        "expected": {
+          "bytes": 21651,
+          "kind": "file",
+          "sha256": "815631741083071c8758db5079e83e9c0404724d21abbe8dc680d762a3e58d12"
+        },
+        "original_extra": "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/core/kalman.py"
+      },
+      "uav_tracking.core.models": {
+        "canonical_source": "uav_tracking/core/models.py",
+        "expected": {
+          "bytes": 10432,
+          "kind": "file",
+          "sha256": "839056848001a7039656e21a4541fefb14c9d61237b2851f9a2f6f9c7ad303f2"
+        },
+        "original_extra": "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/core/models.py"
+      },
+      "uav_tracking.core.target_manager": {
+        "canonical_source": "uav_tracking/core/target_manager.py",
+        "expected": {
+          "bytes": 68121,
+          "kind": "file",
+          "sha256": "b5931d4d20dc025c60cda845aa4c8e151eb8d28e76a55e8c67ce227cd2edbf3b"
+        },
+        "original_extra": "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/core/target_manager.py"
+      },
+      "uav_tracking_nodes.controller_node": {
+        "canonical_source": "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/controller_node.py",
+        "expected": {
+          "bytes": 15149,
+          "kind": "file",
+          "sha256": "fa37a4de445896f8fd08b0bfa2c99a200623c39d98427ccedfe16cc9c6361959"
+        },
+        "original_extra": "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking_nodes/controller_node.py"
+      },
+      "uav_tracking_nodes.detector_node": {
+        "canonical_source": "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/detector_node.py",
+        "expected": {
+          "bytes": 56810,
+          "kind": "file",
+          "sha256": "2316a7f331afec55844da65f6d6b4bb76de551e1bad262bd26ad3728a4636510"
+        },
+        "original_extra": "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking_nodes/detector_node.py"
+      },
+      "uav_tracking_nodes.state_estimator_node": {
+        "canonical_source": "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/state_estimator_node.py",
+        "expected": {
+          "bytes": 60365,
+          "kind": "file",
+          "sha256": "696184b13ebb21307f1091171f15f5f628e6b46b101c692f1dcacea77861fbd0"
+        },
+        "original_extra": "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking_nodes/state_estimator_node.py"
+      },
+      "uav_tracking_px4_adapter.adapter_node": {
+        "canonical_source": "ros2_ws/src/uav_tracking_px4_adapter/uav_tracking_px4_adapter/adapter_node.py",
+        "expected": {
+          "bytes": 26477,
+          "kind": "file",
+          "sha256": "5de4d83c8b780bbcf4b6bcadfc76e3ba5b9dc3fe344c6f92cc5c7c2c16c31622"
+        },
+        "original_extra": "ros2_ws/src/uav_tracking_px4_adapter/build/lib/uav_tracking_px4_adapter/adapter_node.py"
+      }
+    },
+    "packages": {
+      "uav_tracking": "uav_tracking/__init__.py",
+      "uav_tracking.control": "uav_tracking/control/__init__.py",
+      "uav_tracking.core": "uav_tracking/core/__init__.py",
+      "uav_tracking_nodes": "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/__init__.py",
+      "uav_tracking_px4_adapter": "ros2_ws/src/uav_tracking_px4_adapter/uav_tracking_px4_adapter/__init__.py"
+    }
+  },
+  "project_modules_after": [],
+  "finished_utc": "2026-11-02T20:30:24.406273+00:00",
+  "exit_code": 0
+}
