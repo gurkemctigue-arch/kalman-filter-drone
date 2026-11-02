@@ -298,6 +298,36 @@ def load_runtime(root, core):
     return SimpleNamespace(v4=v4, replay=replay, calibration=calibration)
 
 
+def snapshot_audit_context(contract_binding, development, development_path, *, driver_path):
+    """Load a separately pinned metadata auditor; never impersonate a frozen tool."""
+    _, contract = bound(contract_binding)
+    helper_path = Path(__file__).with_name("reliability_v4_snapshot_audit.py")
+    require(contract.get("audit_tools", {}).get("helper") == file_binding(helper_path),
+            "Snapshot contract does not bind the actual adjacent audit helper")
+    helper = import_file("reliability_v4_snapshot_audit_" + sha(helper_path), helper_path)
+    api = SimpleNamespace(require=require, bound=bound, sha=sha, file_binding=file_binding, load=load,
+                          utc=utc, now=now, __file__=__file__)
+    context = helper.validate_contract(contract_binding, development, development_path, api=api,
+                                       driver_path=driver_path, validator_path=__file__)
+    return helper, api, context
+
+
+def source_snapshot_evidence(snapshot, expected_sources, registry, development, development_path):
+    """Keep legacy exact equality; explicit audits retain every original extra."""
+    if "snapshot_audit_contract" not in registry:
+        require(snapshot == expected_sources, "Safety actual saved source/model snapshot differs")
+        return {"result": "PASS", "mode": "EXACT_REGISTERED_SOURCE_SET"}
+    contract_binding = registry["snapshot_audit_contract"]
+    helper, api, context = snapshot_audit_context(contract_binding, development, development_path,
+                                                 driver_path=registry["driver"]["path"])
+    require(registry.get("driver") == context["contract"]["audit_tools"]["driver"]
+            and registry.get("validator") == file_binding(__file__)
+            and utc(context["contract"]["created_utc"]) <= utc(registry["created_utc"]),
+            "Prospective snapshot contract/tool bindings differ or follow safety registration")
+    return helper.validate_snapshot(snapshot, expected_sources, contract_binding, development, development_path,
+                                    api=api, driver_path=registry["driver"]["path"], validator_path=__file__)
+
+
 def no_fixture(data, label):
     require("FIXTURE" not in str(data.get("evidence_scope", "")).upper(), "Fixture cannot admit formal execution: " + label)
 
@@ -689,7 +719,7 @@ def validate_safety(manifest, context, runtime):
             require(configuration.get("dds_runtime_registration") == str(dev_root / relative)
                     and relative in context.development["source_hashes"], "Safety explicit DDS source registration missing")
             expected_sources[relative] = context.development["source_hashes"][relative]
-        require(snapshot == expected_sources, "Safety actual saved source/model snapshot differs")
+        source_snapshot_evidence(snapshot, expected_sources, registry, context.development, context.development_path)
         exits = artifacts["process_exit_codes"][1]
         require({"gazebo", "agent", "px4", "bag", "monitor", "ros"} <= exits.keys()
                 and all(type(code) is int and code in ({0, -2} if process == "agent" else {0}) for process,code in exits.items()),

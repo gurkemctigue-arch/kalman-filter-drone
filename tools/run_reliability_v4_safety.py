@@ -31,14 +31,21 @@ FILES = {"run_config": "run_config.json", "source_snapshot": "configuration/sour
 require, load, binding, write_new = guard.require, guard.load, guard.file_binding, guard.write_new
 
 
-def load_core(core_path, owner_path):
+def load_core(core_path, owner_path, *, snapshot_audit_contract=None):
     core_path, owner_path = Path(core_path).resolve(strict=True), Path(owner_path).resolve(strict=True)
     plan, terminal = load(core_path), load(owner_path)
     root = Path(plan["frozen_root"]).resolve(strict=True)
-    require(root == ROOT and Path(guard.__file__).resolve() == root / "tools/reliability_v4_guard.py",
-            "Use the actual same-root frozen safety tool and guard")
+    if snapshot_audit_contract is None:
+        require(root == ROOT and Path(guard.__file__).resolve() == root / "tools/reliability_v4_guard.py",
+                "Use the actual same-root frozen safety tool and guard")
+    else:
+        _, _, audited = guard.snapshot_audit_context(snapshot_audit_contract, plan, core_path, driver_path=__file__)
+        require(audited["audit_tool_root"] == ROOT, "Explicit actual safety audit-tool root differs")
     runtime = guard.load_runtime(root, plan)
     runner = runtime.v4
+    if snapshot_audit_contract is not None:
+        require(Path(runner.__file__).resolve(strict=True) == root / "scripts/run_reliability_v4.py"
+                and runner.ROOT == root, "Actual frozen runtime runner/root differs from explicit audit contract")
     runner.validate_plan(plan, core_path)
     runner.verify_sources(plan)
     require(plan.get("mode") == "PROBE" and plan.get("selected_seeds") == [4]
@@ -91,7 +98,7 @@ def load_core(core_path, owner_path):
                "original_core_records": records, "all_original_core_cells_pass": True,
                "owner_creation_identity": identity, "cleanup": {"residual_processes": []}}
     return SimpleNamespace(root=root, runner=runner, runtime=runtime, batch=batch, plan=plan, core_path=core_path,
-                           closure=closure, bindings=gate_builder.bindings(plan))
+                           closure=closure, bindings=gate_builder.bindings(plan), snapshot_audit_contract=snapshot_audit_contract)
 
 
 def report_files(trial):
@@ -167,8 +174,9 @@ def definitions(context, prefix, audit):
     return result
 
 
-def register(core_path, owner_path, output, prefix):
-    context = load_core(core_path, owner_path)
+def register(core_path, owner_path, output, prefix, *, snapshot_audit_contract=None):
+    options = {} if snapshot_audit_contract is None else {"snapshot_audit_contract": snapshot_audit_contract}
+    context = load_core(core_path, owner_path, **options)
     output = Path(output).resolve()
     results = Path(context.plan["results_root"]).resolve()
     require(output.is_relative_to(results) and output != results and output.parent.is_dir() and not output.exists(),
@@ -187,6 +195,8 @@ def register(core_path, owner_path, output, prefix):
         "split_clock_bridge": context.plan["split_clock_bridge"], "driver": binding(__file__), "validator": binding(guard.__file__),
         "execution_card": binding(output / "execution_card.md"), "tail_script": binding(output / "terminal_hover_speed.py"),
         "formal_seeds_consumed": False, "automatic_retry": False}
+    if snapshot_audit_contract is not None:
+        registry["snapshot_audit_contract"] = snapshot_audit_contract
     guard.verified_safety_card(registry, context.root)
     write_new(output / "registry.json", registry)
     return binding(output / "registry.json")
@@ -198,7 +208,8 @@ def checked_registry(path, expected_sha):
     registry = load(path)
     require(registry.get("schema_version") == 1 and registry.get("kind") == KIND and registry.get("scope") == SCOPE,
             "Public prospective safety registry required")
-    context = load_core(registry["source_core_plan"]["path"], registry["normal_owner_terminal"]["path"])
+    options = ({"snapshot_audit_contract": registry["snapshot_audit_contract"]} if "snapshot_audit_contract" in registry else {})
+    context = load_core(registry["source_core_plan"]["path"], registry["normal_owner_terminal"]["path"], **options)
     require(registry.get("core_completed_prerequisite") == context.closure
             and all(registry.get(k) == v for k, v in context.closure.items())
             and registry.get("driver") == binding(__file__) and registry.get("validator") == binding(guard.__file__)
@@ -218,6 +229,8 @@ def immutable_inputs(context, registry, path, expected_sha):
     for item in registry["original_core_records"]:
         guard.bound(item)
     context.runner.verify_sources(context.plan)
+    if "snapshot_audit_contract" in registry:
+        guard.snapshot_audit_context(registry["snapshot_audit_contract"], context.plan, context.core_path, driver_path=__file__)
 
 
 def slot_facts(row, registry):
@@ -289,7 +302,9 @@ def audit_slot(context, registry, trial, row):
     resource = context.plan["protocol"]["resources"][trial["target_class"]]
     sources[resource["model"]] = context.plan["source_hashes"][resource["model"]]
     sources["config/dds_runtime_humble22.json"] = context.plan["source_hashes"]["config/dds_runtime_humble22.json"]
-    require(load(directory / FILES["source_snapshot"]) == sources, "Actual safety source/model/DDS snapshot differs")
+    snapshot_evidence = guard.source_snapshot_evidence(load(directory / FILES["source_snapshot"]), sources, registry, context.plan, context.core_path)
+    if "snapshot_audit_contract" in registry:
+        row["source_snapshot_audit"] = snapshot_evidence
     exits = load(directory / FILES["process_exit_codes"])
     require({"gazebo", "agent", "px4", "bag", "monitor", "ros"} <= exits.keys()
             and all(type(code) is int and code in ({0, -2} if name == "agent" else {0}) for name, code in exits.items()),
@@ -551,6 +566,8 @@ def main(argv=None):
     create.add_argument("--core-owner", type=Path, required=True)
     create.add_argument("--output", type=Path, required=True)
     create.add_argument("--prefix", required=True)
+    create.add_argument("--snapshot-audit-contract", type=Path)
+    create.add_argument("--snapshot-audit-contract-sha256")
     for action in ("run", "check"):
         command = sub.add_parser(action)
         command.add_argument("--registry", type=Path, required=True)
@@ -560,7 +577,11 @@ def main(argv=None):
         parser.error("Actual safety registration/execution/check requires the isolated Linux environment")
     try:
         if args.action == "register":
-            result = register(args.core_plan, args.core_owner, args.output, args.prefix)
+            require(bool(args.snapshot_audit_contract) == bool(args.snapshot_audit_contract_sha256),
+                    "Explicit snapshot audit contract path and SHA must be supplied together")
+            contract = ({"path": str(args.snapshot_audit_contract.resolve(strict=True)), "sha256": args.snapshot_audit_contract_sha256}
+                        if args.snapshot_audit_contract else None)
+            result = register(args.core_plan, args.core_owner, args.output, args.prefix, snapshot_audit_contract=contract)
         else:
             result = (run if args.action == "run" else check)(args.registry, args.registry_sha256)
         print(json.dumps(result, indent=2, allow_nan=False))

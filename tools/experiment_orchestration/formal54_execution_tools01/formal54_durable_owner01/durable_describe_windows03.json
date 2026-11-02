@@ -1,0 +1,21 @@
+{
+  "manifest": {
+    "schema_version": 1,
+    "scope": "FORMAL54_DURABLE_SERIAL_LIFETIME_ONLY_NOT_ADMISSION",
+    "files": {
+      "formal54_durable_owner.py": "b2fce3cee771c523f693a2deec1c063e6dc2751b7ce3ee5d9cb6865a4cd3f318",
+      "test_formal54_durable_owner.py": "08460f23dff507ccb398ec5dc29dbd45379b6d0deab00451ccee8ccac448a802",
+      "test_native_durable_dummy.py": "11f88eef375fcd95aebc0d19e104b8f39ae58931f21a66d04d049975fcaff024"
+    },
+    "default_action": "describe",
+    "launches": "existing serial only, after independent source pins and launch ACK",
+    "watch_spawns_or_signals": false,
+    "signal_target": "verified positive worker PID then verified serial PID",
+    "forced_kill_or_process_group_signal": false,
+    "flight_or_cleanup_timeout_s": null,
+    "guard_or_slot_or_full280_policy_changed": false,
+    "native_runtime_validated": false
+  },
+  "canonical_sha256": "f90b780da8d8020c6fec111fd40ac771a315afe82bdb532b8de9984309ce4b2f",
+  "actual_action_executed": false
+}

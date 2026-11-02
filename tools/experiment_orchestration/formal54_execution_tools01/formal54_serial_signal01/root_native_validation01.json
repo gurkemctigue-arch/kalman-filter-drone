@@ -1,0 +1,29 @@
+{
+  "scope": "ROOT_TOOL_OBSERVATION_OF_ACTUAL_NATIVE_DUMMY_TESTS_NOT_FORMAL_OR_FLIGHT_ACCEPTANCE",
+  "command": [
+    "wsl.exe",
+    "-d",
+    "UAVHumble22",
+    "--",
+    "/usr/bin/python3",
+    "-B",
+    "/mnt/d/WSL/UAVHumble22-validation/formal54_serial_signal01/test_native_owned_signal54.py"
+  ],
+  "observed_returncode": 0,
+  "tool_wall_time_s": 3.5627522,
+  "unittest_elapsed_s": 3.008,
+  "tests": 2,
+  "passed": 2,
+  "skipped": 0,
+  "native_signals": [
+    "SIGINT",
+    "SIGTERM"
+  ],
+  "source_files": {
+    "formal280_serial_guard54.py": "2e0d15f735bb82b3f6a2d819620c4f8f03100b853e04485dddacdd4b426c1393",
+    "owned_guard_process54.py": "ae7d7482fb33354d79a3e87416e53d3e1e08ddaef6d5d4e59844bb7f4b7f355c",
+    "test_native_owned_signal54.py": "501806db01fac0f4682444fae47ac7efd26c67fa707199d9a9949475c3ac3487"
+  },
+  "evidence_boundary": "Records the actual unified-exec tool observation; no separate raw native stdout file was captured by this invocation.",
+  "recorded_utc": "2026-11-02T19:38:31.906048+00:00"
+}

@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "scope": "FORMAL54_SERIAL_REVISION02_WINDOWS_AUTHOR_PURE_TESTS_ONLY",
+  "started_utc": "2026-11-02T19:32:34.800672+00:00",
+  "finished_utc": "2026-11-02T19:32:38.331363+00:00",
+  "wall_seconds": 3.530999999959022,
+  "platform": "Windows-11-10.0.22621-SP0",
+  "python": "3.12.3 (tags/v3.12.3:f6650f9, Apr  9 2024, 14:05:25) [MSC v.1938 64 bit (AMD64)]",
+  "commands": [
+    [
+      "C:\\Program Files\\Python312\\python.exe",
+      "-B",
+      "D:\\WSL\\UAVHumble22-validation\\formal54_serial_signal01\\test_formal280_serial_guard54.py"
+    ],
+    [
+      "C:\\Program Files\\Python312\\python.exe",
+      "-B",
+      "D:\\WSL\\UAVHumble22-validation\\formal54_serial_signal01\\formal280_serial_guard54.py",
+      "describe"
+    ]
+  ],
+  "tests": {
+    "count": 25,
+    "passed": 25,
+    "skipped": 0,
+    "returncode": 0,
+    "log": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\formal54_serial_signal01\\author_windows_tests02.log",
+      "sha256": "bd72825be4cec3e387f2f3863686cbea679e6e5816f09ba0d09a943d3012af5f"
+    },
+    "new_regressions": [
+      "second child identity capture raises without reusing previous identity",
+      "signal after provisional annotation and after explicit closed terminal boundary"
+    ]
+  },
+  "describe": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\formal54_serial_signal01\\formal54_serial_describe_windows02.json",
+    "sha256": "a3cdc6e2051abef61d12c1a265b32116dece5c80962b5445bd58e4bc14685136",
+    "canonical_sha256": "d7e1f4f2a8b8eccfcd99abd95c7a7a2e16dea8e128dc8eb97210b53db53b87b8"
+  },
+  "source_sha256_before": {
+    "formal280_serial_guard01.original.py": "6c8d2cd68b2f5d3a8acfea791ca1c82d49d595d664745073dea851802ac7971a",
+    "test_formal280_serial_guard01.original.py": "07eed5ea2464a4a75141afd226e384e591a4fd38a8bc5d4048338f42aeaab520",
+    "formal280_serial_guard54.py": "2e0d15f735bb82b3f6a2d819620c4f8f03100b853e04485dddacdd4b426c1393",
+    "owned_guard_process54.py": "ae7d7482fb33354d79a3e87416e53d3e1e08ddaef6d5d4e59844bb7f4b7f355c",
+    "test_formal280_serial_guard54.py": "72504ad3e32a3cebf57ead413ca17f5769ac7273d12e2e464c6b55f89fe5035e",
+    "test_native_owned_signal54.py": "501806db01fac0f4682444fae47ac7efd26c67fa707199d9a9949475c3ac3487"
+  },
+  "source_sha256_after": {
+    "formal280_serial_guard01.original.py": "6c8d2cd68b2f5d3a8acfea791ca1c82d49d595d664745073dea851802ac7971a",
+    "test_formal280_serial_guard01.original.py": "07eed5ea2464a4a75141afd226e384e591a4fd38a8bc5d4048338f42aeaab520",
+    "formal280_serial_guard54.py": "2e0d15f735bb82b3f6a2d819620c4f8f03100b853e04485dddacdd4b426c1393",
+    "owned_guard_process54.py": "ae7d7482fb33354d79a3e87416e53d3e1e08ddaef6d5d4e59844bb7f4b7f355c",
+    "test_formal280_serial_guard54.py": "72504ad3e32a3cebf57ead413ca17f5769ac7273d12e2e464c6b55f89fe5035e",
+    "test_native_owned_signal54.py": "501806db01fac0f4682444fae47ac7efd26c67fa707199d9a9949475c3ac3487"
+  },
+  "source_unchanged": true,
+  "previous_23_test_receipt_unchanged": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\formal54_serial_signal01\\author_windows_validation01.json",
+    "sha256": "fe33c31af3fdfeaa6b7773b7ca392a420c2485a71eae3069dfebf64836728693"
+  },
+  "previous_source_archive": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\formal54_serial_signal01\\revision01_archive_manifest.json",
+    "sha256": "f9cc3b6e75280147611776447be4a298513a61511673f91452167815641e180b"
+  },
+  "diffs": [
+    {
+      "path": "D:\\WSL\\UAVHumble22-validation\\formal54_serial_signal01\\formal280_serial_guard54_revision02.diff",
+      "sha256": "3babd6d7047c30e03d0c8ce7ef745622946d8815f55a4decb23e395a27204a9d"
+    },
+    {
+      "path": "D:\\WSL\\UAVHumble22-validation\\formal54_serial_signal01\\revision02_changes.diff",
+      "sha256": "e1495bbb220d3591776495050f3d8fefd5580fe67ee61de13ba226c543635689"
+    }
+  ],
+  "python310_source_ast_parse": "PASS",
+  "native_dummy_signal_tests_executed": false,
+  "real_guard_or_wsl_or_simulation_started": false,
+  "workspace_or_old_external_helpers_edited": false,
+  "formal_execution_authorized_by_this_receipt": false
+}

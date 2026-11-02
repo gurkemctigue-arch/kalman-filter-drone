@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "scope": "WINDOWS_FINAL_FAKE_PROCESSES_STATIC_ONLY_PENDING_INDEPENDENT_REVIEW",
+  "started_utc": "2026-11-02T19:55:26.646334+00:00",
+  "finished_utc": "2026-11-02T19:55:40.424129+00:00",
+  "wall_seconds": 13.78100000001723,
+  "platform": "Windows-11-10.0.22621-SP0",
+  "python": "3.12.3 (tags/v3.12.3:f6650f9, Apr  9 2024, 14:05:25) [MSC v.1938 64 bit (AMD64)]",
+  "tests": {
+    "count": 31,
+    "passed": 31,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "success": true,
+    "log": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\formal54_durable_owner01\\author_windows_tests04.log",
+      "sha256": "a01fe708e7f0cf9ec59b5d7fae7c3354a8af47cb8b63dd2695cc2c8ba4d336b8"
+    }
+  },
+  "python310_ast": "PASS",
+  "owner_manifest": {
+    "schema_version": 1,
+    "scope": "FORMAL54_DURABLE_SERIAL_LIFETIME_ONLY_NOT_ADMISSION",
+    "files": {
+      "formal54_durable_owner.py": "b2fce3cee771c523f693a2deec1c063e6dc2751b7ce3ee5d9cb6865a4cd3f318",
+      "test_formal54_durable_owner.py": "08460f23dff507ccb398ec5dc29dbd45379b6d0deab00451ccee8ccac448a802",
+      "test_native_durable_dummy.py": "11f88eef375fcd95aebc0d19e104b8f39ae58931f21a66d04d049975fcaff024"
+    },
+    "default_action": "describe",
+    "launches": "existing serial only, after independent source pins and launch ACK",
+    "watch_spawns_or_signals": false,
+    "signal_target": "verified positive worker PID then verified serial PID",
+    "forced_kill_or_process_group_signal": false,
+    "flight_or_cleanup_timeout_s": null,
+    "guard_or_slot_or_full280_policy_changed": false,
+    "native_runtime_validated": false
+  },
+  "owner_canonical_sha256": "f90b780da8d8020c6fec111fd40ac771a315afe82bdb532b8de9984309ce4b2f",
+  "source_sha256_before": {
+    "formal54_durable_owner.py": "b2fce3cee771c523f693a2deec1c063e6dc2751b7ce3ee5d9cb6865a4cd3f318",
+    "test_formal54_durable_owner.py": "08460f23dff507ccb398ec5dc29dbd45379b6d0deab00451ccee8ccac448a802",
+    "test_native_durable_dummy.py": "11f88eef375fcd95aebc0d19e104b8f39ae58931f21a66d04d049975fcaff024"
+  },
+  "source_sha256_after": {
+    "formal54_durable_owner.py": "b2fce3cee771c523f693a2deec1c063e6dc2751b7ce3ee5d9cb6865a4cd3f318",
+    "test_formal54_durable_owner.py": "08460f23dff507ccb398ec5dc29dbd45379b6d0deab00451ccee8ccac448a802",
+    "test_native_durable_dummy.py": "11f88eef375fcd95aebc0d19e104b8f39ae58931f21a66d04d049975fcaff024"
+  },
+  "new_regression": "Half-written terminal JSON is not completion and does not skip graceful stop",
+  "prior_revision": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\formal54_durable_owner01\\revision02_archive_manifest.json",
+    "sha256": "b4986f0e93c3661259e4e9201dc16c14e160b52351f7984da6e6440b197a5b71"
+  },
+  "real_child_spawned_by_tests": false,
+  "wsl_or_native_or_ros_or_real_guard_or_bag_used": false,
+  "native_dummy_tests_executed": false,
+  "formal_admission_or_slot_created": false
+}

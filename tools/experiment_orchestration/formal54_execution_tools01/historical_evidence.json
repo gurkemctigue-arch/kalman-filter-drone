@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "scope": "Historical gaps/failed writer summarized with actual original path/size/SHA; historical sources not recopied",
+  "entries": [
+    {
+      "group": "formal54_serial_signal01",
+      "status": "SUPERSEDED_23_TEST_REVISION_WITH_TWO_SIGNAL_LIFECYCLE_GAPS",
+      "summary": "The original 23-test author revision passed its then-existing fixtures. Independent review found second-child identity capture and terminal stop-window gaps; final revision02 retains 25 passing author tests. This is not a failed flight or a replacement of formal FAIL rows.",
+      "original_metadata": [
+        {
+          "path": "D:\\WSL\\UAVHumble22-validation\\formal54_serial_signal01\\author_windows_validation01.json",
+          "size_bytes": 2947,
+          "sha256": "fe33c31af3fdfeaa6b7773b7ca392a420c2485a71eae3069dfebf64836728693"
+        },
+        {
+          "path": "D:\\WSL\\UAVHumble22-validation\\formal54_serial_signal01\\formal54_serial_describe_windows01.json",
+          "size_bytes": 1190,
+          "sha256": "05beb1564cddad43fe4a1f95d6ceeb22a7a960b488daddecbf5c9fafcd119bfb"
+        },
+        {
+          "path": "D:\\WSL\\UAVHumble22-validation\\formal54_serial_signal01\\revision01_archive_manifest.json",
+          "size_bytes": 4333,
+          "sha256": "f9cc3b6e75280147611776447be4a298513a61511673f91452167815641e180b"
+        },
+        {
+          "path": "D:\\WSL\\UAVHumble22-validation\\formal54_serial_signal01\\revision02_changes.diff",
+          "size_bytes": 16595,
+          "sha256": "e1495bbb220d3591776495050f3d8fefd5580fe67ee61de13ba226c543635689"
+        }
+      ]
+    },
+    {
+      "group": "formal54_supplementary01",
+      "status": "HISTORICAL41_BINDING_AND_INTERMEDIATE_METADATA_ONLY",
+      "summary": "The prior helper hard-pinned formal41. Original bytes remain in the external archive. The adapter-only 12-test check was an intermediate subset; the final combined author suite is 55 tests, not 55+12.",
+      "original_metadata": [
+        {
+          "path": "D:\\WSL\\UAVHumble22-validation\\formal54_supplementary01\\original_byte_archive_manifest01.json",
+          "size_bytes": 1900,
+          "sha256": "82291c4ed9b6c9fb70bd419bbb0e5afd4129c8a7197053085e7ff9f8b958aa6e"
+        },
+        {
+          "path": "D:\\WSL\\UAVHumble22-validation\\formal54_supplementary01\\adapter_binding_windows_tests01.json",
+          "size_bytes": 537,
+          "sha256": "0084bbf97c426b62839d40b3801459e02f53226c4d18d7af79b1e7d58f083947"
+        },
+        {
+          "path": "D:\\WSL\\UAVHumble22-validation\\formal54_supplementary01\\adapter_binding_windows_tests01.log",
+          "size_bytes": 2528,
+          "sha256": "2386b6a93b08219fdd1dda76d75e3ca20cac28cb80f570a57d5aecb9f82841e6"
+        }
+      ]
+    },
+    {
+      "group": "formal54_durable_owner01",
+      "status": "AUTHOR_RECEIPT_WRITER_FAILURE_NATIVE_EXIT_1_NOT_PRODUCT_TEST_FAILURE",
+      "summary": "Writer01 incorrectly used the production metadata-only pin() on its own .log. The suffix gate correctly refused. Source was not weakened; later author evidence writers closed separately. Original failure metadata and partial log remain external.",
+      "original_metadata": [
+        {
+          "path": "D:\\WSL\\UAVHumble22-validation\\formal54_durable_owner01\\author_evidence_writer_failure01.json",
+          "size_bytes": 451,
+          "sha256": "8040fbf97bc40e2e2a668491795b4080ca90f033a3a2ab336144fd9f3d45aae9"
+        },
+        {
+          "path": "D:\\WSL\\UAVHumble22-validation\\formal54_durable_owner01\\author_windows_tests01.log",
+          "size_bytes": 5138,
+          "sha256": "cec9aab6a6bfe56ec711c8e32780e8a554409624990d8ee26c1378faa9bd7afa"
+        }
+      ]
+    },
+    {
+      "group": "formal54_durable_owner01",
+      "status": "SUPERSEDED_28_TEST_REVISION_OBSERVATION_OWNERSHIP_GAP",
+      "summary": "The 28-test revision passed its original fixtures. Review found watch could accept a foreign live owner receipt without binding it to the current registry. Final source binds registry, exact worker argv and original ACK byte pin. The old source/receipts remain archived.",
+      "original_metadata": [
+        {
+          "path": "D:\\WSL\\UAVHumble22-validation\\formal54_durable_owner01\\author_windows_validation02.json",
+          "size_bytes": 2871,
+          "sha256": "fa9c3e3b8ed744091322f93d34ee7d9decfc81eb095564648fcb3a35fc59365c"
+        },
+        {
+          "path": "D:\\WSL\\UAVHumble22-validation\\formal54_durable_owner01\\durable_describe_windows01.json",
+          "size_bytes": 1018,
+          "sha256": "2154b48c573b7aad06775b346608a2f2143d3eb25d9b66a5cab5f1faaa576ca7"
+        },
+        {
+          "path": "D:\\WSL\\UAVHumble22-validation\\formal54_durable_owner01\\revision01_archive_manifest.json",
+          "size_bytes": 1434,
+          "sha256": "313ee3508f301d27b4592c652d93b5829140cbc47d9400b8b6076d226f4c0bea"
+        }
+      ]
+    },
+    {
+      "group": "formal54_durable_owner01",
+      "status": "SUPERSEDED_30_TEST_REVISION_TERMINAL_PUBLICATION_EDGE",
+      "summary": "The intermediate 30-test revision fixed foreign owner/ACK binding. A subsequent author check added handling for incomplete terminal JSON publication; the final suite is 31 tests. Original 30-test source/evidence remains archived.",
+      "original_metadata": [
+        {
+          "path": "D:\\WSL\\UAVHumble22-validation\\formal54_durable_owner01\\author_windows_validation03.json",
+          "size_bytes": 3051,
+          "sha256": "74b91bad3d069e6550cc04741d4b1b9e1edfe99063cca31bd1eb2f1090ec7ef9"
+        },
+        {
+          "path": "D:\\WSL\\UAVHumble22-validation\\formal54_durable_owner01\\durable_describe_windows02.json",
+          "size_bytes": 1018,
+          "sha256": "81187bc5f7995b6920612f1657bade7de68ea385f1123af01b10023512a97339"
+        },
+        {
+          "path": "D:\\WSL\\UAVHumble22-validation\\formal54_durable_owner01\\revision02_archive_manifest.json",
+          "size_bytes": 993,
+          "sha256": "b4986f0e93c3661259e4e9201dc16c14e160b52351f7984da6e6440b197a5b71"
+        }
+      ]
+    }
+  ]
+}
