@@ -1,0 +1,119 @@
+{
+    "schema_version":  1,
+    "kind":  "ACTUAL_HUMBLE54_NATIVE_IDLE_TOOL_VALIDATION_NOT_FLIGHT_OR_FORMAL_ADMISSION",
+    "created_utc":  "2026-11-02T23:33:41.1409022Z",
+    "distribution":  "UAVHumble22",
+    "physical_python":  "/usr/bin/python3.10",
+    "current_import_audit":  {
+                                 "path":  "D:\\WSL\\UAVHumble22-validation\\snapshot_audit_native_import01\\native_import01.json",
+                                 "sha256":  "6093db7f32e8bb5eb62cb3a979c824642d7cec86b9e62e7060055eccb78f2611",
+                                 "bytes":  66125
+                             },
+    "original_contract_integration":  {
+                                          "path":  "D:\\WSL\\UAVHumble22-validation\\snapshot_audit_native_integration01\\native_contract_integration01.json",
+                                          "sha256":  "3c9f7ce6aeaaa3433c9e5ba8379427649695f8e92c83bf5e169929981f3af714",
+                                          "bytes":  43056
+                                      },
+    "durable_dummy":  {
+                          "tests_passed":  2,
+                          "warning_scope":  "Local launch Popen released after detached worker ACK; serial owned wait still asserted. Original warning text retained.",
+                          "tests_run":  2,
+                          "command":  [
+                                          "/usr/bin/python3.10",
+                                          "-B",
+                                          "/mnt/d/WSL/UAVHumble22-validation/formal54_durable_owner01/test_native_durable_dummy.py"
+                                      ],
+                          "detached_parent_resource_warning_count":  2,
+                          "tool_exit_code":  0,
+                          "duration_s":  3.345,
+                          "post_run_sources":  {
+                                                   "test":  {
+                                                                "path":  "D:\\WSL\\UAVHumble22-validation\\formal54_durable_owner01\\test_native_durable_dummy.py",
+                                                                "sha256":  "11f88eef375fcd95aebc0d19e104b8f39ae58931f21a66d04d049975fcaff024",
+                                                                "bytes":  6541
+                                                            },
+                                                   "owner":  {
+                                                                 "path":  "D:\\WSL\\UAVHumble22-validation\\formal54_durable_owner01\\formal54_durable_owner.py",
+                                                                 "sha256":  "b2fce3cee771c523f693a2deec1c063e6dc2751b7ce3ee5d9cb6865a4cd3f318",
+                                                                 "bytes":  36760
+                                                             }
+                                               },
+                          "log":  {
+                                      "path":  "D:\\WSL\\UAVHumble22-validation\\formal54_durable_owner01\\root_native_dummy01.log",
+                                      "sha256":  "2180eb78b521f59b4c27fee181236147effc7084075e75c09fe59805862401e6",
+                                      "bytes":  540
+                                  },
+                          "post_run_process_query":  {
+                                                         "scope":  "No matching live argv in actual post-run native query; not a proof of every past worker reap event",
+                                                         "tool_exit_code":  1,
+                                                         "command":  [
+                                                                         "pgrep",
+                                                                         "-a",
+                                                                         "-f",
+                                                                         "formal54_durable_native_dummy_|formal54_durable_owner.py"
+                                                                     ],
+                                                         "matching_processes":  [
+
+                                                                                ]
+                                                     }
+                      },
+    "supplementary55_components":  {
+                                       "tests_passed":  63,
+                                       "tests_run":  63,
+                                       "boundary":  "Native synthetic metadata and fake-exec components; actual final admission/adapter execution remains pending",
+                                       "command":  [
+                                                       "/usr/bin/python3.10",
+                                                       "-B",
+                                                       "-m",
+                                                       "unittest",
+                                                       "discover",
+                                                       "-s",
+                                                       "/mnt/d/WSL/UAVHumble22-validation/formal55_supplementary01",
+                                                       "-p",
+                                                       "test_*.py"
+                                                   ],
+                                       "tool_exit_code":  0,
+                                       "duration_s":  18.306,
+                                       "reviewed_canonical_sha256":  "b8f75eccb143871130671a00ad5cf75fe0768e43bc46bb0a99c2586f207b0580",
+                                       "post_run_source_pins":  {
+                                                                    "test_formal55_guard_binding.py":  {
+                                                                                                           "path":  "D:\\WSL\\UAVHumble22-validation\\formal55_supplementary01\\test_formal55_guard_binding.py",
+                                                                                                           "sha256":  "aa149f223f46a97326f2fd9d89a04485a8163dbd40beeb7d23346d274098e634",
+                                                                                                           "bytes":  6043
+                                                                                                       },
+                                                                    "test_formal_supplementary_preflight_independent01.py":  {
+                                                                                                                                 "path":  "D:\\WSL\\UAVHumble22-validation\\formal55_supplementary01\\test_formal_supplementary_preflight_independent01.py",
+                                                                                                                                 "sha256":  "3cca9d37f618212e0c515bee9a0733803952fa07e5ef9e82316394e8817b1fb0",
+                                                                                                                                 "bytes":  4599
+                                                                                                                             },
+                                                                    "test_formal_supplementary_preflight.py":  {
+                                                                                                                   "path":  "D:\\WSL\\UAVHumble22-validation\\formal55_supplementary01\\test_formal_supplementary_preflight.py",
+                                                                                                                   "sha256":  "3bf899b5fa194bf092776eecd94c2dc273b101f5389f737a9917af8f122bf902",
+                                                                                                                   "bytes":  33599
+                                                                                                               },
+                                                                    "formal_supplementary_preflight.sh":  {
+                                                                                                              "path":  "D:\\WSL\\UAVHumble22-validation\\formal55_supplementary01\\formal_supplementary_preflight.sh",
+                                                                                                              "sha256":  "91145e9524e9f6f7ab2114ed39c611fd02d024f9b5ca06521fa43150d896e6c2",
+                                                                                                              "bytes":  208
+                                                                                                          },
+                                                                    "test_formal54_adapter_binding.py":  {
+                                                                                                             "path":  "D:\\WSL\\UAVHumble22-validation\\formal55_supplementary01\\test_formal54_adapter_binding.py",
+                                                                                                             "sha256":  "40101c90e5b8483b647f6a0d3b160062d35892704e4cb7725c6dc8385126bc67",
+                                                                                                             "bytes":  6840
+                                                                                                         },
+                                                                    "formal_supplementary_preflight.py":  {
+                                                                                                              "path":  "D:\\WSL\\UAVHumble22-validation\\formal55_supplementary01\\formal_supplementary_preflight.py",
+                                                                                                              "sha256":  "0953767edd2ba24e1996759ba5e806c146318d0c867953cdb5e22558ba6abf1f",
+                                                                                                              "bytes":  32545
+                                                                                                          }
+                                                                },
+                                       "log":  {
+                                                   "path":  "D:\\WSL\\UAVHumble22-validation\\formal55_supplementary01\\root_native_components01.log",
+                                                   "sha256":  "258d08acb43fbd52171883a4bfb85a784c1bb765820d4800f4718ef8da96e0e8",
+                                                   "bytes":  163
+                                               }
+                                   },
+    "formal_admission_created":  false,
+    "formal_flights_started":  0,
+    "claim_boundary":  "Current import audit, original contract audit and tool components only. Not historical flight import proof, safety4, extension16, capacity or formal admission."
+}

@@ -1,0 +1,601 @@
+{
+  "schema_version": 1,
+  "scope": "ACTUAL_FIXED_TOOL_NATIVE_CONTRACT_AND_SNAPSHOT_AUDIT_ONLY",
+  "started_utc": "2026-11-02T23:31:02.529582+00:00",
+  "result": "NATIVE_CONTRACT_AND_FIRST3_SNAPSHOT_AUDIT_COMPLETE_FORMAL_DUAL_ROOT_VALIDATION_PENDING",
+  "contract_creation_attempted": true,
+  "safety_registration_created": false,
+  "formal_admission_or_plan_created": false,
+  "formal_execution_authorized": false,
+  "formal_dual_root_integration_validated": false,
+  "historical_flight_imports_proved": false,
+  "runtime_root_edited": false,
+  "original_snapshots_edited": false,
+  "bag_sidecar_or_telemetry_read_by_this_script": false,
+  "helper_original_source_and_model_hashing_allowed_and_preserved": true,
+  "self": {
+    "path": "/mnt/d/WSL/UAVHumble22-validation/snapshot_audit_native_integration01/audit_snapshot_contract_integration.py",
+    "bytes": 20389,
+    "sha256": "1062409c9ef2aee5c611831f5100db9ce081557570bd28859a057c7c00cec8cc"
+  },
+  "bundle_before": {
+    "manifest": {
+      "path": "/root/uav_tracking_snapshot_audit54_tools01/bundle_manifest.json",
+      "bytes": 2445,
+      "sha256": "fcee7f195d9822f45edc35d72cbcf0296559426e5dfadd7b2a9b8452fc9bcff3"
+    },
+    "files": {
+      "tools/reliability_v4_guard.py": {
+        "path": "/root/uav_tracking_snapshot_audit54_tools01/tools/reliability_v4_guard.py",
+        "bytes": 86011,
+        "sha256": "e64e9da6a5180d70b32c6b2b3076abe4bbc52d4b748395bf7f8af61e6a7e3a8e"
+      },
+      "tools/run_reliability_v4_safety.py": {
+        "path": "/root/uav_tracking_snapshot_audit54_tools01/tools/run_reliability_v4_safety.py",
+        "bytes": 42661,
+        "sha256": "6d6d1b56d14866355c7d423d3eaaed420860f20190d59acdfa20b853b9f3073b"
+      },
+      "tools/reliability_v4_snapshot_audit.py": {
+        "path": "/root/uav_tracking_snapshot_audit54_tools01/tools/reliability_v4_snapshot_audit.py",
+        "bytes": 17347,
+        "sha256": "9339fe72a67b36f987b81a20833953a50ca59302b4157a1230424e8145497ba6"
+      },
+      "tools/reliability_v4_register.py": {
+        "path": "/root/uav_tracking_snapshot_audit54_tools01/tools/reliability_v4_register.py",
+        "bytes": 28714,
+        "sha256": "fe2b37738ba07016dc1551abe273e5309e702b14df6e3d707b2788d3f3ef992c"
+      },
+      "tools/__init__.py": {
+        "path": "/root/uav_tracking_snapshot_audit54_tools01/tools/__init__.py",
+        "bytes": 81,
+        "sha256": "71439d58f08b95cbc9f7998d54555ac376427bddec6cc04d959cd5427fa1b575"
+      }
+    }
+  },
+  "freeze_metadata_before": {
+    "source_integrity/source_frozen_integrity.json": {
+      "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/freeze_validation/source_integrity/source_frozen_integrity.json",
+      "bytes": 1762,
+      "sha256": "2d845e262201c6264b9f466b4f77eef4e30c9ec19e17a178e0a65c2db0b940f8"
+    },
+    "import_isolation.json": {
+      "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/freeze_validation/import_isolation.json",
+      "bytes": 1265,
+      "sha256": "a8f43e840275763b83f8f8794fd5882d2d2ec02cec397a2bf5e4ed6d570c8576"
+    },
+    "source_integrity/source_before.json": {
+      "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/freeze_validation/source_integrity/source_before.json",
+      "bytes": 339580,
+      "sha256": "cdb4111738f2f51c9911e3e7cebaf9f69aafd92d5cef39d8839a1e5dbb27c82f"
+    },
+    "source_integrity/source_after.json": {
+      "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/freeze_validation/source_integrity/source_after.json",
+      "bytes": 339282,
+      "sha256": "56523188d5613b87a4dcac6daef124ceb039736b40095a3c1526e2b11581c6a5"
+    },
+    "source_integrity/frozen_actual.json": {
+      "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/freeze_validation/source_integrity/frozen_actual.json",
+      "bytes": 339262,
+      "sha256": "7c81219e94b774723e135fa0a696cab603811b298e24900de158f199a414a102"
+    }
+  },
+  "native_tool_imports": {
+    "tools": {
+      "path": "/root/uav_tracking_snapshot_audit54_tools01/tools/__init__.py",
+      "bytes": 81,
+      "sha256": "71439d58f08b95cbc9f7998d54555ac376427bddec6cc04d959cd5427fa1b575"
+    },
+    "reliability_v4_guard": {
+      "path": "/root/uav_tracking_snapshot_audit54_tools01/tools/reliability_v4_guard.py",
+      "bytes": 86011,
+      "sha256": "e64e9da6a5180d70b32c6b2b3076abe4bbc52d4b748395bf7f8af61e6a7e3a8e"
+    },
+    "reliability_v4_snapshot_audit": {
+      "path": "/root/uav_tracking_snapshot_audit54_tools01/tools/reliability_v4_snapshot_audit.py",
+      "bytes": 17347,
+      "sha256": "9339fe72a67b36f987b81a20833953a50ca59302b4157a1230424e8145497ba6"
+    },
+    "run_reliability_v4_safety": {
+      "path": "/root/uav_tracking_snapshot_audit54_tools01/tools/run_reliability_v4_safety.py",
+      "bytes": 42661,
+      "sha256": "6d6d1b56d14866355c7d423d3eaaed420860f20190d59acdfa20b853b9f3073b"
+    },
+    "reliability_v4_register": {
+      "path": "/root/uav_tracking_snapshot_audit54_tools01/tools/reliability_v4_register.py",
+      "bytes": 28714,
+      "sha256": "fe2b37738ba07016dc1551abe273e5309e702b14df6e3d707b2788d3f3ef992c"
+    }
+  },
+  "adapter_header": {
+    "result": "ACTUAL_NATIVE_IMPORT_TOOL_MANIFEST_AND_STATIC_LOADER_INTERFACE_CHECKED",
+    "files": {
+      "formal48_guard_adapter01.py": {
+        "path": "/mnt/d/WSL/UAVHumble22-validation/formal48_dds_adapter01/formal48_guard_adapter01.py",
+        "bytes": 26060,
+        "sha256": "3973a0590981abf578cbd174371d13c82207c717669298b6d7769c14a242444e"
+      },
+      "formal48_guard_adapter01.sh": {
+        "path": "/mnt/d/WSL/UAVHumble22-validation/formal48_dds_adapter01/formal48_guard_adapter01.sh",
+        "bytes": 2531,
+        "sha256": "b1343b56e6effe488e3554b58fbae924aba26cfdc959e113d862ad9b14f9535b"
+      },
+      "test_formal48_guard_adapter01.py": {
+        "path": "/mnt/d/WSL/UAVHumble22-validation/formal48_dds_adapter01/test_formal48_guard_adapter01.py",
+        "bytes": 29003,
+        "sha256": "f3ad7e63ffea568db720e91b6fb449e9ef5e9d72d5f095333178c3f8f3430042"
+      }
+    },
+    "module_file": "/mnt/d/WSL/UAVHumble22-validation/formal48_dds_adapter01/formal48_guard_adapter01.py",
+    "tools_manifest": {
+      "schema_version": 1,
+      "scope": "FORMAL48_DDS_PREFLIGHT_ORIGINAL_GUARD_NATIVE_OWNER_NO_NEW_ADMISSION",
+      "files": {
+        "formal48_guard_adapter01.py": "3973a0590981abf578cbd174371d13c82207c717669298b6d7769c14a242444e",
+        "formal48_guard_adapter01.sh": "b1343b56e6effe488e3554b58fbae924aba26cfdc959e113d862ad9b14f9535b",
+        "test_formal48_guard_adapter01.py": "f3ad7e63ffea568db720e91b6fb449e9ef5e9d72d5f095333178c3f8f3430042"
+      },
+      "owner_tools_canonical_sha256": "e558bf367038a2bb3530d7e5a8ea3e3fae7eb84ac19d02acedecc7c5c2be3ea3",
+      "collector_sha256": "f174ec21ebf962f156d76f8d35f802eebf318163555815527a3e2227b914f180",
+      "actions": [
+        "describe",
+        "run-one"
+      ],
+      "default_manifest": null,
+      "guard_api": "actual manifest.tool execute_one(command_runner=observed_runner)",
+      "guard_argv_or_slot_or_capacity_modified": false,
+      "additional_sitl_lock": false,
+      "dds_files_bound_by_both_formal_plans": [
+        "config/dds_runtime_humble22.json",
+        "uav_tracking/dds_runtime.py",
+        "scripts/apply_humble22_dds_runtime.sh"
+      ],
+      "actual_final_root_preflight_before_original_guard": true,
+      "dds_actual_loaded_processes_claimed": false,
+      "historical_owner_directory": "/mnt/d/WSL/UAVHumble22-validation",
+      "owner_actual_terminal_persisted_before_command_return": true,
+      "sample_max_age_wall_s": 10.0,
+      "owner_archive_wall_budget_s": 1800.0,
+      "native_session_wall_s": 7200.0,
+      "rotation_wall_s": 5400.0,
+      "owned_child_cleanup_graces_s": [
+        240,
+        30,
+        10
+      ],
+      "automatic_retry": false,
+      "registration_or_seal_created": false,
+      "local_raw_evidence_removed": false,
+      "authorization_source": "Unchanged actual sealed guard only; adapter grants no admission"
+    },
+    "tools_canonical_sha256": "dbc9358db20d02e62c2963b868605b4e77f4d16a188f52c5e28e11e20f9f2d5a",
+    "load_context_signature": "(path, expected_sha, reviewed_tools_sha)",
+    "load_original_guard_signature": "(context)",
+    "actual_loader_source": {
+      "load_context": "def load_context(path, expected_sha, reviewed_tools_sha):\n    require(valid_sha(expected_sha) and valid_sha(reviewed_tools_sha)\n            and canonical(tool_manifest()) == reviewed_tools_sha,\n            'Exact reviewed adapter and already sealed manifest digests required')\n    path = Path(path)\n    require(path.is_absolute() and not path.is_symlink(), 'Original absolute manifest required')\n    manifest_binding = binding(path)\n    require(manifest_binding['sha256'] == expected_sha, 'Original sealed manifest digest changed')\n    _, manifest = bound_json(manifest_binding)\n    require(type(manifest.get('schema_version')) is int and manifest['schema_version'] == 1\n            and manifest.get('kind') == 'RELIABILITY_V4_FORMAL_ADMISSION'\n            and manifest.get('manifest_sha256') == canonical({key: value for key, value in manifest.items()\n                                                            if key != 'manifest_sha256'}),\n            'Actual sealed formal admission is required; no candidate or invented seal')\n    root = Path(manifest.get('final_root', ''))\n    require(root.is_absolute() and root.is_dir() and root.resolve(strict=True) == root,\n            'Sealed actual final root must already exist without an alias')\n    state = Path(manifest.get('state_directory', '')).resolve()\n    results = (root/'results').resolve(strict=True)\n    require(state != results and state.is_relative_to(results), 'Original guard state escaped final results')\n    plans = {}\n    for label, mode in (('core', 'FORMAL'), ('extension', 'EXTENSION_FORMAL')):\n        plan_path, plan = bound_json(manifest.get('plans', {}).get(label))\n        require(plan.get('mode') == mode and plan.get('frozen_root') == str(root),\n                'Both original final-root formal plan bindings are required')\n        plans[label] = {'path': plan_path, 'data': plan, 'binding': manifest['plans'][label]}\n    require(plans['core']['data'].get('source_hashes') == plans['extension']['data'].get('source_hashes')\n            and isinstance(plans['core']['data'].get('source_hashes'), dict),\n            'Actual formal plans must bind identical frozen source')\n    sources = plans['core']['data']['source_hashes']\n    tool = manifest.get('tool')\n    require(isinstance(tool, dict) and set(tool) == {'path', 'sha256'}\n            and Path(tool['path']).is_absolute()\n            and valid_sha(tool['sha256']),\n            'Sealed manifest must name its actual original guard path/SHA')\n    guard_source = file_bytes(tool['path'])\n    require(hashlib.sha256(guard_source).hexdigest() == tool['sha256'], 'Original bound guard source changed')\n    collector = binding(root/COLLECTOR_RELATIVE)\n    require(collector['sha256'] == sources.get(COLLECTOR_RELATIVE) == COLLECTOR_SHA,\n            'Actual final-root collector is not the reviewed native tmpfs source')\n    context = SimpleNamespace(path=Path(manifest_binding['path']), manifest=manifest,\n        manifest_binding=manifest_binding, root=root, state=state, plans=plans,\n        tool=tool, guard_source=guard_source, collector=collector,\n        reviewed_tools_sha=reviewed_tools_sha,\n        dds_source_files=dds_source_bindings(root, sources), dds_runtime=None)\n    verify_inputs(context)\n    return context",
+      "load_original_guard": "def load_original_guard(context):\n    \"\"\"Execute the same already hashed bytes, never a second pathname read.\"\"\"\n    verify_inputs(context)\n    name = '_formal41_original_guard_'+context.tool['sha256']\n    spec = importlib.util.spec_from_file_location(name, context.tool['path'])\n    module = importlib.util.module_from_spec(spec)\n    sys.modules[name] = module\n    exec(compile(context.guard_source, context.tool['path'], 'exec'), module.__dict__)\n    require(Path(module.__file__).resolve(strict=True) == Path(context.tool['path'])\n            and binding(context.tool['path']) == context.tool, 'Original guard path/bytes changed during import')\n    return module"
+    },
+    "formal_load_context_called": false,
+    "formal_load_original_guard_called": false,
+    "formal_dual_root_integration_validated": false,
+    "pending": "Real safety4 and real final formal plans/manifest must exist before the complete original adapter/guard load chain can be checked."
+  },
+  "plan": {
+    "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/plan.json",
+    "bytes": 207807,
+    "sha256": "ed88783162991c151ab3d537d4eb7d3546b3688339a06db6f35b7f2ef7c48d4b"
+  },
+  "expected_registered_snapshot_entries": 187,
+  "snapshots": [
+    {
+      "id": "person_stage1_velocity_seed004",
+      "original": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage1_velocity_seed004/configuration/source_sha256.json",
+        "bytes": 23847,
+        "sha256": "0094a5013801e67fb6ae692cef785b190272708d71bfb0cd4a3349a0eb09ee46"
+      },
+      "entries": 204,
+      "default_strict": {
+        "result": "EXPECTED_ORIGINAL_SET_DIFFERENCE_REFUSAL",
+        "exception": "Refusal",
+        "message": "Safety actual saved source/model snapshot differs",
+        "extra_sources": {
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/__init__.py": "9662d07f49e633c6fa87127566a06ec928b227efe706ac6f5183e7c1e77fe5dd",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/control/__init__.py": "3dd25f981ecbd1d24a5bebd47b878fe81c9e81215c0a2ca2c8b9437ed1e93b2b",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/control/follow_controller.py": "1804422a0c67459fc7e616108f0169d6965675d9c8c439ff86e18670c3a2ac89",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/control/gimbal_controller.py": "eb0e9219ed530ba0cca743680aeeb5a5b67e7277711902c759ef28db0862d492",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/core/__init__.py": "b9a309fb1e06013a931fa6a54c95c073b383834254744b73d44f389ecb8bc4fd",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/core/geometry.py": "19f2c58901e4a13b8c4de46b14a99f4a3e5835d7fab1ad614d42efea5252c38c",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/core/kalman.py": "6d4ded5bba32ec9a2825d6520377aa55f68d9fecac1291fbcffd5626253d3194",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/core/models.py": "3460ead57f8071883429c9c9ea9687a3ea6920851eb478902b93b3d597645444",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/core/target_manager.py": "bb9cc099a1ef7e6494d1c87b0bc28e1bbf907031ad05f1c4061c5c068f137c24",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/experiments.py": "4382b64695124922115f57a455e7f48949891e4af3d705941fb1ce1d30cba588",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/simulation.py": "5e24586fc847aa557f076f7b3c5c4f529feb9175747b717e051f93276b068e07",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking_nodes/__init__.py": "9214ca3d6b02eac3bbdf6673e566b4a8c5aa067a7fa5e80d5fc771b2c3a9e627",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking_nodes/controller_node.py": "da80c43421fc1877ab04b69989779f3988f6dfb688b70fe69ab4f62237654dba",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking_nodes/detector_node.py": "c5a9c9d4fa6f3bd4d1c65bd31152f9fba478d4c4eea59aa40c62f7dd71753d44",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking_nodes/state_estimator_node.py": "7cdfed433ac823ba2fa441c1069eab8e5e0a96a9d4bdc79c489debd75eed29db",
+          "ros2_ws/src/uav_tracking_px4_adapter/build/lib/uav_tracking_px4_adapter/__init__.py": "eeb4bcf3619dc97c2bde8797b4ec0a0440496e07ce731d10be97d735801d48e5",
+          "ros2_ws/src/uav_tracking_px4_adapter/build/lib/uav_tracking_px4_adapter/adapter_node.py": "64a068bccb88fe2ad978cb256a7df9a9829724de7179436a629319328c79fa40"
+        },
+        "missing_sources": [],
+        "changed_sources": []
+      },
+      "helper_validate_snapshot_called": true,
+      "explicit_contract_validation": {
+        "result": "PASS",
+        "mode": "RELIABILITY_V4_FROZEN_SNAPSHOT_AUDIT_CONTRACT",
+        "contract": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/snapshot_audit54_contract01.json",
+          "sha256": "37c392024d2935416b1c4d9756c8daad54353e7e6eea2017466976ad6a8214b7"
+        },
+        "registered_count": 187,
+        "original_extra_count": 17,
+        "original_extra_sources": {
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/__init__.py": "9662d07f49e633c6fa87127566a06ec928b227efe706ac6f5183e7c1e77fe5dd",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/control/__init__.py": "3dd25f981ecbd1d24a5bebd47b878fe81c9e81215c0a2ca2c8b9437ed1e93b2b",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/control/follow_controller.py": "1804422a0c67459fc7e616108f0169d6965675d9c8c439ff86e18670c3a2ac89",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/control/gimbal_controller.py": "eb0e9219ed530ba0cca743680aeeb5a5b67e7277711902c759ef28db0862d492",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/core/__init__.py": "b9a309fb1e06013a931fa6a54c95c073b383834254744b73d44f389ecb8bc4fd",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/core/geometry.py": "19f2c58901e4a13b8c4de46b14a99f4a3e5835d7fab1ad614d42efea5252c38c",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/core/kalman.py": "6d4ded5bba32ec9a2825d6520377aa55f68d9fecac1291fbcffd5626253d3194",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/core/models.py": "3460ead57f8071883429c9c9ea9687a3ea6920851eb478902b93b3d597645444",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/core/target_manager.py": "bb9cc099a1ef7e6494d1c87b0bc28e1bbf907031ad05f1c4061c5c068f137c24",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/experiments.py": "4382b64695124922115f57a455e7f48949891e4af3d705941fb1ce1d30cba588",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/simulation.py": "5e24586fc847aa557f076f7b3c5c4f529feb9175747b717e051f93276b068e07",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking_nodes/__init__.py": "9214ca3d6b02eac3bbdf6673e566b4a8c5aa067a7fa5e80d5fc771b2c3a9e627",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking_nodes/controller_node.py": "da80c43421fc1877ab04b69989779f3988f6dfb688b70fe69ab4f62237654dba",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking_nodes/detector_node.py": "c5a9c9d4fa6f3bd4d1c65bd31152f9fba478d4c4eea59aa40c62f7dd71753d44",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking_nodes/state_estimator_node.py": "7cdfed433ac823ba2fa441c1069eab8e5e0a96a9d4bdc79c489debd75eed29db",
+          "ros2_ws/src/uav_tracking_px4_adapter/build/lib/uav_tracking_px4_adapter/__init__.py": "eeb4bcf3619dc97c2bde8797b4ec0a0440496e07ce731d10be97d735801d48e5",
+          "ros2_ws/src/uav_tracking_px4_adapter/build/lib/uav_tracking_px4_adapter/adapter_node.py": "64a068bccb88fe2ad978cb256a7df9a9829724de7179436a629319328c79fa40"
+        },
+        "historical_copy_comparisons": {
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/__init__.py": {
+            "canonical_source": "uav_tracking/__init__.py",
+            "historical_sha256": "9662d07f49e633c6fa87127566a06ec928b227efe706ac6f5183e7c1e77fe5dd",
+            "canonical_sha256": "9662d07f49e633c6fa87127566a06ec928b227efe706ac6f5183e7c1e77fe5dd",
+            "same_bytes": true
+          },
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/control/__init__.py": {
+            "canonical_source": "uav_tracking/control/__init__.py",
+            "historical_sha256": "3dd25f981ecbd1d24a5bebd47b878fe81c9e81215c0a2ca2c8b9437ed1e93b2b",
+            "canonical_sha256": "3dd25f981ecbd1d24a5bebd47b878fe81c9e81215c0a2ca2c8b9437ed1e93b2b",
+            "same_bytes": true
+          },
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/control/follow_controller.py": {
+            "canonical_source": "uav_tracking/control/follow_controller.py",
+            "historical_sha256": "1804422a0c67459fc7e616108f0169d6965675d9c8c439ff86e18670c3a2ac89",
+            "canonical_sha256": "ef7f6c634fc6c5cb0cf40149ed72b45d47d99aa1d8aeeebefb669ea51050f8aa",
+            "same_bytes": false
+          },
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/control/gimbal_controller.py": {
+            "canonical_source": "uav_tracking/control/gimbal_controller.py",
+            "historical_sha256": "eb0e9219ed530ba0cca743680aeeb5a5b67e7277711902c759ef28db0862d492",
+            "canonical_sha256": "eb0e9219ed530ba0cca743680aeeb5a5b67e7277711902c759ef28db0862d492",
+            "same_bytes": true
+          },
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/core/__init__.py": {
+            "canonical_source": "uav_tracking/core/__init__.py",
+            "historical_sha256": "b9a309fb1e06013a931fa6a54c95c073b383834254744b73d44f389ecb8bc4fd",
+            "canonical_sha256": "b9a309fb1e06013a931fa6a54c95c073b383834254744b73d44f389ecb8bc4fd",
+            "same_bytes": true
+          },
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/core/geometry.py": {
+            "canonical_source": "uav_tracking/core/geometry.py",
+            "historical_sha256": "19f2c58901e4a13b8c4de46b14a99f4a3e5835d7fab1ad614d42efea5252c38c",
+            "canonical_sha256": "19f2c58901e4a13b8c4de46b14a99f4a3e5835d7fab1ad614d42efea5252c38c",
+            "same_bytes": true
+          },
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/core/kalman.py": {
+            "canonical_source": "uav_tracking/core/kalman.py",
+            "historical_sha256": "6d4ded5bba32ec9a2825d6520377aa55f68d9fecac1291fbcffd5626253d3194",
+            "canonical_sha256": "815631741083071c8758db5079e83e9c0404724d21abbe8dc680d762a3e58d12",
+            "same_bytes": false
+          },
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/core/models.py": {
+            "canonical_source": "uav_tracking/core/models.py",
+            "historical_sha256": "3460ead57f8071883429c9c9ea9687a3ea6920851eb478902b93b3d597645444",
+            "canonical_sha256": "839056848001a7039656e21a4541fefb14c9d61237b2851f9a2f6f9c7ad303f2",
+            "same_bytes": false
+          },
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/core/target_manager.py": {
+            "canonical_source": "uav_tracking/core/target_manager.py",
+            "historical_sha256": "bb9cc099a1ef7e6494d1c87b0bc28e1bbf907031ad05f1c4061c5c068f137c24",
+            "canonical_sha256": "b5931d4d20dc025c60cda845aa4c8e151eb8d28e76a55e8c67ce227cd2edbf3b",
+            "same_bytes": false
+          },
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/experiments.py": {
+            "canonical_source": "uav_tracking/experiments.py",
+            "historical_sha256": "4382b64695124922115f57a455e7f48949891e4af3d705941fb1ce1d30cba588",
+            "canonical_sha256": "4382b64695124922115f57a455e7f48949891e4af3d705941fb1ce1d30cba588",
+            "same_bytes": true
+          },
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/simulation.py": {
+            "canonical_source": "uav_tracking/simulation.py",
+            "historical_sha256": "5e24586fc847aa557f076f7b3c5c4f529feb9175747b717e051f93276b068e07",
+            "canonical_sha256": "5e24586fc847aa557f076f7b3c5c4f529feb9175747b717e051f93276b068e07",
+            "same_bytes": true
+          },
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking_nodes/__init__.py": {
+            "canonical_source": "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/__init__.py",
+            "historical_sha256": "9214ca3d6b02eac3bbdf6673e566b4a8c5aa067a7fa5e80d5fc771b2c3a9e627",
+            "canonical_sha256": "9214ca3d6b02eac3bbdf6673e566b4a8c5aa067a7fa5e80d5fc771b2c3a9e627",
+            "same_bytes": true
+          },
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking_nodes/controller_node.py": {
+            "canonical_source": "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/controller_node.py",
+            "historical_sha256": "da80c43421fc1877ab04b69989779f3988f6dfb688b70fe69ab4f62237654dba",
+            "canonical_sha256": "fa37a4de445896f8fd08b0bfa2c99a200623c39d98427ccedfe16cc9c6361959",
+            "same_bytes": false
+          },
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking_nodes/detector_node.py": {
+            "canonical_source": "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/detector_node.py",
+            "historical_sha256": "c5a9c9d4fa6f3bd4d1c65bd31152f9fba478d4c4eea59aa40c62f7dd71753d44",
+            "canonical_sha256": "2316a7f331afec55844da65f6d6b4bb76de551e1bad262bd26ad3728a4636510",
+            "same_bytes": false
+          },
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking_nodes/state_estimator_node.py": {
+            "canonical_source": "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/state_estimator_node.py",
+            "historical_sha256": "7cdfed433ac823ba2fa441c1069eab8e5e0a96a9d4bdc79c489debd75eed29db",
+            "canonical_sha256": "696184b13ebb21307f1091171f15f5f628e6b46b101c692f1dcacea77861fbd0",
+            "same_bytes": false
+          },
+          "ros2_ws/src/uav_tracking_px4_adapter/build/lib/uav_tracking_px4_adapter/__init__.py": {
+            "canonical_source": "ros2_ws/src/uav_tracking_px4_adapter/uav_tracking_px4_adapter/__init__.py",
+            "historical_sha256": "eeb4bcf3619dc97c2bde8797b4ec0a0440496e07ce731d10be97d735801d48e5",
+            "canonical_sha256": "eeb4bcf3619dc97c2bde8797b4ec0a0440496e07ce731d10be97d735801d48e5",
+            "same_bytes": true
+          },
+          "ros2_ws/src/uav_tracking_px4_adapter/build/lib/uav_tracking_px4_adapter/adapter_node.py": {
+            "canonical_source": "ros2_ws/src/uav_tracking_px4_adapter/uav_tracking_px4_adapter/adapter_node.py",
+            "historical_sha256": "64a068bccb88fe2ad978cb256a7df9a9829724de7179436a629319328c79fa40",
+            "canonical_sha256": "5de4d83c8b780bbcf4b6bcadfc76e3ba5b9dc3fe344c6f92cc5c7c2c16c31622",
+            "same_bytes": false
+          }
+        },
+        "evidence_limitations": "The original import receipt records core/nodes packages and generated interfaces, plus the adapter ament prefix. It does not record every flight process module, the eight differing historical copies, or adapter_node.__file__."
+      },
+      "validation_basis": "ACTUAL_UNMODIFIED_HELPER_VALIDATE_SNAPSHOT_CALL"
+    },
+    {
+      "id": "person_stage1_position_seed004",
+      "original": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage1_position_seed004/configuration/source_sha256.json",
+        "bytes": 23847,
+        "sha256": "0094a5013801e67fb6ae692cef785b190272708d71bfb0cd4a3349a0eb09ee46"
+      },
+      "entries": 204,
+      "default_strict": {
+        "result": "EXPECTED_ORIGINAL_SET_DIFFERENCE_REFUSAL",
+        "exception": "Refusal",
+        "message": "Safety actual saved source/model snapshot differs",
+        "extra_sources": {
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/__init__.py": "9662d07f49e633c6fa87127566a06ec928b227efe706ac6f5183e7c1e77fe5dd",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/control/__init__.py": "3dd25f981ecbd1d24a5bebd47b878fe81c9e81215c0a2ca2c8b9437ed1e93b2b",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/control/follow_controller.py": "1804422a0c67459fc7e616108f0169d6965675d9c8c439ff86e18670c3a2ac89",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/control/gimbal_controller.py": "eb0e9219ed530ba0cca743680aeeb5a5b67e7277711902c759ef28db0862d492",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/core/__init__.py": "b9a309fb1e06013a931fa6a54c95c073b383834254744b73d44f389ecb8bc4fd",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/core/geometry.py": "19f2c58901e4a13b8c4de46b14a99f4a3e5835d7fab1ad614d42efea5252c38c",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/core/kalman.py": "6d4ded5bba32ec9a2825d6520377aa55f68d9fecac1291fbcffd5626253d3194",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/core/models.py": "3460ead57f8071883429c9c9ea9687a3ea6920851eb478902b93b3d597645444",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/core/target_manager.py": "bb9cc099a1ef7e6494d1c87b0bc28e1bbf907031ad05f1c4061c5c068f137c24",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/experiments.py": "4382b64695124922115f57a455e7f48949891e4af3d705941fb1ce1d30cba588",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/simulation.py": "5e24586fc847aa557f076f7b3c5c4f529feb9175747b717e051f93276b068e07",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking_nodes/__init__.py": "9214ca3d6b02eac3bbdf6673e566b4a8c5aa067a7fa5e80d5fc771b2c3a9e627",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking_nodes/controller_node.py": "da80c43421fc1877ab04b69989779f3988f6dfb688b70fe69ab4f62237654dba",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking_nodes/detector_node.py": "c5a9c9d4fa6f3bd4d1c65bd31152f9fba478d4c4eea59aa40c62f7dd71753d44",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking_nodes/state_estimator_node.py": "7cdfed433ac823ba2fa441c1069eab8e5e0a96a9d4bdc79c489debd75eed29db",
+          "ros2_ws/src/uav_tracking_px4_adapter/build/lib/uav_tracking_px4_adapter/__init__.py": "eeb4bcf3619dc97c2bde8797b4ec0a0440496e07ce731d10be97d735801d48e5",
+          "ros2_ws/src/uav_tracking_px4_adapter/build/lib/uav_tracking_px4_adapter/adapter_node.py": "64a068bccb88fe2ad978cb256a7df9a9829724de7179436a629319328c79fa40"
+        },
+        "missing_sources": [],
+        "changed_sources": []
+      },
+      "helper_validate_snapshot_called": false,
+      "validation_basis": "ORIGINAL_BYTES_SHA_AND_COMPLETE_MAPPING_EQUAL_TO_FIRST_ACTUAL_HELPER_VALIDATED_SNAPSHOT",
+      "equivalent_to": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage1_velocity_seed004/configuration/source_sha256.json",
+        "bytes": 23847,
+        "sha256": "0094a5013801e67fb6ae692cef785b190272708d71bfb0cd4a3349a0eb09ee46"
+      }
+    },
+    {
+      "id": "person_stage2_crossing_seed004",
+      "original": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage2_crossing_seed004/configuration/source_sha256.json",
+        "bytes": 23847,
+        "sha256": "0094a5013801e67fb6ae692cef785b190272708d71bfb0cd4a3349a0eb09ee46"
+      },
+      "entries": 204,
+      "default_strict": {
+        "result": "EXPECTED_ORIGINAL_SET_DIFFERENCE_REFUSAL",
+        "exception": "Refusal",
+        "message": "Safety actual saved source/model snapshot differs",
+        "extra_sources": {
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/__init__.py": "9662d07f49e633c6fa87127566a06ec928b227efe706ac6f5183e7c1e77fe5dd",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/control/__init__.py": "3dd25f981ecbd1d24a5bebd47b878fe81c9e81215c0a2ca2c8b9437ed1e93b2b",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/control/follow_controller.py": "1804422a0c67459fc7e616108f0169d6965675d9c8c439ff86e18670c3a2ac89",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/control/gimbal_controller.py": "eb0e9219ed530ba0cca743680aeeb5a5b67e7277711902c759ef28db0862d492",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/core/__init__.py": "b9a309fb1e06013a931fa6a54c95c073b383834254744b73d44f389ecb8bc4fd",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/core/geometry.py": "19f2c58901e4a13b8c4de46b14a99f4a3e5835d7fab1ad614d42efea5252c38c",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/core/kalman.py": "6d4ded5bba32ec9a2825d6520377aa55f68d9fecac1291fbcffd5626253d3194",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/core/models.py": "3460ead57f8071883429c9c9ea9687a3ea6920851eb478902b93b3d597645444",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/core/target_manager.py": "bb9cc099a1ef7e6494d1c87b0bc28e1bbf907031ad05f1c4061c5c068f137c24",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/experiments.py": "4382b64695124922115f57a455e7f48949891e4af3d705941fb1ce1d30cba588",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking/simulation.py": "5e24586fc847aa557f076f7b3c5c4f529feb9175747b717e051f93276b068e07",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking_nodes/__init__.py": "9214ca3d6b02eac3bbdf6673e566b4a8c5aa067a7fa5e80d5fc771b2c3a9e627",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking_nodes/controller_node.py": "da80c43421fc1877ab04b69989779f3988f6dfb688b70fe69ab4f62237654dba",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking_nodes/detector_node.py": "c5a9c9d4fa6f3bd4d1c65bd31152f9fba478d4c4eea59aa40c62f7dd71753d44",
+          "ros2_ws/src/uav_tracking_nodes/build/lib/uav_tracking_nodes/state_estimator_node.py": "7cdfed433ac823ba2fa441c1069eab8e5e0a96a9d4bdc79c489debd75eed29db",
+          "ros2_ws/src/uav_tracking_px4_adapter/build/lib/uav_tracking_px4_adapter/__init__.py": "eeb4bcf3619dc97c2bde8797b4ec0a0440496e07ce731d10be97d735801d48e5",
+          "ros2_ws/src/uav_tracking_px4_adapter/build/lib/uav_tracking_px4_adapter/adapter_node.py": "64a068bccb88fe2ad978cb256a7df9a9829724de7179436a629319328c79fa40"
+        },
+        "missing_sources": [],
+        "changed_sources": []
+      },
+      "helper_validate_snapshot_called": false,
+      "validation_basis": "ORIGINAL_BYTES_SHA_AND_COMPLETE_MAPPING_EQUAL_TO_FIRST_ACTUAL_HELPER_VALIDATED_SNAPSHOT",
+      "equivalent_to": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage1_velocity_seed004/configuration/source_sha256.json",
+        "bytes": 23847,
+        "sha256": "0094a5013801e67fb6ae692cef785b190272708d71bfb0cd4a3349a0eb09ee46"
+      }
+    }
+  ],
+  "contract": {
+    "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/snapshot_audit54_contract01.json",
+    "sha256": "37c392024d2935416b1c4d9756c8daad54353e7e6eea2017466976ad6a8214b7"
+  },
+  "contract_metadata": {
+    "schema_version": 1,
+    "kind": "RELIABILITY_V4_FROZEN_SNAPSHOT_AUDIT_CONTRACT",
+    "created_utc": "2026-11-02T23:31:02.970659+00:00",
+    "rule": "ORIGINAL_RUN_STAGE1_PY_SH_MSG_SCAN_PLUS_SELECTED_MODEL_AND_EXPLICIT_DDS",
+    "frozen_root": "/root/uav_tracking_fullplan_v4_humble54",
+    "audit_tool_root": "/root/uav_tracking_snapshot_audit54_tools01",
+    "core_plan": {
+      "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/plan.json",
+      "sha256": "ed88783162991c151ab3d537d4eb7d3546b3688339a06db6f35b7f2ef7c48d4b",
+      "plan_sha256": "3e34bdfae710f7b518a5f5fd1506054b03d3275c89e2f827ae136bfa2f682a31"
+    },
+    "freeze_report": {
+      "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/freeze_validation/source_integrity/source_frozen_integrity.json",
+      "sha256": "2d845e262201c6264b9f466b4f77eef4e30c9ec19e17a178e0a65c2db0b940f8"
+    },
+    "import_isolation": {
+      "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/freeze_validation/import_isolation.json",
+      "sha256": "a8f43e840275763b83f8f8794fd5882d2d2ec02cec397a2bf5e4ed6d570c8576"
+    },
+    "source_before": {
+      "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/freeze_validation/source_integrity/source_before.json",
+      "sha256": "cdb4111738f2f51c9911e3e7cebaf9f69aafd92d5cef39d8839a1e5dbb27c82f"
+    },
+    "source_after": {
+      "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/freeze_validation/source_integrity/source_after.json",
+      "sha256": "56523188d5613b87a4dcac6daef124ceb039736b40095a3c1526e2b11581c6a5"
+    },
+    "frozen_map": {
+      "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/freeze_validation/source_integrity/frozen_actual.json",
+      "sha256": "7c81219e94b774723e135fa0a696cab603811b298e24900de158f199a414a102"
+    },
+    "audit_tools": {
+      "driver": {
+        "path": "/root/uav_tracking_snapshot_audit54_tools01/tools/run_reliability_v4_safety.py",
+        "sha256": "6d6d1b56d14866355c7d423d3eaaed420860f20190d59acdfa20b853b9f3073b"
+      },
+      "validator": {
+        "path": "/root/uav_tracking_snapshot_audit54_tools01/tools/reliability_v4_guard.py",
+        "sha256": "e64e9da6a5180d70b32c6b2b3076abe4bbc52d4b748395bf7f8af61e6a7e3a8e"
+      },
+      "helper": {
+        "path": "/root/uav_tracking_snapshot_audit54_tools01/tools/reliability_v4_snapshot_audit.py",
+        "sha256": "9339fe72a67b36f987b81a20833953a50ca59302b4157a1230424e8145497ba6"
+      },
+      "registrar": {
+        "path": "/root/uav_tracking_snapshot_audit54_tools01/tools/reliability_v4_register.py",
+        "sha256": "fe2b37738ba07016dc1551abe273e5309e702b14df6e3d707b2788d3f3ef992c"
+      }
+    },
+    "base_tools": {
+      "driver": {
+        "path": "/root/uav_tracking_fullplan_v4_humble54/tools/run_reliability_v4_safety.py",
+        "sha256": "147847a4ed5743f8f77af33bebb66c910af1fe6a4d7715149a21aee5c8a5e1d6"
+      },
+      "validator": {
+        "path": "/root/uav_tracking_fullplan_v4_humble54/tools/reliability_v4_guard.py",
+        "sha256": "f503b03ac82dc3c599bfb57fa862dc417c279cf54e96939a2ba1d02bcdb53bea"
+      },
+      "registrar": {
+        "path": "/root/uav_tracking_fullplan_v4_humble54/tools/reliability_v4_register.py",
+        "sha256": "fe2b37738ba07016dc1551abe273e5309e702b14df6e3d707b2788d3f3ef992c"
+      }
+    },
+    "evidence_limitations": "The original import receipt records core/nodes packages and generated interfaces, plus the adapter ament prefix. It does not record every flight process module, the eight differing historical copies, or adapter_node.__file__."
+  },
+  "mandatory_helper_hash_traversals_skipped": false,
+  "bundle_after": {
+    "manifest": {
+      "path": "/root/uav_tracking_snapshot_audit54_tools01/bundle_manifest.json",
+      "bytes": 2445,
+      "sha256": "fcee7f195d9822f45edc35d72cbcf0296559426e5dfadd7b2a9b8452fc9bcff3"
+    },
+    "files": {
+      "tools/reliability_v4_guard.py": {
+        "path": "/root/uav_tracking_snapshot_audit54_tools01/tools/reliability_v4_guard.py",
+        "bytes": 86011,
+        "sha256": "e64e9da6a5180d70b32c6b2b3076abe4bbc52d4b748395bf7f8af61e6a7e3a8e"
+      },
+      "tools/run_reliability_v4_safety.py": {
+        "path": "/root/uav_tracking_snapshot_audit54_tools01/tools/run_reliability_v4_safety.py",
+        "bytes": 42661,
+        "sha256": "6d6d1b56d14866355c7d423d3eaaed420860f20190d59acdfa20b853b9f3073b"
+      },
+      "tools/reliability_v4_snapshot_audit.py": {
+        "path": "/root/uav_tracking_snapshot_audit54_tools01/tools/reliability_v4_snapshot_audit.py",
+        "bytes": 17347,
+        "sha256": "9339fe72a67b36f987b81a20833953a50ca59302b4157a1230424e8145497ba6"
+      },
+      "tools/reliability_v4_register.py": {
+        "path": "/root/uav_tracking_snapshot_audit54_tools01/tools/reliability_v4_register.py",
+        "bytes": 28714,
+        "sha256": "fe2b37738ba07016dc1551abe273e5309e702b14df6e3d707b2788d3f3ef992c"
+      },
+      "tools/__init__.py": {
+        "path": "/root/uav_tracking_snapshot_audit54_tools01/tools/__init__.py",
+        "bytes": 81,
+        "sha256": "71439d58f08b95cbc9f7998d54555ac376427bddec6cc04d959cd5427fa1b575"
+      }
+    }
+  },
+  "freeze_metadata_after": {
+    "source_integrity/source_frozen_integrity.json": {
+      "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/freeze_validation/source_integrity/source_frozen_integrity.json",
+      "bytes": 1762,
+      "sha256": "2d845e262201c6264b9f466b4f77eef4e30c9ec19e17a178e0a65c2db0b940f8"
+    },
+    "import_isolation.json": {
+      "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/freeze_validation/import_isolation.json",
+      "bytes": 1265,
+      "sha256": "a8f43e840275763b83f8f8794fd5882d2d2ec02cec397a2bf5e4ed6d570c8576"
+    },
+    "source_integrity/source_before.json": {
+      "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/freeze_validation/source_integrity/source_before.json",
+      "bytes": 339580,
+      "sha256": "cdb4111738f2f51c9911e3e7cebaf9f69aafd92d5cef39d8839a1e5dbb27c82f"
+    },
+    "source_integrity/source_after.json": {
+      "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/freeze_validation/source_integrity/source_after.json",
+      "bytes": 339282,
+      "sha256": "56523188d5613b87a4dcac6daef124ceb039736b40095a3c1526e2b11581c6a5"
+    },
+    "source_integrity/frozen_actual.json": {
+      "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/freeze_validation/source_integrity/frozen_actual.json",
+      "bytes": 339262,
+      "sha256": "7c81219e94b774723e135fa0a696cab603811b298e24900de158f199a414a102"
+    }
+  },
+  "plan_after": {
+    "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/plan.json",
+    "bytes": 207807,
+    "sha256": "ed88783162991c151ab3d537d4eb7d3546b3688339a06db6f35b7f2ef7c48d4b"
+  },
+  "adapter_files_after": {
+    "formal48_guard_adapter01.py": {
+      "path": "/mnt/d/WSL/UAVHumble22-validation/formal48_dds_adapter01/formal48_guard_adapter01.py",
+      "bytes": 26060,
+      "sha256": "3973a0590981abf578cbd174371d13c82207c717669298b6d7769c14a242444e"
+    },
+    "formal48_guard_adapter01.sh": {
+      "path": "/mnt/d/WSL/UAVHumble22-validation/formal48_dds_adapter01/formal48_guard_adapter01.sh",
+      "bytes": 2531,
+      "sha256": "b1343b56e6effe488e3554b58fbae924aba26cfdc959e113d862ad9b14f9535b"
+    },
+    "test_formal48_guard_adapter01.py": {
+      "path": "/mnt/d/WSL/UAVHumble22-validation/formal48_dds_adapter01/test_formal48_guard_adapter01.py",
+      "bytes": 29003,
+      "sha256": "f3ad7e63ffea568db720e91b6fb449e9ef5e9d72d5f095333178c3f8f3430042"
+    }
+  },
+  "finished_utc": "2026-11-02T23:31:04.768031+00:00",
+  "exit_code": 0
+}

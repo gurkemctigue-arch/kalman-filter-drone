@@ -1,17 +1,17 @@
 # 查看当前实验
 
-**2026-11-03 07:08（北京时间）检查点：当前是 Humble54 核心开发批次，11 个原始 PASS、1 个尚未终态；最后一场汽车多目标主动云台正在运行。正式研究仍为 0/280。** 六个行人场景以及汽车速度、位置、多目标交叉、云台中位和主动模式已经通过。独立汽车位置复验不拼入本批计数。
+**2026-11-03 07:46（北京时间）检查点：Humble54 核心 12/12 原始工程 PASS 已闭合；安全 01 批次已经停止，当前没有安全场 PASS，正式研究仍为 0/280。** 实际安全进度于北京时间 07:42:37 记录 `STOPPED_FAULT`、被监控命令退出 2，首场原始状态 `INFRASTRUCTURE_ERROR`，其余 3 场未执行；命令进程已核验结束。
 
-汽车云台[原件与同种子比较](../tools/experiment_orchestration/humble54_car_gimbal_pair01/README_PAIR.md)保留不同指标的区间和分母：检测框中心归一化 RMSE 从中位的 0.169347 降至主动的 0.020650；距离/高度 RMSE 从 0.733114/0.151189 米变为 0.739092/0.152861 米，两场末端均持续稳定。画面居中改善不等于物理跟随改善，也不代替正式多种子比较。
+首场 `person_auto_unique_multi_seed004` 的飞行、source clock、原生启动、专项评价和末端速度 5 条命令均退出 0，但原审计拒绝原因为 `Safety command does not execute the bound frozen source/native evaluator`。这表示冻结评价命令绑定关口未通过，不能把子命令退出 0 当作安全验收 PASS，也不能只据此断言跟踪算法失败。原错误与未执行槽保留，不重试覆盖；具体绑定问题仍待诊断。
 
-汽车位置模式原槽于北京时间 06:08:20 完成 PASS：独立 base_link 距离 / 高度 RMSE 为 0.704895 / 0.165654 米，导航有效覆盖 0.913679，真值覆盖 1.0，六项工程检查均通过；无基础设施停止或残留进程。导航报告原状态仍为 `RECORDED_WITH_CENSORED_FAILURES`，不删除丢失、悬停或删失区间。上述结果只属于本轮开发种子，不能替代正式重复实验。
+已有身份报告的每任务提取现已完成：四个多目标场景首次请求的已知覆盖率为 0.621–0.680，显式重选后为 0.961–0.998。首次分母包括计划短/长遮挡和等待重选区间，不能当作纯可见画面的识别准确率；原报告理由也不证明所有未知的因果来源。没有应用每 UUID 验收阈值，未知不改为正确。汽车多目标主动云台完整 753 格仍为 614 正确、0 已知错误、139 未知，诊断 714 帧（619/0/95）单独保留。
 
-汽车交叉原槽于 06:28:26 完成 PASS，距离 / 高度 RMSE 为 0.868298 / 0.156740 米，导航有效覆盖 0.900398，真值覆盖 1.0。完整身份时间网格为 640 正确 / 0 已知错误 / 114 未知，共 754 格，覆盖 0.848806；诊断帧使用不同分母，不能替代。前三个汽车的小文件独审无阻断，未重读完整录包或大身份报告。
+- [安全 01 命令终态与原槽计数](../results/project_progress/humble54_safety4_run01/index.html)：此批已停止，不将旧心跳当作继续飞行。
+- [核心 12 场原件与闭合边界](../tools/experiment_orchestration/humble54_core12_closed01/README.md)及[核心命令终态](../results/project_progress/humble54_core12_run01/index.html)：核心开发通过保持，不能代替安全 4、扩展 16 或正式重复验收。
+- [每个请求任务的身份计数、遮挡请求范围与未知理由](../tools/diagnostics/humble54_identity_per_uuid_audit01/README.md)：四份已有报告的描述性提取，不是重新评价或新增飞行。
+- [汽车云台原件与同种子比较](../tools/experiment_orchestration/humble54_car_gimbal_pair01/README_PAIR.md)及[当前环境与原生验证](../planning/reliability-v4-humble54-native-validation-20261103.md)：画面居中改善不等于物理跟随改善，工具验证不计为飞行通过。
 
-- [当前命令、进程身份、心跳与原槽计数](../results/project_progress/humble54_core12_run01/index.html)：打开本机页面并核对最新更新时间；停止、过期或未核实状态均不能读作运行中。
-- [六个行人场景原件与独立复核](../tools/experiment_orchestration/humble54_person6_closed01/README.md)：保留完整身份分母、未知和删失，并说明小文件复核的边界。
-- [前三个汽车场景原件](../tools/experiment_orchestration/humble54_car3_closed01/README.md)与[独立复核](../tools/diagnostics/humble54_car3_review01/README.md)：原始 PASS 与来源绑定已核对，不外推汽车总体成功率。
-- [当前环境与原生验证](../planning/reliability-v4-humble54-native-validation-20261103.md)及[正式启动工具修复](../tools/experiment_orchestration/formal55_supplementary01/SNAPSHOT.md)：工具测试不计为新增飞行通过。
+07:38 历史快照曾记录安全 1 场 START、0 场原终态、3 场未开始；现以 07:42:37 的 STOP 终态为准，不再将该早期快照作为当前运行状态。
 
 实时页面、录包及录像位于本机，GitHub 保存代码和小证据快照。批处理可以独立运行，网页不会主动向聊天发送完成消息。PASS/FAIL 以每个原始终态为准；命令退出或报告文件生成不等于整个项目验收完成。
 

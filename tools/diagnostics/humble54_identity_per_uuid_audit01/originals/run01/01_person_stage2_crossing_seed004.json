@@ -1,0 +1,187 @@
+{
+  "id": "person_stage2_crossing_seed004",
+  "slot": {
+    "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\slots\\person_stage2_crossing_seed004.json",
+    "bytes": 64056,
+    "sha256": "992fe8eb0fe57740f338be22af827e7bf2e7468cf1e01cf69c7b334679ba5bb3"
+  },
+  "slot_original_status": "PASS",
+  "report": {
+    "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage2_crossing_seed004\\physical_identity.json",
+    "bytes": 1663576,
+    "sha256_before_parse": "63ea880d3ae0a16cb63a87dcb1ee15560db777daa3404666a9c5e3642e1fe6e8",
+    "sha256_after_parse_same_buffer": "63ea880d3ae0a16cb63a87dcb1ee15560db777daa3404666a9c5e3642e1fe6e8",
+    "stat_before": {
+      "bytes": 1663576,
+      "mtime_ns": 1793651618327701900,
+      "ctime_ns": 1793651618313624600,
+      "device": 5047450703243876295,
+      "inode": 10696049116079546
+    },
+    "stat_after": {
+      "bytes": 1663576,
+      "mtime_ns": 1793651618327701900,
+      "ctime_ns": 1793651618313624600,
+      "device": 5047450703243876295,
+      "inode": 10696049116079546
+    },
+    "physical_report_opened_once": true,
+    "pin_semantics": "Terminal expected SHA matched the single read buffer; buffer SHA rechecked after parse and path stat unchanged. No second post-read file hash."
+  },
+  "evaluation_source": {
+    "script": "/root/uav_tracking_fullplan_v4_humble54/scripts/evaluate_physical_identity.py",
+    "script_sha256": "3a0b640a309ad811cc13687482bf6b0992fcc56c9a939bdccccaf5b9c1af57d8",
+    "dependencies": {
+      "/root/uav_tracking_fullplan_v4_humble54/scripts/evaluate_stage1_flight.py": "655cf6fc7c0cc2a954db7d06d2fbb00a000f2fca80ba0930d153025e28efb7c1",
+      "/root/uav_tracking_fullplan_v4_humble54/scripts/extract_research_recording.py": "0a7b91f4c59d925544fed4e514e59fec3d26eadd754e131633ba56cae7941fa7",
+      "/root/uav_tracking_fullplan_v4_humble54/uav_tracking/research_labels.py": "e1a12d5cf440857733e9f07e532853fbeb47006945094141ac7ee847f284adf8",
+      "/root/uav_tracking_fullplan_v4_humble54/uav_tracking/research_metrics.py": "0e0fb51e7a3213ea244accf04755c04cdeb0eb4e5bd61b02a6a41b57cf6d884d",
+      "/root/uav_tracking_fullplan_v4_humble54/uav_tracking/stage2_identity.py": "4ea4e6660ac9aad6dd2d414142d8625796a7f736bc42a912b4a1c3c9f91e6d02"
+    },
+    "scope": "Offline evaluator and direct local helper source; independent of the recorded flight freeze"
+  },
+  "full_task_aggregate": {
+    "coverage_basis": "fixed_10hz_request_to_recorded_clock_end",
+    "sample_period_s": 0.1,
+    "interval": {
+      "start_s": 17.76,
+      "end_s": 93.02
+    },
+    "scheduled_samples": 753,
+    "correct": 649,
+    "wrong": 0,
+    "unknown": 104,
+    "known_coverage": 0.8618857901726428,
+    "retention_lower_bound": 0.8618857901726428,
+    "requested_task_count": 2,
+    "unconfirmed_requested_tasks": [],
+    "unknown_reason_counts": {
+      "request_not_yet_confirmed": 1,
+      "unknown_identity_evidence_in_time_cell": 101,
+      "task_boundary_within_time_cell": 1,
+      "no_identity_evidence_in_time_cell": 1
+    },
+    "evaluation_status": "RECORDED_WITH_EXPLICIT_UNKNOWN_INTERVALS",
+    "semantics": "Fixed 0.1 s cells anchored at the first explicit REQUEST, ending at the last recorded /clock (final partial cell retained). Each cell belongs to the task active at its start; all REQUESTs are registered even without a snapshot or CONFIRMED event. Before confirmation, after CLEAR/RESET, at a task boundary, or without fresh independent identity evidence the cell is UNKNOWN. No cross-cell interpolation/forward fill. Any known wrong match in the cell takes precedence; otherwise all identity evidence must be known and correct for CORRECT. This measures conservative recorded evidence coverage, not continuous physical identity certainty. Legacy diagnostic-frame metrics remain separate."
+  },
+  "diagnostic_aggregate_separate_denominator": {
+    "frames": 752,
+    "correct": 651,
+    "wrong": 0,
+    "unknown": 101,
+    "known_coverage": 0.8656914893617021,
+    "retention_lower_bound": 0.8656914893617021
+  },
+  "per_target_uuid": [
+    {
+      "target_uuid": "ba2d6ef2-eeb8-451d-a703-8c7f4075e7ad",
+      "request_time_s": 17.76,
+      "source_image_s": 17.7,
+      "confirmation_time_s": 17.844,
+      "confirmed": true,
+      "initial_mapping_known": true,
+      "expected_physical_id": "stage2_person_0",
+      "duplicate_request_uuid": false,
+      "allocated_cell_span": {
+        "start_s": 17.76,
+        "end_s": 49.96000000000001
+      },
+      "scheduled_samples": 322,
+      "correct": 219,
+      "wrong": 0,
+      "unknown": 103,
+      "known_coverage": 0.6801242236024845,
+      "retention_lower_bound": 0.6801242236024845,
+      "unknown_cell_reason_counts": {
+        "request_not_yet_confirmed": 1,
+        "unknown_identity_evidence_in_time_cell": 101,
+        "task_boundary_within_time_cell": 1
+      },
+      "unknown_cell_runs": [
+        {
+          "start_s": 17.76,
+          "end_s": 17.860000000000003,
+          "cells": 1,
+          "reason": "request_not_yet_confirmed"
+        },
+        {
+          "start_s": 28.96,
+          "end_s": 31.160000000000004,
+          "cells": 22,
+          "reason": "unknown_identity_evidence_in_time_cell"
+        },
+        {
+          "start_s": 41.96000000000001,
+          "end_s": 49.86,
+          "cells": 79,
+          "reason": "unknown_identity_evidence_in_time_cell"
+        },
+        {
+          "start_s": 49.86,
+          "end_s": 49.96000000000001,
+          "cells": 1,
+          "reason": "task_boundary_within_time_cell"
+        }
+      ],
+      "diagnostic_frames_separate_denominator": {
+        "correct": 220,
+        "wrong": 0,
+        "unknown": 101,
+        "frames": 321,
+        "unknown_frame_reason_counts": {
+          "known_or_unresolved_external_occlusion": 30,
+          "no_fresh_selected_detection": 71
+        }
+      },
+      "acceptance_threshold_applied": false,
+      "per_task_acceptance_result": "NOT_DEFINED_DESCRIPTIVE_ONLY"
+    },
+    {
+      "target_uuid": "f5737fb4-e629-4098-9f2b-6eb848e683f0",
+      "request_time_s": 49.9,
+      "source_image_s": 49.8,
+      "confirmation_time_s": 49.944,
+      "confirmed": true,
+      "initial_mapping_known": true,
+      "expected_physical_id": "stage2_person_0",
+      "duplicate_request_uuid": false,
+      "allocated_cell_span": {
+        "start_s": 49.96000000000001,
+        "end_s": 93.02
+      },
+      "scheduled_samples": 431,
+      "correct": 430,
+      "wrong": 0,
+      "unknown": 1,
+      "known_coverage": 0.9976798143851509,
+      "retention_lower_bound": 0.9976798143851509,
+      "unknown_cell_reason_counts": {
+        "no_identity_evidence_in_time_cell": 1
+      },
+      "unknown_cell_runs": [
+        {
+          "start_s": 92.96000000000001,
+          "end_s": 93.02,
+          "cells": 1,
+          "reason": "no_identity_evidence_in_time_cell"
+        }
+      ],
+      "diagnostic_frames_separate_denominator": {
+        "correct": 431,
+        "wrong": 0,
+        "unknown": 0,
+        "frames": 431,
+        "unknown_frame_reason_counts": {}
+      },
+      "acceptance_threshold_applied": false,
+      "per_task_acceptance_result": "NOT_DEFINED_DESCRIPTIVE_ONLY"
+    }
+  ],
+  "reconciliation": {
+    "full_timeline_vs_task_summaries_vs_slot": true,
+    "unknown_reason_counts_vs_timeline": true,
+    "diagnostic_frames_vs_slot": true,
+    "original_evaluator_source_and_dependencies_match_prepared_plan": true
+  },
+  "interpretation": "Unknown reasons describe saved evaluator evidence categories, not detector/communication root causes or continuous physical identity certainty."
+}

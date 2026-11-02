@@ -54,9 +54,9 @@ def dds_files(root, directory, *, split=False, identities=None):
     return reg
 
 
-def lifecycle_fixture(root):
+def lifecycle_fixture(root, *, linked=False):
     root = root.resolve()
-    _, old, runtime, _, facts, _ = fixtures.safety_fixture(root)
+    _, old, runtime, _, facts, _ = fixtures.safety_fixture(root, linked=linked)
     plan, dev = old.development, Path(old.development["frozen_root"])
     plan["protocol"] = old.core["protocol"]
     registry = guard.load(facts["registry"]["path"])
@@ -206,6 +206,54 @@ class PublicSafetyLifecycleTests(unittest.TestCase):
                     receipt.write_text('{}', encoding="utf-8")
                 with patch.object(safety, "checked_registry", return_value=(context, registry, path)), self.assertRaises(ValueError):
                     safety.check(path, guard.sha(path))
+
+
+class ResultsSymlinkSafetyTests(unittest.TestCase):
+    invoke = PublicSafetyLifecycleTests.invoke
+
+    def linked_fixture(self, root):
+        try:
+            fixture = lifecycle_fixture(root, linked=True)
+        except OSError:
+            if os.name != "nt":
+                raise
+            self.skipTest("Native results-symlink regression requires Windows symlink privilege or Linux")
+        if not (fixture[0].root / "results").is_symlink():
+            self.skipTest("Native results-symlink regression requires Windows symlink privilege or Linux")
+        return fixture
+
+    def test_native_results_symlink_resolves_only_command_contract_directory(self):
+        with tempfile.TemporaryDirectory() as folder:
+            context, registry, path, calls, _ = self.linked_fixture(Path(folder))
+            lexical = [Path(trial["directory"]) for trial in registry["trials"]]
+            self.assertTrue(all(directory != directory.resolve(strict=False) for directory in lexical))
+            with patch.object(guard, "safety_command_contract", wraps=guard.safety_command_contract) as contract, \
+                    patch.object(context.runner, "infrastructure_evidence", wraps=context.runner.infrastructure_evidence) as infrastructure:
+                result = self.invoke(context, registry, path)
+            self.assertEqual(result["status"], "COMPLETED", result)
+            self.assertEqual(len(calls), 20)
+            # Slot audits and final summary both execute the unchanged guard.
+            self.assertEqual([call.args[3] for call in contract.call_args_list],
+                             [directory.resolve(strict=True) for directory in lexical] * 2)
+            self.assertEqual([call.args[0] for call in infrastructure.call_args_list], lexical * 2)
+            self.assertTrue(all((directory.parent.parent / "uav_tracking/research_failures.py").is_file()
+                                for directory in lexical))
+            with patch.object(safety, "checked_registry", return_value=(context, registry, path)):
+                self.assertTrue(safety.check(path, guard.sha(path))["all_four_original_pass"])
+
+    def test_native_results_symlink_still_refuses_substituted_source_and_native_evaluators(self):
+        for kind in ("source_clock", "native_startup"):
+            with self.subTest(kind=kind), tempfile.TemporaryDirectory() as folder:
+                context, registry, path, calls, _ = self.linked_fixture(Path(folder))
+                registry["trials"][0]["execution_commands"][kind][2] = "scripts/other_evaluator.py"
+                write(path, registry)
+                result = self.invoke(context, registry, path)
+                self.assertEqual(result["status"], "STOPPED_FAULT", result)
+                self.assertEqual((result["attempted_count"], result["pending_count"]), (1, 3))
+                self.assertEqual([command for _, command in calls], list(safety.COMMANDS))
+                original = guard.load(path.parent / (registry["trials"][0]["id"] + ".json"))
+                self.assertEqual(original["status"], "INFRASTRUCTURE_ERROR")
+                self.assertIn("Safety command does not execute the bound frozen source/native evaluator", original["error"])
 
 
 class SplitClockSafetyTests(unittest.TestCase):

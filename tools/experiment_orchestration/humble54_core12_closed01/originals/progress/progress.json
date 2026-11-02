@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "owner": "uav-project-progress-v1",
+  "generated_utc": "2026-11-02T23:28:42.537712+00:00",
+  "status": "COMPLETED",
+  "reason": "Monitored command ended; this is not project acceptance",
+  "completion_scope": "monitored_command",
+  "phase": "batch",
+  "task": {
+    "id": "humble54-core12-run01",
+    "phase": "batch",
+    "started_utc": "2026-11-02T19:40:12.573050+00:00",
+    "process": {
+      "pid": 53488,
+      "alive": true,
+      "start_token": "windows_filetime:134381220125655670",
+      "created_utc": "2026-11-02T19:40:12.565567+00:00"
+    },
+    "finished_utc": "2026-11-02T23:28:42.534656+00:00",
+    "returncode": 0,
+    "monitor_kind": "owned_child",
+    "label": "Humble54 canonical12 core validation"
+  },
+  "process_check": {
+    "verified_alive": false,
+    "identity_matches": true,
+    "observation": {
+      "pid": 53488,
+      "alive": false,
+      "start_token": "windows_filetime:134381220125655670",
+      "created_utc": "2026-11-02T19:40:12.565567+00:00"
+    },
+    "reason": "PID creation identity checked; PID reuse is not accepted"
+  },
+  "monitor_check": {
+    "verified_alive": true,
+    "identity_matches": true,
+    "observation": {
+      "pid": 51296,
+      "alive": true,
+      "start_token": "windows_filetime:134381220123682364",
+      "created_utc": "2026-11-02T19:40:12.368236+00:00"
+    },
+    "reason": "PID creation identity checked; PID reuse is not accepted"
+  },
+  "heartbeat_utc": "2026-11-02T23:28:42.534656+00:00",
+  "heartbeat_age_s": 0.0030558109283447266,
+  "stale_after_s": 10.0,
+  "evidence_sources": {
+    "events": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\humble54_core12_owner01\\monitor_events.jsonl",
+    "plan": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\plan.json"
+  },
+  "evidence": {
+    "state": "COMPLETED",
+    "current_slot": null,
+    "last_slot": "car_stage3_multi_active_seed004",
+    "planned_slots": 12,
+    "attempted_slots": 12,
+    "recorded_terminal_slots": 12,
+    "unattempted_slots": 0,
+    "attempted_without_terminal": [],
+    "status_counts": {
+      "PASS": 12
+    },
+    "last_event": {
+      "event": "COMPLETE_SLOT",
+      "utc": "2026-11-02T23:28:41.913484+00:00",
+      "slot": "car_stage3_multi_active_seed004",
+      "status": "PASS"
+    },
+    "last_event_utc": "2026-11-02T23:28:41.913484+00:00",
+    "terminal_utc": "2026-11-02T23:28:41.913484+00:00",
+    "ledger_step": null,
+    "ledger_finished_utc": null,
+    "ledger_returncode": null,
+    "latest_execution": null,
+    "errors": [],
+    "claim_boundary": "Execution records and counts only; engineering FAIL/PENDING are never counted as PASS"
+  },
+  "tasks": [
+    {
+      "id": "humble54-core12-run01",
+      "phase": "batch",
+      "started_utc": "2026-11-02T19:40:12.573050+00:00",
+      "process": {
+        "pid": 53488,
+        "alive": true,
+        "start_token": "windows_filetime:134381220125655670",
+        "created_utc": "2026-11-02T19:40:12.565567+00:00"
+      },
+      "finished_utc": "2026-11-02T23:28:42.534656+00:00",
+      "returncode": 0,
+      "monitor_kind": "owned_child",
+      "label": "Humble54 canonical12 core validation"
+    }
+  ],
+  "notification": {
+    "requested": false,
+    "submitted": false,
+    "user_observed": null
+  },
+  "claim_boundary": "No ROS/WSL/simulator is started, no bag is read. No automatic chat wake-up or engineering PASS is promised."
+}

@@ -335,7 +335,7 @@ def audit_slot(context, registry, trial, row):
     for name, item in fact["evidence"].items():
         artifact = Path(item["path"])
         artifacts[name] = (artifact, parameters if name == "runtime_parameters" else load(artifact))
-    guard.safety_command_contract(fact["executions"], artifacts, context.root, directory, trial["target_class"], trial["case"],
+    guard.safety_command_contract(fact["executions"], artifacts, context.root, directory.resolve(strict=True), trial["target_class"], trial["case"],
                                   execution_card=Path(registry["execution_card"]["path"]))
     last_end = guard.utc(registry["created_utc"])
     for kind in COMMANDS:

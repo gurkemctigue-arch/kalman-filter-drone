@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "kind": "INDEPENDENT_SMALL_RECEIPT_LOG_AND_SOURCE_PIN_REVIEW_OF_ACTUAL_NATIVE_IDLE_VALIDATION",
+  "created_utc": "2026-11-02T23:43:10.670440+00:00",
+  "result": "PASS_WITH_RETAINED_WARNINGS_AND_EXPLICIT_SCOPE_LIMITS",
+  "reviewer": "clock_split_external_review",
+  "original_summary": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\humble54_native_idle_validation01.json",
+    "bytes": 11280,
+    "sha256": "b5cd32208c7c36f8f61bec8afbd074899a22781bcb353bfeffdf0bbd8bf44492"
+  },
+  "originals_copied": 5,
+  "original_bytes": 121164,
+  "original_files_byte_identical": true,
+  "post_run_source_pins_verified_not_copied": 8,
+  "current_import_audit": {
+    "result": "PASS_CURRENT_IMPORT_AUDIT_ONLY",
+    "exit_code": 0,
+    "module_results": 8,
+    "package_results": 5,
+    "sources_before_after_equal": true,
+    "historical_flight_imports_proved": false
+  },
+  "original_contract_audit": {
+    "result": "NATIVE_CONTRACT_AND_FIRST3_SNAPSHOT_AUDIT_COMPLETE_FORMAL_DUAL_ROOT_VALIDATION_PENDING",
+    "exit_code": 0,
+    "original_helper_hash_traversals_retained": true,
+    "model_hashing_was_prior_native_helper_work_not_repeated_by_review": true,
+    "registered_snapshot_count": 187,
+    "original_extra_count": 17,
+    "first_snapshot_actual_helper_call": true,
+    "remaining_two_basis": "Original bytes/SHA/full mapping equal to first helper-validated snapshot; not two additional helper calls",
+    "actual_contract_binding_verified": {
+      "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\snapshot_audit54_contract01.json",
+      "bytes": 3622,
+      "sha256": "37c392024d2935416b1c4d9756c8daad54353e7e6eea2017466976ad6a8214b7"
+    }
+  },
+  "durable_dummy": {
+    "tests_passed": 2,
+    "tests_run": 2,
+    "duration_s": 3.345,
+    "original_log_retains_resource_warning_count": 2,
+    "serial_wait_and_exit_assertions_observed_in_test_source": true,
+    "watch_process_wait_asserted": true,
+    "worker_poll_has_exhaustion_assertion": false,
+    "actual_postrun_no_matching_argv_is_point_in_time_only": true,
+    "every_historical_worker_reap_proved": false
+  },
+  "supplementary55_components": {
+    "tests_passed": 63,
+    "tests_run": 63,
+    "duration_s": 18.306,
+    "scope": "Native synthetic metadata/fake execution component tests; real final admission/adapter execution remains pending"
+  },
+  "native_or_test_commands_started_by_reviewer": false,
+  "wsl_started_by_reviewer": false,
+  "bags_models_telemetry_jsonl_vhd_payloads_read_by_reviewer": false,
+  "fixed_audit_or_frozen54_source_edited": false,
+  "formal_admission_or_flight_started": false,
+  "claim_boundary": "Current import audit, original contract audit and tool components only. Not historical flight import proof, safety4, extension16, capacity or formal admission.",
+  "limitations": [
+    "Saved actual native receipts/logs are preserved unchanged; no native work was rerun by the reviewer.",
+    "Import audit describes current posthoc paths/source bytes, never all historical flight imports.",
+    "Two detached-launch Popen ResourceWarnings remain in the original log; serial wait assertions and a later no-matching-process observation do not prove every worker parent reap event.",
+    "The 63 tests use native synthetic metadata/fake executions; they do not replace actual final admission, adapter integration or safety flights.",
+    "This archive does not complete safety4, extension16, capacity, calibration, formal repeats, or four-estimator statistics."
+  ]
+}
