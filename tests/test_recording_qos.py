@@ -17,7 +17,7 @@ class RecordingQoSTests(unittest.TestCase):
     def test_checked_in_profiles_bound_only_five_evidence_histories(self):
         profiles = yaml.safe_load((ROOT / "config" / "recording_qos.yaml").read_bytes())
         self.assertEqual({topic: profile["depth"] for topic, profile in profiles.items()}, {
-            "/clock": 2048, "/fmu/out/vehicle_odometry": 1024,
+            "/clock": 1, "/fmu/out/vehicle_odometry": 1024,
             "/vehicle/odometry_timing": 1024, "/vehicle/odometry": 1024,
             "/tracking/flight_phase": 256,
         })

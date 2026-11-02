@@ -4,6 +4,15 @@ set -eo pipefail
 tracking_source="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
 tracking_frozen="${1:-/root/uav_tracking_fullplan_v2}"
 tracking_results_store="${2:-}"
+# Optional compiler package selection; runtime DDS libraries are independent.
+tracking_cmake_extra_args=()
+if [ -n "${STAGE1_FASTCDR_CMAKE_DIR:-}" ]; then
+  if [ ! -f "$STAGE1_FASTCDR_CMAKE_DIR/fastcdr-config.cmake" ]; then
+    echo "STAGE1_FASTCDR_CMAKE_DIR must contain fastcdr-config.cmake" >&2
+    exit 2
+  fi
+  tracking_cmake_extra_args+=("-Dfastcdr_DIR=$STAGE1_FASTCDR_CMAKE_DIR")
+fi
 if ! [[ "$tracking_frozen" =~ ^/root/uav_tracking_fullplan_[a-zA-Z0-9_]+$ ]]; then
   echo "Expected a dedicated /root/uav_tracking_fullplan_NAME destination" >&2
   exit 2
@@ -46,13 +55,16 @@ df -P "$tracking_frozen" "$tracking_frozen/results" \
 cp "$tracking_source/results/recorded_estimator_research/research_report.json" \
   "$tracking_frozen/results/recorded_estimator_research/research_report.json"
 source "$tracking_frozen/scripts/source_ros_environment.sh"
+source "$tracking_frozen/scripts/apply_humble22_dds_runtime.sh" "$tracking_frozen"
 tracking_python="${STAGE1_PYTHON_EXECUTABLE:-/usr/bin/python3}"
 export PYTHONPATH="$tracking_frozen:${PYTHONPATH:-}"
 cd "$tracking_frozen/ros2_ws"
 "$tracking_python" "$(command -v colcon)" build --merge-install --symlink-install \
   --cmake-args "-DPython3_EXECUTABLE=$tracking_python" "-DPYTHON_EXECUTABLE=$tracking_python" \
+  "${tracking_cmake_extra_args[@]}" \
   2>&1 | tee "$tracking_frozen/results/freeze_validation/colcon_build.log"
 source "$tracking_frozen/ros2_ws/install/setup.bash"
+source "$tracking_frozen/scripts/apply_humble22_dds_runtime.sh" "$tracking_frozen"
 # An inherited editable install can silently import an older project even when
 # colcon succeeded. Verify real modules and ament prefixes before any research.
 export PYTHONPATH="$tracking_frozen:${PYTHONPATH:-}"
@@ -90,5 +102,7 @@ cd "$tracking_frozen"
 find uav_tracking ros2_ws/src scripts planning config patches -type f \
   ! -path '*/__pycache__/*' -print0 | sort -z | xargs -0 sha256sum \
   > "$tracking_frozen/results/freeze_validation/source_sha256.txt"
+"$tracking_python" -c 'import json,os,sys; print(json.dumps({"python":sys.executable,"environment":{name:os.environ.get(name) for name in ("ROS_DISTRO","TMPDIR","STAGE1_FASTCDR_CMAKE_DIR","UAV_TRACKING_DDS_RUNTIME_CONFIG","RMW_IMPLEMENTATION","LD_LIBRARY_PATH","AMENT_PREFIX_PATH","CMAKE_PREFIX_PATH","PYTHONPATH")}},indent=2))' \
+  > "$tracking_frozen/results/freeze_validation/full_suite_environment.json"
 "$tracking_python" -m unittest discover -s tests -q 2>&1 | tee "$tracking_frozen/results/freeze_validation/unittest.log"
 printf '%s\n' "$tracking_frozen"

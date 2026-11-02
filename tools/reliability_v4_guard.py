@@ -493,6 +493,108 @@ def safety_command_contract(executions, artifacts, dev_root, directory, cls, cas
             and Path(command[3]).resolve() == directory and Path(command[4]).resolve() == card.resolve(), "Hover-speed original command/stdin differs")
 
 
+def safety_split_clock_evidence(plan, registry, configuration, flight_argv, directory):
+    """Legacy absence means off; new declarations bind actual bridge evidence."""
+    field = "split_clock_bridge"
+    explicit = field in plan or field in registry
+    enabled = plan.get(field, False)
+    require(type(enabled) is bool and (not explicit or type(registry.get(field)) is bool
+            and field in plan and registry[field] is enabled), "Safety split-clock plan/registry differs")
+    require((field not in configuration and not explicit) or type(configuration.get(field)) is bool
+            and configuration[field] is enabled, "Safety split-clock run_config differs")
+    flags = ("--split-clock-bridge", "--no-split-clock-bridge")
+    require(not any(token.startswith(flag + "=") for flag in flags for token in flight_argv)
+            and flight_argv.count(flags[0]) == int(explicit and enabled)
+            and flight_argv.count(flags[1]) == int(explicit and not enabled), "Safety split-clock argv differs")
+    if not enabled:
+        require(not configuration.get("bridge_process_contract"), "Disabled safety split-clock has a split bridge contract")
+        if not explicit:
+            return False
+    root, directory = Path(plan["frozen_root"]), Path(directory)
+    contracts = configuration.get("bridge_process_contract", {})
+    require(not enabled or set(contracts) == {"data", "clock"}, "Safety split bridges need both actual role contracts")
+    identities = []
+    bridge_roles = (("data", "ros_gz_runtime", "config/ros_gz_runtime_humble22.json"),
+                    ("clock", "ros_gz_clock_runtime", "config/ros_gz_clock_runtime_humble22.json")) if enabled else ()
+    for role, prefix, relative in bridge_roles:
+        config_dir = directory / "configuration"
+        registration_path = config_dir / (prefix + "_registration.json")
+        registration = load(registration_path)
+        registration_sha = sha(registration_path)
+        require(registration_sha == plan["source_hashes"].get(relative) == sha(root / relative)
+                and configuration.get(prefix + "_registration") == str(root / relative), "Safety bridge registration differs")
+        reports = {phase: load(config_dir / (prefix + "_" + phase + ".json"))
+                   for phase in ("preflight", "actual", "after")}
+        require(all(report.get("status") == "PASS" and report.get("fixture_only") is False
+                    and report.get("registration_file_sha256") == registration_sha
+                    and report.get("registration_digest") == registration.get("registration_digest")
+                    for report in reports.values())
+                and reports["after"].get("ros_exit_code") == 0, "Safety bridge preflight/live/after evidence incomplete")
+        live, contract = reports["actual"], contracts[role]
+        owned, process = live.get("owned_launch", {}), live.get("process", {})
+        require(live.get("scope") == "LIVE_PID_EXE_AND_MAPS_MATCH_REGISTERED_ROS_GZ_RUNTIME"
+                and owned.get("process") == process and type(process.get("pid")) is int and process["pid"] > 0
+                and type(process.get("start_ticks")) is int and process["start_ticks"] > 0
+                and owned.get("bridge_role") == role and owned.get("node_name") == contract.get("node_name")
+                and owned.get("config_sha256") == contract.get("config_sha256")
+                and owned.get("config_file") == contract.get("config_file"), "Safety live bridge identity/role/config differs")
+        identities.append((process["pid"], process["start_ticks"]))
+        filename = "clock_bridge.yaml" if role == "clock" else "stage2_data_bridge.yaml"
+        source = root / "ros2_ws/src/uav_tracking_bringup/config" / filename
+        installed = root / "ros2_ws/install/share/uav_tracking_bringup/config" / filename
+        expected_sha = plan["source_hashes"].get(source.relative_to(root).as_posix())
+        installed_real = installed.resolve(strict=True)
+        require(installed_real.is_relative_to(root.resolve(strict=True)), "Safety installed bridge YAML escapes frozen root")
+        require(expected_sha is not None and sha(source) == sha(installed_real) == sha(config_dir / filename)
+                == expected_sha == contract.get("config_sha256")
+                and contract.get("node_name") == ("uav_tracking_clock_bridge" if role == "clock" else "uav_tracking_gz_bridge")
+                and Path(contract.get("config_file", "")).resolve() == installed.resolve(), "Safety bridge YAML/source/install binding differs")
+        expected_elfs = {item["real_path"]: item["sha256"] for item in
+                         [registration["executable"], *registration["dependencies"], *registration.get("plugins", [])]}
+        mapped = live.get("mapped_elfs", [])
+        resolved = {str(Path(item.get("path", "")).resolve()): item for item in mapped}
+        require(len(mapped) == len(resolved) == len(expected_elfs) and all(not item.get("deleted") and
+                item.get("sha256") == expected_elfs.get(name) for name, item in resolved.items())
+                and set(resolved) == set(expected_elfs), "Safety actual mapped bridge ELFs differ")
+    require(not enabled or identities[0] != identities[1], "Safety clock and data bridges share one process identity")
+    relative = "config/dds_runtime_humble22.json"
+    snapshot = directory / "configuration/dds_runtime_registration.json"
+    expected_sha = plan["source_hashes"].get(relative)
+    require(expected_sha is not None and sha(snapshot) == sha(root / relative) == expected_sha
+            and configuration.get("dds_runtime_registration") == str(root / relative), "Safety DDS registration differs")
+    reports = {}
+    for phase in ("preflight", "actual", "after", "summary"):
+        report = load(directory / "configuration" / ("dds_runtime_" + phase + ".json"))
+        require(report.get("status") == "PASS" and report.get("fixture_only", False) is False
+                and report.get("registration_sha256") == expected_sha,
+                "Safety DDS preflight/live/after/summary evidence incomplete")
+        reports[phase] = report
+    roles = {"flight_tf", "bridge_data", "bridge_clock", "agent"} if enabled else {"flight_tf", "bridge", "agent"}
+    processes = reports["actual"].get("processes", {})
+    require(set(processes) == roles and reports["after"].get("ros_exit_code") == 0
+            and reports["after"].get("agent_exit_code") in {0, -2}, "Safety actual DDS roles/shutdown differ")
+    registration = load(snapshot)
+    ros_keys = {"dds": "flight_tf_fastdds", "cdr": "flight_tf_fastcdr",
+                "rmw_cpp": "rmw_fastrtps_cpp", "rmw_shared": "rmw_fastrtps_shared_cpp"}
+    for role, report in processes.items():
+        identity, owned = report.get("process", {}), report.get("owned_launch", {})
+        require(report.get("status") == "PASS" and report.get("fixture_only") is False
+                and report.get("registration_sha256") == expected_sha
+                and report.get("role") == ("bridge" if role.startswith("bridge") else role)
+                and type(identity.get("pid")) is int and identity["pid"] > 0
+                and type(identity.get("start_ticks")) is int and identity["start_ticks"] > 0
+                and owned.get("process") == identity, "Safety DDS live owned process evidence differs")
+        keys = {"dds": "agent_fastdds", "cdr": "agent_fastcdr"} if role == "agent" else ros_keys
+        mapped = report.get("mapped_elfs", {})
+        require(set(mapped) == set(keys) and all(all(mapped[family].get(key) == registration["elf_files"][name].get(key)
+                for key in ("realpath", "sha256", "bytes")) for family, name in keys.items()),
+                "Safety DDS actual mapped middleware differs")
+        if enabled and role in {"bridge_data", "bridge_clock"}:
+            require((identity["pid"], identity["start_ticks"]) == identities[0 if role == "bridge_data" else 1],
+                    "Safety DDS and ros_gz bridge identities differ")
+    return enabled
+
+
 def validate_safety(manifest, context, runtime):
     path, summary = bound(manifest["safety"])
     require(summary.get("schema_version") == 1 and summary.get("kind") == "RELIABILITY_V4_FINAL_SAFETY_SUMMARY"
@@ -582,6 +684,11 @@ def validate_safety(manifest, context, runtime):
         expected_sources = {key:value for key,value in context.development["source_hashes"].items()
                             if key.startswith(("scripts/", "uav_tracking/", "ros2_ws/src/")) and Path(key).suffix in {".py", ".sh", ".msg"}}
         expected_sources[resource["model"]] = context.development["source_hashes"][resource["model"]]
+        if "split_clock_bridge" in registry:
+            relative = "config/dds_runtime_humble22.json"
+            require(configuration.get("dds_runtime_registration") == str(dev_root / relative)
+                    and relative in context.development["source_hashes"], "Safety explicit DDS source registration missing")
+            expected_sources[relative] = context.development["source_hashes"][relative]
         require(snapshot == expected_sources, "Safety actual saved source/model snapshot differs")
         exits = artifacts["process_exit_codes"][1]
         require({"gazebo", "agent", "px4", "bag", "monitor", "ros"} <= exits.keys()
@@ -613,6 +720,7 @@ def validate_safety(manifest, context, runtime):
                 and float(option(flight_argv,"--real-time-factor")) == expected["real_time_factor"]
                 and float(option(flight_argv,"--wall-timeout")) == expected["wall_timeout"]
                 and "--occlusions" not in flight_argv and "--reselect-after-loss" not in flight_argv, "Safety flight invocation does not name original frozen trial/mode")
+        safety_split_clock_evidence(context.development, registry, configuration, flight_argv, directory)
         geometry_bound_evidence(resource, cls, configuration, parameters, flight_argv)
         car_surface_recovery_evidence(runtime, resource, cls, configuration, parameters, flight_argv)
         exclusive_navigation_evidence(runtime, resource, cls, configuration, parameters, flight_argv)

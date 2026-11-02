@@ -50,6 +50,21 @@ from uav_tracking_nodes.inference_worker import NonQueuingWorker
 from uav_tracking_nodes.inference_timing import InferenceTiming
 
 
+def enforce_cpu_thread_count(torch, requested_threads: int) -> int:
+    """Enforce the calling thread's pool without clearing a valid MKLDNN cache.
+
+    PyTorch 2.5.1's OpenMP setter clears the MKLDNN computation cache even
+    when passed the current value. Read on every call: lazy backend setup or
+    another native thread may have a different effective OpenMP thread count.
+    """
+    if torch.get_num_threads() != requested_threads:
+        torch.set_num_threads(requested_threads)
+    effective = torch.get_num_threads()
+    if effective != requested_threads:
+        raise RuntimeError("CPU inference thread limit did not take effect")
+    return effective
+
+
 def predict_timing_details(result=None, *, image_shape=None, requested_imgsz=None, effective_threads=None):
     """Read bounded predict metadata only; absent/invalid stages stay unknown."""
     speed = getattr(result, "speed", None)
@@ -281,8 +296,7 @@ class DetectorNode(Node):
             # after backend setup and before warmup/inference, so Gazebo and
             # PX4 keep their CPU share even on the first real sensor frame.
             def enforce_cpu_threads(predictor):
-                torch.set_num_threads(inference_threads)
-                self._effective_inference_threads = torch.get_num_threads()
+                self._effective_inference_threads = enforce_cpu_thread_count(torch, inference_threads)
 
             self._model.add_callback("on_predict_start", enforce_cpu_threads)
             self.get_logger().info(f"Loaded YOLO model: {model_path}")

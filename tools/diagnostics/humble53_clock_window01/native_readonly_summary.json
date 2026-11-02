@@ -1,0 +1,477 @@
+{
+  "schema_version": 1,
+  "kind": "READ_ONLY_CLOCK_ORDER_EXTRACTION_NOT_TRIAL_REEVALUATION",
+  "created_utc": "2026-11-02T18:11:52.913997+00:00",
+  "root": "/root/uav_tracking_fullplan_v4_humble53",
+  "trial": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble53/reliability_v4_humble53_probe01_car_stage1_position_seed004",
+  "extractor": {
+    "path": "/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble53_clock_window01/extract_clock_window.py",
+    "bytes": 24571,
+    "sha256": "99749d3da0b3a9aebec72a48bf1ff3a161856f17a65f24a7700ea477dc8691e3"
+  },
+  "native_traversals": 1,
+  "time_domains": {
+    "message_source_ros_ns": "MESSAGE_SOURCE_OR_PRODUCER_ROS_CLOCK",
+    "latest_recorded_clock": "LAST_CLOCK_PAYLOAD_IN_UNCHANGED_NATIVE_READER_ORDER",
+    "recorder_timestamp_ns": "ORIGINAL_RECORDER_SYSTEM_TIMESTAMP_NOT_SIM_TIME",
+    "phase_producer_monotonic_ns": "PRODUCER_MONOTONIC_WALL_CLOCK_NOT_RECORDER_CLOCK"
+  },
+  "time_rules": "Only subtract values in the same stated domain; never subtract recorder timestamps from ROS/source stamps, interpolate, sort, fit, or backfill clocks",
+  "topic_counts": {
+    "/clock": 27295,
+    "/tracking/flight_phase": 1861,
+    "/fmu/out/vehicle_odometry": 9246,
+    "/vehicle/odometry_timing": 9246,
+    "/vehicle/odometry": 9246
+  },
+  "expected_topic_counts_from_original_integrity": {
+    "/clock": 27295,
+    "/fmu/out/vehicle_odometry": 9246,
+    "/vehicle/odometry_timing": 9246,
+    "/vehicle/odometry": 9246,
+    "/tracking/flight_phase": 1861
+  },
+  "topic_counts_match": true,
+  "decode_errors": [],
+  "native_order_sha256": "d29129a4ad37f9c8ee51481a4931badb0f51cbd2e775679987ba8375fea53a5d",
+  "sqlite_order_check": {
+    "compared_records": 56894,
+    "all_stored_topic_counts_match_integrity": true,
+    "selected_topic_counts": {
+      "/clock": 27295,
+      "/tracking/flight_phase": 1861,
+      "/fmu/out/vehicle_odometry": 9246,
+      "/vehicle/odometry_timing": 9246,
+      "/vehicle/odometry": 9246
+    },
+    "sqlite_timestamp_id_order_sha256": "d29129a4ad37f9c8ee51481a4931badb0f51cbd2e775679987ba8375fea53a5d",
+    "matches_native_timestamp_topic_cdr_order": true,
+    "first_mismatches": [],
+    "scope": "Comparison against SQLite ORDER BY recorder timestamp,id; native output is never resorted"
+  },
+  "original_report_anomaly_counts_for_selection_crosscheck": {
+    "diagnostic_delivery_outside_clock_contract": 8,
+    "odometry_delivery_outside_source_freshness": 1,
+    "phase_source_time_stale_or_future": 3
+  },
+  "selected_anomaly_counts": {
+    "phase_source_time_stale_or_future": 3,
+    "diagnostic_delivery_outside_clock_contract": 8,
+    "odometry_delivery_outside_source_freshness": 1
+  },
+  "selected_anomaly_counts_match_original_report": true,
+  "anomalies": [
+    {
+      "kind": "phase_source_time_stale_or_future",
+      "sequence": 47198,
+      "recorder_timestamp_ns": 1793641192733549094,
+      "producer_source_or_receipt_ros_ns": 76552000000,
+      "latest_recorded_clock": {
+        "filtered_sequence": 47196,
+        "source_ros_ns": 76492000000,
+        "recorder_timestamp_ns": 1793641192733229222
+      },
+      "same_domain_clock_difference_ns": -60000000,
+      "selection_limits_ns": [
+        -50000001,
+        500000001
+      ],
+      "first_later_recorded_clock_at_or_after_producer": {
+        "filtered_sequence": 47250,
+        "clock_source_ros_ns": 76552000000,
+        "recorder_timestamp_ns": 1793641192735534291,
+        "recorder_to_recorder_delta_ns": 1985197
+      }
+    },
+    {
+      "kind": "phase_source_time_stale_or_future",
+      "sequence": 47203,
+      "recorder_timestamp_ns": 1793641192733832777,
+      "producer_source_or_receipt_ros_ns": 76600000000,
+      "latest_recorded_clock": {
+        "filtered_sequence": 47201,
+        "source_ros_ns": 76496000000,
+        "recorder_timestamp_ns": 1793641192733666437
+      },
+      "same_domain_clock_difference_ns": -104000000,
+      "selection_limits_ns": [
+        -50000001,
+        500000001
+      ],
+      "first_later_recorded_clock_at_or_after_producer": {
+        "filtered_sequence": 47262,
+        "clock_source_ros_ns": 76600000000,
+        "recorder_timestamp_ns": 1793641192736103563,
+        "recorder_to_recorder_delta_ns": 2270786
+      }
+    },
+    {
+      "kind": "phase_source_time_stale_or_future",
+      "sequence": 47208,
+      "recorder_timestamp_ns": 1793641192734052740,
+      "producer_source_or_receipt_ros_ns": 76652000000,
+      "latest_recorded_clock": {
+        "filtered_sequence": 47206,
+        "source_ros_ns": 76500000000,
+        "recorder_timestamp_ns": 1793641192733900452
+      },
+      "same_domain_clock_difference_ns": -152000000,
+      "selection_limits_ns": [
+        -50000001,
+        500000001
+      ],
+      "first_later_recorded_clock_at_or_after_producer": {
+        "filtered_sequence": 47281,
+        "clock_source_ros_ns": 76652000000,
+        "recorder_timestamp_ns": 1793641192747013848,
+        "recorder_to_recorder_delta_ns": 12961108
+      }
+    },
+    {
+      "kind": "diagnostic_delivery_outside_clock_contract",
+      "sequence": 47226,
+      "recorder_timestamp_ns": 1793641192734831352,
+      "producer_source_or_receipt_ros_ns": 76568000000,
+      "latest_recorded_clock": {
+        "filtered_sequence": 47223,
+        "source_ros_ns": 76516000000,
+        "recorder_timestamp_ns": 1793641192734680567
+      },
+      "same_domain_clock_difference_ns": -52000000,
+      "selection_limits_ns": [
+        -50000001,
+        500000001
+      ],
+      "first_later_recorded_clock_at_or_after_producer": {
+        "filtered_sequence": 47254,
+        "clock_source_ros_ns": 76568000000,
+        "recorder_timestamp_ns": 1793641192735725489,
+        "recorder_to_recorder_delta_ns": 894137
+      }
+    },
+    {
+      "kind": "diagnostic_delivery_outside_clock_contract",
+      "sequence": 47230,
+      "recorder_timestamp_ns": 1793641192735004432,
+      "producer_source_or_receipt_ros_ns": 76580000000,
+      "latest_recorded_clock": {
+        "filtered_sequence": 47227,
+        "source_ros_ns": 76520000000,
+        "recorder_timestamp_ns": 1793641192734850736
+      },
+      "same_domain_clock_difference_ns": -60000000,
+      "selection_limits_ns": [
+        -50000001,
+        500000001
+      ],
+      "first_later_recorded_clock_at_or_after_producer": {
+        "filtered_sequence": 47257,
+        "clock_source_ros_ns": 76580000000,
+        "recorder_timestamp_ns": 1793641192735869958,
+        "recorder_to_recorder_delta_ns": 865526
+      }
+    },
+    {
+      "kind": "diagnostic_delivery_outside_clock_contract",
+      "sequence": 47234,
+      "recorder_timestamp_ns": 1793641192735133321,
+      "producer_source_or_receipt_ros_ns": 76588000000,
+      "latest_recorded_clock": {
+        "filtered_sequence": 47231,
+        "source_ros_ns": 76524000000,
+        "recorder_timestamp_ns": 1793641192735024020
+      },
+      "same_domain_clock_difference_ns": -64000000,
+      "selection_limits_ns": [
+        -50000001,
+        500000001
+      ],
+      "first_later_recorded_clock_at_or_after_producer": {
+        "filtered_sequence": 47259,
+        "clock_source_ros_ns": 76588000000,
+        "recorder_timestamp_ns": 1793641192735963985,
+        "recorder_to_recorder_delta_ns": 830664
+      }
+    },
+    {
+      "kind": "diagnostic_delivery_outside_clock_contract",
+      "sequence": 47238,
+      "recorder_timestamp_ns": 1793641192735221928,
+      "producer_source_or_receipt_ros_ns": 76608000000,
+      "latest_recorded_clock": {
+        "filtered_sequence": 47235,
+        "source_ros_ns": 76528000000,
+        "recorder_timestamp_ns": 1793641192735153278
+      },
+      "same_domain_clock_difference_ns": -80000000,
+      "selection_limits_ns": [
+        -50000001,
+        500000001
+      ],
+      "first_later_recorded_clock_at_or_after_producer": {
+        "filtered_sequence": 47265,
+        "clock_source_ros_ns": 76608000000,
+        "recorder_timestamp_ns": 1793641192746008137,
+        "recorder_to_recorder_delta_ns": 10786209
+      }
+    },
+    {
+      "kind": "diagnostic_delivery_outside_clock_contract",
+      "sequence": 47242,
+      "recorder_timestamp_ns": 1793641192735299902,
+      "producer_source_or_receipt_ros_ns": 76612000000,
+      "latest_recorded_clock": {
+        "filtered_sequence": 47239,
+        "source_ros_ns": 76532000000,
+        "recorder_timestamp_ns": 1793641192735232094
+      },
+      "same_domain_clock_difference_ns": -80000000,
+      "selection_limits_ns": [
+        -50000001,
+        500000001
+      ],
+      "first_later_recorded_clock_at_or_after_producer": {
+        "filtered_sequence": 47268,
+        "clock_source_ros_ns": 76612000000,
+        "recorder_timestamp_ns": 1793641192746194474,
+        "recorder_to_recorder_delta_ns": 10894572
+      }
+    },
+    {
+      "kind": "odometry_delivery_outside_source_freshness",
+      "sequence": 47245,
+      "recorder_timestamp_ns": 1793641192735368876,
+      "producer_source_or_receipt_ros_ns": 76664000000,
+      "latest_recorded_clock": {
+        "filtered_sequence": 47243,
+        "source_ros_ns": 76536000000,
+        "recorder_timestamp_ns": 1793641192735309683
+      },
+      "same_domain_clock_difference_ns": -128000000,
+      "selection_limits_ns": [
+        -100000000,
+        550000000
+      ],
+      "first_later_recorded_clock_at_or_after_producer": {
+        "filtered_sequence": 47284,
+        "clock_source_ros_ns": 76664000000,
+        "recorder_timestamp_ns": 1793641192747112471,
+        "recorder_to_recorder_delta_ns": 11743595
+      }
+    },
+    {
+      "kind": "diagnostic_delivery_outside_clock_contract",
+      "sequence": 47246,
+      "recorder_timestamp_ns": 1793641192735378949,
+      "producer_source_or_receipt_ros_ns": 76668000000,
+      "latest_recorded_clock": {
+        "filtered_sequence": 47243,
+        "source_ros_ns": 76536000000,
+        "recorder_timestamp_ns": 1793641192735309683
+      },
+      "same_domain_clock_difference_ns": -132000000,
+      "selection_limits_ns": [
+        -50000001,
+        500000001
+      ],
+      "first_later_recorded_clock_at_or_after_producer": {
+        "filtered_sequence": 47285,
+        "clock_source_ros_ns": 76668000000,
+        "recorder_timestamp_ns": 1793641192747145695,
+        "recorder_to_recorder_delta_ns": 11766746
+      }
+    },
+    {
+      "kind": "diagnostic_delivery_outside_clock_contract",
+      "sequence": 47264,
+      "recorder_timestamp_ns": 1793641192746000376,
+      "producer_source_or_receipt_ros_ns": 76684000000,
+      "latest_recorded_clock": {
+        "filtered_sequence": 47263,
+        "source_ros_ns": 76604000000,
+        "recorder_timestamp_ns": 1793641192736150521
+      },
+      "same_domain_clock_difference_ns": -80000000,
+      "selection_limits_ns": [
+        -50000001,
+        500000001
+      ],
+      "first_later_recorded_clock_at_or_after_producer": {
+        "filtered_sequence": 47289,
+        "clock_source_ros_ns": 76684000000,
+        "recorder_timestamp_ns": 1793641192754419200,
+        "recorder_to_recorder_delta_ns": 8418824
+      }
+    },
+    {
+      "kind": "diagnostic_delivery_outside_clock_contract",
+      "sequence": 47271,
+      "recorder_timestamp_ns": 1793641192746358855,
+      "producer_source_or_receipt_ros_ns": 76684000000,
+      "latest_recorded_clock": {
+        "filtered_sequence": 47268,
+        "source_ros_ns": 76612000000,
+        "recorder_timestamp_ns": 1793641192746194474
+      },
+      "same_domain_clock_difference_ns": -72000000,
+      "selection_limits_ns": [
+        -50000001,
+        500000001
+      ],
+      "first_later_recorded_clock_at_or_after_producer": {
+        "filtered_sequence": 47289,
+        "clock_source_ros_ns": 76684000000,
+        "recorder_timestamp_ns": 1793641192754419200,
+        "recorder_to_recorder_delta_ns": 8060345
+      }
+    }
+  ],
+  "source_or_file_order_changes": [
+    {
+      "kind": "producer_sample_source_change_window",
+      "sequence": 47246,
+      "previous_source_ns": 76608000000,
+      "source_ns": 76664000000
+    }
+  ],
+  "window": {
+    "source_range_ns": [
+      76400000000,
+      77100000000
+    ],
+    "context_filtered_records_each_side": 12,
+    "records": 386,
+    "all_clock_records": 27295,
+    "all_phase_records": 1861
+  },
+  "original_report_status_unchanged": {
+    "source_clock": "FAIL",
+    "native_startup": "FAIL"
+  },
+  "protection": {
+    "unchanged": true,
+    "small_inputs_before": {
+      "run_config.json": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble53/reliability_v4_humble53_probe01_car_stage1_position_seed004/run_config.json",
+        "bytes": 4467,
+        "sha256": "f221a6d78c86f41287518cfdc7fdc1ffe1524def9a99f6403c9b57edea5261d8"
+      },
+      "summary.json": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble53/reliability_v4_humble53_probe01_car_stage1_position_seed004/summary.json",
+        "bytes": 4934,
+        "sha256": "d55a0ff5f9f310aa6ae349ce2927e5b6918a9aca2d32a3d2d22f7feaae65513a"
+      },
+      "bag_integrity.json": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble53/reliability_v4_humble53_probe01_car_stage1_position_seed004/bag_integrity.json",
+        "bytes": 4969,
+        "sha256": "888e58158e4be637255ec6876d71a1ab6046c6826abf010ebab7ebbbc349df05"
+      },
+      "recording_closure.json": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble53/reliability_v4_humble53_probe01_car_stage1_position_seed004/recording_closure.json",
+        "bytes": 24311,
+        "sha256": "66c1de9d8e6128077f89fb1d3c2f5d4c65c2fdb222e4a508b6d7c9385505b6d1"
+      },
+      "px4_source_clock_report.json": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble53/reliability_v4_humble53_probe01_car_stage1_position_seed004/px4_source_clock_report.json",
+        "bytes": 7932,
+        "sha256": "07821bb48aff2c1e43b08c81c8806d59bf1e4a6e79959da6e70e8169d50b880b"
+      },
+      "native_startup_report.json": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble53/reliability_v4_humble53_probe01_car_stage1_position_seed004/native_startup_report.json",
+        "bytes": 9122,
+        "sha256": "a93ac917305a539efdb1d46f016853fb4d50a6c6ded8e846c47e23d42187f1e0"
+      },
+      "rosbag/metadata.yaml": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble53/reliability_v4_humble53_probe01_car_stage1_position_seed004/rosbag/metadata.yaml",
+        "bytes": 16893,
+        "sha256": "45d4b20af6705e46c078da52637dd4eae2b3a89b9ad6423517c7a41fe693bb8f"
+      },
+      "configuration/runtime_parameters.yaml": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble53/reliability_v4_humble53_probe01_car_stage1_position_seed004/configuration/runtime_parameters.yaml",
+        "bytes": 4759,
+        "sha256": "2aaeabfa5f3078cecbb1e062ca705752b5edcf9accc7bcc8af88e722d2ed7596"
+      }
+    },
+    "small_inputs_after": {
+      "run_config.json": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble53/reliability_v4_humble53_probe01_car_stage1_position_seed004/run_config.json",
+        "bytes": 4467,
+        "sha256": "f221a6d78c86f41287518cfdc7fdc1ffe1524def9a99f6403c9b57edea5261d8"
+      },
+      "summary.json": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble53/reliability_v4_humble53_probe01_car_stage1_position_seed004/summary.json",
+        "bytes": 4934,
+        "sha256": "d55a0ff5f9f310aa6ae349ce2927e5b6918a9aca2d32a3d2d22f7feaae65513a"
+      },
+      "bag_integrity.json": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble53/reliability_v4_humble53_probe01_car_stage1_position_seed004/bag_integrity.json",
+        "bytes": 4969,
+        "sha256": "888e58158e4be637255ec6876d71a1ab6046c6826abf010ebab7ebbbc349df05"
+      },
+      "recording_closure.json": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble53/reliability_v4_humble53_probe01_car_stage1_position_seed004/recording_closure.json",
+        "bytes": 24311,
+        "sha256": "66c1de9d8e6128077f89fb1d3c2f5d4c65c2fdb222e4a508b6d7c9385505b6d1"
+      },
+      "px4_source_clock_report.json": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble53/reliability_v4_humble53_probe01_car_stage1_position_seed004/px4_source_clock_report.json",
+        "bytes": 7932,
+        "sha256": "07821bb48aff2c1e43b08c81c8806d59bf1e4a6e79959da6e70e8169d50b880b"
+      },
+      "native_startup_report.json": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble53/reliability_v4_humble53_probe01_car_stage1_position_seed004/native_startup_report.json",
+        "bytes": 9122,
+        "sha256": "a93ac917305a539efdb1d46f016853fb4d50a6c6ded8e846c47e23d42187f1e0"
+      },
+      "rosbag/metadata.yaml": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble53/reliability_v4_humble53_probe01_car_stage1_position_seed004/rosbag/metadata.yaml",
+        "bytes": 16893,
+        "sha256": "45d4b20af6705e46c078da52637dd4eae2b3a89b9ad6423517c7a41fe693bb8f"
+      },
+      "configuration/runtime_parameters.yaml": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble53/reliability_v4_humble53_probe01_car_stage1_position_seed004/configuration/runtime_parameters.yaml",
+        "bytes": 4759,
+        "sha256": "2aaeabfa5f3078cecbb1e062ca705752b5edcf9accc7bcc8af88e722d2ed7596"
+      }
+    },
+    "archive_stats_before": {
+      "rosbag_0.db3.zstd": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble53/reliability_v4_humble53_probe01_car_stage1_position_seed004/rosbag/rosbag_0.db3.zstd",
+        "bytes": 427720437,
+        "mtime_ns": 1793641325000000000,
+        "ctime_ns": 1793641728898346100,
+        "device": 70,
+        "inode": 281474977783961
+      }
+    },
+    "archive_stats_after": {
+      "rosbag_0.db3.zstd": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble53/reliability_v4_humble53_probe01_car_stage1_position_seed004/rosbag/rosbag_0.db3.zstd",
+        "bytes": 427720437,
+        "mtime_ns": 1793641325000000000,
+        "ctime_ns": 1793641728898346100,
+        "device": 70,
+        "inode": 281474977783961
+      }
+    },
+    "archived_payload_sha256_provenance": {
+      "rosbag_0.db3.zstd": "0233ea135fd1d93e06ea5cc81699efa626bb106d715b6cfc4bbd685ebe8aef1b"
+    },
+    "scope": "Small metadata/reports freshly hashed before and after. Archive size/mtime/ctime/device/inode checked before/after. Payload hashes are original bag_integrity provenance, not recomputed. Source compressed files are only copied to disposable cache"
+  },
+  "interpretation": "A matching SQLite/native byte order rules out an extractor reordering artifact. Negative same-domain clock differences then exist in stored recorder order; DDS callback backlog versus producer/clock scheduling still requires runtime timing evidence. This extraction creates no PASS/FAIL verdict",
+  "outputs": {
+    "window.jsonl": {
+      "bytes": 346715,
+      "sha256": "db6977fb61a1e9df885225fac6549753b1c0e3bb4a831f91c1aa08eb5b29acb1"
+    },
+    "clock_all.jsonl": {
+      "bytes": 18100671,
+      "sha256": "1ea2ed8004ce405fa1fdfe53b3fdf18b6a76ca5d0e4631c068385d61159e529c"
+    },
+    "phase_all.jsonl": {
+      "bytes": 2247205,
+      "sha256": "5fca1d23fb6cd2a5cc1c5387f92d3b0d982743d66a7f878b4f8f693f2654ceae"
+    }
+  }
+}

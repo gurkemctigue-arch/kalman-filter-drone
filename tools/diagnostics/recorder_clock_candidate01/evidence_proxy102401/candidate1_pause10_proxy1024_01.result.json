@@ -1,0 +1,481 @@
+{
+  "schema_version": 1,
+  "kind": "PROSPECTIVE_RECORDER_CLOCK_QOS_COMPONENT_V1",
+  "status": "COMPONENT_EVIDENCE_COMPLETE_NO_REPAIR_CLAIM",
+  "condition": "candidate1",
+  "started_utc": "2026-11-02T18:51:51.652697+00:00",
+  "source_root": "/root/uav_tracking_fullplan_v4_humble53",
+  "scope": "REAL_RECORDER_WITH_PRODUCTION_RGBD_TWO_BRIDGES_COMPONENT_ONLY_NO_PX4_NO_YOLO",
+  "execution_probe": {
+    "path": "/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/recorder_clock_candidate01/probe_recorder_clock.py",
+    "bytes": 37861,
+    "sha256": "da41172acf2172f1b94c8d3c95388b171a0a6bdc0ef5380ba874ff63360c4abb"
+  },
+  "original_inputs": [
+    {
+      "path": "/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/recorder_clock_candidate01/probe_recorder_clock.py",
+      "bytes": 37861,
+      "sha256": "da41172acf2172f1b94c8d3c95388b171a0a6bdc0ef5380ba874ff63360c4abb"
+    },
+    {
+      "path": "/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/clock_isolation_candidate01/probe_split_rgbd01.py",
+      "bytes": 14874,
+      "sha256": "1ec86d74d846f31a151db28b0db1c1246c298c9d2975f8f08fbe1c9f1924a892"
+    },
+    {
+      "path": "/root/uav_tracking_fullplan_v4_humble53/config/recording_qos.yaml",
+      "bytes": 672,
+      "sha256": "d56c368ecba5e77a7343a7832be4ec234a4cd4576e367aaa9a808c356cf76824"
+    },
+    {
+      "path": "/root/uav_tracking_fullplan_v4_humble53/config/ros_gz_clock_runtime_humble22.json",
+      "bytes": 26070,
+      "sha256": "908f8b7e18154377e57ce6f92922b63b36f7d4fb90ac79e61cc1b8dd95d3e4e4"
+    },
+    {
+      "path": "/root/uav_tracking_fullplan_v4_humble53/config/ros_gz_runtime_humble22.json",
+      "bytes": 29086,
+      "sha256": "08cbc9ea8a2b6e50b71efc4910e5adef7c309b742fb0e9177cd803e934a028af"
+    },
+    {
+      "path": "/root/uav_tracking_fullplan_v4_humble53/config/dds_runtime_humble22.json",
+      "bytes": 2267,
+      "sha256": "4e517b62e823585b53dd2ac503f65eaf9bc3fd4c59d9d8fdb900d985f99d030d"
+    },
+    {
+      "path": "/root/uav_tracking_fullplan_v4_humble53/uav_tracking/ros_gz_runtime.py",
+      "bytes": 21491,
+      "sha256": "8edc809b1db6da0929269facc9650468b8458f0d5fd6eaca5ba3db5b01185cc0"
+    },
+    {
+      "path": "/root/uav_tracking_fullplan_v4_humble53/uav_tracking/dds_runtime.py",
+      "bytes": 15854,
+      "sha256": "f89c73293d6dad8405a0f3a61c3cbce000d8af94a715566e5f09f9f3072342c2"
+    }
+  ],
+  "formal_flights_started": 0,
+  "original_reports_modified": false,
+  "repair_claimed": false,
+  "stress": {
+    "requested_pause_wall_s": 1.0,
+    "at_elapsed_source_s": 10.0,
+    "applied": true,
+    "artificial_stress_not_production": true,
+    "stopped_monotonic_ns": 55446257398318,
+    "stopped_source_ns": 10008000000,
+    "recorder_identity": {
+      "pid": 84941,
+      "parent_pid": 84877,
+      "process_group": 84941,
+      "session": 84941,
+      "start_ticks": 5536111
+    },
+    "resumed_monotonic_ns": 55447267530290,
+    "resumed_source_ns": 10132000000,
+    "actual_pause_wall_s": 1.010131972
+  },
+  "runtime_environment": {
+    "ROS_DISTRO": "humble",
+    "RMW_IMPLEMENTATION": "rmw_fastrtps_cpp",
+    "ROS_DOMAIN_ID": "74",
+    "AMENT_PREFIX_PATH": "/root/uav_tracking_fullplan_v4_humble53/ros2_ws/install:/root/uav_humble22/px4_msgs_ws/install/px4_msgs:/root/uav_humble22/ros_gz_shutdown_A01_ws/install:/root/uav_humble22/ros_gz_ws/install/ros_gz_sim:/root/uav_humble22/ros_gz_ws/install/ros_gz_bridge:/root/uav_humble22/ros_gz_ws/install/ros_gz_interfaces:/opt/ros/humble",
+    "LD_LIBRARY_PATH": "/root/uav_humble22/agent_install/lib:/root/uav_humble22/fastdds_listener_A01/install/lib:/root/uav_tracking_fullplan_v4_humble53/ros2_ws/install/lib:/root/uav_humble22/px4_msgs_ws/install/px4_msgs/lib:/root/uav_humble22/ros_gz_shutdown_A01_ws/install/lib:/root/uav_humble22/ros_gz_ws/install/ros_gz_sim/lib:/root/uav_humble22/ros_gz_ws/install/ros_gz_bridge/lib:/root/uav_humble22/ros_gz_ws/install/ros_gz_interfaces/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib",
+    "PYTHONPATH": "/root/uav_tracking_fullplan_v4_humble53:/root/uav_tracking_fullplan_v4_humble53/ros2_ws/build/uav_tracking_bringup:/root/uav_tracking_fullplan_v4_humble53/ros2_ws/build/uav_tracking_px4_adapter:/root/uav_tracking_fullplan_v4_humble53/ros2_ws/build/uav_tracking_nodes:/root/uav_tracking_fullplan_v4_humble53/ros2_ws/install/lib/python3.10/site-packages:/root/uav_humble22/px4_msgs_ws/install/px4_msgs/lib/python3.10/site-packages:/root/uav_humble22/ros_gz_ws/install/ros_gz_interfaces/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages"
+  },
+  "requested_recorder_profiles": {
+    "/clock": {
+      "history": "keep_last",
+      "depth": 1,
+      "reliability": "reliable",
+      "durability": "volatile"
+    },
+    "/fmu/out/vehicle_odometry": {
+      "history": "keep_last",
+      "depth": 1024,
+      "reliability": "best_effort",
+      "durability": "transient_local"
+    },
+    "/vehicle/odometry_timing": {
+      "history": "keep_last",
+      "depth": 1024,
+      "reliability": "reliable",
+      "durability": "volatile"
+    },
+    "/vehicle/odometry": {
+      "history": "keep_last",
+      "depth": 1024,
+      "reliability": "reliable",
+      "durability": "volatile"
+    },
+    "/tracking/flight_phase": {
+      "history": "keep_last",
+      "depth": 256,
+      "reliability": "reliable",
+      "durability": "volatile"
+    },
+    "/recorder_clock_candidate/producer_receipt": {
+      "history": "keep_last",
+      "depth": 1024,
+      "reliability": "reliable",
+      "durability": "volatile"
+    },
+    "/recorder_clock_candidate/capture_control": {
+      "history": "keep_last",
+      "depth": 1024,
+      "reliability": "reliable",
+      "durability": "volatile"
+    }
+  },
+  "qos_snapshot": {
+    "path": "/root/uav_tracking_bag_spool/recorder_clock_candidate01/candidate1_pause10_proxy1024_01/recording_qos.yaml",
+    "bytes": 771,
+    "sha256": "0a7adf3cd33ae1912e5b5bd017bf09b5f9d6b05a339f91b9a1941f454bf5d147"
+  },
+  "diagnostic_evidence_qos": {
+    "producer_evidence_depth": 1024,
+    "requested_publisher_profiles": {
+      "/recorder_clock_candidate/producer_receipt": {
+        "history": "keep_last",
+        "depth": 1024,
+        "reliability": "reliable",
+        "durability": "volatile"
+      },
+      "/recorder_clock_candidate/capture_control": {
+        "history": "keep_last",
+        "depth": 1024,
+        "reliability": "reliable",
+        "durability": "volatile"
+      }
+    },
+    "requested_recorder_profile_overrides": {
+      "/recorder_clock_candidate/producer_receipt": {
+        "history": "keep_last",
+        "depth": 1024,
+        "reliability": "reliable",
+        "durability": "volatile"
+      },
+      "/recorder_clock_candidate/capture_control": {
+        "history": "keep_last",
+        "depth": 1024,
+        "reliability": "reliable",
+        "durability": "volatile"
+      }
+    },
+    "image_observer_requested_profile": {
+      "history": "keep_last",
+      "depth": 10,
+      "reliability": "reliable",
+      "durability": "volatile"
+    },
+    "scope": "Requested QoS, not independently certified endpoint QoS; absent recorder overrides retain auto-discovery"
+  },
+  "base_probe_path_rebinding": {
+    "ROOT": "/root/uav_tracking_fullplan_v4_humble53",
+    "BASE": "/root/uav_tracking_bag_spool/recorder_clock_candidate01/candidate1_pause10_proxy1024_01/base_inputs",
+    "OUT": "/root/uav_tracking_bag_spool/recorder_clock_candidate01/candidate1_pause10_proxy1024_01/base_capture",
+    "original_scope_note": "Base receipt says no bag because its own code does not record; this enclosing tool adds the recorder separately."
+  },
+  "recorder_time_configuration": {
+    "cli_use_sim_time": false,
+    "raw_native_timestamp_domain": "NOT_INDEPENDENTLY_CERTIFIED_WALL_CLOCK",
+    "comparison": "Record timestamp intervals retained directly; never subtracted from ROS source or producer monotonic time"
+  },
+  "producer_proxy": {
+    "source_timer_period_s": 0.01,
+    "also_records_rgb_callback_receipts": true,
+    "scope": "Independent ROS clock producer proxy; not PX4 adapter/source validity or image-to-command latency"
+  },
+  "owned_processes": {
+    "recorder": {
+      "identity": {
+        "pid": 84941,
+        "parent_pid": 84877,
+        "process_group": 84941,
+        "session": 84941,
+        "start_ticks": 5536111
+      },
+      "requested_command": [
+        "/opt/ros/humble/bin/ros2",
+        "bag",
+        "record",
+        "--storage",
+        "sqlite3",
+        "--node-name",
+        "recorder_clock_candidate_record",
+        "--qos-profile-overrides-path",
+        "/root/uav_tracking_bag_spool/recorder_clock_candidate01/candidate1_pause10_proxy1024_01/recording_qos.yaml",
+        "-o",
+        "/root/uav_tracking_bag_spool/recorder_clock_candidate01/candidate1_pause10_proxy1024_01/rosbag",
+        "/clock",
+        "/camera/color/image_raw",
+        "/camera/aligned_depth_to_color/image_raw",
+        "/camera/color/camera_info",
+        "/recorder_clock_candidate/producer_receipt",
+        "/recorder_clock_candidate/capture_control"
+      ],
+      "actual_proc_cmdline": [
+        "/usr/bin/python3",
+        "/opt/ros/humble/bin/ros2",
+        "bag",
+        "record",
+        "--storage",
+        "sqlite3",
+        "--node-name",
+        "recorder_clock_candidate_record",
+        "--qos-profile-overrides-path",
+        "/root/uav_tracking_bag_spool/recorder_clock_candidate01/candidate1_pause10_proxy1024_01/recording_qos.yaml",
+        "-o",
+        "/root/uav_tracking_bag_spool/recorder_clock_candidate01/candidate1_pause10_proxy1024_01/rosbag",
+        "/clock",
+        "/camera/color/image_raw",
+        "/camera/aligned_depth_to_color/image_raw",
+        "/camera/color/camera_info",
+        "/recorder_clock_candidate/producer_receipt",
+        "/recorder_clock_candidate/capture_control"
+      ]
+    },
+    "component": {
+      "identity": {
+        "pid": 84956,
+        "parent_pid": 84877,
+        "process_group": 84956,
+        "session": 84956,
+        "start_ticks": 5536141
+      },
+      "requested_command": [
+        "/root/uav_humble22/venv/bin/python",
+        "-B",
+        "/root/uav_tracking_bag_spool/recorder_clock_candidate01/candidate1_pause10_proxy1024_01/run_original_component.py"
+      ],
+      "actual_proc_cmdline": [
+        "/root/uav_humble22/venv/bin/python",
+        "-B",
+        "/root/uav_tracking_bag_spool/recorder_clock_candidate01/candidate1_pause10_proxy1024_01/run_original_component.py"
+      ]
+    }
+  },
+  "capture_window": {
+    "start_source_ns": 116000000,
+    "end_source_ns": 20116000000,
+    "armed_source_ns": 16000000,
+    "rule": "First observed RGB/Depth/Info plus matched recorder readers, then a future 100ms guard and fixed20source seconds; never native-bag availability cropping"
+  },
+  "base_component_receipt": {
+    "path": "/root/uav_tracking_bag_spool/recorder_clock_candidate01/candidate1_pause10_proxy1024_01/base_capture/receipt.json",
+    "bytes": 2064,
+    "sha256": "db4c14057e375287b7db27b1b41d639a5fdc88a03c5d0e9b9565eb3079af306a"
+  },
+  "base_component_status": "PASS",
+  "base_owned_processes": {
+    "data": {
+      "identity": {
+        "pid": 84957,
+        "parent_pid": 84956,
+        "process_group": 84957,
+        "session": 84957,
+        "start_ticks": 5536160
+      },
+      "command": [
+        "/root/uav_humble22/ros_gz_shutdown_A01_ws/install/lib/ros_gz_bridge/parameter_bridge",
+        "/world/stage3_flight/set_pose@ros_gz_interfaces/srv/SetEntityPose",
+        "--ros-args",
+        "-r",
+        "__node:=uav_tracking_gz_bridge",
+        "-p",
+        "config_file:=/root/uav_tracking_bag_spool/recorder_clock_candidate01/candidate1_pause10_proxy1024_01/base_capture/data.yaml",
+        "-p",
+        "use_sim_time:=true"
+      ]
+    },
+    "clock": {
+      "identity": {
+        "pid": 84958,
+        "parent_pid": 84956,
+        "process_group": 84958,
+        "session": 84958,
+        "start_ticks": 5536160
+      },
+      "command": [
+        "/root/uav_humble22/ros_gz_shutdown_A01_ws/install/lib/ros_gz_bridge/parameter_bridge",
+        "--ros-args",
+        "-r",
+        "__node:=uav_tracking_clock_bridge",
+        "-p",
+        "config_file:=/root/uav_tracking_bag_spool/recorder_clock_candidate01/candidate1_pause10_proxy1024_01/base_capture/clock.yaml",
+        "-p",
+        "use_sim_time:=true"
+      ]
+    },
+    "gazebo": {
+      "identity": {
+        "pid": 84959,
+        "parent_pid": 84956,
+        "process_group": 84959,
+        "session": 84959,
+        "start_ticks": 5536160
+      },
+      "command": [
+        "gz",
+        "sim",
+        "--seed",
+        "5",
+        "-s",
+        "-r",
+        "--headless-rendering",
+        "/root/uav_tracking_bag_spool/recorder_clock_candidate01/candidate1_pause10_proxy1024_01/base_capture/world.sdf"
+      ]
+    }
+  },
+  "base_owned_processes_pin": {
+    "path": "/root/uav_tracking_bag_spool/recorder_clock_candidate01/candidate1_pause10_proxy1024_01/base_capture/owned_processes.json",
+    "bytes": 1595,
+    "sha256": "328acf3ffa169fb37e6b2eeef23cc805a78bc82d6ceaa907915814e3605d4e62"
+  },
+  "base_nested_cleanup": {
+    "data": {
+      "exit_code": 0,
+      "forced": false,
+      "direct_child_reaped": true,
+      "residual_group_members": []
+    },
+    "clock": {
+      "exit_code": 0,
+      "forced": false,
+      "direct_child_reaped": true,
+      "residual_group_members": []
+    },
+    "gazebo": {
+      "exit_code": 0,
+      "forced": false,
+      "direct_child_reaped": true,
+      "residual_group_members": []
+    }
+  },
+  "cleanup": {
+    "component": {
+      "returncode": 0,
+      "requested_signals": [],
+      "direct_child_reaped": true,
+      "residual_group_members": [],
+      "forced": false
+    },
+    "recorder": {
+      "returncode": 0,
+      "requested_signals": [
+        "SIGINT"
+      ],
+      "direct_child_reaped": true,
+      "residual_group_members": [],
+      "forced": false
+    }
+  },
+  "bag_analysis": {
+    "full_native_read": true,
+    "sqlite_integrity": {
+      "rosbag_0.db3": [
+        "ok"
+      ]
+    },
+    "metadata_counts": {
+      "/clock": 5027,
+      "/camera/color/image_raw": 202,
+      "/camera/color/camera_info": 203,
+      "/recorder_clock_candidate/capture_control": 3,
+      "/camera/aligned_depth_to_color/image_raw": 202,
+      "/recorder_clock_candidate/producer_receipt": 2224
+    },
+    "native_counts": {
+      "/recorder_clock_candidate/capture_control": 3,
+      "/clock": 5027,
+      "/recorder_clock_candidate/producer_receipt": 2224,
+      "/camera/color/camera_info": 203,
+      "/camera/color/image_raw": 202,
+      "/camera/aligned_depth_to_color/image_raw": 202
+    },
+    "source_window_ns": [
+      116000000,
+      20116000000
+    ],
+    "source_window_duration_s": 20.0,
+    "prospective_window": {
+      "start_source_ns": 116000000,
+      "end_source_ns": 20116000000,
+      "armed_source_ns": 16000000,
+      "rule": "First observed RGB/Depth/Info plus matched recorder readers, then a future 100ms guard and fixed20source seconds; never native-bag availability cropping"
+    },
+    "observer_reached_registered_end": true,
+    "nonclock_comparisons": {
+      "/camera/color/image_raw": {
+        "observer_count": 200,
+        "native_bag_count": 200,
+        "exact_stamp_payload_multiset_equal": true,
+        "missing": 0,
+        "unexpected_or_duplicate": 0,
+        "duplicate_observer_source_stamps": 0,
+        "max_observed_source_gap_ns": 100000000,
+        "registered_10hz_4ms_cadence_observed": true
+      },
+      "/camera/aligned_depth_to_color/image_raw": {
+        "observer_count": 200,
+        "native_bag_count": 200,
+        "exact_stamp_payload_multiset_equal": true,
+        "missing": 0,
+        "unexpected_or_duplicate": 0,
+        "duplicate_observer_source_stamps": 0,
+        "max_observed_source_gap_ns": 100000000,
+        "registered_10hz_4ms_cadence_observed": true
+      },
+      "/camera/color/camera_info": {
+        "observer_count": 200,
+        "native_bag_count": 200,
+        "exact_stamp_payload_multiset_equal": true,
+        "missing": 0,
+        "unexpected_or_duplicate": 0,
+        "duplicate_observer_source_stamps": 0,
+        "max_observed_source_gap_ns": 100000000,
+        "registered_10hz_4ms_cadence_observed": true
+      }
+    },
+    "producer_control_exact_multiset_equal": {
+      "/recorder_clock_candidate/producer_receipt": true,
+      "/recorder_clock_candidate/capture_control": true
+    },
+    "nonclock_evidence_complete": true,
+    "last_clock_closure": {
+      "closed": true,
+      "last_recorded_clock_ns": 20224000000,
+      "last_native_image_source_ns": 20200000000,
+      "end_marker_producer_clock_ns": 20224000000,
+      "last_observer_clock_ns": 20224000000
+    },
+    "clock_counts": {
+      "native_bag": 5027,
+      "independent_observer": 5055,
+      "claim": "Fewer clock messages alone is never a successful result"
+    },
+    "clock_source_step_ns": {
+      "minimum": 4000000,
+      "maximum": 96000000,
+      "regressions": 0,
+      "duplicates": 0,
+      "steps_over_4ms": 2
+    },
+    "original_record_timestamp_interval_ns": {
+      "minimum": 21326,
+      "maximum": 1964623163,
+      "negative_intervals": 0,
+      "domain": "RAW_NATIVE_RECORDER_TIMESTAMP_DOMAIN_NOT_INDEPENDENTLY_CERTIFIED_WALL_CLOCK"
+    },
+    "producer_clock_vs_recorder_latest_ns": {
+      "minimum": 0,
+      "maximum": 92000000,
+      "missing_latest_clock": 0,
+      "outside_original_diagnostic_reference_bounds": 0,
+      "scope": "Independent image-callback producer ROS receipt, not PX4 adapter receipt or causal latency"
+    },
+    "base_component_receipt_status": "PASS",
+    "single_condition_comparison": "NOT_COMPARED_NO_REPAIR_OR_FLIGHT_ACCEPTANCE_CLAIM"
+  },
+  "finished_utc": "2026-11-02T18:54:45.859820+00:00",
+  "clock_comparison_boundary": "Single condition never proves improvement. Preserve fewer-clock, missing images, producer-reference anomalies and failure cases. No full-flight clock or target-following acceptance."
+}

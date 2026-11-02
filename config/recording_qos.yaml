@@ -1,8 +1,9 @@
 # Requested recorder receive histories for small evidence messages.
-# This is a delivery-capacity hypothesis; original evaluation gates still apply.
+# Keep the latest Clock instead of replaying its backlog after a recorder stall.
+# Intermediate Clock updates may be dropped; original time/evidence gates apply.
 /clock:
   history: keep_last
-  depth: 2048
+  depth: 1
   reliability: reliable
   durability: volatile
 /fmu/out/vehicle_odometry:

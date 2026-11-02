@@ -1,5 +1,7 @@
 # RGB-D UAV target tracking and following
 
+**2026-11-03 修复进展：Humble54 已完成检测器线程策略对照和录包时钟队列组件对照，尚待新冷构建和完整飞行。** 新时钟方案在诊断数据完整的配对测试中由5次参考越界降为0次，代价为跳过中间Clock；检测器保持原权重和CPU4设置。临时目录继承、完整源码复制校验、开发batch owner及公共安全/容量入口已补齐并在分项验证中。原Humble53的 **7 PASS / 1 FAIL / 4 PENDING** 和正式 **0/280** 不变，不能把组件或测试通过称为项目验收完成。见 [修复、原件和后续验证顺序](planning/reliability-v4-humble54-repair-20261103.md)。下方为历史快照。
+
 **2026-11-03 01:51（北京时间）停止检查点：Humble53 核心 12 场批次已停止，原始结果为 7 PASS、1 FAIL、4 PENDING，正式仍 0/280。** 六个行人场景与汽车速度跟随通过；汽车位置跟随原 FAIL，后续四场汽车交叉/云台尚未执行，不能称核心 12 场通过。失败场的来源时钟、阶段时间及表面跟随检查分别未过门，录制闭合和 bag 完整性通过；多个失败是否同一根因仍在诊断，尚无修复完成结论。汽车速度场物理距离/高度 RMSE 为 0.7316/0.1595 米、末段均持续稳定，原导航删失记录保留。新增视频库存与 v4 交付入口及其原回归共 **59 项测试通过**，属于交付工具测试，不能计为飞行通过。见[停止原因、证据及下一步](planning/reliability-v4-humble53-core-stop-20261103.md)和[小原件快照](tools/diagnostics/humble53_core_stop_snapshot01/README.md)；本机[核心进度](results/project_progress/humble53_core_slots01/index.html)保留终态。下方运行中描述均为历史检查点。
 
 **2026-11-03 00:16（北京时间）检查点：Humble53 新核心 12 场已有前 4 场原始工程 PASS，4 个原 attempt 审计均已闭合；第 5 场行人主动云台已开始，余 7 场待执行，正式仍 0/280。** 第四场行人云台中位的距离/高度 RMSE 为 0.7732/0.1630 米，末段两项持续稳定、来源时钟、原生起飞和中位云台检查均通过；旧 Humble51 对应失败完整保留。行人交叉的固定身份时间格为 753 格：648 正确、0 已知错误、105 未知，已知覆盖 86.06%，未知继续计入分母。本轮汽车及主动云台尚无通过结论，不能据此认定整体可靠性已解决。见[本轮四场结果与边界](planning/reliability-v4-humble53-core-checkpoint-20261103.md)、[原件快照](tools/experiment_orchestration/humble53_core4_snapshot01/README.md)及本机[核心进度](results/project_progress/humble53_core_slots01/index.html)。下方均为历史检查点。

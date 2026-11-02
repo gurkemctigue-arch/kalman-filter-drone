@@ -1,0 +1,240 @@
+{
+  "schema_version": 1,
+  "reviewed_utc": "2026-11-02T18:10:55.785983+00:00",
+  "status": "MATCHED_PIXELS_MODEL_PARAMETERS_AND_BOXES_IN_SMALL_POLICY_DIAGNOSTIC",
+  "artifacts": [
+    {
+      "path": "D:\\WSL\\UAVHumble22-validation\\detector54_policy01\\baseline01\\started.json",
+      "bytes": 1378,
+      "sha256": "e431179f237e3c0cf315cada80880e6643fc7f6452eab74101f2bf8385fca41e"
+    },
+    {
+      "path": "D:\\WSL\\UAVHumble22-validation\\detector54_policy01\\baseline01\\environment.json",
+      "bytes": 1300,
+      "sha256": "cc050f362154f6cd5724ca1904ded52db17754406129ffcd9c0026c6058eb06b"
+    },
+    {
+      "path": "D:\\WSL\\UAVHumble22-validation\\detector54_policy01\\baseline01\\inputs.json",
+      "bytes": 4662,
+      "sha256": "32a47fd0bc6f72baae7c13b85df1140d471f3e633fbf0a8ab43757acdb2250ca"
+    },
+    {
+      "path": "D:\\WSL\\UAVHumble22-validation\\detector54_policy01\\baseline01\\warmup.jsonl",
+      "bytes": 8694,
+      "sha256": "392359b811458e9369bbaaa8407fb0c1ac11257382db0bb2655d5c7e9b08a1a5"
+    },
+    {
+      "path": "D:\\WSL\\UAVHumble22-validation\\detector54_policy01\\baseline01\\samples.jsonl",
+      "bytes": 113724,
+      "sha256": "33faf45fc86ec1ffcb1cb62490de5145a8515f52a496dd222a735324012c9a03"
+    },
+    {
+      "path": "D:\\WSL\\UAVHumble22-validation\\detector54_policy01\\baseline01\\summary.json",
+      "bytes": 1845,
+      "sha256": "05a301fa63a2e8f637850f70491dcc2487a03efaf5c76c49b919fb75ed27a238"
+    },
+    {
+      "path": "D:\\WSL\\UAVHumble22-validation\\detector54_policy01\\guarded01\\started.json",
+      "bytes": 1376,
+      "sha256": "a616eaa486aca7b129b39a463a46e8bcd50cfad0abf57f6807eb2087a126acff"
+    },
+    {
+      "path": "D:\\WSL\\UAVHumble22-validation\\detector54_policy01\\guarded01\\environment.json",
+      "bytes": 1299,
+      "sha256": "e3fc93521036d592caa1e53d66cbd0d7c54c2d8d2dd187a4b24844d4e40ebbe9"
+    },
+    {
+      "path": "D:\\WSL\\UAVHumble22-validation\\detector54_policy01\\guarded01\\inputs.json",
+      "bytes": 4662,
+      "sha256": "32a47fd0bc6f72baae7c13b85df1140d471f3e633fbf0a8ab43757acdb2250ca"
+    },
+    {
+      "path": "D:\\WSL\\UAVHumble22-validation\\detector54_policy01\\guarded01\\warmup.jsonl",
+      "bytes": 8694,
+      "sha256": "c74a009918a369c55df9cd3851ab9ce5e54769f51fd496dbec5874d40ec38b58"
+    },
+    {
+      "path": "D:\\WSL\\UAVHumble22-validation\\detector54_policy01\\guarded01\\samples.jsonl",
+      "bytes": 113615,
+      "sha256": "388d32474014e17752a197a8f2307ba7f810b4ba6a8271d6d9e7f8f4ffedfa84"
+    },
+    {
+      "path": "D:\\WSL\\UAVHumble22-validation\\detector54_policy01\\guarded01\\summary.json",
+      "bytes": 1845,
+      "sha256": "7f43867b482356d288903de235c4b78164d42643e0308d92012fd0aef90df511"
+    }
+  ],
+  "sample_counts": {
+    "baseline": 36,
+    "guarded": 36
+  },
+  "warmups_excluded": 3,
+  "comparison_fields": [
+    "path",
+    "png_sha256",
+    "actual_model_input_shape",
+    "actual_backend_format",
+    "actual_backend_device",
+    "actual_backend_fp16",
+    "effective_predictor_args",
+    "torch_threads_after",
+    "torch_interop_threads",
+    "cv2_threads",
+    "all_post_nms_boxes"
+  ],
+  "field_disagreements": [],
+  "input_manifests_equal": true,
+  "model_manifests_equal": true,
+  "observed_actual_input_shapes": [
+    "[1, 3, 384, 512]"
+  ],
+  "measured_setter_calls": {
+    "baseline": 36,
+    "guarded": 0
+  },
+  "environment_difference_fields": [],
+  "summaries": {
+    "baseline01": {
+      "schema_version": 1,
+      "started_utc": "2026-11-02T18:07:06.565309+00:00",
+      "finished_utc": "2026-11-02T18:07:48.745023+00:00",
+      "status": "OFFLINE_POLICY_COMPLETE_NOT_FLIGHT_ACCEPTANCE",
+      "policy": "baseline",
+      "wait_policy": "inherited",
+      "error": null,
+      "failure_context": null,
+      "expected_samples": 36,
+      "recorded_samples": 36,
+      "unattempted_or_missing": 0,
+      "warmup_records": 3,
+      "statistics": {
+        "predict_wall_s": {
+          "denominator": 36,
+          "known": 36,
+          "unknown": 0,
+          "minimum": 0.22707104699657066,
+          "median": 0.2680566884992004,
+          "p95": 0.5029153822488297,
+          "p99": 0.7730892497500459,
+          "maximum": 0.8870537210023031
+        },
+        "process_cpu_s": {
+          "denominator": 36,
+          "known": 36,
+          "unknown": 0,
+          "minimum": 0.9029913870000001,
+          "median": 1.0603366449999978,
+          "p95": 1.9961351369999987,
+          "p99": 3.053858130949999,
+          "maximum": 3.496763266000002
+        },
+        "calling_thread_cpu_s": {
+          "denominator": 36,
+          "known": 36,
+          "unknown": 0,
+          "minimum": 0.2270755910000002,
+          "median": 0.2680553779999997,
+          "p95": 0.5029117077499999,
+          "p99": 0.7688904074000003,
+          "maximum": 0.8805898190000008
+        },
+        "idle_since_previous_predict_finish_s": {
+          "denominator": 36,
+          "known": 36,
+          "unknown": 0,
+          "minimum": 0.009429470999748446,
+          "median": 0.7332165250008984,
+          "p95": 0.7653312129968981,
+          "p99": 0.7739518853541085,
+          "maximum": 0.7743091720039956
+        }
+      },
+      "callback_wall_s": {
+        "denominator": 36,
+        "known": 36,
+        "unknown": 0,
+        "minimum": 8.293300197692588e-05,
+        "median": 9.426950055058114e-05,
+        "p95": 0.00015000049825175665,
+        "p99": 0.00016382995236199346,
+        "maximum": 0.0001686750038061291
+      },
+      "root_cause_or_live_freshness_claimed": false
+    },
+    "guarded01": {
+      "schema_version": 1,
+      "started_utc": "2026-11-02T18:08:02.558016+00:00",
+      "finished_utc": "2026-11-02T18:08:42.309185+00:00",
+      "status": "OFFLINE_POLICY_COMPLETE_NOT_FLIGHT_ACCEPTANCE",
+      "policy": "guarded",
+      "wait_policy": "inherited",
+      "error": null,
+      "failure_context": null,
+      "expected_samples": 36,
+      "recorded_samples": 36,
+      "unattempted_or_missing": 0,
+      "warmup_records": 3,
+      "statistics": {
+        "predict_wall_s": {
+          "denominator": 36,
+          "known": 36,
+          "unknown": 0,
+          "minimum": 0.2269861920067342,
+          "median": 0.2630580490003922,
+          "p95": 0.36680180775147164,
+          "p99": 0.3903826527017372,
+          "maximum": 0.39815081100095995
+        },
+        "process_cpu_s": {
+          "denominator": 36,
+          "known": 36,
+          "unknown": 0,
+          "minimum": 0.9000694609999993,
+          "median": 1.0439116145000007,
+          "p95": 1.452403291749997,
+          "p99": 1.5441162355499993,
+          "maximum": 1.5740488190000015
+        },
+        "calling_thread_cpu_s": {
+          "denominator": 36,
+          "known": 36,
+          "unknown": 0,
+          "minimum": 0.2269906810000002,
+          "median": 0.2630467834999999,
+          "p95": 0.3668051449999994,
+          "p99": 0.38722650925000024,
+          "maximum": 0.39329362800000034
+        },
+        "idle_since_previous_predict_finish_s": {
+          "denominator": 36,
+          "known": 36,
+          "unknown": 0,
+          "minimum": 0.009152351005468518,
+          "median": 0.7383016365020012,
+          "p95": 0.7676445434990455,
+          "p99": 0.7739380368479032,
+          "maximum": 0.7744607439963147
+        }
+      },
+      "callback_wall_s": {
+        "denominator": 36,
+        "known": 36,
+        "unknown": 0,
+        "minimum": 3.92299989471212e-06,
+        "median": 4.821002221433446e-06,
+        "p95": 7.142751201172359e-06,
+        "p99": 7.718448978266677e-06,
+        "maximum": 7.834998541511595e-06
+      },
+      "root_cause_or_live_freshness_claimed": false
+    }
+  },
+  "limitations": [
+    "36 measurements per condition, same 12 previously consumed engineering frames repeated 3 times, not independent accuracy data",
+    "Sequential independent processes, not randomized simultaneous paired runtime conditions",
+    "Root disclosed an independent torch build-info import lasting approximately 2.6 seconds during guarded; no exact per-sample attribution asserted",
+    "Policy helper uses equivalent guarded logic; does not directly invoke new production detector helper",
+    "No Gazebo/ROS contention, delivery freshness or flight acceptance established",
+    "Same median and lower observed tail do not prove elimination of rare spikes or identify the original Humble53 root cause"
+  ]
+}

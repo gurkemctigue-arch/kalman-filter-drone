@@ -1,0 +1,67 @@
+{
+  "scope": "READ_ONLY_SAME_PIXELS_PRODUCTION_HELPER_144_COMPARISON_NOT_FLIGHT_ACCEPTANCE",
+  "source_outputs": [
+    "D:\\WSL\\UAVHumble22-validation\\detector54_policy01\\production_baseline144_01",
+    "D:\\WSL\\UAVHumble22-validation\\detector54_policy01\\production_guarded144_01"
+  ],
+  "counts": [
+    144,
+    144
+  ],
+  "known_complete": true,
+  "same_inputs": true,
+  "compared_fields": [
+    "png_sha256",
+    "actual_model_input_shape",
+    "effective_predictor_args",
+    "actual_backend_format",
+    "actual_backend_device",
+    "actual_backend_fp16",
+    "torch_threads_after",
+    "torch_interop_threads",
+    "cv2_threads",
+    "all_post_nms_boxes"
+  ],
+  "mismatches": [],
+  "measurement_setter_calls": [
+    144,
+    0
+  ],
+  "predict_wall_s": [
+    {
+      "denominator": 144,
+      "known": 144,
+      "unknown": 0,
+      "minimum": 0.21984963800059631,
+      "median": 0.26105074050065014,
+      "p95": 0.36335204009628796,
+      "p99": 0.3976364267401368,
+      "maximum": 0.5100407499994617
+    },
+    {
+      "denominator": 144,
+      "known": 144,
+      "unknown": 0,
+      "minimum": 0.21605345099669648,
+      "median": 0.2525398910001968,
+      "p95": 0.33302554440051607,
+      "p99": 0.36913281746805293,
+      "maximum": 0.37109840600169264
+    }
+  ],
+  "summary_sha256": [
+    "f9ba3cbbd5f9097b5c72a2595856444a3356c6168915326b71dd1d8431b02392",
+    "0d58aa45d201dc47dccf4c8063fa02dfbc2645e9a239405652347cd601e75495"
+  ],
+  "samples_sha256": [
+    "2de3acc3b460e4b2f8535a7143d1b3d75cb5b0ffbe2c77bf0709a0d891a84a46",
+    "97509eda338a687cd2b609d51407b489ce04aab8e9e6527c0bb7c9bd3f2dd7b0"
+  ],
+  "helper_sha256": "2316a7f331afec55844da65f6d6b4bb76de551e1bad262bd26ad3728a4636510",
+  "limitations": [
+    "One sequential baseline then one guarded process; no randomized condition order.",
+    "Twelve previously consumed diagnostic frames repeated twelve times; not independent detector holdout samples.",
+    "No Gazebo, PX4 or live ROS competition. No claim that rare original runtime spikes are eliminated."
+  ],
+  "original_failed_trials_unchanged": true
+}

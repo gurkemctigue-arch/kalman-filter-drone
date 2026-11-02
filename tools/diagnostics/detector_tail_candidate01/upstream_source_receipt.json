@@ -1,0 +1,9 @@
+{
+  "retrieved_utc": "2026-11-02T18:08:45.130020+00:00",
+  "source_url": "https://raw.githubusercontent.com/pytorch/pytorch/v2.5.1/aten/src/ATen/ParallelOpenMP.cpp",
+  "source_sha256": "535299020fad8782f34968f61ab24887b6d63e8223d77bff0c7201e99711b5f6",
+  "license_url": "https://raw.githubusercontent.com/pytorch/pytorch/v2.5.1/LICENSE",
+  "license_sha256": "47a26beb94e3f6b333a3677fc85d546f1fdfd2f0b3686c26d2fb5b10e0134165",
+  "observation": "Under AT_PARALLEL_OPENMP, set_num_threads has no same-value early return, and calls clear_computation_cache whenever AT_MKLDNN_ENABLED; runtime build config and controlled measurements are still required.",
+  "runtime_root_cause_claimed": false
+}

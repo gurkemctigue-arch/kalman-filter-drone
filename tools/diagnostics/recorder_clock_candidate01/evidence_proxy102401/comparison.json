@@ -1,0 +1,273 @@
+{
+  "created_utc": "2026-11-02T18:55:24.137332+00:00",
+  "scope": "MATCHED_RECORDER_COMPONENT_ONLY_NO_PX4_NO_YOLO",
+  "repair_claimed": false,
+  "flight_acceptance_claimed": false,
+  "same_probe_and_original_inputs": true,
+  "requested_profile_diff": [
+    "/clock"
+  ],
+  "conditions": [
+    {
+      "directory": "current2048_pause10_proxy1024_01",
+      "original_result": "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_bag_spool\\recorder_clock_candidate01\\current2048_pause10_proxy1024_01\\result.json",
+      "result_sha256": "d0cfc2121b5e7fdca44b7f57bdd09f61ef7b5ec8261b82536e8dd997e95c96c4",
+      "status": "COMPONENT_EVIDENCE_COMPLETE_NO_REPAIR_CLAIM",
+      "probe": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/recorder_clock_candidate01/probe_recorder_clock.py",
+        "bytes": 37861,
+        "sha256": "da41172acf2172f1b94c8d3c95388b171a0a6bdc0ef5380ba874ff63360c4abb"
+      },
+      "requested_diagnostic_qos": {
+        "producer_evidence_depth": 1024,
+        "requested_publisher_profiles": {
+          "/recorder_clock_candidate/producer_receipt": {
+            "history": "keep_last",
+            "depth": 1024,
+            "reliability": "reliable",
+            "durability": "volatile"
+          },
+          "/recorder_clock_candidate/capture_control": {
+            "history": "keep_last",
+            "depth": 1024,
+            "reliability": "reliable",
+            "durability": "volatile"
+          }
+        },
+        "requested_recorder_profile_overrides": {
+          "/recorder_clock_candidate/producer_receipt": {
+            "history": "keep_last",
+            "depth": 1024,
+            "reliability": "reliable",
+            "durability": "volatile"
+          },
+          "/recorder_clock_candidate/capture_control": {
+            "history": "keep_last",
+            "depth": 1024,
+            "reliability": "reliable",
+            "durability": "volatile"
+          }
+        },
+        "image_observer_requested_profile": {
+          "history": "keep_last",
+          "depth": 10,
+          "reliability": "reliable",
+          "durability": "volatile"
+        },
+        "scope": "Requested QoS, not independently certified endpoint QoS; absent recorder overrides retain auto-discovery"
+      },
+      "pause": {
+        "requested_pause_wall_s": 1.0,
+        "at_elapsed_source_s": 10.0,
+        "applied": true,
+        "artificial_stress_not_production": true,
+        "stopped_monotonic_ns": 55246621234008,
+        "stopped_source_ns": 10008000000,
+        "recorder_identity": {
+          "pid": 84584,
+          "parent_pid": 84520,
+          "process_group": 84584,
+          "session": 84584,
+          "start_ticks": 5516145
+        },
+        "resumed_monotonic_ns": 55247633785999,
+        "resumed_source_ns": 10132000000,
+        "actual_pause_wall_s": 1.012551991
+      },
+      "nonclock_evidence_complete": true,
+      "nonclock_comparisons": {
+        "/camera/color/image_raw": {
+          "observer_count": 200,
+          "native_bag_count": 200,
+          "exact_stamp_payload_multiset_equal": true,
+          "missing": 0,
+          "unexpected_or_duplicate": 0,
+          "duplicate_observer_source_stamps": 0,
+          "max_observed_source_gap_ns": 100000000,
+          "registered_10hz_4ms_cadence_observed": true
+        },
+        "/camera/aligned_depth_to_color/image_raw": {
+          "observer_count": 200,
+          "native_bag_count": 200,
+          "exact_stamp_payload_multiset_equal": true,
+          "missing": 0,
+          "unexpected_or_duplicate": 0,
+          "duplicate_observer_source_stamps": 0,
+          "max_observed_source_gap_ns": 100000000,
+          "registered_10hz_4ms_cadence_observed": true
+        },
+        "/camera/color/camera_info": {
+          "observer_count": 200,
+          "native_bag_count": 200,
+          "exact_stamp_payload_multiset_equal": true,
+          "missing": 0,
+          "unexpected_or_duplicate": 0,
+          "duplicate_observer_source_stamps": 0,
+          "max_observed_source_gap_ns": 100000000,
+          "registered_10hz_4ms_cadence_observed": true
+        }
+      },
+      "producer_control_exact_multiset_equal": {
+        "/recorder_clock_candidate/producer_receipt": true,
+        "/recorder_clock_candidate/capture_control": true
+      },
+      "clock_counts": {
+        "native_bag": 5055,
+        "independent_observer": 5055,
+        "claim": "Fewer clock messages alone is never a successful result"
+      },
+      "clock_source_step_ns": {
+        "minimum": 4000000,
+        "maximum": 4000000,
+        "regressions": 0,
+        "duplicates": 0,
+        "steps_over_4ms": 0
+      },
+      "producer_clock_vs_recorder_latest_ns": {
+        "minimum": -68000000,
+        "maximum": 4000000,
+        "missing_latest_clock": 0,
+        "outside_original_diagnostic_reference_bounds": 5,
+        "scope": "Independent image-callback producer ROS receipt, not PX4 adapter receipt or causal latency"
+      },
+      "last_clock_closure": {
+        "closed": true,
+        "last_recorded_clock_ns": 20224000000,
+        "last_native_image_source_ns": 20200000000,
+        "end_marker_producer_clock_ns": 20224000000,
+        "last_observer_clock_ns": 20224000000
+      }
+    },
+    {
+      "directory": "candidate1_pause10_proxy1024_01",
+      "original_result": "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_bag_spool\\recorder_clock_candidate01\\candidate1_pause10_proxy1024_01\\result.json",
+      "result_sha256": "eec51a98785d918dc53214a09a3de99997fd1159d141908e31ee5f75dd0d73ce",
+      "status": "COMPONENT_EVIDENCE_COMPLETE_NO_REPAIR_CLAIM",
+      "probe": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/recorder_clock_candidate01/probe_recorder_clock.py",
+        "bytes": 37861,
+        "sha256": "da41172acf2172f1b94c8d3c95388b171a0a6bdc0ef5380ba874ff63360c4abb"
+      },
+      "requested_diagnostic_qos": {
+        "producer_evidence_depth": 1024,
+        "requested_publisher_profiles": {
+          "/recorder_clock_candidate/producer_receipt": {
+            "history": "keep_last",
+            "depth": 1024,
+            "reliability": "reliable",
+            "durability": "volatile"
+          },
+          "/recorder_clock_candidate/capture_control": {
+            "history": "keep_last",
+            "depth": 1024,
+            "reliability": "reliable",
+            "durability": "volatile"
+          }
+        },
+        "requested_recorder_profile_overrides": {
+          "/recorder_clock_candidate/producer_receipt": {
+            "history": "keep_last",
+            "depth": 1024,
+            "reliability": "reliable",
+            "durability": "volatile"
+          },
+          "/recorder_clock_candidate/capture_control": {
+            "history": "keep_last",
+            "depth": 1024,
+            "reliability": "reliable",
+            "durability": "volatile"
+          }
+        },
+        "image_observer_requested_profile": {
+          "history": "keep_last",
+          "depth": 10,
+          "reliability": "reliable",
+          "durability": "volatile"
+        },
+        "scope": "Requested QoS, not independently certified endpoint QoS; absent recorder overrides retain auto-discovery"
+      },
+      "pause": {
+        "requested_pause_wall_s": 1.0,
+        "at_elapsed_source_s": 10.0,
+        "applied": true,
+        "artificial_stress_not_production": true,
+        "stopped_monotonic_ns": 55446257398318,
+        "stopped_source_ns": 10008000000,
+        "recorder_identity": {
+          "pid": 84941,
+          "parent_pid": 84877,
+          "process_group": 84941,
+          "session": 84941,
+          "start_ticks": 5536111
+        },
+        "resumed_monotonic_ns": 55447267530290,
+        "resumed_source_ns": 10132000000,
+        "actual_pause_wall_s": 1.010131972
+      },
+      "nonclock_evidence_complete": true,
+      "nonclock_comparisons": {
+        "/camera/color/image_raw": {
+          "observer_count": 200,
+          "native_bag_count": 200,
+          "exact_stamp_payload_multiset_equal": true,
+          "missing": 0,
+          "unexpected_or_duplicate": 0,
+          "duplicate_observer_source_stamps": 0,
+          "max_observed_source_gap_ns": 100000000,
+          "registered_10hz_4ms_cadence_observed": true
+        },
+        "/camera/aligned_depth_to_color/image_raw": {
+          "observer_count": 200,
+          "native_bag_count": 200,
+          "exact_stamp_payload_multiset_equal": true,
+          "missing": 0,
+          "unexpected_or_duplicate": 0,
+          "duplicate_observer_source_stamps": 0,
+          "max_observed_source_gap_ns": 100000000,
+          "registered_10hz_4ms_cadence_observed": true
+        },
+        "/camera/color/camera_info": {
+          "observer_count": 200,
+          "native_bag_count": 200,
+          "exact_stamp_payload_multiset_equal": true,
+          "missing": 0,
+          "unexpected_or_duplicate": 0,
+          "duplicate_observer_source_stamps": 0,
+          "max_observed_source_gap_ns": 100000000,
+          "registered_10hz_4ms_cadence_observed": true
+        }
+      },
+      "producer_control_exact_multiset_equal": {
+        "/recorder_clock_candidate/producer_receipt": true,
+        "/recorder_clock_candidate/capture_control": true
+      },
+      "clock_counts": {
+        "native_bag": 5027,
+        "independent_observer": 5055,
+        "claim": "Fewer clock messages alone is never a successful result"
+      },
+      "clock_source_step_ns": {
+        "minimum": 4000000,
+        "maximum": 96000000,
+        "regressions": 0,
+        "duplicates": 0,
+        "steps_over_4ms": 2
+      },
+      "producer_clock_vs_recorder_latest_ns": {
+        "minimum": 0,
+        "maximum": 92000000,
+        "missing_latest_clock": 0,
+        "outside_original_diagnostic_reference_bounds": 0,
+        "scope": "Independent image-callback producer ROS receipt, not PX4 adapter receipt or causal latency"
+      },
+      "last_clock_closure": {
+        "closed": true,
+        "last_recorded_clock_ns": 20224000000,
+        "last_native_image_source_ns": 20200000000,
+        "end_marker_producer_clock_ns": 20224000000,
+        "last_observer_clock_ns": 20224000000
+      }
+    }
+  ],
+  "decision": "Clock.depth1 is supported as a new full-flight candidate: reference-bound anomalies decreased from5 to0 in this controlled pair while all nonclock evidence remained complete. It intentionally dropped28 intermediate clocks and reached96ms source gaps. This does not prove every flight timestamp meets unchanged evaluation bounds or solve detector timing; preserve the older incomplete condition and run a new complete flight."
+}
