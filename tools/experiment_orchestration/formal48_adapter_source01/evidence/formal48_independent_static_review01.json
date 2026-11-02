@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "scope": "INDEPENDENT_FORMAL48_DDS_ENTRY_STATIC_PIN_AND_TINY_TEST_REVIEW_ONLY",
+  "reviewer": "/root/exclusive_navigation_prototype",
+  "reviewed_utc": "2026-11-02T01:08:27.312558+00:00",
+  "status": "PASS_STATIC_TOOL_PINS_MAY_BE_FROZEN_NOT_FORMAL_ADMISSION",
+  "independence_disclosure": "Reviewer authored the prior readonly wiring design note; not author of formal48 adapter, shell or test implementation. Reviewed production diffs against historical41 and independently reran tiny tests.",
+  "pending_inventory": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\formal48_dds_adapter01\\formal48_author_pending_review01.json",
+    "sha256": "90bf26e6d2bdc368d0f0b8bff4fc615b77c08dd59f2540b47d0213c95314697a"
+  },
+  "accepted_tool_manifest": {
+    "schema_version": 1,
+    "scope": "FORMAL48_DDS_PREFLIGHT_ORIGINAL_GUARD_NATIVE_OWNER_NO_NEW_ADMISSION",
+    "files": {
+      "formal48_guard_adapter01.py": "3973a0590981abf578cbd174371d13c82207c717669298b6d7769c14a242444e",
+      "formal48_guard_adapter01.sh": "b1343b56e6effe488e3554b58fbae924aba26cfdc959e113d862ad9b14f9535b",
+      "test_formal48_guard_adapter01.py": "f3ad7e63ffea568db720e91b6fb449e9ef5e9d72d5f095333178c3f8f3430042"
+    },
+    "owner_tools_canonical_sha256": "e558bf367038a2bb3530d7e5a8ea3e3fae7eb84ac19d02acedecc7c5c2be3ea3",
+    "collector_sha256": "f174ec21ebf962f156d76f8d35f802eebf318163555815527a3e2227b914f180",
+    "actions": [
+      "describe",
+      "run-one"
+    ],
+    "default_manifest": null,
+    "guard_api": "actual manifest.tool execute_one(command_runner=observed_runner)",
+    "guard_argv_or_slot_or_capacity_modified": false,
+    "additional_sitl_lock": false,
+    "dds_files_bound_by_both_formal_plans": [
+      "config/dds_runtime_humble22.json",
+      "uav_tracking/dds_runtime.py",
+      "scripts/apply_humble22_dds_runtime.sh"
+    ],
+    "actual_final_root_preflight_before_original_guard": true,
+    "dds_actual_loaded_processes_claimed": false,
+    "historical_owner_directory": "/mnt/d/WSL/UAVHumble22-validation",
+    "owner_actual_terminal_persisted_before_command_return": true,
+    "sample_max_age_wall_s": 10.0,
+    "owner_archive_wall_budget_s": 1800.0,
+    "native_session_wall_s": 7200.0,
+    "rotation_wall_s": 5400.0,
+    "owned_child_cleanup_graces_s": [
+      240,
+      30,
+      10
+    ],
+    "automatic_retry": false,
+    "registration_or_seal_created": false,
+    "local_raw_evidence_removed": false,
+    "authorization_source": "Unchanged actual sealed guard only; adapter grants no admission"
+  },
+  "accepted_tools_canonical_sha256": "dbc9358db20d02e62c2963b868605b4e77f4d16a188f52c5e28e11e20f9f2d5a",
+  "preserved_original_files_rehashed": {
+    "formal41_guard_adapter01.py": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\formal41_guard_adapter01.py",
+      "bytes": 21981,
+      "sha256": "139ac592e4ead129fc14b93019b4b5b0d7deba700babcb95f58d64dac3278435"
+    },
+    "formal41_guard_adapter01.sh": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\formal41_guard_adapter01.sh",
+      "bytes": 2308,
+      "sha256": "302ce280d6f89e80fbc5ce8ec43ec92dcdb306400dd2116c53a2a6cb547a9fa5"
+    },
+    "test_formal41_guard_adapter01.py": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\test_formal41_guard_adapter01.py",
+      "bytes": 23102,
+      "sha256": "02f79a3cfcc44ae40c2528f3390d1d5a384f881469a74b772a886999c2d1c21f"
+    },
+    "formal280_serial_guard01.py": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\formal280_serial_guard01.py",
+      "bytes": 14920,
+      "sha256": "6c8d2cd68b2f5d3a8acfea791ca1c82d49d595d664745073dea851802ac7971a"
+    },
+    "local_runtime_observer41.py": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\local_runtime_observer41.py",
+      "bytes": 49900,
+      "sha256": "2f1348d862525777800df823780a269ef235b0df8d96b9ec378dc61c2be99914"
+    }
+  },
+  "main_guard_sha256_rehashed": "890ae232ced07e1efcc58a56beb078113c1f7d3c46f25173a57d2640e8f5c60d",
+  "dds48_pending02_sha256_rehashed": "bb9356a2e919bc59e2c188ec3e0c923f289c134d8b850131bfa019052165ac8f",
+  "blocking_findings": [],
+  "findings": [
+    {
+      "result": "PASS",
+      "evidence": "formal48_guard_adapter01.sh:16-39",
+      "finding": "Shell derives root from exact sealed manifest and both bound formal plans before setup; after last project install setup and Agent setup it clears inherited DDS selection, selects the same final-root config and sources the same final-root helper. No later project setup or fixed future final root."
+    },
+    {
+      "result": "PASS",
+      "evidence": "formal48_guard_adapter01.py:128-245,260-268,448-458",
+      "finding": "Both formal source maps are identical, with canonical same-root config/verifier/helper files SHA-bound. Actual checked verifier bytes execute and preflight production final-root registration before original guard is loaded or executed. Foreign root, changed files, failed/fixture result or wrong runtime are rejected; only checked_utc is normalized."
+    },
+    {
+      "result": "PASS",
+      "evidence": "formal48_guard_adapter01.py:177-190,327-333; unchanged run_one/ObservedRunner lifecycle AST",
+      "finding": "Existing verify_inputs closure rechecks DDS files and stable preflight, and existing started.json records exact source bindings and preflight. Adapter claims no actual mapped processes; original trial remains mapping authority."
+    },
+    {
+      "result": "PASS",
+      "evidence": "AST comparison with original formal41_guard_adapter01.py; original files byte hashes; original guard/serial tests",
+      "finding": "Only tool_manifest/load_context/verify_inputs/require_runtime and DDS started evidence in ObservedRunner.__call__ differ; only dds_source_bindings and dds_preflight are added. Original run_one, cleanup, owner validation, signals, resolutions, guard execute_one arguments, lock, capacity and serial closure logic are unchanged."
+    },
+    {
+      "result": "PASS",
+      "evidence": "formal48_guard_adapter01.py:104-125; author inventory; isolated describe",
+      "finding": "New OWN py/sh/test canonical is separate. Original owner imported from original parent and full canonical checked; collector hash unchanged. No original41/owner/guard/serial/dds48 tool source changed, no dependency global override or added SITL lock."
+    },
+    {
+      "result": "PASS",
+      "evidence": "FORMAL48_DDS_HANDOFF.md; original serial REMAINDER parser compatibility test",
+      "finding": "Prefix supplies manifest file SHA and new adapter canonical; serial appends run-one and manifest once. Actual manifest.tool remains original guard authority. Handoff leaves final-root, sealed manifest and future admission values unfilled and retains prior whole-source verification boundary."
+    }
+  ],
+  "independently_executed_checks": {
+    "platform": "Windows; tiny fixture/unit tests and static inspection only",
+    "unittest_command": "python -B -m unittest test_formal48_guard_adapter01 -v",
+    "unittest_returncode": 0,
+    "tests": 23,
+    "passed": 23,
+    "skipped": 0,
+    "elapsed_s": 3.664,
+    "test_scope": "Original guard execute_one with tiny synthetic metadata, fake checker/storage/owner/child and tiny DDS API verifier; no real ROS, Linux DDS or admission",
+    "all_three_files_python310_ast_or_bash_syntax_and_lf": true,
+    "git_bash_syntax_returncode": 0,
+    "fresh_isolated_describe_manifest_equals_pending": true,
+    "fresh_isolated_describe_canonical": "dbc9358db20d02e62c2963b868605b4e77f4d16a188f52c5e28e11e20f9f2d5a",
+    "preserved_functions_ast_changed": [
+      "ObservedRunner.__call__",
+      "load_context",
+      "require_runtime",
+      "tool_manifest",
+      "verify_inputs"
+    ],
+    "new_functions": [
+      "dds_preflight",
+      "dds_source_bindings"
+    ]
+  },
+  "limits": {
+    "wsl_executed": false,
+    "actual_final_root_environment_or_DDS_preflight_executed": false,
+    "native_build_or_flight_executed": false,
+    "whole_source_seal_verified": false,
+    "formal_admission_created_or_accepted": false,
+    "formal_slot_started": false,
+    "production_code_or_existing_receipts_modified": false,
+    "source48_or_dds48_tools_modified": false
+  },
+  "required_later_evidence": [
+    "Actual final-root DDS environment and real wrapper preflight after final build",
+    "Actual original development/safety/extension/calibration/capacity/registration/seal prerequisites",
+    "Root verifies actual whole-source manifest with then-reviewed seal producer before formal serial start; original guard does not gain whole-tree sidecar consumption"
+  ],
+  "permission_to_freeze": "These exact static adapter pins may be frozen; this independent receipt grants no runtime, candidate, formal admission or flight acceptance."
+}
