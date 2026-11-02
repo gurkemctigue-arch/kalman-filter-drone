@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "kind": "NATIVE_SNAPSHOT_INTEGRATION_PREPARATION_SNAPSHOT_NOT_NATIVE_EXECUTION",
+  "recorded_utc": "2026-11-02T21:04:39.920513+00:00",
+  "files": [
+    {
+      "original_path": "D:\\WSL\\UAVHumble22-validation\\snapshot_audit_native_integration01\\audit_snapshot_contract_integration.py",
+      "snapshot_path": "audit_snapshot_contract_integration.py",
+      "bytes": 20389,
+      "sha256": "1062409c9ef2aee5c611831f5100db9ce081557570bd28859a057c7c00cec8cc"
+    },
+    {
+      "original_path": "D:\\WSL\\UAVHumble22-validation\\snapshot_audit_native_integration01\\audit_snapshot_contract_integration.revision01.py",
+      "snapshot_path": "audit_snapshot_contract_integration.revision01.py",
+      "bytes": 19495,
+      "sha256": "13101122fef6e14ee0efe5bc9124f206651dbb941272c924d52e5bae287d9a24"
+    },
+    {
+      "original_path": "D:\\WSL\\UAVHumble22-validation\\snapshot_audit_native_integration01\\FUTURE_NATIVE_COMMAND01.txt",
+      "snapshot_path": "FUTURE_NATIVE_COMMAND01.txt",
+      "bytes": 1336,
+      "sha256": "3223d5db7acd36a53574aa3de077b7004f6845738daeeb718ec0b63f8b27b2f0"
+    },
+    {
+      "original_path": "D:\\WSL\\UAVHumble22-validation\\snapshot_audit_native_integration01\\FUTURE_NATIVE_COMMAND02.txt",
+      "snapshot_path": "FUTURE_NATIVE_COMMAND02.txt",
+      "bytes": 1336,
+      "sha256": "c04825009ed76004f3c4ed33e4a79074ad2b95600dc47535c0756a692f3b2f4e"
+    },
+    {
+      "original_path": "D:\\WSL\\UAVHumble22-validation\\snapshot_audit_native_integration01\\inert_receipt_closure02\\keyboard_interrupt.json",
+      "snapshot_path": "inert_receipt_closure02/keyboard_interrupt.json",
+      "bytes": 1388,
+      "sha256": "ca5c578fabfdd6ee4c45a9aec8941a1775b7c9f1972443bffb3d1b63f114f663"
+    },
+    {
+      "original_path": "D:\\WSL\\UAVHumble22-validation\\snapshot_audit_native_integration01\\inert_receipt_closure02\\ordinary_error.json",
+      "snapshot_path": "inert_receipt_closure02/ordinary_error.json",
+      "bytes": 1410,
+      "sha256": "249439267389e6934e1dac5edaf0fdefa5b5ea242f7afdcc4e8721628688f5a5"
+    },
+    {
+      "original_path": "D:\\WSL\\UAVHumble22-validation\\snapshot_audit_native_integration01\\inert_receipt_closure02\\success.json",
+      "snapshot_path": "inert_receipt_closure02/success.json",
+      "bytes": 1017,
+      "sha256": "b7e80033063353af4234ee279de9e42186d38cd1fb7124b944de7a6192bf1d9e"
+    },
+    {
+      "original_path": "D:\\WSL\\UAVHumble22-validation\\snapshot_audit_native_integration01\\inert_receipt_closure02\\system_exit_seven.json",
+      "snapshot_path": "inert_receipt_closure02/system_exit_seven.json",
+      "bytes": 1417,
+      "sha256": "0a6ae7cd154c595d2eae850d0d262fe478f9af35d8bd7928cd557c479d8ea3fa"
+    },
+    {
+      "original_path": "D:\\WSL\\UAVHumble22-validation\\snapshot_audit_native_integration01\\inert_receipt_closure02\\system_exit_zero.json",
+      "snapshot_path": "inert_receipt_closure02/system_exit_zero.json",
+      "bytes": 1417,
+      "sha256": "fca7304175d83aa72db3c7cc6f80e4949d0dbc15d5931f17eaff24224f7a6db3"
+    },
+    {
+      "original_path": "D:\\WSL\\UAVHumble22-validation\\snapshot_audit_native_integration01\\README.md",
+      "snapshot_path": "README.md",
+      "bytes": 7150,
+      "sha256": "d11775a9a19f8c8707dcb97bd444f6dd7e7901a3143d5688345884cd32404528"
+    },
+    {
+      "original_path": "D:\\WSL\\UAVHumble22-validation\\snapshot_audit_native_integration01\\verify_prepared_integration.py",
+      "snapshot_path": "verify_prepared_integration.py",
+      "bytes": 6409,
+      "sha256": "cc14a2e5f88214d0194137d9b73f26dcea2251851c2c7ba379a037fec4b8520a"
+    },
+    {
+      "original_path": "D:\\WSL\\UAVHumble22-validation\\snapshot_audit_native_integration01\\verify_prepared_integration02.py",
+      "snapshot_path": "verify_prepared_integration02.py",
+      "bytes": 10680,
+      "sha256": "e9f9d789e06d11db234951f282ccf8899011bf4b4a3165ace246abc7c4520b34"
+    },
+    {
+      "original_path": "D:\\WSL\\UAVHumble22-validation\\snapshot_audit_native_integration01\\windows_preparation_review01.json",
+      "snapshot_path": "windows_preparation_review01.json",
+      "bytes": 7393,
+      "sha256": "1c1f5cba9c068ce9ed21e5e4ab2dda9073150faeb18f36a7d83796da59ae7e3b"
+    },
+    {
+      "original_path": "D:\\WSL\\UAVHumble22-validation\\snapshot_audit_native_integration01\\windows_preparation_review02.json",
+      "snapshot_path": "windows_preparation_review02.json",
+      "bytes": 15228,
+      "sha256": "0e4b86154fdeb97a6c8c4d12764ee5e81a517a8270917718ca7224a59a62997f"
+    }
+  ],
+  "root_review": "Reviewed exact two-change diff from verified revision01: terminal PLAN/adapter byte rechecks, BaseException/finally receipt closure. Parsed all copied Python3.10 sources and checked copy bytes; did not execute target code.",
+  "windows_checks": "Original receipt02 records only small pins/AST and five inert callback cases. Actual helper/adapter execute was not called.",
+  "not_performed": [
+    "native contract creation",
+    "ROS/WSL imports",
+    "model/bag reading",
+    "safety registration",
+    "formal manifest or flight"
+  ],
+  "future_command": "Use the external original FUTURE_NATIVE_COMMAND02.txt only in an exclusive native idle window. The formal48 actual final-manifest dual-root load remains pending."
+}

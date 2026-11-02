@@ -1,0 +1,17 @@
+PREPARED COMMAND ONLY. Native execution has NOT been run.
+Schedule only after the native experiment owner is idle.
+This creates a new audit contract; it does not register safety or admit a formal flight.
+
+Script SHA256: 13101122fef6e14ee0efe5bc9124f206651dbb941272c924d52e5bae287d9a24
+
+env HUMBLE22_PROJECT_ROOT=/root/uav_tracking_fullplan_v4_humble54 \
+    HUMBLE22_ROS_GZ_WS=/root/uav_humble22/ros_gz_shutdown_A01_ws \
+    HUMBLE22_PX4_ROOT=/root/uav_humble22/PX4-Autopilot-v4mag \
+    TMPDIR=/tmp STAGE1_TRANSIENT_DIR=/tmp PYTHONDONTWRITEBYTECODE=1 \
+    bash -c 'source /root/uav_tracking_fullplan_v4_humble54/scripts/humble22_env.sh && exec /root/uav_humble22/venv/bin/python -B /mnt/d/WSL/UAVHumble22-validation/snapshot_audit_native_integration01/audit_snapshot_contract_integration.py --expected-self-sha256 13101122fef6e14ee0efe5bc9124f206651dbb941272c924d52e5bae287d9a24 --output /mnt/d/WSL/UAVHumble22-validation/snapshot_audit_native_integration01/native_contract_integration01.json'
+
+Use a fresh interpreter. Keep helper model hashing unchanged.
+Do not run while a native experiment is active.
+Preserve any existing receipt or contract (including refused attempts).
+The original fixed external guard path must be retained through real safety4
+and any later real formal manifest; changing to a final-root copy is forbidden.
