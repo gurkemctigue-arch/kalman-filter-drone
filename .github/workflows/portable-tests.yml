@@ -37,3 +37,6 @@ jobs:
         run: |
           python scripts/run_estimator_replay_v4.py plan
           python scripts/export_estimator_replay_v4.py --help
+      - name: Check offline timing validity with synthetic fixtures
+        working-directory: tools/offline_evaluation/timing_v2
+        run: python -B -m unittest -v test_offline_pipeline_timing test_offline_pipeline_timing_independent01

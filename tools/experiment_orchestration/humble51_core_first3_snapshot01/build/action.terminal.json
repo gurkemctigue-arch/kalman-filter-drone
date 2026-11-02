@@ -1,0 +1,249 @@
+{
+  "schema_version": 1,
+  "scope": "BOUNDED_SINGLE_ACTION_PROCESS_GROUP_ONLY_NOT_FLIGHT_ACCEPTANCE",
+  "action": "build",
+  "status": "PASS",
+  "started_utc": "2026-11-02T09:31:24.329083+00:00",
+  "finished_utc": "2026-11-02T09:33:01.026374+00:00",
+  "elapsed_wall_s": 96.69733946799897,
+  "timeout_s": 1800.0,
+  "term_grace_s": 30.0,
+  "kill_confirm_s": 5.0,
+  "command": [
+    "/bin/bash",
+    "/mnt/d/WSL/UAVHumble22-validation/build51_transition01/build_humble51_transition01.sh",
+    "build",
+    "/mnt/d/WSL/UAVHumble22-validation/dds48_tools01/reviewed_freeze_review_v4_humble51_01.json",
+    "83ea03bcd41720c3da5992ddfda651eb04f24cf032d0f9f1e9b3528f366840c7",
+    "/mnt/d/WSL/UAVHumble22-validation/build51_transition01/build51_transition_contract_final01.json",
+    "d4df53a73a1231d963c1246ec3c1bc59bb6c3d9badd315dc1b79f4a1d04b5cb6"
+  ],
+  "pid": 30377,
+  "direct_child_returncode": 0,
+  "requested_signals": [],
+  "launcher_error": null,
+  "cleanup": {
+    "members_before_cleanup": [],
+    "signals": [],
+    "residual_processes": [],
+    "actual_proc_group_empty": true,
+    "direct_child_reaped": true
+  },
+  "binding_before": {
+    "review": {
+      "path": "/mnt/d/WSL/UAVHumble22-validation/dds48_tools01/reviewed_freeze_review_v4_humble51_01.json",
+      "sha256": "83ea03bcd41720c3da5992ddfda651eb04f24cf032d0f9f1e9b3528f366840c7"
+    },
+    "source": {
+      "manifest_sha256": "70f05b966d984769b885bf3134f727880903016283d730b514b7b8de4a2333ec",
+      "freeze_source_sha256": "de9bba5a4e32d44dfb6f992d27ed06cd04a955bb8ba1cf75b505c1cfa3752f1f",
+      "verified_file_count": 1362
+    },
+    "closed_original_evidence": {
+      "capsule_sha256": "dbb1e3d885803e38fc6641a4e9149eddc0d9fbb2ef777f2e11fdb14656c72c2a",
+      "files": 70,
+      "metadata_bytes": 5708732,
+      "file_map_sha256": "75fcf43e259cdde7fe4b7b9612d771e0e4d5b64180552e2ba0b14aa53a366593",
+      "retained_fields_sha256": "48b7cd16e284405338d3f8ddd74bb5078625d8e2dce48c7e07b11320d248dbde",
+      "payloads_reverified": false
+    },
+    "development_resource_override": {
+      "override": {
+        "schema_version": 1,
+        "status": "FINAL_DEVELOPMENT_BUILD_RESOURCE_OVERRIDE_INDEPENDENTLY_REVIEWED",
+        "scope": "EXPLICIT512_RESOURCE_SUPPLEMENT_WITH_UNCHANGED_GENERIC_BUILD_IMPLEMENTATIONS",
+        "tools_canonical_sha256": "919a4483554c73cfbabb1efda910c2dd831e79b963443545bece5307fe51077e",
+        "resource_revision": "car_train20_04_m512_cpu4_v1",
+        "receipt": {
+          "path": "config/car_sim_train20_04_m512_resource_receipt.json",
+          "sha256": "9abeaca3a892e61761564bc7116bb8aed34d9864f4f7406bd9f3a4bc59f3c26c"
+        },
+        "supersedes_legacy_resource_choice_only": true,
+        "legacy_runtime_invariant_field_is_schema_compatibility_only": true,
+        "unchanged_contracts": [
+          "safety",
+          "bridge_source",
+          "magnetic",
+          "source_binding",
+          "bounded_owner",
+          "build",
+          "suite"
+        ],
+        "environment_contract": "SEPARATELY_BOUND_DEVELOPMENT_DDS_OVERRIDE_REQUIRED",
+        "legacy640_runtime_acceptance_claimed": false,
+        "runtime_acceptance_claimed": false,
+        "formal_seed_use_authorized": false
+      },
+      "tools_manifest": {
+        "schema_version": 1,
+        "scope": "EXPLICIT512_RESOURCE_SUPPLEMENT_WITH_UNCHANGED_GENERIC_BUILD_IMPLEMENTATIONS",
+        "files": {
+          "development_freeze_build.py": "37c146e3c8e39817c03ca2de6ca55c0438ebf0a44b9d6d063c320bc7d145f870",
+          "development_freeze_build.sh": "ee3d84d4109f373776e16ffb33c91087f3eff021c4050268d9d64d2201f87aab",
+          "test_development_freeze_build.py": "8fedd44f2ea3341bfe3308ed4c273b0fa6bd89758ba769ffb8e76a77fb404daf"
+        },
+        "reused_generic_canonical_sha256": "e57017201f1033847e49bb7843b1ef61bad28c21ac9f16e876736498980219cf",
+        "resource_guard": {
+          "schema_version": 1,
+          "scope": "DEVELOPMENT_IMAGE_REGRESSION_AND_OFFLINE_WORKER_TIMING_ONLY_NOT_FLIGHT_ACCEPTANCE",
+          "files": {
+            "development_resource_guard.py": "06bad02f069e6c2f9bc4daa6c25807cda92091ab3711e7d604c31b9956e857a8",
+            "test_development_resource_guard.py": "8e580caca877b6da2cd713739397f1f47a89aa26a340e2a27ea85e3d0bfed834",
+            "test_dds48_environment.py": "671c89c46151b87aa733103e8efd8ff794de8bdfc6ec0c52eda852095af7078e"
+          },
+          "revision": "car_train20_04_m512_cpu4_v1",
+          "receipt": {
+            "path": "config/car_sim_train20_04_m512_resource_receipt.json",
+            "sha256": "9abeaca3a892e61761564bc7116bb8aed34d9864f4f7406bd9f3a4bc59f3c26c"
+          },
+          "generic_tools_canonical_sha256": "e57017201f1033847e49bb7843b1ef61bad28c21ac9f16e876736498980219cf",
+          "legacy_guard_modified": false,
+          "dependency_globals_modified": false,
+          "closed_loop_or_formal_acceptance_awarded": false
+        },
+        "actual_build_and_suite_functions": [
+          "reviewed_freeze_build.build",
+          "reviewed_freeze_build.installed_checks",
+          "reviewed_freeze_build.validate_build"
+        ],
+        "legacy_runtime_contracts_called": false,
+        "dependency_globals_modified": false,
+        "flight_actions_authorized": false,
+        "formal_seed_use_authorized": false
+      },
+      "reviewed_protocol_sha256": "a5f7412dd239d5452bdc725c825cd0b744aa5448acd15af9ebc7d6b6a9064d5b",
+      "development_dds_override": {
+        "schema_version": 1,
+        "status": "FINAL_DEVELOPMENT_DDS_OVERRIDE_INDEPENDENTLY_REVIEWED",
+        "scope": "HUMBLE_FASTDDS_LISTENER_LIFECYCLE_A01",
+        "tools_canonical_sha256": "919a4483554c73cfbabb1efda910c2dd831e79b963443545bece5307fe51077e",
+        "source_files": {
+          "config/dds_runtime_humble22.json": "4e517b62e823585b53dd2ac503f65eaf9bc3fd4c59d9d8fdb900d985f99d030d",
+          "uav_tracking/dds_runtime.py": "f89c73293d6dad8405a0f3a61c3cbce000d8af94a715566e5f09f9f3072342c2",
+          "scripts/apply_humble22_dds_runtime.sh": "db4cf741ddda918727793496f7831cf0a3e6b51d7078a48876758cd517e721cb"
+        },
+        "runtime_environment_only": true,
+        "generic_runtime_dictionary_unchanged": true,
+        "system_fastcdr_cmake": "/opt/ros/humble/lib/cmake/fastcdr",
+        "agent_compile_prefix_forbidden": true,
+        "runtime_fastcdr_may_differ_from_compiler_fastcdr": true,
+        "historical_tools_and_evidence_modified": false,
+        "actual_loaded_processes_claimed": false,
+        "runtime_acceptance_claimed": false,
+        "formal_seed_use_authorized": false
+      }
+    }
+  },
+  "binding_after": {
+    "review": {
+      "path": "/mnt/d/WSL/UAVHumble22-validation/dds48_tools01/reviewed_freeze_review_v4_humble51_01.json",
+      "sha256": "83ea03bcd41720c3da5992ddfda651eb04f24cf032d0f9f1e9b3528f366840c7"
+    },
+    "source": {
+      "manifest_sha256": "70f05b966d984769b885bf3134f727880903016283d730b514b7b8de4a2333ec",
+      "freeze_source_sha256": "de9bba5a4e32d44dfb6f992d27ed06cd04a955bb8ba1cf75b505c1cfa3752f1f",
+      "verified_file_count": 1362
+    },
+    "closed_original_evidence": {
+      "capsule_sha256": "dbb1e3d885803e38fc6641a4e9149eddc0d9fbb2ef777f2e11fdb14656c72c2a",
+      "files": 70,
+      "metadata_bytes": 5708732,
+      "file_map_sha256": "75fcf43e259cdde7fe4b7b9612d771e0e4d5b64180552e2ba0b14aa53a366593",
+      "retained_fields_sha256": "48b7cd16e284405338d3f8ddd74bb5078625d8e2dce48c7e07b11320d248dbde",
+      "payloads_reverified": false
+    },
+    "development_resource_override": {
+      "override": {
+        "schema_version": 1,
+        "status": "FINAL_DEVELOPMENT_BUILD_RESOURCE_OVERRIDE_INDEPENDENTLY_REVIEWED",
+        "scope": "EXPLICIT512_RESOURCE_SUPPLEMENT_WITH_UNCHANGED_GENERIC_BUILD_IMPLEMENTATIONS",
+        "tools_canonical_sha256": "919a4483554c73cfbabb1efda910c2dd831e79b963443545bece5307fe51077e",
+        "resource_revision": "car_train20_04_m512_cpu4_v1",
+        "receipt": {
+          "path": "config/car_sim_train20_04_m512_resource_receipt.json",
+          "sha256": "9abeaca3a892e61761564bc7116bb8aed34d9864f4f7406bd9f3a4bc59f3c26c"
+        },
+        "supersedes_legacy_resource_choice_only": true,
+        "legacy_runtime_invariant_field_is_schema_compatibility_only": true,
+        "unchanged_contracts": [
+          "safety",
+          "bridge_source",
+          "magnetic",
+          "source_binding",
+          "bounded_owner",
+          "build",
+          "suite"
+        ],
+        "environment_contract": "SEPARATELY_BOUND_DEVELOPMENT_DDS_OVERRIDE_REQUIRED",
+        "legacy640_runtime_acceptance_claimed": false,
+        "runtime_acceptance_claimed": false,
+        "formal_seed_use_authorized": false
+      },
+      "tools_manifest": {
+        "schema_version": 1,
+        "scope": "EXPLICIT512_RESOURCE_SUPPLEMENT_WITH_UNCHANGED_GENERIC_BUILD_IMPLEMENTATIONS",
+        "files": {
+          "development_freeze_build.py": "37c146e3c8e39817c03ca2de6ca55c0438ebf0a44b9d6d063c320bc7d145f870",
+          "development_freeze_build.sh": "ee3d84d4109f373776e16ffb33c91087f3eff021c4050268d9d64d2201f87aab",
+          "test_development_freeze_build.py": "8fedd44f2ea3341bfe3308ed4c273b0fa6bd89758ba769ffb8e76a77fb404daf"
+        },
+        "reused_generic_canonical_sha256": "e57017201f1033847e49bb7843b1ef61bad28c21ac9f16e876736498980219cf",
+        "resource_guard": {
+          "schema_version": 1,
+          "scope": "DEVELOPMENT_IMAGE_REGRESSION_AND_OFFLINE_WORKER_TIMING_ONLY_NOT_FLIGHT_ACCEPTANCE",
+          "files": {
+            "development_resource_guard.py": "06bad02f069e6c2f9bc4daa6c25807cda92091ab3711e7d604c31b9956e857a8",
+            "test_development_resource_guard.py": "8e580caca877b6da2cd713739397f1f47a89aa26a340e2a27ea85e3d0bfed834",
+            "test_dds48_environment.py": "671c89c46151b87aa733103e8efd8ff794de8bdfc6ec0c52eda852095af7078e"
+          },
+          "revision": "car_train20_04_m512_cpu4_v1",
+          "receipt": {
+            "path": "config/car_sim_train20_04_m512_resource_receipt.json",
+            "sha256": "9abeaca3a892e61761564bc7116bb8aed34d9864f4f7406bd9f3a4bc59f3c26c"
+          },
+          "generic_tools_canonical_sha256": "e57017201f1033847e49bb7843b1ef61bad28c21ac9f16e876736498980219cf",
+          "legacy_guard_modified": false,
+          "dependency_globals_modified": false,
+          "closed_loop_or_formal_acceptance_awarded": false
+        },
+        "actual_build_and_suite_functions": [
+          "reviewed_freeze_build.build",
+          "reviewed_freeze_build.installed_checks",
+          "reviewed_freeze_build.validate_build"
+        ],
+        "legacy_runtime_contracts_called": false,
+        "dependency_globals_modified": false,
+        "flight_actions_authorized": false,
+        "formal_seed_use_authorized": false
+      },
+      "reviewed_protocol_sha256": "a5f7412dd239d5452bdc725c825cd0b744aa5448acd15af9ebc7d6b6a9064d5b",
+      "development_dds_override": {
+        "schema_version": 1,
+        "status": "FINAL_DEVELOPMENT_DDS_OVERRIDE_INDEPENDENTLY_REVIEWED",
+        "scope": "HUMBLE_FASTDDS_LISTENER_LIFECYCLE_A01",
+        "tools_canonical_sha256": "919a4483554c73cfbabb1efda910c2dd831e79b963443545bece5307fe51077e",
+        "source_files": {
+          "config/dds_runtime_humble22.json": "4e517b62e823585b53dd2ac503f65eaf9bc3fd4c59d9d8fdb900d985f99d030d",
+          "uav_tracking/dds_runtime.py": "f89c73293d6dad8405a0f3a61c3cbce000d8af94a715566e5f09f9f3072342c2",
+          "scripts/apply_humble22_dds_runtime.sh": "db4cf741ddda918727793496f7831cf0a3e6b51d7078a48876758cd517e721cb"
+        },
+        "runtime_environment_only": true,
+        "generic_runtime_dictionary_unchanged": true,
+        "system_fastcdr_cmake": "/opt/ros/humble/lib/cmake/fastcdr",
+        "agent_compile_prefix_forbidden": true,
+        "runtime_fastcdr_may_differ_from_compiler_fastcdr": true,
+        "historical_tools_and_evidence_modified": false,
+        "actual_loaded_processes_claimed": false,
+        "runtime_acceptance_claimed": false,
+        "formal_seed_use_authorized": false
+      }
+    }
+  },
+  "binding_error": null,
+  "action_log_sha256": "4f2727c02e948058b1273d72efb9b9234c57b7e99efcaace9850020efe1c116e",
+  "execution_count": 1,
+  "automatic_retry": false,
+  "automatic_next_step": false,
+  "formal_seeds_consumed": false,
+  "runtime_acceptance": "NOT_EVALUATED"
+}

@@ -1,0 +1,246 @@
+{
+  "kind": "SYNTHETIC_DIFFERENTIAL_ONLY_NOT_REAL_TIMING_STATISTICS",
+  "created_utc": "2026-11-02T10:12:43.425492+00:00",
+  "input_fixture": [
+    {
+      "stream": "bag",
+      "bag_sequence": 0,
+      "record_timestamp_ns": 1000000000,
+      "topic": "/tracking/detection_diagnostics",
+      "kind": "detector",
+      "message": {
+        "clock_epoch": 0,
+        "acquisition_ns": 1000000000,
+        "completed_s": 1.1,
+        "inference_wall_s": 0.25
+      }
+    },
+    {
+      "stream": "bag",
+      "bag_sequence": 1,
+      "record_timestamp_ns": 2000000000,
+      "topic": "/tracking/status",
+      "kind": "controller_status",
+      "message": {
+        "lifecycle": 2,
+        "reason": "tracking",
+        "track_id": 7,
+        "prediction_active": false,
+        "time_since_measurement_s": 0.0
+      }
+    },
+    {
+      "stream": "bag",
+      "bag_sequence": 2,
+      "record_timestamp_ns": 3000000000,
+      "topic": "/tracking/status",
+      "kind": "controller_status",
+      "message": {
+        "lifecycle": 3,
+        "reason": "coasting_prediction",
+        "track_id": 7,
+        "prediction_active": true,
+        "time_since_measurement_s": 0.5
+      }
+    },
+    {
+      "stream": "bag",
+      "bag_sequence": 3,
+      "record_timestamp_ns": 4000000000,
+      "topic": "/tracking/status",
+      "kind": "controller_status",
+      "message": {
+        "lifecycle": 6,
+        "reason": "missing_state",
+        "track_id": 0,
+        "prediction_active": false,
+        "time_since_measurement_s": 0.0
+      }
+    },
+    {
+      "stream": "bag",
+      "bag_sequence": 4,
+      "record_timestamp_ns": 5000000000,
+      "topic": "/tracking/status",
+      "kind": "controller_status",
+      "message": {
+        "lifecycle": 4,
+        "reason": "target_lost",
+        "track_id": 7,
+        "prediction_active": false,
+        "time_since_measurement_s": 0.0
+      }
+    },
+    {
+      "stream": "bag",
+      "bag_sequence": 5,
+      "record_timestamp_ns": 6000000000,
+      "topic": "/tracking/status",
+      "kind": "controller_status",
+      "message": {
+        "lifecycle": 2,
+        "reason": "tracking",
+        "track_id": 7,
+        "prediction_active": false,
+        "time_since_measurement_s": -1.0
+      }
+    },
+    {
+      "stream": "bag",
+      "bag_sequence": 6,
+      "record_timestamp_ns": 7000000000,
+      "topic": "/tracking/status",
+      "kind": "decode_error",
+      "message": {},
+      "failed_kind": "controller_status"
+    },
+    {
+      "stream": "bag",
+      "bag_sequence": 7,
+      "record_timestamp_ns": 8000000000,
+      "topic": "/tracking/command",
+      "kind": "controller_command",
+      "message": {
+        "track_id": 7,
+        "command_age_s": 0.0
+      }
+    },
+    {
+      "stream": "bag",
+      "bag_sequence": 8,
+      "record_timestamp_ns": 9000000000,
+      "topic": "/tracking/detection_diagnostics",
+      "kind": "detector",
+      "message": {
+        "clock_epoch": 0,
+        "acquisition_ns": 1500000000,
+        "completed_s": 1.6,
+        "inference_wall_s": 0.25
+      }
+    }
+  ],
+  "changed_top_level_report_fields": [
+    "controller_reported_measurement_age_source_s"
+  ],
+  "all_other_report_fields_equal": true,
+  "production_bytes_outside_status_rows_equal": true,
+  "source_file_bindings_and_analyze_files_validation_unchanged": true,
+  "original_lf_newline_style_preserved": true,
+  "main_git_status_short": "",
+  "producer_and_existing_endpoint_source_pins_read_only": {
+    "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/controller_node.py": {
+      "bytes": 15149,
+      "sha256": "fa37a4de445896f8fd08b0bfa2c99a200623c39d98427ccedfe16cc9c6361959"
+    },
+    "ros2_ws/src/uav_tracking_interfaces/msg/TrackingStatus.msg": {
+      "bytes": 492,
+      "sha256": "f9d29ba33ee852f1bb301fa42f7d6e57aac92159f73961098d08e5a8f65a2f79"
+    },
+    "scripts/evaluate_follow_dynamics.py": {
+      "bytes": 15455,
+      "sha256": "c9b0c54242c4860b463d2df09ab7b1fcde9079ca1aa120d75b711856cb47c72b"
+    },
+    "scripts/evaluate_navigation_reference.py": {
+      "bytes": 38019,
+      "sha256": "bbff6c746ed76d0139c194cdfc1409f38dc422d64ddbc73da2995a0838df4422"
+    }
+  },
+  "original_fixture_metric": {
+    "total": 6,
+    "known": 4,
+    "unknown": 2,
+    "unknown_reasons": {
+      "invalid_reported_measurement_age": 1,
+      "decode_error": 1
+    },
+    "statistics_s": {
+      "mean": 0.125,
+      "median": 0.0,
+      "p95": 0.4249999999999998,
+      "max": 0.5
+    },
+    "samples": [
+      {
+        "event_index": 1,
+        "reason": null,
+        "value": 0.0
+      },
+      {
+        "event_index": 2,
+        "reason": null,
+        "value": 0.5
+      },
+      {
+        "event_index": 3,
+        "reason": null,
+        "value": 0.0
+      },
+      {
+        "event_index": 4,
+        "reason": null,
+        "value": 0.0
+      },
+      {
+        "event_index": 5,
+        "reason": "invalid_reported_measurement_age",
+        "value": null
+      },
+      {
+        "event_index": 6,
+        "reason": "decode_error",
+        "value": null
+      }
+    ]
+  },
+  "candidate_fixture_metric": {
+    "total": 6,
+    "known": 2,
+    "unknown": 4,
+    "unknown_reasons": {
+      "measurement_age_not_applicable_to_controller_lifecycle": 2,
+      "invalid_reported_measurement_age": 1,
+      "decode_error": 1
+    },
+    "statistics_s": {
+      "mean": 0.25,
+      "median": 0.25,
+      "p95": 0.475,
+      "max": 0.5
+    },
+    "samples": [
+      {
+        "event_index": 1,
+        "reason": null,
+        "value": 0.0
+      },
+      {
+        "event_index": 2,
+        "reason": null,
+        "value": 0.5
+      },
+      {
+        "event_index": 3,
+        "reason": "measurement_age_not_applicable_to_controller_lifecycle",
+        "value": null
+      },
+      {
+        "event_index": 4,
+        "reason": "measurement_age_not_applicable_to_controller_lifecycle",
+        "value": null
+      },
+      {
+        "event_index": 5,
+        "reason": "invalid_reported_measurement_age",
+        "value": null
+      },
+      {
+        "event_index": 6,
+        "reason": "decode_error",
+        "value": null
+      }
+    ]
+  },
+  "command_age_default_did_not_make_causal_endpoints_observed": true,
+  "source_tree_modified": false,
+  "no_real_bag_wsl_ros_simulation": true
+}

@@ -1,5 +1,13 @@
 # 查看当前实验
 
+**当前入口：Humble51。2026-11-02 18:58:44（北京时间）快照为3/12个原始工程PASS、3个对应外层核验闭合；第四场行人云台中位运行，另8场未开始，正式0/280。** 四包冷构建36.4秒；完整Linux套件1870项为1865通过、5项已说明原因的平台跳过。当前页面应核对最新观测时间与进程身份：
+
+- [Humble51核心场景、原始终态与录像](../results/project_progress/humble51_core_slots01/index.html)：每15秒只读观察本机小文件。
+- [Humble51命令进程、身份与心跳](../results/project_progress/humble51_core_run01/index.html)：检查运行进程是否仍为原始命令，以及外层退出结果。
+- [本轮验证记录与后续步骤](../planning/reliability-v4-humble51-validation-20261102.md)和[前三场原件快照](../tools/experiment_orchestration/humble51_core_first3_snapshot01/README.md)：区分工程通过、完整身份分母与尚未完成的工作。
+
+这些实时页、录包和录像位于本机，GitHub只保存源码与最小证据快照。实验程序可以独立运行，页面不会主动向聊天发消息。行人交叉753个完整身份时间格中648正确、0已知错误、105未知；第一任务单独覆盖仅67.70%，未知继续保留。原Humble50的11 PASS/1 FAIL属于历史批次，不与51混计。下方文字与入口原样保留为历史快照。
+
 **最新入口：Humble50。2026-11-02 12:46（北京时间）快照为3/12个原始PASS、3个外层核验闭合，核心批次仍在执行，正式0/280。** 本轮已完成行人速度跟随、位置跟随和多目标交叉，四包冷构建及完整Linux测试已通过。以页面的最新观测时间为准：
 
 - [当前核心场景、原始终态与录像](../results/project_progress/humble50_core_slots01/index.html)：每15秒观察原始小文件；RUNNING标记本身不证明进程存活。

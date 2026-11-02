@@ -1,5 +1,7 @@
 # RGB-D UAV target tracking and following
 
+**2026-11-02 18:58:44（北京时间）快照：Humble51 核心12场已有3个原始工程 PASS、3个对应外层核验闭合，第四场行人云台中位正在运行，另8场未开始；正式实验仍为0/280。** 本轮四包冷构建用时36.4秒；完整 Linux 套件1870项中1865通过、5项有明确平台原因的跳过。前三场的距离/高度RMSE分别为0.7624/0.1584、0.7865/0.1668、0.8940/0.1618米，末段距离和高度稳定检查均通过。行人交叉完整身份时间格为753格：648正确、0已知错误、105未知，覆盖86.06%；第一任务单独仅67.70%，不能称全程身份均已证实。汽车及主动云台的本轮结果仍待产生，原Humble50的11 PASS/1 FAIL保持独立，不能拼入51。见[本轮验证与剩余工作](planning/reliability-v4-humble51-validation-20261102.md)、[原件最小快照](tools/experiment_orchestration/humble51_core_first3_snapshot01/README.md)、本机[核心进度](results/project_progress/humble51_core_slots01/index.html)及[进程与心跳](results/project_progress/humble51_core_run01/index.html)。下方原文均保留为各自时点的历史快照，不代表最新运行状态。
+
 **2026-11-02：Humble50 核心12场已完整闭合，11 PASS、1 FAIL，尚未进入正式280场。** 唯一失败是汽车多目标主动云台场景：短遮挡后原模型已有约0.34–0.41的目标框，被0.45阈值过滤，最终触发正确的LOST锁。原始图像、深度和同采集TF已复核；正在验证仅允许弱检测维护已有三维轨迹的修复，禁止弱框启动任务、自动换人或解除LOST锁。独立完整像素检查还解释了相邻车边缘造成的导航拒绝，原保护继续保留。详见[修复原理与验证边界](docs/CONFIDENCE_TIER_MAINTENANCE.md)。新版本仍须独立构建并重跑完整12场，下方均为有时间标记的历史快照。
 
 **2026-11-02 14:28（北京时间）快照：Humble50 核心验证已闭合8场，均为原始工程PASS；六个行人场景及汽车速度、位置跟随通过，第九场汽车交叉已开始。** 汽车速度/位置两场的真实机体距离RMSE为0.751574/0.715457米、高度RMSE为0.153512/0.169195米，末段距离和高度持续稳定检查均通过。它们属于同一个开发种子，不能据此认定汽车总体可靠性已解决；整批、安全4、扩展16和正式280次仍待完成。见[汽车两场原件与边界](tools/experiment_orchestration/humble50_car_pair_snapshot01/README.md)、[本轮执行记录](planning/reliability-v4-humble50-validation-20261102.md)和本机[实时进度](results/project_progress/humble50_core_slots01/index.html)。下方状态按时间作为历史快照阅读。

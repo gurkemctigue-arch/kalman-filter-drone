@@ -1,0 +1,83 @@
+{
+  "created_utc": "2026-11-02T09:36:01.917869+00:00",
+  "started_utc": "2026-11-02T09:34:24.029154+00:00",
+  "status": "PASS",
+  "returncode": 0,
+  "tests": 1870,
+  "skipped": 5,
+  "execution_count": 1,
+  "source_binding_before": {
+    "manifest_sha256": "70f05b966d984769b885bf3134f727880903016283d730b514b7b8de4a2333ec",
+    "freeze_source_sha256": "de9bba5a4e32d44dfb6f992d27ed06cd04a955bb8ba1cf75b505c1cfa3752f1f",
+    "verified_file_count": 1362
+  },
+  "source_binding_after": {
+    "manifest_sha256": "70f05b966d984769b885bf3134f727880903016283d730b514b7b8de4a2333ec",
+    "freeze_source_sha256": "de9bba5a4e32d44dfb6f992d27ed06cd04a955bb8ba1cf75b505c1cfa3752f1f",
+    "verified_file_count": 1362
+  },
+  "source_unchanged": true,
+  "freeze_source_sha256": "de9bba5a4e32d44dfb6f992d27ed06cd04a955bb8ba1cf75b505c1cfa3752f1f",
+  "suite_log_sha256": "ad57a9a86dc45010ae59a31d1e1583152575c381607c573ee2f283235050b94c",
+  "final_review": {
+    "path": "/mnt/d/WSL/UAVHumble22-validation/dds48_tools01/reviewed_freeze_review_v4_humble51_01.json",
+    "sha256": "83ea03bcd41720c3da5992ddfda651eb04f24cf032d0f9f1e9b3528f366840c7"
+  },
+  "toolchain_canonical_sha256": "e57017201f1033847e49bb7843b1ef61bad28c21ac9f16e876736498980219cf",
+  "closed_original_evidence_before": {
+    "capsule_sha256": "dbb1e3d885803e38fc6641a4e9149eddc0d9fbb2ef777f2e11fdb14656c72c2a",
+    "files": 70,
+    "metadata_bytes": 5708732,
+    "file_map_sha256": "75fcf43e259cdde7fe4b7b9612d771e0e4d5b64180552e2ba0b14aa53a366593",
+    "retained_fields_sha256": "48b7cd16e284405338d3f8ddd74bb5078625d8e2dce48c7e07b11320d248dbde",
+    "payloads_reverified": false
+  },
+  "closed_original_evidence_after": {
+    "capsule_sha256": "dbb1e3d885803e38fc6641a4e9149eddc0d9fbb2ef777f2e11fdb14656c72c2a",
+    "files": 70,
+    "metadata_bytes": 5708732,
+    "file_map_sha256": "75fcf43e259cdde7fe4b7b9612d771e0e4d5b64180552e2ba0b14aa53a366593",
+    "retained_fields_sha256": "48b7cd16e284405338d3f8ddd74bb5078625d8e2dce48c7e07b11320d248dbde",
+    "payloads_reverified": false
+  },
+  "closed_original_evidence_unchanged": true,
+  "four_packages_built": true,
+  "module_ament_isolation": true,
+  "platform": {
+    "os_name": "posix",
+    "sys_platform": "linux",
+    "bash_path": "/usr/bin/bash",
+    "zstd_path": "/usr/bin/zstd",
+    "powershell_path": null,
+    "node_path": null,
+    "node_docx_resolve_returncode": null
+  },
+  "skip_source_contract": {
+    "expected_skip_count": 5,
+    "source_counts": {
+      "tests/test_document_runtime_preparation.py": 1,
+      "tests/test_project_progress_monitor.py": 3,
+      "tests/test_reliability_v4_report.py": 1
+    },
+    "expected_tests": {
+      "test_document_runtime_preparation.DocumentRuntimePreparationTests.test_word_script_paths_only_never_starts_word_and_preserves_existing_pdf": "Windows PowerShell path-only fixture",
+      "test_reliability_v4_report.ReliabilityReportTests.test_node_gate_verifies_python_sources_without_rendering_docx": "Node.js and npm docx are required for the source-only renderer gate",
+      "test_project_progress_monitor.ProjectProgressTests.test_real_windows_reader_releasing_lock_allows_json_and_html_publication": "Real Windows sharing semantics",
+      "test_project_progress_monitor.ProjectProgressTests.test_real_windows_persistent_lock_preserves_snapshot_and_cleans_temporary": "Real Windows sharing semantics",
+      "test_project_progress_monitor.ProjectProgressTests.test_real_monitor_survives_busy_snapshot_without_restarting_or_killing_target": "Real Windows sharing semantics"
+    }
+  },
+  "actual_skipped_tests": {
+    "test_document_runtime_preparation.DocumentRuntimePreparationTests.test_word_script_paths_only_never_starts_word_and_preserves_existing_pdf": "Windows PowerShell path-only fixture",
+    "test_project_progress_monitor.ProjectProgressTests.test_real_monitor_survives_busy_snapshot_without_restarting_or_killing_target": "Real Windows sharing semantics",
+    "test_project_progress_monitor.ProjectProgressTests.test_real_windows_persistent_lock_preserves_snapshot_and_cleans_temporary": "Real Windows sharing semantics",
+    "test_project_progress_monitor.ProjectProgressTests.test_real_windows_reader_releasing_lock_allows_json_and_html_publication": "Real Windows sharing semantics",
+    "test_reliability_v4_report.ReliabilityReportTests.test_node_gate_verifies_python_sources_without_rendering_docx": "Node.js and npm docx are required for the source-only renderer gate"
+  },
+  "skip_contract_error": null,
+  "generated_message_roundtrip_sha256": "fd44c2848dea4e4d6c0eba77c66da8ed6c05afd38bfc401f6b7292d4d4552b43",
+  "generated_message_roundtrip_path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble51/freeze_validation/generated_message_roundtrip.json",
+  "bounded_action_terminal_must_be_PASS": true,
+  "formal_seeds_consumed": false,
+  "runtime_acceptance": "NOT_EVALUATED"
+}
