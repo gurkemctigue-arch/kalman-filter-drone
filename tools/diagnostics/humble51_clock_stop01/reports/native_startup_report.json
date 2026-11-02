@@ -1,0 +1,241 @@
+{
+  "schema_version": 1,
+  "evaluation_status": "FAIL",
+  "native_startup_pass": false,
+  "checks": {
+    "configuration_registered": true,
+    "startup_parameter_values": true,
+    "native_takeoff_command": true,
+    "command_sequence": true,
+    "px4_mode_sequence": true,
+    "pre_offboard_ground_readiness": true,
+    "handoff_readiness_and_settle": true,
+    "visual_task_after_handoff": true,
+    "full_recording_coverage": false
+  },
+  "configuration": {
+    "takeoff_mode": "px4_native",
+    "px4_time_mode": "source_sim",
+    "supervisor_takeoff_mode": "px4_native",
+    "adapter_time_mode": "source_sim",
+    "use_sim_time": true,
+    "simulation_only": true,
+    "takeoff_height_m": 3.0,
+    "position_tolerance_m": 0.18,
+    "settle_speed_mps": 0.2,
+    "settle_s": 1.0,
+    "native_takeoff_timeout_sim_s": 40.0,
+    "native_wall_timeout_s": 180.0,
+    "local_position_topic": "/fmu/out/vehicle_local_position_v1",
+    "estimator_flags_topic": "/fmu/out/estimator_status_flags",
+    "declared_px4_parameters": {
+      "COM_RC_IN_MODE": 4,
+      "NAV_DLL_ACT": 0,
+      "UXRCE_DDS_SYNCT": 0,
+      "SENS_EN_MAGSIM": 0,
+      "MIS_TAKEOFF_ALT": 3.0,
+      "COM_TAKEOFF_ACT": 0,
+      "SENS_IMU_MODE": 1
+    },
+    "observed_px4_parameters": {
+      "MIS_TAKEOFF_ALT": [
+        3.0
+      ],
+      "COM_TAKEOFF_ACT": [
+        0.0
+      ],
+      "SENS_IMU_MODE": [
+        1.0
+      ],
+      "UXRCE_DDS_SYNCT": [
+        0.0
+      ]
+    },
+    "recorded_configuration_evidence": {
+      "run_config": {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble51/reliability_v4_humble51_probe01_person_stage3_midpoint_seed004/run_config.json",
+        "sha256": "968abe934b02ec16e3d9cf54ba0d3a340a85cfc9006ad0e25d027b277bec9ce9"
+      },
+      "runtime_parameters": {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble51/reliability_v4_humble51_probe01_person_stage3_midpoint_seed004/configuration/runtime_parameters.yaml",
+        "sha256": "269b95013978469c7d2bb2b555b6dc1c51d23b7c706f0f179a9e6d46edf0bb39"
+      },
+      "px4_parameters": {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble51/reliability_v4_humble51_probe01_person_stage3_midpoint_seed004/configuration/px4_parameters.json",
+        "sha256": "5c317d8f70b058624882c2db173c02abefb06a0f3995731a465c4e5ec0491efd"
+      },
+      "px4_log": {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble51/reliability_v4_humble51_probe01_person_stage3_midpoint_seed004/px4.log",
+        "sha256": "418817e9420e21b51e3080a2a951dcfc392b5331013998c2434cd4e6d3104edf"
+      }
+    }
+  },
+  "counts": {
+    "/fmu/out/vehicle_local_position_v1": 4664,
+    "/fmu/out/estimator_status_flags": 105,
+    "/fmu/out/vehicle_status_v1": 203,
+    "/fmu/in/vehicle_command": 4,
+    "/vehicle/odometry": 9320,
+    "/tracking/flight_phase": 1876,
+    "/tracking/state": 4511,
+    "/tracking/command": 1876
+  },
+  "recorded_clock": {
+    "messages": 25968,
+    "start_s": 0.0,
+    "end_s": 93.816
+  },
+  "failures": {
+    "phase_source_time_stale_or_future": 1
+  },
+  "incomplete_evidence": {},
+  "details": {
+    "native_dual_budget": {
+      "source_origin_s": 5.052,
+      "monotonic_wall_origin_s": 26506.843258649,
+      "source_limit_s": 40.0,
+      "wall_limit_s": 180.0,
+      "completed_elapsed_source_s": 13.3,
+      "completed_elapsed_wall_s": 106.399849148,
+      "method": "Explicit independent source and monotonic wall origins/elapsed values, never a fitted real-time factor. Steady-clock watchdog implementation is not inferred solely from a successful recording."
+    },
+    "interval": {
+      "start_s": 4.7,
+      "end_s": 93.816,
+      "basis": "first recorded native takeoff command through full recorded clock end"
+    },
+    "stream_coverage": {
+      "/fmu/out/vehicle_local_position_v1": {
+        "start_s": 4.7,
+        "end_s": 93.816,
+        "maximum_gap_s": 0.12399999999999523,
+        "maximum_allowed_gap_s": 0.5,
+        "tail_s": 0.0,
+        "gaps": []
+      },
+      "/fmu/out/estimator_status_flags": {
+        "start_s": 4.7,
+        "end_s": 93.816,
+        "maximum_gap_s": 1.0120000000000005,
+        "maximum_allowed_gap_s": 1.5,
+        "tail_s": 0.13599999999999568,
+        "gaps": []
+      },
+      "/fmu/out/vehicle_status_v1": {
+        "start_s": 4.7,
+        "end_s": 93.816,
+        "maximum_gap_s": 0.5080000000000098,
+        "maximum_allowed_gap_s": 1.0,
+        "tail_s": 0.2920000000000016,
+        "gaps": []
+      },
+      "/vehicle/odometry": {
+        "start_s": 4.7,
+        "end_s": 93.816,
+        "maximum_gap_s": 0.09199999999999875,
+        "maximum_allowed_gap_s": 0.5,
+        "tail_s": 0.0,
+        "gaps": []
+      },
+      "/tracking/flight_phase": {
+        "start_s": 4.7,
+        "end_s": 93.816,
+        "maximum_gap_s": 0.12000000000000455,
+        "maximum_allowed_gap_s": 0.5,
+        "tail_s": 0.016000000000005343,
+        "gaps": []
+      },
+      "/tracking/state": {
+        "start_s": 18.452,
+        "end_s": 93.816,
+        "maximum_gap_s": 0.1319999999999979,
+        "maximum_allowed_gap_s": 0.5,
+        "tail_s": 0.016000000000005343,
+        "gaps": []
+      },
+      "/tracking/command": {
+        "start_s": 18.452,
+        "end_s": 93.816,
+        "maximum_gap_s": 0.12000000000000455,
+        "maximum_allowed_gap_s": 0.5,
+        "tail_s": 0.016000000000005343,
+        "gaps": []
+      }
+    },
+    "ground_readiness": {
+      "time_s": 4.7,
+      "failures": [],
+      "missing_evidence": []
+    },
+    "ground_anchor": {
+      "received_sim_s": 4.644,
+      "position_enu_m": [
+        0.000947016931604594,
+        0.0012774502392858267,
+        -0.02378368377685547
+      ],
+      "goal_ned_m": [
+        0.0012774502392858267,
+        0.000947016931604594,
+        -2.9762163162231445
+      ],
+      "method": "Latest recorded causal adapted odometry before REQUEST_NATIVE_TAKEOFF; ENU->NED axis mapping, no GT or fitted offset"
+    },
+    "handoff_settle": {
+      "start_s": 17.352,
+      "end_s": 18.352,
+      "sample_period_s": 0.05,
+      "samples": 21,
+      "position_tolerance_m": 0.18,
+      "speed_limit_mps": 0.2,
+      "ready_samples": 21
+    },
+    "events": {
+      "first_nav_takeoff_s": 4.7,
+      "first_arm_s": 4.852,
+      "request_offboard_s": 18.352,
+      "request_native_source_s": 4.652,
+      "request_offboard_source_s": 18.352,
+      "first_offboard_command_s": 18.4,
+      "first_hold_s": 18.452,
+      "armed_modes": {
+        "AUTO_TAKEOFF": 4.996,
+        "AUTO_LOITER": 13.576,
+        "OFFBOARD": 18.424
+      }
+    }
+  },
+  "claim_boundary": "PASS establishes this recorded native startup/configuration/causal handoff and full-stream evidence contract only. It does not certify target-following accuracy or general estimator readiness. All recorded failure phases and silent tails remain; no GT, entity IDs, offset fit or online readiness replay.",
+  "bag": {
+    "storage_identifier": "sqlite3",
+    "compression_format": "zstd",
+    "compression_mode": "file",
+    "reader": "SequentialCompressionReader",
+    "source_bag_read_only": true,
+    "decompression_cache": "temporary directory, removed after reading",
+    "bag": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble51/reliability_v4_humble51_probe01_person_stage3_midpoint_seed004/rosbag",
+    "topic_types": {
+      "/clock": "rosgraph_msgs/msg/Clock",
+      "/fmu/out/vehicle_local_position_v1": "px4_msgs/msg/VehicleLocalPosition",
+      "/tracking/command": "uav_tracking_interfaces/msg/TrackingCommand",
+      "/vehicle/odometry": "nav_msgs/msg/Odometry",
+      "/fmu/out/estimator_status_flags": "px4_msgs/msg/EstimatorStatusFlags",
+      "/tracking/state": "uav_tracking_interfaces/msg/TargetState",
+      "/fmu/in/vehicle_command": "px4_msgs/msg/VehicleCommand",
+      "/fmu/out/vehicle_status_v1": "px4_msgs/msg/VehicleStatus",
+      "/tracking/flight_phase": "std_msgs/msg/String"
+    },
+    "read_errors": {},
+    "scope": "Only startup commands/state/clock/phase/odometry/visual activation; no GT, images or simulator entity names"
+  },
+  "trial": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble51/reliability_v4_humble51_probe01_person_stage3_midpoint_seed004",
+  "frames_path": "/root/uav_tracking_fullplan_v4_humble51/results/reliability_v4_humble51_probe01_person_stage3_midpoint_seed004/native_startup_report.frames.jsonl",
+  "evaluation_source": {
+    "script": "/root/uav_tracking_fullplan_v4_humble51/scripts/evaluate_native_startup.py",
+    "script_sha256": "0a1d9b4de56b0bd5f3bc100275f4b3216717624db9bfb8607cecb5e03fb65d51",
+    "dependencies": {
+      "/root/uav_tracking_fullplan_v4_humble51/scripts/evaluate_stage1_flight.py": "655cf6fc7c0cc2a954db7d06d2fbb00a000f2fca80ba0930d153025e28efb7c1"
+    },
+    "scope": "Independent offline native-startup logic plus compression-safe bag reader; no online readiness helper, GT or simulator API"
+  }
+}

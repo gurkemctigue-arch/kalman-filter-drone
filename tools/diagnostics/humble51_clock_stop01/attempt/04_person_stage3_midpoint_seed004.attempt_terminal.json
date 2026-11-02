@@ -1,0 +1,53 @@
+{
+  "slot": "person_stage3_midpoint_seed004",
+  "number": 4,
+  "started_utc": "2026-11-02T10:49:54.045240+00:00",
+  "runner_result": {
+    "started_this_invocation": 1,
+    "stop": null,
+    "plan_sha256": "175de857d31de0e7b6f622d33b0cb2a72d2a7278a6ad0dfc1bded6447c1878f9",
+    "mode": "PROBE",
+    "planned_count": 12,
+    "status_counts": {
+      "PASS": 3,
+      "FAIL": 1,
+      "PENDING": 8
+    },
+    "terminal_count": 4,
+    "all_engineering_pass": false,
+    "exit_code_semantics": "Run exit zero means no orchestration/infrastructure stop; inspect all_engineering_pass and every terminal result separately.",
+    "pending_ids": [
+      "person_stage3_active_seed004",
+      "person_stage3_multi_active_seed004",
+      "car_stage1_velocity_seed004",
+      "car_stage1_position_seed004",
+      "car_stage2_crossing_seed004",
+      "car_stage3_midpoint_seed004",
+      "car_stage3_active_seed004",
+      "car_stage3_multi_active_seed004"
+    ],
+    "scope": "New post-repair engineering slots; navigation/base_link evidence and unknown identity are retained. This is not a new v3 four-estimator comparison."
+  },
+  "record": {
+    "status": "FAIL",
+    "engineering_result": "FAIL",
+    "record_binding": {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble51/reliability_v4_humble51_probe01_seed004_matrix/slots/person_stage3_midpoint_seed004.json",
+      "sha256": "0a03788460c4372acea4f3b5c2ad476a15b1c8886ddb1a8d4214b7032e8f6ba0",
+      "record_sha256": "b13adccdb1d3d903611d6e6e3a54d1c00636952cf9adf854e63e55a52c3b838c",
+      "started_marker": {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble51/reliability_v4_humble51_probe01_seed004_matrix/slots/person_stage3_midpoint_seed004.started.json",
+        "sha256": "2f8bed6f0a81b5be98daa62e6a7777a6755bccbac866aa0c96f4861abde713c8"
+      },
+      "plan_sha256": "175de857d31de0e7b6f622d33b0cb2a72d2a7278a6ad0dfc1bded6447c1878f9",
+      "started_utc": "2026-11-02T10:49:58.151261+00:00"
+    }
+  },
+  "audit": null,
+  "error": "ValueError:Original source-clock/native-startup evidence must independently PASS",
+  "started_marker": {
+    "path": "/root/uav_tracking_fullplan_v4_humble51/results/reliability_v4_humble51_probe01_seed004_matrix/observed_driver01/04_person_stage3_midpoint_seed004.started.json",
+    "sha256": "dd58ae874c787336c78a3d362f001196da1f53b77e9a01b1c11a778e251213d9"
+  },
+  "finished_utc": "2026-11-02T11:09:57.452891+00:00"
+}

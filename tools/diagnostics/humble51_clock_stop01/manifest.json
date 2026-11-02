@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "scope": "IMMUTABLE_SMALL_ORIGINAL_STOP_RECORDS_NOT_COMPLETE_REPRODUCTION_PACKAGE",
+  "created_utc": "2026-11-02T11:23:47.953946+00:00",
+  "monitor_terminal_utc": "2026-11-02T11:10:29.393495+00:00",
+  "monitor_terminal_bjt": "2026-11-02T19:10:29+08:00",
+  "core_counts": {
+    "PASS": 3,
+    "FAIL": 1,
+    "PENDING": 8
+  },
+  "formal_attempts": 0,
+  "formal_planned": 280,
+  "source_results_root": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble51",
+  "plan_source_path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble51\\reliability_v4_humble51_probe01_seed004_matrix\\plan.json",
+  "plan_file_sha256": "1421651bb42ca9cae173ed0f8239099d4dc58eb5330c55689478d575539d3c5e",
+  "source_clock_failure_counts": {
+    "source_rejected:future_or_wrong_domain_source_timestamp": 4,
+    "diagnostic_delivery_outside_clock_contract": 1
+  },
+  "source_clock_incomplete_counts": {
+    "raw_px4_without_timing_diagnostic": 2
+  },
+  "native_startup_failure_counts": {
+    "phase_source_time_stale_or_future": 1
+  },
+  "owner_snapshot_stage": "The small owner/execution_terminal.json is the original COPY_VERIFIED_PENDING_OWNER_CLOSURE candidate. Final NATIVE_FAILED_RAW_ARCHIVED is retained in the unbundled whole outer execution_terminal.json; these are distinct lifecycle stages, not rewritten source bytes.",
+  "file_count": 8,
+  "copied_bytes": 98518,
+  "files": [
+    {
+      "snapshot_path": "reports/px4_source_clock_report.json",
+      "source_path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble51\\reliability_v4_humble51_probe01_person_stage3_midpoint_seed004\\px4_source_clock_report.json",
+      "bytes": 7900,
+      "sha256": "0ae6ab4344dccfc98e7604f520c5bb3bd0db59e4d4a34e3ab8e17172f3bd7db6",
+      "copy_bytes_match": true
+    },
+    {
+      "snapshot_path": "reports/native_startup_report.json",
+      "source_path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble51\\reliability_v4_humble51_probe01_person_stage3_midpoint_seed004\\native_startup_report.json",
+      "bytes": 9141,
+      "sha256": "0fa5995b5896e7108a2d4efd2ab2d759f514a4c02cb7799b726b5bfa98a13f89",
+      "copy_bytes_match": true
+    },
+    {
+      "snapshot_path": "slot/person_stage3_midpoint_seed004.json",
+      "source_path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble51\\reliability_v4_humble51_probe01_seed004_matrix\\slots\\person_stage3_midpoint_seed004.json",
+      "bytes": 58163,
+      "sha256": "0a03788460c4372acea4f3b5c2ad476a15b1c8886ddb1a8d4214b7032e8f6ba0",
+      "copy_bytes_match": true
+    },
+    {
+      "snapshot_path": "attempt/04_person_stage3_midpoint_seed004.attempt_terminal.json",
+      "source_path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble51\\reliability_v4_humble51_probe01_seed004_matrix\\observed_driver01\\04_person_stage3_midpoint_seed004.attempt_terminal.json",
+      "bytes": 2528,
+      "sha256": "298986b311952f946c89d2f94b538298b66cc070af11ecc76a389513dac61bb5",
+      "copy_bytes_match": true
+    },
+    {
+      "snapshot_path": "monitor/end_summary.json",
+      "source_path": "D:\\基于yolo和卡尔曼滤波\\results\\project_progress\\humble51_core_run01\\end_summary.json",
+      "bytes": 3073,
+      "sha256": "dd6e8d8b28a7189067b991d9791db747ae0fb322ba8b88ac78ab6f89c291edba",
+      "copy_bytes_match": true
+    },
+    {
+      "snapshot_path": "owner/execution_terminal.json",
+      "source_path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble51\\reliability_v4_humble51_probe01_seed004_matrix\\observed_driver01\\observer_driver\\execution_terminal.json",
+      "bytes": 8376,
+      "sha256": "3352c5fee3e7bc1992c00461b5b0a6d0e4316fe1319a059b408ed04d834e9e1c",
+      "copy_bytes_match": true
+    },
+    {
+      "snapshot_path": "owner/native_exit_terminal.json",
+      "source_path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble51\\reliability_v4_humble51_probe01_seed004_matrix\\observed_driver01\\observer_driver\\native_exit_terminal.json",
+      "bytes": 3429,
+      "sha256": "6332fe95f387704cbb727e316b35b8d619d108e6d358d6355b5519c862467cb3",
+      "copy_bytes_match": true
+    },
+    {
+      "snapshot_path": "owner/archive_manifest.json",
+      "source_path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble51\\reliability_v4_humble51_probe01_seed004_matrix\\observed_driver01\\observer_driver\\archive_manifest.json",
+      "bytes": 5908,
+      "sha256": "b1c0720ed0c35932fa73bb2b55bd22b515f7b19c0ee87a8d489de222d7464d6c",
+      "copy_bytes_match": true
+    }
+  ],
+  "native_readonly_diagnostic": {
+    "copied_utc": "2026-11-02T11:30:07.639788+00:00",
+    "not_regrading_original_trial": true,
+    "files": [
+      {
+        "snapshot_path": "native_readonly/read_raw_clock_window01.py",
+        "source_path": "D:\\WSL\\UAVHumble22-validation\\humble51_clock_stop01\\read_raw_clock_window01.py",
+        "bytes": 7172,
+        "sha256": "e014dc59dbef41421e4ad606a2ad8b0b56422f92bf683604c97e563fb6e8c568"
+      },
+      {
+        "snapshot_path": "native_readonly/summary.json",
+        "source_path": "D:\\WSL\\UAVHumble22-validation\\humble51_clock_stop01\\native_raw01\\summary.json",
+        "bytes": 8728,
+        "sha256": "bcee4cfb7ee5bff0c5a5ab234e453b8993d955b385060cb7b8753d8088701cb6"
+      },
+      {
+        "snapshot_path": "native_readonly/window_records.jsonl",
+        "source_path": "D:\\WSL\\UAVHumble22-validation\\humble51_clock_stop01\\native_raw01\\window_records.jsonl",
+        "bytes": 107749,
+        "sha256": "234d0c67b53d4019508616701e637f7f2087d7be6010d89d7a7f03edadaf7b75"
+      }
+    ]
+  }
+}

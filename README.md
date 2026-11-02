@@ -1,5 +1,7 @@
 # RGB-D UAV target tracking and following
 
+**2026-11-02 19:10:29（北京时间）停止记录：Humble51核心批次已STOPPED，原始结果为3 PASS、1 FAIL、8 PENDING，正式仍0/280。** 第四场行人云台中位完成飞行，但独立source-clock记录4次未来源时刻拒绝、1次诊断交付越界及2条raw/timing缺配对；native-startup另有1次phase时间越界，硬门因此停止后续。起飞、模式序列与交接稳定检查均通过。已有侧车把5个source-clock异常定位到84.028秒附近，尚不能确定共同根因，正在继续原包只读诊断。owner异常路径的原始归档已保留；最终失败状态与较早copy候选的差异不代表原件被篡改。详见[停止原因、证据与最短下一步](planning/reliability-v4-humble51-clock-stop-20261102.md)及[小原件快照](tools/diagnostics/humble51_clock_stop01/README.md)。下方18:58及更早运行中描述均为历史快照。
+
 **2026-11-02 18:58:44（北京时间）快照：Humble51 核心12场已有3个原始工程 PASS、3个对应外层核验闭合，第四场行人云台中位正在运行，另8场未开始；正式实验仍为0/280。** 本轮四包冷构建用时36.4秒；完整 Linux 套件1870项中1865通过、5项有明确平台原因的跳过。前三场的距离/高度RMSE分别为0.7624/0.1584、0.7865/0.1668、0.8940/0.1618米，末段距离和高度稳定检查均通过。行人交叉完整身份时间格为753格：648正确、0已知错误、105未知，覆盖86.06%；第一任务单独仅67.70%，不能称全程身份均已证实。汽车及主动云台的本轮结果仍待产生，原Humble50的11 PASS/1 FAIL保持独立，不能拼入51。见[本轮验证与剩余工作](planning/reliability-v4-humble51-validation-20261102.md)、[原件最小快照](tools/experiment_orchestration/humble51_core_first3_snapshot01/README.md)、本机[核心进度](results/project_progress/humble51_core_slots01/index.html)及[进程与心跳](results/project_progress/humble51_core_run01/index.html)。下方原文均保留为各自时点的历史快照，不代表最新运行状态。
 
 **2026-11-02：Humble50 核心12场已完整闭合，11 PASS、1 FAIL，尚未进入正式280场。** 唯一失败是汽车多目标主动云台场景：短遮挡后原模型已有约0.34–0.41的目标框，被0.45阈值过滤，最终触发正确的LOST锁。原始图像、深度和同采集TF已复核；正在验证仅允许弱检测维护已有三维轨迹的修复，禁止弱框启动任务、自动换人或解除LOST锁。独立完整像素检查还解释了相邻车边缘造成的导航拒绝，原保护继续保留。详见[修复原理与验证边界](docs/CONFIDENCE_TIER_MAINTENANCE.md)。新版本仍须独立构建并重跑完整12场，下方均为有时间标记的历史快照。

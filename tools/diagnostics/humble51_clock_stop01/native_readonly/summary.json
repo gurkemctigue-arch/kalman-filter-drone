@@ -1,0 +1,220 @@
+{
+  "kind": "READONLY_STOPPED51_CLOCK_DIAGNOSTIC_NOT_REGRADING",
+  "started_utc": "2026-11-02T11:20:47.313737+00:00",
+  "finished_utc": "2026-11-02T11:21:24.320424+00:00",
+  "elapsed_wall_s": 37.00669812900014,
+  "topic_counts": {
+    "/clock": 25968,
+    "/tracking/flight_phase": 1876,
+    "/fmu/out/vehicle_odometry": 9326,
+    "/vehicle/odometry_timing": 9324,
+    "/vehicle/odometry": 9320
+  },
+  "filtered_records": 55814,
+  "selected_records": 421,
+  "unmatched_raw": [
+    {
+      "filtered_sequence": 49965,
+      "topic": "/fmu/out/vehicle_odometry",
+      "bag_record_timestamp_ns": 1793617290184726008,
+      "sample_us": 84040000,
+      "publication_us": 84048000,
+      "reset_counter": 12,
+      "latest_recorded_clock_sim_s": 84.028
+    },
+    {
+      "filtered_sequence": 49967,
+      "topic": "/fmu/out/vehicle_odometry",
+      "bag_record_timestamp_ns": 1793617290185093327,
+      "sample_us": 84052000,
+      "publication_us": 84060000,
+      "reset_counter": 12,
+      "latest_recorded_clock_sim_s": 84.028
+    }
+  ],
+  "unconsumed_diagnostic_pairs": 0,
+  "bad_diagnostics": [
+    {
+      "filtered_sequence": 49979,
+      "topic": "/vehicle/odometry_timing",
+      "bag_record_timestamp_ns": 1793617290204833007,
+      "diagnostic": {
+        "schema_version": 1,
+        "mode": "source_sim",
+        "accepted": false,
+        "reason": "future_or_wrong_domain_source_timestamp",
+        "output_s": 84.028,
+        "receipt_ros_s": 84.028,
+        "source_sample_s": 84.076,
+        "source_publication_s": 84.08,
+        "odometry_header_s": null,
+        "source_to_receipt_s": -0.048,
+        "source_time_valid": false,
+        "reset_counter": 12,
+        "frame_locked": true
+      },
+      "latest_recorded_clock_sim_s": 84.028
+    },
+    {
+      "filtered_sequence": 49980,
+      "topic": "/vehicle/odometry_timing",
+      "bag_record_timestamp_ns": 1793617290217184854,
+      "diagnostic": {
+        "schema_version": 1,
+        "mode": "source_sim",
+        "accepted": false,
+        "reason": "future_or_wrong_domain_source_timestamp",
+        "output_s": 84.028,
+        "receipt_ros_s": 84.028,
+        "source_sample_s": 84.092,
+        "source_publication_s": 84.096,
+        "odometry_header_s": null,
+        "source_to_receipt_s": -0.064,
+        "source_time_valid": false,
+        "reset_counter": 12,
+        "frame_locked": true
+      },
+      "latest_recorded_clock_sim_s": 84.028
+    },
+    {
+      "filtered_sequence": 49981,
+      "topic": "/vehicle/odometry_timing",
+      "bag_record_timestamp_ns": 1793617290224473512,
+      "diagnostic": {
+        "schema_version": 1,
+        "mode": "source_sim",
+        "accepted": false,
+        "reason": "future_or_wrong_domain_source_timestamp",
+        "output_s": 84.028,
+        "receipt_ros_s": 84.028,
+        "source_sample_s": 84.108,
+        "source_publication_s": 84.112,
+        "odometry_header_s": null,
+        "source_to_receipt_s": -0.08,
+        "source_time_valid": false,
+        "reset_counter": 12,
+        "frame_locked": true
+      },
+      "latest_recorded_clock_sim_s": 84.028
+    },
+    {
+      "filtered_sequence": 49982,
+      "topic": "/vehicle/odometry_timing",
+      "bag_record_timestamp_ns": 1793617290231021694,
+      "diagnostic": {
+        "schema_version": 1,
+        "mode": "source_sim",
+        "accepted": false,
+        "reason": "future_or_wrong_domain_source_timestamp",
+        "output_s": 84.028,
+        "receipt_ros_s": 84.028,
+        "source_sample_s": 84.12,
+        "source_publication_s": 84.124,
+        "odometry_header_s": null,
+        "source_to_receipt_s": -0.092,
+        "source_time_valid": false,
+        "reset_counter": 12,
+        "frame_locked": true
+      },
+      "latest_recorded_clock_sim_s": 84.028
+    },
+    {
+      "filtered_sequence": 49986,
+      "topic": "/vehicle/odometry_timing",
+      "bag_record_timestamp_ns": 1793617290323594720,
+      "diagnostic": {
+        "schema_version": 1,
+        "mode": "source_sim",
+        "accepted": true,
+        "reason": "validated_source_stamp",
+        "output_s": 84.116,
+        "receipt_ros_s": 84.116,
+        "source_sample_s": 84.128,
+        "source_publication_s": 84.136,
+        "odometry_header_s": 84.128,
+        "source_to_receipt_s": -0.012,
+        "source_time_valid": true,
+        "reset_counter": 12,
+        "frame_locked": true,
+        "vehicle_frame_valid": true,
+        "vehicle_frame_reason": "vehicle_frame_valid"
+      },
+      "latest_recorded_clock_sim_s": 84.028
+    }
+  ],
+  "bad_phase": [
+    {
+      "filtered_sequence": 49988,
+      "topic": "/tracking/flight_phase",
+      "bag_record_timestamp_ns": 1793617290346160744,
+      "phase_text": "FOLLOW: forwarding fresh visual controller command; phase_wall_monotonic_s=27139.561985765; native_started_source_s=5.052000000; native_started_wall_s=26506.843258649; native_elapsed_source_s=13.300000000; native_elapsed_wall_s=106.399849148; source_sim_s=84.100000000",
+      "phase_source_s": 84.1,
+      "latest_recorded_clock_sim_s": 84.032,
+      "phase_age_s": -0.06799999999999784
+    }
+  ],
+  "clock_source_gaps_over_20ms": [],
+  "protected_before": {
+    "/root/uav_tracking_fullplan_v4_humble51/results/reliability_v4_humble51_probe01_person_stage3_midpoint_seed004/bag_integrity.json": {
+      "bytes": 5411,
+      "sha256": "5a9d16ed9e789ccd0a41b5397682921c695f2f241b457558495318dadf8ddd4b"
+    },
+    "/root/uav_tracking_fullplan_v4_humble51/results/reliability_v4_humble51_probe01_person_stage3_midpoint_seed004/run_config.json": {
+      "bytes": 3020,
+      "sha256": "968abe934b02ec16e3d9cf54ba0d3a340a85cfc9006ad0e25d027b277bec9ce9"
+    },
+    "/root/uav_tracking_fullplan_v4_humble51/results/reliability_v4_humble51_probe01_person_stage3_midpoint_seed004/px4_source_clock_report.json": {
+      "bytes": 7900,
+      "sha256": "0ae6ab4344dccfc98e7604f520c5bb3bd0db59e4d4a34e3ab8e17172f3bd7db6"
+    },
+    "/root/uav_tracking_fullplan_v4_humble51/results/reliability_v4_humble51_probe01_person_stage3_midpoint_seed004/native_startup_report.json": {
+      "bytes": 9141,
+      "sha256": "0fa5995b5896e7108a2d4efd2ab2d759f514a4c02cb7799b726b5bfa98a13f89"
+    },
+    "/root/uav_tracking_fullplan_v4_humble51/results/reliability_v4_humble51_probe01_person_stage3_midpoint_seed004/rosbag/rosbag_0.db3.zstd": {
+      "bytes": 479248913,
+      "sha256": "875ab20512b38390754506c48da8e0d6a15bfbbb2f23e6703946548980fb925f"
+    },
+    "/root/uav_tracking_fullplan_v4_humble51/results/reliability_v4_humble51_probe01_person_stage3_midpoint_seed004/rosbag/metadata.yaml": {
+      "bytes": 20015,
+      "sha256": "198e932ee979641b63318022b2bf37b8f8a85a76e18b065a61216d5391dd362f"
+    }
+  },
+  "protected_after": {
+    "/root/uav_tracking_fullplan_v4_humble51/results/reliability_v4_humble51_probe01_person_stage3_midpoint_seed004/bag_integrity.json": {
+      "bytes": 5411,
+      "sha256": "5a9d16ed9e789ccd0a41b5397682921c695f2f241b457558495318dadf8ddd4b"
+    },
+    "/root/uav_tracking_fullplan_v4_humble51/results/reliability_v4_humble51_probe01_person_stage3_midpoint_seed004/run_config.json": {
+      "bytes": 3020,
+      "sha256": "968abe934b02ec16e3d9cf54ba0d3a340a85cfc9006ad0e25d027b277bec9ce9"
+    },
+    "/root/uav_tracking_fullplan_v4_humble51/results/reliability_v4_humble51_probe01_person_stage3_midpoint_seed004/px4_source_clock_report.json": {
+      "bytes": 7900,
+      "sha256": "0ae6ab4344dccfc98e7604f520c5bb3bd0db59e4d4a34e3ab8e17172f3bd7db6"
+    },
+    "/root/uav_tracking_fullplan_v4_humble51/results/reliability_v4_humble51_probe01_person_stage3_midpoint_seed004/native_startup_report.json": {
+      "bytes": 9141,
+      "sha256": "0fa5995b5896e7108a2d4efd2ab2d759f514a4c02cb7799b726b5bfa98a13f89"
+    },
+    "/root/uav_tracking_fullplan_v4_humble51/results/reliability_v4_humble51_probe01_person_stage3_midpoint_seed004/rosbag/rosbag_0.db3.zstd": {
+      "bytes": 479248913,
+      "sha256": "875ab20512b38390754506c48da8e0d6a15bfbbb2f23e6703946548980fb925f"
+    },
+    "/root/uav_tracking_fullplan_v4_humble51/results/reliability_v4_humble51_probe01_person_stage3_midpoint_seed004/rosbag/metadata.yaml": {
+      "bytes": 20015,
+      "sha256": "198e932ee979641b63318022b2bf37b8f8a85a76e18b065a61216d5391dd362f"
+    }
+  },
+  "reader": {
+    "storage_identifier": "sqlite3",
+    "compression_format": "zstd",
+    "compression_mode": "file",
+    "reader": "SequentialCompressionReader",
+    "source_bag_read_only": true,
+    "decompression_cache": "temporary directory, removed after reading"
+  },
+  "source_unchanged": true,
+  "record_timestamp_scope": "Original recorder timestamps; not mixed with simulation seconds.",
+  "tool_sha256": "e014dc59dbef41421e4ad606a2ad8b0b56422f92bf683604c97e563fb6e8c568"
+}
