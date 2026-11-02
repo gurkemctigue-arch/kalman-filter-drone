@@ -1,5 +1,7 @@
 # 当前工作交接（持续开发，非验收报告）
 
+**2026-11-02 12:56（北京时间）：当前为Humble50，前三场行人开发原PASS及外层核验已闭合，第四场云台中位正在执行，正式0/280。** 同源四包冷构建和1819项原生Linux测试已通过（1814通过、5项平台跳过）。最新[验证记录](reliability-v4-humble50-validation-20261102.md)、[实际核心进度](../results/project_progress/humble50_core_slots01/index.html)和[命令心跳](../results/project_progress/humble50_core_run01/index.html)已更新，公开最小证据见提交`00ea66f`。本机继续交接还可读取`D:/WSL/UAVHumble22-validation/ACTIVE_HUMBLE50_ROOT.md`；不得重启正在执行的core批次。下方47及更早描述均为历史快照。
+
 **2026-11-02：DDS 修复来源和实际加载诊断已完成，启动脚本顺序修复已通过 Linux 专项验证，正在冻结 Humble48。** Windows 完整测试为1815项、11项跳过；该轮早于最后的 shell 调整，之后新增4项 Linux Bash 行为测试与8份语法检查全部通过。真实两个入口借用原47安装环境进行 DDS preflight 亦通过。尚未新候选完整 Linux 测试或新飞行，正式仍0/280；原47保持11 PASS、1基础设施错误。详见[验证范围记录](../tools/diagnostics/humble47_dds_exit01/test_validation/receipt.json)。
 
 **2026-11-02：Humble47核心批次已终止，原结果11 PASS、1基础设施错误；正式仍0/280。** 最后一场汽车多目标主动云台的飞行窗口已完成，但真实TF进程退出时在Fast DDS发生SIGSEGV，七项离线评价未执行，不能算通过。已依据原始core与上游修复完成独立Fast DDS整库构建，并在真实生产TF对象图完成三种退出顺序各20次正常退出、逐轮确认加载新库；有限诊断不替代新飞行。正在接入运行时来源校验、准备新候选及完整新core12，旧47不重试、不拼接结果。见[事故、修复依据与实际证据](reliability-v4-humble47-dds-exit-incident.md)。下方均为历史时间快照。
