@@ -1,0 +1,383 @@
+{
+  "schema_version": 1,
+  "scope": "READ_ONLY_GITHUB_CI_STATUS_AND_ORIGINAL_FAILURE_LOG_AUDIT_NOT_ROS_SITL_OR_ALGORITHM_ACCEPTANCE",
+  "created_utc": "2026-11-02T07:06:24.302Z",
+  "repository": "gurkemctigue-arch/kalman-filter-drone",
+  "requested_commit": "d4e473a",
+  "local_head_sha": "d4e473a7ec21b129395bb680343c2d327d8f529a",
+  "public_main_observation": {
+    "observed_utc": "2026-11-02T06:57:45.8108871Z",
+    "endpoint": "main_branch",
+    "result": {
+      "name": "main",
+      "head_sha": "d4e473a7ec21b129395bb680343c2d327d8f529a",
+      "commit_url": "https://github.com/gurkemctigue-arch/kalman-filter-drone/commit/d4e473a7ec21b129395bb680343c2d327d8f529a"
+    }
+  },
+  "public_actions_observation": {
+    "observed_utc": "2026-11-02T06:57:45.9161615Z",
+    "endpoint": "actions_runs",
+    "result": {
+      "total_count": 1,
+      "workflow_runs": {
+        "id": 41401412315,
+        "name": "Portable Python tests",
+        "head_branch": "main",
+        "head_sha": "d4e473a7ec21b129395bb680343c2d327d8f529a",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "failure",
+        "html_url": "https://github.com/gurkemctigue-arch/kalman-filter-drone/actions/runs/41401412315",
+        "run_number": 110,
+        "run_attempt": 1,
+        "created_at": "2026-11-02T06:40:33Z",
+        "updated_at": "2026-11-02T06:42:28Z",
+        "run_started_at": "2026-11-02T06:40:33Z",
+        "jobs_url": "https://api.github.com/repos/gurkemctigue-arch/kalman-filter-drone/actions/runs/41401412315/jobs",
+        "path": ".github/workflows/portable-tests.yml"
+      }
+    }
+  },
+  "public_checks_observation": {
+    "observed_utc": "2026-11-02T06:57:45.8108871Z",
+    "total_count": 2,
+    "check_runs": [
+      {
+        "id": 125133819688,
+        "name": "portable (3.10)",
+        "status": "completed",
+        "conclusion": "failure",
+        "started_at": "2026-11-02T06:40:36Z",
+        "completed_at": "2026-11-02T06:42:27Z",
+        "html_url": "https://github.com/gurkemctigue-arch/kalman-filter-drone/actions/runs/41401412315/job/125133819688",
+        "details_url": "https://github.com/gurkemctigue-arch/kalman-filter-drone/actions/runs/41401412315/job/125133819688",
+        "app": "github-actions"
+      },
+      {
+        "id": 125133819432,
+        "name": "portable (3.12)",
+        "status": "completed",
+        "conclusion": "failure",
+        "started_at": "2026-11-02T06:40:36Z",
+        "completed_at": "2026-11-02T06:41:38Z",
+        "html_url": "https://github.com/gurkemctigue-arch/kalman-filter-drone/actions/runs/41401412315/job/125133819432",
+        "details_url": "https://github.com/gurkemctigue-arch/kalman-filter-drone/actions/runs/41401412315/job/125133819432",
+        "app": "github-actions"
+      }
+    ]
+  },
+  "actual_jobs": {
+    "observed_utc": "2026-11-02T07:03:02.6358880Z",
+    "metadata_path": "D:\\WSL\\UAVHumble22-validation\\candidate50_preparation01\\github_d4e473a_failure_logs01\\jobs_api.json",
+    "total_count": 2,
+    "jobs": [
+      {
+        "id": 125133819432,
+        "name": "portable (3.12)",
+        "status": "completed",
+        "conclusion": "failure",
+        "html_url": "https://github.com/gurkemctigue-arch/kalman-filter-drone/actions/runs/41401412315/job/125133819432",
+        "labels": [
+          "ubuntu-22.04"
+        ],
+        "steps": [
+          {
+            "name": "Set up job",
+            "number": 1,
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@v5",
+            "number": 3,
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Install archive and Python test dependencies",
+            "number": 4,
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run portable fixtures, including standard zstd round trips",
+            "number": 5,
+            "status": "completed",
+            "conclusion": "failure"
+          },
+          {
+            "name": "Check replay command entry points without opening recordings",
+            "number": 6,
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Post Run actions/setup-python@v5",
+            "number": 11,
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "number": 12,
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "number": 13,
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 125133819688,
+        "name": "portable (3.10)",
+        "status": "completed",
+        "conclusion": "failure",
+        "html_url": "https://github.com/gurkemctigue-arch/kalman-filter-drone/actions/runs/41401412315/job/125133819688",
+        "labels": [
+          "ubuntu-22.04"
+        ],
+        "steps": [
+          {
+            "name": "Set up job",
+            "number": 1,
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@v5",
+            "number": 3,
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Install archive and Python test dependencies",
+            "number": 4,
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run portable fixtures, including standard zstd round trips",
+            "number": 5,
+            "status": "completed",
+            "conclusion": "failure"
+          },
+          {
+            "name": "Check replay command entry points without opening recordings",
+            "number": 6,
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Post Run actions/setup-python@v5",
+            "number": 11,
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "number": 12,
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "number": 13,
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      }
+    ]
+  },
+  "network_history": {
+    "public_api_proxy": "http://127.0.0.1:17890",
+    "anonymous_failures": [
+      {
+        "observed_utc": "2026-11-02T06:58:23.1243520Z",
+        "endpoint": "jobs",
+        "request_failed": true,
+        "error_type": "System.Net.WebException",
+        "error_message": "远程服务器返回错误: (403) 已禁止。"
+      },
+      {
+        "observed_utc": "2026-11-02T06:58:22.0985039Z",
+        "endpoint": "annotations_310",
+        "request_failed": true,
+        "error_type": "System.Net.WebException",
+        "error_message": "远程服务器返回错误: (403) 已禁止。"
+      },
+      {
+        "observed_utc": "2026-11-02T06:58:22.0985039Z",
+        "endpoint": "annotations_312",
+        "request_failed": true,
+        "error_type": "System.Net.WebException",
+        "error_message": "远程服务器返回错误: (403) 已禁止。"
+      }
+    ],
+    "anonymous_rate_limit_observation": {
+      "observed_utc": "2026-11-02T06:59:08.4617570Z",
+      "endpoint": "rate_limit",
+      "result": {
+        "resources": {
+          "code_search": {
+            "limit": 60,
+            "remaining": 0,
+            "reset": 1793602911,
+            "used": 60
+          },
+          "core": {
+            "limit": 60,
+            "remaining": 0,
+            "reset": 1793602911,
+            "used": 60
+          },
+          "graphql": {
+            "limit": 0,
+            "remaining": 0,
+            "reset": 1793606347,
+            "used": 0
+          },
+          "integration_manifest": {
+            "limit": 5000,
+            "remaining": 5000,
+            "reset": 1793606347,
+            "used": 0
+          },
+          "search": {
+            "limit": 10,
+            "remaining": 10,
+            "reset": 1793602807,
+            "used": 0
+          }
+        },
+        "rate": {
+          "limit": 60,
+          "remaining": 0,
+          "reset": 1793602911,
+          "used": 60
+        }
+      }
+    },
+    "public_html_log_visibility": "Public job page returned HTTP 200 and 'Sign in to view logs'; it exposed only step failure and exit code.",
+    "authenticated_read": "Existing Git credential manager, noninteractive; credential captured in process memory for api.github.com read requests only.",
+    "credential_or_authorization_saved_or_printed": false,
+    "authorization_forwarded_to_cross_host_log_redirect": false,
+    "signed_redirect_url_saved_or_printed": false
+  },
+  "original_failure_log_artifacts": [
+    {
+      "kind": "job_log",
+      "observed_utc": "2026-11-02T07:03:12.2654250Z",
+      "job_id": "125133819688",
+      "status_code": 200,
+      "downloaded": true,
+      "path": "D:\\WSL\\UAVHumble22-validation\\candidate50_preparation01\\github_d4e473a_failure_logs01\\job_310_original.log",
+      "bytes": 312907,
+      "sha256": "ef294a9adcac536b535f0b10d2c38c3334c0a1f090bf95a07b6a917fe5a1d8e7",
+      "redirect_host": "productionresultssa30.blob.core.windows.net",
+      "authorization_forwarded_to_redirect": false
+    },
+    {
+      "kind": "job_log",
+      "observed_utc": "2026-11-02T07:03:13.7612865Z",
+      "job_id": "125133819432",
+      "status_code": 200,
+      "downloaded": true,
+      "path": "D:\\WSL\\UAVHumble22-validation\\candidate50_preparation01\\github_d4e473a_failure_logs01\\job_312_original.log",
+      "bytes": 427571,
+      "sha256": "37b7c9b9776fffb4f8cfce5d7a101b2becfd9b03b1cdc307b79c4a87d26aa4ac",
+      "redirect_host": "productionresultssa30.blob.core.windows.net",
+      "authorization_forwarded_to_redirect": false
+    }
+  ],
+  "exact_failure_block_artifacts": [
+    {
+      "path": "D:\\WSL\\UAVHumble22-validation\\candidate50_preparation01\\github_d4e473a_failure_logs01\\job_310_failure_block.log",
+      "bytes": 1776,
+      "sha256": "c1c632edb8fbce9d37df8949b7d13f97c54f40bdb6c405efc109c1305d2aef07",
+      "original_path": "D:\\WSL\\UAVHumble22-validation\\candidate50_preparation01\\github_d4e473a_failure_logs01\\job_310_original.log",
+      "source_start_line": 2227,
+      "source_end_line": 2244,
+      "contains_exact_original_text_substring": true
+    },
+    {
+      "path": "D:\\WSL\\UAVHumble22-validation\\candidate50_preparation01\\github_d4e473a_failure_logs01\\job_312_failure_block.log",
+      "bytes": 1854,
+      "sha256": "579a2ea024c36a52a56fbb3dfdd0b694a6d462574113834b24c7ecf52e1a695a",
+      "original_path": "D:\\WSL\\UAVHumble22-validation\\candidate50_preparation01\\github_d4e473a_failure_logs01\\job_312_original.log",
+      "source_start_line": 2193,
+      "source_end_line": 2210,
+      "contains_exact_original_text_substring": true
+    }
+  ],
+  "observed_failure": {
+    "test_id": "test_exclusive_navigation_cdr.ExclusiveNavigationCDRTests.test_real_cdr_retains_complete_native_cloud_and_independent_invalid_candidate",
+    "source_file": "tests/test_exclusive_navigation_cdr.py",
+    "assertion_line": 86,
+    "child_import_source_line": 19,
+    "child_traceback_location": "<string>:5",
+    "exception": "ModuleNotFoundError: No module named 'rclpy'",
+    "parent_assertion": "AssertionError: 1 != 0",
+    "python_310": {
+      "tests": 1819,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 5,
+      "elapsed_s": 72.271
+    },
+    "python_312": {
+      "tests": 1819,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 5,
+      "elapsed_s": 37.304
+    },
+    "failed_step": "Run portable fixtures, including standard zstd round trips",
+    "failed_step_number": 5,
+    "dependency_installation": "success in both jobs",
+    "subsequent_replay_entrypoint_step": "skipped in both jobs",
+    "interpretation": "A real ROS CDR integration test was included in generic Linux portable CI without ROS dependencies; this is a CI test-selection/environment-boundary failure, not a flight or algorithm failure."
+  },
+  "validation_scope": {
+    "runner_os": "ubuntu-22.04",
+    "python_versions": [
+      "3.10",
+      "3.12"
+    ],
+    "workflow_path": ".github/workflows/portable-tests.yml",
+    "workflow_sha256": "7e48f08f2b35a4eef2ed1852b63ac2b34c9e314959cc2285866961f194d271f7",
+    "cdr_test_source_sha256": "88b0abac04af3d3ceaa54da5fb92f47c9a67e96a1a8e557376cbd0e619d04a43",
+    "workflow_installation": "apt zstd; pip install -e '.[test]'",
+    "portable_test_command": "python -B -m unittest discover -s tests -v",
+    "native_test_current_skip_condition": "os.name == 'nt' only, tests/test_exclusive_navigation_cdr.py:10",
+    "real_cdr_assertions_preserved_in_source": true,
+    "local_reproduction_executed": false,
+    "reproducible_boundary": "Linux Python with portable test dependencies but no rclpy or built generated ROS interfaces. Existing CI jobs are the actual observed executions.",
+    "next_fix_scope": "Portable/native test selection or explicit native environment availability/opt-in. Preserve real CDR serialization, generated-interface origin checks and assertions in native validation; do not mock ROS or change flight algorithms to make portable CI green."
+  },
+  "audit_actions": {
+    "github_workflow_triggered_or_rerun": false,
+    "github_comment_or_message_sent": false,
+    "main_repository_or_frozen_source_modified": false,
+    "wsl_tests_build_or_simulation_started": false,
+    "existing_core_runtime_touched": false,
+    "original_ci_failure_preserved": true
+  }
+}
+

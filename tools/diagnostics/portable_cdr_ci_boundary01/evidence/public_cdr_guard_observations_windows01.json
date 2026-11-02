@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "scope": "WINDOWS_MANUAL_EXISTING_TEST_GUARD_OBSERVATIONS_NOT_LINUX_OR_NATIVE_CDR_VALIDATION",
+  "created_utc": "2026-11-02T07:16:05.619820+00:00",
+  "source": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tests\\test_exclusive_navigation_cdr.py",
+  "source_sha256": "4e80f62d7630e5160bcde7c4c0f5511263689a97af98bef27d4981f996a3e414",
+  "temporarily_bypassed_windows_method_decorator_only": true,
+  "environment_and_method_restored": true,
+  "observations_match_expected_guard_behavior": true,
+  "cases": [
+    {
+      "case": "WINDOWS_FRESH_CHILD_OPTIONAL_ROS_ABSENT",
+      "tests_run": 1,
+      "skipped": [
+        "NATIVE_ROS_PREREQUISITE_ABSENT rclpy"
+      ],
+      "failures": [],
+      "errors": []
+    },
+    {
+      "case": "WINDOWS_FRESH_CHILD_NATIVE_REQUIRED_ABSENT_EXPECTED_FAILURE",
+      "tests_run": 1,
+      "skipped": [],
+      "failures": [
+        "Traceback (most recent call last):\n  File \"D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tests\\test_exclusive_navigation_cdr.py\", line 106, in test_real_cdr_retains_complete_native_cloud_and_independent_invalid_candidate\n    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)\nAssertionError: 1 != 0 : Traceback (most recent call last):\n  File \"<string>\", line 17, in <module>\nModuleNotFoundError: No module named 'rclpy'\n\n"
+      ],
+      "errors": []
+    }
+  ],
+  "limits": [
+    "Original registered native CDR body assertions unchanged",
+    "Required-missing case intentionally fails; this is not a new successful native CDR test",
+    "Actual Linux portable CI and final native validation remain separate evidence"
+  ]
+}

@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "scope": "INDEPENDENT_STATIC_PUBLIC_CDR_PREREQUISITE_GUARD_REVIEW_ONLY",
+  "created_utc": "2026-11-02T07:19:36.070Z",
+  "reviewer": "/root/exclusive_navigation_prototype",
+  "candidate_author_is_reviewer": false,
+  "result": "PASS_STATIC_REVIEW_NO_IMPORT_OR_CDR_FAILURE_MASKING_FOUND",
+  "public_worktree_head": "d4e473a7ec21b129395bb680343c2d327d8f529a",
+  "reviewed_inputs": {
+    "changed_source": {
+      "path": "D:\\基于yolo和卡尔曼滤波\\tests\\test_exclusive_navigation_cdr.py",
+      "sha256": "4e80f62d7630e5160bcde7c4c0f5511263689a97af98bef27d4981f996a3e414"
+    },
+    "exact_candidate_patch": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\candidate50_preparation01\\portable_cdr_missing_prerequisite_candidate01.patch",
+      "sha256": "24fe2fd227316bdf84f02425ec47c7176707f6343f5fd2a4388aa8d1631e1c18"
+    },
+    "recorded_windows_observations": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\candidate50_preparation01\\public_cdr_guard_observations_windows01.json",
+      "sha256": "a67276a8b3426306447dcb9ef8d6f2c0b624533dbb0f75bc9348a88910940e84"
+    },
+    "original_github_failure_audit": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\candidate50_preparation01\\github_d4e473a_readonly01.json",
+      "sha256": "74ec9b0ed00eebbfa406cadbedf6dd3c6de3d78a06267a070d230fc4ee90dd82"
+    }
+  },
+  "actual_diff": {
+    "changed_tracked_files": [
+      "tests/test_exclusive_navigation_cdr.py"
+    ],
+    "added_lines": 20,
+    "deleted_lines": 0,
+    "applied_diff_matches_candidate_patch": true,
+    "original_windows_platform_decorator_unchanged": true,
+    "original_fresh_subprocess_timeout_and_cwd_unchanged": true,
+    "original_native_origin_serialization_roundtrip_assertions_and_success_marker_unchanged": true,
+    "flight_or_production_algorithm_code_modified": false
+  },
+  "static_boundary_checks": [
+    {
+      "case": "Optional portable environment with genuinely missing top-level rclpy or uav_tracking_interfaces spec",
+      "finding": "Only find_spec(name) is None emits one of two exact markers and exits 77. Parent additionally requires code 77, the exact stripped stdout marker, and no nonempty registered DDS configuration before skip."
+    },
+    {
+      "case": "Nonempty UAV_TRACKING_DDS_RUNTIME_CONFIG",
+      "finding": "Both child absence guard and parent skip are disabled; missing ROS raises during the real import and fails the original return-code assertion."
+    },
+    {
+      "case": "Installed but broken package, nested dependency or native import",
+      "finding": "A present top-level spec proceeds to the original real imports. find_spec/import exceptions are not caught or converted to skip; ordinary import failures return nonzero and fail."
+    },
+    {
+      "case": "Generated message import, source-origin, native type support, serialization or CDR assertion failure",
+      "finding": "Original statements remain outside any skip/error catch. Their failures propagate through the unchanged return-code assertion; no broad ModuleNotFoundError/ImportError exception suppression was added."
+    },
+    {
+      "case": "Unexpected exit, timeout or mismatched marker",
+      "finding": "Timeout still propagates as an error; an unexpected nonzero return code, 77 without a recognized exact stdout marker, or extra nonwhitespace stdout cannot pass the skip condition."
+    }
+  ],
+  "recorded_observations_review": {
+    "source_sha_matches_actual_changed_source": true,
+    "receipt_hash_matches_root_provided_identity": true,
+    "windows_normal_platform_skip": "The original Windows decorator still skips the test; this is not a ROS execution.",
+    "optional_missing_case": "Root manually bypassed only that decorator and observed one skip with exact missing-rclpy marker in a fresh Windows child.",
+    "registered_missing_case": "Root observed the intentionally failing missing-rclpy case with no skip; it is a rejection-path observation, not successful native CDR validation.",
+    "restoration_recorded": true,
+    "reviewer_reran_observations": false,
+    "limits": "These two Windows child observations establish only the recorded local guard behavior. They are not Linux portable CI, native ROS imports, generated-message type support, a CDR round trip, a cold build or flight acceptance."
+  },
+  "remaining_evidence": [
+    "Publish the reviewed public-only test fix and inspect the actual subsequent portable Python 3.10/3.12 CI results.",
+    "Retain required native validation and its original strong CDR assertions; no native PASS is created by this review.",
+    "The active frozen50 source is unchanged by this public worktree test-only diff. Future final-root creation from frozen50 does not automatically copy this public CI fix."
+  ],
+  "review_actions": {
+    "windows_named_small_file_reads_and_hashes_only": true,
+    "original_full_job_logs_reread": false,
+    "new_tests_or_observations_executed": false,
+    "wsl_native_build_or_simulation_started": false,
+    "main_or_frozen_source_modified": false,
+    "github_workflow_or_message_written": false,
+    "runtime_source_tree_proof_repeated": false,
+    "new_native_or_project_acceptance_claimed": false
+  }
+}
+

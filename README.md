@@ -103,6 +103,11 @@ command is sufficient for a minimal environment; pytest is only a convenience
 runner. ROS 2 execution is separate and should be performed in the WSL/Ubuntu
 environment described in `docs/ROS2_SIMULATION.md`.
 
+The real generated-message CDR test runs when ROS and the generated interfaces
+are available. Portable CI skips it only for an explicitly missing prerequisite;
+registered native validation still fails for missing or broken dependencies.
+See [the CI/native environment boundary](docs/CI_NATIVE_CDR.md).
+
 The portable GitHub Actions workflow runs these fixtures on Ubuntu 22.04 with
 Python 3.10 and 3.12, including standard `zstd` archive checks. It does not
 install ROS, start Gazebo/PX4, or certify a completed flight experiment. The

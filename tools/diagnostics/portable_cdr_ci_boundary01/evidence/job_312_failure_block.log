@@ -1,0 +1,18 @@
+2026-11-02T06:41:37.3257946Z ======================================================================
+2026-11-02T06:41:37.3258564Z FAIL: test_real_cdr_retains_complete_native_cloud_and_independent_invalid_candidate (test_exclusive_navigation_cdr.ExclusiveNavigationCDRTests.test_real_cdr_retains_complete_native_cloud_and_independent_invalid_candidate)
+2026-11-02T06:41:37.3259071Z ----------------------------------------------------------------------
+2026-11-02T06:41:37.3259280Z Traceback (most recent call last):
+2026-11-02T06:41:37.3264264Z   File "/home/runner/work/kalman-filter-drone/kalman-filter-drone/tests/test_exclusive_navigation_cdr.py", line 86, in test_real_cdr_retains_complete_native_cloud_and_independent_invalid_candidate
+2026-11-02T06:41:37.3264779Z     self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+2026-11-02T06:41:37.3265041Z AssertionError: 1 != 0 : Traceback (most recent call last):
+2026-11-02T06:41:37.3265410Z   File "<string>", line 5, in <module>
+2026-11-02T06:41:37.3265591Z ModuleNotFoundError: No module named 'rclpy'
+2026-11-02T06:41:37.3265714Z 
+2026-11-02T06:41:37.3265717Z 
+2026-11-02T06:41:37.3265808Z ----------------------------------------------------------------------
+2026-11-02T06:41:37.3266003Z Ran 1819 tests in 37.304s
+2026-11-02T06:41:37.3266092Z 
+2026-11-02T06:41:37.3266159Z FAILED (failures=1, skipped=5)
+2026-11-02T06:41:37.3266564Z {"status": "COMPLETE_AUXILIARY_ANALYSIS", "output": "/tmp/tmpcs2npxtp/inputs/appendix", "manifest_sha256": "1a66ea4d396bfe6cbf5fae76cbde283da929cf4ae61518026af4a8550540fe9a"}
+2026-11-02T06:41:37.3267150Z {"status": "INCOMPLETE_EVIDENCE", "output": "/tmp/tmplt__z_r8/inputs/appendix", "manifest_sha256": "b935801a2e27ff5dbfa5825c8046a51d909cfb8bb092d2bc49c2ff7a9260f095"}
+2026-11-02T06:41:37.4279214Z ##[error]Process completed with exit code 1.

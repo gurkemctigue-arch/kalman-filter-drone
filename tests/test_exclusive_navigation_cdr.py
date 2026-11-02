@@ -14,9 +14,22 @@ class ExclusiveNavigationCDRTests(unittest.TestCase):
         # actual generated interfaces and their native type-support libraries.
         code = r'''
 import importlib
+import importlib.util
+import os
 from pathlib import Path
 import numpy as np
+
+def require_native_package(name):
+    # Registered native validation must fail if its ROS installation is absent.
+    # Only a genuinely unavailable package in portable CI permits a skip.
+    if (not os.environ.get('UAV_TRACKING_DDS_RUNTIME_CONFIG')
+            and importlib.util.find_spec(name) is None):
+        print('NATIVE_ROS_PREREQUISITE_ABSENT ' + name)
+        raise SystemExit(77)
+
+require_native_package('rclpy')
 from rclpy.serialization import serialize_message, deserialize_message
+require_native_package('uav_tracking_interfaces')
 from uav_tracking_interfaces.msg import TargetObservation, TargetObservationArray
 from uav_tracking.core.exclusive_navigation import MAX_EXCLUSIVE_PIXELS
 
@@ -83,6 +96,13 @@ print('ACTUAL_EXCLUSIVE_NATIVE_CLOUD_CDR_PASS', MAX_EXCLUSIVE_PIXELS, len(wire))
 '''
         result = subprocess.run([sys.executable, "-B", "-c", code], cwd=Path(__file__).resolve().parents[1],
             capture_output=True, text=True, timeout=30)
+        absent_markers = {
+            "NATIVE_ROS_PREREQUISITE_ABSENT rclpy",
+            "NATIVE_ROS_PREREQUISITE_ABSENT uav_tracking_interfaces",
+        }
+        if (result.returncode == 77 and result.stdout.strip() in absent_markers
+                and not os.environ.get("UAV_TRACKING_DDS_RUNTIME_CONFIG")):
+            self.skipTest(result.stdout.strip())
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertIn("ACTUAL_EXCLUSIVE_NATIVE_CLOUD_CDR_PASS 16384", result.stdout)
 

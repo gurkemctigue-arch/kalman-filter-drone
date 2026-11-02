@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "scope": "PUBLIC_SMALL_ORIGINAL_CI_FAILURE_AND_GUARD_REPAIR_EVIDENCE_NOT_FLIGHT_OR_NATIVE_ACCEPTANCE",
+  "created_utc": "2026-11-02T07:21:38.934722+00:00",
+  "original_failed_commit": "d4e473a7ec21b129395bb680343c2d327d8f529a",
+  "original_failed_run_url": "https://github.com/gurkemctigue-arch/kalman-filter-drone/actions/runs/41401412315",
+  "repaired_public_test_source": "tests/test_exclusive_navigation_cdr.py",
+  "before_source_sha256": "88b0abac04af3d3ceaa54da5fb92f47c9a67e96a1a8e557376cbd0e619d04a43",
+  "after_source_sha256": "4e80f62d7630e5160bcde7c4c0f5511263689a97af98bef27d4981f996a3e414",
+  "frozen_flight_source_unchanged": "5aa188f4eacdc7d2d3a8c637ae726bf120160c3b",
+  "copied_original_count": 6,
+  "copied_original_bytes": 26464,
+  "files": [
+    {
+      "path": "evidence/github_d4e473a_readonly01.json",
+      "original_path": "D:\\WSL\\UAVHumble22-validation\\candidate50_preparation01\\github_d4e473a_readonly01.json",
+      "bytes": 14213,
+      "sha256": "74ec9b0ed00eebbfa406cadbedf6dd3c6de3d78a06267a070d230fc4ee90dd82"
+    },
+    {
+      "path": "evidence/job_310_failure_block.log",
+      "original_path": "D:\\WSL\\UAVHumble22-validation\\candidate50_preparation01\\github_d4e473a_failure_logs01\\job_310_failure_block.log",
+      "bytes": 1776,
+      "sha256": "c1c632edb8fbce9d37df8949b7d13f97c54f40bdb6c405efc109c1305d2aef07"
+    },
+    {
+      "path": "evidence/job_312_failure_block.log",
+      "original_path": "D:\\WSL\\UAVHumble22-validation\\candidate50_preparation01\\github_d4e473a_failure_logs01\\job_312_failure_block.log",
+      "bytes": 1854,
+      "sha256": "579a2ea024c36a52a56fbb3dfdd0b694a6d462574113834b24c7ecf52e1a695a"
+    },
+    {
+      "path": "policy/portable_cdr_missing_prerequisite_candidate01.patch",
+      "original_path": "D:\\WSL\\UAVHumble22-validation\\candidate50_preparation01\\portable_cdr_missing_prerequisite_candidate01.patch",
+      "bytes": 1754,
+      "sha256": "24fe2fd227316bdf84f02425ec47c7176707f6343f5fd2a4388aa8d1631e1c18"
+    },
+    {
+      "path": "evidence/public_cdr_guard_observations_windows01.json",
+      "original_path": "D:\\WSL\\UAVHumble22-validation\\candidate50_preparation01\\public_cdr_guard_observations_windows01.json",
+      "bytes": 1679,
+      "sha256": "a67276a8b3426306447dcb9ef8d6f2c0b624533dbb0f75bc9348a88910940e84"
+    },
+    {
+      "path": "review/public_cdr_boundary_review01.json",
+      "original_path": "D:\\WSL\\UAVHumble22-validation\\candidate50_preparation01\\public_cdr_boundary_review01.json",
+      "bytes": 5188,
+      "sha256": "bda9c7edecc169cedd6c71319221adbb3465a9682c127c43df6cc3aa94508ba7"
+    }
+  ],
+  "root_verified_all_copies_byte_exact": true,
+  "limits": [
+    "Windows manual guard observations are not Linux/native CDR proof",
+    "Native-required missing dependency is an intentionally observed rejection, not a successful CDR test",
+    "Actual post-repair Linux Actions run not asserted by this snapshot",
+    "Complete original failed job logs remain preserved at paths and hashes in audit receipt",
+    "Public test patch is not mixed into frozen50 or current final-v2 copy"
+  ]
+}
