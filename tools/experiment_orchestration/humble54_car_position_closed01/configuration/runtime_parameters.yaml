@@ -1,0 +1,162 @@
+uav_tracking_detection:
+  ros__parameters:
+    use_sim_time: true
+    class_name: car
+    class_id: 2
+    confidence_threshold: 0.45
+    maintenance_confidence_threshold: 0.25
+    model_path: /root/uav_tracking_fullplan_v4_humble54/models/yolo11m_car_sim_train20_04.pt
+    depth_scale: 1.0
+    min_depth_m: 0.2
+    max_depth_m: 50.0
+    min_depth_valid_ratio: 0.35
+    image_topic: /camera/color/image_raw
+    depth_topic: /camera/aligned_depth_to_color/image_raw
+    camera_info_topic: /camera/color/camera_info
+    observation_topic: /tracking/observations
+    depth_max_age_s: 0.02
+    inference_image_size: 512
+    max_inference_rate_hz: 10.0
+    inference_device: cpu
+    inference_threads: 4
+    car_surface_recovery_enabled: true
+    car_surface_recovery_method: component_centroid_v1
+    surface_geometry_frame: map
+    surface_tf_timeout_s: 0.02
+    surface_max_image_pixels: 307200
+    surface_max_roi_pixels: 307200
+    surface_max_visible_boxes: 64
+    navigation_enabled: true
+    navigation_exclusive_enabled: true
+    activation_phase_topic: /tracking/flight_phase
+    image_reliability: reliable
+uav_tracking_state_estimator:
+  ros__parameters:
+    use_sim_time: true
+    target_mode: auto_unique
+    target_class: car
+    initialization_confidence_threshold: 0.45
+    maintenance_confidence_threshold: 0.25
+    observation_topic: /tracking/observations
+    selection_topic: /tracking/selection
+    state_topic: /tracking/state
+    state_frame: map
+    process_noise_accel_mps2: 1.0
+    measurement_noise_position_m:
+    - 0.05
+    - 0.05
+    - 0.1
+    mahalanobis_gate: 9.21
+    default_dt: 0.0333333333
+    max_coast_frames: 8
+    max_lost_frames: 30
+    max_prediction_duration_s: 0.75
+    track_retention_duration_s: 3.0
+    max_observation_age_s: 0.6
+    supported_birth_confirmation_required: true
+    navigation_enabled: true
+    navigation_dimensions_m:
+    - 4.5
+    - 1.8
+    - 1.5
+    navigation_dimension_std_m:
+    - 0.45
+    - 0.18
+    - 0.15
+    navigation_correlated_two_face_bound: true
+    navigation_exclusive_enabled: true
+    estimator_method: adaptive_kf
+    propagate_vehicle_uncertainty: true
+    association_mode: legacy
+uav_tracking_controller:
+  ros__parameters:
+    use_sim_time: true
+    state_topic: /tracking/navigation_state
+    command_topic: /tracking/command
+    status_topic: /tracking/status
+    control_rate_hz: 20.0
+    command_mode: position
+    slew_position: true
+    max_position_lead_m:
+    - 2.0
+    - 2.0
+    - 0.5
+    desired_distance_m: 9.0
+    desired_height_m: 2.0
+    desired_offset_m:
+    - 0.0
+    - 0.0
+    - 0.0
+    position_gain:
+    - 0.6
+    - 0.6
+    - 0.5
+    integral_gain:
+    - 0.02
+    - 0.02
+    - 0.02
+    max_acceleration_mps2:
+    - 0.7
+    - 0.7
+    - 0.5
+    max_position_acceleration_mps2:
+    - 3.0
+    - 3.0
+    - 3.0
+    deadzone_m: 0.0
+    max_velocity_mps:
+    - 2.0
+    - 2.0
+    - 1.0
+    integral_limit: 1.0
+    prediction_timeout_s: 0.75
+    vehicle_timeout_s: 0.5
+    failsafe_mode: hold
+uav_tracking_px4_adapter:
+  ros__parameters:
+    use_sim_time: true
+    command_topic: /tracking/flight_command
+    trajectory_setpoint_topic: /fmu/in/trajectory_setpoint
+    offboard_control_mode_topic: /fmu/in/offboard_control_mode
+    vehicle_odometry_topic: /fmu/out/vehicle_odometry
+    vehicle_odom_topic: /vehicle/odometry
+    vehicle_status_topic: /fmu/out/vehicle_status_v1
+    vehicle_command_ack_topic: /fmu/out/vehicle_command_ack
+    require_vehicle_status: true
+    vehicle_status_timeout_s: 1.0
+    publish_rate_hz: 50.0
+    command_timeout_s: 0.5
+    odometry_timestamp_mode: source_sim
+    odometry_source_max_age_s: 0.5
+    odometry_source_max_future_s: 0.05
+    odometry_timing_topic: /vehicle/odometry_timing
+uav_tracking_flight_supervisor:
+  ros__parameters:
+    status_timestamp_mode: source_sim
+    status_source_max_age_s: 1.0
+    status_source_max_future_s: 0.05
+    status_timeout_s: 10.0
+    requested_simulation_real_time_factor: 0.125
+    stream_timestamp_mode: source_sim
+    odometry_timeout_s: 4.0
+    command_timeout_s: 4.0
+    odometry_source_max_age_s: 0.5
+    odometry_source_max_future_s: 0.05
+    command_source_max_age_s: 0.5
+    command_source_max_future_s: 0.05
+    publish_rate_hz: 20.0
+    heartbeat_prestream_s: 1.2
+    auto_start: true
+    simulation_only: true
+    takeoff_height_m: 3.0
+    takeoff_mode: px4_native
+    use_sim_time: true
+    supervisor_diagnostics_topic: /tracking/supervisor_diagnostics
+    native_takeoff_timeout_sim_s: 40.0
+    native_wall_timeout_s: 180.0
+    native_settle_s: 1.0
+    native_handoff_guard_s: 0.25
+    native_settle_speed_mps: 0.2
+    takeoff_position_tolerance_m: 0.18
+    local_position_topic: /fmu/out/vehicle_local_position_v1
+    estimator_flags_topic: /fmu/out/estimator_status_flags
