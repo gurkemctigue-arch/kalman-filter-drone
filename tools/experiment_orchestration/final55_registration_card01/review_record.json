@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "kind": "FUTURE_EXECUTION_CARD_AND_PUBLICATION_TOOL_REVIEW_NOT_EXECUTION",
+  "recorded_utc": "2026-11-02T21:01:58.462527+00:00",
+  "original_card": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\final55_normal_registration_execution_card01.md",
+    "bytes": 34952,
+    "sha256": "a903c8e50dbbb1106ce6edf825e7f8844fdd7562d60fad78e01dfa18f8a1d5eb"
+  },
+  "tools": {
+    "tools/reliability_v4_publication.py": {
+      "bytes": 30259,
+      "sha256": "8e1c903e25abe1557e64c2ab4c64662691e8962aeb2769aa57d2ec57f8064cd6"
+    },
+    "tests/test_reliability_v4_publication.py": {
+      "bytes": 34075,
+      "sha256": "99f20cfcb8b7f378c33f6b00c3c423d41de352c4d0fc465cfedce109affbfc36"
+    }
+  },
+  "verification": {
+    "author_windows_metadata_tests": {
+      "run": 32,
+      "passed": 32,
+      "elapsed_s": 4.378,
+      "source": "author tool observation reported in agent handoff; no separate raw log synthesized"
+    },
+    "independent_review": "clock_split_external_review inspected source, hashes, Python3.10 AST and actual registrar/guard/safety/native-supplement interface shapes; did not rerun tests",
+    "root_check": "matched final source/test hashes and parsed Python3.10 AST; did not execute target modules"
+  },
+  "not_performed": [
+    "WSL/native execution",
+    "canonical planning publication",
+    "final root freeze",
+    "formal plan generation",
+    "admission seal",
+    "formal flight"
+  ],
+  "boundary": "This card contains future command shapes and actual tool pins. No placeholder is an executed receipt. Planning publication preserves original DRAFT cold-build maps and uses a new final complete sidecar."
+}
