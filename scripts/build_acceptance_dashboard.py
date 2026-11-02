@@ -644,6 +644,452 @@ def build_dashboard(roots, output, *, checkpoint_title=None, checkpoint_note=Non
             "engineering_record_statuses":dict(Counter(trial["status"] for trial in trials))}
 
 
+V4_JSON_LIMIT = 32 * 1024 * 1024
+V4_COHORTS = {"core": (120, "FORMAL"), "extension": (160, "EXTENSION_FORMAL")}
+V4_TERMINAL = {"PASS", "FAIL", "INCOMPLETE_EVIDENCE", "EVALUATION_PENDING",
+               "INFRASTRUCTURE_ERROR", "INTERRUPTED"}
+V4_ATTACHMENT_KINDS = {
+    "detection": "PROSPECTIVE_ALL_ACTOR_DYNAMIC_DETECTION_REPORT_V1",
+    "recovery": "PROSPECTIVE_PHYSICAL_RECOVERY_APPENDIX_V1",
+    "timing": "OFFLINE_OBSERVED_PIPELINE_TIMING_NOT_CAUSAL_E2E",
+}
+
+
+def _v4_require(condition, message):
+    if not condition:
+        raise ValueError(message)
+
+
+def _v4_digest(value):
+    return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":"),
+                                     allow_nan=False).encode()).hexdigest()
+
+
+class _V4Inputs:
+    """Only bounded saved files; no evaluator imports or raw-data traversal."""
+
+    def __init__(self):
+        self.records = {}
+        self.protected = set()
+        self.deferred = []
+
+    def protect(self, path):
+        self.protected.add(Path(path).resolve())
+
+    def pin(self, value):
+        _v4_require(isinstance(value, dict) and isinstance(value.get("path"), str)
+                    and bool(value["path"]) and isinstance(value.get("sha256"), str)
+                    and re.fullmatch(r"[0-9a-f]{64}", value["sha256"]) is not None,
+                    "缺少有效 path/SHA-256 绑定")
+        if "bytes" in value:
+            _v4_require(type(value["bytes"]) is int and value["bytes"] >= 0, "无效文件大小绑定")
+        path = Path(value["path"]).resolve()
+        self.protect(path.parent)
+        return path
+
+    def defer(self, value, role):
+        self.pin(value)
+        self.deferred.append({"role": role, "binding": value, "validation": "NOT_REREAD"})
+
+    def read(self, path, role, *, binding=None, parse=True):
+        path = Path(path).resolve()
+        self.protect(path.parent)
+        if binding is not None:
+            _v4_require(self.pin(binding) == path, "绑定路径不一致：" + str(path))
+        _v4_require(path.is_file() and path.stat().st_size <= V4_JSON_LIMIT,
+                    "文件缺失或超过32 MiB读取上限：" + str(path))
+        with path.open("rb") as stream:
+            raw = stream.read(V4_JSON_LIMIT + 1)
+        _v4_require(len(raw) <= V4_JSON_LIMIT, "文件读取期间超过大小上限：" + str(path))
+        digest = hashlib.sha256(raw).hexdigest()
+        if binding is not None:
+            _v4_require(digest == binding["sha256"] and
+                        ("bytes" not in binding or binding["bytes"] == len(raw)),
+                        "绑定文件已改变：" + str(path))
+        record = {"path": str(path), "sha256": digest, "bytes": len(raw)}
+        previous = self.records.get(str(path))
+        _v4_require(previous is None or all(previous[key] == record[key] for key in record),
+                    "读取期间来源改变：" + str(path))
+        record["roles"] = sorted(set((previous or {}).get("roles", [])) | {role})
+        self.records[str(path)] = record
+        if not parse:
+            return None
+
+        def pairs(items):
+            result = {}
+            for key, value in items:
+                _v4_require(key not in result, "JSON重复键：" + key)
+                result[key] = value
+            return result
+
+        def invalid(token):
+            raise ValueError("JSON非有限数值：" + token)
+
+        def floating(token):
+            value = float(token)
+            _v4_require(math.isfinite(value), "JSON非有限数值：" + token)
+            return value
+
+        value = json.loads(raw.decode("utf-8-sig"), object_pairs_hook=pairs,
+                           parse_constant=invalid, parse_float=floating)
+        _v4_require(isinstance(value, dict), "JSON顶层必须是对象：" + str(path))
+        return value
+
+    def bound(self, binding, role):
+        return self.read(self.pin(binding), role, binding=binding)
+
+    def unchanged(self):
+        for item in list(self.records.values()):
+            self.read(item["path"], "final_small_file_check", binding=item, parse=False)
+
+
+def _v4_source(package, requested, role):
+    _v4_require(isinstance(requested, str) and bool(requested), "未提供绑定来源：" + role)
+    matches = [item for item in package.get("sources", []) if isinstance(item, dict)
+               and item.get("role") == role and item.get("path") == requested]
+    _v4_require(len(matches) == 1 and matches[0].get("exists") is True,
+                "来源索引缺失或重复：" + role)
+    return matches[0]
+
+
+def _v4_package(path, inputs):
+    path = Path(path).resolve()
+    if path.is_dir():
+        path = path / "documents.json"
+    package = inputs.read(path, "v4_documents")
+    _v4_require(type(package.get("schema_version")) is int and package["schema_version"] == 1
+                and package.get("kind") == "RELIABILITY_V4_DOCUMENT_PACKAGE",
+                "不支持的v4文档包schema/kind")
+    digest = _v4_digest({key: value for key, value in package.items() if key != "document_package_sha256"})
+    _v4_require(package.get("document_package_sha256") == digest, "文档包结构摘要不一致")
+    index = inputs.read(path.parent / "sources.json", "v4_document_sources")
+    _v4_require(type(index.get("schema_version")) is int and index["schema_version"] == 1
+                and index.get("kind") == "RELIABILITY_V4_REPORT_SOURCES"
+                and index.get("sources") == package.get("sources")
+                and index.get("document_package_sha256") == digest
+                and index.get("mode") == package.get("mode")
+                and index.get("scope") == package.get("scope"), "文档来源索引不一致")
+    expected = {"plan.md", "report.md", "plan.html", "report.html", "documents.json"}
+    outputs = index.get("outputs")
+    _v4_require(isinstance(outputs, list) and len(outputs) == 5
+                and all(isinstance(item, dict) for item in outputs)
+                and {item.get("path") for item in outputs} == expected, "文档包输出索引不完整")
+    for item in outputs:
+        binding = {**item, "path": str(path.parent / item["path"])}
+        inputs.read(binding["path"], "saved_document_output", binding=binding, parse=False)
+    _v4_require(isinstance(package.get("sources"), list) and isinstance(package.get("request"), dict),
+                "文档包缺少来源/请求结构")
+    return path, package
+
+
+def _v4_engineering(package, inputs):
+    """Count saved statuses on the original plans; never compute a verdict."""
+    request = package["request"]
+    plans, bindings, expected = {}, {}, {}
+    for cohort, (count, mode) in V4_COHORTS.items():
+        binding = _v4_source(package, request.get(cohort + "_path"), "engineering_plan")
+        plan = inputs.bound(binding, cohort + "_plan")
+        _v4_require(type(plan.get("schema_version")) is int and plan["schema_version"] == 1
+                    and plan.get("mode") == mode and len(plan.get("trials", [])) == count,
+                    "正式分母需要原始core120+extension160；开发包不能代入正式280")
+        _v4_require(plan.get("plan_sha256") == _v4_digest({key: value for key, value in plan.items()
+                                                         if key != "plan_sha256"}),
+                    "计划结构摘要已改变：" + cohort)
+        for key in ("frozen_root", "output"):
+            if isinstance(plan.get(key), str):
+                inputs.protect(plan[key])
+        ids = [trial.get("id") for trial in plan["trials"] if isinstance(trial, dict)]
+        _v4_require(len(ids) == count and all(isinstance(value, str) and value for value in ids)
+                    and len(set(ids)) == count and not (set(ids) & set(expected)), "计划槽ID缺失或重复")
+        for trial in plan["trials"]:
+            expected[trial["id"]] = (cohort, trial)
+            if isinstance(trial.get("directory"), str):
+                inputs.protect(trial["directory"])
+        plans[cohort], bindings[cohort] = plan, binding
+    _v4_require(plans["extension"].get("core_reference_binding", {}).get("plan_sha256")
+                == plans["core"]["plan_sha256"], "扩展计划未引用该核心计划")
+    summary_binding = _v4_source(package, request.get("summary_path"), "engineering_summary")
+    summary = inputs.bound(summary_binding, "v4_engineering_summary")
+    _v4_require(type(summary.get("schema_version")) is int and summary["schema_version"] == 1
+                and isinstance(summary.get("trials"), list)
+                and isinstance(summary.get("cohorts"), dict)
+                and package.get("cohorts") == summary["cohorts"], "不支持或不一致的工程summary")
+    for cohort, (count, _mode) in V4_COHORTS.items():
+        item = summary["cohorts"].get(cohort, {})
+        _v4_require(item.get("planned_slots") == count
+                    and item.get("plan_sha256") == plans[cohort]["plan_sha256"], "summary计划分母/摘要不一致")
+    rows = {}
+    for row in summary["trials"]:
+        _v4_require(isinstance(row, dict) and isinstance(row.get("slot_id"), str)
+                    and row["slot_id"] in expected and row["slot_id"] not in rows, "summary出现额外/重复槽")
+        cohort, trial = expected[row["slot_id"]]
+        _v4_require(row.get("cohort") == cohort and isinstance(row.get("status"), str)
+                    and row["status"] and all(row.get(key) == trial.get(key)
+                    for key in ("target_class", "group", "seed")), "summary槽身份/状态不一致")
+        rows[row["slot_id"]] = row
+    complete_rows = []
+    for slot_id, (cohort, trial) in expected.items():
+        complete_rows.append(rows.get(slot_id, {"slot_id": slot_id, "cohort": cohort,
+            "target_class": trial.get("target_class"), "group": trial.get("group"),
+            "seed": trial.get("seed"), "status": "MISSING_SUMMARY_ROW", "metrics": {},
+            "report_issues": [{"reason": "绑定summary中缺少原计划槽；不等于通过或零误差"}]}))
+    return {"status": "SAVED_FORMAL_ROWS_BOUND_NOT_REEVALUATED", "rows": complete_rows,
+            "plans": plans, "plan_bindings": bindings, "summary": summary,
+            "slot_counts": dict(Counter(row["status"] for row in complete_rows))}
+
+
+def _v4_same_plan(binding, engineering, cohort, inputs):
+    inputs.pin(binding)
+    expected = engineering["plan_bindings"][cohort]
+    _v4_require(all(binding.get(key) == expected.get(key) for key in ("path", "sha256")),
+                "附件绑定了不同的原始计划：" + cohort)
+
+
+def _v4_attachment(path, kind, engineering, inputs):
+    path = Path(path).resolve()
+    result = {"type": kind, "path": str(path), "status": "REJECTED_OR_MISSING", "data": None}
+    try:
+        data = inputs.read(path, kind + "_saved_report")
+        _v4_require(type(data.get("schema_version")) is int and data["schema_version"] == 1
+                    and data.get("kind") == V4_ATTACHMENT_KINDS[kind], "不支持的附件schema/kind")
+        _v4_require(engineering["status"] == "SAVED_FORMAL_ROWS_BOUND_NOT_REEVALUATED",
+                    "没有可绑定的正式120+160计划，附件不能计入本入口")
+        if kind == "detection":
+            protocol = inputs.bound(data.get("protocol"), "prospective_detection_protocol")
+            _v4_require(type(protocol.get("schema_version")) is int and protocol["schema_version"] == 1
+                        and protocol.get("kind") == "PROSPECTIVE_ALL_ACTOR_DYNAMIC_CAMERA_DETECTION_V1"
+                        and protocol.get("original_planned_slots") == data.get("original_planned_slots") == 280,
+                        "检测协议schema/完整280分母不一致")
+            for cohort in V4_COHORTS:
+                _v4_same_plan(protocol.get("plans", {}).get(cohort), engineering, cohort, inputs)
+            original_ids = {row["slot_id"] for row in engineering["rows"]}
+            protocol_slots = protocol.get("slots", [])
+            _v4_require(isinstance(protocol_slots, list) and all(isinstance(row, dict) for row in protocol_slots),
+                        "检测协议槽必须是对象列表")
+            protocol_ids = [row.get("slot_id") for row in protocol_slots]
+            recordings = data.get("recordings")
+            _v4_require(len(protocol_ids) == 280 and set(protocol_ids) == original_ids
+                        and isinstance(recordings, list) and all(isinstance(row, dict) for row in recordings),
+                        "检测协议/报告槽结构不完整")
+            ids = [row.get("slot_id") for row in recordings]
+            missing = data.get("missing_original_slot_ids")
+            _v4_require(len(set(ids)) == len(ids) and set(ids) <= original_ids
+                        and data.get("recording_slots_supplied") == len(ids)
+                        and isinstance(missing, list) and len(set(missing)) == len(missing)
+                        and set(missing) == original_ids - set(ids)
+                        and data.get("all280_recordings_supplied") is (not missing), "检测缺失槽台账不一致")
+            review_pin = data.get("review_file")
+            if review_pin is not None:
+                review = inputs.bound(review_pin, "independent_visible_label_review")
+                _v4_require(type(review.get("schema_version")) is int and review["schema_version"] == 1
+                            and review.get("kind") == "INDEPENDENT_ALL_ACTOR_VISIBLE_LABEL_REVIEW_V1",
+                            "未知独立可见标签复核schema")
+            for row in recordings:
+                _v4_require(row.get("protocol") == data["protocol"], "逐槽检测协议绑定不一致")
+                _v4_require(row.get("reviewed_metrics") is None or isinstance(row["reviewed_metrics"], dict),
+                            "检测指标结构无效")
+                inputs.defer(row.get("recording"), "detection_recording_not_reread")
+                if row.get("prediction_cache") is not None:
+                    inputs.defer(row["prediction_cache"], "detection_prediction_cache_not_reread")
+                if row.get("reviewed_metrics") is not None:
+                    _v4_require(review_pin is not None and row.get("independent_visible_label_review_valid") is True
+                                and row.get("publication_status") == "REVIEWED_SUBSET_ONLY",
+                                "已复核检测指标缺少独立复核绑定")
+            _v4_require(data.get("reviewed_aggregate") is None or (isinstance(data["reviewed_aggregate"], dict)
+                and review_pin is not None and any(row.get("reviewed_metrics") is not None for row in recordings)),
+                "检测汇总缺少已复核子集")
+            if isinstance(data.get("reviewed_aggregate"), dict):
+                value = data["reviewed_aggregate"].get("map50_95")
+                _v4_require(value is None or (finite(value) and 0 <= value <= 1), "检测mAP不是有效数值/null")
+        elif kind == "recovery":
+            _v4_require(data.get("scope") == "INDEPENDENT_PHYSICAL_RECOVERY_APPENDIX_NOT_ORIGINAL_VERDICTS"
+                        and data.get("evaluation_status") == "DESCRIPTIVE_APPENDIX_WITH_EXPLICIT_UNKNOWN_AND_MISSING_OPPORTUNITIES",
+                        "恢复附件范围不符；协议文件不能当作分析报告")
+            protocol = inputs.bound(data.get("protocol_binding"), "physical_recovery_protocol")
+            _v4_require(type(protocol.get("schema_version")) is int and protocol["schema_version"] == 1
+                        and protocol.get("kind") == V4_ATTACHMENT_KINDS[kind]
+                        and protocol.get("registered_slots") == 40
+                        and protocol.get("registered_opportunities") == 80
+                        and protocol.get("original_core_denominator") == 120, "恢复协议分母不完整")
+            _v4_same_plan(protocol.get("core_plan"), engineering, "core", inputs)
+            protocol_slots = protocol.get("slots", [])
+            slots = data.get("slots", [])
+            _v4_require(isinstance(protocol_slots, list) and isinstance(slots, list)
+                        and all(isinstance(row, dict) for row in [*protocol_slots, *slots]), "恢复槽结构无效")
+            registered = {row.get("slot_id") for row in protocol_slots}
+            _v4_require(len(protocol_slots) == len(registered) == 40 and len(slots) == 40
+                        and {row.get("slot_id") for row in slots} == registered
+                        and registered <= {row["slot_id"] for row in engineering["rows"] if row["cohort"] == "core"},
+                        "恢复原40槽台账不完整")
+            for row in [*protocol_slots, *slots]:
+                opportunities = row.get("opportunities", [])
+                _v4_require(isinstance(opportunities, list) and len(opportunities) == 2
+                            and all(isinstance(entry, dict) for entry in opportunities)
+                            and {(entry.get("id"), entry.get("kind")) for entry in opportunities}
+                            == {(row["slot_id"] + ":" + name, name) for name in ("short", "long_explicit_reselection")},
+                            "恢复原两类机会有遗漏或重标")
+            for name, count in (("short", 40), ("long_explicit_reselection", 40), ("all", 80)):
+                entry = data.get("summary", {}).get(name, {})
+                _v4_require(isinstance(entry, dict) and entry.get("registered_opportunities") == count
+                            and isinstance(entry.get("original_confirmation_delay_s"), dict), "恢复机会分母/时延结构不一致")
+                supported = entry.get("supported_original_without_observed_different")
+                lower_bound = entry.get("descriptive_lower_bound")
+                _v4_require(type(supported) is int and 0 <= supported <= count and finite(lower_bound)
+                            and math.isclose(lower_bound, supported / count, abs_tol=1e-12), "恢复描述下界与完整机会计数不一致")
+        else:
+            _v4_require(data.get("scope") == "OBSERVABLE_TIMING_ONLY_NOT_ACCEPTANCE", "时延附件范围不符")
+            context = inputs.bound(data.get("inputs", {}).get("context"), "timing_export_context")
+            _v4_require(type(context.get("schema_version")) is int and context["schema_version"] == 1
+                        and context.get("kind") == "NATIVE_PIPELINE_TIMING_EXPORT_CONTEXT_NOT_ACCEPTANCE"
+                        and context.get("events") == data.get("inputs", {}).get("events"), "时延原始context/events绑定不一致")
+            matches = [(cohort, trial) for cohort, plan in engineering["plans"].items()
+                       for trial in plan["trials"] if context.get("source_root") == plan.get("frozen_root")
+                       and isinstance(context.get("source_root"), str)
+                       and context.get("trial") == trial.get("directory") and isinstance(context.get("trial"), str)]
+            _v4_require(len(matches) == 1, "时延context不是本轮原始120+160计划中的唯一冻结来源/试验")
+            result["bound_cohort"], matched_trial = matches[0]
+            result["bound_slot_id"] = matched_trial["id"]
+            inputs.defer(context.get("events"), "timing_events_not_reread")
+            for name in ("source_root", "trial", "source_results_root"):
+                if isinstance(context.get(name), str):
+                    inputs.protect(context[name])
+            for root in context.get("protected_roots", []):
+                inputs.protect(root)
+            for key in ("actual_worker_processed_wall_fps", "capture_to_controller_causal_source_s",
+                        "capture_to_px4_setpoint_causal_source_s", "physical_capture_to_px4_effect_wall_s"):
+                _v4_require(isinstance(data.get(key), dict) and data[key].get("status") == "NOT_OBSERVED",
+                            "当前时延schema不能声称worker墙时FPS或因果端到端已观察")
+            _v4_require(data["actual_worker_processed_wall_fps"].get("hz") is None,
+                        "未观察到的墙时FPS不能有数值")
+            for key in ("detector_acquisition_to_prepublication_source_s", "detector_processing_prefix_wall_s",
+                        "completed_job_yolo_predict_wall_s", "controller_reported_measurement_age_source_s"):
+                entry = data.get(key)
+                _v4_require(isinstance(entry, dict) and isinstance(entry.get("statistics_s"), dict)
+                            and all(type(entry.get(name)) is int and entry[name] >= 0 for name in ("known", "unknown", "total"))
+                            and entry["known"] + entry["unknown"] == entry["total"], "时延机会计数/统计结构不一致")
+                _v4_require(entry["known"] > 0 or all(value is None for value in entry["statistics_s"].values()),
+                            "没有已知时延样本，不能展示非null统计")
+        result.update(status="SAVED_REPORT_SMALL_BINDINGS_CHECKED_NOT_REVERIFIED", data=data)
+    except (OSError, ValueError, KeyError, TypeError, AttributeError) as error:
+        result["error"] = str(error)
+    return result
+
+
+def _v4_value(value):
+    return "未知 / 缺失（null）" if value is None else esc(value)
+
+
+def _v4_table(headers, rows):
+    return "<table><tr>" + "".join("<th>" + esc(value) + "</th>" for value in headers) + "</tr>" + "".join(
+        "<tr>" + "".join("<td>" + _v4_value(value) + "</td>" for value in row) + "</tr>" for row in rows) + "</table>"
+
+
+def _v4_attachment_html(item, output):
+    names = {"detection": "动态相机全物体检测附件", "recovery": "独立物理恢复描述附件", "timing": "可观测时序附件"}
+    body = ['<section class="panel"><h2>' + names[item["type"]] + '</h2><p>' + esc(item["status"]) + '</p>']
+    if item["data"] is None:
+        return "".join(body + ['<p class="notice">缺失或拒绝：' + esc(item.get("error", "未提供")) + '</p></section>'])
+    data = item["data"]
+    body.append('<p>' + link(Path(item["path"]), output, "打开保存的原报告") + '</p><p class="notice">仅核对报告、协议及明确的小文件绑定；未重读全部原始数据，未重算指标，也未在本入口执行独立语义复验。</p>')
+    if item["type"] == "detection":
+        body.append(_v4_table(["原计划槽", "已提供录制槽", "缺失录制槽", "保存的采样机会数"],
+            [[280, data.get("recording_slots_supplied"), len(data["missing_original_slot_ids"]), data.get("scheduled_opportunities")]]))
+        counts = Counter(row.get("publication_status", "UNKNOWN") for row in data["recordings"])
+        body.append(_v4_table(["保存的检测发布状态", "槽数"], sorted(counts.items())))
+        aggregate = data.get("reviewed_aggregate")
+        body.append('<p>保存报告中的独立批准可见子集 mAP50:95：' + _v4_value(aggregate.get("map50_95") if isinstance(aggregate, dict) else None)
+                    + '。仅适用于已批准的可见仿真子集；缺图、遮挡及未复核机会仍保留，不能解释为全飞行准确率、在线FPS或原280槽全部验收通过。</p>')
+    elif item["type"] == "recovery":
+        body.append('<p class="notice">此工具没有 verify-report。这里只展示已保存的描述附件，不能声称已独立复验；显式重选是用户/脚本辅助，不是自动ReID。</p>')
+        body.append(_v4_table(["机会类型", "完整分母", "支持原个体且未见不同个体", "描述下界", "右删失", "缺失/无效事件", "确认时延均值/s"], [
+            [name, entry.get("registered_opportunities"), entry.get("supported_original_without_observed_different"),
+             entry.get("descriptive_lower_bound"), entry.get("right_censored"), entry.get("missing_or_invalid_events"),
+             entry.get("original_confirmation_delay_s", {}).get("mean")]
+            for name, entry in data["summary"].items() if name in {"short", "long_explicit_reselection", "all"}]))
+        body.append('<p>未知与未恢复机会保留在80机会分母中；未观察到确认的时延保持null。原个体恢复与重选后是否跟对新请求对象分开解释。</p>')
+    else:
+        body.append('<p>精确绑定原计划槽：' + esc(item["bound_cohort"] + " / " + item["bound_slot_id"]) + '</p>')
+        body.append('<p class="notice">实际worker墙时FPS、图像到控制器/设定值的因果端到端时延、物理采集到PX4生效时延：NOT_OBSERVED（未观察）。不得跨时钟相减或按RTF换算。</p>')
+        names = [("detector_acquisition_to_prepublication_source_s", "采集到发布前/source clock"),
+                 ("detector_processing_prefix_wall_s", "检测处理及发布前缀/wall clock"),
+                 ("completed_job_yolo_predict_wall_s", "已完成job的YOLO predict/wall clock"),
+                 ("controller_reported_measurement_age_source_s", "控制器报告的测量年龄/source clock")]
+        body.append(_v4_table(["保存的可观测量", "已知", "未知", "机会总数", "均值/s", "p95/s"], [
+            [label, data.get(key, {}).get("known"), data.get(key, {}).get("unknown"),
+             data.get(key, {}).get("total"), data.get(key, {}).get("statistics_s", {}).get("mean"),
+             data.get(key, {}).get("statistics_s", {}).get("p95")] for key, label in names]))
+        body.append('<p>source clock数值不能自动视为墙时；事件和job原日志未在此重读，尾部完整性未在此认证。</p>')
+    return "".join(body + ['</section>'])
+
+
+def build_v4_dashboard(package_path, output, *, prospective_detection=(), physical_recovery=(), timing=()):
+    """Independent saved-v4 presentation; not the reporter's verify_package."""
+    inputs = _V4Inputs()
+    package_path, package = _v4_package(package_path, inputs)
+    try:
+        engineering = _v4_engineering(package, inputs)
+    except (OSError, ValueError, KeyError, TypeError, AttributeError) as error:
+        engineering = {"status": "MISSING_OR_REJECTED_FORMAL_ENGINEERING", "error": str(error),
+                       "rows": [], "slot_counts": {"MISSING_FORMAL_EVIDENCE": 280}}
+    attachments = []
+    for kind, paths in (("detection", prospective_detection), ("recovery", physical_recovery), ("timing", timing)):
+        attachments.extend(_v4_attachment(path, kind, engineering, inputs) for path in paths)
+        if not paths:
+            attachments.append({"type": kind, "status": "MISSING_NOT_PROVIDED", "data": None})
+    requested_output = Path(output).absolute()
+    for path in (requested_output, requested_output.with_suffix(".sources.json")):
+        _v4_require(not path.exists() and not path.is_symlink(), "v4入口必须写入新的独立文件：" + str(path))
+    output = requested_output.resolve()
+    source_index = output.with_suffix(".sources.json")
+    for path in (output, source_index):
+        _v4_require(not path.exists() and not path.is_symlink(), "v4入口必须写入新的独立文件：" + str(path))
+        _v4_require(not any(path.is_relative_to(root) for root in inputs.protected),
+                    "禁止在输入/原始试验/冻结目录内输出：" + str(path))
+    title = "v4独立交付入口 · 原计划280槽证据"
+    body = ['<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">',
+            '<title>' + title + '</title><style>body{background:#f3f5f8;color:#172339;font:15px/1.65 system-ui,"Microsoft YaHei",sans-serif}main{max-width:1280px;margin:auto;padding:24px}.panel{background:white;border:1px solid #d9e1eb;border-radius:10px;padding:18px;margin:18px 0}.notice{background:#fff3cf;padding:12px}table{border-collapse:collapse;width:100%;font-size:13px}td,th{border-bottom:1px solid #d9e1eb;padding:7px;text-align:left;overflow-wrap:anywhere}a{color:#135ca9;overflow-wrap:anywhere}.scroll{overflow-x:auto}details{margin:10px 0}</style><main>',
+            '<h1>' + title + '</h1><p class="notice">这是保存证据的独立展示，不重新执行原reporter的verify_package/final_gate，不读取bag、模型或Gazebo，不借用历史166槽判定。终态登记、工程通过、身份已知覆盖与论文结论各有边界，页面不能授予项目整体验收。</p>',
+            '<section class="panel"><h2>文档包与来源</h2><p>包模式：' + esc(package.get("mode")) + '；保存范围：' + esc(package.get("scope")) + '</p><p>已核对文档结构摘要及5个保存输出文件绑定；未按原请求重建原始验收。DOCX/PDF原生分页与逐页视觉验收不由本入口证明。</p><p>'
+            + ' · '.join(link(package_path.parent / name, output, label) for name, label in
+                         (("plan.html", "计划书HTML"), ("report.html", "研究报告HTML"), ("documents.json", "文档结构"), ("sources.json", "原包来源"))) + '</p></section>',
+            '<section class="panel"><h2>工程执行覆盖</h2><p>原计划分母：280（core 120＋extension 160）。状态：' + esc(engineering["status"]) + '</p>']
+    if engineering.get("error"):
+        body.append('<p class="notice">正式证据不可用：' + esc(engineering["error"]) + '。280槽保留为缺失；开发试验不填入正式分母。</p>')
+    body.append(_v4_table(["保存的原状态 / 明确缺失", "槽数（总分母280）"], sorted(engineering["slot_counts"].items())))
+    body.append('<p>FAIL、证据不足、基础设施停止、中断、未知状态、未完成与缺失全部保留；不把有限误差或终态登记重新判成PASS。</p></section>')
+    body.extend(_v4_attachment_html(item, output) for item in attachments)
+    body.append('<section class="panel"><h2>原计划逐槽记录</h2><p>以下数值来自绑定summary，未重算；null不是0。身份已知覆盖与保持下界使用原完整任务时间格，不以已检测到的帧替换分母。</p><div class="scroll">')
+    headers = ["队列 / 槽ID", "类别 / 组 / seed", "原状态", "距离RMSE/m", "高度RMSE/m", "完整任务身份已知覆盖", "完整任务保持下界", "错误样本", "未知样本", "报告问题"]
+    rows = []
+    for row in engineering["rows"]:
+        metrics = row.get("metrics") if isinstance(row.get("metrics"), dict) else {}
+        rows.append([row["cohort"] + " / " + row["slot_id"], "/".join(str(row.get(key)) for key in ("target_class", "group", "seed")),
+                     row["status"], *[metrics.get(key) for key in ("base_link_distance_rmse_m", "base_link_height_rmse_m",
+                     "physical_task_time_known_coverage", "physical_task_time_retention_lower_bound",
+                     "physical_task_time_wrong_samples", "physical_task_time_unknown_samples")],
+                     json.dumps(row.get("report_issues", []), ensure_ascii=False)])
+    body.append(_v4_table(headers, rows))
+    body.append('</div></section><p>' + link(source_index, output, "本入口小文件核对记录与未重读绑定索引")
+                + '</p><p>本页不运行模拟、不做标注、不重算统计。附件只补充展示，不改变原计划槽裁决；失败不能被删除或以新批次替换。</p></main></html>')
+    inputs.unchanged()
+    index = {"schema_version": 1, "kind": "RELIABILITY_V4_SAVED_DELIVERY_DASHBOARD",
+             "generated_utc": datetime.now(timezone.utc).isoformat(), "original_planned_slots": 280,
+             "validation": "SMALL_SAVED_FILES_CHECKED_NOT_ORIGINAL_EVALUATOR_RECONSTRUCTION",
+             "project_acceptance_claimed": False, "engineering_status": engineering["status"],
+             "slot_counts": engineering["slot_counts"], "displayed_slot_rows": len(engineering["rows"]),
+             "attachments": [{key: value for key, value in item.items() if key != "data"} for item in attachments],
+             "checked_small_files": list(inputs.records.values()), "deferred_bindings_not_reread": inputs.deferred,
+             "original_evaluator_rerun": False, "ros_bag_reads": 0, "model_inference": False}
+    output.parent.mkdir(parents=True, exist_ok=True)
+    with source_index.open("x", encoding="utf-8", newline="\n") as stream:
+        stream.write(json.dumps(index, ensure_ascii=False, indent=2, allow_nan=False) + "\n")
+    with output.open("x", encoding="utf-8", newline="\n") as stream:
+        stream.write("\n".join(body))
+    return {"output": str(output), "source_index": str(source_index), "original_planned_slots": 280,
+            "engineering_status": engineering["status"], "slot_counts": engineering["slot_counts"],
+            "attachment_statuses": [item["status"] for item in attachments], "project_acceptance_claimed": False}
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--results-dir",type=Path,default=ROOT/"results")
@@ -652,9 +1098,23 @@ def main():
     parser.add_argument("--checkpoint-title")
     parser.add_argument("--checkpoint-note")
     parser.add_argument("--highlight-frame",type=Path,action="append",default=[])
+    parser.add_argument("--v4-package", type=Path, help="显式v4 documents.json或包目录；独立于历史166槽入口")
+    parser.add_argument("--v4-prospective-detection", type=Path, action="append", default=[])
+    parser.add_argument("--v4-physical-recovery", type=Path, action="append", default=[])
+    parser.add_argument("--v4-timing", type=Path, action="append", default=[])
     args=parser.parse_args()
-    result=build_dashboard([args.results_dir,*args.additional_results_dir],args.output or args.results_dir/"验收总览.html",
-                           checkpoint_title=args.checkpoint_title,checkpoint_note=args.checkpoint_note,highlight_frames=args.highlight_frame)
+    if args.v4_package is not None:
+        if (args.output is None or args.results_dir != ROOT/"results" or args.additional_results_dir
+                or args.checkpoint_title or args.checkpoint_note or args.highlight_frame):
+            parser.error("v4分支需要显式--output，不能混用历史发现/检查点选项")
+        result = build_v4_dashboard(args.v4_package, args.output,
+                    prospective_detection=args.v4_prospective_detection,
+                    physical_recovery=args.v4_physical_recovery, timing=args.v4_timing)
+    else:
+        if args.v4_prospective_detection or args.v4_physical_recovery or args.v4_timing:
+            parser.error("v4附件需要--v4-package；不能交给历史166槽分支")
+        result=build_dashboard([args.results_dir,*args.additional_results_dir],args.output or args.results_dir/"验收总览.html",
+                               checkpoint_title=args.checkpoint_title,checkpoint_note=args.checkpoint_note,highlight_frames=args.highlight_frame)
     print(json.dumps(result,ensure_ascii=False))
 
 

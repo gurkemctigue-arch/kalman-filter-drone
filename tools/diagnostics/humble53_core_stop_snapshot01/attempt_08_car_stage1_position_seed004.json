@@ -1,0 +1,49 @@
+{
+  "slot": "car_stage1_position_seed004",
+  "number": 8,
+  "started_utc": "2026-11-02T17:28:29.953240+00:00",
+  "runner_result": {
+    "started_this_invocation": 1,
+    "stop": null,
+    "plan_sha256": "550257fd3a3de476dd1c43f637014faa7f09290c71ca434f95bba338823dea33",
+    "mode": "PROBE",
+    "planned_count": 12,
+    "status_counts": {
+      "PASS": 7,
+      "FAIL": 1,
+      "PENDING": 4
+    },
+    "terminal_count": 8,
+    "all_engineering_pass": false,
+    "exit_code_semantics": "Run exit zero means no orchestration/infrastructure stop; inspect all_engineering_pass and every terminal result separately.",
+    "pending_ids": [
+      "car_stage2_crossing_seed004",
+      "car_stage3_midpoint_seed004",
+      "car_stage3_active_seed004",
+      "car_stage3_multi_active_seed004"
+    ],
+    "scope": "New post-repair engineering slots; navigation/base_link evidence and unknown identity are retained. This is not a new v3 four-estimator comparison."
+  },
+  "record": {
+    "status": "FAIL",
+    "engineering_result": "FAIL",
+    "record_binding": {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble53/reliability_v4_humble53_probe01_seed004_matrix/slots/car_stage1_position_seed004.json",
+      "sha256": "884c20621aad6c504f03668c8c7f7e944fc2aec6e1b465d49f1e9a5507c39ede",
+      "record_sha256": "534e590e5313bda5fd3ebb3e3391204d2a616e6f022ef42dc9a39ab287449918",
+      "started_marker": {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble53/reliability_v4_humble53_probe01_seed004_matrix/slots/car_stage1_position_seed004.started.json",
+        "sha256": "90b9550bee8a020af09df2742fac04f3610ba5ef83f0985ac68c65cffb3f807a"
+      },
+      "plan_sha256": "550257fd3a3de476dd1c43f637014faa7f09290c71ca434f95bba338823dea33",
+      "started_utc": "2026-11-02T17:29:11.407053+00:00"
+    }
+  },
+  "audit": null,
+  "error": "ValueError:Original source-clock/native-startup evidence must independently PASS",
+  "started_marker": {
+    "path": "/root/uav_tracking_fullplan_v4_humble53/results/reliability_v4_humble53_probe01_seed004_matrix/observed_driver01/08_car_stage1_position_seed004.started.json",
+    "sha256": "83410f44ee806545021242d7210c71168243005288363a277fd05b45676f1107"
+  },
+  "finished_utc": "2026-11-02T17:49:56.855692+00:00"
+}

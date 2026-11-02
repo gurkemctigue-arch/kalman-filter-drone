@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "policy": "ext4_sqlite_close_standard_zstd_verified_native_read",
+  "source_spool": "/root/uav_tracking_bag_spool/trial_wmez5b_j",
+  "destination": "/root/uav_tracking_fullplan_v4_humble53/results/reliability_v4_humble53_probe01_car_stage1_position_seed004/rosbag",
+  "recorder_exit_code": 0,
+  "raw_validation": {
+    "status": "PASS",
+    "metadata_sha256": "5085845e57b7de439b5e39899ff08147e789489ab4f78d22b94d5b893a145cef",
+    "message_count": 155028,
+    "topic_counts": {
+      "/tracking/observation_frames": 553,
+      "/tracking/detection_diagnostics": 728,
+      "/tracking/navigation_state": 4315,
+      "/tracking/selection": 1,
+      "/tracking/status": 1861,
+      "/tracking/tracks": 4315,
+      "/fmu/in/offboard_control_mode": 4654,
+      "/tf_static": 1,
+      "/tracking/flight_command": 1861,
+      "/vehicle/odometry": 9246,
+      "/fmu/out/vehicle_odometry": 9246,
+      "/camera/color/camera_info": 930,
+      "/camera/aligned_depth_to_color/image_raw": 930,
+      "/fmu/out/vehicle_local_position_v1": 4626,
+      "/fmu/out/vehicle_command_ack": 5,
+      "/fmu/in/trajectory_setpoint": 4654,
+      "/tracking/state": 4315,
+      "/tracking/observations": 524,
+      "/tf": 9243,
+      "/camera/color/image_raw": 930,
+      "/fmu/out/estimator_status_flags": 100,
+      "/fmu/out/vehicle_status_v1": 202,
+      "/tracking/navigation_diagnostics": 4315,
+      "/tracking/flight_phase": 1861,
+      "/fmu/in/vehicle_command": 3,
+      "/tracking/supervisor_diagnostics": 757,
+      "/vehicle/odometry_timing": 9246,
+      "/ground_truth/poses": 23227,
+      "/clock": 27295,
+      "/tracking/command": 1861,
+      "/ground_truth/vehicle_poses": 23223
+    },
+    "files": [
+      {
+        "path": "rosbag_0.db3",
+        "bytes": 2118504448,
+        "sha256": "48ee59ca1230464b7cf6e25189746222b6c01f981efad4f8f23e6e7771890848",
+        "message_count": 155028,
+        "first_timestamp_ns": 1793640567204867329,
+        "last_timestamp_ns": 1793641325179446250,
+        "sqlite_integrity": "ok"
+      }
+    ]
+  },
+  "compressed_files": [
+    {
+      "path": "rosbag_0.db3.zstd",
+      "sha256": "0233ea135fd1d93e06ea5cc81699efa626bb106d715b6cfc4bbd685ebe8aef1b",
+      "bytes": 427720437,
+      "raw_sha256": "48ee59ca1230464b7cf6e25189746222b6c01f981efad4f8f23e6e7771890848",
+      "raw_bytes": 2118504448,
+      "zstd_test": "PASS",
+      "compression_command": [
+        "zstd",
+        "-T4",
+        "-19",
+        "--long=27",
+        "--check",
+        "-q",
+        "/root/uav_tracking_bag_spool/trial_wmez5b_j/rosbag/rosbag_0.db3",
+        "-o",
+        "/root/uav_tracking_bag_spool/trial_wmez5b_j/archive/rosbag_0.db3.zstd"
+      ],
+      "compression_wall_s": 168.0465188839953
+    }
+  ],
+  "native_reader_validation": {
+    "status": "PASS",
+    "reader": "SequentialCompressionReader",
+    "message_count": 155028,
+    "topic_counts": {
+      "/tracking/observation_frames": 553,
+      "/tracking/detection_diagnostics": 728,
+      "/tracking/navigation_state": 4315,
+      "/tracking/selection": 1,
+      "/tracking/status": 1861,
+      "/tracking/tracks": 4315,
+      "/fmu/in/offboard_control_mode": 4654,
+      "/tf_static": 1,
+      "/tracking/flight_command": 1861,
+      "/vehicle/odometry": 9246,
+      "/fmu/out/vehicle_odometry": 9246,
+      "/camera/color/camera_info": 930,
+      "/camera/aligned_depth_to_color/image_raw": 930,
+      "/fmu/out/vehicle_local_position_v1": 4626,
+      "/fmu/out/vehicle_command_ack": 5,
+      "/fmu/in/trajectory_setpoint": 4654,
+      "/tracking/state": 4315,
+      "/tracking/observations": 524,
+      "/tf": 9243,
+      "/camera/color/image_raw": 930,
+      "/fmu/out/estimator_status_flags": 100,
+      "/fmu/out/vehicle_status_v1": 202,
+      "/tracking/navigation_diagnostics": 4315,
+      "/tracking/flight_phase": 1861,
+      "/fmu/in/vehicle_command": 3,
+      "/tracking/supervisor_diagnostics": 757,
+      "/vehicle/odometry_timing": 9246,
+      "/ground_truth/poses": 23227,
+      "/clock": 27295,
+      "/tracking/command": 1861,
+      "/ground_truth/vehicle_poses": 23223
+    },
+    "full_stream_read": true
+  },
+  "compression_profile": {
+    "name": "zstd19_long27",
+    "executable": "zstd",
+    "arguments": [
+      "-T4",
+      "-19",
+      "--long=27",
+      "--check"
+    ],
+    "threads": 4,
+    "level": 19,
+    "long_window_log": 27,
+    "checksum": true
+  },
+  "zstd_version": "*** zstd command line interface 64-bits v1.4.8, by Yann Collet ***",
+  "published_metadata_sha256": "45d4b20af6705e46c078da52637dd4eae2b3a89b9ad6423517c7a41fe693bb8f",
+  "finished_at_utc": "2026-11-02T17:45:36.863695+00:00",
+  "spool_retained": false,
+  "archive_processing": {
+    "started_at_utc": "2026-11-02T17:42:09.900894+00:00",
+    "finished_at_utc": "2026-11-02T17:45:37.124313+00:00",
+    "wall_s": 207.2234159360014,
+    "scope": "closed_recording_validation_compression_native_read_verified_copy_and_owned_spool_cleanup"
+  }
+}
