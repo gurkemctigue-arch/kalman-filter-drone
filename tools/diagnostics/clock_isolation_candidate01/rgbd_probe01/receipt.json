@@ -1,0 +1,81 @@
+{
+  "kind": "BOUNDED_SPLIT_BRIDGE_PRODUCTION_RGBD_SMOKE",
+  "status": "PASS",
+  "started_utc": "2026-11-02T11:53:15.243348+00:00",
+  "scope": "COMPONENT_SMOKE_NO_PX4_NO_YOLO_NO_BAG_NO_FLIGHT_ACCEPTANCE",
+  "original_runtime": "/root/uav_tracking_fullplan_v4_humble51",
+  "rtf": 0.125,
+  "step_s": 0.004,
+  "observation_source_s": 20.0,
+  "camera": {
+    "width": 640,
+    "height": 480,
+    "update_rate_hz": 10
+  },
+  "claim_limit": "A bounded component smoke cannot establish the repair of rare clock delivery pauses or flight reliability.",
+  "counts": {
+    "info": 203,
+    "clock_reliable": 5048,
+    "clock_best_effort": 5047,
+    "depth": 202,
+    "rgb": 202
+  },
+  "shapes": {
+    "info": {
+      "width": 640,
+      "height": 480,
+      "encoding": null
+    },
+    "depth": {
+      "width": 640,
+      "height": 480,
+      "encoding": "32FC1"
+    },
+    "rgb": {
+      "width": 640,
+      "height": 480,
+      "encoding": "rgb8"
+    }
+  },
+  "synchronized_stamp_count": 202,
+  "service_success": true,
+  "unique_clock_publisher": true,
+  "observed_source_s": 20.0,
+  "checks": "PASS",
+  "clock_summary": {
+    "clock_reliable": {
+      "samples": 5048,
+      "max_callback_wall_gap_s": 0.03369960599957267,
+      "max_source_step_ns": 4000000
+    },
+    "clock_best_effort": {
+      "samples": 5047,
+      "max_callback_wall_gap_s": 0.0336898019995715,
+      "max_source_step_ns": 4000000
+    }
+  },
+  "delivery_anomaly_count": 0,
+  "graph_history_depth_claim": "UNKNOWN_RMW_GRAPH_VALUES_ARE_NOT_ACTUAL_PUBLISHER_QUEUE_DEPTH",
+  "cleanup": {
+    "data": {
+      "exit_code": 0,
+      "forced": false,
+      "direct_child_reaped": true,
+      "residual_group_members": []
+    },
+    "clock": {
+      "exit_code": 0,
+      "forced": false,
+      "direct_child_reaped": true,
+      "residual_group_members": []
+    },
+    "gazebo": {
+      "exit_code": 0,
+      "forced": false,
+      "direct_child_reaped": true,
+      "residual_group_members": []
+    }
+  },
+  "duration_wall_s": 167.16358098699857,
+  "finished_utc": "2026-11-02T11:56:02.412343+00:00"
+}

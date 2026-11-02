@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 # Run each component in its own WSL terminal with the same environment.
-# Usage: bash scripts/run_stage1_flight.sh {gazebo|px4|agent|ros|check} [person|car]
+# Usage: bash scripts/run_stage1_flight.sh {gazebo|px4|agent|ros|check} [person|car] [split_clock_bridge=true|false]
 set -euo pipefail
 
 stage1_component="${1:-check}"
 stage1_class="${2:-person}"
+stage1_split_clock_bridge="${3:-true}"
+case "$stage1_split_clock_bridge" in true|false) ;; *) echo "split_clock_bridge must be true or false" >&2; exit 2;; esac
 case "$stage1_class" in person|car) ;; *) echo "class must be person or car" >&2; exit 2;; esac
 stage1_project="${STAGE1_PROJECT_ROOT:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)}"
 stage1_px4="${STAGE1_PX4_ROOT:-/root/PX4-Autopilot}"
@@ -105,6 +107,7 @@ case "$stage1_component" in
     exec ros2 launch uav_tracking_bringup "${STAGE_LAUNCH:-stage1_flight.launch.py}" \
       "params_file:=${STAGE_PARAMS_FILE:-$stage1_share/config/stage1_tracking_${stage1_class}.yaml}" \
       "auto_start:=${STAGE1_AUTO_START:-false}" \
+      "split_clock_bridge:=$stage1_split_clock_bridge" \
       "takeoff_height_m:=${STAGE1_TAKEOFF_HEIGHT_M:-3.0}" \
       "command_mode:=${STAGE1_COMMAND_MODE:-velocity}" \
       "speed_mps:=${STAGE_SPEED_MPS:-0.5}" \

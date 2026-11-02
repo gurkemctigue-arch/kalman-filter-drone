@@ -170,7 +170,8 @@ class CarInputScaleRegistrationTests(unittest.TestCase):
                         "model_hashes": current["model_hashes"],
                         "magnetic_runtime_manifest_sha256": current["magnetic_runtime_binding"]["manifest_sha256"],
                         "magnetic_library_registration_sha256": current["magnetic_library_binding"]["registration_sha256"],
-                        "navigation_acceptance_sha256": v4.digest(current["protocol"]["navigation_acceptance"])},
+                        "navigation_acceptance_sha256": v4.digest(current["protocol"]["navigation_acceptance"]),
+                        v4.SPLIT_CLOCK_BRIDGE_FIELD: v4.split_clock_bridge_setting(current)},
                     "probe_slots": [{"plan_path": str(Path(previous["output"]) / "plan.json"),
                                      "plan_file_sha256": v4.sha(Path(previous["output"]) / "plan.json"),
                                      "slot_id": previous["trials"][0]["id"], "record_file_sha256": "0" * 64}]}

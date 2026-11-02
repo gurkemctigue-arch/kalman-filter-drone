@@ -69,6 +69,8 @@ def bindings(plan):
         result["simulation_pacing_sha256"] = v4.digest(v4.simulation_pacing_summary(plan["protocol"]))
     if v4.SUPERVISOR_STREAM_FIELD in plan["protocol"]:
         result["supervisor_stream_timing_sha256"] = v4.digest(v4.supervisor_stream_summary(plan["protocol"]))
+    if v4.SPLIT_CLOCK_BRIDGE_FIELD in plan:
+        result[v4.SPLIT_CLOCK_BRIDGE_FIELD] = v4.split_clock_bridge_setting(plan)
     return result
 
 
@@ -85,6 +87,8 @@ def matching_pacing_policy(target, previous):
         raise ValueError("Probe simulation pacing policy differs from the target registration")
     if v4.supervisor_stream_summary(previous["protocol"]) != v4.supervisor_stream_summary(target["protocol"]):
         raise ValueError("Probe supervisor stream timing differs from the target registration")
+    if v4.split_clock_bridge_setting(previous) is not v4.split_clock_bridge_setting(target):
+        raise ValueError("Probe clock bridge process mode differs from the target registration")
 
 
 def register_gimbal_reevaluations(target_plan, probe_plan, output):

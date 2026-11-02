@@ -36,6 +36,7 @@ TERMINAL = {"PASS", "FAIL", "INCOMPLETE_EVIDENCE", "EVALUATION_PENDING", "INFRAS
 PROTOCOL_PATH = "planning/reliability-v4-preregistration.json"
 SUPERVISOR_STREAM_FIELD = "supervisor_stream_timing"
 SUPERVISOR_STREAM_FLAG = "--supervisor-stream-timestamp-mode"
+SPLIT_CLOCK_BRIDGE_FIELD = "split_clock_bridge"
 EXTENSION_PROTOCOL_PATH = "planning/reliability-v4-extension-preregistration.json"
 EXTENSION_CONDITIONS = ("depth_noise", "depth_holes", "dropout", "latency", "combined",
                         "speed_changes_velocity", "speed_changes_position", "far_distance")
@@ -776,7 +777,33 @@ def gimbal_reevaluation_command(evaluation_root, source_plan, previous, trial, o
         "--original-report", original["report"], "--output", output)
 
 
-def trial_spec(root, protocol, prefix, cls, group, seed, wall_timeout):
+def split_clock_bridge_setting(plan):
+    """An absent historical declaration means the original single process."""
+    value = plan.get(SPLIT_CLOCK_BRIDGE_FIELD, False)
+    if type(value) is not bool:
+        raise ValueError("Plan split_clock_bridge must be a boolean")
+    return value
+
+
+def split_clock_bridge_trial_binding(plan, trial):
+    """Bind the actual boolean flag without rewriting historical commands."""
+    enabled = split_clock_bridge_setting(plan)
+    explicit = SPLIT_CLOCK_BRIDGE_FIELD in plan
+    command = trial.get("flight_command", [])
+    flags = ("--split-clock-bridge", "--no-split-clock-bridge")
+    present = [argument for argument in command if argument in flags]
+    if explicit:
+        expected_flag = flags[0 if enabled else 1]
+        if type(trial.get(SPLIT_CLOCK_BRIDGE_FIELD)) is not bool or trial[SPLIT_CLOCK_BRIDGE_FIELD] is not enabled:
+            raise ValueError("Trial split_clock_bridge differs from plan registration")
+        if present != [expected_flag]:
+            raise ValueError("Trial split_clock_bridge command differs from plan registration")
+    elif SPLIT_CLOCK_BRIDGE_FIELD in trial or present:
+        raise ValueError("Historical trial has an undeclared split_clock_bridge option")
+    return enabled, explicit
+
+
+def trial_spec(root, protocol, prefix, cls, group, seed, wall_timeout, *, split_clock_bridge=None):
     pacing = simulation_pacing_summary(protocol)
     if SIMULATION_PACING_FIELD in protocol and not _fixed_registration_value_matches(wall_timeout, pacing["flight_wall_timeout_s"]):
         raise ValueError("Trial wall timeout differs from " + SIMULATION_PACING_FIELD)
@@ -826,6 +853,11 @@ def trial_spec(root, protocol, prefix, cls, group, seed, wall_timeout):
                     "source_sim" if SUPERVISOR_STREAM_FIELD in protocol else "receipt_wall"])
     if PX4_ADAPTER_PUBLISH_RATE_FIELD in pacing:
         command.extend([PX4_ADAPTER_PUBLISH_RATE_FLAG, str(pacing[PX4_ADAPTER_PUBLISH_RATE_FIELD])])
+    if split_clock_bridge is not None:
+        if type(split_clock_bridge) is not bool:
+            raise ValueError("Trial split_clock_bridge must be a boolean")
+        spec[SPLIT_CLOCK_BRIDGE_FIELD] = split_clock_bridge
+        command.append("--split-clock-bridge" if split_clock_bridge else "--no-split-clock-bridge")
     if correlated_bound:
         command.append(CORRELATED_BOUND_FLAG)
     if surface_recovery["enabled"]:
@@ -922,6 +954,7 @@ def validate_extension_reference(plan):
         raise ValueError("Condition-extension reference must be the bound immutable FORMAL core plan")
     validate_plan(core, path)
     if (core["protocol"] != plan["protocol"] or core["protocol_sha256"] != plan["protocol_sha256"]
+            or split_clock_bridge_setting(core) is not split_clock_bridge_setting(plan)
             or flight_source_hashes(core["source_hashes"]) != flight_source_hashes(plan["source_hashes"])
             or core["model_hashes"] != plan["model_hashes"]
             or core["magnetic_runtime_binding"] != plan["magnetic_runtime_binding"]
@@ -941,11 +974,11 @@ def validate_extension_reference(plan):
             raise ValueError("Condition-extension registration must precede every actual core held-out flight")
 
 
-def extension_trial_spec(root, protocol, extension, prefix, cls, condition, seed, wall_timeout):
+def extension_trial_spec(root, protocol, extension, prefix, cls, condition, seed, wall_timeout, *, split_clock_bridge=None):
     if condition not in EXTENSION_CONDITIONS:
         raise ValueError("Unknown condition extension")
     group = extension["reference_groups"][condition]
-    spec = trial_spec(root, protocol, prefix, cls, group, seed, wall_timeout)
+    spec = trial_spec(root, protocol, prefix, cls, group, seed, wall_timeout, split_clock_bridge=split_clock_bridge)
     original_name = spec["name"]
     identifier = f"{cls}_extension_{condition}_seed{seed:03d}"
     name = f"{prefix}_{identifier}"
@@ -1115,7 +1148,7 @@ def make_plan(root, output, prefix, *, formal=False, seeds=None, groups=None, cl
     for cls in classes:
         if protocol["resources"][cls]["model"] not in hashes:
             raise ValueError("Missing frozen model weight for " + cls)
-    trials = [trial_spec(root, protocol, prefix, cls, group, seed, wall_timeout)
+    trials = [trial_spec(root, protocol, prefix, cls, group, seed, wall_timeout, split_clock_bridge=True)
               for cls in classes for group in groups for seed in seeds]
     for trial in trials:
         if trial["world_source"] not in hashes:
@@ -1127,6 +1160,7 @@ def make_plan(root, output, prefix, *, formal=False, seeds=None, groups=None, cl
     plan = {"schema_version": 1, "study_kind": "POST_REPAIR_ENGINEERING_VALIDATION", "mode": "FORMAL" if formal else "PROBE",
             "created_utc": utc_now(), "frozen_root": str(root), "results_root": str((root / "results").resolve()),
             "output": str(output), "prefix": prefix, "protocol": protocol, "protocol_sha256": sha(root / PROTOCOL_PATH),
+            SPLIT_CLOCK_BRIDGE_FIELD: True,
             "source_hashes": hashes, "model_hashes": {key: value for key, value in hashes.items() if key.endswith(".pt")},
             "config_hashes": {key: value for key, value in hashes.items() if key.endswith((".yaml", ".yml", ".json", ".sdf", ".msg"))},
             "development_probe_gate": gate, "selected_classes": classes, "selected_groups": groups, "selected_seeds": seeds,
@@ -1170,7 +1204,8 @@ def make_extension_plan(root, output, prefix, *, formal=False, seeds=None, condi
                 selected_extension_conditions=conditions,
                 extension_protocol_binding={"path": str(root / EXTENSION_PROTOCOL_PATH),
                     "sha256": sha(root / EXTENSION_PROTOCOL_PATH), "protocol": extension})
-    plan["trials"] = [extension_trial_spec(root, protocol, extension, prefix, cls, condition, seed, wall_timeout)
+    plan["trials"] = [extension_trial_spec(root, protocol, extension, prefix, cls, condition, seed, wall_timeout,
+                                          split_clock_bridge=split_clock_bridge_setting(plan))
                       for cls in plan["selected_classes"] for condition in conditions for seed in plan["selected_seeds"]]
     if formal and len(plan["trials"]) != 160:
         raise ValueError("Formal condition-extension denominator must be exactly 160")
@@ -1209,6 +1244,7 @@ def validate_plan(plan, path=None):
     if path is not None and Path(path).resolve() != Path(plan["output"]) / "plan.json":
         raise ValueError("Plan was moved away from its frozen output path")
     root = Path(plan["frozen_root"])
+    split_clock = split_clock_bridge_setting(plan) if SPLIT_CLOCK_BRIDGE_FIELD in plan else None
     names = [trial["name"] for trial in plan["trials"]]
     if not names or len(names) != len(set(names)):
         raise ValueError("Duplicate or empty trial set")
@@ -1239,14 +1275,15 @@ def validate_plan(plan, path=None):
                 or set(conditions) - set(EXTENSION_CONDITIONS)):
             raise ValueError("Invalid condition-extension matrix")
         expected = [extension_trial_spec(root, plan["protocol"], extension, plan["prefix"], cls, condition, seed,
-                                        plan["trials"][0]["wall_timeout_s"])
+                                        plan["trials"][0]["wall_timeout_s"], split_clock_bridge=split_clock)
                     for cls in plan["selected_classes"] for condition in conditions for seed in plan["selected_seeds"]]
     else:
         expected = [trial_spec(root, plan["protocol"], plan["prefix"], cls, group, seed,
-                              plan["trials"][0]["wall_timeout_s"])
+                              plan["trials"][0]["wall_timeout_s"], split_clock_bridge=split_clock)
                     for cls in plan["selected_classes"] for group in plan["selected_groups"] for seed in plan["selected_seeds"]]
     # Availability is frozen evidence. Never recompute it from a later tree.
     for original, regenerated in zip(plan["trials"], expected):
+        split_clock_bridge_trial_binding(plan, original)
         simulation_pacing_trial_binding(plan, original)
         correlated_two_face_trial_binding(plan, original)
         car_surface_recovery_trial_binding(plan, original)
@@ -1412,7 +1449,12 @@ def runtime_configuration(plan, trial):
         correlated_bound, explicit_bound = correlated_two_face_trial_binding(plan, trial)
         surface_recovery, explicit_surface_recovery = car_surface_recovery_trial_binding(plan, trial)
         exclusive_navigation_trial_binding(plan, trial)
+        split_clock, explicit_split_clock = split_clock_bridge_trial_binding(plan, trial)
         config = load(directory / "run_config.json")
+        if (SPLIT_CLOCK_BRIDGE_FIELD in config and type(config[SPLIT_CLOCK_BRIDGE_FIELD]) is not bool
+                or config.get(SPLIT_CLOCK_BRIDGE_FIELD, False) is not split_clock
+                or explicit_split_clock and SPLIT_CLOCK_BRIDGE_FIELD not in config):
+            errors.append("run_config:split_clock_bridge")
         expected = {key: trial[key] for key in ("name", "target_class", "stage", "seed", "speed_mps", "command_mode", "takeoff_mode",
             "gimbal_mode", "target_mode", "association_mode", "initial_select", "initial_min_candidates", "scenario_kind",
             "multi_target", "inference_image_size", "inference_threads", "desired_distance_m", "gazebo_render_driver")}
@@ -2127,6 +2169,10 @@ def validate_probe_gate(plan, *, extensions=False):
         expected_binding["simulation_pacing_sha256"] = digest(simulation_pacing_summary(plan["protocol"]))
     if SUPERVISOR_STREAM_FIELD in plan["protocol"]:
         expected_binding["supervisor_stream_timing_sha256"] = digest(supervisor_stream_summary(plan["protocol"]))
+    if SPLIT_CLOCK_BRIDGE_FIELD in plan:
+        expected_binding[SPLIT_CLOCK_BRIDGE_FIELD] = split_clock_bridge_setting(plan)
+        if type(gate.get("bindings", {}).get(SPLIT_CLOCK_BRIDGE_FIELD)) is not bool:
+            raise ValueError("Development probe gate split_clock_bridge binding must be a boolean")
     if gate.get("bindings") != expected_binding:
         raise ValueError("Development probe gate source/model/runtime/evaluator/threshold binding differs")
     slots = gate.get("probe_slots")
@@ -2180,6 +2226,8 @@ def validate_probe_gate(plan, *, extensions=False):
                 raise ValueError("Development probe simulation pacing differs from final registration")
             if supervisor_stream_summary(previous["protocol"]) != supervisor_stream_summary(plan["protocol"]):
                 raise ValueError("Development probe supervisor stream timing differs from final registration")
+            if split_clock_bridge_setting(previous) is not split_clock_bridge_setting(plan):
+                raise ValueError("Development probe clock bridge process mode differs from final registration")
             if (any(previous["protocol"]["resources"][cls]["model"] != plan["protocol"]["resources"][cls]["model"]
                     for cls in CLASSES)
                     or previous["protocol"].get("model_adaptation") != plan["protocol"].get("model_adaptation")

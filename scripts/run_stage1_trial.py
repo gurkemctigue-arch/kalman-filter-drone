@@ -159,6 +159,7 @@ def snapshot_px4_parameters(px4_root: Path, destination: Path, phase: str) -> di
 
 
 ROS_GZ_CONFIG = "config/ros_gz_runtime_humble22.json"
+ROS_GZ_CLOCK_CONFIG = "config/ros_gz_clock_runtime_humble22.json"
 ROS_GZ_PATCH = "patches/ros_gz_bridge_ownership_shutdown_A01.patch"
 DDS_CONFIG = "config/dds_runtime_humble22.json"
 
@@ -267,15 +268,17 @@ def find_owned_dds_process(context, leader_pid, role, *, expected_leader=None, b
 
 
 def capture_owned_dds_runtime(context, destination, ros_pid, agent_pid, *, check_alive=lambda: None,
-                              timeout_s=8., backend=None):
+                              timeout_s=8., backend=None, bridge_specs=None):
     """Bind owned TF, bridge and Agent middleware before unpausing physics."""
     from uav_tracking.dds_runtime import MappingsNotReadyError, verify_loaded_process
     from uav_tracking.ros_gz_runtime import RuntimeBackend, parse_process_stat
     backend = backend or RuntimeBackend()
     if not math.isfinite(timeout_s) or timeout_s <= 0:
         raise ValueError("DDS startup wait must be positive and finite")
+    bridge_roles = ("bridge",) if bridge_specs is None else ("bridge_data", "bridge_clock")
     leaders = {role: parse_process_stat(backend.proc_text(pid, "stat"), pid)
-               for role, pid in (("flight_tf", ros_pid), ("bridge", ros_pid), ("agent", agent_pid))}
+               for role, pid in (("flight_tf", ros_pid), *((role, ros_pid) for role in bridge_roles),
+                                 ("agent", agent_pid))}
     deadline, reports, owners = time.monotonic() + timeout_s, {}, {}
     try:
         while len(reports) != len(leaders):
@@ -284,6 +287,9 @@ def capture_owned_dds_runtime(context, destination, ros_pid, agent_pid, *, check
                 def find_owned():
                     if role == "bridge":
                         return find_owned_parameter_bridge(leader["pid"], expected_leader=leader, backend=backend)
+                    if role in {"bridge_data", "bridge_clock"}:
+                        return find_owned_parameter_bridges(leader["pid"], bridge_specs,
+                            expected_leader=leader, backend=backend).get(role.removeprefix("bridge_"))
                     return find_owned_dds_process(context, leader["pid"], role,
                                                   expected_leader=leader, backend=backend)
                 owned = find_owned()
@@ -293,7 +299,8 @@ def capture_owned_dds_runtime(context, destination, ros_pid, agent_pid, *, check
                     continue
                 owners[role] = owned
                 try:
-                    report = verify_loaded_process(context["path"], owned["process"]["pid"], role=role,
+                    report = verify_loaded_process(context["path"], owned["process"]["pid"],
+                        role="bridge" if role in {"bridge_data", "bridge_clock"} else role,
                         expected_process=owned["process"], expected_config_sha256=context["sha256"], backend=backend)
                 except MappingsNotReadyError:
                     continue
@@ -364,12 +371,60 @@ def prepare_ros_gz_runtime(root, requested=None, *, backend=None):
             "sha256": hashlib.sha256(raw).hexdigest(), "preflight": report}
 
 
-def snapshot_ros_gz_runtime(context, destination):
+def snapshot_ros_gz_runtime(context, destination, *, artifact_prefix="ros_gz_runtime"):
     destination = Path(destination)
-    (destination / "ros_gz_runtime_registration.json").write_bytes(context["raw"])
+    (destination / (artifact_prefix + "_registration.json")).write_bytes(context["raw"])
     report = {**context["preflight"], "registration_file_sha256": context["sha256"],
               "configured_registration_path": str(context["path"])}
-    (destination / "ros_gz_runtime_preflight.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
+    (destination / (artifact_prefix + "_preflight.json")).write_text(json.dumps(report, indent=2), encoding="utf-8")
+
+
+def prepare_split_clock_runtime(root, data_context, requested=None, *, backend=None):
+    """Consume a real independently captured clock registration; never infer one."""
+    if data_context is None:
+        raise ValueError("Split bridges require the reviewed data ros_gz registration")
+    path = Path(requested) if requested else Path(root) / ROS_GZ_CLOCK_CONFIG
+    clock = prepare_ros_gz_runtime(root, str(path), backend=backend)
+    data, value = data_context["registration"], clock["registration"]
+    if (value["overlay_root"] != data["overlay_root"]
+            or any(value["executable"][key] != data["executable"][key]
+                   for key in ("real_path", "sha256", "bytes"))):
+        raise ValueError("Clock and data bridges must use the same registered executable")
+    if value.get("source") != data.get("source"):
+        raise ValueError("Clock and data bridges must use the same registered source")
+    # A final root may have a new same-byte patch copy. Bind patch content,
+    # while each registration still independently verifies its actual copy.
+    patch_keys = ("sha256", "bytes")
+    if (not isinstance(value.get("patch"), dict) or not isinstance(data.get("patch"), dict)
+            or any(value["patch"].get(key) != data["patch"].get(key) for key in patch_keys)):
+        raise ValueError("Clock and data bridges must use the same registered patch")
+    if value.get("plugins") != []:
+        raise ValueError("Clock-only registration must not contain data service plugins")
+    return clock
+
+
+def split_bridge_specs(root, stage):
+    """Bind explicit launch arguments to same-byte installed/source YAML files."""
+    root = Path(root)
+    if stage not in (1, 2, 3):
+        raise ValueError("Split bridge stage must be 1, 2 or 3")
+    data_name = "stage1_flight_data_bridge.yaml" if stage == 1 else f"stage{stage}_data_bridge.yaml"
+    names = {"data": data_name, "clock": "clock_bridge.yaml"}
+    result = {}
+    for role, name in names.items():
+        source = root / "ros2_ws/src/uav_tracking_bringup/config" / name
+        installed = root / "ros2_ws/install/share/uav_tracking_bringup/config" / name
+        source_raw, installed_raw = source.read_bytes(), installed.read_bytes()
+        if len(source_raw) > 65536 or source_raw != installed_raw:
+            raise ValueError("Installed split bridge config differs from source: " + name)
+        result[role] = {
+            "node_name": "uav_tracking_gz_bridge" if role == "data" else "uav_tracking_clock_bridge",
+            "config_file": str(installed.absolute()), "config_real_path": str(installed.resolve(strict=True)),
+            "config_sha256": hashlib.sha256(source_raw).hexdigest(), "source_config": str(source),
+            "service_argument": (f"/world/stage{stage}_flight/set_pose@ros_gz_interfaces/srv/SetEntityPose"
+                                 if role == "data" else None),
+        }
+    return result
 
 
 def _ros_gz_children(pid, backend, thread_budget):
@@ -388,8 +443,8 @@ def _ros_gz_children(pid, backend, thread_budget):
     return sorted(children), len(tasks)
 
 
-def find_owned_parameter_bridge(leader_pid, *, expected_leader=None, backend=None,
-                              process_limit=64, thread_limit=512):
+def _find_owned_parameter_bridge_candidates(leader_pid, *, expected_leader=None, backend=None,
+                                           process_limit=64, thread_limit=512):
     """Follow only kernel child lists, with creation/parent identities checked."""
     from uav_tracking.ros_gz_runtime import ProcessNotAliveError, RuntimeBackend, parse_process_stat
     backend = backend or RuntimeBackend()
@@ -430,9 +485,68 @@ def find_owned_parameter_bridge(leader_pid, *, expected_leader=None, backend=Non
         queue.extend((child, pid, chain) for child in children)
     if parse_process_stat(backend.proc_text(leader_pid, "stat"), leader_pid) != leader:
         raise RuntimeError("Owned ROS launch identity changed during discovery")
+    return candidates
+
+
+def find_owned_parameter_bridge(leader_pid, *, expected_leader=None, backend=None,
+                                process_limit=64, thread_limit=512):
+    """Historical single-bridge contract, still rejecting additional bridges."""
+    candidates = _find_owned_parameter_bridge_candidates(leader_pid, expected_leader=expected_leader,
+        backend=backend, process_limit=process_limit, thread_limit=thread_limit)
     if len(candidates) > 1:
         raise RuntimeError("Owned ROS launch contains multiple parameter_bridge processes")
     return candidates[0] if candidates else None
+
+
+def find_owned_parameter_bridges(leader_pid, expected_configs, *, expected_leader=None, backend=None,
+                                 process_limit=64, thread_limit=512):
+    """Recognize only the two explicit roles; reject duplicate/foreign bridges."""
+    from uav_tracking.bridge_process_contract import validate_split_bridge_argv
+    from uav_tracking.ros_gz_runtime import RuntimeBackend, parse_process_stat
+    if set(expected_configs) != {"data", "clock"}:
+        raise ValueError("Split bridge configs must declare exactly data and clock")
+    backend = backend or RuntimeBackend()
+    candidates = _find_owned_parameter_bridge_candidates(leader_pid, expected_leader=expected_leader,
+        backend=backend, process_limit=process_limit, thread_limit=thread_limit)
+    if len(candidates) > 2:
+        raise RuntimeError("Owned ROS launch contains extra parameter_bridge processes")
+    result = {}
+    for owned in candidates:
+        pid = owned["process"]["pid"]
+        executable = backend.exe_path(pid)
+        if executable.endswith(" (deleted)"):
+            raise RuntimeError("Owned split bridge executable is deleted")
+        command = [part for part in backend.proc_text(pid, "cmdline").split("\0") if part]
+        matches = []
+        for role, expected in expected_configs.items():
+            try:
+                contract = validate_split_bridge_argv(command,
+                    {key: expected[key] for key in ("node_name", "config_file", "service_argument")}, role=role)
+            except ValueError:
+                continue
+            matches.append((role, contract))
+        if len(matches) != 1:
+            raise RuntimeError("Owned parameter_bridge has unregistered role/argv/config")
+        role, contract = matches[0]
+        if role in result:
+            raise RuntimeError("Duplicate owned split bridge role: " + role)
+        expected = expected_configs[role]
+        config = Path(contract["config_file"])
+        with config.open("rb") as stream:
+            raw = stream.read(65537)
+        if (len(raw) > 65536 or hashlib.sha256(raw).hexdigest() != expected["config_sha256"]
+                or str(config.resolve(strict=True)) != expected["config_real_path"]):
+            raise RuntimeError("Owned split bridge configuration changed: " + role)
+        for identity in owned["ancestor_chain"]:
+            if parse_process_stat(backend.proc_text(identity["pid"], "stat"), identity["pid"]) != identity:
+                raise RuntimeError("Owned split bridge ancestor creation identity changed")
+        if (backend.exe_path(pid) != executable
+                or [part for part in backend.proc_text(pid, "cmdline").split("\0") if part] != command):
+            raise RuntimeError("Owned split bridge argv/executable changed during discovery")
+        result[role] = {**owned, **contract, "executable": executable,
+                        "config_sha256": expected["config_sha256"],
+                        "config_real_path": expected["config_real_path"]}
+    return result
 
 
 def pending_ros_gz_mappings(context, owned, *, backend):
@@ -477,7 +591,8 @@ def pending_ros_gz_mappings(context, owned, *, backend):
 
 
 def capture_owned_ros_gz_runtime(context, destination, leader_pid, *, check_alive=lambda: None,
-                                 timeout_s=5., backend=None):
+                                 timeout_s=5., backend=None, bridge_specs=None, bridge_role=None,
+                                 artifact_prefix="ros_gz_runtime"):
     """Wait only for an owned bridge to appear, while physics is still paused."""
     from uav_tracking.ros_gz_runtime import RuntimeBackend, parse_process_stat, verify_live_process
     backend = backend or RuntimeBackend()
@@ -486,11 +601,18 @@ def capture_owned_ros_gz_runtime(context, destination, leader_pid, *, check_aliv
     deadline = time.monotonic() + timeout_s
     leader = {"pid": leader_pid}
     discovered, missing = None, []
+    if bridge_specs is not None and bridge_role not in {"data", "clock"}:
+        raise ValueError("Split ROS-GZ capture requires an explicit data/clock role")
+    def find_owned():
+        if bridge_specs is None:
+            return find_owned_parameter_bridge(leader_pid, expected_leader=leader, backend=backend)
+        return find_owned_parameter_bridges(leader_pid, bridge_specs,
+            expected_leader=leader, backend=backend).get(bridge_role)
     try:
         leader = parse_process_stat(backend.proc_text(leader_pid, "stat"), leader_pid)
         while True:
             check_alive()
-            owned = find_owned_parameter_bridge(leader_pid, expected_leader=leader, backend=backend)
+            owned = find_owned()
             if discovered is not None and owned != discovered:
                 raise RuntimeError("Owned bridge identity/ownership changed during startup wait")
             if owned is not None:
@@ -503,21 +625,22 @@ def capture_owned_ros_gz_runtime(context, destination, leader_pid, *, check_aliv
             if owned is not None and not missing:
                 report = verify_live_process(context["registration"], owned["process"]["pid"],
                     expected_start_ticks=owned["process"]["start_ticks"], patch_path=context["patch"], backend=backend)
-                after = find_owned_parameter_bridge(leader_pid, expected_leader=leader, backend=backend)
+                after = find_owned()
                 if after != owned or report["process"] != owned["process"]:
                     raise RuntimeError("Bridge ownership/creation identity changed during verification")
                 report.update(owned_launch=owned, registration_file_sha256=context["sha256"])
-                (Path(destination) / "ros_gz_runtime_actual.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
+                (Path(destination) / (artifact_prefix + "_actual.json")).write_text(json.dumps(report, indent=2), encoding="utf-8")
                 return report
             time.sleep(min(.05, remaining))
     except (OSError, ValueError, RuntimeError) as error:
-        (Path(destination) / "ros_gz_runtime_actual_error.json").write_text(
+        (Path(destination) / (artifact_prefix + "_actual_error.json")).write_text(
             json.dumps({"status": "FAIL", "error": str(error), "leader": leader,
                         "registration_file_sha256": context["sha256"]}, indent=2), encoding="utf-8")
         raise RuntimeError("Owned ros_gz runtime could not be verified before unpause") from error
 
 
-def verify_ros_gz_runtime_after(context, destination, *, ros_exit_code, ros_log, backend=None):
+def verify_ros_gz_runtime_after(context, destination, *, ros_exit_code, ros_log, backend=None,
+                                artifact_prefix="ros_gz_runtime"):
     """Return cleanup error for the caller to raise after recording finalization."""
     from uav_tracking.ros_gz_runtime import verify_registration
     try:
@@ -527,11 +650,11 @@ def verify_ros_gz_runtime_after(context, destination, *, ros_exit_code, ros_log,
         if ros_exit_code != 0 or "process has died" in ros_log:
             raise RuntimeError("ROS launch/child shutdown failed; original exit/log evidence is retained")
         report.update(registration_file_sha256=context["sha256"], ros_exit_code=ros_exit_code)
-        (Path(destination) / "ros_gz_runtime_after.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
+        (Path(destination) / (artifact_prefix + "_after.json")).write_text(json.dumps(report, indent=2), encoding="utf-8")
         return None
     except (OSError, ValueError, RuntimeError) as error:
         try:
-            (Path(destination) / "ros_gz_runtime_after_error.json").write_text(
+            (Path(destination) / (artifact_prefix + "_after_error.json")).write_text(
                 json.dumps({"status": "FAIL", "error": str(error), "ros_exit_code": ros_exit_code,
                             "registration_file_sha256": context["sha256"]}, indent=2), encoding="utf-8")
         except OSError as publication_error:
@@ -594,6 +717,10 @@ def main() -> None:
                         help="Pre-audited per-environment Gazebo ELF registration; gazebo_enu defaults to config/gazebo_magnetic_runtime.json (Jazzy)")
     parser.add_argument("--ros-gz-runtime-registration", default=None,
                         help="Optional reviewed ros_gz registration; defaults to final-root config when present")
+    parser.add_argument("--split-clock-bridge", action=argparse.BooleanOptionalAction, default=True,
+                        help="Separate clock/data bridge processes; --no-split-clock-bridge is explicit legacy diagnosis")
+    parser.add_argument("--ros-gz-clock-runtime-registration", default=None,
+                        help="Actual reviewed clock-only ELF registration; split mode fails closed if absent")
     parser.add_argument("--dds-runtime-registration", default=None,
                         help="Explicit Humble DDS registration override; otherwise use this root's strict default config")
     parser.add_argument("--propagate-vehicle-uncertainty", action="store_true")
@@ -676,7 +803,18 @@ def main() -> None:
     ros_gz_runtime = prepare_ros_gz_runtime(root, args.ros_gz_runtime_registration)
     if ros_gz_runtime is not None:
         args.ros_gz_runtime_registration = str(ros_gz_runtime["path"])
+    clock_ros_gz_runtime, bridge_specs = None, None
+    if args.split_clock_bridge:
+        clock_ros_gz_runtime = prepare_split_clock_runtime(root, ros_gz_runtime,
+            args.ros_gz_clock_runtime_registration)
+        args.ros_gz_clock_runtime_registration = str(clock_ros_gz_runtime["path"])
+        bridge_specs = split_bridge_specs(root, args.stage)
+        args.bridge_process_contract = bridge_specs
+    elif args.ros_gz_clock_runtime_registration is not None:
+        parser.error("Clock runtime registration is only used with --split-clock-bridge")
     dds_runtime = prepare_dds_runtime(root, args.dds_runtime_registration)
+    if args.split_clock_bridge and dds_runtime is None:
+        raise ValueError("Split bridges require independent DDS runtime verification")
     if dds_runtime is not None:
         args.dds_runtime_registration = str(dds_runtime["path"])
         args.dds_runtime_evidence = {"registration_sha256": dds_runtime["sha256"],
@@ -710,6 +848,8 @@ def main() -> None:
     snapshot.mkdir()
     if ros_gz_runtime is not None:
         snapshot_ros_gz_runtime(ros_gz_runtime, snapshot)
+    if clock_ros_gz_runtime is not None:
+        snapshot_ros_gz_runtime(clock_ros_gz_runtime, snapshot, artifact_prefix="ros_gz_clock_runtime")
     if dds_runtime is not None:
         snapshot_dds_runtime(dds_runtime, snapshot)
     if magnetic_runtime is not None:
@@ -734,8 +874,11 @@ def main() -> None:
     bridge_name = "stage1_flight_bridge.yaml" if args.stage == 1 else f"stage{args.stage}_bridge.yaml"
     world_source = bringup / "worlds" / (
         f"stage3_multi_{args.target_class}.sdf" if args.multi_target else f"{world}_{args.target_class}.sdf")
+    bridge_config_sources = ([Path(spec["source_config"]) for spec in bridge_specs.values()]
+                             if bridge_specs is not None else [])
     for item in [config_path,
                  bringup / "config" / bridge_name,
+                 *bridge_config_sources,
                  world_source,
                  bringup / "models" / f"target_{args.target_class}" / "model.sdf",
                  bringup / "models" / ("x500_stage3" if args.stage == 3 else "x500_stage1") / "model.sdf"]:
@@ -976,7 +1119,7 @@ def main() -> None:
             for key, value in fault_settings.items():
                 fault_command.extend(["-p", f"{key}:={value}"])
             start("sensor_faults", fault_command)
-        start("ros", ["bash", str(runner), "ros", args.target_class])
+        start("ros", ["bash", str(runner), "ros", args.target_class, str(args.split_clock_bridge).lower()])
         if recording_spool is not None:
             # Establish this DDS participant while physics is still paused.
             # Reuse its live subscriptions at closure instead of introducing
@@ -1000,14 +1143,20 @@ def main() -> None:
                 raise RuntimeError("ROS component failed during startup; see ros.log")
         if ros_gz_runtime is not None:
             capture_owned_ros_gz_runtime(ros_gz_runtime, snapshot, processes["ros"].pid,
-                                        check_alive=check_startup_processes)
+                check_alive=check_startup_processes, bridge_specs=bridge_specs,
+                bridge_role="data" if bridge_specs is not None else None)
+        if clock_ros_gz_runtime is not None:
+            capture_owned_ros_gz_runtime(clock_ros_gz_runtime, snapshot, processes["ros"].pid,
+                check_alive=check_startup_processes, bridge_specs=bridge_specs, bridge_role="clock",
+                artifact_prefix="ros_gz_clock_runtime")
         if dds_runtime is not None:
             capture_owned_dds_runtime(dds_runtime, snapshot, processes["ros"].pid, processes["agent"].pid,
-                                      check_alive=check_startup_processes)
+                                      check_alive=check_startup_processes, bridge_specs=bridge_specs)
             args.dds_runtime_evidence["actual"] = "configuration/dds_runtime_actual.json"
             (output / "run_config.json").write_text(json.dumps(vars(args), indent=2), encoding="utf-8")
         from wait_stage1_graph import wait_ready as wait_ready_graph
         wait_ready_graph(output / "graph_startup_readiness.json", require_recorder=not args.no_bag,
+                         expected_clock_node="/uav_tracking_clock_bridge" if args.split_clock_bridge else None,
                          check_alive=check_startup_processes)
         check_startup_processes()
         resumed = subprocess.run(["gz", "service", "-s", f"/world/{world}/control", "--reqtype", "gz.msgs.WorldControl",
@@ -1087,12 +1236,20 @@ def main() -> None:
         for log in logs:
             log.close()
         (output / "process_exit_codes.json").write_text(json.dumps({name: p.poll() for name, p in processes.items()}, indent=2), encoding="utf-8")
-        if ros_gz_runtime is not None and "ros" in processes:
-            try:
-                ros_gz_error = verify_ros_gz_runtime_after(ros_gz_runtime, snapshot,
-                    ros_exit_code=processes["ros"].poll(), ros_log=(output / "ros.log").read_text(errors="replace"))
-            except (OSError, ValueError, RuntimeError) as error:
-                ros_gz_error = error  # Recording finalization still runs.
+        if "ros" in processes:
+            for bridge_context, prefix in ((ros_gz_runtime, "ros_gz_runtime"),
+                                           (clock_ros_gz_runtime, "ros_gz_clock_runtime")):
+                if bridge_context is None:
+                    continue
+                try:
+                    bridge_error = verify_ros_gz_runtime_after(bridge_context, snapshot,
+                        ros_exit_code=processes["ros"].poll(), ros_log=(output / "ros.log").read_text(errors="replace"),
+                        artifact_prefix=prefix)
+                    if bridge_error is not None and ros_gz_error is None:
+                        ros_gz_error = bridge_error
+                except (OSError, ValueError, RuntimeError) as error:
+                    if ros_gz_error is None:
+                        ros_gz_error = error  # Recording finalization still runs.
         if dds_runtime is not None:
             try:
                 dds_error = verify_dds_runtime_after(dds_runtime, snapshot,

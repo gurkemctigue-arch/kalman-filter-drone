@@ -9,6 +9,7 @@ import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
+from launch.conditions import IfCondition, UnlessCondition
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
@@ -18,14 +19,18 @@ def generate_launch_description():
     share = get_package_share_directory("uav_tracking_bringup")
     params = LaunchConfiguration("params_file")
     sim_time = {"use_sim_time": True}
+    split_clock = LaunchConfiguration("split_clock_bridge")
     return LaunchDescription([
         DeclareLaunchArgument("params_file", default_value=os.path.join(share, "config", "stage1_tracking_person.yaml")),
+        DeclareLaunchArgument("split_clock_bridge", default_value="true", choices=["true", "false"]),
         DeclareLaunchArgument("auto_start", default_value="false", description="Explicitly allow simulation-only Offboard activation and takeoff."),
         DeclareLaunchArgument("takeoff_height_m", default_value="3.0"),
         DeclareLaunchArgument("command_mode", default_value="velocity", choices=["velocity", "position"]),
         DeclareLaunchArgument("speed_mps", default_value="0.5"),
         DeclareLaunchArgument("motion_profile_kind", default_value="standard", choices=["standard", "speed_changes"]),
-        Node(package="ros_gz_bridge", executable="parameter_bridge", name="uav_tracking_gz_bridge", arguments=["/world/stage1_flight/set_pose@ros_gz_interfaces/srv/SetEntityPose"], parameters=[sim_time, {"config_file": os.path.join(share, "config", "stage1_flight_bridge.yaml")}], output="screen"),
+        Node(package="ros_gz_bridge", executable="parameter_bridge", name="uav_tracking_gz_bridge", condition=UnlessCondition(split_clock), arguments=["/world/stage1_flight/set_pose@ros_gz_interfaces/srv/SetEntityPose"], parameters=[sim_time, {"config_file": os.path.join(share, "config", "stage1_flight_bridge.yaml")}], output="screen"),
+        Node(package="ros_gz_bridge", executable="parameter_bridge", name="uav_tracking_gz_bridge", condition=IfCondition(split_clock), arguments=["/world/stage1_flight/set_pose@ros_gz_interfaces/srv/SetEntityPose", "--ros-args", "-p", "config_file:=" + os.path.join(share, "config", "stage1_flight_data_bridge.yaml"), "-p", "use_sim_time:=true"], output="screen"),
+        Node(package="ros_gz_bridge", executable="parameter_bridge", name="uav_tracking_clock_bridge", condition=IfCondition(split_clock), arguments=["--ros-args", "-p", "config_file:=" + os.path.join(share, "config", "clock_bridge.yaml"), "-p", "use_sim_time:=true"], output="screen"),
         Node(package="uav_tracking_px4_adapter", executable="px4_adapter", name="uav_tracking_px4_adapter", parameters=[params, sim_time, {"command_topic": "/tracking/flight_command", "require_vehicle_status": True, "vehicle_status_topic": "/fmu/out/vehicle_status_v1"}], output="screen"),
         Node(package="uav_tracking_bringup", executable="flight_tf", name="uav_tracking_flight_tf", parameters=[sim_time], output="screen"),
         Node(package="uav_tracking_bringup", executable="scenario_motion", name="stage1_scenario_motion", parameters=[sim_time, {"speed_mps": ParameterValue(LaunchConfiguration("speed_mps"), value_type=float), "motion_profile_kind": LaunchConfiguration("motion_profile_kind")}], output="screen"),

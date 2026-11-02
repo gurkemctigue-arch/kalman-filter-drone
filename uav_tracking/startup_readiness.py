@@ -30,7 +30,7 @@ REQUIRED_TOPICS = {
 }
 
 
-def assess_graph(snapshot: dict, *, require_recorder: bool) -> dict:
+def assess_graph(snapshot: dict, *, require_recorder: bool, expected_clock_node=None) -> dict:
     """Require typed endpoints, QoS, a live adapter and output DDS matches."""
     failures = []
     identities = []
@@ -57,7 +57,8 @@ def assess_graph(snapshot: dict, *, require_recorder: bool) -> dict:
     for topic in REQUIRED_TOPICS:
         entry = topics.get(topic, {})
         publishers = entry.get("publishers", [])
-        expected_node = ADAPTER_NODE if topic in {ODOM_TOPIC, TIMING_TOPIC} else None
+        expected_node = (ADAPTER_NODE if topic in {ODOM_TOPIC, TIMING_TOPIC}
+                         else expected_clock_node if topic == "/clock" else None)
         publisher = select(publishers, role="publisher", topic=topic, node=expected_node)
         if expected_node and len(publishers) != 1:
             failures.append(f"{topic}: unexpected additional publisher")

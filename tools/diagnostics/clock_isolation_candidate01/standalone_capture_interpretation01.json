@@ -1,0 +1,22 @@
+{
+  "created_utc": "2026-11-02T11:54:41.404325+00:00",
+  "scope": "READONLY_INTERPRETATION_OF_ORIGINAL_STANDALONE_CLOCK_CAPTURE",
+  "original_receipt_status": "FAIL",
+  "original_receipt_sha256": "c2c6784bdd3ac63d6a46bbee6d7aaf579bd014a27e5108cb29194047e5d96315",
+  "overall_capture_promoted_to_pass": false,
+  "checks": {
+    "live_ros_gz_pass": true,
+    "live_dds_pass": true,
+    "source_matches_existing_data_registration": true,
+    "executable_matches_existing_data_registration": true,
+    "same_patch_bytes": true,
+    "clock_no_registered_plugins": true,
+    "unique_clock_publisher": true,
+    "reliable_volatile_graph": true,
+    "owned_sigint_clean": true
+  },
+  "mapping_registration_usable_for_review": true,
+  "registration_sha256": "908f8b7e18154377e57ce6f92922b63b36f7d4fb90ac79e61cc1b8dd95d3e4e4",
+  "diagnostic_assertion_issue": "Humble RMW graph returns history UNKNOWN=3 and depth=0; the probe incorrectly required graph to expose KEEP_LAST depth10. This does not demonstrate a publisher queue mismatch. Actual depth is not measured by this graph API. Original FAIL receipt is unchanged.",
+  "claim_limit": "Actual component mapping and normal owned shutdown only. No simulated clock samples were published; no bridge-delivery, launch, flight or whole-project success."
+}

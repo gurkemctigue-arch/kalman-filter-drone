@@ -1,0 +1,60 @@
+{
+  "data": {
+    "identity": {
+      "pid": 44241,
+      "parent_pid": 44193,
+      "process_group": 44241,
+      "session": 44241,
+      "start_ticks": 3024458
+    },
+    "command": [
+      "/root/uav_humble22/ros_gz_shutdown_A01_ws/install/lib/ros_gz_bridge/parameter_bridge",
+      "/world/stage3_flight/set_pose@ros_gz_interfaces/srv/SetEntityPose",
+      "--ros-args",
+      "-r",
+      "__node:=uav_tracking_gz_bridge",
+      "-p",
+      "config_file:=/mnt/d/WSL/UAVHumble22-validation/clock_isolation_candidate01/rgbd_probe01/data.yaml",
+      "-p",
+      "use_sim_time:=true"
+    ]
+  },
+  "clock": {
+    "identity": {
+      "pid": 44242,
+      "parent_pid": 44193,
+      "process_group": 44242,
+      "session": 44242,
+      "start_ticks": 3024458
+    },
+    "command": [
+      "/root/uav_humble22/ros_gz_shutdown_A01_ws/install/lib/ros_gz_bridge/parameter_bridge",
+      "--ros-args",
+      "-r",
+      "__node:=uav_tracking_clock_bridge",
+      "-p",
+      "config_file:=/mnt/d/WSL/UAVHumble22-validation/clock_isolation_candidate01/rgbd_probe01/clock.yaml",
+      "-p",
+      "use_sim_time:=true"
+    ]
+  },
+  "gazebo": {
+    "identity": {
+      "pid": 44243,
+      "parent_pid": 44193,
+      "process_group": 44243,
+      "session": 44243,
+      "start_ticks": 3024458
+    },
+    "command": [
+      "gz",
+      "sim",
+      "--seed",
+      "5",
+      "-s",
+      "-r",
+      "--headless-rendering",
+      "/mnt/d/WSL/UAVHumble22-validation/clock_isolation_candidate01/rgbd_probe01/world.sdf"
+    ]
+  }
+}

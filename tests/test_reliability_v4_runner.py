@@ -217,6 +217,7 @@ class FakeCommands:
             for key in ["speed_mps", "desired_distance_m", "duration", "real_time_factor", "wall_timeout", "max_inference_rate_hz", "monitor_tick_s", "short_occlusion_s"]:
                 config[key] = float(option(key))
             config.update(multi_target="--multi-target" in command, occlusions=True, reselect_after_loss=True,
+                          split_clock_bridge="--split-clock-bridge" in command,
                           correlated_two_face_bound=v4.CORRELATED_BOUND_FLAG in command,
                           propagate_vehicle_uncertainty="--propagate-vehicle-uncertainty" in command,
                           supervisor_status_timestamp_mode="source_sim", supervisor_status_source_max_age_s=1.,
@@ -377,7 +378,8 @@ def fixture_probe_gate(root):
             "model_hashes":development["model_hashes"],
             "magnetic_runtime_manifest_sha256":development["magnetic_runtime_binding"]["manifest_sha256"],
             "magnetic_library_registration_sha256":development["magnetic_library_binding"]["registration_sha256"],
-            "navigation_acceptance_sha256":v4.digest(development["protocol"]["navigation_acceptance"])},
+            "navigation_acceptance_sha256":v4.digest(development["protocol"]["navigation_acceptance"]),
+            v4.SPLIT_CLOCK_BRIDGE_FIELD:v4.split_clock_bridge_setting(development)},
         "probe_slots":[{"plan_path":str(Path(development["output"])/"plan.json"),
             "plan_file_sha256":v4.sha(Path(development["output"])/"plan.json"), "slot_id":trial["id"],
             "record_file_sha256":v4.sha(v4.record_path(development,trial))} for trial in development["trials"]]}
@@ -541,7 +543,8 @@ class CorrelatedBoundRegistrationTests(unittest.TestCase):
                         "model_hashes": current["model_hashes"],
                         "magnetic_runtime_manifest_sha256": current["magnetic_runtime_binding"]["manifest_sha256"],
                         "magnetic_library_registration_sha256": current["magnetic_library_binding"]["registration_sha256"],
-                        "navigation_acceptance_sha256": v4.digest(current["protocol"]["navigation_acceptance"])},
+                        "navigation_acceptance_sha256": v4.digest(current["protocol"]["navigation_acceptance"]),
+                        v4.SPLIT_CLOCK_BRIDGE_FIELD: v4.split_clock_bridge_setting(current)},
                     "probe_slots": [{"plan_path": str(Path(previous["output"])/"plan.json"),
                                      "plan_file_sha256": v4.sha(Path(previous["output"])/"plan.json"),
                                      "slot_id": previous["trials"][0]["id"], "record_file_sha256": "0"*64}]}
@@ -735,7 +738,8 @@ class ModelAdaptationRegistrationTests(unittest.TestCase):
                         "model_hashes": current["model_hashes"],
                         "magnetic_runtime_manifest_sha256": current["magnetic_runtime_binding"]["manifest_sha256"],
                         "magnetic_library_registration_sha256": current["magnetic_library_binding"]["registration_sha256"],
-                        "navigation_acceptance_sha256": v4.digest(current["protocol"]["navigation_acceptance"])},
+                        "navigation_acceptance_sha256": v4.digest(current["protocol"]["navigation_acceptance"]),
+                        v4.SPLIT_CLOCK_BRIDGE_FIELD: v4.split_clock_bridge_setting(current)},
                     "probe_slots": [{"plan_path": str(Path(previous["output"])/"plan.json"),
                                      "plan_file_sha256": v4.sha(Path(previous["output"])/"plan.json"),
                                      "slot_id": previous["trials"][0]["id"], "record_file_sha256": "0"*64}]}
@@ -801,7 +805,8 @@ class Train04ModelAdaptationRegistrationTests(ModelAdaptationRegistrationTests):
                         "model_hashes": current["model_hashes"],
                         "magnetic_runtime_manifest_sha256": current["magnetic_runtime_binding"]["manifest_sha256"],
                         "magnetic_library_registration_sha256": current["magnetic_library_binding"]["registration_sha256"],
-                        "navigation_acceptance_sha256": v4.digest(current["protocol"]["navigation_acceptance"])},
+                        "navigation_acceptance_sha256": v4.digest(current["protocol"]["navigation_acceptance"]),
+                        v4.SPLIT_CLOCK_BRIDGE_FIELD: v4.split_clock_bridge_setting(current)},
                     "probe_slots": [{"plan_path": str(Path(previous["output"])/"plan.json"),
                                      "plan_file_sha256": v4.sha(Path(previous["output"])/"plan.json"),
                                      "slot_id": previous["trials"][0]["id"], "record_file_sha256": "0"*64}]}

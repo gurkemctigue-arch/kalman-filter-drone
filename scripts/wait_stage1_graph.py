@@ -12,7 +12,7 @@ from uav_tracking.startup_readiness import (
 
 
 def wait_ready(output: Path, *, require_recorder: bool, check_alive=None,
-               timeout_wall_s: float = 45.) -> dict:
+               timeout_wall_s: float = 45., expected_clock_node=None) -> dict:
     import rclpy
     from rclpy.executors import SingleThreadedExecutor
     from rclpy.qos import QoSCompatibility, qos_check_compatible
@@ -24,6 +24,7 @@ def wait_ready(output: Path, *, require_recorder: bool, check_alive=None,
     report = {"schema_version": 1, "status": "FAIL", "created_utc": datetime.now(timezone.utc).isoformat(),
         "scope": "PAUSED_GRAPH_AND_ADAPTER_DDS_MATCHES_BEFORE_UNPAUSE",
         "require_recorder": require_recorder, "required_topics": REQUIRED_TOPICS,
+        "expected_clock_publisher_node": expected_clock_node,
         "timeout_wall_s": timeout_wall_s, "stable_wall_s": 1., "guard_wall_s": .5,
         "policy": "No source samples waived; independent complete-recording evaluation remains required",
         "observations": []}
@@ -82,7 +83,8 @@ def wait_ready(output: Path, *, require_recorder: bool, check_alive=None,
                     encoded_subscriptions.append(encoded)
                 snapshot["topics"][topic] = {"publishers": [encode(p) for p in publishers],
                     "subscriptions": encoded_subscriptions}
-            assessment = assess_graph(snapshot, require_recorder=require_recorder)
+            assessment = assess_graph(snapshot, require_recorder=require_recorder,
+                                      expected_clock_node=expected_clock_node)
             stability = gate.observe(time.monotonic()-beginning, assessment)
             snapshot.update(assessment=assessment, stability=stability)
             report["observations"].append(snapshot)
