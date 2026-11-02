@@ -1,0 +1,475 @@
+"""Cold-build one actually prepared independent root, with the original checks."""
+from __future__ import annotations
+import argparse
+import importlib.util
+import json
+import os
+from pathlib import Path
+import re
+import shutil
+import subprocess
+import sys
+
+import prepare_development_final_root_v2 as preparation
+import build_humble41_final_root01 as primitives
+import development_freeze_build as development_build
+import bounded_humble33_action as bounded
+import humble33_skip_contract as skips
+
+require,sha,read,binding,write_new=preparation.require,preparation.sha,preparation.read,preparation.binding,preparation.write_new
+EXTERNAL=preparation.EXTERNAL
+WRAPPER=EXTERNAL/'build_development_final_root_v2.sh'
+KIND='PARAMETERIZED_INDEPENDENT_FINAL_ROOT_COLD_BUILD_ONLY_V2'
+ATTEMPT='final_root_build_development_v2_01'
+BUILD_ARTIFACTS=('colcon_build.log','unittest.log','import_isolation.json','generated_message_roundtrip.json',
+    'fastcdr_provenance.json','runtime_preflight.json','runtime_preflight_closure.json','started.json',
+    'colcon_exit.json','full_suite.json','dds_compile_environment.json','dds_install_transition.json',
+    'cv2_import_environment01.started.json','cv2_import_environment01.json')
+OWNER_ARTIFACTS=('action.started.json','action.process.json','action.log')
+
+
+def tools():return preparation.tool_manifest()
+
+
+def build_command(context):
+    return ['/bin/bash',str(WRAPPER),'--build-internal','--preparation-outcome',context['preparation']['path'],
+        '--preparation-sha256',context['preparation']['sha256']]
+
+
+def validate_receipt(path,digest):
+    outcome=preparation.checked({'path':str(path),'sha256':digest})
+    require(outcome.get('kind')==preparation.KIND and outcome.get('status')=='SOURCE_COPY_VERIFIED_NOT_BUILT_OR_REGISTERED'
+            and outcome.get('source_unchanged') is True and outcome.get('build_executed') is False
+            and outcome.get('protocols_registered') is False and outcome.get('plans_created') is False
+            and type(outcome.get('flights_executed')) is int and outcome['flights_executed']==0
+            and outcome.get('formal_seed_use_authorized') is False,'Actual successful preparation scope required')
+    value=outcome['proposal'];candidate,review=preparation.validate_proposal(value)
+    root,results=Path(value['destination_root']),Path(value['results_root'])
+    preparation.validate_paths(Path(value['source_root']),root,results,existing=True)
+    require(Path(path).resolve(strict=True)==results/'freeze_validation/source_preparation_v2_outcome.json'
+            and read(results/'freeze_validation/source_preparation_v2_started.json')==value,
+            'Actual preparation outcome/start must belong to the bound final results store')
+    manifest=results/'freeze_validation/source_sha256_v2.txt'
+    require(outcome['preparation_source_manifest']==binding(manifest)
+            and manifest.read_text()==''.join(digest+'  '+name+'\n' for name,digest in sorted(value['expected_protected_file_hashes'].items())),
+            'Original preparation source manifest must remain unchanged after registrations')
+    return {'outcome':outcome,'proposal':value,'candidate':candidate,'review':review,'root':root,'results':results,
+        'attempt':results/'freeze_validation'/ATTEMPT,'owner':results/'freeze_validation'/(ATTEMPT+'_owner'),
+        'preparation':binding(path)}
+
+
+def source_check(context,allowed_planning=None):
+    require(binding(context['preparation']['path'])==context['preparation'],'Actual preparation outcome changed')
+    result=preparation.verify_prepared(context['proposal'],allowed_planning)
+    require(binding(context['outcome']['preparation_source_manifest']['path'])==context['outcome']['preparation_source_manifest'],
+            'Original preparation source manifest changed')
+    if not allowed_planning:
+        require(result==context['outcome']['source_verification'],'Actual original copy verification differs')
+    return result
+
+
+def action_binding(context):
+    return {'preparation':context['preparation'],'tools':tools(),'source':source_check(context),
+        'formal_seed_use_authorized':False}
+
+
+def require_owned_child(context):
+    require(os.environ.get('DEVELOPMENT_FINAL_BUILD_V2_RECEIPT_DIR')==str(context['owner']),
+            'Use the original bounded final-build launcher')
+    parent=os.environ.get('DEVELOPMENT_FINAL_BUILD_V2_PARENT_PID','')
+    require(parent.isdigit() and int(parent)>1,'Bounded final-build parent PID required')
+    owned=read(context['owner']/'action.process.json')
+    leader,launcher=bounded.process_stat(owned.get('pid',-1)),bounded.process_stat(int(parent))
+    require(leader is not None and launcher is not None and leader['ppid']==launcher['pid']
+            and leader['start_ticks']==owned.get('observed_leader_stat',{}).get('start_ticks')
+            and os.getpgrp()==os.getsid(0)==owned.get('pid')==owned.get('pgid')==owned.get('session'),
+            'Final-build child escaped the actual original owned process group')
+
+
+# Reuse the reviewed50 implementations as immutable inputs; no native work on import.
+TRANSITION_INPUTS={
+    'transition':('build_humble50_transition01.py','7541567ccfb5bc668dc920f63e6b1dc630745a1d9b53ce6813cb402e0ff55c59'),
+    'cv2':('cv2_import_environment01.py','c3696a457df49ae95d92785fd213a03019b14c1c3507cd6728eb5955040ad0b4')}
+TRANSITION_SEMANTICS='ORIGINAL_COLD_COMPILE_RECORD_AND_EXACT_INSTALLED_DDS_VERIFIED'
+
+
+def transition_helpers():
+    modules,inputs={},{}
+    for key,(name,digest) in TRANSITION_INPUTS.items():
+        path=EXTERNAL.parent/'build50_transition01'/name
+        require(path.is_file() and not path.is_symlink() and path.resolve(strict=True)==path
+                and path.stat().st_size<=preparation.generic.MAX_SMALL and sha(path)==digest,
+                'Original reviewed50 transition helper changed: '+name)
+        spec=importlib.util.spec_from_file_location('final_v2_reviewed50_'+key,path)
+        require(spec is not None and spec.loader is not None,'Cannot load original reviewed50 helper')
+        module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+        require(Path(module.__file__).resolve(strict=True)==path,'Transition helper origin changed')
+        modules[key]=module;inputs[key]=binding(path)
+    return modules,inputs
+
+
+def destination_review(context,source_verification):
+    """Local helper context after the caller's original copy/source proof.
+
+    Active verify supplies source_check(context). Offline closure validation uses
+    the bound preparation proof; it must not recheck later published planning.
+    The original context review and its registered source binding stay intact.
+    """
+    proposal,review=context['proposal'],context['review']
+    require(source_verification==context['outcome']['source_verification']
+            and review.get('_review_binding')==proposal['source_review']
+            and review.get('frozen_root')==proposal['source_root']==context['candidate']['frozen_root']
+            and str(context['root'])==proposal['destination_root']
+            and binding(context['preparation']['path'])==context['preparation']
+            and binding(context['outcome']['preparation_source_manifest']['path'])
+                ==context['outcome']['preparation_source_manifest'],
+            'Original candidate/source review and actual destination preparation proof required')
+    local=dict(review);local['frozen_root']=str(context['root'])
+    require({key:value for key,value in local.items() if key!='frozen_root'}
+            =={key:value for key,value in review.items() if key!='frozen_root'},
+            'Only the local helper frozen_root field may be adapted')
+    proof={'scope':'LOCAL_HELPER_CONTEXT_ONLY_NOT_NEW_SOURCE_REVIEW',
+        'preparation':context['preparation'],'source_review':proposal['source_review'],
+        'original_source_manifest':proposal['original_source_manifest'],
+        'preparation_source_manifest':context['outcome']['preparation_source_manifest'],
+        'source_verification':source_verification,'source_root':proposal['source_root'],
+        'destination_root':str(context['root']),'adapted_review_fields':['frozen_root'],
+        'registered_source_review_modified':False,'destination_source_review_published':False}
+    return local,proof
+
+
+def check_install_transition(context,runtime,local_review,adaptation,helpers,inputs,record):
+    root=context['root'];setup=root/'ros2_ws/install/setup.bash';lib=root/'ros2_ws/install/lib'
+    require(setup.is_file() and not setup.is_symlink() and setup.resolve(strict=True)==setup
+            and lib.is_dir() and not lib.is_symlink() and lib.resolve(strict=True)==lib,
+            'Actual canonical same-root generated setup/install required')
+    installed=record.get('after');config=read(root/development_build.resource.DDS_CONFIG)
+    development_build.resource.verify_dds_record({'dds':installed},local_review,root)
+    proof=helpers['transition'].verify_transition(runtime['dds'],installed,str(root),config['prefix']+'/lib')
+    expected={'schema_version':1,'scope':TRANSITION_SEMANTICS,'preparation':context['preparation'],
+        'source_review':context['proposal']['source_review'],'destination_review_adaptation':adaptation,
+        'helper_inputs':inputs,'runtime_preflight':binding(context['attempt']/'runtime_preflight.json'),
+        'dds_compile_environment':binding(context['attempt']/'dds_compile_environment.json'),
+        'before':runtime['dds'],'after':installed,'proof':proof,'generated_setup':binding(setup),
+        'actual_environment_unchanged':False,'actual_loaded_processes_claimed':False}
+    require(record==expected,'Original cold-to-installed transition evidence differs')
+    return installed
+
+
+def check_cv2_receipt(context,helper,installed):
+    attempt=context['attempt'];report=read(attempt/helper.RECEIPT_NAME);started=read(attempt/helper.START_NAME)
+    require(report.get('schema_version')==1 and report.get('scope')==helper.SCOPE
+            and report.get('root')==str(context['root'])
+            and report.get('status')=='PASS_PINNED_CV2_IMPORTED_AND_COMPLETE_ENVIRONMENT_RESTORED'
+            and report.get('before_dds')==report.get('after_dds')==installed
+            and report.get('before_environment')==report.get('restored_environment')
+            and report.get('delta_proof')==helper.verify_import_delta(
+                report['before_environment'],report['imported_environment'])
+            and report.get('started_receipt')==binding(attempt/helper.START_NAME)
+            and all(report.get(key) is True for key in ('restoration_applied','full_environment_restored','fresh_dds_equal'))
+            and all(report.get(key) is False for key in ('libraries_unloaded_or_reloaded',
+                'project_source_changed','actual_loaded_dds_processes_claimed')),
+            'Exact complete CV2 import/environment restoration evidence required')
+    require(started.get('schema_version')==1 and started.get('scope')==helper.SCOPE
+            and started.get('root')==str(context['root']) and started.get('started_utc')==report.get('started_utc')
+            and started.get('expected_file_pins')==helper.FILE_PINS
+            and started.get('before_environment')==report['before_environment']
+            and started.get('automatic_retry') is False
+            and report.get('module_paths')=={'python':str(helper.CV2_ROOT/'__init__.py'),
+                'native':str(helper.CV2_ROOT/'cv2.abi3.so')}
+            and report.get('files_before')==report.get('files_after')
+            and set(report.get('files_before',{}))==set(helper.FILE_PINS),
+            'Original CV2 started marker/module origins/file map differs')
+    for name,digest in helper.FILE_PINS.items():
+        path=helper.CV2_ROOT/name;row=report['files_before'][name]
+        require(path.is_file() and not path.is_symlink() and path.resolve(strict=True)==path
+                and row=={'path':str(path),'sha256':digest,'bytes':path.stat().st_size}
+                and sha(path)==digest,'Original pinned CV2 wheel bytes changed: '+name)
+    return binding(attempt/helper.RECEIPT_NAME)
+
+
+def verify(context):
+    require_owned_child(context)
+    primitives.require_environment(context,build=False)
+    attempt=context['attempt'];started=read(attempt/'started.json')
+    require(started['preparation']==context['preparation'] and started['tools']==tools(),
+            'Actual build helper/preparation binding changed')
+    require(binding(started['colcon_defaults']['path'])==started['colcon_defaults']
+            and read(started['colcon_defaults']['path'])=={},'Exclusive empty colcon defaults changed')
+    require(read(attempt/'fastcdr_provenance.json')==primitives.audit_fastcdr(context['root']),
+            'Actual FastCDR compiler inputs changed before imports')
+    runtime=read(attempt/'runtime_preflight.json')
+    development_build.resource.verify_dds_record(runtime,context['review'],context['root'])
+    development_build.resource.verify_compile_record(read(attempt/'dds_compile_environment.json'),
+        runtime,context['review'],context['root'])
+    local_review,adaptation=destination_review(context,source_check(context))
+    helpers,inputs=transition_helpers()
+    installed=development_build.resource.dds_contracts(local_review,context['root'])
+    setup=context['root']/'ros2_ws/install/setup.bash'
+    config=read(context['root']/development_build.resource.DDS_CONFIG)
+    transition={'schema_version':1,'scope':TRANSITION_SEMANTICS,'preparation':context['preparation'],
+        'source_review':context['proposal']['source_review'],'destination_review_adaptation':adaptation,
+        'helper_inputs':inputs,'runtime_preflight':binding(attempt/'runtime_preflight.json'),
+        'dds_compile_environment':binding(attempt/'dds_compile_environment.json'),
+        'before':runtime['dds'],'after':installed,
+        'proof':helpers['transition'].verify_transition(runtime['dds'],installed,str(context['root']),config['prefix']+'/lib'),
+        'generated_setup':binding(setup),'actual_environment_unchanged':False,'actual_loaded_processes_claimed':False}
+    check_install_transition(context,runtime,local_review,adaptation,helpers,inputs,transition)
+    write_new(attempt/'dds_install_transition.json',transition)
+    cv2_receipt=helpers['cv2'].preload_and_restore(attempt,development_build.resource,local_review,context['root'])
+    require(cv2_receipt==check_cv2_receipt(context,helpers['cv2'],installed),'Actual CV2 helper receipt binding differs')
+    origins=primitives.audit_origins(context);write_new(attempt/'import_isolation.json',origins)
+    cdr=primitives.cdr_roundtrip();write_new(attempt/'generated_message_roundtrip.json',cdr)
+    require(cdr.get('status')=='PASS' and len(cdr.get('checks',{}))==11,'Actual generated-message CDR failed')
+    suite=primitives.run_suite(context)
+    after=source_check(context)
+    require(started['source_before']==after and started['tools']==tools(),'Final source/tools changed during cold build and suite')
+    development_build.verify_512_runtime(runtime,context['root'])
+    development_build.resource.verify_dds_runtime({'dds':installed},local_review,context['root'])
+    require(transition_helpers()[1]==inputs,'Original transition helpers changed during verification')
+    require(check_cv2_receipt(context,helpers['cv2'],installed)==cv2_receipt,'CV2 evidence changed during verification')
+    write_new(attempt/'runtime_preflight_closure.json',{'before':started['runtime_preflight'],
+        'after':binding(attempt/'runtime_preflight.json'),'strict512_verified':True,
+        'dds_runtime_verified':True,'dds_compile_environment':binding(attempt/'dds_compile_environment.json'),
+        'dds_verification_semantics':TRANSITION_SEMANTICS,'actual_environment_unchanged':False,
+        'dds_install_transition':binding(attempt/'dds_install_transition.json'),'cv2_import_receipt':cv2_receipt})
+    require(started['runtime_preflight']==binding(attempt/'runtime_preflight.json'),'Actual final512 preflight changed')
+    result={'schema_version':1,'kind':KIND,'status':'PASS_BUILD_AND_STATIC_CHECKS_ONLY',
+        'preparation':context['preparation'],'root':str(context['root']),'tools':tools(),
+        'source_after':after,'full_suite':suite,'module_count':len(origins['module_files']),
+        'dds_install_transition':binding(attempt/'dds_install_transition.json'),'cv2_import_receipt':cv2_receipt,
+        'ament_package_count':len(origins['ros_package_prefixes']),'actual_cdr_checks':11,
+        'source_unchanged':True,'protocols_registered':False,'formal_seed_use_authorized':False}
+    write_new(attempt/'verification_outcome.json',result)
+    return result
+
+
+def build(context):
+    require_owned_child(context)
+    primitives.require_environment(context,build=False)
+    root,attempt=context['root'],context['attempt']
+    require(not attempt.exists() and not attempt.is_symlink(),'Exclusive final-root build attempt required')
+    require(not any((root/'ros2_ws'/name).exists() or (root/'ros2_ws'/name).is_symlink() for name in ('build','install','log')),
+            'Actual independent final root must receive a cold build')
+    before=source_check(context)
+    runtime=development_build.runtime_contracts(context['review'],root)
+    development_build.verify_512_runtime(runtime,root)
+    attempt.mkdir();defaults=attempt/'colcon_defaults.yaml';write_new(defaults,{})
+    write_new(attempt/'runtime_preflight.json',runtime)
+    try:
+        compile_record={}
+        try:
+            with development_build.resource.compile_environment(context['review'],root) as compile_record:
+                environment=primitives.require_environment(context,build=True)
+                colcon=shutil.which('colcon');require(colcon is not None,'Actual colcon unavailable')
+                command=primitives.colcon_command(root,colcon)
+                write_new(attempt/'started.json',{'schema_version':1,'kind':KIND,'created_utc':preparation.generic.utc(),
+                    'preparation':context['preparation'],'tools':tools(),'source_before':before,'environment':environment,
+                    'runtime_environment':compile_record['runtime_environment'],
+                    'command':command,'colcon_defaults':binding(defaults),'runtime_preflight':binding(attempt/'runtime_preflight.json')})
+                with (attempt/'colcon_build.log').open('x') as stream:
+                    process=subprocess.run(command,cwd=root/'ros2_ws',stdin=subprocess.DEVNULL,stdout=stream,
+                        stderr=subprocess.STDOUT,env=dict(os.environ,COLCON_DEFAULTS_FILE=str(defaults)))
+        finally:
+            write_new(attempt/'dds_compile_environment.json',compile_record)
+        development_build.resource.verify_compile_record(compile_record,runtime,context['review'],root)
+        development_build.resource.verify_dds_runtime(runtime,context['review'],root)
+        write_new(attempt/'colcon_exit.json',{'returncode':process.returncode,'log':binding(attempt/'colcon_build.log')})
+        require(process.returncode==0 and re.search(r'Summary:\s+4 packages finished',
+            re.sub(r'\x1b\[[0-9;]*m','',(attempt/'colcon_build.log').read_text())),'Actual four-package cold build failed')
+        write_new(attempt/'fastcdr_provenance.json',primitives.audit_fastcdr(root))
+        command=['/bin/bash',str(WRAPPER),'--verify-internal','--preparation-outcome',context['preparation']['path'],
+            '--preparation-sha256',context['preparation']['sha256']]
+        with (attempt/'verification.log').open('x') as stream:
+            result=subprocess.run(command,cwd=root,stdin=subprocess.DEVNULL,stdout=stream,stderr=subprocess.STDOUT)
+        require(result.returncode==0,'Actual final-root verification failed; retain all original evidence')
+        verification=read(attempt/'verification_outcome.json')
+        require(verification['status']=='PASS_BUILD_AND_STATIC_CHECKS_ONLY' and verification['full_suite']['status']=='PASS'
+                and verification['tools']==tools(),'Actual mandatory final-root suite/checks did not pass')
+        outcome={'schema_version':1,'kind':KIND,'status':'FINAL_ROOT_BUILT_NOT_REGISTERED_OR_FLOWN',
+            'root':str(root),'results':str(context['results']),'preparation':context['preparation'],
+            'verification':binding(attempt/'verification_outcome.json'),'four_packages_built':True,
+            'full_suite_status':'PASS','source_unchanged':True,'protocols_registered':False,
+            'plans_created':False,'flights_executed':0,'formal_seed_use_authorized':False}
+        write_new(attempt/'outcome.json',outcome)
+        return outcome
+    except BaseException as error:
+        write_new(attempt/'failed.json',{'kind':KIND,'status':'FAILED_RETAIN_ROOT_AND_ALL_LOGS_NO_RETRY',
+            'error':type(error).__name__+':'+str(error),'formal_seed_use_authorized':False})
+        raise
+
+
+def validate_completed_build(pin):
+    chain=preparation.checked(pin)
+    require(chain.get('kind')==KIND and chain.get('status')=='ACTUAL_FINAL_COPY_BUILD_SUITE_COMPLETE_NOT_ADMITTED'
+            and chain.get('formal_seed_use_authorized') is False and chain.get('capacity_admission_performed') is False,
+            'Actual independent final-root build chain required')
+    context=validate_receipt(chain['preparation']['path'],chain['preparation']['sha256'])
+    require(binding(context['attempt']/'chain.json')==pin,'Actual build chain path escaped the prepared root')
+    outcome=preparation.checked(chain['build_outcome']);terminal=preparation.checked(chain['bounded_terminal'])
+    require(chain['build_outcome']==binding(context['attempt']/'outcome.json')
+            and chain['bounded_terminal']==binding(context['owner']/'action.terminal.json')
+            and outcome.get('kind')==KIND and outcome.get('root')==str(context['root'])
+            and outcome.get('results')==str(context['results']) and outcome.get('preparation')==context['preparation']
+            and outcome.get('four_packages_built') is True and outcome.get('full_suite_status')=='PASS'
+            and outcome.get('source_unchanged') is True and outcome.get('protocols_registered') is False
+            and outcome.get('status')=='FINAL_ROOT_BUILT_NOT_REGISTERED_OR_FLOWN'
+            and outcome.get('plans_created') is False and type(outcome.get('flights_executed')) is int
+            and outcome['flights_executed']==0
+            and outcome.get('formal_seed_use_authorized') is False,'Actual final build outcome scope changed')
+    expected_action={'preparation':context['preparation'],'tools':tools(),
+        'source':context['outcome']['source_verification'],'formal_seed_use_authorized':False}
+    require(chain.get('action_binding')==expected_action,'Actual owner binding must be the original unchanged preparation')
+    require(terminal.get('scope')=='BOUNDED_SINGLE_ACTION_PROCESS_GROUP_ONLY_NOT_FLIGHT_ACCEPTANCE'
+            and terminal.get('action')=='final-root-build' and terminal.get('command')==build_command(context)
+            and terminal.get('status')=='PASS' and type(terminal.get('direct_child_returncode')) is int
+            and terminal['direct_child_returncode']==0 and type(terminal.get('execution_count')) is int and terminal['execution_count']==1
+            and terminal.get('cleanup',{}).get('actual_proc_group_empty') is True
+            and terminal['cleanup'].get('direct_child_reaped') is True and terminal['cleanup'].get('residual_processes')==[]
+            and terminal.get('binding_before')==terminal.get('binding_after')==expected_action
+            and terminal.get('binding_error') is None and terminal.get('launcher_error') is None
+            and terminal.get('requested_signals')==[] and terminal.get('automatic_retry') is False
+            and terminal.get('automatic_next_step') is False and terminal.get('formal_seeds_consumed') is False
+            and terminal.get('runtime_acceptance')=='NOT_EVALUATED',
+            'Actual bounded cold-build owner did not finish healthily')
+    verification=preparation.checked(outcome['verification'])
+    require(outcome['verification']==binding(context['attempt']/'verification_outcome.json')
+            and verification.get('status')=='PASS_BUILD_AND_STATIC_CHECKS_ONLY' and verification.get('full_suite',{}).get('status')=='PASS'
+            and verification.get('tools')==tools() and verification.get('preparation')==context['preparation']
+            and verification.get('kind')==KIND and verification.get('root')==str(context['root'])
+            and verification.get('source_after')==context['outcome']['source_verification']
+            and verification.get('source_unchanged') is True and verification.get('protocols_registered') is False
+            and verification.get('formal_seed_use_authorized') is False,'Actual final-root isolation/CDR/suite result changed')
+    require(set(chain.get('build_artifacts',{}))==set(BUILD_ARTIFACTS)
+            and set(chain.get('owner_artifacts',{}))==set(OWNER_ARTIFACTS),'Exact actual build/owner artifact closure required')
+    for name in BUILD_ARTIFACTS:
+        require(binding(context['attempt']/name)==chain['build_artifacts'][name],'Actual final build artifact changed: '+name)
+    for name in OWNER_ARTIFACTS:
+        require(binding(context['owner']/name)==chain['owner_artifacts'][name],'Actual owner artifact changed: '+name)
+    owner_start=read(context['owner']/'action.started.json');owner_process=read(context['owner']/'action.process.json')
+    require(owner_start.get('action')=='final-root-build' and owner_start.get('command')==build_command(context)
+            and owner_start.get('binding_before')==expected_action and owner_start.get('execution_count')==1
+            and owner_start.get('automatic_retry') is False and owner_start.get('automatic_next_step') is False
+            and owner_start.get('formal_seeds_consumed') is False
+            and terminal.get('action_log_sha256')==sha(context['owner']/'action.log'),
+            'Original owner command/start/log closure differs')
+    for name,expected in {'timeout_s':preparation.generic.ACTIONS['build']+preparation.generic.ACTIONS['validate'],
+            'term_grace_s':30.,'kill_confirm_s':5.}.items():
+        require(type(owner_start.get(name)) in (int,float) and owner_start[name]==terminal.get(name)==expected,
+                'Original owned build wall-time/cleanup budget differs')
+    leader=owner_process.get('observed_leader_stat',{});pid=owner_process.get('pid')
+    require(type(pid) is int and pid>1 and pid==owner_process.get('pgid')==owner_process.get('session')==terminal.get('pid')
+            and leader.get('pid')==pid and type(leader.get('start_ticks')) is int and leader['start_ticks']>0,
+            'Actual original leader process identity differs')
+    started=read(context['attempt']/'started.json')
+    require(started.get('kind')==KIND and started.get('preparation')==context['preparation'] and started.get('tools')==tools()
+            and started.get('source_before')==context['outcome']['source_verification']
+            and started.get('colcon_defaults')==binding(context['attempt']/'colcon_defaults.yaml')
+            and read(context['attempt']/'colcon_defaults.yaml')=={}
+            and started.get('runtime_preflight')==binding(context['attempt']/'runtime_preflight.json'),
+            'Original cold-build start/default/source/runtime closure differs')
+    command=started.get('command',[])
+    require(len(command)>1 and command==primitives.colcon_command(context['root'],command[1]),
+            'Actual original four-package compiler command differs')
+    colcon=read(context['attempt']/'colcon_exit.json')
+    require(type(colcon.get('returncode')) is int and colcon['returncode']==0
+            and colcon.get('log')==binding(context['attempt']/'colcon_build.log')
+            and re.search(r'Summary:\s+4 packages finished',re.sub(r'\x1b\[[0-9;]*m','',
+                (context['attempt']/'colcon_build.log').read_text())) is not None,
+            'Actual four-package cold-build log/exit differs')
+    origins=read(context['attempt']/'import_isolation.json')
+    modules=origins.get('module_files',{});prefixes=origins.get('ros_package_prefixes',{})
+    require(origins.get('root')==str(context['root']) and origins.get('isolated') is True
+            and set(modules)==set((*primitives.MODULES,*context['review'].get('additional_import_modules',[])))
+            and set(prefixes)==set(primitives.PACKAGES)
+            and all(Path(location).resolve(strict=True).is_relative_to(context['root']) for location in (*modules.values(),*prefixes.values()))
+            and origins.get('module_count')==verification.get('module_count')==len(modules)
+            and origins.get('ament_package_count')==verification.get('ament_package_count')==len(prefixes)
+            and origins.get('selected_bridge_overlay')==str(primitives.BRIDGE)
+            and origins.get('bridge_runtime_validation',{}).get('status')=='PASS',
+            'Actual built imports/ament/bridge origin evidence differs')
+    cdr=read(context['attempt']/'generated_message_roundtrip.json')
+    require(cdr.get('status')=='PASS' and cdr.get('scope')=='ACTUAL_BUILT_ROS_MESSAGE_SERIALIZATION_ONLY_NO_NODE_NO_SIMULATION'
+            and len(cdr.get('checks',{}))==11 and all(value is True for value in cdr['checks'].values())
+            and verification.get('actual_cdr_checks')==11 and cdr.get('execution_count')==1
+            and type(cdr.get('serialized_bytes')) is int and cdr['serialized_bytes']>0
+            and preparation.generic.valid_sha(cdr.get('serialized_sha256')),'Actual eleven generated-message checks differ')
+    fastcdr=read(context['attempt']/'fastcdr_provenance.json')
+    require(fastcdr.get('status')=='MATCHES_HUMBLE_SYSTEM_FASTCDR' and fastcdr.get('root')==str(context['root'])
+            and fastcdr.get('fastcdr_directory')==str(primitives.FASTCDR) and fastcdr.get('agent_compile_prefix_absent') is True
+            and fastcdr.get('inputs_sha256') and all(sha(path)==digest for path,digest in fastcdr['inputs_sha256'].items()),
+            'Actual compiler/FastCDR inputs changed')
+    suite=read(context['attempt']/'full_suite.json');log=(context['attempt']/'unittest.log').read_text()
+    observed=re.search(r'Ran (\d+) tests in ([0-9.]+)s',log)
+    require(suite==verification.get('full_suite') and suite.get('status')=='PASS'
+            and type(suite.get('returncode')) is int and suite['returncode']==0 and observed is not None
+            and type(suite.get('tests')) is int and suite['tests']==int(observed[1])>skips.EXPECTED_FULL_SUITE_SKIPS
+            and suite.get('log')==binding(context['attempt']/'unittest.log')
+            and re.search(r'(?m)^OK \(skipped=5\)$',log) is not None and 'FAILED' not in log
+            and suite.get('actual_skipped_tests')==skips.validate_observed_skips(log)
+            and suite.get('skip_source_contract')==skips.validate_skip_sources({name:(context['root']/name).read_text()
+                for name in skips.SKIP_SOURCE_PATHS}),'Actual full-suite count/log/skip evidence differs')
+    runtime=read(context['attempt']/'runtime_preflight.json')
+    development_build.verify_512_runtime(runtime,context['root'])
+    development_build.resource.verify_dds_record(runtime,context['review'],context['root'])
+    development_build.resource.verify_compile_record(read(context['attempt']/'dds_compile_environment.json'),
+        runtime,context['review'],context['root'])
+    local_review,adaptation=destination_review(context,context['outcome']['source_verification'])
+    helpers,inputs=transition_helpers()
+    transition=read(context['attempt']/'dds_install_transition.json')
+    installed=check_install_transition(context,runtime,local_review,adaptation,helpers,inputs,transition)
+    cv2_receipt=check_cv2_receipt(context,helpers['cv2'],installed)
+    transition_pin=binding(context['attempt']/'dds_install_transition.json')
+    require(verification.get('dds_install_transition')==transition_pin
+            and verification.get('cv2_import_receipt')==cv2_receipt,'Actual verification transition/CV2 bindings differ')
+    closure=read(context['attempt']/'runtime_preflight_closure.json')
+    require(closure.get('before')==closure.get('after')==started['runtime_preflight']
+            and closure.get('strict512_verified') is True
+            and closure.get('dds_runtime_verified') is True
+            and closure.get('dds_compile_environment')==binding(context['attempt']/'dds_compile_environment.json')
+            and closure.get('dds_verification_semantics')==TRANSITION_SEMANTICS
+            and closure.get('actual_environment_unchanged') is False
+            and closure.get('dds_install_transition')==transition_pin
+            and closure.get('cv2_import_receipt')==cv2_receipt,
+            'Actual final512/DDS runtime preflight closure differs')
+    require(chain['tools']==tools(),'Build-chain helper identity changed')
+    return context
+
+
+def launch(context):
+    root=context['root'];require(not context['attempt'].exists() and not context['owner'].exists(),'No build retry/recovery')
+    command=build_command(context)
+    with preparation.generic.exclusive_window():
+        before=action_binding(context)
+        terminal=bounded.run_bounded(command,context['owner'],action='final-root-build',
+            timeout_s=preparation.generic.ACTIONS['build']+preparation.generic.ACTIONS['validate'],grace_s=30.,kill_confirm_s=5.,
+            binding=lambda phase:action_binding(context),environment=dict(os.environ,
+                DEVELOPMENT_FINAL_BUILD_V2_RECEIPT_DIR=str(context['owner']),DEVELOPMENT_FINAL_BUILD_V2_PARENT_PID=str(os.getpid())))
+    require(terminal['status']=='PASS','Actual owned final build failed; original root and attempt retained')
+    chain={'schema_version':1,'kind':KIND,'status':'ACTUAL_FINAL_COPY_BUILD_SUITE_COMPLETE_NOT_ADMITTED',
+        'preparation':context['preparation'],'build_outcome':binding(context['attempt']/'outcome.json'),
+        'bounded_terminal':binding(context['owner']/'action.terminal.json'),'action_binding':before,
+        'build_artifacts':{name:binding(context['attempt']/name) for name in BUILD_ARTIFACTS},
+        'owner_artifacts':{name:binding(context['owner']/name) for name in OWNER_ARTIFACTS},'tools':tools(),
+        'formal_seed_use_authorized':False,'capacity_admission_performed':False}
+    write_new(context['attempt']/'chain.json',chain)
+    validate_completed_build(binding(context['attempt']/'chain.json'))
+    return chain
+
+
+def main(argv=None):
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('action',choices=('describe','root','build','internal-build','internal-verify'),nargs='?',default='describe')
+    parser.add_argument('--preparation-outcome',type=Path);parser.add_argument('--preparation-sha256')
+    parser.add_argument('--reviewed-tools-sha256');args=parser.parse_args(argv)
+    if args.action=='describe':print(json.dumps({'manifest':tools(),'sha256':preparation.canonical(tools()),'actual_action_executed':False}));return 0
+    development_build.resource.require_linux()
+    context=validate_receipt(args.preparation_outcome,args.preparation_sha256)
+    if args.action=='root':print(context['root']);return 0
+    if args.action=='build':preparation.require_tools(args.reviewed_tools_sha256);launch(context)
+    elif args.action=='internal-build':build(context)
+    else:verify(context)
+    return 0
+
+
+if __name__=='__main__':raise SystemExit(main())

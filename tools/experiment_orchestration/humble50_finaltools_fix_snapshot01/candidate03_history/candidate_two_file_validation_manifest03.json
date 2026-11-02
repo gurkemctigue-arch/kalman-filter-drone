@@ -1,0 +1,83 @@
+{
+  "actual_native_preflight_compile_ros_cv2_or_simulation_executed": false,
+  "application_files": [
+    {
+      "candidate": {
+        "path": "D:\\WSL\\UAVHumble22-validation\\finalroot50_preparation01\\build_development_final_root_v2.candidate01.py",
+        "sha256": "7405debd20fd1867858dba1b9a1baf507640fee3b4b2e77eb3df2e265ad60708"
+      },
+      "original_sha256": "c1660b80ed62b6295d088e3a3f18e099941647b8e81bcfa7a77511490ea95718",
+      "patch": {
+        "path": "D:\\WSL\\UAVHumble22-validation\\finalroot50_preparation01\\final_root_v2_installed_dds_cv2_candidate01.patch",
+        "sha256": "6830e6df21a931c6b16da68a6de97cfc4a27f2485d4436792243a36e326482af"
+      },
+      "target": "D:\\WSL\\UAVHumble22-validation\\dds48_tools01\\build_development_final_root_v2.py"
+    },
+    {
+      "candidate": {
+        "path": "D:\\WSL\\UAVHumble22-validation\\finalroot50_preparation01\\test_development_final_root_v2.candidate01.py",
+        "sha256": "bdf88c4cc55311faa2e46a403538e7df3d4245b2fd447b7dc14d498e1c77a7d9"
+      },
+      "original_sha256": "70878d27c6ecf94d691264b4bb6f3831b99e405cf170f8940e40d0b801101a3b",
+      "patch": {
+        "path": "D:\\WSL\\UAVHumble22-validation\\finalroot50_preparation01\\final_root_v2_metadata_tests_candidate01.patch",
+        "sha256": "c8e070b2471a25a11c9f1e0a90826db956199e41a83b36faa86eb9ff899cfe2c"
+      },
+      "target": "D:\\WSL\\UAVHumble22-validation\\dds48_tools01\\test_development_final_root_v2.py"
+    }
+  ],
+  "baseline_two_files_unchanged": true,
+  "builder_proof_relaxed": false,
+  "created_utc": "2026-11-02T04:05:19.772242+00:00",
+  "dds48_pinned_or_main_files_modified": false,
+  "future_final_root_or_formal_evidence_created": false,
+  "later_requirements": [
+    "Only apply after actual50 required gates",
+    "Apply two candidate01 diffs to existing unexecuted same-name v2 entries",
+    "Recompute and independently review v2 tools OWN/canonical after both changes",
+    "Retain core2129 and all original pinned primitives unchanged",
+    "Real final-root cold build/import/CDR/full suite still required before registration and admission"
+  ],
+  "native_focused_log": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\finalroot50_preparation01\\candidate_native_metadata_tests_attempt03.log",
+    "sha256": "db0f8364191ae843d3deb6e0a0caf96fed9edfb028e259d076f7ccce0096e18d"
+  },
+  "native_focused_test_receipt": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\finalroot50_preparation01\\candidate_native_metadata_tests_attempt03.json",
+    "sha256": "a956f4159139717c484fe5d8554b8fb5376618a13341026ee5de3c91e7c1a24b"
+  },
+  "native_runner": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\finalroot50_preparation01\\run_candidate_native_metadata_tests03.py",
+    "sha256": "2a18c5c614b4ea3778508c0a95bd98cce32a3e952d82e168184a88f4f8084a06"
+  },
+  "original_no_source_check_assertion_preserved": true,
+  "rejected_windows_adapter_tests_candidate": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\finalroot50_preparation01\\test_development_final_root_v2.candidate02.py",
+    "sha256": "c7b350fa988633e6ba02233912c2458c08975801c20f356652d7df72b5747736"
+  },
+  "schema_version": 1,
+  "static_selected17_review": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\finalroot50_preparation01\\native_selected17_static_review03.json",
+    "sha256": "e5a04047a62319dfc149aa1049cd836b312d3dc5a15e4ac0b64de8a9b9e15e6f"
+  },
+  "status": "TWO_FILE_CANDIDATE_PATCHES_READY_FOR_LATER_REVIEWED_APPLICATION_NOT_APPLIED",
+  "test_class_changes_only": [
+    "CompletedBuildFixture"
+  ],
+  "tests": {
+    "completed_build_existing": 4,
+    "completed_build_new_rejection_and_order_cases": 10,
+    "elapsed_s": 69.79,
+    "errors": 0,
+    "failed": 0,
+    "passed": 17,
+    "skips": 0,
+    "total": 17,
+    "unchanged_owner_cases": 3
+  },
+  "windows_attempt01_failure_preserved": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\finalroot50_preparation01\\candidate_metadata_tests_attempt01.json",
+    "sha256": "b6e3acdfe399ff80b618a5bfe0592188930bf8a42e5cf469dcde9e77c01b289b"
+  },
+  "windows_attempt02_adapter_not_for_application": true
+}

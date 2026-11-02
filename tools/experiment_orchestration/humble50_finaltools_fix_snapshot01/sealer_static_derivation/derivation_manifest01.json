@@ -1,0 +1,174 @@
+{
+  "baseline_connection_canonical_sha256": "81d2cf99ad9093e30dd5d98ca03bf6bd56bb229f012e11a1fb18eeb182d96921",
+  "basis": {
+    "application_manifest": {
+      "bytes": 4095,
+      "path": "D:\\WSL\\UAVHumble22-validation\\finalroot50_preparation01\\candidate_two_file_validation_manifest03.json",
+      "sha256": "85f37c34c73276362c2cd452069460195917c5cacdfa7b538395e2eac9c2e74f"
+    },
+    "canonical_encoding": "hashlib.sha256(json.dumps(value,sort_keys=True,separators=(comma,colon),allow_nan=False).encode()).hexdigest()",
+    "current_inventory": {
+      "bytes": 24382,
+      "path": "D:\\WSL\\UAVHumble22-validation\\dds48_tools01\\dds48_toolchain_pending_review02.json",
+      "sha256": "bb9356a2e919bc59e2c188ec3e0c923f289c134d8b850131bfa019052165ac8f"
+    },
+    "manifest_json_pointer": "/tool_manifests/final_v2",
+    "source_canonical_definition": {
+      "line": 82,
+      "path": "D:\\WSL\\UAVHumble22-validation\\dds48_tools01\\reviewed_freeze_build.py",
+      "sha256": "de87c22faaaaafb4927f442fb1186787ff0ba71dbed8fde6c002e9ed7252f518"
+    },
+    "source_definition": {
+      "bytes": 16320,
+      "path": "D:\\WSL\\UAVHumble22-validation\\dds48_tools01\\prepare_development_final_root_v2.py",
+      "sha256": "fe7d38750ecd52b5eff8019357a5f2c0e9afe8ac83017aaffb0774978150d9a7"
+    }
+  },
+  "candidate_grammar_only_ast_parse": true,
+  "connection_manifest": {
+    "bytes": 1850,
+    "path": "D:\\WSL\\UAVHumble22-validation\\finalroot50_preparation01\\sealer_candidate01\\projected_final_v2_tool_manifest01.json",
+    "sha256": "9f4defe2353d28fd94daf5699c4e3d14e20bada6ec5b25078e125119ab10d1f4"
+  },
+  "connection_own": [
+    "prepare_development_final_root_v2.py",
+    "build_development_final_root_v2.py",
+    "build_development_final_root_v2.sh",
+    "publish_development_final_protocols_v2.py",
+    "test_development_final_root_v2.py"
+  ],
+  "created_utc": "2026-11-02T04:59:11.443278+00:00",
+  "dependency_propagation": "Two approved candidate01 hashes change final_v2 canonical; that new canonical replaces sealer CONNECTION_SHA, changing sealer own file hash and its separate tools canonical. No sealer membership in preparation OWN; no self-referential pin.",
+  "formal_evidence_created": false,
+  "formal_pass_claimed": false,
+  "future_final_root_created": false,
+  "historical_sealer_connection_sha256": "556d5fcd280a92ac50e7cbad2c7e0b634841e046172fa29a0ec1274a075f9531",
+  "kind": "STATIC_SEALER_CONNECTION_CANDIDATE_DERIVATION_NOT_APPLIED",
+  "new_application_file": {
+    "candidate": {
+      "bytes": 22605,
+      "path": "D:\\WSL\\UAVHumble22-validation\\finalroot50_preparation01\\sealer_candidate01\\seal_development_final_source_v2.candidate01.py",
+      "sha256": "02c9a91efcc3c1946e977727c162b5ca1ec401306c6d24f55b88e8ff0509297e"
+    },
+    "changes": "Only CONNECTION_SHA literal at original line 24",
+    "original": {
+      "bytes": 22605,
+      "path": "D:\\WSL\\UAVHumble22-validation\\dds48_tools01\\seal_development_final_source_v2.py",
+      "sha256": "7da70bdbcbdb5483515100e7b20329310fec57fa52800331e5ab5efc360f44e8"
+    },
+    "patch": {
+      "bytes": 740,
+      "path": "D:\\WSL\\UAVHumble22-validation\\finalroot50_preparation01\\sealer_candidate01\\sealer_connection_candidate01.patch",
+      "sha256": "8d582e95112fcc9a4d60fb6f4e37c8b13c8dd8943d7c76cc3b05625dd353717a"
+    },
+    "target": "D:\\WSL\\UAVHumble22-validation\\dds48_tools01\\seal_development_final_source_v2.py"
+  },
+  "prior_two_application_files": [
+    {
+      "candidate": {
+        "bytes": 35444,
+        "path": "D:\\WSL\\UAVHumble22-validation\\finalroot50_preparation01\\build_development_final_root_v2.candidate01.py",
+        "sha256": "7405debd20fd1867858dba1b9a1baf507640fee3b4b2e77eb3df2e265ad60708"
+      },
+      "original": {
+        "bytes": 25310,
+        "path": "D:\\WSL\\UAVHumble22-validation\\dds48_tools01\\build_development_final_root_v2.py",
+        "sha256": "c1660b80ed62b6295d088e3a3f18e099941647b8e81bcfa7a77511490ea95718"
+      },
+      "target": "D:\\WSL\\UAVHumble22-validation\\dds48_tools01\\build_development_final_root_v2.py"
+    },
+    {
+      "candidate": {
+        "bytes": 82677,
+        "path": "D:\\WSL\\UAVHumble22-validation\\finalroot50_preparation01\\test_development_final_root_v2.candidate01.py",
+        "sha256": "bdf88c4cc55311faa2e46a403538e7df3d4245b2fd447b7dc14d498e1c77a7d9"
+      },
+      "original": {
+        "bytes": 68191,
+        "path": "D:\\WSL\\UAVHumble22-validation\\dds48_tools01\\test_development_final_root_v2.py",
+        "sha256": "70878d27c6ecf94d691264b4bb6f3831b99e405cf170f8940e40d0b801101a3b"
+      },
+      "target": "D:\\WSL\\UAVHumble22-validation\\dds48_tools01\\test_development_final_root_v2.py"
+    }
+  ],
+  "production_files_modified": false,
+  "production_modules_imported": false,
+  "projected_connection_canonical_sha256": "e8585f14ece45335f24614a1794bedf1c205503a90cf587060ed25851c0bd0c9",
+  "projected_sealer_tools_canonical_sha256": "ffa69d35ed1581c68e1b80ef0f3f5030be99178ea1236d5547c3fb4203268a41",
+  "ros_or_cv2_imported": false,
+  "schema_version": 1,
+  "sealer_own": [
+    "seal_development_final_source_v2.py",
+    "test_seal_development_final_source_v2.py"
+  ],
+  "sealer_test_change_required": false,
+  "sealer_tool_manifest": {
+    "bytes": 613,
+    "path": "D:\\WSL\\UAVHumble22-validation\\finalroot50_preparation01\\sealer_candidate01\\projected_sealer_tool_manifest01.json",
+    "sha256": "4a93d9d194fc8789eda9a2e273b697b8081939f929fac3429a7b8069f35fba3f"
+  },
+  "source_tree_scanned_or_hashed": false,
+  "status": "STATIC_ONLY_NO_PRODUCTION_OR_RUNTIME_ACTION",
+  "targeted_current_own_and_reused_file_bindings": [
+    {
+      "bytes": 16320,
+      "path": "D:\\WSL\\UAVHumble22-validation\\dds48_tools01\\prepare_development_final_root_v2.py",
+      "sha256": "fe7d38750ecd52b5eff8019357a5f2c0e9afe8ac83017aaffb0774978150d9a7"
+    },
+    {
+      "bytes": 25310,
+      "path": "D:\\WSL\\UAVHumble22-validation\\dds48_tools01\\build_development_final_root_v2.py",
+      "sha256": "c1660b80ed62b6295d088e3a3f18e099941647b8e81bcfa7a77511490ea95718"
+    },
+    {
+      "bytes": 2429,
+      "path": "D:\\WSL\\UAVHumble22-validation\\dds48_tools01\\build_development_final_root_v2.sh",
+      "sha256": "4364257f2a822ce87424e2cf768e54b1b4a102602f96bc8377fbf9b843344425"
+    },
+    {
+      "bytes": 18434,
+      "path": "D:\\WSL\\UAVHumble22-validation\\dds48_tools01\\publish_development_final_protocols_v2.py",
+      "sha256": "bb27baac2f6ce4180101edac145355a8162f50f1be6a70d7a577f58cf631b3dc"
+    },
+    {
+      "bytes": 68191,
+      "path": "D:\\WSL\\UAVHumble22-validation\\dds48_tools01\\test_development_final_root_v2.py",
+      "sha256": "70878d27c6ecf94d691264b4bb6f3831b99e405cf170f8940e40d0b801101a3b"
+    },
+    {
+      "bytes": 25296,
+      "path": "D:\\WSL\\UAVHumble22-validation\\dds48_tools01\\prepare_humble41_final_root01.py",
+      "sha256": "4e97c4a0bd621069630d2afaa2664c11f139dfbc623c4efa9f59938fd240c0d7"
+    },
+    {
+      "bytes": 30467,
+      "path": "D:\\WSL\\UAVHumble22-validation\\dds48_tools01\\build_humble41_final_root01.py",
+      "sha256": "d79aa4138c1488d037bb0459bd199ba0094e83040835c45878b1838323209eff"
+    },
+    {
+      "bytes": 24231,
+      "path": "D:\\WSL\\UAVHumble22-validation\\dds48_tools01\\publish_humble28_final02_protocols01.py",
+      "sha256": "eaf2141f7e343dd6c74bcef80d7480f9b4282e947effed92110f428cc43d4664"
+    },
+    {
+      "bytes": 4944,
+      "path": "D:\\WSL\\UAVHumble22-validation\\dds48_tools01\\humble33_skip_contract.py",
+      "sha256": "9a4f9d8584077d5c6ebbc099cb35b0c56746bbd725b0893882814bdc87b92406"
+    },
+    {
+      "bytes": 6556,
+      "path": "D:\\WSL\\UAVHumble22-validation\\dds48_tools01\\assemble_development_candidate.py",
+      "sha256": "67aa0051a44579dba0425ee6614c406217d29fbe8036f5cb9c5c6102af6c12d2"
+    }
+  ],
+  "unchanged_dependency_canonicals": {
+    "core": "2129fd88ec6f55625acaa1455919d516a364075394bd2e18efed3f108316a11a",
+    "strict512_build": "919a4483554c73cfbabb1efda910c2dd831e79b963443545bece5307fe51077e"
+  },
+  "unchanged_sealer_test": {
+    "bytes": 27719,
+    "path": "D:\\WSL\\UAVHumble22-validation\\dds48_tools01\\test_seal_development_final_source_v2.py",
+    "sha256": "c8528f013ad0f7103395a8132b327f915c67978293adc4a56f96f2de489c6b58"
+  },
+  "wsl_or_tests_executed": false
+}

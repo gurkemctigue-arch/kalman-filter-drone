@@ -1,0 +1,221 @@
+--- a/build_development_final_root_v2.py
++++ b/build_development_final_root_v2.py
+@@ -1,8 +1,9 @@
+ """Cold-build one actually prepared independent root, with the original checks."""
+ from __future__ import annotations
+ import argparse
++import importlib.util
+ import json
+ import os
+ from pathlib import Path
+ import re
+ import shutil
+@@ -20,11 +21,12 @@
+ WRAPPER=EXTERNAL/'build_development_final_root_v2.sh'
+ KIND='PARAMETERIZED_INDEPENDENT_FINAL_ROOT_COLD_BUILD_ONLY_V2'
+ ATTEMPT='final_root_build_development_v2_01'
+ BUILD_ARTIFACTS=('colcon_build.log','unittest.log','import_isolation.json','generated_message_roundtrip.json',
+     'fastcdr_provenance.json','runtime_preflight.json','runtime_preflight_closure.json','started.json',
+-    'colcon_exit.json','full_suite.json','dds_compile_environment.json')
++    'colcon_exit.json','full_suite.json','dds_compile_environment.json','dds_install_transition.json',
++    'cv2_import_environment01.started.json','cv2_import_environment01.json')
+ OWNER_ARTIFACTS=('action.started.json','action.process.json','action.log')
+ 
+ 
+ def tools():return preparation.tool_manifest()
+ 
+@@ -82,10 +84,112 @@
+             and leader['start_ticks']==owned.get('observed_leader_stat',{}).get('start_ticks')
+             and os.getpgrp()==os.getsid(0)==owned.get('pid')==owned.get('pgid')==owned.get('session'),
+             'Final-build child escaped the actual original owned process group')
+ 
+ 
++# Reuse the reviewed50 implementations as immutable inputs; no native work on import.
++TRANSITION_INPUTS={
++    'transition':('build_humble50_transition01.py','7541567ccfb5bc668dc920f63e6b1dc630745a1d9b53ce6813cb402e0ff55c59'),
++    'cv2':('cv2_import_environment01.py','c3696a457df49ae95d92785fd213a03019b14c1c3507cd6728eb5955040ad0b4')}
++TRANSITION_SEMANTICS='ORIGINAL_COLD_COMPILE_RECORD_AND_EXACT_INSTALLED_DDS_VERIFIED'
++
++
++def transition_helpers():
++    modules,inputs={},{}
++    for key,(name,digest) in TRANSITION_INPUTS.items():
++        path=EXTERNAL.parent/'build50_transition01'/name
++        require(path.is_file() and not path.is_symlink() and path.resolve(strict=True)==path
++                and path.stat().st_size<=preparation.generic.MAX_SMALL and sha(path)==digest,
++                'Original reviewed50 transition helper changed: '+name)
++        spec=importlib.util.spec_from_file_location('final_v2_reviewed50_'+key,path)
++        require(spec is not None and spec.loader is not None,'Cannot load original reviewed50 helper')
++        module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
++        require(Path(module.__file__).resolve(strict=True)==path,'Transition helper origin changed')
++        modules[key]=module;inputs[key]=binding(path)
++    return modules,inputs
++
++
++def destination_review(context,source_verification):
++    """Local helper context after the caller's original copy/source proof.
++
++    Active verify supplies source_check(context). Offline closure validation uses
++    the bound preparation proof; it must not recheck later published planning.
++    The original context review and its registered source binding stay intact.
++    """
++    proposal,review=context['proposal'],context['review']
++    require(source_verification==context['outcome']['source_verification']
++            and review.get('_review_binding')==proposal['source_review']
++            and review.get('frozen_root')==proposal['source_root']==context['candidate']['frozen_root']
++            and str(context['root'])==proposal['destination_root']
++            and binding(context['preparation']['path'])==context['preparation']
++            and binding(context['outcome']['preparation_source_manifest']['path'])
++                ==context['outcome']['preparation_source_manifest'],
++            'Original candidate/source review and actual destination preparation proof required')
++    local=dict(review);local['frozen_root']=str(context['root'])
++    require({key:value for key,value in local.items() if key!='frozen_root'}
++            =={key:value for key,value in review.items() if key!='frozen_root'},
++            'Only the local helper frozen_root field may be adapted')
++    proof={'scope':'LOCAL_HELPER_CONTEXT_ONLY_NOT_NEW_SOURCE_REVIEW',
++        'preparation':context['preparation'],'source_review':proposal['source_review'],
++        'original_source_manifest':proposal['original_source_manifest'],
++        'preparation_source_manifest':context['outcome']['preparation_source_manifest'],
++        'source_verification':source_verification,'source_root':proposal['source_root'],
++        'destination_root':str(context['root']),'adapted_review_fields':['frozen_root'],
++        'registered_source_review_modified':False,'destination_source_review_published':False}
++    return local,proof
++
++
++def check_install_transition(context,runtime,local_review,adaptation,helpers,inputs,record):
++    root=context['root'];setup=root/'ros2_ws/install/setup.bash';lib=root/'ros2_ws/install/lib'
++    require(setup.is_file() and not setup.is_symlink() and setup.resolve(strict=True)==setup
++            and lib.is_dir() and not lib.is_symlink() and lib.resolve(strict=True)==lib,
++            'Actual canonical same-root generated setup/install required')
++    installed=record.get('after');config=read(root/development_build.resource.DDS_CONFIG)
++    development_build.resource.verify_dds_record({'dds':installed},local_review,root)
++    proof=helpers['transition'].verify_transition(runtime['dds'],installed,str(root),config['prefix']+'/lib')
++    expected={'schema_version':1,'scope':TRANSITION_SEMANTICS,'preparation':context['preparation'],
++        'source_review':context['proposal']['source_review'],'destination_review_adaptation':adaptation,
++        'helper_inputs':inputs,'runtime_preflight':binding(context['attempt']/'runtime_preflight.json'),
++        'dds_compile_environment':binding(context['attempt']/'dds_compile_environment.json'),
++        'before':runtime['dds'],'after':installed,'proof':proof,'generated_setup':binding(setup),
++        'actual_environment_unchanged':False,'actual_loaded_processes_claimed':False}
++    require(record==expected,'Original cold-to-installed transition evidence differs')
++    return installed
++
++
++def check_cv2_receipt(context,helper,installed):
++    attempt=context['attempt'];report=read(attempt/helper.RECEIPT_NAME);started=read(attempt/helper.START_NAME)
++    require(report.get('schema_version')==1 and report.get('scope')==helper.SCOPE
++            and report.get('root')==str(context['root'])
++            and report.get('status')=='PASS_PINNED_CV2_IMPORTED_AND_COMPLETE_ENVIRONMENT_RESTORED'
++            and report.get('before_dds')==report.get('after_dds')==installed
++            and report.get('before_environment')==report.get('restored_environment')
++            and report.get('delta_proof')==helper.verify_import_delta(
++                report['before_environment'],report['imported_environment'])
++            and report.get('started_receipt')==binding(attempt/helper.START_NAME)
++            and all(report.get(key) is True for key in ('restoration_applied','full_environment_restored','fresh_dds_equal'))
++            and all(report.get(key) is False for key in ('libraries_unloaded_or_reloaded',
++                'project_source_changed','actual_loaded_dds_processes_claimed')),
++            'Exact complete CV2 import/environment restoration evidence required')
++    require(started.get('schema_version')==1 and started.get('scope')==helper.SCOPE
++            and started.get('root')==str(context['root']) and started.get('started_utc')==report.get('started_utc')
++            and started.get('expected_file_pins')==helper.FILE_PINS
++            and started.get('before_environment')==report['before_environment']
++            and started.get('automatic_retry') is False
++            and report.get('module_paths')=={'python':str(helper.CV2_ROOT/'__init__.py'),
++                'native':str(helper.CV2_ROOT/'cv2.abi3.so')}
++            and report.get('files_before')==report.get('files_after')
++            and set(report.get('files_before',{}))==set(helper.FILE_PINS),
++            'Original CV2 started marker/module origins/file map differs')
++    for name,digest in helper.FILE_PINS.items():
++        path=helper.CV2_ROOT/name;row=report['files_before'][name]
++        require(path.is_file() and not path.is_symlink() and path.resolve(strict=True)==path
++                and row=={'path':str(path),'sha256':digest,'bytes':path.stat().st_size}
++                and sha(path)==digest,'Original pinned CV2 wheel bytes changed: '+name)
++    return binding(attempt/helper.RECEIPT_NAME)
++
++
+ def verify(context):
+     require_owned_child(context)
+     primitives.require_environment(context,build=False)
+     attempt=context['attempt'];started=read(attempt/'started.json')
+     require(started['preparation']==context['preparation'] and started['tools']==tools(),
+@@ -93,28 +197,49 @@
+     require(binding(started['colcon_defaults']['path'])==started['colcon_defaults']
+             and read(started['colcon_defaults']['path'])=={},'Exclusive empty colcon defaults changed')
+     require(read(attempt/'fastcdr_provenance.json')==primitives.audit_fastcdr(context['root']),
+             'Actual FastCDR compiler inputs changed before imports')
+     runtime=read(attempt/'runtime_preflight.json')
+-    development_build.resource.verify_dds_runtime(runtime,context['review'],context['root'])
++    development_build.resource.verify_dds_record(runtime,context['review'],context['root'])
+     development_build.resource.verify_compile_record(read(attempt/'dds_compile_environment.json'),
+         runtime,context['review'],context['root'])
++    local_review,adaptation=destination_review(context,source_check(context))
++    helpers,inputs=transition_helpers()
++    installed=development_build.resource.dds_contracts(local_review,context['root'])
++    setup=context['root']/'ros2_ws/install/setup.bash'
++    config=read(context['root']/development_build.resource.DDS_CONFIG)
++    transition={'schema_version':1,'scope':TRANSITION_SEMANTICS,'preparation':context['preparation'],
++        'source_review':context['proposal']['source_review'],'destination_review_adaptation':adaptation,
++        'helper_inputs':inputs,'runtime_preflight':binding(attempt/'runtime_preflight.json'),
++        'dds_compile_environment':binding(attempt/'dds_compile_environment.json'),
++        'before':runtime['dds'],'after':installed,
++        'proof':helpers['transition'].verify_transition(runtime['dds'],installed,str(context['root']),config['prefix']+'/lib'),
++        'generated_setup':binding(setup),'actual_environment_unchanged':False,'actual_loaded_processes_claimed':False}
++    check_install_transition(context,runtime,local_review,adaptation,helpers,inputs,transition)
++    write_new(attempt/'dds_install_transition.json',transition)
++    cv2_receipt=helpers['cv2'].preload_and_restore(attempt,development_build.resource,local_review,context['root'])
++    require(cv2_receipt==check_cv2_receipt(context,helpers['cv2'],installed),'Actual CV2 helper receipt binding differs')
+     origins=primitives.audit_origins(context);write_new(attempt/'import_isolation.json',origins)
+     cdr=primitives.cdr_roundtrip();write_new(attempt/'generated_message_roundtrip.json',cdr)
+     require(cdr.get('status')=='PASS' and len(cdr.get('checks',{}))==11,'Actual generated-message CDR failed')
+     suite=primitives.run_suite(context)
+     after=source_check(context)
+     require(started['source_before']==after and started['tools']==tools(),'Final source/tools changed during cold build and suite')
+     development_build.verify_512_runtime(runtime,context['root'])
+-    development_build.resource.verify_dds_runtime(runtime,context['review'],context['root'])
++    development_build.resource.verify_dds_runtime({'dds':installed},local_review,context['root'])
++    require(transition_helpers()[1]==inputs,'Original transition helpers changed during verification')
++    require(check_cv2_receipt(context,helpers['cv2'],installed)==cv2_receipt,'CV2 evidence changed during verification')
+     write_new(attempt/'runtime_preflight_closure.json',{'before':started['runtime_preflight'],
+         'after':binding(attempt/'runtime_preflight.json'),'strict512_verified':True,
+-        'dds_runtime_verified':True,'dds_compile_environment':binding(attempt/'dds_compile_environment.json')})
++        'dds_runtime_verified':True,'dds_compile_environment':binding(attempt/'dds_compile_environment.json'),
++        'dds_verification_semantics':TRANSITION_SEMANTICS,'actual_environment_unchanged':False,
++        'dds_install_transition':binding(attempt/'dds_install_transition.json'),'cv2_import_receipt':cv2_receipt})
+     require(started['runtime_preflight']==binding(attempt/'runtime_preflight.json'),'Actual final512 preflight changed')
+     result={'schema_version':1,'kind':KIND,'status':'PASS_BUILD_AND_STATIC_CHECKS_ONLY',
+         'preparation':context['preparation'],'root':str(context['root']),'tools':tools(),
+         'source_after':after,'full_suite':suite,'module_count':len(origins['module_files']),
++        'dds_install_transition':binding(attempt/'dds_install_transition.json'),'cv2_import_receipt':cv2_receipt,
+         'ament_package_count':len(origins['ros_package_prefixes']),'actual_cdr_checks':11,
+         'source_unchanged':True,'protocols_registered':False,'formal_seed_use_authorized':False}
+     write_new(attempt/'verification_outcome.json',result)
+     return result
+ 
+@@ -287,15 +412,27 @@
+     runtime=read(context['attempt']/'runtime_preflight.json')
+     development_build.verify_512_runtime(runtime,context['root'])
+     development_build.resource.verify_dds_record(runtime,context['review'],context['root'])
+     development_build.resource.verify_compile_record(read(context['attempt']/'dds_compile_environment.json'),
+         runtime,context['review'],context['root'])
++    local_review,adaptation=destination_review(context,context['outcome']['source_verification'])
++    helpers,inputs=transition_helpers()
++    transition=read(context['attempt']/'dds_install_transition.json')
++    installed=check_install_transition(context,runtime,local_review,adaptation,helpers,inputs,transition)
++    cv2_receipt=check_cv2_receipt(context,helpers['cv2'],installed)
++    transition_pin=binding(context['attempt']/'dds_install_transition.json')
++    require(verification.get('dds_install_transition')==transition_pin
++            and verification.get('cv2_import_receipt')==cv2_receipt,'Actual verification transition/CV2 bindings differ')
+     closure=read(context['attempt']/'runtime_preflight_closure.json')
+     require(closure.get('before')==closure.get('after')==started['runtime_preflight']
+             and closure.get('strict512_verified') is True
+             and closure.get('dds_runtime_verified') is True
+-            and closure.get('dds_compile_environment')==binding(context['attempt']/'dds_compile_environment.json'),
++            and closure.get('dds_compile_environment')==binding(context['attempt']/'dds_compile_environment.json')
++            and closure.get('dds_verification_semantics')==TRANSITION_SEMANTICS
++            and closure.get('actual_environment_unchanged') is False
++            and closure.get('dds_install_transition')==transition_pin
++            and closure.get('cv2_import_receipt')==cv2_receipt,
+             'Actual final512/DDS runtime preflight closure differs')
+     require(chain['tools']==tools(),'Build-chain helper identity changed')
+     return context
+ 
+ 

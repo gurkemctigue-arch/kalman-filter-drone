@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "scope": "ROOT_INDEPENDENT_STATIC_CANDIDATE_REVIEW_NOT_RUNTIME_AUTHORITY",
+  "created_utc": "2026-11-02T05:00:22.198186+00:00",
+  "result": "PASS_STATIC_CANDIDATE_ONLY",
+  "checks": [
+    "exactly one literal connection pin changed",
+    "two-file candidate01 projection recomputed independently",
+    "projected sealer manifest recomputed independently",
+    "unchanged sealer test bytes",
+    "production files still baseline"
+  ],
+  "inputs": {
+    "seal_development_final_source_v2.candidate01.py": "02c9a91efcc3c1946e977727c162b5ca1ec401306c6d24f55b88e8ff0509297e",
+    "projected_final_v2_tool_manifest01.json": "9f4defe2353d28fd94daf5699c4e3d14e20bada6ec5b25078e125119ab10d1f4",
+    "projected_sealer_tool_manifest01.json": "4a93d9d194fc8789eda9a2e273b697b8081939f929fac3429a7b8069f35fba3f",
+    "derivation_manifest01.json": "46e8c77402a0fdee1aebc15c5afa659962db892a99e65794a6deaef490ef94d1"
+  },
+  "projected_connection_canonical_sha256": "e8585f14ece45335f24614a1794bedf1c205503a90cf587060ed25851c0bd0c9",
+  "projected_sealer_canonical_sha256": "ffa69d35ed1581c68e1b80ef0f3f5030be99178ea1236d5547c3fb4203268a41",
+  "production_applied": false,
+  "native_imports_or_tests_executed": false,
+  "final_root_build_pass_claimed": false,
+  "formal_flights_authorized": false,
+  "later_required": "After actual development gates, apply three exact candidates and independently check real native manifests, boundaries and final-root build"
+}

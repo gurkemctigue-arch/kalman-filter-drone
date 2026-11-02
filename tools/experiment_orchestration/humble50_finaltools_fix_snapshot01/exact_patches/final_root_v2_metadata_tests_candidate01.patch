@@ -1,0 +1,267 @@
+--- a/test_development_final_root_v2.py
++++ b/test_development_final_root_v2.py
+@@ -2,15 +2,16 @@
+ from contextlib import ExitStack,nullcontext,redirect_stdout
+ from copy import deepcopy
+ import io
+ import importlib
++import importlib.util
+ import json
+ import os
+ from pathlib import Path
+ import shutil
+ import sys
+ import tempfile
+-from types import SimpleNamespace
++from types import FunctionType,SimpleNamespace
+ import unittest
+ from unittest.mock import Mock,patch
+ 
+ import prepare_development_final_root_v2 as p
+@@ -244,12 +245,23 @@
+                 for method,predicate,reason in methods:
+                     content+='    @unittest.skipUnless('+predicate+','+repr(reason)+')\n    def '+method+'(self):pass\n'
+             target=self.root/path;target.parent.mkdir(exist_ok=True);target.write_text(content)
+         dump(self.attempt/'colcon_defaults.yaml',{})
++        source_root=self.base/'source';source_root.mkdir()
++        source_review=dump(self.base/'source_review.json',{'fixture':'immutable source review'})
++        source_manifest=dump(self.base/'source_manifest.json',{'fixture':'immutable source manifest'})
++        preparation_manifest=dump(self.base/'preparation_manifest.json',{'fixture':'actual protected copy manifest'})
++        self.context['outcome']['preparation_source_manifest']=preparation_manifest
++        self.context['candidate']={'frozen_root':str(source_root)}
++        self.context['proposal']={'source_root':str(source_root),'destination_root':str(self.root),
++            'source_review':source_review,'original_source_manifest':source_manifest}
++        self.context['review'].update(frozen_root=str(source_root),_review_binding=source_review)
+         dds={'scope':b.development_build.resource.DDS_SCOPE,
+             'source_files':{name:'2'*64 for name in b.development_build.resource.DDS_FILES},
+             'preflight':{'status':'PASS','scope':b.development_build.resource.DDS_SCOPE,
+-                'registration_path':str(self.root/b.development_build.resource.DDS_CONFIG),'registration_sha256':'2'*64},
++                'registration_path':str(self.root/b.development_build.resource.DDS_CONFIG),'registration_sha256':'2'*64,
++                'fixture_only':False,'environment':{'LD_LIBRARY_PATH':
++                    '/root/uav_humble22/agent_install/lib:/root/dds/install/lib:/opt/ros/humble/lib'}},
+             'actual_loaded_processes_claimed':False}
+         self.context['review']['files']=dict(dds['source_files'])
+         runtime=dump(self.attempt/'runtime_preflight.json',{'fixture':'strict512 checked boundary','dds':dds})
+         compile_pin=dump(self.attempt/'dds_compile_environment.json',{'runtime_before':dds,'runtime_after':dds,
+@@ -278,13 +290,19 @@
+         self.suite={'status':'PASS','returncode':0,'tests':12,'log':p.binding(self.attempt/'unittest.log'),
+             'actual_skipped_tests':b.skips.validate_observed_skips(log),'skip_source_contract':b.skips.validate_skip_sources({
+                 name:(self.root/name).read_text() for name in b.skips.SKIP_SOURCE_PATHS})}
+         dump(self.attempt/'full_suite.json',self.suite)
++        self.make_transition_and_cv2_fixture(runtime,compile_pin)
++        transition=p.binding(self.attempt/'dds_install_transition.json')
++        cv2_receipt=p.binding(self.attempt/'cv2_import_environment01.json')
+         dump(self.attempt/'runtime_preflight_closure.json',{'before':runtime,'after':runtime,'strict512_verified':True,
+-            'dds_runtime_verified':True,'dds_compile_environment':compile_pin})
++            'dds_runtime_verified':True,'dds_compile_environment':compile_pin,
++            'dds_verification_semantics':b.TRANSITION_SEMANTICS,'actual_environment_unchanged':False,
++            'dds_install_transition':transition,'cv2_import_receipt':cv2_receipt})
+         self.verification={'kind':b.KIND,'status':'PASS_BUILD_AND_STATIC_CHECKS_ONLY','root':str(self.root),
+             'preparation':self.preparation,'tools':self.tools,'source_after':self.source,'full_suite':self.suite,
+             'module_count':len(modules),'ament_package_count':len(prefixes),'actual_cdr_checks':11,
++            'dds_install_transition':transition,'cv2_import_receipt':cv2_receipt,
+             'source_unchanged':True,'protocols_registered':False,'formal_seed_use_authorized':False}
+         dump(self.attempt/'verification_outcome.json',self.verification)
+         self.outcome={'kind':b.KIND,'status':'FINAL_ROOT_BUILT_NOT_REGISTERED_OR_FLOWN','root':str(self.root),'results':str(self.results),
+             'preparation':self.preparation,'verification':p.binding(self.attempt/'verification_outcome.json'),
+@@ -304,8 +322,70 @@
+             'binding_after':self.action,'runtime_acceptance':'NOT_EVALUATED','action_log_sha256':p.sha(self.owner/'action.log')}
+         dump(self.owner/'action.terminal.json',self.terminal)
+         self.refresh()
+ 
++    def make_transition_and_cv2_fixture(self,runtime_pin,compile_pin):
++        # Only load the small byte-pinned Python definitions. No ROS/native CV2
++        # import occurs. Native wheel paths/hash boundary uses tiny temp files;
++        # DDS acquisition and process ownership are explicit mocks in active verify.
++        originals={}
++        for key,(name,digest) in b.TRANSITION_INPUTS.items():
++            path=b.EXTERNAL.parent/'build50_transition01'/name
++            self.assertEqual(p.sha(path),digest)
++            spec=importlib.util.spec_from_file_location('fixture_pure_'+key,path)
++            module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
++            originals[key]=module
++        wheel=self.base/'cv2';wheel.mkdir()
++        pins={}
++        for name in originals['cv2'].FILE_PINS:
++            path=wheel/name;path.write_bytes(('synthetic wheel input '+name).encode());pins[name]=p.sha(path)
++        globals_copy=dict(originals['cv2'].verify_import_delta.__globals__)
++        globals_copy['RAW_LIBRARY_PREFIX']=str(wheel)+'/../../lib64'
++        globals_copy['QT_VALUES']={'QT_QPA_PLATFORM_PLUGIN_PATH':str(wheel/'qt/plugins'),
++            'QT_QPA_FONTDIR':str(wheel/'qt/fonts')}
++        self.cv2=SimpleNamespace(SCOPE=originals['cv2'].SCOPE,FILE_PINS=pins,CV2_ROOT=wheel,
++            START_NAME=originals['cv2'].START_NAME,RECEIPT_NAME=originals['cv2'].RECEIPT_NAME,
++            verify_import_delta=FunctionType(originals['cv2'].verify_import_delta.__code__,globals_copy))
++        self.helpers={'transition':originals['transition'],'cv2':self.cv2}
++        self.inputs={}
++        for key in self.helpers:
++            path=self.base/(key+'_helper.py');path.write_text('# synthetic helper origin boundary\n')
++            self.inputs[key]=p.binding(path)
++        setup=self.root/'ros2_ws/install/setup.bash';setup.parent.mkdir(parents=True)
++        setup.write_text('# synthetic generated setup; never sourced\n');(setup.parent/'lib').mkdir()
++        dump(self.root/b.development_build.resource.DDS_CONFIG,{'prefix':'/root/dds/install'})
++        runtime=json.loads((self.attempt/'runtime_preflight.json').read_text());self.installed=deepcopy(runtime['dds'])
++        before_ld=self.installed['preflight']['environment']['LD_LIBRARY_PATH'].split(':')
++        self.installed['preflight']['environment']['LD_LIBRARY_PATH']=':'.join(
++            before_ld[:2]+[str(self.root)+'/ros2_ws/install/lib']+before_ld[2:])
++        _,adaptation=b.destination_review(self.context,self.source)
++        transition={'schema_version':1,'scope':b.TRANSITION_SEMANTICS,'preparation':self.preparation,
++            'source_review':self.context['proposal']['source_review'],'destination_review_adaptation':adaptation,
++            'helper_inputs':self.inputs,'runtime_preflight':runtime_pin,'dds_compile_environment':compile_pin,
++            'before':runtime['dds'],'after':self.installed,
++            'proof':self.helpers['transition'].verify_transition(runtime['dds'],self.installed,str(self.root),'/root/dds/install/lib'),
++            'generated_setup':p.binding(setup),'actual_environment_unchanged':False,'actual_loaded_processes_claimed':False}
++        dump(self.attempt/'dds_install_transition.json',transition)
++        before={'PATH':'/fixture/bin','LD_LIBRARY_PATH':self.installed['preflight']['environment']['LD_LIBRARY_PATH'],
++            'UNCHANGED_FIXTURE_VALUE':'complete environment is checked'}
++        imported={**before,'LD_LIBRARY_PATH':globals_copy['RAW_LIBRARY_PREFIX']+':'+before['LD_LIBRARY_PATH'],
++            **globals_copy['QT_VALUES']}
++        started={'schema_version':1,'scope':self.cv2.SCOPE,'root':str(self.root),'started_utc':'fixture-only',
++            'expected_file_pins':pins,'before_environment':before,'automatic_retry':False}
++        marker=dump(self.attempt/self.cv2.START_NAME,started)
++        files={name:{'path':str(wheel/name),'sha256':digest,'bytes':(wheel/name).stat().st_size}
++            for name,digest in pins.items()}
++        self.cv2_report={'schema_version':1,'scope':self.cv2.SCOPE,'root':str(self.root),'started_utc':'fixture-only',
++            'status':'PASS_PINNED_CV2_IMPORTED_AND_COMPLETE_ENVIRONMENT_RESTORED',
++            'before_environment':before,'imported_environment':imported,'restored_environment':dict(before),
++            'before_dds':self.installed,'after_dds':self.installed,'files_before':files,'files_after':files,
++            'module_paths':{'python':str(wheel/'__init__.py'),'native':str(wheel/'cv2.abi3.so')},
++            'delta_proof':self.cv2.verify_import_delta(before,imported),'started_receipt':marker,
++            'restoration_applied':True,'full_environment_restored':True,'fresh_dds_equal':True,
++            'libraries_unloaded_or_reloaded':False,'project_source_changed':False,
++            'actual_loaded_dds_processes_claimed':False}
++        dump(self.attempt/self.cv2.RECEIPT_NAME,self.cv2_report)
++
+     def refresh(self):
+         self.outcome['verification']=p.binding(self.attempt/'verification_outcome.json');dump(self.attempt/'outcome.json',self.outcome)
+         self.chain={'kind':b.KIND,'status':'ACTUAL_FINAL_COPY_BUILD_SUITE_COMPLETE_NOT_ADMITTED','preparation':self.preparation,
+             'build_outcome':p.binding(self.attempt/'outcome.json'),'bounded_terminal':p.binding(self.owner/'action.terminal.json'),
+@@ -317,8 +397,9 @@
+     def mocks(self):
+         stack=ExitStack();stack.enter_context(patch.object(b,'validate_receipt',return_value=self.context))
+         stack.enter_context(patch.object(b,'tools',return_value=self.tools))
+         stack.enter_context(patch.object(b.development_build,'verify_512_runtime'))
++        stack.enter_context(patch.object(b,'transition_helpers',return_value=(self.helpers,self.inputs)))
+         return stack
+ 
+     def test_actual_terminal_build_suite_evidence_accepts_without_requiring_current_draft_source(self):
+         with self.mocks(),patch.object(b,'source_check',side_effect=AssertionError('Published canonical delta belongs to publication validation')):
+@@ -345,8 +426,119 @@
+         with self.mocks():self.assertRaisesRegex(ValueError,'owner',b.validate_completed_build,self.pin)
+         self.terminal['action']='final-root-build';dump(self.owner/'action.terminal.json',self.terminal)
+         self.owner_start['automatic_retry']=True;dump(self.owner/'action.started.json',self.owner_start);self.refresh()
+         with self.mocks():self.assertRaisesRegex(ValueError,'owner command',b.validate_completed_build,self.pin)
++
++
++    def test_installed_loader_wrong_root_or_extra_item_rejected_even_with_rebound_artifact(self):
++        path=self.attempt/'dds_install_transition.json';original=json.loads(path.read_text())
++        for replacement in (str(self.base/'other')+'/ros2_ws/install/lib',
++                str(self.root)+'/ros2_ws/install/lib:/unexpected/lib'):
++            with self.subTest(loader=replacement):
++                changed=deepcopy(original);changed['after']['preflight']['environment']['LD_LIBRARY_PATH']=changed[
++                    'after']['preflight']['environment']['LD_LIBRARY_PATH'].replace(str(self.root)+'/ros2_ws/install/lib',replacement)
++                dump(path,changed);self.refresh()
++                with self.mocks():self.assertRaisesRegex(ValueError,'insertion',b.validate_completed_build,self.pin)
++
++    def test_cv2_unrestored_or_undeclared_import_delta_rejected_after_rebinding(self):
++        path=self.attempt/self.cv2.RECEIPT_NAME
++        for section in ('restored_environment','imported_environment'):
++            with self.subTest(section=section):
++                changed=deepcopy(self.cv2_report);changed[section]['UNCHANGED_FIXTURE_VALUE']='tampered'
++                dump(path,changed);self.refresh()
++                with self.mocks():self.assertRaisesRegex(ValueError,'CV2|OpenCV',b.validate_completed_build,self.pin)
++
++    def test_cv2_started_hash_module_origin_or_fresh_dds_tamper_rejected(self):
++        path=self.attempt/self.cv2.RECEIPT_NAME
++        mutations=[lambda report:report['started_receipt'].update(sha256='f'*64),
++            lambda report:report['module_paths'].update(native=str(self.base/'wrong.so')),
++            lambda report:report['after_dds'].update(extra='unapproved')]
++        for mutate in mutations:
++            changed=deepcopy(self.cv2_report);mutate(changed);dump(path,changed);self.refresh()
++            with self.mocks():self.assertRaisesRegex(ValueError,'CV2',b.validate_completed_build,self.pin)
++
++    def test_cv2_pinned_wheel_byte_change_is_rejected_without_importing_it(self):
++        (self.cv2.CV2_ROOT/'cv2.abi3.so').write_bytes(b'tampered tiny fixture only')
++        with self.mocks():self.assertRaisesRegex(ValueError,'wheel bytes',b.validate_completed_build,self.pin)
++
++    def test_original_cold_preflight_bytes_change_cannot_be_hidden_by_rebound_chain(self):
++        path=self.attempt/'runtime_preflight.json';changed=json.loads(path.read_text());changed['fixture']='changed original bytes'
++        dump(path,changed);self.refresh()
++        with self.mocks():self.assertRaisesRegex(ValueError,'cold-build start',b.validate_completed_build,self.pin)
++
++    def test_local_destination_adaptation_requires_original_source_and_preparation_proof(self):
++        original_review=deepcopy(self.context['review'])
++        local,proof=b.destination_review(self.context,self.source)
++        self.assertEqual(self.context['review'],original_review)
++        self.assertEqual(local,{**original_review,'frozen_root':str(self.root)})
++        self.assertEqual(proof['adapted_review_fields'],['frozen_root'])
++        with self.assertRaisesRegex(ValueError,'preparation proof'):
++            b.destination_review(self.context,{'different_source':'unapproved'})
++        self.context['proposal']['destination_root']=str(self.base/'wrong')
++        with self.assertRaisesRegex(ValueError,'preparation proof'):b.destination_review(self.context,self.source)
++
++    def test_same_root_generated_setup_hash_and_transition_receipt_tamper_rejected(self):
++        path=self.attempt/'dds_install_transition.json';record=json.loads(path.read_text())
++        record['generated_setup']['sha256']='f'*64;dump(path,record);self.refresh()
++        with self.mocks():self.assertRaisesRegex(ValueError,'transition evidence',b.validate_completed_build,self.pin)
++
++    def test_three_transition_and_cv2_sidecars_are_required_even_for_rebound_pass(self):
++        for name in ('dds_install_transition.json',self.cv2.START_NAME,self.cv2.RECEIPT_NAME):
++            with self.subTest(name=name):
++                missing=deepcopy(self.chain);missing['build_artifacts'].pop(name)
++                pin=dump(self.attempt/'chain.json',missing)
++                with self.mocks():self.assertRaisesRegex(ValueError,'artifact closure',b.validate_completed_build,pin)
++
++    def active_verify_mocks(self,events,fail_preload=False):
++        # Native process/environment, DDS acquisition and original audit/suite
++        # implementations are blocked boundaries. Candidate verify ordering,
++        # artifact creation and all transition/CV2 metadata checks remain real.
++        for name in ('dds_install_transition.json',self.cv2.START_NAME,self.cv2.RECEIPT_NAME,
++                'import_isolation.json','generated_message_roundtrip.json','verification_outcome.json',
++                'runtime_preflight_closure.json'):
++            (self.attempt/name).unlink()
++        marker=deepcopy(self.cv2_report['started_receipt'])
++        original_start={'schema_version':1,'scope':self.cv2.SCOPE,'root':str(self.root),'started_utc':'fixture-only',
++            'expected_file_pins':self.cv2.FILE_PINS,'before_environment':self.cv2_report['before_environment'],'automatic_retry':False}
++        def preload(directory,resource,review,root):
++            events.append('preload')
++            self.assertEqual(review['frozen_root'],str(root));self.assertEqual(root,self.root)
++            if fail_preload:raise ValueError('fixture preload failed; no native import')
++            self.assertEqual(dump(directory/self.cv2.START_NAME,original_start),marker)
++            return dump(directory/self.cv2.RECEIPT_NAME,self.cv2_report)
++        def original_result(name,value):
++            def run(*args):events.append(name);return deepcopy(value)
++            return run
++        stack=self.mocks()
++        stack.enter_context(patch.object(b,'require_owned_child'))
++        stack.enter_context(patch.object(b.primitives,'require_environment'))
++        stack.enter_context(patch.object(b,'source_check',return_value=self.source))
++        stack.enter_context(patch.object(b.primitives,'audit_fastcdr',return_value=json.loads((self.attempt/'fastcdr_provenance.json').read_text())))
++        stack.enter_context(patch.object(b.development_build.resource,'dds_contracts',return_value=self.installed))
++        stack.enter_context(patch.object(b.development_build.resource,'verify_dds_runtime',side_effect=lambda runtime,*args:
++            self.assertEqual(runtime['dds'],self.installed)))
++        stack.enter_context(patch.object(self.cv2,'preload_and_restore',side_effect=preload,create=True))
++        stack.enter_context(patch.object(b.primitives,'audit_origins',side_effect=original_result('origins',self.origins)))
++        stack.enter_context(patch.object(b.primitives,'cdr_roundtrip',side_effect=original_result('cdr',self.cdr)))
++        stack.enter_context(patch.object(b.primitives,'run_suite',side_effect=original_result('suite',self.suite)))
++        return stack
++
++    def test_active_verify_preloads_and_restores_before_original_import_cdr_and_suite(self):
++        events=[]
++        with self.active_verify_mocks(events):result=b.verify(self.context)
++        self.assertEqual(events,['preload','origins','cdr','suite'])
++        self.assertEqual(result['status'],'PASS_BUILD_AND_STATIC_CHECKS_ONLY')
++        closure=json.loads((self.attempt/'runtime_preflight_closure.json').read_text())
++        self.assertEqual(closure['before'],closure['after'])
++        self.assertFalse(closure['actual_environment_unchanged'])
++        self.assertEqual(closure['dds_install_transition'],p.binding(self.attempt/'dds_install_transition.json'))
++
++    def test_active_preload_failure_prevents_original_imports_and_success_receipt(self):
++        events=[]
++        with self.active_verify_mocks(events,fail_preload=True):
++            self.assertRaisesRegex(ValueError,'preload failed',b.verify,self.context)
++        self.assertEqual(events,['preload'])
++        self.assertFalse((self.attempt/'verification_outcome.json').exists())
+ 
+ 
+ class OriginalGateFixture(unittest.TestCase):
+     def setUp(self):

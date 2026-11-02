@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "status": "PASS_STATIC_PEER_REVIEW_ONLY_NOT_APPLIED_OR_EXECUTED",
+  "reviewer": "/root/core41_closed_audit/candidate48_static_paths",
+  "candidate_author_is_reviewer": false,
+  "candidate": {
+    "path": "D:/WSL/UAVHumble22-validation/finalroot50_preparation01/build_development_final_root_v2.candidate01.py",
+    "sha256": "7405debd20fd1867858dba1b9a1baf507640fee3b4b2e77eb3df2e265ad60708"
+  },
+  "original_sha256": "c1660b80ed62b6295d088e3a3f18e099941647b8e81bcfa7a77511490ea95718",
+  "patch_sha256": "6830e6df21a931c6b16da68a6de97cfc4a27f2485d4436792243a36e326482af",
+  "reviewed_checks": {
+    "candidate_original_patch_hashes_match_manifest": true,
+    "cold_build_body_owner_and_2400_second_budget_preserved": true,
+    "original_cold_preflight_and_compile_record_preserved": true,
+    "installed_transition_recomputed_with_pinned_helper": true,
+    "same_root_setup_and_install_lib_are_canonical": true,
+    "local_review_changes_only_frozen_root_and_binds_preparation_proof": true,
+    "cv2_helper_actual_return_binding_matches_receipt_check": true,
+    "cv2_full_environment_and_four_input_file_bindings_verified": true,
+    "three_new_artifacts_and_closure_bindings_are_mandatory": true,
+    "offline_completed_build_has_no_source_check_or_current_shell_dds_comparison": true,
+    "original_import_cdr_full_suite_and_source_checks_preserved": true
+  },
+  "resolved_prerequisite": {
+    "path": "D:/WSL/UAVHumble22-validation/dds48_tools01/humble23_bridge_shutdown_diagnostic01/A01_final_validation01.json",
+    "expected_sha256": "a5c8d2a593d4c8ea17a809723f12dafca28cca016b1e5aa4ae3934878ac1ed1b",
+    "finding": "Present in the copied tools directory and independently rehashed during this review; raw SHA matches the original required metadata identity. This patch does not change that path.",
+    "present_and_expected_sha256_verified": true
+  },
+  "limitations": {
+    "candidate_imported_or_executed": false,
+    "tests_executed": false,
+    "wsl_or_native_commands_executed": false,
+    "large_native_file_hashes_read": false,
+    "production_files_modified": false,
+    "runtime_or_project_acceptance_claimed": false
+  }
+}
