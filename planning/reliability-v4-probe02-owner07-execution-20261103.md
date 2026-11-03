@@ -1,5 +1,17 @@
 # probe02 剩余五场的实际续跑
 
+**最新容量结论：20:16:32，显式after28续接真实结束。** 6个实际步骤（新idle、inventory、person export、car export、R0、full280 budget）均exit0，整体因原容量门保留exit2。所需244.936135 GiB，D盘快照可用92.117596 GiB，差152.818540 GiB；完整280槽、1.15系数、22 GiB后续开销和17.958118 GiB临时预留均保留。原始[预算与续接终态副本](../results/diagnostics/humble54_after28_budget_review01/review01.json)已保存，storage SHA为 `45dffb5746b38ee1fe96acab430a6799095c7fff239f381928af2c4b9440fe78`。前台session61617已回收，线程37816同线程释放临时防休眠。容量不足尚未解决，final55/正式0/280不变，不能套用旧“12步完整成功”的stage入口。
+
+person export含752次测量和4511个输出事件，car export含747次测量和4507个输出事件；两者原 `online_equivalence_status` 与 `native_state_audit_status` 均为PASS。R0文件316797B，状态 `CANDIDATE_NOT_REGISTERED`、范围 `DEVELOPMENT_ONLY`。它是正式比较前的候选，不是正式算法优势结论。
+
+第二次短计时已修复新就绪文件竞态并通过四节点就绪，随后因动态导入读包helper未先注册sys.modules停止；原short02失败和退出保留，4个算法进程均正常退出、replay exit1，cleanup_errors为空。fixed06仅增加该模块注册，23项回归通过，root复核源码及新增真实dataclass加载回归；第三次原生回放尚未开始，实际计时样本仍为0。
+
+**两次实际退出后的更新：actual28 已于 19:51:59 完成，28 份大小凭证齐全；随后总流程于 19:52:07 真实停止，exit 2。** 唯一错误为 `Refused: Refusing large input`。汇总文件为 244,845 B，受限的是其引用的两份汽车身份评价明细（3,066,769 B 和 7,660,044 B），超过原通用读取器的 2 MiB 上限。原 7 个执行步骤均 exit 0，physical inventory、两类 export、R0 和完整 budget 尚未执行。原 terminal、源码、文件测量与退出均保留，正在修复显式续接；不能把本次停止写成容量不足或测量全部成功。前台 session89816 已真实回收，线程17644已同线程释放临时防休眠。
+
+19:55:31，独立软件管线短回放实际启动；19:56:21 已真实退出 2，前台 session32666 已回收，线程22628已释放临时防休眠。其原 summary 记录 `JSONDecodeError: Expecting value: line 1 column 1 (char 0)`，回放尚未开始，有效计时样本为0，4组子进程均已退出且 cleanup_errors 为空。正在修复新就绪 JSON 的发布竞态；原失败输出在 `/root/humble54_pipeline_bench01_short01`，小原件副本在 `results/diagnostics/humble54_pipeline_timing_run01`。本次没有修改历史 strict UNKNOWN 或物理端到端结论，正式仍0/280。
+
+**最新闭合检查点（2026-11-03 19:48:54，北京时间）：原扩展16/16已完成，11 PASS、4 FAIL、1 INCOMPLETE_EVIDENCE；collector07、monitor、launcher均实际exit0；正式0/280。** after07完整测量已真实开始，当前receipt尚无最终terminal，未取得正预算或正式准入。以下按真实执行顺序保留各检查点，较早的运行中/待结束描述不是当前状态。
+
 2026-11-03 18:00:37（北京时间），新 collector07 已实际调用原单槽入口，开始 `car_extension_latency_seed004`。Windows 原 monitor 持有 WSL 子进程，外层 launcher 持有 monitor 的原 Popen 并临时防止休眠；不自动重试、不覆盖旧实验。实际启动及心跳记录在 `results/diagnostics/humble54_pending_collector07_launcher01/`。
 
 实时显示：[原进度页](../results/monitor_humble54_probe02_owner07/index.html)。该页报告进程、心跳、原始终态数和当前槽；实验通过率以真实终态为准。启动校验期间原生输出尚不存在，暂时显示无事件是正常的，不能据此判断路径错误。
@@ -33,3 +45,15 @@ collector07 复核原第 13 场后于 18:46:42 实际启动汽车 `speed_changes
 后续 nav28/sensor4 的外置直接 producer 已通过 14 项作者假对象测试及独立复核，源码 SHA 为 `e1c439d51a5ae6569ae7efe34b3eb899228977a2fbf27d9d1f3bf2aa88bd3f75`，独审回执在 `tools/experiment_orchestration/final55_nav_sensor_after07_producer_review01/independent_review01.json`。它按原注册逐条执行并调用原完成清单校验器，sensor 部分只消费真实提取与阅图材料，不生成身份成功或人工审图结论。尚无任何实际 nav28 或 sensor4 producer 执行；必须在完整终态、实际容量预算、新 cold 构建与真实 target/注册之后再执行，原 FAIL/null 和准入门保持不变。
 
 19:22:19，第 15 场汽车 `speed_changes_position` 产生原始 PASS，终态 SHA 为 `057534448a7e4da809e8f84dc09705f1c3d016f5ace6e0cb10b06ab4b8c4ebab`。距离 RMSE 为 0.617890 m，高度 RMSE 为 0.169138 m，状态覆盖率为 0.914894，真值覆盖率为 1.0，原六项导航检查均通过。collector07 随后实际启动最后一场汽车 `far_distance`；扩展原终态累计 15/16：10 PASS、4 FAIL、1 INCOMPLETE_EVIDENCE。开发成果页按原终态重生成，尚不能把原 collector、monitor 或 launcher 计为已退出。
+
+19:41:32.705733，第16场 `car_extension_far_distance_seed004` 产生原始 PASS，执行状态为 COMPLETED，无基础设施停止。距离 RMSE 为 **0.6593609238394991 m**，高度 RMSE 为 **0.15419769757319002 m**；valid_state_coverage 为0.9148936170212766，truth_coverage 为1.0。原六项导航检查 `base_link_distance`、`base_link_height`、`navigation_coverage`、`truth_coverage`、`final_distance_settled`、`final_height_settled` 均为 true。原终态[JSON](../results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/car_extension_far_distance_seed004.json)文件 SHA256 为 `f03c983121b8913e0d3be31ad64fef6ca694df964a2214adbc6eac48f1ed2047`，`record_sha256` 内容摘要为 `ec7daddb35e3924aba2dca8cddd098b16f15f328ec0b4c2dff0f68d0d8b05159`。两种摘要分别保留，不混用。
+
+19:42:07.987811，native collector07 的 `/root/uav_tracking_collection54_probe02_owner07/terminal.json` 记录 `COLLECTION_FINISHED`、returncode0、current_slot null。原 owner identity 为 PID266942、boot ID `f79204a4-99cd-42cf-b886-aa905b1cac6a`、start_ticks10982275。native terminal 原文件 SHA256 为 `34a60e0bc189c0b1845e0d4a0dc85388e968a53a666e2cfdeedb46eb48e03432`，与 Windows launcher 留存的[原字节副本](../results/diagnostics/humble54_pending_collector07_launcher01/native_terminal.json)一致。11个原闭合观察加5个本次实际续槽，共16原终态，累计 **11 PASS、4 FAIL、1 INCOMPLETE_EVIDENCE**。collector正常退出表示采集/核对流程结束，不表示16格工程全部通过。
+
+19:42:09.296661，原 Windows [launcher terminal](../results/diagnostics/humble54_pending_collector07_launcher01/terminal.json) 为 OWNED_MONITOR_ENDED、returncode0、closure_verified true、errors[]、interruptions[]；原 monitor实际returncode0，native collection returncode0，临时防休眠线程41076已同线程释放。launcher terminal 文件 SHA256 为 `8f5056620e21b60860d9d8785b79eab0c74a243071f08d039711f166b5d771e9`。旧owner06/observer07/trigger09的原exit2不变，未把原失败改为成功。
+
+19:43:26，after07直接测量的七个实际输入完成登记；19:47:01独立复核确认仅登记字面变化、原流程与原工具不改，原件在 `tools/experiment_orchestration/humble54_closed_measurement01/registration01/` 和 `review_registration01/`。root约19:47实际启动该测量进程，tools session89816持有原调用，临时防休眠线程17644请求成功。原receipt的 `started_utc` 为 `2026-11-03T11:48:45.275129+00:00`（北京时间19:48:45.275129），与进程开始后的原full16闭合复核分开记录。
+
+19:48:54从 Windows 只读原 `D:\WSL\UAVHumble22-validation\humble54_probe02_closed_measurement_after07_01` 小JSON：started/state均为 STARTED_DIRECT_MEASUREMENT，native_idle实际exit0，尚无terminal。这是当时观察，不预写后续actual28、physical inventory、两类exports、R0或full280 budget成功；后续实际进展以该目录的原state/terminal和真实退出码为准。若完整预算不足，原负budget与整体exit2必须保留；[容量刷新设计卡](reliability-v4-capacity-refresh-design-20261103.md)只是未实施的最小连接方案，不能替代实际容量修复。
+
+开发成果页已使用原小JSON重生成：core12+extension16共28/28终态，23 PASS、4 FAIL、1 INCOMPLETE_EVIDENCE；独立安全4/4 PASS单列，正式仍0/280。本次仅更新文档与派生HTML/输入凭证，没有启动WSL、原生重任务或新的owner，没有修改原证据、冻结源或measurement工具，没有Git提交。

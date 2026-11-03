@@ -1,0 +1,22 @@
+{
+  "status": "ROOT_SOURCE_AND_REAL_FILESYSTEM_REGRESSION_REVIEWED_FIXED05",
+  "created_utc": "2026-11-03T12:04:10.066642+00:00",
+  "source_map": {
+    "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\diagnostics\\humble54_pipeline_timing_bench01\\source_sha256_windows05.json",
+    "sha256": "ae2a480453c6f69b8e544f6e4606653d48d294913bbdc155848b7c78a5af97f7"
+  },
+  "all_eight_map_bindings_match": true,
+  "only_runtime_change": "write_new publishes complete closed JSON with same-directory os.link and keeps refusal to overwrite",
+  "root_tests": {
+    "command": "python -X utf8 -B -m unittest discover -s tools/diagnostics/humble54_pipeline_timing_bench01 -p test_bench.py -k AtomicWriteTests -v",
+    "run": 2,
+    "pass": 2
+  },
+  "author_full_suite": {
+    "run": 22,
+    "pass": 22
+  },
+  "prior_native_failure_preserved": true,
+  "native_fixed05_status": "STARTED_NOT_YET_TERMINAL",
+  "formal_admission": false
+}

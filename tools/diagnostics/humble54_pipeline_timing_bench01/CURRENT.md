@@ -1,10 +1,12 @@
 # 当前可审查版本
 
-当前运行源码以 `source_sha256_windows04.json` 为准，清单原字节 SHA 为 `1992ccaa860bf129b80d3de30ec67d8ebf2baa1181efac79f711a9913a63dfd9`。独立复核记录在相邻的 `../humble54_pipeline_timing_review01/independent_review01.json`，其 SHA 为 `bd0f6228162694f7ed56be9cb3e0c11ddbecf68e7c9a0853b30222472e7e4316`。
+当前运行源码以 `source_sha256_windows06.json` 为准，清单原字节 SHA 为 `4c5bdb715448ea597405b41e2cb1d21c4fa7befec8d5a0a27e84f321b87f1226`。fixed05 修复新 JSON 发布竞态，fixed06 补齐动态导入前的模块注册。23项作者测试通过，root核对当前源码清单并独立通过新增的 dataclass 动态加载回归；此前也已独立通过两项真实文件系统并发回归。修复和旧实现失败负对照见对应 CHANGE、validation 与 negative_control 文件。
 
-`validation_windows04.json` 和 `test_windows04.log` 是这版实际的 Windows 假对象测试记录。01—03 文件只保留准备过程的历史摘要，不能用它们的源码摘要校验当前源码。README 末尾对 01 的引用属于初次准备说明；当前以本页和 04 清单为准。
+fixed04 的首次原生短回放因就绪文件发布竞态停止；fixed05 的第二次短回放四节点均已就绪，随后在读包模块动态导入时停止。两次有效计时样本均为0，全部子进程已退出；原输出 `/root/humble54_pipeline_bench01_short01` 和 `short02` 保留。旧源码和清单分别逐字节归档在 `archive_fixed04/` 与 `archive_fixed05/`。fixed06 的下一次原生输出使用新的 `/root/humble54_pipeline_bench01_short03`，实际执行结论以新 summary 为准。
 
-这版通过了 20 项作者测试、独立破坏归因及端点隔离检查。当前尚未执行原生完整管线回放，实际软件时延样本仍为零。原生短回放必须等 collector07 及其子进程全部真实退出，再显式使用 README 中的命令。原命令自行持有项目锁，无需外层另加 flock。
+`validation_windows06.json` 和 `test_windows06.log` 是当前版实际的 Windows 测试记录。01—05 文件保留历史摘要，不能用它们的源码摘要校验当前源码。README 末尾对01的引用属于初次准备说明；当前以本页和06清单为准。
+
+基础管线通过了20项作者测试、独立破坏归因及端点隔离检查，fixed06合计23项。当前有效软件时延样本仍为零。原生短回放须在其他重任务完全退出后显式执行；原命令自行持有项目锁，无需外层另加 flock。旧04独审保留在相邻的 `../humble54_pipeline_timing_review01/independent_review01.json`，按其对应版本阅读。
 
 原调用一次和对象保持的检查不证明没有开销。钩子包含取消息时的 Python profile、字段快照、JSON 编码、锁及队列操作；所得时延只描述被观察的独立软件回放。历史 strict UNKNOWN 和物理 E2E 结论均不变。未来实际运行状态以本次新输出目录中的原始日志和 summary 为准。
 

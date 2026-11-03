@@ -1,0 +1,1132 @@
+{
+  "schema_version": 1,
+  "kind": "RELIABILITY_V4_STORAGE_BUDGET_ASSEMBLY_NOT_ADMISSION",
+  "created_utc": "2026-11-03T12:16:18.399278+00:00",
+  "evidence_scope": "METADATA_BUDGET_ASSEMBLY_ONLY_NOT_RUNTIME_ACCEPTANCE",
+  "admission_performed": false,
+  "storage": {
+    "volumes": [
+      {
+        "id": "drive_D",
+        "mount": "/mnt/d",
+        "windows_volume_id": "\\\\?\\Volume{68f0ab91-90ab-4baa-ad88-9b7899195944}\\"
+      }
+    ],
+    "results_volume": "drive_D",
+    "vhd_host": {
+      "distribution": "UAVHumble22",
+      "path": "/mnt/d/WSL/UAVHumble22/ext4.vhdx",
+      "volume": "drive_D"
+    },
+    "temporary_peak_bytes": {
+      "drive_D": 19282382761
+    },
+    "temporary_bound_rule": {
+      "revision": "three_raw_two_compressed_plus_margin_v1",
+      "raw_growth_factor": 1.15,
+      "compressed_growth_factor": 1.15,
+      "extra_bytes_by_volume": {
+        "drive_D": 2147483648
+      },
+      "basis": "Keep the existing three-raw/two-compressed bound with15 percent growth on both measured raw and compressed bytes, plus2 GiB on the physical volume for temporary bookkeeping and one serial analysis operation. No parallel simulation/export/build work is allowed. The original guard still reserves at least8 GiB and checks actual capacity before every formal slot."
+    },
+    "delivery_reservations": {
+      "offline_replay20": {
+        "bytes_by_volume": {
+          "drive_D": 8589934592
+        },
+        "basis": "Reserve8 GiB for20 formal velocity recordings' arrays, online/native/truth sidecars, four estimator outputs and audit tables; roughly409.6 MiB per source. Original bags are already in per-slot persistent storage. Serial decompression uses the separate temporary reserve. This does not assert any export or replay has run."
+      },
+      "videos12": {
+        "bytes_by_volume": {
+          "drive_D": 2147483648
+        },
+        "basis": "Reserve2 GiB for12 selected seed1000 browser video copies and indexes, roughly170.7 MiB per clip. Immutable onboard originals are already in measured trial bytes. Preserve the complete recorded duration and failures; no shorter successful-only clip is assumed."
+      },
+      "detection_audit": {
+        "bytes_by_volume": {
+          "drive_D": 4294967296
+        },
+        "basis": "Reserve4 GiB for both original single-target detection subsets plus all12 prospective full-task supplementary sources: original sampled RGB, prediction-free all-actor overlays, independent review, schema2 caches, evaluation and timing/lineage attachments. Sampling remains FOLLOW+1s then every2s to final recorded Clock with no image cap; approximately40 opportunities per75s source is only a planning scale, not a fixed count or license to truncate tails."
+      },
+      "figures_documents": {
+        "bytes_by_volume": {
+          "drive_D": 2147483648
+        },
+        "basis": "Reserve2 GiB for statistics, figures, unified HTML, Word/PDF, per-page rendering images and the small shareable delivery package. Document rendering and visual review remain required."
+      },
+      "runtime_logs": {
+        "bytes_by_volume": {
+          "drive_D": 2147483648
+        },
+        "basis": "Reserve2 GiB for remaining external owner/monitor/registration and document-tool logs beyond per-trial measured logs. Raw experiment failures remain preserved. No deletion or NTFS savings are assumed."
+      }
+    },
+    "additional_remaining_bytes": {
+      "drive_D": 4294967296
+    },
+    "cells": [
+      {
+        "matrix": "core",
+        "target_class": "car",
+        "condition": "stage1_position",
+        "persistent_bytes_by_volume": {
+          "drive_D": 695335986
+        },
+        "basis": "Use each condition's complete measured trial bytes with 15 percent growth for held-out seed variation, plus16 MiB per formal slot for small receipts and metadata. The factor is a planning choice, not a measured upper bound; no compression saving, deduplication, deletion or successful-only selection is assumed.; ceil(590051104 * 1.15) on results volume plus explicit per-volume extras",
+        "development_size_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_core12_probe01_car_stage1_position_seed004.json",
+          "sha256": "85f243696d7ad23abb175917f450d604af9c0535f9f10d8beccb2f2c48c7369d"
+        },
+        "archive_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage1_position_seed004/bag_integrity.json",
+          "sha256": "60c503ff2bfb1baf5b04746a1e2ab24575f134da050d5182d0b30ce4ad4546a9"
+        }
+      },
+      {
+        "matrix": "core",
+        "target_class": "car",
+        "condition": "stage1_velocity",
+        "persistent_bytes_by_volume": {
+          "drive_D": 682785795
+        },
+        "basis": "Use each condition's complete measured trial bytes with 15 percent growth for held-out seed variation, plus16 MiB per formal slot for small receipts and metadata. The factor is a planning choice, not a measured upper bound; no compression saving, deduplication, deletion or successful-only selection is assumed.; ceil(579137894 * 1.15) on results volume plus explicit per-volume extras",
+        "development_size_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_core12_probe01_car_stage1_velocity_seed004.json",
+          "sha256": "63da85610817da5351dbd43aebc75fc98a6260c5416853b856093bca16a24adc"
+        },
+        "archive_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage1_velocity_seed004/bag_integrity.json",
+          "sha256": "c694e191705f2718d939911e589a2d73574c3345391acd03b196f0ad9312c2f6"
+        }
+      },
+      {
+        "matrix": "core",
+        "target_class": "car",
+        "condition": "stage2_crossing",
+        "persistent_bytes_by_volume": {
+          "drive_D": 732027638
+        },
+        "basis": "Use each condition's complete measured trial bytes with 15 percent growth for held-out seed variation, plus16 MiB per formal slot for small receipts and metadata. The factor is a planning choice, not a measured upper bound; no compression saving, deduplication, deletion or successful-only selection is assumed.; ceil(621956888 * 1.15) on results volume plus explicit per-volume extras",
+        "development_size_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_core12_probe01_car_stage2_crossing_seed004.json",
+          "sha256": "ea183b6c1610dd57c13e8f7ad4c99c33bcb28df3ff508bec7eca9ac38c9da1ab"
+        },
+        "archive_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage2_crossing_seed004/bag_integrity.json",
+          "sha256": "19f7e26e093715d4bcdc9b527b96fedc97307e314288c9fbbcffcb890ba12649"
+        }
+      },
+      {
+        "matrix": "core",
+        "target_class": "car",
+        "condition": "stage3_active",
+        "persistent_bytes_by_volume": {
+          "drive_D": 554827373
+        },
+        "basis": "Use each condition's complete measured trial bytes with 15 percent growth for held-out seed variation, plus16 MiB per formal slot for small receipts and metadata. The factor is a planning choice, not a measured upper bound; no compression saving, deduplication, deletion or successful-only selection is assumed.; ceil(467869701 * 1.15) on results volume plus explicit per-volume extras",
+        "development_size_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_core12_probe01_car_stage3_active_seed004.json",
+          "sha256": "1f6efda30f076b1bfcbf8f1c4d5c6940bba97b2dfe2e9a906346c4fe1d5bccfb"
+        },
+        "archive_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage3_active_seed004/bag_integrity.json",
+          "sha256": "15850632abb3de83bf5f1bdafe3e4bce180e7309e4965307569bd95e9e654706"
+        }
+      },
+      {
+        "matrix": "core",
+        "target_class": "car",
+        "condition": "stage3_midpoint",
+        "persistent_bytes_by_volume": {
+          "drive_D": 690516399
+        },
+        "basis": "Use each condition's complete measured trial bytes with 15 percent growth for held-out seed variation, plus16 MiB per formal slot for small receipts and metadata. The factor is a planning choice, not a measured upper bound; no compression saving, deduplication, deletion or successful-only selection is assumed.; ceil(585860159 * 1.15) on results volume plus explicit per-volume extras",
+        "development_size_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_core12_probe01_car_stage3_midpoint_seed004.json",
+          "sha256": "3d2a0bb7c802393063b58ec0dc574d1878eba785909eaa9ca61e29262892b440"
+        },
+        "archive_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage3_midpoint_seed004/bag_integrity.json",
+          "sha256": "f5baa1a8f1f5b6f07b43f76c0e46e6c373221b3bdd6596bb149cd07b98323db4"
+        }
+      },
+      {
+        "matrix": "core",
+        "target_class": "car",
+        "condition": "stage3_multi_active",
+        "persistent_bytes_by_volume": {
+          "drive_D": 724719097
+        },
+        "basis": "Use each condition's complete measured trial bytes with 15 percent growth for held-out seed variation, plus16 MiB per formal slot for small receipts and metadata. The factor is a planning choice, not a measured upper bound; no compression saving, deduplication, deletion or successful-only selection is assumed.; ceil(615601635 * 1.15) on results volume plus explicit per-volume extras",
+        "development_size_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_core12_probe01_car_stage3_multi_active_seed004.json",
+          "sha256": "06283d55f6e630c653c03a446ecaf4fccaa05aaf69d34684f9b9519fb73ebee6"
+        },
+        "archive_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage3_multi_active_seed004/bag_integrity.json",
+          "sha256": "9bb0e22db405d4d0cef2f8da2cb3e745187c203be17d4ba4a8fc024defce947a"
+        }
+      },
+      {
+        "matrix": "core",
+        "target_class": "person",
+        "condition": "stage1_position",
+        "persistent_bytes_by_volume": {
+          "drive_D": 685512155
+        },
+        "basis": "Use each condition's complete measured trial bytes with 15 percent growth for held-out seed variation, plus16 MiB per formal slot for small receipts and metadata. The factor is a planning choice, not a measured upper bound; no compression saving, deduplication, deletion or successful-only selection is assumed.; ceil(581508642 * 1.15) on results volume plus explicit per-volume extras",
+        "development_size_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_core12_probe01_person_stage1_position_seed004.json",
+          "sha256": "74927c54f19e58d2c0a3192e21c95ce10478c41a3387f777a0c03b88038ba20f"
+        },
+        "archive_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage1_position_seed004/bag_integrity.json",
+          "sha256": "650c5ef7f2ae4f93806fc4a87e1e471c3429cdc9944a9716a6d19df05e22139c"
+        }
+      },
+      {
+        "matrix": "core",
+        "target_class": "person",
+        "condition": "stage1_velocity",
+        "persistent_bytes_by_volume": {
+          "drive_D": 656472917
+        },
+        "basis": "Use each condition's complete measured trial bytes with 15 percent growth for held-out seed variation, plus16 MiB per formal slot for small receipts and metadata. The factor is a planning choice, not a measured upper bound; no compression saving, deduplication, deletion or successful-only selection is assumed.; ceil(556257131 * 1.15) on results volume plus explicit per-volume extras",
+        "development_size_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_core12_probe01_person_stage1_velocity_seed004.json",
+          "sha256": "ba3ba791f312422783a190763509b8ab3b5c0f573c596831bb28bf1072d3622a"
+        },
+        "archive_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage1_velocity_seed004/bag_integrity.json",
+          "sha256": "10b98d48f6469f612b97876091d73ea2cdb15158be0ffc9834ea70a01a22af65"
+        }
+      },
+      {
+        "matrix": "core",
+        "target_class": "person",
+        "condition": "stage2_crossing",
+        "persistent_bytes_by_volume": {
+          "drive_D": 693898508
+        },
+        "basis": "Use each condition's complete measured trial bytes with 15 percent growth for held-out seed variation, plus16 MiB per formal slot for small receipts and metadata. The factor is a planning choice, not a measured upper bound; no compression saving, deduplication, deletion or successful-only selection is assumed.; ceil(588801123 * 1.15) on results volume plus explicit per-volume extras",
+        "development_size_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_core12_probe01_person_stage2_crossing_seed004.json",
+          "sha256": "3dbf74e8712da66886d5810b973abda60dc0d6c90728225b0c559401d12a77bd"
+        },
+        "archive_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage2_crossing_seed004/bag_integrity.json",
+          "sha256": "b6c9704a819e4e9b51d502513acabf838ada1e251b7e51cbb26f783f0a064fc4"
+        }
+      },
+      {
+        "matrix": "core",
+        "target_class": "person",
+        "condition": "stage3_active",
+        "persistent_bytes_by_volume": {
+          "drive_D": 543491414
+        },
+        "basis": "Use each condition's complete measured trial bytes with 15 percent growth for held-out seed variation, plus16 MiB per formal slot for small receipts and metadata. The factor is a planning choice, not a measured upper bound; no compression saving, deduplication, deletion or successful-only selection is assumed.; ceil(458012346 * 1.15) on results volume plus explicit per-volume extras",
+        "development_size_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_core12_probe01_person_stage3_active_seed004.json",
+          "sha256": "13e6b22fc79d32c09f468b274c283fe5d31c91b2ff6329c6f18c02a65fd1390a"
+        },
+        "archive_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage3_active_seed004/bag_integrity.json",
+          "sha256": "761aaf03bd25338c7447af261985d5810c609a85b2b78d24da1741974d1bd8bc"
+        }
+      },
+      {
+        "matrix": "core",
+        "target_class": "person",
+        "condition": "stage3_midpoint",
+        "persistent_bytes_by_volume": {
+          "drive_D": 655162929
+        },
+        "basis": "Use each condition's complete measured trial bytes with 15 percent growth for held-out seed variation, plus16 MiB per formal slot for small receipts and metadata. The factor is a planning choice, not a measured upper bound; no compression saving, deduplication, deletion or successful-only selection is assumed.; ceil(555118011 * 1.15) on results volume plus explicit per-volume extras",
+        "development_size_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004.json",
+          "sha256": "c926f6c91ff04f8eb1909c6bb7d9057e96644c254465a0c211ff0a3e8b58c3fd"
+        },
+        "archive_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004/bag_integrity.json",
+          "sha256": "556a0332d35e65b6e10bfc8b932d08e204e2a45cb6285dda2e3d8bc9ecf7477c"
+        }
+      },
+      {
+        "matrix": "core",
+        "target_class": "person",
+        "condition": "stage3_multi_active",
+        "persistent_bytes_by_volume": {
+          "drive_D": 631239350
+        },
+        "basis": "Use each condition's complete measured trial bytes with 15 percent growth for held-out seed variation, plus16 MiB per formal slot for small receipts and metadata. The factor is a planning choice, not a measured upper bound; no compression saving, deduplication, deletion or successful-only selection is assumed.; ceil(534314899 * 1.15) on results volume plus explicit per-volume extras",
+        "development_size_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004.json",
+          "sha256": "a9072fabdcc5ad4c4bf7c1c903f3253e99b3e5d57f41f15fa0ac87bfe416bae8"
+        },
+        "archive_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004/bag_integrity.json",
+          "sha256": "28d6ca1370e5787a4b7cf656e40642a3445b0ab5b34bd4d1090ab350f95874d1"
+        }
+      },
+      {
+        "matrix": "extension",
+        "target_class": "car",
+        "condition": "combined",
+        "persistent_bytes_by_volume": {
+          "drive_D": 1381545300
+        },
+        "basis": "Use each condition's complete measured trial bytes with 15 percent growth for held-out seed variation, plus16 MiB per formal slot for small receipts and metadata. The factor is a planning choice, not a measured upper bound; no compression saving, deduplication, deletion or successful-only selection is assumed.; ceil(1186754855 * 1.15) on results volume plus explicit per-volume extras",
+        "development_size_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_car_extension_combined_seed004.json",
+          "sha256": "3bd5ba01d1954c33de4270375f489fafdf3d41c1df8ecae483c821cbf621d83f"
+        },
+        "archive_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_combined_seed004/bag_integrity.json",
+          "sha256": "00e394990c68fecb325cf1bb9eef1dfc36ad2b74115189c7ce951e34961a2d70"
+        }
+      },
+      {
+        "matrix": "extension",
+        "target_class": "car",
+        "condition": "depth_holes",
+        "persistent_bytes_by_volume": {
+          "drive_D": 792547830
+        },
+        "basis": "Use each condition's complete measured trial bytes with 15 percent growth for held-out seed variation, plus16 MiB per formal slot for small receipts and metadata. The factor is a planning choice, not a measured upper bound; no compression saving, deduplication, deletion or successful-only selection is assumed.; ceil(674583142 * 1.15) on results volume plus explicit per-volume extras",
+        "development_size_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_car_extension_depth_holes_seed004.json",
+          "sha256": "cbde7eeb80cbe84243d3bc7820454e3a34a8f54321e4aea924411f2693c8ba13"
+        },
+        "archive_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_depth_holes_seed004/bag_integrity.json",
+          "sha256": "4c1a30312acb89ee1f64bd93424bd045a00bc5644d429c2c52a57a2ad431cf74"
+        }
+      },
+      {
+        "matrix": "extension",
+        "target_class": "car",
+        "condition": "depth_noise",
+        "persistent_bytes_by_volume": {
+          "drive_D": 1562951305
+        },
+        "basis": "Use each condition's complete measured trial bytes with 15 percent growth for held-out seed variation, plus16 MiB per formal slot for small receipts and metadata. The factor is a planning choice, not a measured upper bound; no compression saving, deduplication, deletion or successful-only selection is assumed.; ceil(1344499207 * 1.15) on results volume plus explicit per-volume extras",
+        "development_size_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_car_extension_depth_noise_seed004.json",
+          "sha256": "f9d6a8153d219ab3f90a50722d54df8486657e92b1bf6af427e1366c3410f877"
+        },
+        "archive_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_depth_noise_seed004/bag_integrity.json",
+          "sha256": "771965790df42df0e2ce71d8b3ad38cc7861d11ef58489f490520da61ed0f9c4"
+        }
+      },
+      {
+        "matrix": "extension",
+        "target_class": "car",
+        "condition": "dropout",
+        "persistent_bytes_by_volume": {
+          "drive_D": 668247883
+        },
+        "basis": "Use each condition's complete measured trial bytes with 15 percent growth for held-out seed variation, plus16 MiB per formal slot for small receipts and metadata. The factor is a planning choice, not a measured upper bound; no compression saving, deduplication, deletion or successful-only selection is assumed.; ceil(566496232 * 1.15) on results volume plus explicit per-volume extras",
+        "development_size_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_car_extension_dropout_seed004.json",
+          "sha256": "2e15233805ec6ae407c61b595402ecae9eb93d98b1d01c604ee3656927817f3c"
+        },
+        "archive_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_dropout_seed004/bag_integrity.json",
+          "sha256": "6479e8a0cdb63265856199ece49e16dc7b0250c26a758fb4ef34cce76f7ce601"
+        }
+      },
+      {
+        "matrix": "extension",
+        "target_class": "car",
+        "condition": "far_distance",
+        "persistent_bytes_by_volume": {
+          "drive_D": 681671584
+        },
+        "basis": "Use each condition's complete measured trial bytes with 15 percent growth for held-out seed variation, plus16 MiB per formal slot for small receipts and metadata. The factor is a planning choice, not a measured upper bound; no compression saving, deduplication, deletion or successful-only selection is assumed.; ceil(578169015 * 1.15) on results volume plus explicit per-volume extras",
+        "development_size_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_car_extension_far_distance_seed004.json",
+          "sha256": "6e10ccf1fe26ae36c77b9397622aa1b730d1204edc58e00f0c806266462d00de"
+        },
+        "archive_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_far_distance_seed004/bag_integrity.json",
+          "sha256": "8b6215b25f03997106d6d8f4ecf458f5ee1af35dcd7760143e237956e47053f4"
+        }
+      },
+      {
+        "matrix": "extension",
+        "target_class": "car",
+        "condition": "latency",
+        "persistent_bytes_by_volume": {
+          "drive_D": 683745114
+        },
+        "basis": "Use each condition's complete measured trial bytes with 15 percent growth for held-out seed variation, plus16 MiB per formal slot for small receipts and metadata. The factor is a planning choice, not a measured upper bound; no compression saving, deduplication, deletion or successful-only selection is assumed.; ceil(579972085 * 1.15) on results volume plus explicit per-volume extras",
+        "development_size_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_car_extension_latency_seed004.json",
+          "sha256": "c31bc80e60156a1d1a48fe41ed165dd43cfc241051057a12dd77937457441e07"
+        },
+        "archive_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_latency_seed004/bag_integrity.json",
+          "sha256": "6bbcd5874faf173b9cb1597996392596c6a75594e5e4866320603cef2b09feee"
+        }
+      },
+      {
+        "matrix": "extension",
+        "target_class": "car",
+        "condition": "speed_changes_position",
+        "persistent_bytes_by_volume": {
+          "drive_D": 689909591
+        },
+        "basis": "Use each condition's complete measured trial bytes with 15 percent growth for held-out seed variation, plus16 MiB per formal slot for small receipts and metadata. The factor is a planning choice, not a measured upper bound; no compression saving, deduplication, deletion or successful-only selection is assumed.; ceil(585332500 * 1.15) on results volume plus explicit per-volume extras",
+        "development_size_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_car_extension_speed_changes_position_seed004.json",
+          "sha256": "5a6aad71c31b408793b46b0fbb4e5dbe347c25fd8643e4500e208a32ff618f1a"
+        },
+        "archive_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_speed_changes_position_seed004/bag_integrity.json",
+          "sha256": "cab18b7d8048420f1a19d3353c74990fd04dc1c471fb813df0151a34937a3398"
+        }
+      },
+      {
+        "matrix": "extension",
+        "target_class": "car",
+        "condition": "speed_changes_velocity",
+        "persistent_bytes_by_volume": {
+          "drive_D": 660789137
+        },
+        "basis": "Use each condition's complete measured trial bytes with 15 percent growth for held-out seed variation, plus16 MiB per formal slot for small receipts and metadata. The factor is a planning choice, not a measured upper bound; no compression saving, deduplication, deletion or successful-only selection is assumed.; ceil(560010366 * 1.15) on results volume plus explicit per-volume extras",
+        "development_size_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_car_extension_speed_changes_velocity_seed004.json",
+          "sha256": "097113494747c1e05e79facbfc998b1c4e0d6cac2b036a96134753aaae2c6c77"
+        },
+        "archive_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_speed_changes_velocity_seed004/bag_integrity.json",
+          "sha256": "78b9c4a52edfac00772782f0c96e84b086c4af39823cff8ee6af1f123df9692c"
+        }
+      },
+      {
+        "matrix": "extension",
+        "target_class": "person",
+        "condition": "combined",
+        "persistent_bytes_by_volume": {
+          "drive_D": 1347252446
+        },
+        "basis": "Use each condition's complete measured trial bytes with 15 percent growth for held-out seed variation, plus16 MiB per formal slot for small receipts and metadata. The factor is a planning choice, not a measured upper bound; no compression saving, deduplication, deletion or successful-only selection is assumed.; ceil(1156934982 * 1.15) on results volume plus explicit per-volume extras",
+        "development_size_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_person_extension_combined_seed004.json",
+          "sha256": "753cd8c5e79ab03a0b5424cb646be02b54bf6bc2cfcfe681472e1003f37be055"
+        },
+        "archive_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_person_extension_combined_seed004/bag_integrity.json",
+          "sha256": "1cc4a6cf6e4d91348c48e513c49f4709b24484cd7ab33d291da2f2d7b220bf5c"
+        }
+      },
+      {
+        "matrix": "extension",
+        "target_class": "person",
+        "condition": "depth_holes",
+        "persistent_bytes_by_volume": {
+          "drive_D": 759550787
+        },
+        "basis": "Use each condition's complete measured trial bytes with 15 percent growth for held-out seed variation, plus16 MiB per formal slot for small receipts and metadata. The factor is a planning choice, not a measured upper bound; no compression saving, deduplication, deletion or successful-only selection is assumed.; ceil(645890061 * 1.15) on results volume plus explicit per-volume extras",
+        "development_size_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_person_extension_depth_holes_seed004.json",
+          "sha256": "16472a0f2e3bae22c92d4661388bce6e6d778857ea71f447c0eb618a4dad5aca"
+        },
+        "archive_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_person_extension_depth_holes_seed004/bag_integrity.json",
+          "sha256": "ad6c958814aa89ba6f000752c6d498f75d77aa5b70448744000dc3e6af40a52b"
+        }
+      },
+      {
+        "matrix": "extension",
+        "target_class": "person",
+        "condition": "depth_noise",
+        "persistent_bytes_by_volume": {
+          "drive_D": 1520212714
+        },
+        "basis": "Use each condition's complete measured trial bytes with 15 percent growth for held-out seed variation, plus16 MiB per formal slot for small receipts and metadata. The factor is a planning choice, not a measured upper bound; no compression saving, deduplication, deletion or successful-only selection is assumed.; ceil(1307335215 * 1.15) on results volume plus explicit per-volume extras",
+        "development_size_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_person_extension_depth_noise_seed004.json",
+          "sha256": "e999ae1ec5bb6ed8fa95a8d9d0e40c9d6810603c54e2305b78b8cb3df3b9262b"
+        },
+        "archive_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_person_extension_depth_noise_seed004/bag_integrity.json",
+          "sha256": "b962d575e98545c01ad6b3414a58186c2c2641b3d950600654095065f6063d7d"
+        }
+      },
+      {
+        "matrix": "extension",
+        "target_class": "person",
+        "condition": "dropout",
+        "persistent_bytes_by_volume": {
+          "drive_D": 672093137
+        },
+        "basis": "Use each condition's complete measured trial bytes with 15 percent growth for held-out seed variation, plus16 MiB per formal slot for small receipts and metadata. The factor is a planning choice, not a measured upper bound; no compression saving, deduplication, deletion or successful-only selection is assumed.; ceil(569839931 * 1.15) on results volume plus explicit per-volume extras",
+        "development_size_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_person_extension_dropout_seed004.json",
+          "sha256": "20406d36d188e95b8f87c1b9be7e57e1ced8947d2a9780ba86bf06b514f6bd39"
+        },
+        "archive_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_person_extension_dropout_seed004/bag_integrity.json",
+          "sha256": "f301e33b0b14ba6005156e70b0733c357794bc589c692b9925e9036f1696d811"
+        }
+      },
+      {
+        "matrix": "extension",
+        "target_class": "person",
+        "condition": "far_distance",
+        "persistent_bytes_by_volume": {
+          "drive_D": 647714035
+        },
+        "basis": "Use each condition's complete measured trial bytes with 15 percent growth for held-out seed variation, plus16 MiB per formal slot for small receipts and metadata. The factor is a planning choice, not a measured upper bound; no compression saving, deduplication, deletion or successful-only selection is assumed.; ceil(548640712 * 1.15) on results volume plus explicit per-volume extras",
+        "development_size_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_person_extension_far_distance_seed004.json",
+          "sha256": "e5cb11515bd81d2c9dc2ec73430694d7d6c29dea84047f2c54b1c2389806dd45"
+        },
+        "archive_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_person_extension_far_distance_seed004/bag_integrity.json",
+          "sha256": "26605894e90111aa74d7a2dba9a7cd1ac6473b7cd0b5454d5423b028ed049b6f"
+        }
+      },
+      {
+        "matrix": "extension",
+        "target_class": "person",
+        "condition": "latency",
+        "persistent_bytes_by_volume": {
+          "drive_D": 673949050
+        },
+        "basis": "Use each condition's complete measured trial bytes with 15 percent growth for held-out seed variation, plus16 MiB per formal slot for small receipts and metadata. The factor is a planning choice, not a measured upper bound; no compression saving, deduplication, deletion or successful-only selection is assumed.; ceil(571453768 * 1.15) on results volume plus explicit per-volume extras",
+        "development_size_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_person_extension_latency_seed004.json",
+          "sha256": "b647a06e570b58f528b03575299dfdfc44bbfeb46bf40404f79b40d0a71dc631"
+        },
+        "archive_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_person_extension_latency_seed004/bag_integrity.json",
+          "sha256": "a415cc2084c748498e6ed78ffd4d8f7746d5c924d00eb79c4ae820c84ccf818c"
+        }
+      },
+      {
+        "matrix": "extension",
+        "target_class": "person",
+        "condition": "speed_changes_position",
+        "persistent_bytes_by_volume": {
+          "drive_D": 679337814
+        },
+        "basis": "Use each condition's complete measured trial bytes with 15 percent growth for held-out seed variation, plus16 MiB per formal slot for small receipts and metadata. The factor is a planning choice, not a measured upper bound; no compression saving, deduplication, deletion or successful-only selection is assumed.; ceil(576139650 * 1.15) on results volume plus explicit per-volume extras",
+        "development_size_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_person_extension_speed_changes_position_seed004.json",
+          "sha256": "f407d51c1e71334a5537d1666bc0ab9bd8f9dfd570c2fb80d659ade0d4f0ed2f"
+        },
+        "archive_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_person_extension_speed_changes_position_seed004/bag_integrity.json",
+          "sha256": "cfd9527ed0515e6e93777b7fbd30a42655147726f159f7eb6f2fe4c9569742ce"
+        }
+      },
+      {
+        "matrix": "extension",
+        "target_class": "person",
+        "condition": "speed_changes_velocity",
+        "persistent_bytes_by_volume": {
+          "drive_D": 641839681
+        },
+        "basis": "Use each condition's complete measured trial bytes with 15 percent growth for held-out seed variation, plus16 MiB per formal slot for small receipts and metadata. The factor is a planning choice, not a measured upper bound; no compression saving, deduplication, deletion or successful-only selection is assumed.; ceil(543532578 * 1.15) on results volume plus explicit per-volume extras",
+        "development_size_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_person_extension_speed_changes_velocity_seed004.json",
+          "sha256": "545a4cb9b6f50a6bf870e9715793e95bf17ba08aca89b0825d8dd17d08856e7a"
+        },
+        "archive_evidence": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_person_extension_speed_changes_velocity_seed004/bag_integrity.json",
+          "sha256": "a56940838e32da13ef003009ee0a245babd5b74627c6750c6b50ba224aeb74c0"
+        }
+      }
+    ]
+  },
+  "storage_sha256": "45dffb5746b38ee1fe96acab430a6799095c7fff239f381928af2c4b9440fe78",
+  "provenance": {
+    "development_plans": {
+      "core": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/plan.json",
+        "sha256": "ed88783162991c151ab3d537d4eb7d3546b3688339a06db6f35b7f2ef7c48d4b"
+      },
+      "extension": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/plan.json",
+        "sha256": "1f7ff9559bcf9b1b02528a771f046481712a0ff5ec33eb961fe90310d1dcca54"
+      }
+    },
+    "physical_inventory": {
+      "path": "/mnt/d/WSL/UAVHumble22-validation/humble54_probe02_closed_measurement_after07_01_continue_after28_01/physical_inventory.json",
+      "sha256": "701b8212e9cf9957d7a797bdd4b04c2b6d0a2b6856e533273c584f1c05a1dc51"
+    },
+    "assumptions": {
+      "path": "/mnt/d/基于yolo和卡尔曼滤波/planning/reliability-v4-humble54-storage-assumptions01.json",
+      "sha256": "bc0ef3a6549bb7421b1b6de64c17951c4d71af32114c94a8e4234ad42360b049"
+    },
+    "assumptions_values": {
+      "schema_version": 1,
+      "kind": "RELIABILITY_V4_STORAGE_ASSUMPTIONS_NOT_ADMISSION",
+      "basis": "2026-11-03 prospective planning allowance, chosen before full28 measurement and before all formal STARTs. Applies only if the actual storage-probe confirms results and the UAVHumble22 VHD are both on the single drive_D physical volume. These are explicit engineering allowances, not observed future sizes or a capacity approval. Recompute the real budget from all28 completed 75s development cells; retain an insufficient-space result rather than decreasing margins to fit.",
+      "persistent_growth_factor": 1.15,
+      "raw_growth_factor": 1.15,
+      "compressed_growth_factor": 1.15,
+      "persistent_extra_bytes_by_volume": {
+        "drive_D": 16777216
+      },
+      "persistent_basis": "Use each condition's complete measured trial bytes with 15 percent growth for held-out seed variation, plus16 MiB per formal slot for small receipts and metadata. The factor is a planning choice, not a measured upper bound; no compression saving, deduplication, deletion or successful-only selection is assumed.",
+      "temporary_extra_bytes_by_volume": {
+        "drive_D": 2147483648
+      },
+      "temporary_basis": "Keep the existing three-raw/two-compressed bound with15 percent growth on both measured raw and compressed bytes, plus2 GiB on the physical volume for temporary bookkeeping and one serial analysis operation. No parallel simulation/export/build work is allowed. The original guard still reserves at least8 GiB and checks actual capacity before every formal slot.",
+      "additional_remaining_bytes": {
+        "drive_D": 4294967296
+      },
+      "additional_remaining_basis": "Reserve4 GiB beyond current usage for the new final55 source, cold-build products, isolated delivery tools, two development calibration exports and registration artifacts. Already existing VHD allocation and historical results are not counted again as future permanent growth. This is a fixed planning allowance, not a completed-build measurement.",
+      "delivery_reservations": {
+        "offline_replay20": {
+          "bytes_by_volume": {
+            "drive_D": 8589934592
+          },
+          "basis": "Reserve8 GiB for20 formal velocity recordings' arrays, online/native/truth sidecars, four estimator outputs and audit tables; roughly409.6 MiB per source. Original bags are already in per-slot persistent storage. Serial decompression uses the separate temporary reserve. This does not assert any export or replay has run."
+        },
+        "videos12": {
+          "bytes_by_volume": {
+            "drive_D": 2147483648
+          },
+          "basis": "Reserve2 GiB for12 selected seed1000 browser video copies and indexes, roughly170.7 MiB per clip. Immutable onboard originals are already in measured trial bytes. Preserve the complete recorded duration and failures; no shorter successful-only clip is assumed."
+        },
+        "detection_audit": {
+          "bytes_by_volume": {
+            "drive_D": 4294967296
+          },
+          "basis": "Reserve4 GiB for both original single-target detection subsets plus all12 prospective full-task supplementary sources: original sampled RGB, prediction-free all-actor overlays, independent review, schema2 caches, evaluation and timing/lineage attachments. Sampling remains FOLLOW+1s then every2s to final recorded Clock with no image cap; approximately40 opportunities per75s source is only a planning scale, not a fixed count or license to truncate tails."
+        },
+        "figures_documents": {
+          "bytes_by_volume": {
+            "drive_D": 2147483648
+          },
+          "basis": "Reserve2 GiB for statistics, figures, unified HTML, Word/PDF, per-page rendering images and the small shareable delivery package. Document rendering and visual review remain required."
+        },
+        "runtime_logs": {
+          "bytes_by_volume": {
+            "drive_D": 2147483648
+          },
+          "basis": "Reserve2 GiB for remaining external owner/monitor/registration and document-tool logs beyond per-trial measured logs. Raw experiment failures remain preserved. No deletion or NTFS savings are assumed."
+        }
+      }
+    },
+    "small_inputs_sha256": {
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/plan.json": "ed88783162991c151ab3d537d4eb7d3546b3688339a06db6f35b7f2ef7c48d4b",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/plan.json": "1f7ff9559bcf9b1b02528a771f046481712a0ff5ec33eb961fe90310d1dcca54",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/car_stage1_position_seed004.json": "a487aed8799c214edf0e3ea1b7f4d05679537760ba643087d0fea879a49abbd1",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_core12_probe01_car_stage1_position_seed004.json": "85f243696d7ad23abb175917f450d604af9c0535f9f10d8beccb2f2c48c7369d",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage1_position_seed004/bag_integrity.json": "60c503ff2bfb1baf5b04746a1e2ab24575f134da050d5182d0b30ce4ad4546a9",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage1_position_seed004/summary.json": "a21acd0abc44b49785cd35be85c5d0694c19664f321bad8cfb97eacc90b7766e",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage1_position_seed004/recording_closure.json": "c6dbb41a32936e7c41377051151a36ac763bb336d57934c1b85a0fd593185f54",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/car_stage1_velocity_seed004.json": "81aa5f0e41c99d7cd6f603fb2d52345fed11e5030a8e9fab856ccfd56da226c9",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_core12_probe01_car_stage1_velocity_seed004.json": "63da85610817da5351dbd43aebc75fc98a6260c5416853b856093bca16a24adc",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage1_velocity_seed004/bag_integrity.json": "c694e191705f2718d939911e589a2d73574c3345391acd03b196f0ad9312c2f6",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage1_velocity_seed004/summary.json": "3528e9e4954f9e61ff0b4a95c0ade94fd54ef25a7382e01e1774391471eefdef",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage1_velocity_seed004/recording_closure.json": "de5a5eb76dadacd0086be0f75093b486fb52fdfb9b60b81adac6e32af196ad0d",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/car_stage2_crossing_seed004.json": "29ed7dc726f9882395907abc25e58f99bc7bf905b8339bdb7cf56ed69c7300c8",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_core12_probe01_car_stage2_crossing_seed004.json": "ea183b6c1610dd57c13e8f7ad4c99c33bcb28df3ff508bec7eca9ac38c9da1ab",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage2_crossing_seed004/bag_integrity.json": "19f7e26e093715d4bcdc9b527b96fedc97307e314288c9fbbcffcb890ba12649",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage2_crossing_seed004/summary.json": "dd5048ae6a93ef4e722f64255ee7f166afc392161079efd48f07d7be723d40cd",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage2_crossing_seed004/recording_closure.json": "a997e89f7d8ff3b231a242982c02b57e061ea8d9a85071c70d15c2e6b03d1118",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/car_stage3_active_seed004.json": "ae2711d00dfa30a18bba12b695a6f708b779b6e9ebb12dca595cc8160f9d7cfa",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_core12_probe01_car_stage3_active_seed004.json": "1f6efda30f076b1bfcbf8f1c4d5c6940bba97b2dfe2e9a906346c4fe1d5bccfb",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage3_active_seed004/bag_integrity.json": "15850632abb3de83bf5f1bdafe3e4bce180e7309e4965307569bd95e9e654706",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage3_active_seed004/summary.json": "eba9f7debb8b76f4f1e9726743a42a21604bc2b2463ac9001ef71c7e28ac1958",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage3_active_seed004/recording_closure.json": "e81247cac862f667b7d5909e14a8707b9ea381ba9698f5482e47f97b6df12808",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/car_stage3_midpoint_seed004.json": "122e8040625c5df83c0baa39d78ba982ce4732b8a64a772cb3a61697f329b808",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_core12_probe01_car_stage3_midpoint_seed004.json": "3d2a0bb7c802393063b58ec0dc574d1878eba785909eaa9ca61e29262892b440",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage3_midpoint_seed004/bag_integrity.json": "f5baa1a8f1f5b6f07b43f76c0e46e6c373221b3bdd6596bb149cd07b98323db4",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage3_midpoint_seed004/summary.json": "33761b2fd748bf9dd2ba8c83ccea4e260b01eac43ad33ce641774f453af545f2",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage3_midpoint_seed004/recording_closure.json": "5f163d014c3b1f51a36a431ab2099b6e8f4ef30628ed658b23f44170cda558a4",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/car_stage3_multi_active_seed004.json": "f2d190881e4e3594a2eaf75d74a974bab800a3c8254c8b09ae89094c4ff08931",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_core12_probe01_car_stage3_multi_active_seed004.json": "06283d55f6e630c653c03a446ecaf4fccaa05aaf69d34684f9b9519fb73ebee6",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage3_multi_active_seed004/bag_integrity.json": "9bb0e22db405d4d0cef2f8da2cb3e745187c203be17d4ba4a8fc024defce947a",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage3_multi_active_seed004/summary.json": "dc24c9c3bbe18e3f4c96b0d17db2b34e1433fd66308edf9218a5cbc00d2f0f06",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage3_multi_active_seed004/recording_closure.json": "d191dda38efb0afbb3033aacfb7cb0e2182577d8b9a2b45f8f27ae80a88db59e",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/person_stage1_position_seed004.json": "f822f423fc00c29f390aea11f73bcbd88f9194ee56e4714eadf4e66cd448fb6a",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_core12_probe01_person_stage1_position_seed004.json": "74927c54f19e58d2c0a3192e21c95ce10478c41a3387f777a0c03b88038ba20f",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage1_position_seed004/bag_integrity.json": "650c5ef7f2ae4f93806fc4a87e1e471c3429cdc9944a9716a6d19df05e22139c",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage1_position_seed004/summary.json": "e7d6c1bc8413e0fee9497b15abcbeb26c2532434ceda800f06afb7d8b0fe1a39",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage1_position_seed004/recording_closure.json": "e577a0b073eb4c194c2bd80ccfed7132e3446ae6fb966bdbc99e7cfce5a386fb",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/person_stage1_velocity_seed004.json": "77d22a38c34ffae598063fd14d5520824d20c7ac9194f691ab051d26b6967291",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_core12_probe01_person_stage1_velocity_seed004.json": "ba3ba791f312422783a190763509b8ab3b5c0f573c596831bb28bf1072d3622a",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage1_velocity_seed004/bag_integrity.json": "10b98d48f6469f612b97876091d73ea2cdb15158be0ffc9834ea70a01a22af65",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage1_velocity_seed004/summary.json": "606eade05d0460354d879af32579a6b5425bd4c35bc83fd5f1291d2f591b15aa",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage1_velocity_seed004/recording_closure.json": "c865a2fa5e059a4a21cfba1a879658eebb4fc90cc32298d0c11baff8e2a7e0e1",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/person_stage2_crossing_seed004.json": "992fe8eb0fe57740f338be22af827e7bf2e7468cf1e01cf69c7b334679ba5bb3",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_core12_probe01_person_stage2_crossing_seed004.json": "3dbf74e8712da66886d5810b973abda60dc0d6c90728225b0c559401d12a77bd",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage2_crossing_seed004/bag_integrity.json": "b6c9704a819e4e9b51d502513acabf838ada1e251b7e51cbb26f783f0a064fc4",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage2_crossing_seed004/summary.json": "7cbdae0b1eeb5f484efa4da7422fcb559d609fd95367f3388c303cbb5be83356",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage2_crossing_seed004/recording_closure.json": "888f445e27f6c936e1f519dc4cd2457b364c21f34fbbf55c92245487e1fe9021",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/person_stage3_active_seed004.json": "73f178cb86407207f6356a17d2ad7520f30d1b958e2e60bdd5c202b0e759e122",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_core12_probe01_person_stage3_active_seed004.json": "13e6b22fc79d32c09f468b274c283fe5d31c91b2ff6329c6f18c02a65fd1390a",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage3_active_seed004/bag_integrity.json": "761aaf03bd25338c7447af261985d5810c609a85b2b78d24da1741974d1bd8bc",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage3_active_seed004/summary.json": "81acbcf03dd5c404d4ccc6ac1daf57419ff27d92fe6cf6d7aedf825446b427d7",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage3_active_seed004/recording_closure.json": "dc2a4f66a37e9bb1e5507569efef5bfcc9649cab7693869130bb4f2f352dbe8a",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/person_stage3_midpoint_seed004.json": "f2eb8e3048004a257bdd5f6240a2ae9344921a0f24cf4dbb44a924d4b3d1418d",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004.json": "c926f6c91ff04f8eb1909c6bb7d9057e96644c254465a0c211ff0a3e8b58c3fd",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004/bag_integrity.json": "556a0332d35e65b6e10bfc8b932d08e204e2a45cb6285dda2e3d8bc9ecf7477c",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004/summary.json": "c2aa37bc28f05815a6552ae65890701a10cef935a3e42885930535e149a152d5",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004/recording_closure.json": "1c80c02b0beca351252cb114106457fbb48a0bb0151e06bc36f2af658c6ec760",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/person_stage3_multi_active_seed004.json": "42de6664d65f530f261d1ed337e0eaa645a679117324c5b73b2bbbd7712e2d71",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004.json": "a9072fabdcc5ad4c4bf7c1c903f3253e99b3e5d57f41f15fa0ac87bfe416bae8",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004/bag_integrity.json": "28d6ca1370e5787a4b7cf656e40642a3445b0ab5b34bd4d1090ab350f95874d1",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004/summary.json": "b61b9f116d83a661c9680941947692768f7159d34567f4a3882807df406a9b7d",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004/recording_closure.json": "6413909f0bd3c0ac0d0fa5ad323083434a82ce3207645bde600284fa1a064573",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/car_extension_combined_seed004.json": "50cda01cbc0850b94aa52962f365d5fb7daec7daff7b4fcd6503178fe4f5a00b",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_car_extension_combined_seed004.json": "3bd5ba01d1954c33de4270375f489fafdf3d41c1df8ecae483c821cbf621d83f",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_combined_seed004/bag_integrity.json": "00e394990c68fecb325cf1bb9eef1dfc36ad2b74115189c7ce951e34961a2d70",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_combined_seed004/summary.json": "e08bdf8fdffbce7bf8a13f6c303670d9d09fcd477d9a4288d13ca061d9d3e647",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_combined_seed004/recording_closure.json": "806d6347d270fd5be626d437ed9ff8d6f252df0807934dda9a36861c041b4de2",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/car_extension_depth_holes_seed004.json": "7865ca292f4bb0ab8de4581be3535f3270e0fdcdf4ce29a7ccdbb79001449249",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_car_extension_depth_holes_seed004.json": "cbde7eeb80cbe84243d3bc7820454e3a34a8f54321e4aea924411f2693c8ba13",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_depth_holes_seed004/bag_integrity.json": "4c1a30312acb89ee1f64bd93424bd045a00bc5644d429c2c52a57a2ad431cf74",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_depth_holes_seed004/summary.json": "36fc540d307d63042670c608165457b31bb6531c5c355985ad5f873fe0012adc",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_depth_holes_seed004/recording_closure.json": "84a183558c0f3f2cfb306ee75ec45b1e990b99e9e9f1265c13d7ca7e1a12e10b",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/car_extension_depth_noise_seed004.json": "ac3f4e7113a2ca686edfc02003531e2dfd910441b20f44f5ab2420b11406588a",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_car_extension_depth_noise_seed004.json": "f9d6a8153d219ab3f90a50722d54df8486657e92b1bf6af427e1366c3410f877",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_depth_noise_seed004/bag_integrity.json": "771965790df42df0e2ce71d8b3ad38cc7861d11ef58489f490520da61ed0f9c4",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_depth_noise_seed004/summary.json": "29848719191fcc7a2dcc7c7f29be7589c9cfda0797adcc0259787265a425eae8",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_depth_noise_seed004/recording_closure.json": "e5c0d4235d5a41c07194784ef3ec6653f3914f092185a48c28780150945e0b36",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/car_extension_dropout_seed004.json": "f80a774d1af43cbb6e8525662bb13f3c2853c9c19d68ac57ccd82435b9015f17",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_car_extension_dropout_seed004.json": "2e15233805ec6ae407c61b595402ecae9eb93d98b1d01c604ee3656927817f3c",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_dropout_seed004/bag_integrity.json": "6479e8a0cdb63265856199ece49e16dc7b0250c26a758fb4ef34cce76f7ce601",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_dropout_seed004/summary.json": "d9d983b7df16d05d55813eff8345acd7e257b4f202f4148caa5ca6269471b3b2",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_dropout_seed004/recording_closure.json": "674e87f7f7f28dc531a7b7ddfb4b53896344ccb016d837f21f4bde7a23ab06e2",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/car_extension_far_distance_seed004.json": "f03c983121b8913e0d3be31ad64fef6ca694df964a2214adbc6eac48f1ed2047",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_car_extension_far_distance_seed004.json": "6e10ccf1fe26ae36c77b9397622aa1b730d1204edc58e00f0c806266462d00de",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_far_distance_seed004/bag_integrity.json": "8b6215b25f03997106d6d8f4ecf458f5ee1af35dcd7760143e237956e47053f4",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_far_distance_seed004/summary.json": "ca85579758d94eccd3f9728ee0d84974f4338fe1187b65916c2601ed0f47b95d",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_far_distance_seed004/recording_closure.json": "27a494aab2bef42a6c7c7daec9ed55196bcd5ac19231860c9cd4d5bddb82ea11",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/car_extension_latency_seed004.json": "b2f1ec888c217cd1ac8e0dcfc56a19e4746dc5096e7902cf8c6d04c732330ab1",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_car_extension_latency_seed004.json": "c31bc80e60156a1d1a48fe41ed165dd43cfc241051057a12dd77937457441e07",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_latency_seed004/bag_integrity.json": "6bbcd5874faf173b9cb1597996392596c6a75594e5e4866320603cef2b09feee",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_latency_seed004/summary.json": "d6f43f081fdf9c6c82777408b3a0001230c1dad442e19b1fc9fb4221ec6472ec",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_latency_seed004/recording_closure.json": "f0af567cdc4c74a5c0b13ba801097ae7795eb2d4f67e63129ba182d2de42dcaf",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/car_extension_speed_changes_position_seed004.json": "057534448a7e4da809e8f84dc09705f1c3d016f5ace6e0cb10b06ab4b8c4ebab",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_car_extension_speed_changes_position_seed004.json": "5a6aad71c31b408793b46b0fbb4e5dbe347c25fd8643e4500e208a32ff618f1a",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_speed_changes_position_seed004/bag_integrity.json": "cab18b7d8048420f1a19d3353c74990fd04dc1c471fb813df0151a34937a3398",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_speed_changes_position_seed004/summary.json": "58fa299b62cb6035f697a45426bd3816a98efa95d746d533cb1f2fef75c6d0ee",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_speed_changes_position_seed004/recording_closure.json": "f2a5736ee69db2b8b83ae3936ce78e0a3bad681a792ff08581b808b2a6053ca1",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/car_extension_speed_changes_velocity_seed004.json": "91860f3fddddc85c25cf478ce2707dcb77557b9498ddb29b81b0ad38b48a6f2c",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_car_extension_speed_changes_velocity_seed004.json": "097113494747c1e05e79facbfc998b1c4e0d6cac2b036a96134753aaae2c6c77",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_speed_changes_velocity_seed004/bag_integrity.json": "78b9c4a52edfac00772782f0c96e84b086c4af39823cff8ee6af1f123df9692c",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_speed_changes_velocity_seed004/summary.json": "6e1268929cd4a6c64c97b8614f5b15d4ea78b47bb24c4b83847898a69eb891a3",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_speed_changes_velocity_seed004/recording_closure.json": "0ee1c099266e961cac0d6b2c49135022a3f5b0df218b67d1e6cb669aea687be4",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_combined_seed004.json": "f57d22dff4989c8bbb45b56ba2151d66e52b5689984cd0a0104f531d4749b655",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_person_extension_combined_seed004.json": "753cd8c5e79ab03a0b5424cb646be02b54bf6bc2cfcfe681472e1003f37be055",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_person_extension_combined_seed004/bag_integrity.json": "1cc4a6cf6e4d91348c48e513c49f4709b24484cd7ab33d291da2f2d7b220bf5c",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_person_extension_combined_seed004/summary.json": "4122a3b404c7e5b840aafa562eeeccd794d1bc8c1becc66d0852471e7ea793db",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_person_extension_combined_seed004/recording_closure.json": "5e7dd86b6de3be88ebca0a4e7079e48216f548fea7d6012eda02efc6ed6f4f64",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_depth_holes_seed004.json": "12687276e9fa2defd43dcc336619d1b4c6715dbe325d3be04173cf8211239f5d",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_person_extension_depth_holes_seed004.json": "16472a0f2e3bae22c92d4661388bce6e6d778857ea71f447c0eb618a4dad5aca",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_person_extension_depth_holes_seed004/bag_integrity.json": "ad6c958814aa89ba6f000752c6d498f75d77aa5b70448744000dc3e6af40a52b",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_person_extension_depth_holes_seed004/summary.json": "1539d488c92af6bdfc1091e43271151a8825960ec9886617cdd749b6f5c09c32",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_person_extension_depth_holes_seed004/recording_closure.json": "cfd0159d66f94665be78c093fc62fdd7c2d2668843e43d8cd0142ebf89e51bb3",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_depth_noise_seed004.json": "571c1c9638e1e2705bc4bbd0cc75afcea8d038e7014c03ea155732a57faa596d",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_person_extension_depth_noise_seed004.json": "e999ae1ec5bb6ed8fa95a8d9d0e40c9d6810603c54e2305b78b8cb3df3b9262b",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_person_extension_depth_noise_seed004/bag_integrity.json": "b962d575e98545c01ad6b3414a58186c2c2641b3d950600654095065f6063d7d",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_person_extension_depth_noise_seed004/summary.json": "d645d6865b099b785529a2b3adc469501e4306680adab355f67df875213eab39",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_person_extension_depth_noise_seed004/recording_closure.json": "06688368bc60f67ebffeac9822b4458937835a88074e1025b6f2c9e968e88972",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_dropout_seed004.json": "c09f95ee3c4d5f14847bcbea82e8795b11cab6f5184fe735abac4c22decaeba8",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_person_extension_dropout_seed004.json": "20406d36d188e95b8f87c1b9be7e57e1ced8947d2a9780ba86bf06b514f6bd39",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_person_extension_dropout_seed004/bag_integrity.json": "f301e33b0b14ba6005156e70b0733c357794bc589c692b9925e9036f1696d811",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_person_extension_dropout_seed004/summary.json": "b330bfe3c239a45cbdf68388a6463a46c146f421db50f234ebe8065c95aaf8c4",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_person_extension_dropout_seed004/recording_closure.json": "427429caaf3a6ccff5ba684277ca06d552e1347f1555238636aa33d64f22535c",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_far_distance_seed004.json": "ad759ecb86fadaffd12fef6bd59a77baa967669b1ecb2084f9c155576347491f",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_person_extension_far_distance_seed004.json": "e5cb11515bd81d2c9dc2ec73430694d7d6c29dea84047f2c54b1c2389806dd45",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_person_extension_far_distance_seed004/bag_integrity.json": "26605894e90111aa74d7a2dba9a7cd1ac6473b7cd0b5454d5423b028ed049b6f",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_person_extension_far_distance_seed004/summary.json": "dcc9fba28af2b669d4779c13d8b35b15e119f3f6f9baf6f4debde17aa2063cfb",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_person_extension_far_distance_seed004/recording_closure.json": "8c5a521474272c3e775129e5b67aa6914e278ef60bd6757e1457ff85f6202941",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_latency_seed004.json": "7357baeaa7cc1bfe2a08526cc53fa113654dd171c0b99a351870c77f77fc14f9",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_person_extension_latency_seed004.json": "b647a06e570b58f528b03575299dfdfc44bbfeb46bf40404f79b40d0a71dc631",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_person_extension_latency_seed004/bag_integrity.json": "a415cc2084c748498e6ed78ffd4d8f7746d5c924d00eb79c4ae820c84ccf818c",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_person_extension_latency_seed004/summary.json": "c1b40579ec3d220cc365510d71a0fb17d544251d85395a1b01e239b365c8efe4",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_person_extension_latency_seed004/recording_closure.json": "d922986c6e6e760c14b701a14afe645fb057492cef73ad81bac5707e020acc30",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_speed_changes_position_seed004.json": "d64c7f7e401ccb8cf62cc393e5c45dfbdb7c25e38d07a246f69966d0d6aa8891",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_person_extension_speed_changes_position_seed004.json": "f407d51c1e71334a5537d1666bc0ab9bd8f9dfd570c2fb80d659ade0d4f0ed2f",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_person_extension_speed_changes_position_seed004/bag_integrity.json": "cfd9527ed0515e6e93777b7fbd30a42655147726f159f7eb6f2fe4c9569742ce",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_person_extension_speed_changes_position_seed004/summary.json": "b09e4fc873bd425dd1377be37e48dcf311efc6351886cf89812a814b038a4eb6",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_person_extension_speed_changes_position_seed004/recording_closure.json": "afc8729225a82884a150d14d36fc090a833b5ce6c1e3084fef18f25439743840",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_speed_changes_velocity_seed004.json": "a482af35d8ad5dc4fb33480552becdf701ea94af28b22b26431ca6db7ff05681",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_person_extension_speed_changes_velocity_seed004.json": "545a4cb9b6f50a6bf870e9715793e95bf17ba08aca89b0825d8dd17d08856e7a",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_person_extension_speed_changes_velocity_seed004/bag_integrity.json": "a56940838e32da13ef003009ee0a245babd5b74627c6750c6b50ba224aeb74c0",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_person_extension_speed_changes_velocity_seed004/summary.json": "cc0e15e7009c234171721af1dad48493f2b409e08b35fefd97a4c762e57439fc",
+      "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_person_extension_speed_changes_velocity_seed004/recording_closure.json": "ec2afee9b8c80c8f52ea6faedbe718b84dbf7da84374109615f66e53f6ff3651",
+      "/mnt/d/WSL/UAVHumble22-validation/humble54_probe02_closed_measurement_after07_01_continue_after28_01/physical_inventory.json": "701b8212e9cf9957d7a797bdd4b04c2b6d0a2b6856e533273c584f1c05a1dc51",
+      "/mnt/d/基于yolo和卡尔曼滤波/planning/reliability-v4-humble54-storage-assumptions01.json": "bc0ef3a6549bb7421b1b6de64c17951c4d71af32114c94a8e4234ad42360b049"
+    },
+    "tool": {
+      "path": "/root/uav_tracking_storage_measure54_probe02_after07_01/tools/reliability_v4_storage_budget.py",
+      "sha256": "e02424cc5df2e103c8994afca8fdeee7fba02c777e0bb50fd7e54576d3e6b4aa"
+    },
+    "guard_tool": {
+      "path": "/root/uav_tracking_storage_measure54_probe02_after07_01/tools/reliability_v4_guard.py",
+      "sha256": "e64e9da6a5180d70b32c6b2b3076abe4bbc52d4b748395bf7f8af61e6a7e3a8e"
+    },
+    "original_development_statuses": [
+      {
+        "cell": [
+          "core",
+          "car",
+          "stage1_position"
+        ],
+        "status": "PASS",
+        "terminal": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/car_stage1_position_seed004.json",
+          "sha256": "a487aed8799c214edf0e3ea1b7f4d05679537760ba643087d0fea879a49abbd1"
+        }
+      },
+      {
+        "cell": [
+          "core",
+          "car",
+          "stage1_velocity"
+        ],
+        "status": "PASS",
+        "terminal": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/car_stage1_velocity_seed004.json",
+          "sha256": "81aa5f0e41c99d7cd6f603fb2d52345fed11e5030a8e9fab856ccfd56da226c9"
+        }
+      },
+      {
+        "cell": [
+          "core",
+          "car",
+          "stage2_crossing"
+        ],
+        "status": "PASS",
+        "terminal": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/car_stage2_crossing_seed004.json",
+          "sha256": "29ed7dc726f9882395907abc25e58f99bc7bf905b8339bdb7cf56ed69c7300c8"
+        }
+      },
+      {
+        "cell": [
+          "core",
+          "car",
+          "stage3_active"
+        ],
+        "status": "PASS",
+        "terminal": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/car_stage3_active_seed004.json",
+          "sha256": "ae2711d00dfa30a18bba12b695a6f708b779b6e9ebb12dca595cc8160f9d7cfa"
+        }
+      },
+      {
+        "cell": [
+          "core",
+          "car",
+          "stage3_midpoint"
+        ],
+        "status": "PASS",
+        "terminal": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/car_stage3_midpoint_seed004.json",
+          "sha256": "122e8040625c5df83c0baa39d78ba982ce4732b8a64a772cb3a61697f329b808"
+        }
+      },
+      {
+        "cell": [
+          "core",
+          "car",
+          "stage3_multi_active"
+        ],
+        "status": "PASS",
+        "terminal": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/car_stage3_multi_active_seed004.json",
+          "sha256": "f2d190881e4e3594a2eaf75d74a974bab800a3c8254c8b09ae89094c4ff08931"
+        }
+      },
+      {
+        "cell": [
+          "core",
+          "person",
+          "stage1_position"
+        ],
+        "status": "PASS",
+        "terminal": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/person_stage1_position_seed004.json",
+          "sha256": "f822f423fc00c29f390aea11f73bcbd88f9194ee56e4714eadf4e66cd448fb6a"
+        }
+      },
+      {
+        "cell": [
+          "core",
+          "person",
+          "stage1_velocity"
+        ],
+        "status": "PASS",
+        "terminal": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/person_stage1_velocity_seed004.json",
+          "sha256": "77d22a38c34ffae598063fd14d5520824d20c7ac9194f691ab051d26b6967291"
+        }
+      },
+      {
+        "cell": [
+          "core",
+          "person",
+          "stage2_crossing"
+        ],
+        "status": "PASS",
+        "terminal": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/person_stage2_crossing_seed004.json",
+          "sha256": "992fe8eb0fe57740f338be22af827e7bf2e7468cf1e01cf69c7b334679ba5bb3"
+        }
+      },
+      {
+        "cell": [
+          "core",
+          "person",
+          "stage3_active"
+        ],
+        "status": "PASS",
+        "terminal": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/person_stage3_active_seed004.json",
+          "sha256": "73f178cb86407207f6356a17d2ad7520f30d1b958e2e60bdd5c202b0e759e122"
+        }
+      },
+      {
+        "cell": [
+          "core",
+          "person",
+          "stage3_midpoint"
+        ],
+        "status": "PASS",
+        "terminal": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/person_stage3_midpoint_seed004.json",
+          "sha256": "f2eb8e3048004a257bdd5f6240a2ae9344921a0f24cf4dbb44a924d4b3d1418d"
+        }
+      },
+      {
+        "cell": [
+          "core",
+          "person",
+          "stage3_multi_active"
+        ],
+        "status": "PASS",
+        "terminal": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/person_stage3_multi_active_seed004.json",
+          "sha256": "42de6664d65f530f261d1ed337e0eaa645a679117324c5b73b2bbbd7712e2d71"
+        }
+      },
+      {
+        "cell": [
+          "extension",
+          "car",
+          "combined"
+        ],
+        "status": "FAIL",
+        "terminal": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/car_extension_combined_seed004.json",
+          "sha256": "50cda01cbc0850b94aa52962f365d5fb7daec7daff7b4fcd6503178fe4f5a00b"
+        }
+      },
+      {
+        "cell": [
+          "extension",
+          "car",
+          "depth_holes"
+        ],
+        "status": "PASS",
+        "terminal": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/car_extension_depth_holes_seed004.json",
+          "sha256": "7865ca292f4bb0ab8de4581be3535f3270e0fdcdf4ce29a7ccdbb79001449249"
+        }
+      },
+      {
+        "cell": [
+          "extension",
+          "car",
+          "depth_noise"
+        ],
+        "status": "PASS",
+        "terminal": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/car_extension_depth_noise_seed004.json",
+          "sha256": "ac3f4e7113a2ca686edfc02003531e2dfd910441b20f44f5ab2420b11406588a"
+        }
+      },
+      {
+        "cell": [
+          "extension",
+          "car",
+          "dropout"
+        ],
+        "status": "FAIL",
+        "terminal": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/car_extension_dropout_seed004.json",
+          "sha256": "f80a774d1af43cbb6e8525662bb13f3c2853c9c19d68ac57ccd82435b9015f17"
+        }
+      },
+      {
+        "cell": [
+          "extension",
+          "car",
+          "far_distance"
+        ],
+        "status": "PASS",
+        "terminal": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/car_extension_far_distance_seed004.json",
+          "sha256": "f03c983121b8913e0d3be31ad64fef6ca694df964a2214adbc6eac48f1ed2047"
+        }
+      },
+      {
+        "cell": [
+          "extension",
+          "car",
+          "latency"
+        ],
+        "status": "PASS",
+        "terminal": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/car_extension_latency_seed004.json",
+          "sha256": "b2f1ec888c217cd1ac8e0dcfc56a19e4746dc5096e7902cf8c6d04c732330ab1"
+        }
+      },
+      {
+        "cell": [
+          "extension",
+          "car",
+          "speed_changes_position"
+        ],
+        "status": "PASS",
+        "terminal": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/car_extension_speed_changes_position_seed004.json",
+          "sha256": "057534448a7e4da809e8f84dc09705f1c3d016f5ace6e0cb10b06ab4b8c4ebab"
+        }
+      },
+      {
+        "cell": [
+          "extension",
+          "car",
+          "speed_changes_velocity"
+        ],
+        "status": "PASS",
+        "terminal": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/car_extension_speed_changes_velocity_seed004.json",
+          "sha256": "91860f3fddddc85c25cf478ce2707dcb77557b9498ddb29b81b0ad38b48a6f2c"
+        }
+      },
+      {
+        "cell": [
+          "extension",
+          "person",
+          "combined"
+        ],
+        "status": "FAIL",
+        "terminal": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_combined_seed004.json",
+          "sha256": "f57d22dff4989c8bbb45b56ba2151d66e52b5689984cd0a0104f531d4749b655"
+        }
+      },
+      {
+        "cell": [
+          "extension",
+          "person",
+          "depth_holes"
+        ],
+        "status": "PASS",
+        "terminal": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_depth_holes_seed004.json",
+          "sha256": "12687276e9fa2defd43dcc336619d1b4c6715dbe325d3be04173cf8211239f5d"
+        }
+      },
+      {
+        "cell": [
+          "extension",
+          "person",
+          "depth_noise"
+        ],
+        "status": "PASS",
+        "terminal": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_depth_noise_seed004.json",
+          "sha256": "571c1c9638e1e2705bc4bbd0cc75afcea8d038e7014c03ea155732a57faa596d"
+        }
+      },
+      {
+        "cell": [
+          "extension",
+          "person",
+          "dropout"
+        ],
+        "status": "INCOMPLETE_EVIDENCE",
+        "terminal": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_dropout_seed004.json",
+          "sha256": "c09f95ee3c4d5f14847bcbea82e8795b11cab6f5184fe735abac4c22decaeba8"
+        }
+      },
+      {
+        "cell": [
+          "extension",
+          "person",
+          "far_distance"
+        ],
+        "status": "PASS",
+        "terminal": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_far_distance_seed004.json",
+          "sha256": "ad759ecb86fadaffd12fef6bd59a77baa967669b1ecb2084f9c155576347491f"
+        }
+      },
+      {
+        "cell": [
+          "extension",
+          "person",
+          "latency"
+        ],
+        "status": "PASS",
+        "terminal": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_latency_seed004.json",
+          "sha256": "7357baeaa7cc1bfe2a08526cc53fa113654dd171c0b99a351870c77f77fc14f9"
+        }
+      },
+      {
+        "cell": [
+          "extension",
+          "person",
+          "speed_changes_position"
+        ],
+        "status": "FAIL",
+        "terminal": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_speed_changes_position_seed004.json",
+          "sha256": "d64c7f7e401ccb8cf62cc393e5c45dfbdb7c25e38d07a246f69966d0d6aa8891"
+        }
+      },
+      {
+        "cell": [
+          "extension",
+          "person",
+          "speed_changes_velocity"
+        ],
+        "status": "PASS",
+        "terminal": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_speed_changes_velocity_seed004.json",
+          "sha256": "a482af35d8ad5dc4fb33480552becdf701ea94af28b22b26431ca6db7ff05681"
+        }
+      }
+    ]
+  },
+  "capacity_preview": {
+    "scope": "CURRENT_SNAPSHOT_FULL280_ASSUMPTION_BUDGET_NOT_ADMISSION",
+    "volumes": {
+      "drive_D": {
+        "mount": "/mnt/d",
+        "windows_volume_id": "\\\\?\\Volume{68f0ab91-90ab-4baa-ad88-9b7899195944}\\",
+        "free_bytes": 98910515200,
+        "full_280_persistent_bytes": 220093469690,
+        "remaining_build_delivery_bytes": 23622320128,
+        "temporary_reserve_bytes": 19282382761,
+        "required_bytes": 262998172579,
+        "remaining_after_budget_bytes": -164087657379,
+        "fits_declared_physical_budget": false
+      }
+    },
+    "ext4_logical_free_bytes": 979160379392,
+    "fits_declared_logical_budget": true,
+    "scheduled_slots": 280
+  },
+  "limits": "Growth factors and the three-raw/two-compressed formula are explicit assumptions, not measured future maxima. The guard must revalidate final plans/gates/evidence and current host capacity before every slot. No bag/VHD contents read or hashed; no trial or registration changed."
+}

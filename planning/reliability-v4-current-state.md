@@ -1,5 +1,13 @@
 # 当前工作交接（持续开发，非验收报告）
 
+**最新状态：显式after28续接已真实执行完毕，session61617于20:16:32回收，WSL exit2、临时防休眠线程37816同线程释放。** 原6个续步（新idle及剩余5工作流）全部exit0；唯一最终错误为原正预算容量门拒绝。actual28、person/car exports和R0齐全；完整预算需要244.936135 GiB，D盘当时可用92.117596 GiB，缺152.818540 GiB，ext4逻辑空间通过、宿主物理空间失败。原测量与两次短计时的失败保留。计时fixed06已源审与23项回归通过，第三次原生短回放待执行。正式仍0/280；当前正复核用户可判断的清理候选，不删除其他文件。详见[预算原件诊断](../results/diagnostics/humble54_after28_budget_review01/review01.json)和[执行记录](reliability-v4-probe02-owner07-execution-20261103.md)。下方均为历史快照。
+
+**2026-11-03 19:48:54（北京时间）检查点：核心开发 12/12、安全 03 为 4/4 PASS；扩展 probe02 已完成 16/16 原终态（11 PASS、4 FAIL、1 INCOMPLETE_EVIDENCE），正式仍 0/280。** 最后汽车 far_distance 原 PASS，距离/高度 RMSE 为 0.659361/0.154198 m，状态/真值覆盖率为 0.914894/1.0，原六项导航检查均通过。native collector07 于 19:42:07 COLLECTION_FINISHED/0；原 Windows monitor、launcher 已实际 exit 0，19:42:09 释放临时防休眠。查看[闭合进度](../results/monitor_humble54_probe02_owner07/index.html)、[开发成果快照](../results/diagnostics/humble54_development_view01/index.html)和[本轮原件及终态 SHA](reliability-v4-probe02-owner07-execution-20261103.md)。旧 owner06/observer07/trigger09 的 exit2、扩展原 FAIL/null/INCOMPLETE 全部保留，旧 runner08 不调用。
+
+after07 直接测量的七个真实输入已登记并完成独立复核，root 约 19:47 实际启动进程并持有 session89816。receipt 的真实开始时间为 19:48:45.275129；19:48:54 state 为 STARTED_DIRECT_MEASUREMENT，仅 native_idle 已 exit 0，尚无 terminal。后续状态必须读取 `D:\WSL\UAVHumble22-validation\humble54_probe02_closed_measurement_after07_01` 的实际 receipt；不得把启动计为测量/定标/预算通过。完整预算尚无结论，不能预期未经实测的压缩收益填补容量缺口；实际负结果应保留并按[容量刷新设计卡](reliability-v4-capacity-refresh-design-20261103.md)另行处理，该卡本身未实施。
+
+final55 cold、完整28格导航重评、sensor4 原API及真实输入审查、readiness、正式280槽、四法比较与最终新交付仍未完成。已源审的压缩候选、计时台架、nav28/sensor4 producer 和两类回放清单仍只是各自准备成果，不计入真实实验。以下19:23及更早块为历史记录，不再表示 collector07 运行中。
+
 **2026-11-03 19:23（北京时间）检查点：核心开发 12/12、安全 03 的 4/4 已通过；扩展 probe02 为 16 START、15 原终态（10 PASS、4 FAIL、1 INCOMPLETE_EVIDENCE），最后汽车 far_distance 运行中；正式 0/280。** 当前真实启动链为 collector07、原 Windows monitor 和 launcher，root 仍持有工具 session18637。看 [owner07 实时页](../results/monitor_humble54_probe02_owner07/index.html)和[本轮实际执行记录](reliability-v4-probe02-owner07-execution-20261103.md)。旧 owner06/observer07/trigger09 都已 exit2，旧 runner08 从未启动，不能再调用旧 chain。汽车变速速度/位置均原始 PASS，距离/高度 RMSE 分别为 0.642943/0.160741 m、0.617890/0.169138 m；汽车 combined 原 FAIL 与先前 FAIL/INCOMPLETE 保留。
 
 原 collector 真退出后，登记七个实际绑定并运行 [after07 直接测量入口](../tools/experiment_orchestration/humble54_closed_measurement01/README.md)，再按 [FINAL55_NEXT 顶部](../tools/experiment_orchestration/humble54_closed_followon_runner08/FINAL55_NEXT.md)推进。完整预算尚未执行，D 约剩 93.7 GiB，原17条件的部分预算已超过该容量，不能预期整理 VHD 或未经实测的压缩解决缺口。无损22候选、独立软件计时台架、nav28/sensor4 producer 及两类完整回放清单已源审，仅是准备成果，均未进行对应原生执行。真实完整容量、final55 cold、readiness、正式280、四法比较及最终交付仍未完成。下方旧 GitHub 连接失败等说明均为历史；本轮已多次真实推送，最近确认远端 `b8fbe59`。

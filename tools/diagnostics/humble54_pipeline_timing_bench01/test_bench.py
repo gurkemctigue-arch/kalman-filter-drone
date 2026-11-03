@@ -86,6 +86,70 @@ def reduced(events,**kwargs):
     return reduce_events(events,probe_path=PROBE,begin_ns=1000,end_ns=9000,**kwargs)
 
 
+class AtomicWriteTests(unittest.TestCase):
+    def test_concurrent_reader_never_observes_partial_json_during_slow_serialization(self):
+        entered,release,done,stop,scanned,complete_seen=(threading.Event() for _ in range(6))
+        writer_errors,read_errors,reads=[],[],[]
+        class BlockingList(list):
+            def __iter__(self):
+                entered.set()
+                if not release.wait(5.):raise TimeoutError('serialization gate not released')
+                yield from super().__iter__()
+        payload={'state':'ready','payload':BlockingList(range(64))}
+        with tempfile.TemporaryDirectory() as directory:
+            path=Path(directory)/'ready.json'
+            def writer():
+                try:bench.write_new(path,payload)
+                except BaseException as error:writer_errors.append(error)
+                finally:done.set()
+            def reader():
+                rounds=0
+                while not stop.is_set():
+                    if path.exists():
+                        try:
+                            value=json.loads(path.read_bytes());reads.append(value)
+                            if value=={'state':'ready','payload':list(range(64))}:complete_seen.set()
+                        except Exception as error:read_errors.append(error)
+                    rounds+=1
+                    if rounds>=20:scanned.set()
+                    stop.wait(.001)
+            writer_thread=threading.Thread(target=writer);reader_thread=threading.Thread(target=reader)
+            writer_thread.start()
+            try:
+                self.assertTrue(entered.wait(2.))
+                reader_thread.start()
+                self.assertTrue(scanned.wait(2.))
+                release.set();writer_thread.join(5.)
+                self.assertFalse(writer_thread.is_alive())
+                self.assertTrue(complete_seen.wait(2.))
+            finally:
+                release.set();stop.set();writer_thread.join(5.)
+                if reader_thread.ident is not None:reader_thread.join(5.)
+            self.assertEqual(writer_errors,[])
+            self.assertEqual(read_errors,[])
+            self.assertTrue(reads)
+            self.assertEqual(list(Path(directory).iterdir()),[path])
+
+    def test_competing_writers_publish_one_complete_value_without_overwrite(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path=Path(directory)/'ready.json';gate=threading.Barrier(3)
+            successes,errors=[],[]
+            def writer(number):
+                gate.wait(timeout=3.)
+                try:bench.write_new(path,{'writer':number,'payload':'x'*100_000});successes.append(number)
+                except BaseException as error:errors.append(error)
+            threads=[threading.Thread(target=writer,args=(number,)) for number in (1,2)]
+            for thread in threads:thread.start()
+            gate.wait(timeout=3.)
+            for thread in threads:thread.join(5.);self.assertFalse(thread.is_alive())
+            self.assertEqual(len(successes),1);self.assertEqual(len(errors),1)
+            self.assertIsInstance(errors[0],FileExistsError)
+            before=path.read_bytes();self.assertEqual(json.loads(before)['writer'],successes[0])
+            with self.assertRaises(FileExistsError):bench.write_new(path,{'overwrite':True})
+            self.assertEqual(path.read_bytes(),before)
+            self.assertEqual(list(Path(directory).iterdir()),[path])
+
+
 class TypedTests(unittest.TestCase):
     def test_exact_width_scalar_buffers_preserve_numpy_style_fields_and_nan_bits(self):
         double=ctypes.c_double.from_buffer_copy(bytes.fromhex('010000000000f87f') if sys.byteorder=='little' else bytes.fromhex('7ff8000000000001'))
@@ -264,6 +328,38 @@ class ReducerTests(unittest.TestCase):
 
 
 class CliTests(unittest.TestCase):
+    def test_replay_real_dynamic_import_supports_future_annotated_dataclass(self):
+        cleanup=[]
+        class Node:
+            def __init__(self,*args):pass
+            def destroy_node(self):cleanup.append('node_destroyed')
+        qos=SimpleNamespace(QoSProfile=object,ReliabilityPolicy=object,DurabilityPolicy=object)
+        rclpy=SimpleNamespace(init=lambda **kw:None,ok=lambda:True,shutdown=lambda:cleanup.append('context_shutdown'))
+        modules={'rclpy':rclpy,'rclpy.node':SimpleNamespace(Node=Node),'rclpy.qos':qos,'rosbag2_py':SimpleNamespace(),
+                 'rosidl_runtime_py':SimpleNamespace(),'rosidl_runtime_py.utilities':SimpleNamespace(get_message=lambda x:None)}
+        fixture=('from __future__ import annotations\n'
+                 'from dataclasses import dataclass\n'
+                 'from typing import ClassVar\n'
+                 '@dataclass\n'
+                 'class ReaderMetadata:\n'
+                 '    kind: str = "fixture"\n'
+                 '    origin: ClassVar[str] = "dynamic"\n'
+                 'def open_bag_reader(*args):\n'
+                 '    raise RuntimeError("fixture reached reader after dataclass import")\n')
+        with tempfile.TemporaryDirectory() as directory,patch.dict(sys.modules,modules),patch.object(bench,'start_event'), \
+             patch('observer.Trace',side_effect=lambda *args:Trace()):
+            root=Path(directory);(root/'scripts').mkdir()
+            (root/'scripts/evaluate_stage1_flight.py').write_text(fixture,encoding='utf-8')
+            sys.modules.pop('bench_original_bag_reader',None)
+            config={'source_root':directory,'scratch_root':directory,'bag_uri':directory,'storage_id':'sqlite3'}
+            with self.assertRaisesRegex(RuntimeError,'reader after dataclass import'):bench.replay_worker(config,root)
+            loaded=sys.modules['bench_original_bag_reader']
+            self.assertEqual(loaded.ReaderMetadata.__module__,'bench_original_bag_reader')
+            self.assertEqual(loaded.ReaderMetadata().kind,'fixture')
+            self.assertEqual(loaded.ReaderMetadata.origin,'dynamic')
+            self.assertEqual([p.name for p in root.iterdir()],['scripts'])
+        self.assertEqual(cleanup,['node_destroyed','context_shutdown'])
+
     def test_role_hook_install_failure_closes_observer_and_trace(self):
         cleanup=[]
         class RecordingTrace(Trace):
@@ -320,7 +416,7 @@ class CliTests(unittest.TestCase):
         rclpy=SimpleNamespace(init=lambda **kw:None,ok=lambda:True,shutdown=lambda:cleanup.append('context_shutdown'))
         modules={'rclpy':rclpy,'rclpy.node':SimpleNamespace(Node=Node),'rclpy.qos':qos,'rosbag2_py':SimpleNamespace(),
                  'rosidl_runtime_py':SimpleNamespace(),'rosidl_runtime_py.utilities':SimpleNamespace(get_message=lambda x:None)}
-        spec=SimpleNamespace(loader=Loader())
+        spec=SimpleNamespace(name='bench_original_bag_reader',loader=Loader())
         with tempfile.TemporaryDirectory() as directory,patch.dict(sys.modules,modules),patch.object(bench,'start_event'), \
              patch('observer.Trace',side_effect=lambda *args:Trace()), \
              patch.object(bench.importlib.util,'spec_from_file_location',return_value=spec), \

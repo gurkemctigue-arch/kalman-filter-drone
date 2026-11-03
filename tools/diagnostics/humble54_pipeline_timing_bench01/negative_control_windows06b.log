@@ -1,0 +1,33 @@
+test_replay_real_dynamic_import_supports_future_annotated_dataclass (test_bench.CliTests.test_replay_real_dynamic_import_supports_future_annotated_dataclass) ... ERROR
+
+======================================================================
+ERROR: test_replay_real_dynamic_import_supports_future_annotated_dataclass (test_bench.CliTests.test_replay_real_dynamic_import_supports_future_annotated_dataclass)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\基于yolo和卡尔曼滤波\tools\diagnostics\humble54_pipeline_timing_bench01\test_bench.py", line 355, in test_replay_real_dynamic_import_supports_future_annotated_dataclass
+    with self.assertRaisesRegex(RuntimeError,'reader after dataclass import'):bench.replay_worker(config,root)
+                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\基于yolo和卡尔曼滤波\tools\diagnostics\humble54_pipeline_timing_bench01\archive_fixed05\bench.py", line 257, in replay_worker
+    helper=importlib.util.module_from_spec(spec);spec.loader.exec_module(helper)
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "D:\微信小~1\INSTAL~1\temp\tmppqa54781\scripts\evaluate_stage1_flight.py", line 4, in <module>
+  File "C:\Program Files\Python312\Lib\dataclasses.py", line 1268, in dataclass
+    return wrap(cls)
+           ^^^^^^^^^
+  File "C:\Program Files\Python312\Lib\dataclasses.py", line 1258, in wrap
+    return _process_class(cls, init, repr, eq, order, unsafe_hash,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python312\Lib\dataclasses.py", line 983, in _process_class
+    and _is_type(type, cls, dataclasses, dataclasses.KW_ONLY,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python312\Lib\dataclasses.py", line 749, in _is_type
+    ns = sys.modules.get(cls.__module__).__dict__
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute '__dict__'. Did you mean: '__dir__'?
+
+----------------------------------------------------------------------
+Ran 1 test in 0.040s
+
+FAILED (errors=1)

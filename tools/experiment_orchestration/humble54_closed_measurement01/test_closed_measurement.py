@@ -23,13 +23,13 @@ class PreparationContracts(unittest.TestCase):
         cls.old = s.fixed_module(s.OLD08, s.OLD08_SHA)
 
     def test_disabled_entry_refuses_before_any_read_or_subprocess(self):
-        with patch.object(s, "fixed_module", side_effect=AssertionError("No input read")), redirect_stdout(io.StringIO()):
+        with patch.object(s, "PRODUCTION_ENABLED", False), patch.object(s, "REGISTERED_INPUTS", {}), \
+             patch.object(s, "fixed_module", side_effect=AssertionError("No input read")), redirect_stdout(io.StringIO()):
             self.assertEqual(s.main([]), 0)
+            self.assertEqual(s.main(["--continue-after28"]), 0)
             self.assertEqual(s.main(["--execute"]), 2)
             with self.assertRaisesRegex(ValueError, "Production disabled"):
                 s.run()
-        self.assertFalse(s.PRODUCTION_ENABLED)
-        self.assertEqual(s.REGISTERED_INPUTS, {})
 
     def test_reused_original_functions_keep_exact_six_steps_and_recordings(self):
         p = s.new_paths(self.old)

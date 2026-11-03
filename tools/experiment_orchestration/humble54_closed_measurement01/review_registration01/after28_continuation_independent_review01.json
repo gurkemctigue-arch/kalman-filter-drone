@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "reviewed_utc": "2026-11-03T12:09:48.589478+00:00",
+  "reviewer": "/root/continuation06_preparation",
+  "status": "EXPLICIT_AFTER28_CONTINUATION_NO_BLOCKING_ISSUE",
+  "reviewed_source": {
+    "path": "tools\\experiment_orchestration\\humble54_closed_measurement01\\run_closed_measurement.py",
+    "sha256": "f32bd4bc97e58a15417fb9757eceb7e7cf2de2cb4e16ac5df54d200a40bae3b0"
+  },
+  "executed_archive": {
+    "path": "tools\\experiment_orchestration\\humble54_closed_measurement01\\continue_after28_01\\run_closed_measurement.executed_47fcbd.py",
+    "sha256": "47fcbd727debbdb418bb9fbb1cc6a5abeb9806855f6331709c8590c688232433"
+  },
+  "preserved_original_function_bodies": [
+    "closure_audit",
+    "fixed_module",
+    "new_paths",
+    "require",
+    "run",
+    "verify_events"
+  ],
+  "added_function_bodies": [
+    "after28_inputs",
+    "run_after28",
+    "validate_after28_terminal",
+    "verify_after28_products"
+  ],
+  "checks": {
+    "original_seven_step_zero_exits_and_unique_Refused_reason_required": true,
+    "old_self_source_binding_only_redirected_to_exact_executed_archive": true,
+    "original_terminal_closure_and_summary_fixed_sha_required": true,
+    "all_28_receipts_and_690_original_small_bindings_revalidated": true,
+    "two_explicit_metadata_files_real_sha_verified": true,
+    "reader_and_bound_use_exact_path_size_sha_below_8MiB_only": true,
+    "unchanged_uses_same_exact_reader_and_original_sha_recheck": true,
+    "all_other_original_2MiB_limits_retained": true,
+    "original_machine_lock_and_fresh_idle_required": true,
+    "only_five_remaining_original_workflow_commands_invoked": true,
+    "original_failed_execution_window_retained_separately": true,
+    "new_receipt_and_inventory_original_receipt_not_written": true,
+    "original_negative_or_unknown_budget_still_fails_with_evidence_retained": true,
+    "no_native_or_wsl_started_by_reviewer": true
+  },
+  "independent_validation": {
+    "command": "python -m unittest discover -s tools/experiment_orchestration/humble54_closed_measurement01 -p test*.py -v",
+    "passed": 15,
+    "failed": 0,
+    "scope": "Eight new continuation and seven existing Windows synthetic fixtures; no native/bag payload"
+  },
+  "supporting_receipts": [
+    {
+      "path": "tools\\experiment_orchestration\\humble54_closed_measurement01\\review_registration01\\actual28_two_identity_metadata_hash01.json",
+      "sha256": "d0bcb2dc4e450405435d4b404f63e430784d028e277fc0a5ac220305a89e8e1a"
+    },
+    {
+      "path": "tools\\experiment_orchestration\\humble54_closed_measurement01\\review_registration01\\actual28_size_stop_diagnosis01.json",
+      "sha256": "0807c2f2c82db73a1efd3e048c054035451034018ffa974e46361e72d49e54a8"
+    }
+  ],
+  "conclusion": "Safe to execute the reviewed explicit continuation under the existing serial native policy; review does not establish real export/calibration/budget success or formal admission."
+}

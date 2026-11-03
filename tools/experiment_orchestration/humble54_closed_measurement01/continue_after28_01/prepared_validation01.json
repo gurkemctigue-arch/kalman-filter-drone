@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "kind": "WINDOWS_SYNTHETIC_AFTER28_CONTINUATION_PREPARATION_NOT_NATIVE_EXECUTION",
+  "created_utc": "2026-11-03T12:09:41.667402+00:00",
+  "source_sha256": "f32bd4bc97e58a15417fb9757eceb7e7cf2de2cb4e16ac5df54d200a40bae3b0",
+  "executed_source_archive_sha256": "47fcbd727debbdb418bb9fbb1cc6a5abeb9806855f6331709c8590c688232433",
+  "preserved_original_terminal_sha256": "fadaead9a3ba1b4f2d45c7df4ab05fd055fce33c24e8900b24d78112ab704b5c",
+  "status": "15_SYNTHETIC_TESTS_PASS_PENDING_INDEPENDENT_REVIEW",
+  "tests": {
+    "command": [
+      "C:\\Program Files\\Python312\\python.exe",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tools/experiment_orchestration/humble54_closed_measurement01",
+      "-p",
+      "test_*.py",
+      "-v"
+    ],
+    "started_utc": "2026-11-03T12:09:37.730991+00:00",
+    "finished_utc": "2026-11-03T12:09:41.667402+00:00",
+    "returncode": 0,
+    "tests_run": 15,
+    "log_sha256": "ebf681320fedf39efd1fa7c67a8987be993f9ed3b9374b56394fab171f068d44"
+  },
+  "files": {
+    "run_closed_measurement.py": "f32bd4bc97e58a15417fb9757eceb7e7cf2de2cb4e16ac5df54d200a40bae3b0",
+    "test_closed_measurement.py": "fec62dfffb926d3f4e1743cb5d702de9fa29bf42e2d41c2f295c036c09f616d2",
+    "test_after28_continuation.py": "4e665222636b1545d410674b6c4c64701e189ec68bc9cc53264441cffdbc20a6",
+    "README.md": "b8d59ee79857806a238df9f7b5bc0ead346818cf7271e83b8b3788d4238a7049"
+  },
+  "large_json_exception": {
+    "exact_original_paths": 2,
+    "exact_original_sizes_bytes": [
+      3066769,
+      7660044
+    ],
+    "ceiling_bytes": 8388608,
+    "all_other_bytes_limit": 2097152,
+    "reader_bound_and_unchanged_gates_preserved": true
+  },
+  "native_execution_started": false,
+  "wsl_or_real_child_started": false,
+  "original_receipt_written": false,
+  "stage_adapter_implemented": false,
+  "owner_trigger_retry_flight_or_formal_admission_added": false,
+  "git_commit_created": false
+}

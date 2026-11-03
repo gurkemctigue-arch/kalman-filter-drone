@@ -1,0 +1,20 @@
+test_concurrent_reader_never_observes_partial_json_during_slow_serialization (test_bench.AtomicWriteTests.test_concurrent_reader_never_observes_partial_json_during_slow_serialization) ... FAIL
+
+======================================================================
+FAIL: test_concurrent_reader_never_observes_partial_json_during_slow_serialization (test_bench.AtomicWriteTests.test_concurrent_reader_never_observes_partial_json_during_slow_serialization)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\基于yolo和卡尔曼滤波\tools\diagnostics\humble54_pipeline_timing_bench01\test_bench.py", line 129, in test_concurrent_reader_never_observes_partial_json_during_slow_serialization
+    self.assertEqual(read_errors,[])
+AssertionError: Lists differ: [JSONDecodeError('Expecting value: line 1 [1193 chars]0)')] != []
+
+First list contains 20 additional elements.
+First extra element 0:
+JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+
+Diff is 1305 characters long. Set self.maxDiff to None to see it.
+
+----------------------------------------------------------------------
+Ran 1 test in 0.313s
+
+FAILED (failures=1)

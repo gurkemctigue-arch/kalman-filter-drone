@@ -1,0 +1,26 @@
+test_replay_real_dynamic_import_supports_future_annotated_dataclass (test_bench.CliTests.test_replay_real_dynamic_import_supports_future_annotated_dataclass) ... ERROR
+
+======================================================================
+ERROR: test_replay_real_dynamic_import_supports_future_annotated_dataclass (test_bench.CliTests.test_replay_real_dynamic_import_supports_future_annotated_dataclass)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\基于yolo和卡尔曼滤波\tools\diagnostics\humble54_pipeline_timing_bench01\test_bench.py", line 355, in test_replay_real_dynamic_import_supports_future_annotated_dataclass
+    with self.assertRaisesRegex(RuntimeError,'reader after dataclass import'):bench.replay_worker(config,root)
+                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\基于yolo和卡尔曼滤波\tools\diagnostics\humble54_pipeline_timing_bench01\archive_fixed05\bench.py", line 250, in replay_worker
+    start_event(trace)
+  File "D:\基于yolo和卡尔曼滤波\tools\diagnostics\humble54_pipeline_timing_bench01\archive_fixed05\bench.py", line 168, in start_event
+    trace.emit("process_start", boot_id=Path("/proc/sys/kernel/random/boot_id").read_text().strip(),
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python312\Lib\pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\Python312\Lib\pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '\\proc\\sys\\kernel\\random\\boot_id'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.011s
+
+FAILED (errors=1)

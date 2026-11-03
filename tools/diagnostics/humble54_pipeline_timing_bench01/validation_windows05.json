@@ -1,0 +1,51 @@
+{
+  "created_utc": "2026-11-03T12:01:45.670642+00:00",
+  "status": "PASS_WINDOWS_FILESYSTEM_AND_FAKE_ONLY_NOT_NATIVE",
+  "tests": 22,
+  "test_command": [
+    "C:\\Program Files\\Python312\\python.exe",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tools\\diagnostics\\humble54_pipeline_timing_bench01",
+    "-p",
+    "test_bench.py",
+    "-v"
+  ],
+  "test_returncode": 0,
+  "test_wall_s": 1.5,
+  "test_log_sha256": "e4ad0bf5cc38dad272a899b2995a1bddbadf3acd9c3aa2b8d5f7efda5b8cb0e6",
+  "negative_control": {
+    "source": "archive_fixed04/bench.py",
+    "test": "concurrent_reader_never_observes_partial_json_during_slow_serialization",
+    "tests": 1,
+    "expected_failures": 1,
+    "errors": 0,
+    "result": "OLD_IMPLEMENTATION_EXPOSES_PARTIAL_JSON_AS_EXPECTED",
+    "log_sha256": "40c1d412d9051781d3ee87844e2c197c80540a7920f706a25d0748e51bd72880"
+  },
+  "fixed04_archive_verified": true,
+  "short01_manifest_unchanged": true,
+  "source_map_sha256": "ae2a480453c6f69b8e544f6e4606653d48d294913bbdc155848b7c78a5af97f7",
+  "sources": {
+    "bench.py": "7c83fe783000cad66cae89785543668890f34ed5077706774b13d9571a3f7d4f",
+    "observer.py": "8b447fd441790add9751571406ea50e7499b68de80b248e57d470de89a0b7417",
+    "reducer.py": "628271811d1454b1521586cbe332d4d3636f24434ce783fb8f437a51edcb1351",
+    "typed_message.py": "cf602133ba3f5aab5053e5dc79f7d57465eaf02b55dc504fac48c212ecae7fb3",
+    "test_bench.py": "ed82262c6e8807545949817bfd4c4a9d6b2c595406810c1fa418edaf15e51fa3",
+    "README.md": "41de44bcc62e2b9365e27062477f31aa43d20a1399e418d634826cfef4678ca6",
+    "person004_short01.manifest.json": "50eb91cfc5ad324715f54892316396bbe38a71a9ecc133fbab592bcb70f35ddf",
+    "CHANGE_FIXED05.md": "56ad385d57ef6ab13825df5195868ee9c1216d9c6445872264be87c284848b97"
+  },
+  "native_started": false,
+  "short01_output_modified": false,
+  "bag_payloads_read": false,
+  "weights_read": false,
+  "algorithm_sources_modified": false,
+  "timeout_modified": false,
+  "cleanup_gates_modified": false,
+  "physical_e2e": "NOT_OBSERVED",
+  "historical_strict_changed": false
+}

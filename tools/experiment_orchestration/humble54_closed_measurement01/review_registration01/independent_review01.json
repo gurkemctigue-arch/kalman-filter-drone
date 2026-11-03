@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "reviewed_utc": "2026-11-03T11:47:01.223303+00:00",
+  "reviewer": "/root/continuation06_preparation",
+  "status": "LITERAL_CONFIGURATION_AND_SEVEN_ORIGINAL_BINDINGS_VERIFIED",
+  "registration_sha256": "0e2cb4be2f9661bc9d049b83dbc96d1f0cccfc1209670e272b2ab453f5167edb",
+  "before_sha256": "f5ce329b6f2da02bf8e7259bed03832fbd5b4ec5a504fea5244eeb82fa477773",
+  "after_sha256": "47fcbd727debbdb418bb9fbb1cc6a5abeb9806855f6331709c8590c688232433",
+  "changes": [
+    "PRODUCTION_ENABLED False -> True",
+    "REGISTERED_INPUTS {} -> seven actual original path/SHA bindings"
+  ],
+  "all_other_source_text_identical": true,
+  "pre_source_equals_reviewed_prepared_snapshot": true,
+  "steps_locks_thresholds_changed": false,
+  "artifacts": [
+    {
+      "name": "admission",
+      "native_path": "/root/uav_tracking_collection54_probe02_owner07.admission.json",
+      "host_original": "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_collection54_probe02_owner07.admission.json",
+      "bytes": 1699,
+      "sha256": "3a6d5b731bb28948301a513292a08bb94fafc5a0d8f1540a0270493f774c6208",
+      "matches_registered": true
+    },
+    {
+      "name": "collector",
+      "native_path": "/mnt/d/基于yolo和卡尔曼滤波/tools/experiment_orchestration/humble54_pending_collector07/collect_humble54_pending07.py",
+      "host_original": "D:\\基于yolo和卡尔曼滤波\\tools\\experiment_orchestration\\humble54_pending_collector07\\collect_humble54_pending07.py",
+      "bytes": 57453,
+      "sha256": "7d2523325bca8ef520fe0e5a7bd78da355943099e3f45efee2c3ad4e870cdd9b",
+      "matches_registered": true
+    },
+    {
+      "name": "events",
+      "native_path": "/root/uav_tracking_collection54_probe02_owner07/events.jsonl",
+      "host_original": "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_collection54_probe02_owner07\\events.jsonl",
+      "bytes": 27966,
+      "sha256": "d1bf63bf661e0358f6e94881e13da7178c9fb78d052438a3cbe0a9b8a9a460d4",
+      "matches_registered": true
+    },
+    {
+      "name": "launcher_terminal",
+      "native_path": "/mnt/d/基于yolo和卡尔曼滤波/results/diagnostics/humble54_pending_collector07_launcher01/terminal.json",
+      "host_original": "D:\\基于yolo和卡尔曼滤波\\results\\diagnostics\\humble54_pending_collector07_launcher01\\terminal.json",
+      "bytes": 7162,
+      "sha256": "8f5056620e21b60860d9d8785b79eab0c74a243071f08d039711f166b5d771e9",
+      "matches_registered": true
+    },
+    {
+      "name": "monitor_state",
+      "native_path": "/mnt/d/基于yolo和卡尔曼滤波/results/monitor_humble54_probe02_owner07/monitor_state.json",
+      "host_original": "D:\\基于yolo和卡尔曼滤波\\results\\monitor_humble54_probe02_owner07\\monitor_state.json",
+      "bytes": 1778,
+      "sha256": "1bb851051d292495cc9e951035e105fe94cfe555a7d12b86a2a0ec541d5055cf",
+      "matches_registered": true
+    },
+    {
+      "name": "profile",
+      "native_path": "/mnt/d/基于yolo和卡尔曼滤波/tools/experiment_orchestration/humble54_pending_collector07/registered_profile07.json",
+      "host_original": "D:\\基于yolo和卡尔曼滤波\\tools\\experiment_orchestration\\humble54_pending_collector07\\registered_profile07.json",
+      "bytes": 56281,
+      "sha256": "c36f17363874173ee7fed08d482a68f518fd44cffd581d757de09ccd649ded55",
+      "matches_registered": true
+    },
+    {
+      "name": "terminal",
+      "native_path": "/root/uav_tracking_collection54_probe02_owner07/terminal.json",
+      "host_original": "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_collection54_probe02_owner07\\terminal.json",
+      "bytes": 41041,
+      "sha256": "34a60e0bc189c0b1845e0d4a0dc85388e968a53a666e2cfdeedb46eb48e03432",
+      "matches_registered": true
+    }
+  ],
+  "total_original_bytes_read": 193380,
+  "conclusion": "No blocking issue in this literal registration difference. Existing execution semantics remain unchanged; runner revalidates actual inputs at execution.",
+  "boundaries": [
+    "No runner import, native/WSL command, bag/model payload read or simulation launch",
+    "Registration review does not establish measurement success, readiness or formal admission"
+  ]
+}

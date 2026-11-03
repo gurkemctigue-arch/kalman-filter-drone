@@ -1,5 +1,11 @@
 # 查看当前实验
 
+**最新执行结果：28/28 文件测量、两类导出、校准候选和完整280次预算均已实际产生；容量门因D盘缺152.82 GiB而拒绝进入后续正式流程，正式仍0/280。** 续接6个实际步骤均exit0，整体保留容量拒绝的exit2，20:16:32前台真实结束；没有在后台继续飞行。独立计时工具已完成两项修复，第三次短回放尚未执行，有效计时样本仍为0。详见[实际预算](../results/diagnostics/humble54_after28_budget_review01/review01.json)和[本轮执行记录](../planning/reliability-v4-probe02-owner07-execution-20261103.md)。下方按各记录时间阅读。
+
+**2026-11-03 19:48:54（北京时间）检查点：扩展 probe02 已有全部 16/16 原终态，11 PASS、4 FAIL、1 INCOMPLETE_EVIDENCE；collector07、原 monitor 和 launcher 均真实 exit 0。** 最后汽车远距离场于 19:41:32 原始 PASS，距离/高度 RMSE 为 0.659361/0.154198 m，六项导航检查全 true。核心开发 12/12、安全 4/4 PASS，正式仍 0/280，项目尚未全部验收。打开[闭合进度页](../results/monitor_humble54_probe02_owner07/index.html)、[28 槽开发成果快照](../results/diagnostics/humble54_development_view01/index.html)和[本轮原件记录](../planning/reliability-v4-probe02-owner07-execution-20261103.md)。
+
+after07 测量进程已实际启动；本次读取的 started/state 显示 19:48:45 STARTED_DIRECT_MEASUREMENT、native_idle exit 0，19:48:54 尚无最终 terminal。后续实际步骤和退出状态以本机 `D:\WSL\UAVHumble22-validation\humble54_probe02_closed_measurement_after07_01` 的原 receipt 为准；进程启动不等于 actual28、exports、R0 或 full280 正预算完成。final55、nav28/sensor4 与正式研究仍须独立完成，原失败和未知不改。下方均为各自时间的历史快照。
+
 **2026-11-03 19:23（北京时间）检查点：扩展 probe02 完成 15/16，10 PASS、4 FAIL、1 INCOMPLETE_EVIDENCE，最后汽车远距离场景运行中。** 现在查看本机 [collector07 实时页](../results/monitor_humble54_probe02_owner07/index.html)，按实际心跳、进程身份及原终态判断；[开发成果页](../results/diagnostics/humble54_development_view01/index.html)提供已完成场景的原录像、图片和报告。核心开发 12/12、安全 4/4 已通过，正式仍 0/280。汽车变速速度/位置模式均原始 PASS，原件见[本轮记录](../planning/reliability-v4-probe02-owner07-execution-20261103.md)。旧 owner06、observer07、trigger09 已真实停止；旧 runner08 未启动。下一实际入口是 [FINAL55_NEXT 顶部的 after07 路径](../tools/experiment_orchestration/humble54_closed_followon_runner08/FINAL55_NEXT.md)，须等原任务完全结束，再执行完整测量与预算。下方运行中描述均是各自时间的历史快照。
 
 **2026-11-03 16:38（北京时间）检查点：扩展probe02已记录9个原终态（6 PASS、2 FAIL、1 INCOMPLETE_EVIDENCE），第十场汽车深度空洞运行中，6场未尝试。** 汽车深度噪声已PASS，距离/高度RMSE0.736/0.148 m、末段稳定。核心12/12、安全4/4 PASS，正式0/280。[当前实时页](../results/monitor_humble54_probe02_owner06/index.html)以原始终态和实际心跳为准。07/09已重新取得工具存活回执，继续等待原owner06完整闭合；08尚未启动。[容量风险](../planning/reliability-v4-space-risk-20261103.md)及两个失败场景窄窗诊断仍待处理。下方均为历史检查点。

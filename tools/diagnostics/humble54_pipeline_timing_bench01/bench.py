@@ -46,9 +46,17 @@ def read_json(path):
 
 
 def write_new(path, value):
-    with Path(path).open("x", encoding="utf-8", newline="\n") as handle:
-        json.dump(value, handle, indent=2, allow_nan=False)
-        handle.write("\n")
+    path = Path(path)
+    descriptor, temporary = tempfile.mkstemp(prefix="."+path.name+".", suffix=".tmp", dir=path.parent)
+    try:
+        with os.fdopen(descriptor, "w", encoding="utf-8", newline="\n") as handle:
+            json.dump(value, handle, indent=2, allow_nan=False)
+            handle.write("\n")
+        # A same-directory hard link publishes complete closed bytes atomically.
+        # Unlike replace/rename on POSIX, an existing destination cannot be overwritten.
+        os.link(temporary, path)
+    finally:
+        Path(temporary).unlink(missing_ok=True)
 
 
 def validate_shape(config):
@@ -246,7 +254,9 @@ def replay_worker(config, output):
         source=Path(config["source_root"])
         sys.path[:0]=[str(source),str(source/"scripts")]
         spec=importlib.util.spec_from_file_location("bench_original_bag_reader",source/"scripts/evaluate_stage1_flight.py")
-        helper=importlib.util.module_from_spec(spec);spec.loader.exec_module(helper)
+        helper=importlib.util.module_from_spec(spec)
+        sys.modules[spec.name]=helper
+        spec.loader.exec_module(helper)
         owned=resources.enter_context(tempfile.TemporaryDirectory(prefix="pipeline_timing_read_",dir=config["scratch_root"]))
         prior_tempdir=tempfile.tempdir
         tempfile.tempdir=owned
