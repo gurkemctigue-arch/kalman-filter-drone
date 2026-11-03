@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "scope": "WINDOWS_SMALL_METADATA_SCHEMA_DIAGNOSTIC_ONLY_NOT_NATIVE_OR_ACCEPTANCE",
+  "created_utc": "2026-11-03T00:16:42.908009+00:00",
+  "result": "RAW_SCHEMA_MISMATCH_REPRODUCED_ONLY",
+  "original_terminal": {
+    "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_safety02_audit\\execution_terminal.json",
+    "bytes": 1628,
+    "sha256": "50229d3a8b122d925d50fc78946b402de2035f10d438ef0d1d8c3ea3a80cb4a2"
+  },
+  "original_slot": {
+    "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_safety02_audit\\person_auto_unique_multi_seed004.json",
+    "bytes": 45398,
+    "sha256": "84d388524296a862e6c53285ddeafe4bdf0beb679c6e9d652ee3be30f13d1c4d"
+  },
+  "original_status": "INFRASTRUCTURE_ERROR",
+  "recorded_error": "KeyError: 'result'",
+  "reproduced_original_aggregation_error": "KeyError: 'result'",
+  "original_driver_sha256_recovered_in_memory_from_exact_inverse_patch": "82c5ee395e81db0a15339149d8775cf3a8fe1c9fdce524e9e54cf2bc3d287e73",
+  "candidate_driver": {
+    "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\run_reliability_v4_safety.py",
+    "bytes": 42846,
+    "sha256": "6f93e58d6281aa882c4b89273fcfaa1dc1897d9651174e2b947d82bd28d5c172"
+  },
+  "all_five_recorded_commands_exited_zero": true,
+  "report_metadata": {
+    "source_clock": {
+      "binding": {
+        "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_safety02_person_auto_unique_multi_seed004\\px4_source_clock_report.json",
+        "bytes": 7832,
+        "sha256": "186c98b0eb586d468b1f11f15dceadaeac6ef3df25b525df00ebf60c5a255662"
+      },
+      "evaluation_status": "PASS",
+      "has_raw_result_key": false,
+      "raw_result": null
+    },
+    "native_startup": {
+      "binding": {
+        "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_safety02_person_auto_unique_multi_seed004\\native_startup_report.json",
+        "bytes": 9082,
+        "sha256": "dfd85a65d658d7bbd37e4bf21dad5a41e8a369fd15edfef79b92b1778cbcd05b"
+      },
+      "evaluation_status": "PASS",
+      "has_raw_result_key": false,
+      "raw_result": null
+    },
+    "specialized": {
+      "binding": {
+        "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_safety02_person_auto_unique_multi_seed004\\auto_unique_evaluation_v2.json",
+        "bytes": 4323,
+        "sha256": "96cb2627e2ac3a3a162593378e6299ec56153c4cac3ec773ae277cf4cc18285c"
+      },
+      "evaluation_status": null,
+      "has_raw_result_key": true,
+      "raw_result": "PASS"
+    },
+    "terminal_speed": {
+      "binding": {
+        "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_safety02_person_auto_unique_multi_seed004\\terminal_hover_speed_evaluation.json",
+        "bytes": 6196,
+        "sha256": "193ebe6ee504a6e74cfd0d55d0059cd4dcd5a8a736c8b346604fe898e22d7828"
+      },
+      "evaluation_status": null,
+      "has_raw_result_key": true,
+      "raw_result": "PASS"
+    }
+  },
+  "corrected_specialist_tail_aggregation": "PASS",
+  "independent_read_evaluation_reexecuted": false,
+  "full_slot_reexecuted": false,
+  "native_started": false,
+  "flight_started": false,
+  "bag_model_or_large_telemetry_read": false,
+  "original_status_rewritten": false,
+  "limitation": "Only the recorded raw-report schema and final aggregation mismatch are reproduced. Prior independent validations were not rerun. The original INFRASTRUCTURE_ERROR and three unexecuted cases remain unchanged; this is not a four-case safety PASS."
+}
