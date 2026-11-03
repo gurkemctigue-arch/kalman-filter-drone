@@ -1,5 +1,7 @@
 # v4 开发与验证状态
 
+**2026-11-03 用户停止决定：实验已停止，持续目标paused，不自动续跑。** 最新同源核心12/12及独立安全4/4 PASS；扩展probe02完整16终态为11 PASS、4 FAIL、1 INCOMPLETE_EVIDENCE，正式0/280。全项目未完成最终验收。现有材料已整理为[整体报告](project-overview-20261103/index.html)，包括原始指标、身份未知、统计边界和停止原因。下方所有运行状态均为历史快照。
+
 **2026-11-03 16:38（北京时间）检查点：核心开发12/12、安全03 4/4 PASS；扩展probe02为10 START、9个原终态（6 PASS、2 FAIL、1 INCOMPLETE_EVIDENCE）、6未尝试，正式0/280。** 行人8场已完成，汽车深度噪声PASS、距离/高度RMSE0.736/0.148 m，六项导航门均通过。第十场汽车深度空洞正在运行。owner06、退出观察07和后续触发09均已重新确认存活，08尚未执行。[实时页](../results/monitor_humble54_probe02_owner06/index.html)、[容量风险](../planning/reliability-v4-space-risk-20261103.md)。
 
 **2026-11-03 14:20（北京时间）历史检查点：owner06 已从第四场行人延迟接续同一 probe02。** 当时为4 START、3个原终态（2 PASS、1 INCOMPLETE）、12未尝试；Windows/Linux完整准入记录一致。第三场未知保留，前三场不重飞。

@@ -1,5 +1,7 @@
 # 查看当前实验
 
+**2026-11-03：实验按用户明确要求停止，当前无相关实验进程，持续目标已paused。** 不再自动等待空间或触发后续流程；正式实验保持0/280，所有原始数据和失败保留。请先阅读[项目整体报告](project-overview-20261103/index.html)及[停止记录](project-overview-20261103/stop_state.json)。下方“正在运行”的文字均是历史检查点。
+
 **22:16检查点：本轮所有原生任务已退出，无本轮仿真或压缩在后台继续。正式仍0/280，项目未全部验收。** 22级压缩在900秒总预算内未完成，原退出1和ERROR保留；19级基线的字节SHA、全部155847条原生消息验证通过，另两项未开始。两原归档SHA/stat不变、残留子进程为空、防休眠同线程释放、之后native_idle实际exit0/matching[]。详见[原件与结论](../results/diagnostics/humble54_lossless22_bench_execution01/README.md)。[六摘要计时页](../results/diagnostics/humble54_pipeline_timing_view01/index.html)已通过新版浏览器5视图/13交互复验；[开发演示](../results/diagnostics/humble54_development_view01/index.html)和[身份覆盖核查](../results/diagnostics/humble54_identity_coverage_readonly01/README.md)可独立查看。D盘查询约91.18GiB，原预算需244.94GiB，仍缺约153.75GiB；需用户选择可清理目录或提供数据盘，不能自动删除其他软件/资料。下方运行中描述均按各自时间视为历史记录。
 
 **21:44:08完整汽车回放正常exit0，session83906已回收；21:46:45开始无损压缩19/22比较，session77204，当前仍运行。** 汽车三条DDS边747/4508/1854全部为受控候选，命令1377 FOLLOW全链、477非FOLLOW保留，RGB有链681/927。两类完整回放的原件已保存；[诊断页](../results/diagnostics/humble54_pipeline_timing_view01/index.html)包含6摘要、85项一致性检查，浏览器复验待压缩结束。4个多目标开发槽的[身份覆盖核查](../results/diagnostics/humble54_identity_coverage_readonly01/README.md)与[汽车原因补充](../results/diagnostics/humble54_identity_coverage_readonly01/car_detailed_review01.md)已完成，只读原评价，3014格中2551正确、463未知、0已知错，不等于最终身份准确率。正式仍0/280，压缩未证明任何可计入预算的收益。

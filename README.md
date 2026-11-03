@@ -1,5 +1,7 @@
 # RGB-D UAV target tracking and following
 
+**2026-11-03：按用户要求停止实验，持续实验目标已暂停，不自动恢复。** 三阶段功能已实现；Humble54核心开发12/12、安全4/4 PASS，扩展16槽为11 PASS、4 FAIL、1证据不完整，正式仍0/280。现无相关仿真/实验运行器；原始数据与失败保留。完整状态、剩余问题和存储停止原因见[项目整体报告](docs/project-overview-20261103/index.html)（同目录提供Word、PDF及Markdown）。以下带时间的“运行中/下一步”是历史记录，不是继续执行授权。
+
 **22:16更新：本轮所有原生任务均已退出，项目尚未全部验收；正式仍0/280。** 两类完整软件回放已闭合，[六摘要诊断页](results/diagnostics/humble54_pipeline_timing_view01/index.html)通过85项数据检查、5个浏览器视图与13项交互复验。[压缩实测](results/diagnostics/humble54_lossless22_bench_execution01/README.md)的19级基线通过、22级900秒超时，后两项未开始，未计任何容量收益；原件和旧失败保留。D盘当前约91.18GiB可用，原完整预算需244.94GiB，缺约153.75GiB；正式实验、四法统计和最终新报告仍待空间及后续准入。
 
 **21:46更新：行人、汽车完整软件回放均已正常退出，当前唯一原生任务是无损压缩19/22对比；正式仍0/280，容量缺口尚未解决。** [计时诊断页](results/diagnostics/humble54_pipeline_timing_view01/index.html)已收录六次闭合回放，85项数据一致性检查通过，新版浏览器复验待原生空闲后执行。另已核清[4个多目标开发槽的身份覆盖](results/diagnostics/humble54_identity_coverage_readonly01/README.md)及[汽车未知原因](results/diagnostics/humble54_identity_coverage_readonly01/car_detailed_review01.md)：3014个任务时间格中2551按原几何评价记为正确、463未知、0已知错；未知与独立可见性复核边界保留。
