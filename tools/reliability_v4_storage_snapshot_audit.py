@@ -20,6 +20,10 @@ RECOVERY_SCRIPT = Path("/mnt/d/WSL/UAVHumble22-validation/safety54_symlink_recov
 RECOVERY_SCRIPT_SHA = "dda5af047eaa82c53e55260597c3643680c394fabab9cfc12c56dd15373a965c"
 RECOVERY_DRIVER_SHA = "82c5ee395e81db0a15339149d8775cf3a8fe1c9fdce524e9e54cf2bc3d287e73"
 RECOVERY_STATUS = "NATIVE_REPAIR_CONTRACT_AND_READ_ONLY_COMMAND_CONTRACT_COMPLETE_FRESH_SAFETY4_PENDING"
+SCHEMA_SCRIPT = Path("/mnt/d/WSL/UAVHumble22-validation/safety54_schema_recovery03.py")
+SCHEMA_SCRIPT_SHA = "a7c40c182f2101a90cd5a07b0e45b67116500ae60b4983095a6cbb86f5cb8984"
+SCHEMA_DRIVER_SHA = "6f93e58d6281aa882c4b89273fcfaa1dc1897d9651174e2b947d82bd28d5c172"
+SCHEMA_STATUS = "NATIVE_SCHEMA_REPAIR_CONTRACT_AND_READ_ONLY_DIAGNOSTIC_COMPLETE_FRESH_SAFETY4_PENDING"
 TOOL_PINS = {
     "driver": ("run_reliability_v4_safety.py", "6d6d1b56d14866355c7d423d3eaaed420860f20190d59acdfa20b853b9f3073b"),
     "validator": ("reliability_v4_guard.py", "e64e9da6a5180d70b32c6b2b3076abe4bbc52d4b748395bf7f8af61e6a7e3a8e"),
@@ -119,7 +123,8 @@ def prepare(registry_binding, native_binding, core, core_path, *, guard, bind, r
             "Completed original native integration receipt required; preparation is insufficient")
     producer, _ = bound(native.get("self"), data=False)
     recovery = Path(native["self"]["path"]) == RECOVERY_SCRIPT and producer == {"path": str(RECOVERY_SCRIPT), "sha256": RECOVERY_SCRIPT_SHA}
-    require(recovery or Path(native["self"]["path"]) == NATIVE_SCRIPT
+    schema_recovery = Path(native["self"]["path"]) == SCHEMA_SCRIPT and producer == {"path": str(SCHEMA_SCRIPT), "sha256": SCHEMA_SCRIPT_SHA}
+    require(recovery or schema_recovery or Path(native["self"]["path"]) == NATIVE_SCRIPT
             and producer == {"path": str(NATIVE_SCRIPT), "sha256": NATIVE_SCRIPT_SHA},
             "Reviewed original native integration producer differs")
     if recovery:
@@ -133,6 +138,35 @@ def prepare(registry_binding, native_binding, core, core_path, *, guard, bind, r
                 and all(native.get(name) is True for name in ("core_plan_unchanged", "original_failure_and_contract_unchanged",
                     "fixed_guard_helper_registrar_unchanged", "current_tool_bundle_unchanged_during_validation",
                     "frozen_metadata_unchanged_during_validation")), "Completed reviewed symlink-recovery native audit required")
+    if schema_recovery:
+        require(native.get("kind") == "ACTUAL_NATIVE_SAFETY_RESULT_SCHEMA_REPAIR" and native.get("status") == SCHEMA_STATUS
+                and native.get("original_schema_keyerror_reproduced") == "KeyError: 'result'"
+                and native.get("schema_specific_aggregation_diagnostic_result") == "PASS"
+                and native.get("full_old_slot_reaudit_performed") is False
+                and native.get("original_registry_not_revalidated_or_rewritten") is True
+                and native.get("formal_admission_created") is False and native.get("original_result_rewritten") is False
+                and type(native.get("flights_started")) is int and native["flights_started"] == 0
+                and all(native.get(name) is True for name in ("core_plan_unchanged", "original_failure_and_contract_unchanged",
+                    "fixed_guard_helper_registrar_unchanged", "current_tool_bundle_unchanged_during_validation",
+                    "frozen_metadata_unchanged_during_validation")), "Completed reviewed schema-recovery native audit required")
+        normalized, raw_keys = native.get("original_public_reader_results"), native.get("original_raw_report_keys")
+        require(isinstance(normalized, dict) and set(normalized) == {"source_clock", "native_startup"}
+                and isinstance(raw_keys, dict) and set(raw_keys) == {"source_clock", "native_startup", "specialized", "terminal_speed"},
+                "Saved schema diagnostic report denominator differs")
+        prior_directory = root / "results/reliability_v4_humble54_safety02_person_auto_unique_multi_seed004"
+        for kind, filename in (("source_clock", "px4_source_clock_report.json"), ("native_startup", "native_startup_report.json")):
+            item = normalized[kind]
+            require(isinstance(item, dict) and item.get("kind") == kind
+                    and item.get("result") == item.get("reported_verdict") == "PASS" and item.get("error") is None
+                    and type(item.get("execution", {}).get("returncode")) is int and item["execution"]["returncode"] == 0
+                    and item["execution"].get("error") is None, "Saved original normalized reader did not PASS")
+            original_pin, original = bound({"path": item.get("report"), "sha256": item.get("report_sha256")})
+            require(Path(original_pin["path"]) == (prior_directory / filename).resolve(strict=True)
+                    and original.get("evaluation_status") == "PASS" and original.get(kind + "_pass") is True
+                    and "result" not in original and raw_keys[kind] == sorted(original),
+                    "Saved original reader schema/report binding differs")
+        require(all(isinstance(raw_keys[kind], list) and "result" in raw_keys[kind] and "checks" in raw_keys[kind]
+                    for kind in ("specialized", "terminal_speed")), "Saved specialist/tail raw-result schema differs")
     for flag in ("safety_registration_created", "formal_admission_or_plan_created", "formal_execution_authorized",
                  "formal_dual_root_integration_validated", "historical_flight_imports_proved", "runtime_root_edited",
                  "original_snapshots_edited", "bag_sidecar_or_telemetry_read_by_this_script"):
@@ -144,7 +178,9 @@ def prepare(registry_binding, native_binding, core, core_path, *, guard, bind, r
     tools = contract.get("audit_tools", {})
     require(set(tools) == set(TOOL_PINS), "Complete fixed original audit tool bindings required")
     for key, (name, expected) in TOOL_PINS.items():
-        if recovery and key == "driver":
+        if schema_recovery and key == "driver":
+            expected = SCHEMA_DRIVER_SHA
+        elif recovery and key == "driver":
             expected = RECOVERY_DRIVER_SHA
         actual, _ = bound(tools[key], data=False)
         require(actual == {"path": str(AUDIT_ROOT / "tools" / name), "sha256": expected}, "Fixed audit tool path/bytes differ")
