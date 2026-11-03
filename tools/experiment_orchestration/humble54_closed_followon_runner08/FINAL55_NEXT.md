@@ -2,6 +2,14 @@
 
 **当前状态更正（2026-11-03）：旧 owner06、observer07、trigger09 已真实以 exit 2 停止，runner08 未启动。旧 runner08 必须取得旧07的三个真实 exit 0及其完整闭合，当前条件不成立，禁止直接调用08或把旧失败改写为成功。** 新 collector07 仅续原计划剩余5槽；必须等待其实际退出、16槽原件复核和新闭合审计后，才可使用 [新直接测量准备入口](../humble54_closed_measurement01/README.md)复用原08的28格测量、具名 velocity exports、R0 与完整280槽预算。该入口仍 `PRODUCTION_ENABLED=False`、`REGISTERED_INPUTS={}`，没有预登记未来结果。下文涉及旧07 full profile、旧08结果路径及 candidate04 旧chain接口的内容仅保留为原技术索引，须由真实新闭合和后续已审适配替代，不能直接执行；原120+160=280范围、容量预留、正式验收条件全部保留。
 
+当前实际续接路径（优先于下文旧链示例）：
+
+1. 等待 [collector07](../humble54_pending_collector07/README.md) 原 monitor/WSL/native/外层 Popen 真实退出，取得七个真实原始绑定；不把运行中 state 当 terminal，不重跑已尝试槽。
+2. 审核、登记 [直接测量入口](../humble54_closed_measurement01/run_closed_measurement.py) 的七个绑定，原生串行执行原六步。实际输出路径为 `full28_storage_measurement_probe02_after07_01`、`reliability_v4_humble54_development_calibration_probe02_after07_01`、`full280_storage_budget_probe02_after07_01/budget.json`，receipt 为 `/mnt/d/WSL/UAVHumble22-validation/humble54_probe02_closed_measurement_after07_01`。负预算保留并阻断 staging。
+3. 仅在真实正预算及完整终态后，登记 [after07 staging](../../staging/final55_after07_stage01/README.md) 的 `measurement_source`、`measurement_terminal`、`budget` 三个绑定。当前仍关闭；候选源码 `a7915583…5069e` 已通过 5 项小测试和 root 源码/实际小文件复审。它重核原16、完整12执行步骤、输入及原容量规则，然后复用原 base staging/outcome 函数。新 staging 是 `/root/uav_tracking_final55_stage_after07_01`，新 receipt 是 `/mnt/d/WSL/UAVHumble22-validation/final55_stage_after07_01`，最终冻结路径仍为 `/root/uav_tracking_fullplan_v4_final55`。
+4. staging 候选只更新原10 overlay中的4个 after pins，派生合同仅增加明确的条件身份 opt-in。新的 source/scanner 预期摘要来自实际候选清单，集合仍为308/185、flight277不变；不能使用下文旧摘要。原 FAIL/null/UNOBSERVED 不改，物理身份和导航安全门不放松。新的合同和模块 pins 已在候选 profile 中显式绑定，不能回用旧合同。
+5. 实际 staging 成功后，从新 staging 自身执行原 cold 构建流程；后续 navigation28、sensor4、readiness、publication、正式120/160、两补充协议、seal和原正式owner顺序仍适用。以下示例中的旧 stage/budget/R0 路径必须对应替换为这次实际新原件，不能仅凭准备文件跳步。
+
 本卡只整理已存在的源码、CLI 和顺序；未启动 WSL、读取 bag/模型、登记任何未来证据或修改 06/07/08/09。以下均为未来动作，`ACTUAL_*` 只能来自当时真实原件。已有完整卡无需重写：
 
 - [离线叠加、navigation28 与 sensor4](../../../planning/reliability-v4-final55-offline-overlay-20261103.md)，其中 probe01 示例须由下述已审 candidate04 的 probe02 固定绑定替代。
