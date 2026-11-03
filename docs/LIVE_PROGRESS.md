@@ -1,5 +1,7 @@
 # 查看当前实验
 
+**2026-11-03 11:50（北京时间）：当前请打开[新串行采集进度页](../results/project_progress/humble54_pending_collection03/index.html)。** 原扩展16场当前7 START、6终态（3 PASS / 2 INCOMPLETE_EVIDENCE / 1 FAIL）、9未尝试，第七场为行人加减速的位置控制。页面完整计入原前六槽，新采集器逐场检查来源、录包与长时安全，出现新未知或异常即停，不重试原结果。页面完成仅说明采集命令结束，不代表原工程全PASS或正式研究完成。第六场速度控制原PASS，组合场的长窗预测与距离超标均保留。正式仍0/280；[执行记录](../planning/reliability-v4-execution-20261103.md)保存真实进程身份、原件及边界。下方均为历史快照。
+
 **2026-11-03 11:26（北京时间）：第六场行人加减速（速度控制）已实际启动。** 打开[本条命令监督页](../results/project_progress/humble54_extension_speed_velocity04/index.html)查看进程、心跳及退出状态；此页不包含矩阵 events，不能把其中默认计数当作完整实验进度。原矩阵当前 6 START、5 终态：2 PASS、2 INCOMPLETE_EVIDENCE、1 FAIL，10 场未尝试。组合场原 FAIL 是长窗无预测状态，九项安全行为通过；通信延迟的新命名网格修复诊断数值 PASS，但原缺证记录保留。正式仍 0/280。详细身份、原件及下一步见[执行记录](../planning/reliability-v4-execution-20261103.md)。下方均为历史快照。
 
 **2026-11-03 10:53（北京时间）实际检查点：原扩展计划为 5 START、4 个原终态（2 PASS、2 INCOMPLETE_EVIDENCE）、11 个未尝试槽；正式仍 0/280。** 第五槽 `person_extension_combined_seed004` 已于 `2026-11-03T02:50:53.012521Z` 在新 normal CLI 单槽调用中启动。请打开[监督进度页](../results/project_progress/humble54_extension_supervised02/index.html)；它汇合旧 owner 历史观测的拷贝和实际新 START/终态 marker，仅是派生观察，不是新 owner、正式准入或扩展全批 PASS。

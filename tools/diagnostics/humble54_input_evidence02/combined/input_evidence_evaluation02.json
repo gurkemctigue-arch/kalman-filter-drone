@@ -1,0 +1,304 @@
+{
+  "schema_version": 1,
+  "revision": "sensor_input_interruption_v1",
+  "scope": "DEVELOPMENT_EVIDENCE_ONLY_NOT_FORMAL_ADMISSION",
+  "status": "NOT_APPLICABLE",
+  "contract_sha256": "35f61541d5eab4fddd856a9c4b9ed76f2d6e0c66a8d172cf94256129e2315c17",
+  "module_sha256": "f3ce374272d750fc058cb98c5c8782f96a977c59aeade59afe0c5a2a80b4a5ba",
+  "claim_boundary": "Input/stimulus evidence only. Original terminal, acceptance, checks and nulls are unchanged. Absent input is not an empty detector result. Occlusion and injected dropout effects are not separately identified. No engineering PASS, physical identity truth, navigation acceptance, formal readiness or formal execution is asserted; caller retains its navigation and safety gates.",
+  "errors": [],
+  "known_algorithm_failures": [
+    "surface:long:prediction_observed=FAIL"
+  ],
+  "slot_id": "person_extension_combined_seed004",
+  "original": {
+    "terminal_status": "FAIL",
+    "engineering_evidence": {
+      "negative_evaluators": [
+        "surface_flight"
+      ],
+      "pending": [],
+      "incomplete": []
+    },
+    "acceptance": {
+      "result": "FAIL",
+      "scope": "Observed flight/occlusion behavior only; no ground-truth accuracy threshold is asserted",
+      "short_occlusion_recorded": true,
+      "long_occlusion_recorded": true,
+      "clock_timebase_available": true,
+      "missing_topics": [],
+      "input_read_error_count": 0,
+      "failed_events_retained": true
+    },
+    "occlusions": [
+      {
+        "start_s": 29.8,
+        "end_s": 30.080000000000002,
+        "complete": true,
+        "close_request_id": 1,
+        "open_request_id": 3,
+        "duration_s": 0.28000000000000114,
+        "kind": "short",
+        "event_semantics": "requested shutter pose interval, not an independently measured occluder state",
+        "shutter_execution": {
+          "close_request_id": 1,
+          "open_request_id": 3,
+          "close_response_s": 29.82,
+          "open_response_s": 30.1,
+          "close_success": true,
+          "open_success": true,
+          "close_ack_before_open_request": true,
+          "close_reason": null,
+          "open_reason": null,
+          "successful_close_response_to_open_request_s": 0.26000000000000156,
+          "semantics": "Matched SetEntityPose acknowledgements corroborate execution; request intervals are not exact rendered-image occlusion durations"
+        },
+        "explicit_reselection": null,
+        "post_reselection_tracking": null,
+        "first_predicted_s": 29.8,
+        "first_lost_s": null,
+        "first_hover_s": null,
+        "first_measured_after_open_s": 30.204,
+        "first_explicit_reselection_s": null,
+        "first_unrequested_measured_after_loss_s": null,
+        "first_unrequested_predicted_after_loss_s": null,
+        "first_unrequested_active_state_after_loss_s": null,
+        "first_unrequested_tracking_control_after_loss_s": null,
+        "tracking_control_grace_after_loss_s": 0.1,
+        "post_open_measured_missing_receive_time_count": 0,
+        "recovery_after_open_s": 0.12399999999999878,
+        "valid_depth_gap_straddling_event_s": 0.40000000000000213,
+        "diagnostic_frames_inside": 1,
+        "candidate_free_frames_inside": 1,
+        "valid_depth_frames_inside": 0,
+        "speed_at_shutter_start_mps": 0.4838698350688256,
+        "speed_at_hover_entry_mps": null,
+        "braking_observation_end_s": null,
+        "braking_speed_mps": {
+          "count": 0,
+          "mean": null,
+          "median": null,
+          "p95": null,
+          "max": null,
+          "rmse": null,
+          "mean_absolute": null,
+          "p95_absolute": null,
+          "max_absolute": null
+        },
+        "sustained_low_speed_start_s": null,
+        "time_to_sustained_low_speed_after_hover_s": null,
+        "braking_from_motion_demonstrated": false,
+        "checks": {
+          "recorded_close_event": true,
+          "shutter_close_service_succeeded": true,
+          "shutter_open_service_succeeded": true,
+          "shutter_close_ack_before_open_request": true,
+          "detector_interruption_observed": true,
+          "prediction_observed": true,
+          "lost_observed_for_long_occlusion": null,
+          "hover_observed_for_long_occlusion": null,
+          "sustained_low_speed_after_hover": null,
+          "no_automatic_recovery_after_long_loss": null,
+          "no_tracking_control_before_reselection_after_long_loss": null,
+          "sustained_tracking_after_reselection": null,
+          "no_loss_during_short_occlusion": true,
+          "identity_preserved_on_observed_recovery": true
+        },
+        "result": "PASS"
+      },
+      {
+        "start_s": 42.800000000000004,
+        "end_s": 45.88,
+        "complete": true,
+        "close_request_id": 4,
+        "open_request_id": 19,
+        "duration_s": 3.0799999999999983,
+        "kind": "long",
+        "event_semantics": "requested shutter pose interval, not an independently measured occluder state",
+        "shutter_execution": {
+          "close_request_id": 4,
+          "open_request_id": 19,
+          "close_response_s": 42.82,
+          "open_response_s": 45.900000000000006,
+          "close_success": true,
+          "open_success": true,
+          "close_ack_before_open_request": true,
+          "close_reason": null,
+          "open_reason": null,
+          "successful_close_response_to_open_request_s": 3.0600000000000023,
+          "semantics": "Matched SetEntityPose acknowledgements corroborate execution; request intervals are not exact rendered-image occlusion durations"
+        },
+        "explicit_reselection": {
+          "confirmed": true,
+          "original_target_uuid": "18ce49c4-75be-4bd3-9c56-f69dbe42f1b9",
+          "requested_target_uuid": "d12ccf22-d307-42bd-8acd-fc9ef2d00890",
+          "confirmed_target_uuid": "d12ccf22-d307-42bd-8acd-fc9ef2d00890",
+          "selection_time_s": 49.8,
+          "confirmation_time_s": 49.804,
+          "confirmation_record_sequence": 52035,
+          "confirmation_state_index": 1879,
+          "confirmation_image_stamp_s": 49.7,
+          "confirmed_track_id": 3,
+          "action": "SELECT",
+          "selection_action_code": 0,
+          "first_valid_request_s": 49.8,
+          "invalid_candidates": []
+        },
+        "post_reselection_tracking": {
+          "result": "PASS",
+          "checks": {
+            "minimum_recording_duration": true,
+            "minimum_state_span": true,
+            "minimum_control_span": true,
+            "same_target_active_states_only": true,
+            "tracking_control_only_after_grace": true,
+            "continuous_state_evidence": true,
+            "continuous_control_evidence": true,
+            "fresh_state_at_trial_end": true,
+            "tracking_control_at_trial_end": true,
+            "chronological_state_and_control_evidence": true
+          },
+          "confirmed_target_uuid": "d12ccf22-d307-42bd-8acd-fc9ef2d00890",
+          "confirmation_time_s": 49.804,
+          "confirmation_record_sequence": 52035,
+          "confirmation_state_index": 1879,
+          "trial_end_s": 92.928,
+          "minimum_duration_s": 5.0,
+          "tail_freshness_s": 0.5,
+          "maximum_evidence_gap_s": 0.5,
+          "control_grace_s": 0.1,
+          "maximum_measurement_age_s": 0.75,
+          "observed_duration_s": 43.123999999999995,
+          "state_span_s": 43.116,
+          "control_span_s": 43.04800000000001,
+          "last_state_age_to_trial_end_s": 0.007999999999995566,
+          "last_control_age_to_trial_end_s": 0.027999999999991587,
+          "last_state_measurement_age_at_trial_end_s": 0.12799999731778655,
+          "maximum_state_evidence_gap_s": 0.020000000000010232,
+          "maximum_control_evidence_gap_s": 0.05200000000000671,
+          "state_count": 2549,
+          "tracking_control_count": 862,
+          "state_counts": {
+            "MEASURED": 393,
+            "PREDICTED": 2156
+          },
+          "lifecycle_counts": {
+            "PREDICT": 861,
+            "FOLLOW": 1
+          },
+          "first_invalid_state_s": null,
+          "first_uuid_mismatch_s": null,
+          "first_nontracking_control_after_grace_s": null,
+          "state_time_regression_count": 0,
+          "control_time_regression_count": 0,
+          "receive_clock_regression_count": 0,
+          "invalid_receive_clock_count": 0,
+          "chronology_time_basis": "received_sim_s",
+          "receive_clock_order_scope": "GLOBAL_RECORD_SEQUENCE",
+          "operational_time_regressions_are_diagnostic_only": true,
+          "boundary_evidence": "RECORD_SEQUENCE",
+          "semantics": "The exact confirmation record starts the sustained interval. Recording order, not a float-time window, selects later records; equal-time or backdated later faults remain evidence. Receive /clock values must be valid and nondecreasing. Derived max(header, receive) time regressions are diagnostic because measurement and prediction headers have different meanings. A brief confirmation cannot certify sustained tracking"
+        },
+        "first_predicted_s": null,
+        "first_lost_s": 42.804,
+        "first_hover_s": 42.852,
+        "first_measured_after_open_s": null,
+        "first_explicit_reselection_s": 49.8,
+        "first_unrequested_measured_after_loss_s": null,
+        "first_unrequested_predicted_after_loss_s": null,
+        "first_unrequested_active_state_after_loss_s": null,
+        "first_unrequested_tracking_control_after_loss_s": null,
+        "tracking_control_grace_after_loss_s": 0.1,
+        "post_open_measured_missing_receive_time_count": 0,
+        "recovery_after_open_s": null,
+        "valid_depth_gap_straddling_event_s": 3.1000000000000014,
+        "diagnostic_frames_inside": 16,
+        "candidate_free_frames_inside": 16,
+        "valid_depth_frames_inside": 0,
+        "speed_at_shutter_start_mps": 0.011869636935800844,
+        "speed_at_hover_entry_mps": 0.011746576302391778,
+        "braking_observation_end_s": 44.852,
+        "braking_speed_mps": {
+          "count": 201,
+          "mean": 0.0066325366974981,
+          "median": 0.004959512955197199,
+          "p95": 0.014037305646461065,
+          "max": 0.014218907133189556,
+          "rmse": 0.007666080002305329,
+          "mean_absolute": 0.0066325366974981,
+          "p95_absolute": 0.014037305646461065,
+          "max_absolute": 0.014218907133189556
+        },
+        "sustained_low_speed_start_s": 42.852,
+        "time_to_sustained_low_speed_after_hover_s": 0.0,
+        "braking_from_motion_demonstrated": false,
+        "checks": {
+          "recorded_close_event": true,
+          "shutter_close_service_succeeded": true,
+          "shutter_open_service_succeeded": true,
+          "shutter_close_ack_before_open_request": true,
+          "detector_interruption_observed": true,
+          "prediction_observed": false,
+          "lost_observed_for_long_occlusion": true,
+          "hover_observed_for_long_occlusion": true,
+          "sustained_low_speed_after_hover": true,
+          "no_automatic_recovery_after_long_loss": true,
+          "no_tracking_control_before_reselection_after_long_loss": true,
+          "sustained_tracking_after_reselection": true,
+          "no_loss_during_short_occlusion": null,
+          "identity_preserved_on_observed_recovery": null
+        },
+        "result": "FAIL"
+      }
+    ]
+  },
+  "input_bindings": {
+    "plan": {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_matrix/plan.json",
+      "sha256": "f32fb17a77670f5c774076ff9bf4b752b3e91eea4f28021efb826ed9b8520055"
+    },
+    "terminal": {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_matrix/slots/person_extension_combined_seed004.json",
+      "sha256": "596db684d39afe1eb561b710550541728a71e5e6c564118a1206d204c557c677"
+    },
+    "flight_evaluation.json": {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_person_extension_combined_seed004/flight_evaluation.json",
+      "sha256": "5b2946c2aad931f53c70bcd4f7bdbfd31195637bb3ec0fb99bfd74630a1e8266"
+    },
+    "px4_source_clock_report.json": {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_person_extension_combined_seed004/px4_source_clock_report.json",
+      "sha256": "c5372bfe2a60cb94b22a62a1f0e89f69d066a75bf2954933b09beaf1b6f87e5b"
+    },
+    "native_startup_report.json": {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_person_extension_combined_seed004/native_startup_report.json",
+      "sha256": "a181ac9bcbe50890e87fdf16e4706ecf22a1c86fd1b8acc9b247b7a6b59d9f29"
+    },
+    "recording_closure.json": {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_person_extension_combined_seed004/recording_closure.json",
+      "sha256": "e2546f3850913539a589fc7bebc4372d3c6864af6a83bdf433f2ae05b161a49f"
+    },
+    "bag_integrity.json": {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_person_extension_combined_seed004/bag_integrity.json",
+      "sha256": "130b2c96e7b42cb9c6bb3fb498f3e513caf8fd3fb9d3bd9228898c4285a02cb2"
+    },
+    "configuration/sensor_faults.json": {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_person_extension_combined_seed004/configuration/sensor_faults.json",
+      "sha256": "cc5b4c6413537d24bb402d9295182647d773ee540de0fd1524a9bdbb5ad73f36"
+    },
+    "rosbag/metadata.yaml": {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_person_extension_combined_seed004/rosbag/metadata.yaml",
+      "sha256": "83724644ebbd056393409c633515e999ec747e0a8745e1f6e85a4da9115462fa"
+    },
+    "scripts/evaluate_stage1_flight.py": {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/scripts/evaluate_stage1_flight.py",
+      "sha256": "655cf6fc7c0cc2a954db7d06d2fbb00a000f2fca80ba0930d153025e28efb7c1"
+    },
+    "scripts/sensor_fault_bridge.py": {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/scripts/sensor_fault_bridge.py",
+      "sha256": "c07b1b5e7a7addbe2b7b4ad63cb798503646a8f92cf14aa66a1fd35582a486f0"
+    }
+  },
+  "reason": "Original short detector check already has recorded diagnostic evidence",
+  "original_detector_interruption_observed": true,
+  "behavior_validity": "KNOWN_ALGORITHM_FAILURES_RETAINED"
+}

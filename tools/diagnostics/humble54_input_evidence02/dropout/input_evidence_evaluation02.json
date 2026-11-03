@@ -1,0 +1,392 @@
+{
+  "schema_version": 1,
+  "revision": "sensor_input_interruption_v1",
+  "scope": "DEVELOPMENT_EVIDENCE_ONLY_NOT_FORMAL_ADMISSION",
+  "status": "UPSTREAM_INPUT_INTERRUPTION_CORROBORATED",
+  "contract_sha256": "35f61541d5eab4fddd856a9c4b9ed76f2d6e0c66a8d172cf94256129e2315c17",
+  "module_sha256": "f3ce374272d750fc058cb98c5c8782f96a977c59aeade59afe0c5a2a80b4a5ba",
+  "claim_boundary": "Input/stimulus evidence only. Original terminal, acceptance, checks and nulls are unchanged. Absent input is not an empty detector result. Occlusion and injected dropout effects are not separately identified. No engineering PASS, physical identity truth, navigation acceptance, formal readiness or formal execution is asserted; caller retains its navigation and safety gates.",
+  "errors": [],
+  "known_algorithm_failures": [],
+  "slot_id": "person_extension_dropout_seed004",
+  "original": {
+    "terminal_status": "INCOMPLETE_EVIDENCE",
+    "engineering_evidence": {
+      "incomplete": [
+        "surface_flight"
+      ],
+      "pending": []
+    },
+    "acceptance": {
+      "result": "INCOMPLETE_EVIDENCE",
+      "scope": "Observed flight/occlusion behavior only; no ground-truth accuracy threshold is asserted",
+      "short_occlusion_recorded": true,
+      "long_occlusion_recorded": true,
+      "clock_timebase_available": true,
+      "missing_topics": [],
+      "input_read_error_count": 0,
+      "failed_events_retained": true
+    },
+    "occlusions": [
+      {
+        "start_s": 31.3,
+        "end_s": 31.580000000000002,
+        "complete": true,
+        "close_request_id": 1,
+        "open_request_id": 3,
+        "duration_s": 0.28000000000000114,
+        "kind": "short",
+        "event_semantics": "requested shutter pose interval, not an independently measured occluder state",
+        "shutter_execution": {
+          "close_request_id": 1,
+          "open_request_id": 3,
+          "close_response_s": 31.32,
+          "open_response_s": 31.6,
+          "close_success": true,
+          "open_success": true,
+          "close_ack_before_open_request": true,
+          "close_reason": null,
+          "open_reason": null,
+          "successful_close_response_to_open_request_s": 0.26000000000000156,
+          "semantics": "Matched SetEntityPose acknowledgements corroborate execution; request intervals are not exact rendered-image occlusion durations"
+        },
+        "explicit_reselection": null,
+        "post_reselection_tracking": null,
+        "first_predicted_s": 31.3,
+        "first_lost_s": null,
+        "first_hover_s": null,
+        "first_measured_after_open_s": 31.62,
+        "first_explicit_reselection_s": null,
+        "first_unrequested_measured_after_loss_s": null,
+        "first_unrequested_predicted_after_loss_s": null,
+        "first_unrequested_active_state_after_loss_s": null,
+        "first_unrequested_tracking_control_after_loss_s": null,
+        "tracking_control_grace_after_loss_s": 0.1,
+        "post_open_measured_missing_receive_time_count": 0,
+        "recovery_after_open_s": 0.03999999999999915,
+        "valid_depth_gap_straddling_event_s": 0.5,
+        "diagnostic_frames_inside": 0,
+        "candidate_free_frames_inside": 0,
+        "valid_depth_frames_inside": 0,
+        "speed_at_shutter_start_mps": 0.5384588822892103,
+        "speed_at_hover_entry_mps": null,
+        "braking_observation_end_s": null,
+        "braking_speed_mps": {
+          "count": 0,
+          "mean": null,
+          "median": null,
+          "p95": null,
+          "max": null,
+          "rmse": null,
+          "mean_absolute": null,
+          "p95_absolute": null,
+          "max_absolute": null
+        },
+        "sustained_low_speed_start_s": null,
+        "time_to_sustained_low_speed_after_hover_s": null,
+        "braking_from_motion_demonstrated": false,
+        "checks": {
+          "recorded_close_event": true,
+          "shutter_close_service_succeeded": true,
+          "shutter_open_service_succeeded": true,
+          "shutter_close_ack_before_open_request": true,
+          "detector_interruption_observed": null,
+          "prediction_observed": true,
+          "lost_observed_for_long_occlusion": null,
+          "hover_observed_for_long_occlusion": null,
+          "sustained_low_speed_after_hover": null,
+          "no_automatic_recovery_after_long_loss": null,
+          "no_tracking_control_before_reselection_after_long_loss": null,
+          "sustained_tracking_after_reselection": null,
+          "no_loss_during_short_occlusion": true,
+          "identity_preserved_on_observed_recovery": true
+        },
+        "result": "INCOMPLETE_EVIDENCE"
+      },
+      {
+        "start_s": 44.300000000000004,
+        "end_s": 47.38,
+        "complete": true,
+        "close_request_id": 4,
+        "open_request_id": 19,
+        "duration_s": 3.0799999999999983,
+        "kind": "long",
+        "event_semantics": "requested shutter pose interval, not an independently measured occluder state",
+        "shutter_execution": {
+          "close_request_id": 4,
+          "open_request_id": 19,
+          "close_response_s": 44.32,
+          "open_response_s": 47.400000000000006,
+          "close_success": true,
+          "open_success": true,
+          "close_ack_before_open_request": true,
+          "close_reason": null,
+          "open_reason": null,
+          "successful_close_response_to_open_request_s": 3.0600000000000023,
+          "semantics": "Matched SetEntityPose acknowledgements corroborate execution; request intervals are not exact rendered-image occlusion durations"
+        },
+        "explicit_reselection": {
+          "confirmed": true,
+          "original_target_uuid": "e3a49084-74d3-4fcc-8bab-668b312ec1a8",
+          "requested_target_uuid": "bb6f82a2-4dcb-4afc-8624-01b9e0eed920",
+          "confirmed_target_uuid": "bb6f82a2-4dcb-4afc-8624-01b9e0eed920",
+          "selection_time_s": 51.3,
+          "confirmation_time_s": 51.32,
+          "confirmation_record_sequence": 53192,
+          "confirmation_state_index": 1878,
+          "confirmation_image_stamp_s": 51.3,
+          "confirmed_track_id": 2,
+          "action": "SELECT",
+          "selection_action_code": 0,
+          "first_valid_request_s": 51.3,
+          "invalid_candidates": []
+        },
+        "post_reselection_tracking": {
+          "result": "PASS",
+          "checks": {
+            "minimum_recording_duration": true,
+            "minimum_state_span": true,
+            "minimum_control_span": true,
+            "same_target_active_states_only": true,
+            "tracking_control_only_after_grace": true,
+            "continuous_state_evidence": true,
+            "continuous_control_evidence": true,
+            "fresh_state_at_trial_end": true,
+            "tracking_control_at_trial_end": true,
+            "chronological_state_and_control_evidence": true
+          },
+          "confirmed_target_uuid": "bb6f82a2-4dcb-4afc-8624-01b9e0eed920",
+          "confirmation_time_s": 51.32,
+          "confirmation_record_sequence": 53192,
+          "confirmation_state_index": 1878,
+          "trial_end_s": 94.384,
+          "minimum_duration_s": 5.0,
+          "tail_freshness_s": 0.5,
+          "maximum_evidence_gap_s": 0.5,
+          "control_grace_s": 0.1,
+          "maximum_measurement_age_s": 0.75,
+          "observed_duration_s": 43.064,
+          "state_span_s": 43.059999999999995,
+          "control_span_s": 43.00000000000001,
+          "last_state_age_to_trial_end_s": 0.0040000000000048885,
+          "last_control_age_to_trial_end_s": 0.031999999999996476,
+          "last_state_measurement_age_at_trial_end_s": 0.08399999821186555,
+          "maximum_state_evidence_gap_s": 0.020000000000010232,
+          "maximum_control_evidence_gap_s": 0.05200000000000671,
+          "state_count": 2545,
+          "tracking_control_count": 861,
+          "state_counts": {
+            "MEASURED": 392,
+            "PREDICTED": 2153
+          },
+          "lifecycle_counts": {
+            "PREDICT": 811,
+            "FOLLOW": 50
+          },
+          "first_invalid_state_s": null,
+          "first_uuid_mismatch_s": null,
+          "first_nontracking_control_after_grace_s": null,
+          "state_time_regression_count": 0,
+          "control_time_regression_count": 0,
+          "receive_clock_regression_count": 0,
+          "invalid_receive_clock_count": 0,
+          "chronology_time_basis": "received_sim_s",
+          "receive_clock_order_scope": "GLOBAL_RECORD_SEQUENCE",
+          "operational_time_regressions_are_diagnostic_only": true,
+          "boundary_evidence": "RECORD_SEQUENCE",
+          "semantics": "The exact confirmation record starts the sustained interval. Recording order, not a float-time window, selects later records; equal-time or backdated later faults remain evidence. Receive /clock values must be valid and nondecreasing. Derived max(header, receive) time regressions are diagnostic because measurement and prediction headers have different meanings. A brief confirmation cannot certify sustained tracking"
+        },
+        "first_predicted_s": 44.32,
+        "first_lost_s": 44.66,
+        "first_hover_s": 44.652,
+        "first_measured_after_open_s": null,
+        "first_explicit_reselection_s": 51.3,
+        "first_unrequested_measured_after_loss_s": null,
+        "first_unrequested_predicted_after_loss_s": null,
+        "first_unrequested_active_state_after_loss_s": null,
+        "first_unrequested_tracking_control_after_loss_s": null,
+        "tracking_control_grace_after_loss_s": 0.1,
+        "post_open_measured_missing_receive_time_count": 0,
+        "recovery_after_open_s": null,
+        "valid_depth_gap_straddling_event_s": 3.5,
+        "diagnostic_frames_inside": 24,
+        "candidate_free_frames_inside": 24,
+        "valid_depth_frames_inside": 0,
+        "speed_at_shutter_start_mps": 0.48210177144562705,
+        "speed_at_hover_entry_mps": 0.5057232766423926,
+        "braking_observation_end_s": 46.652,
+        "braking_speed_mps": {
+          "count": 201,
+          "mean": 0.16576261005465656,
+          "median": 0.08116651754939543,
+          "p95": 0.5069460270002326,
+          "max": 0.510928251344224,
+          "rmse": 0.24411598873867413,
+          "mean_absolute": 0.16576261005465656,
+          "p95_absolute": 0.5069460270002326,
+          "max_absolute": 0.510928251344224
+        },
+        "sustained_low_speed_start_s": 45.164,
+        "time_to_sustained_low_speed_after_hover_s": 0.5120000000000005,
+        "braking_from_motion_demonstrated": true,
+        "checks": {
+          "recorded_close_event": true,
+          "shutter_close_service_succeeded": true,
+          "shutter_open_service_succeeded": true,
+          "shutter_close_ack_before_open_request": true,
+          "detector_interruption_observed": true,
+          "prediction_observed": true,
+          "lost_observed_for_long_occlusion": true,
+          "hover_observed_for_long_occlusion": true,
+          "sustained_low_speed_after_hover": true,
+          "no_automatic_recovery_after_long_loss": true,
+          "no_tracking_control_before_reselection_after_long_loss": true,
+          "sustained_tracking_after_reselection": true,
+          "no_loss_during_short_occlusion": null,
+          "identity_preserved_on_observed_recovery": null
+        },
+        "result": "PASS"
+      }
+    ]
+  },
+  "input_bindings": {
+    "plan": {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_matrix/plan.json",
+      "sha256": "f32fb17a77670f5c774076ff9bf4b752b3e91eea4f28021efb826ed9b8520055"
+    },
+    "terminal": {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_matrix/slots/person_extension_dropout_seed004.json",
+      "sha256": "1369693a3b95abe1a2dad3feff9baf0bfd0354208c4ad90029bb2c6d0c5b3074"
+    },
+    "flight_evaluation.json": {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_person_extension_dropout_seed004/flight_evaluation.json",
+      "sha256": "b38bf40da57df7e58bb38eec0800d975a36e867955be14a671cd1c3915431798"
+    },
+    "px4_source_clock_report.json": {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_person_extension_dropout_seed004/px4_source_clock_report.json",
+      "sha256": "f51a6759cd788b95ea3e74e10468dcd2a9ad63f967e547bcc693999127b3e26f"
+    },
+    "native_startup_report.json": {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_person_extension_dropout_seed004/native_startup_report.json",
+      "sha256": "f77d62a4143abda0731d98aed01dbea57ec7e561fd798faeeb91261f6a344847"
+    },
+    "recording_closure.json": {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_person_extension_dropout_seed004/recording_closure.json",
+      "sha256": "8fe191e694851f3a5cd347daa484e9edbca561c2cb7760dca179447e1936e275"
+    },
+    "bag_integrity.json": {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_person_extension_dropout_seed004/bag_integrity.json",
+      "sha256": "5ec8bdb81d0f30f62b3131b1f09d1b33cf67a8f198d9fc4a327332db4254584f"
+    },
+    "configuration/sensor_faults.json": {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_person_extension_dropout_seed004/configuration/sensor_faults.json",
+      "sha256": "e1a0112c64d528eb67442f7f43510b1d4b5852f098b0e9c094a2b8a84e78e0ee"
+    },
+    "rosbag/metadata.yaml": {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_person_extension_dropout_seed004/rosbag/metadata.yaml",
+      "sha256": "407ff706c109e167aa5521c6a203ba8528f8cbe3e4865b1d0e6cfb244fa46c11"
+    },
+    "scripts/evaluate_stage1_flight.py": {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/scripts/evaluate_stage1_flight.py",
+      "sha256": "655cf6fc7c0cc2a954db7d06d2fbb00a000f2fca80ba0930d153025e28efb7c1"
+    },
+    "scripts/sensor_fault_bridge.py": {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/scripts/sensor_fault_bridge.py",
+      "sha256": "c07b1b5e7a7addbe2b7b4ad63cb798503646a8f92cf14aa66a1fd35582a486f0"
+    }
+  },
+  "extraction_manifest": {
+    "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_person_dropout_input_extract02/manifest.json",
+    "sha256": "98797300204c5f3c26f202aa008f7692c13cd05a3bce7a0e2805b708cf0f19d7"
+  },
+  "window_opportunity_counts": {
+    "/camera/color/image_raw": 9,
+    "/camera/aligned_depth_to_color/image_raw": 9,
+    "/research/camera/color/image_raw": 5,
+    "/research/camera/aligned_depth_to_color/image_raw": 5,
+    "/tracking/detection_diagnostics": 5
+  },
+  "visual_review": {
+    "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_person_dropout_input_extract02/visual_review_native01.json",
+    "sha256": "384b1cc4133b98c6a029b535e403ba30a5e533ad9c6a507ebf5a239e2a29069e"
+  },
+  "reviewed_obscured_acquisition_s": [
+    "31.4",
+    "31.5"
+  ],
+  "drop_ledger": [
+    {
+      "acquisition_ns": 31000000000,
+      "window": 155,
+      "first8_sha256_hex": "e6561ec73630a975",
+      "expected_drop": false
+    },
+    {
+      "acquisition_ns": 31100000000,
+      "window": 155,
+      "first8_sha256_hex": "e6561ec73630a975",
+      "expected_drop": false
+    },
+    {
+      "acquisition_ns": 31200000000,
+      "window": 156,
+      "first8_sha256_hex": "0bdcdab22531979f",
+      "expected_drop": true
+    },
+    {
+      "acquisition_ns": 31300000000,
+      "window": 156,
+      "first8_sha256_hex": "0bdcdab22531979f",
+      "expected_drop": true
+    },
+    {
+      "acquisition_ns": 31400000000,
+      "window": 157,
+      "first8_sha256_hex": "0ad18a0958ff996a",
+      "expected_drop": true
+    },
+    {
+      "acquisition_ns": 31500000000,
+      "window": 157,
+      "first8_sha256_hex": "0ad18a0958ff996a",
+      "expected_drop": true
+    },
+    {
+      "acquisition_ns": 31600000000,
+      "window": 158,
+      "first8_sha256_hex": "f2bb139138f64af9",
+      "expected_drop": false
+    },
+    {
+      "acquisition_ns": 31700000000,
+      "window": 158,
+      "first8_sha256_hex": "f2bb139138f64af9",
+      "expected_drop": false
+    },
+    {
+      "acquisition_ns": 31800000000,
+      "window": 159,
+      "first8_sha256_hex": "d9dbde03180dbd07",
+      "expected_drop": false
+    }
+  ],
+  "delivered_without_diagnostic_acquisition_ns": [],
+  "short_window_opportunities": {
+    "/camera/color/image_raw": [
+      31300000000,
+      31400000000,
+      31500000000
+    ],
+    "/camera/aligned_depth_to_color/image_raw": [
+      31300000000,
+      31400000000,
+      31500000000
+    ],
+    "/research/camera/color/image_raw": [],
+    "/research/camera/aligned_depth_to_color/image_raw": [],
+    "/tracking/detection_diagnostics": []
+  },
+  "detector_check_observability": "UNOBSERVABLE_NO_RECORDED_INPUT_OPPORTUNITY",
+  "original_detector_interruption_observed": null,
+  "behavior_validity": "ORIGINAL_OBSERVED_CHECKS_PRESERVED"
+}

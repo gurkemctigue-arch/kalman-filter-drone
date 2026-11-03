@@ -2,6 +2,18 @@
 
 本记录是执行检查点，不是全项目验收报告。用户已授权继续修复、仿真、统计、交付及 GitHub 同步。正式研究仍为 **0/280**。
 
+**11:50（北京时间）新采集器实际运行：7 START、6 原终态（3 PASS、2 INCOMPLETE_EVIDENCE、1 FAIL）、9 未尝试。** 原第七槽 `person_extension_speed_changes_position_seed004` 正在原 normal CLI 中运行，新[串行采集进度页](../results/project_progress/humble54_pending_collection03/index.html)显示完整16格分母。前六槽事件为明确标注的原件观察拷贝，不伪造本owner曾启动它们，也未复制旧owner的FAULT事件；新事件标明 `ACTUAL_CHILD_INVOCATION`，原正式试验START仍以原 `.started.json` 为准。
+
+外置 collector 代码 SHA256 `dd4583da4f34b216bc5dd5a95aa904459ebc7f68e2bfba026a2e3e66706d9c86`，14项标准库fixture/fake-child测试通过；root此前实际只读前置exit0，确认六个原终态及来源、安全齐备，再显式调用 `--execute`。运行 session **52906**；Windows monitor **16596** / FILETIME `134381511872112352`，owned WSL **46712** / FILETIME `134381511874567318`；Linux collector **149576**，当前实际子命令 **149577**。`power_owner54/receipt08/state.json` 实读ACTIVE，observer **23740**，只申请本monitor存活期间的临时防休眠、不改全局策略。
+
+collector只对连续原PENDING逐次调用不变的单槽入口；每次完成后核原报告/配置/终态SHA、source/native/录包及长时九项安全检查，再继续下一槽。新的未知、基础设施/来源或安全问题立即停，不重试旧槽。已知压力算法FAIL继续保留；原历史null独列 `unobserved_checks`，不算已知算法失败。原owner/waiter仍保持原停止状态，无容量、export、final55或正式后续自动接续。第六场15份原始小证据见[字节快照](../tools/experiment_orchestration/humble54_extension_sixth01/README.md)。
+
+**11:47（北京时间）原终态复核：** 第六场 `person_extension_speed_changes_velocity_seed004` 实际已于 `03:40:24.461884 UTC` 原始 **PASS / COMPLETED**，原 terminal SHA256 `a152e62b340e4ebbc55613cad93a938f1cfe010ed9b4cd0bb4602e19e5a0855d`。normal CLI/监督 session65985 已退出0，非基础设施停止、无残留；source/native/surface PASS、六项导航门均 true。距离/高度 RMSE 为 0.696673/0.169817 m，有效导航覆盖 0.914894、真值覆盖1.0，两项末端持续稳定通过。当前共6终态：3 PASS、2 INCOMPLETE_EVIDENCE、1 FAIL，10 PENDING。此前归档阶段描述只代表当时过程，不作为当前状态。其 4,617 条 PX4 设定值均为 velocity-only，position-only/同时 position+velocity/invalid 均为0。
+
+原六槽连续前缀的原生只读 collector 检查已经实际退出0。该复核同时确认组合场 navigation 也是 **FAIL**：距离 RMSE **2.296435 m** 超过原1.0m门，高度 RMSE0.149508m、有效导航覆盖0.800532、真值覆盖1.0，其余五项导航门为true。此前只列长窗 prediction=False 的描述不构成完整失败清单；两项原算法失败均保留，不能称为仅缺证或仅日志问题。collector 此时尚未启动采集；正在将其历史null观察从 `known_algorithm_failures` 单独列为 `unobserved_checks`，随后才会用新名字输出正式采集记录。
+
+两份已导出行人数据已实际调用只读模块：dropout 返回 `UPSTREAM_INPUT_INTERRUPTION_CORROBORATED`、errors=[]；combined 返回 `NOT_APPLICABLE`（短窗原本已有检测诊断）、errors=[]，仍保留 `surface:long:prediction_observed=FAIL`。首次调用因原合同指向 `/root/.../results` 符号链接、未显式给 canonical path，保留为 `INCOMPLETE`；第二次另存规范路径合同，只改变同一 source_plan 的路径表示，原文件 SHA/科学参数/四槽不变。两次结果与原件见[52份字节保留快照](../tools/diagnostics/humble54_input_evidence02/README.md)。没有改原缺证或原FAIL，汽车两格未齐，完整四槽/工程准入仍未完成。
+
 **11:26（北京时间）接续检查点：原扩展计划 6 START、5 个原终态（2 PASS、2 INCOMPLETE_EVIDENCE、1 FAIL）、10 个未尝试槽。** 第六槽 `person_extension_speed_changes_velocity_seed004` 已于 `2026-11-03T03:21:54.939210Z` 实际 START，normal CLI 仅执行该一个原 PENDING 槽。新[命令监督页](../results/project_progress/humble54_extension_speed_velocity04/index.html)只监督本条命令及其真实退出码，不以无 events 的页面计数代表矩阵进度。Windows monitor PID **31988** / FILETIME `134381497020715128`，owned WSL PID **34872** / FILETIME `134381497024909290`，unified-exec session **65985**。临时防休眠 `power_owner54/receipt07/state.json` 已实读 ACTIVE，observer **16704**，绑定上述 monitor 身份、不改变全局策略。
 
 第五槽组合扰动于 `03:12:44.978442 UTC` 原始 **FAIL / COMPLETED**，terminal SHA256 `596db684d39afe1eb561b710550541728a71e5e6c564118a1206d204c557c677`；flight0、infra=false、cleanup 空、source/native PASS，长时九项安全行为均 true，但 `prediction_observed=false`。原 FAIL 保留。上一命令正常退出 0 仅表示执行结束，不代表该槽工程 PASS。

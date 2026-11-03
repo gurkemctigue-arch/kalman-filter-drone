@@ -1,5 +1,7 @@
 # RGB-D UAV target tracking and following
 
+**2026-11-03 11:50（北京时间）：原扩展验证已结束6场：3 PASS、2 INCOMPLETE_EVIDENCE、1 FAIL；第七场行人加减速（位置控制）正在运行，9场未尝试，正式仍0/280。** [当前串行采集进度](results/project_progress/humble54_pending_collection03/index.html)包含完整16格分母；新采集器保留原结果，遇到新未知或安全/来源异常即停。第六场速度控制原PASS，距离/高度RMSE0.697/0.170m；组合场保留长窗预测与距离超标两项失败。行人输入补证已实际复核，见[原件与边界](tools/diagnostics/humble54_input_evidence02/README.md)；汽车两格及完整28格导航复评仍待完成。进程身份及下一步见[执行记录](planning/reliability-v4-execution-20261103.md)。下方均为历史快照。
+
 **2026-11-03 11:26（北京时间）：原扩展验证已完成 5 场，2 PASS、2 INCOMPLETE_EVIDENCE、1 FAIL；第六场行人加减速（速度控制）已启动，10 场尚未尝试，正式仍 0/280。** [当前单槽命令进度](results/project_progress/humble54_extension_speed_velocity04/index.html)与[执行记录](planning/reliability-v4-execution-20261103.md)包含真实进程身份及边界。组合扰动的长窗预测检查失败，但丢失悬停、减速、禁止自动恢复和重选等安全项通过，原 FAIL 保留。通信延迟的新命名网格修复诊断已实际完成，六项导航数值门均通过；原缺证终态不改，完整 28 格复评仍待执行。行人两份原始输入已提取并实际阅图，完整四槽输入附件尚未齐。下方 10:53 及更早块全部为历史快照。
 
 **2026-11-03 10:53（北京时间）检查点：原扩展计划为 5 START、4 个原终态（2 PASS、2 INCOMPLETE_EVIDENCE）、11 个未尝试槽；正式仍 0/280。** 第五槽 `person_extension_combined_seed004` 已于 `2026-11-03T02:50:53.012521Z` 由新 normal CLI 单槽启动。查看[监督进度页](results/project_progress/humble54_extension_supervised02/index.html)；它由旧 owner 的历史观测拷贝和实际新 START/终态 marker 派生，不是新 owner、正式准入或扩展全批通过证明。精确进程身份、session 和临时防休眠 receipt06 见[执行记录](planning/reliability-v4-execution-20261103.md)。
