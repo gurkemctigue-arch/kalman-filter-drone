@@ -1,5 +1,9 @@
 # 2026-11-03 接续执行记录
 
+**12:48（北京时间）新 probe02 实际启动。** 唯一重型原生任务为 session **82237**，新 Windows outer 源 SHA `8f6ceb38bc8ce7fb6aa6bec80f02b260b551082bde1d0a700ea1561a87ac79a1`。monitor PID **46244** / FILETIME `134381548661261043`，owned WSL PID **54036** / FILETIME `134381548663401799`，Linux collector PID **154647** / boot `f79204a4-99cd-42cf-b886-aa905b1cac6a` / start ticks `9111573`。本次临时 system/display 请求已被 API 接受，不改全局策略。已真实保存早期 native state 和 monitor state，owner/held handles 均在运行；未提前生成退出或准入收据。
+
+首场 `person_extension_depth_noise_seed004` 原 START 为 `2026-11-03T04:47:53.727684Z`；启动检查点 1 START、0 终态、15 未尝试。权威状态在 `/root/uav_tracking_collection54_probe02_owner04`（Linux ext4），Windows [实时页](../results/monitor_humble54_probe02_owner04/index.html)只读小元数据；[真实启动快照](../tools/experiment_orchestration/humble54_probe02_windows_owner04/actual_start01/snapshot_receipt.json)保存独立身份和原始字节。后续仍须逐槽核查、新完整16闭合、28格容量/导出/R0、final55冷构建与正式准入；正式 **0/280**。
+
 **12:43（北京时间）恢复检查点：旧 probe01 已终态保留，新完整 probe02 尚待启动。** 旧 collector03 因真实 DrvFS 权限错误停止；其独立飞行随后结束，但原上层 flight command 返回码丢失，原公开 runner 已将第八槽登记为 `INTERRUPTED`，没有根据飞行摘要补成完成。旧批次合计 8 终态：3 PASS、2 INCOMPLETE_EVIDENCE、2 FAIL、1 INTERRUPTED，另 8 未尝试；旧 owner/waiter 继续保持原停止状态。下方“仍在运行”等描述均为对应时间的历史检查点。
 
 已用原公开 CLI 登记完整新 16 格 `extension16_probe02_matrix`，文件 SHA `1f7ff9559bcf9b1b02528a771f046481712a0ff5ec33eb961fe90310d1dcca54`，保留同一冻结54飞行源码、模型、协议和开发 seed4；不拼接旧成功槽。新 collector04 的真实 Linux 23 项小监督测试通过，实际 Windows/DrvFS 小探针也通过：旧03遇真实 errno13 失败，新04遇71次同类异常后于句柄释放后成功写入。监督输出拟放 Linux ext4；新的外层 Windows 进程监督入口正在准备，须持有 monitor/WSL 原始进程句柄直到实际退出。此时新16尚无飞行 START，正式研究仍 **0/280**。

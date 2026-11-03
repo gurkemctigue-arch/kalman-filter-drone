@@ -1,5 +1,9 @@
 # 查看当前实验
 
+**2026-11-03 12:48（北京时间）：新完整 16 场开发矩阵 probe02 已实际启动。** 当前打开[实时进度页](../results/monitor_humble54_probe02_owner04/index.html)，以最新心跳、进程创建身份及原终态计数为准。启动检查点为 1 START、0 终态、15 未尝试，首场为行人深度噪声；此计数不冒充之后的实时值。监督状态在 Linux ext4，Windows 外层持有本次 monitor/WSL 原始进程句柄，并已实际申请临时防休眠。闭合证据尚未产生，正式研究仍 **0/280**。
+
+旧 probe01 已停止并保留 8 个原终态（3 PASS、2 INCOMPLETE_EVIDENCE、2 FAIL、1 INTERRUPTED）和 8 个未尝试槽；下方旧页面“运行中”的文字仅为各时间的历史快照。第八场因上层 flight command 返回码丢失，由原公开 runner 登记 INTERRUPTED，未从飞行摘要推算完成。新16不拼接旧成功槽。恢复修复和原件见[恢复记录](../tools/experiment_orchestration/humble54_probe02_recovery01/README.md)，本次真实启动身份见[启动快照](../tools/experiment_orchestration/humble54_probe02_windows_owner04/actual_start01/snapshot_receipt.json)。
+
 **2026-11-03 11:50（北京时间）：当前请打开[新串行采集进度页](../results/project_progress/humble54_pending_collection03/index.html)。** 原扩展16场当前7 START、6终态（3 PASS / 2 INCOMPLETE_EVIDENCE / 1 FAIL）、9未尝试，第七场为行人加减速的位置控制。页面完整计入原前六槽，新采集器逐场检查来源、录包与长时安全，出现新未知或异常即停，不重试原结果。页面完成仅说明采集命令结束，不代表原工程全PASS或正式研究完成。第六场速度控制原PASS，组合场的长窗预测与距离超标均保留。正式仍0/280；[执行记录](../planning/reliability-v4-execution-20261103.md)保存真实进程身份、原件及边界。下方均为历史快照。
 
 **2026-11-03 11:26（北京时间）：第六场行人加减速（速度控制）已实际启动。** 打开[本条命令监督页](../results/project_progress/humble54_extension_speed_velocity04/index.html)查看进程、心跳及退出状态；此页不包含矩阵 events，不能把其中默认计数当作完整实验进度。原矩阵当前 6 START、5 终态：2 PASS、2 INCOMPLETE_EVIDENCE、1 FAIL，10 场未尝试。组合场原 FAIL 是长窗无预测状态，九项安全行为通过；通信延迟的新命名网格修复诊断数值 PASS，但原缺证记录保留。正式仍 0/280。详细身份、原件及下一步见[执行记录](../planning/reliability-v4-execution-20261103.md)。下方均为历史快照。

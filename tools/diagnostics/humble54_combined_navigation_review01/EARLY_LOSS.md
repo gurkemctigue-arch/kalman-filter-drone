@@ -1,5 +1,12 @@
 # Early loss: narrow evidence and limits
 
+This is the preliminary telemetry-only review. Its then-unread input stream was
+later checked in the separately archived [actual delivery reconciliation](early_loss_input_evidence01/actual_delivery_reconciliation.json)
+and [direct visual review](early_loss_input_evidence01/visual_review.json).
+The historical limits below describe the earlier review, not a remaining claim
+that those exported source keys have never been examined. Original JSON evidence
+and trial FAIL remain unchanged.
+
 The original combined trial loses the selected target before the long shutter. Its full result remains FAIL and its whole752-sample distanceRMSE remains2.29643482982561m against the original1.0m maximum. No original report or threshold changed.
 
 The exact fault source SHA256 is c07b1b5e7a7addbe2b7b4ad63cb798503646a8f92cf14aa66a1fd35582a486f0, matching both original plan and recorded runtime source manifest. With recorded seed 4 and drop_fraction 0.1, the original SHA256(seed:200ms-window) rule expects KEEP at 34.1 s, DROP from 34.2 through 34.7 s (windows 171 through 173), and KEEP at 34.8 s. These are deterministic injection expectations, not observed input deliveries.
