@@ -1,5 +1,10 @@
 # RGB-D UAV target tracking and following
 
+**2026-11-03 15:24（北京时间）检查点：核心开发 12/12、安全 4/4 PASS；新扩展 probe02 已完成 5 场（3 PASS、1 FAIL、1 INCOMPLETE_EVIDENCE），第六场行人加减速速度控制正在执行。正式研究仍为 0/280。** [当前实时页](results/monitor_humble54_probe02_owner06/index.html)显示实际心跳和计数，[工作交接](planning/reliability-v4-current-state.md)记录边界。第五场组合故障的原 FAIL 与丢失悬停保护均如实保留，见[失败复核](planning/reliability-v4-probe02-combined-review-20261103.md)。完整扩展结束后已安排自动串行定标与容量核算；[空间风险](planning/reliability-v4-space-risk-20261103.md)尚未解决，不能据此宣称正式实验可以全部容纳。
+
+<details>
+<summary>此前检查点（按记录时间阅读，不代表当前进程状态）</summary>
+
 **2026-11-03 11:50（北京时间）：原扩展验证已结束6场：3 PASS、2 INCOMPLETE_EVIDENCE、1 FAIL；第七场行人加减速（位置控制）正在运行，9场未尝试，正式仍0/280。** [当前串行采集进度](results/project_progress/humble54_pending_collection03/index.html)包含完整16格分母；新采集器保留原结果，遇到新未知或安全/来源异常即停。第六场速度控制原PASS，距离/高度RMSE0.697/0.170m；组合场保留长窗预测与距离超标两项失败。行人输入补证已实际复核，见[原件与边界](tools/diagnostics/humble54_input_evidence02/README.md)；汽车两格及完整28格导航复评仍待完成。进程身份及下一步见[执行记录](planning/reliability-v4-execution-20261103.md)。下方均为历史快照。
 
 **2026-11-03 11:26（北京时间）：原扩展验证已完成 5 场，2 PASS、2 INCOMPLETE_EVIDENCE、1 FAIL；第六场行人加减速（速度控制）已启动，10 场尚未尝试，正式仍 0/280。** [当前单槽命令进度](results/project_progress/humble54_extension_speed_velocity04/index.html)与[执行记录](planning/reliability-v4-execution-20261103.md)包含真实进程身份及边界。组合扰动的长窗预测检查失败，但丢失悬停、减速、禁止自动恢复和重选等安全项通过，原 FAIL 保留。通信延迟的新命名网格修复诊断已实际完成，六项导航数值门均通过；原缺证终态不改，完整 28 格复评仍待执行。行人两份原始输入已提取并实际阅图，完整四槽输入附件尚未齐。下方 10:53 及更早块全部为历史快照。
@@ -126,6 +131,8 @@ Humble25原核心12格的9 PASS、3 FAIL保持不变：六个行人格均PASS，
 </details>
 
 当前v4计划正文见[修订计划书](docs/FINAL_PLAN_V4.md)；本轮正式Word/PDF仍待实际研究资料齐备后生成。历史交付与复核入口：[结果工件说明](docs/RESULTS_ARTIFACTS.md) · [查看与复核方法](docs/验收使用指南.md) · [三阶段历史状态](docs/THREE_STAGE_STATUS.md) · [已归档计划书](docs/最终版毕业设计计划书_最终版.docx)。历史结果页面和报告保留失败、身份未知、缺失及未执行项；工程通过与正式重复研究完成分别判断。
+
+</details>
 
 This repository implements a simulation-first RGB-D UAV target following system with YOLO11, 3-D Kalman filtering and PX4 Offboard control. Estimation and control remain independent from ROS 2, PX4 and Gazebo so the same core can be tested, replayed and connected to a future vehicle adapter.
 
