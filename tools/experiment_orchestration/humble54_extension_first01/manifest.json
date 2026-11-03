@@ -1,0 +1,193 @@
+{
+  "schema_version": 1,
+  "kind": "HUMBLE54_EXTENSION_FIRST_ORIGINAL_TERMINAL_MINIMAL_ARCHIVE",
+  "created_utc": "2026-11-03T01:44:08.343530+00:00",
+  "slot": "person_extension_depth_noise_seed004",
+  "source_plan": {
+    "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_matrix/plan.json",
+    "file_sha256": "f32fb17a77670f5c774076ff9bf4b752b3e91eea4f28021efb826ed9b8520055",
+    "plan_sha256": "ded5ab19b72f53c932cbea2044561a4e2fe937445cb07eb9525e9e0be5fc9761",
+    "copied": false
+  },
+  "terminal": {
+    "status": "PASS",
+    "execution_status": "COMPLETED",
+    "infrastructure_stop": false,
+    "flight_exit_code": 0,
+    "started_utc": "2026-11-03T01:15:27.076989+00:00",
+    "finished_utc": "2026-11-03T01:38:26.893766+00:00",
+    "file_sha256": "1382341a973f05555ba8e13dc4213102f933f3ccc72c5f18439e2ae98dd2978b",
+    "record_sha256": "ce0fff0fd3b63ae2f90d6ddc2daf7fe79376bfc32781a5748b455ab06fa3c928",
+    "record_digest_verified": true,
+    "start_id_plan_time_match": true,
+    "cleanup": {
+      "residual_processes": [],
+      "process_exit_codes": {
+        "gazebo": 0,
+        "agent": -2,
+        "px4": 0,
+        "bag": 0,
+        "monitor": 0,
+        "sensor_faults": 0,
+        "ros": 0
+      }
+    },
+    "engineering_evidence": {
+      "checks": {
+        "base_link_distance": true,
+        "base_link_height": true,
+        "navigation_coverage": true,
+        "truth_coverage": true,
+        "final_distance_settled": true,
+        "final_height_settled": true
+      },
+      "measured": {
+        "base_link_distance_rmse_m": 0.7579153021034524,
+        "base_link_height_rmse_m": 0.16198630847630732,
+        "valid_state_coverage": 0.9162234042553191,
+        "truth_coverage": 1.0
+      }
+    }
+  },
+  "reports": {
+    "recording_closure_status": "PASS",
+    "evaluations": [
+      {
+        "kind": "source_clock",
+        "result": "PASS",
+        "reported_verdict": "PASS",
+        "returncode": 0,
+        "error": null,
+        "report_sha256": "ef2b8a39e44ced35fee25ce685d28481d3bd03a34a0fe6271cba143389373754"
+      },
+      {
+        "kind": "native_startup",
+        "result": "PASS",
+        "reported_verdict": "PASS",
+        "returncode": 0,
+        "error": null,
+        "report_sha256": "e0a786411908f243339e4a6c8e3e93e23b8caa657fa9da42b9760ebdb4196f60"
+      },
+      {
+        "kind": "surface_flight",
+        "result": "PASS",
+        "reported_verdict": "PASS",
+        "returncode": 0,
+        "error": null,
+        "report_sha256": "2a704791bfd01db2f4118a0cc98f90abf4684fe94d65c651f01c3964201decc0"
+      },
+      {
+        "kind": "navigation",
+        "result": "RECORDED_WITH_CENSORED_FAILURES",
+        "reported_verdict": "RECORDED_WITH_CENSORED_FAILURES",
+        "returncode": 0,
+        "error": null,
+        "report_sha256": "4881703c037baccce346d7e113feaea5f67743e0d5e301f3eabacdf5c8076b19"
+      }
+    ],
+    "navigation_evaluation_status": "RECORDED_WITH_CENSORED_FAILURES",
+    "navigation_incomplete_reasons": []
+  },
+  "files": [
+    {
+      "source": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_matrix/slots/person_extension_depth_noise_seed004.json",
+      "archive": "originals/matrix/person_extension_depth_noise_seed004.json",
+      "bytes": 55109,
+      "sha256": "1382341a973f05555ba8e13dc4213102f933f3ccc72c5f18439e2ae98dd2978b",
+      "kind": "original_terminal",
+      "terminal_artifact_sha256": null,
+      "terminal_artifact_match": null
+    },
+    {
+      "source": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_matrix/slots/person_extension_depth_noise_seed004.started.json",
+      "archive": "originals/matrix/person_extension_depth_noise_seed004.started.json",
+      "bytes": 2233,
+      "sha256": "5d438d8b1390d03f68f13f653afee3547bb355e97fbc6af0c310559a80f42529",
+      "kind": "original_start",
+      "terminal_artifact_sha256": null,
+      "terminal_artifact_match": null
+    },
+    {
+      "source": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_person_extension_depth_noise_seed004/summary.json",
+      "archive": "originals/trial/summary.json",
+      "bytes": 4816,
+      "sha256": "8ed778674fc6a7beb7a5ee76296c5e2735d921f21bd41e9c36a9d5399a547249",
+      "kind": "original_trial_artifact",
+      "terminal_artifact_sha256": "8ed778674fc6a7beb7a5ee76296c5e2735d921f21bd41e9c36a9d5399a547249",
+      "terminal_artifact_match": true
+    },
+    {
+      "source": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_person_extension_depth_noise_seed004/recording_closure.json",
+      "archive": "originals/trial/recording_closure.json",
+      "bytes": 25782,
+      "sha256": "5006ef696c0593aef3f6ec61199fe1b0fc925ff855f3495c22fbe18901fefc53",
+      "kind": "original_trial_artifact",
+      "terminal_artifact_sha256": "5006ef696c0593aef3f6ec61199fe1b0fc925ff855f3495c22fbe18901fefc53",
+      "terminal_artifact_match": true
+    },
+    {
+      "source": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_person_extension_depth_noise_seed004/bag_integrity.json",
+      "archive": "originals/trial/bag_integrity.json",
+      "bytes": 5214,
+      "sha256": "49baee77e825ca9a6c1c404e8716dbb5ea659c9cb9b3bfba2fee6a8e600b0038",
+      "kind": "original_trial_artifact",
+      "terminal_artifact_sha256": "49baee77e825ca9a6c1c404e8716dbb5ea659c9cb9b3bfba2fee6a8e600b0038",
+      "terminal_artifact_match": true
+    },
+    {
+      "source": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_person_extension_depth_noise_seed004/px4_source_clock_report.json",
+      "archive": "originals/trial/px4_source_clock_report.json",
+      "bytes": 7957,
+      "sha256": "ef2b8a39e44ced35fee25ce685d28481d3bd03a34a0fe6271cba143389373754",
+      "kind": "original_trial_artifact",
+      "terminal_artifact_sha256": "ef2b8a39e44ced35fee25ce685d28481d3bd03a34a0fe6271cba143389373754",
+      "terminal_artifact_match": true
+    },
+    {
+      "source": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_person_extension_depth_noise_seed004/native_startup_report.json",
+      "archive": "originals/trial/native_startup_report.json",
+      "bytes": 9226,
+      "sha256": "e0a786411908f243339e4a6c8e3e93e23b8caa657fa9da42b9760ebdb4196f60",
+      "kind": "original_trial_artifact",
+      "terminal_artifact_sha256": "e0a786411908f243339e4a6c8e3e93e23b8caa657fa9da42b9760ebdb4196f60",
+      "terminal_artifact_match": true
+    },
+    {
+      "source": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_person_extension_depth_noise_seed004/flight_evaluation.json",
+      "archive": "originals/trial/flight_evaluation.json",
+      "bytes": 24371,
+      "sha256": "2a704791bfd01db2f4118a0cc98f90abf4684fe94d65c651f01c3964201decc0",
+      "kind": "original_trial_artifact",
+      "terminal_artifact_sha256": "2a704791bfd01db2f4118a0cc98f90abf4684fe94d65c651f01c3964201decc0",
+      "terminal_artifact_match": true
+    },
+    {
+      "source": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_person_extension_depth_noise_seed004/navigation_reference_evaluation.json",
+      "archive": "originals/trial/navigation_reference_evaluation.json",
+      "bytes": 149563,
+      "sha256": "4881703c037baccce346d7e113feaea5f67743e0d5e301f3eabacdf5c8076b19",
+      "kind": "original_trial_artifact",
+      "terminal_artifact_sha256": "4881703c037baccce346d7e113feaea5f67743e0d5e301f3eabacdf5c8076b19",
+      "terminal_artifact_match": true
+    }
+  ],
+  "derived_live_observation": {
+    "scope": "Timestamped external observation only; not trial-original evidence or a batch completion record",
+    "progress_generated_utc": "2026-11-03T01:44:07.757396+00:00",
+    "status": "RUNNING",
+    "evidence": {
+      "current_slot": "person_extension_depth_holes_seed004",
+      "planned_slots": 16,
+      "attempted_slots": 2,
+      "recorded_terminal_slots": 1,
+      "unattempted_slots": 14,
+      "status_counts": {
+        "PASS": 1
+      }
+    },
+    "waiter_heartbeat_utc": "2026-11-03T01:44:04.603462+00:00",
+    "waiter_status": "WAITING_FOR_EXTENSION",
+    "followon_launched": false
+  },
+  "claim_boundary": "Copies only nine named original JSON files, each <=1 MiB. Seven trial files match original terminal artifact_hashes; terminal/start have separately computed byte hashes and ID/plan/start-time binding. No bag/model/telemetry/large JSONL was opened. No original result was changed, no new evaluation or flight was run. One development-seed engineering PASS does not close extension16 or formal280; RECORDED_WITH_CENSORED_FAILURES remains unchanged."
+}

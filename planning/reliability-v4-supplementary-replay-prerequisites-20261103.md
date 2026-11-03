@@ -34,6 +34,7 @@ tracking_dev=/root/uav_tracking_fullplan_v4_humble54
 tracking_core="$tracking_dev/results/reliability_v4_humble54_core12_probe01_matrix/plan.json"
 tracking_calibration="$tracking_dev/results/reliability_v4_humble54_development_calibration01"
 export HUMBLE22_PROJECT_ROOT="$tracking_dev"
+export HUMBLE22_ROS_GZ_WS=/root/uav_humble22/ros_gz_shutdown_A01_ws
 export HUMBLE22_PX4_ROOT=/root/uav_humble22/PX4-Autopilot-v4mag
 export PYTHONDONTWRITEBYTECODE=1
 source "$tracking_dev/scripts/humble22_env.sh"
@@ -66,5 +67,7 @@ bash "$tracking_dev/scripts/run_research_session.sh" \
 5. 按[final55 staging卡](reliability-v4-final55-source-staging.md)准备与冷构建，再按normal card完成gate/safety assembly、core/extension发布及真实120/160定义。新delivery工具始终外置，不修改54或冷构建后的55全树。
 6. 固定audit registrar组装replay候选并发布canonical；实际最终源三登记齐全且所有正式槽尚未START时，分别生成detection与physical两份真实补充protocol并独立核pins/UTC/分母。原guard不消费它们，physical也未自动接入detection preflight。
 7. 完成真实seal、最终source sidecar与新formal55 supplementary合同/adapter/serial绑定，再由原guard逐槽执行。此处没有新增飞行、提前登记或准入。
+
+父任务另已授权准备外置 `D:/WSL/UAVHumble22-validation/run_humble54_closed_followon01.sh`，将第1—3步落实为一次性、失败停止的未来原生接续入口，含固定双SHA、真实终态/START/owner核验、现有idle查询、逐步骤真实日志和全新外部收据。该脚本目前仅准备及静审，本文没有执行它；Windows原调用句柄/创建时间与真正退出由父任务的独立等待器负责，不能靠owner文件提前接续。具体脚本SHA以独审完成后的最终绑定为准。
 
 真正正式录制齐备后，独立代理负责原图和无预测标签叠图审核，用户不必手工标注。physical/timing保留未知及完整分母；replay是给定同一录制轨迹的四法状态估计比较，不是四种控制器的闭环因果试验。最终报告和dashboard只引用实际生成并通过自身语义校验的独立附件。

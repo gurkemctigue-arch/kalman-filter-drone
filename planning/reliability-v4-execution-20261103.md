@@ -2,11 +2,12 @@
 
 本记录是执行检查点，不是全项目验收报告。用户已授权继续修复、仿真、统计、交付及 GitHub 同步。正式研究仍为 **0/280**。
 
-**09:19（北京时间）实际检查点：扩展 16 正在运行，1 START、0 终态、15 未开始。** 重新读取的进度生成于 `2026-11-03T01:18:48.490319+00:00`，状态 `RUNNING`，命令与监控器的创建身份及新鲜心跳核验通过。首场为 `person_extension_depth_noise_seed004`，原始槽 START 标记为 `01:15:27.076989 UTC`；Linux owner 于 `01:19:05.979500 UTC` 仍记录该活动槽。没有预记 PASS。核心 12/12 与安全 03 四场原始工程 PASS 均已闭合，正式仍为 0/280。
+**09:44（北京时间）实际检查点：扩展 16 正在运行，2 START、1 原始 PASS、14 未开始。** 重新读取的进度生成于 `2026-11-03T01:44:07.757396+00:00`，状态 `RUNNING`，命令与监控器的创建身份及新鲜心跳核验通过；当前为 `person_extension_depth_holes_seed004`，其 START 为 `01:38:29.546129 UTC`。首场深度噪声已于 `01:38:26.893766 UTC` 记录原始工程 PASS，未预记其余场景。核心 12/12 与安全 03 四场原始工程 PASS 均已闭合，正式仍为 0/280。
 
 ## 已实际完成
 
 - Humble54 同源核心 12 场原始工程 PASS 已闭合，保留同一开发种子的限制。
+- 扩展首场 `person_extension_depth_noise_seed004` 原始 PASS / COMPLETED，`flight_exit_code=0`、`infrastructure_stop=false`，清理残留列表为空；距离/高度 RMSE 为 0.7579153021/0.1619863085 m，有效状态覆盖 0.9162234043、真值覆盖 1.0，末端持续稳定均通过。navigation 原状态 `RECORDED_WITH_CENSORED_FAILURES` 保留。[首场最小原件](../tools/experiment_orchestration/humble54_extension_first01/README.md)含九个原始小型 JSON，七份试验报告与终态 artifact 哈希一致，终态内部摘要及 START 绑定核验通过；未读 bag 或改原评价。
 - 安全 02 于北京时间 08:08:49 结束：1 INFRASTRUCTURE_ERROR、3 未执行。五条子命令退出 0，但汇总读取不存在的 `result` 字段导致 `KeyError`；source/native 原报告采用 `evaluation_status`。
 - 修复只调整末尾汇总，source/native 仍由原 `read_evaluation` 严格校验。Windows 63 项专项检查运行成功，4 项平台条件跳过；其结果来自执行代理的实际工具返回，未另造原始日志。
 - Ubuntu 22.04/Humble 实际 5 项回归全部通过，2.692 秒、无跳过；保存原始日志及退出码。它们是组件测试，不是五次飞行。
@@ -18,11 +19,17 @@
 - 冻结运行根：`/root/uav_tracking_fullplan_v4_humble54`；没有修改冻结飞行源码。
 - [实时进度](../results/project_progress/humble54_extension16_run01/index.html)；[原计划](../results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_matrix/plan.json)。计划于 `01:15:23.564925 UTC` 实际创建，模式 `EXTENSION_PROBE`，共 16 场开发种子 004；未消耗正式种子。
 - 计划原文件 SHA256：`f32fb17a77670f5c774076ff9bf4b752b3e91eea4f28021efb826ed9b8520055`；登记 digest：`ded5ab19b72f53c932cbea2044561a4e2fe937445cb07eb9525e9e0be5fc9761`。这两个值分别绑定文件字节与计划内容，不能混用。
-- [Linux owner 状态](../results/frozen_fullplan_v4_humble54/humble54_extension16_owner01/owner_state.json)：PID 134468、start ticks `7830987`、boot ID `f79204a4-99cd-42cf-b886-aa905b1cac6a`，状态 `RUNNING`。owner 的待完成计数包含正在执行的首场；START/终态计数以上述实际进度和原槽标记为准。
+- [Linux owner 状态](../results/frozen_fullplan_v4_humble54/humble54_extension16_owner01/owner_state.json)：启动时 PID 134468、start ticks `7830987`、boot ID `f79204a4-99cd-42cf-b886-aa905b1cac6a`。09:19 的 RUNNING 记录是历史观察；当前 START/终态计数以上述 09:44 实际进度和原槽标记为准。
 - Windows monitor PID 19256，creation FILETIME `134381420603083387`；owned WSL 命令 PID 4888，creation FILETIME `134381420604764583`。本轮 unified-exec session 为 29911。
 - 临时防休眠 observer PID 44952，依据 `D:/WSL/UAVHumble22-validation/power_owner54/receipt04/state.json`：09:18:41 状态 `ACTIVE`，API request 返回 `2147483648`，绑定 monitor 19256 的上述创建身份；不改变全局电源策略。旧 observer 50284 不属于此当前有效收据，不能混用。
 
 只保留一个重型原生任务，扩展批次活动期间不另开 WSL/仿真或录包分析。保留每个原始终态；基础设施或证据门失败仍先停止定位，不改称普通压力算法失败。
+
+## 已实际启动的有条件后续等待器
+
+Windows waiter 于 `01:37:42.141035 UTC` 启动，PID 28932、creation FILETIME `134381434621456534`，运行 `D:/WSL/UAVHumble22-validation/wait_humble54_extension_followon01.py --execute`。`01:44:04.603462 UTC` 实读状态仍为 `WAITING_FOR_EXTENSION`、`followon_launched=false`，原 monitor/WSL 精确句柄退出码均为 null；并未启动后续原生步骤。实际启动、等待快照与来源文件见[独立原件归档](../tools/experiment_orchestration/humble54_closed_followon01/manifest.json)。
+
+等待器持有原 monitor PID 19256 / FILETIME `134381420603083387` 与 WSL PID 4888 / FILETIME `134381420604764583` 的句柄；须等待原进程退出并完成闭合核验，才有条件顺序执行八步：元数据预检、空闲检查、源码暂存、28 格容量统计、物理卷清单采集、行人指定开发录包导出、汽车指定开发录包导出、R0 定标。无自动重试，未创建正式准入、final55 最终构建、参数假设收据或新飞行。防休眠仅为临时系统请求，不改变全局电源策略；正式仍为 0/280。
 
 ## 已结束的安全 03 批次（历史检查点）
 

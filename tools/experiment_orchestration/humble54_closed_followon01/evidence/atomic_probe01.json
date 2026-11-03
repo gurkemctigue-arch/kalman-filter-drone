@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "kind": "SYNTHETIC_WAITER_ATOMIC_PUBLICATION_FIXTURES",
+  "started_utc": "2026-11-03T01:35:30.919423+00:00",
+  "invocation_argv": [
+    "C:\\Program Files\\Python312\\python.exe",
+    "-B",
+    "D:/WSL/UAVHumble22-validation/probe_wait_humble54_extension_atomic01.py"
+  ],
+  "source_path": "D:\\WSL\\UAVHumble22-validation\\wait_humble54_extension_followon01.py",
+  "source_sha256_before": "86ecaa7a788761259dadff87979ced75ae1e82366c068abb85bcdacbd8332610",
+  "real_windows_handles_opened": false,
+  "sleep_api_called": false,
+  "waiter_execute_called": false,
+  "wsl_or_child_started": false,
+  "fixtures": [
+    {
+      "name": "winerror32_then_success",
+      "result": "PASS",
+      "replace_calls": 2,
+      "sleep_requests_s": [
+        0.02
+      ],
+      "own_temporary_files_remaining": 0
+    },
+    {
+      "name": "nonsharing_immediate_raise_preserves_published",
+      "result": "PASS",
+      "replace_calls": 1,
+      "sleep_requests_s": [],
+      "published_bytes_unchanged": true,
+      "own_temporary_files_remaining": 0
+    }
+  ],
+  "result": "PASS_TWO_SYNTHETIC_PUBLICATION_FIXTURES_ONLY",
+  "source_sha256_after": "86ecaa7a788761259dadff87979ced75ae1e82366c068abb85bcdacbd8332610",
+  "source_unchanged": true,
+  "finished_utc": "2026-11-03T01:35:30.931422+00:00",
+  "actual_probe_exit_code": 0
+}

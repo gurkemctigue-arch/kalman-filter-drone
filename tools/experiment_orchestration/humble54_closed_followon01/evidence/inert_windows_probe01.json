@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "kind": "ACTUAL_WINDOWS_WAITER_INERT_HANDLE_PROBE",
+  "started_utc": "2026-11-03T01:36:45.250714+00:00",
+  "pid": 51596,
+  "invocation_argv": [
+    "C:\\Program Files\\Python312\\python.exe",
+    "-B",
+    "D:/WSL/UAVHumble22-validation/probe_wait_humble54_extension_followon01.py"
+  ],
+  "source": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\wait_humble54_extension_followon01.py",
+    "size_bytes": 24595,
+    "sha256_before": "86ecaa7a788761259dadff87979ced75ae1e82366c068abb85bcdacbd8332610",
+    "sha256_after": "86ecaa7a788761259dadff87979ced75ae1e82366c068abb85bcdacbd8332610",
+    "unchanged": true
+  },
+  "executed_waiter_execute": false,
+  "sleep_api_called": false,
+  "wsl_or_child_started": false,
+  "handles": [
+    {
+      "role": "OLD_MONITOR",
+      "pid": 19256,
+      "observed_creation_filetime": 134381420603083387,
+      "expected_creation_filetime": 134381420603083387,
+      "creation_matches": true,
+      "exit_if_signaled": null,
+      "observation_utc": "2026-11-03T01:36:45.313051+00:00"
+    },
+    {
+      "role": "OLD_WSL",
+      "pid": 4888,
+      "observed_creation_filetime": 134381420604764583,
+      "expected_creation_filetime": 134381420604764583,
+      "creation_matches": true,
+      "exit_if_signaled": null,
+      "observation_utc": "2026-11-03T01:36:45.313051+00:00"
+    }
+  ],
+  "result": "PASS_INERT_ONLY_BOTH_EXACT_PROCESSES_STILL_RUNNING",
+  "default_main": {
+    "returncode": 2,
+    "future_outputs_created": false
+  },
+  "handle_close_results": [
+    true,
+    true
+  ],
+  "finished_utc": "2026-11-03T01:36:45.314102+00:00",
+  "actual_probe_exit_code": 0,
+  "scope": "Only inert default and real current-process identity/liveness; no real exit0 observed or claimed"
+}

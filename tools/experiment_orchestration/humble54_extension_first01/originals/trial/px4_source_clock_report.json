@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "evaluation_status": "PASS",
+  "source_clock_pass": true,
+  "clock_domain_valid": true,
+  "vehicle_frame_continuity_valid": true,
+  "configuration": {
+    "px4_time_mode": "source_sim",
+    "use_sim_time": true,
+    "command_topic": "/tracking/flight_command",
+    "trajectory_setpoint_topic": "/fmu/in/trajectory_setpoint",
+    "offboard_control_mode_topic": "/fmu/in/offboard_control_mode",
+    "vehicle_odometry_topic": "/fmu/out/vehicle_odometry",
+    "vehicle_odom_topic": "/vehicle/odometry",
+    "vehicle_status_topic": "/fmu/out/vehicle_status_v1",
+    "vehicle_command_ack_topic": "/fmu/out/vehicle_command_ack",
+    "require_vehicle_status": true,
+    "vehicle_status_timeout_s": 1.0,
+    "publish_rate_hz": 50.0,
+    "command_timeout_s": 0.5,
+    "odometry_timestamp_mode": "source_sim",
+    "odometry_source_max_age_s": 0.5,
+    "odometry_source_max_future_s": 0.05,
+    "odometry_timing_topic": "/vehicle/odometry_timing",
+    "uxrce_dds_synct": 0,
+    "recorded_configuration_evidence": {
+      "run_config": {
+        "path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_extension16_probe01_person_extension_depth_noise_seed004/run_config.json",
+        "sha256": "76c47844e4d3002128058465adf54840f9f028a25f4bec34f0d44d2ee2a09672"
+      },
+      "runtime_parameters": {
+        "path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_extension16_probe01_person_extension_depth_noise_seed004/configuration/runtime_parameters.yaml",
+        "sha256": "aaacecfd529532c2caa93bb6f8648ba6af4237524cee0e68c5d77c3df918678b"
+      },
+      "px4_parameters": {
+        "path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_extension16_probe01_person_extension_depth_noise_seed004/configuration/px4_parameters.json",
+        "sha256": "e349c490b0622e2e5c51b47b6ad4bd6c66475076c3a01744ff33eeed57b50276"
+      }
+    }
+  },
+  "interval": {
+    "start_s": 0.5800000000000001,
+    "end_s": 96.252,
+    "basis": "first raw delivery through full recorded /clock end; loss tails retained"
+  },
+  "counts": {
+    "raw_px4": 9563,
+    "timing_diagnostics": 9563,
+    "adapted_odometry": 9563,
+    "claimed_accepted": 9563,
+    "claimed_rejected": 0,
+    "independently_matched_triplets": 9563
+  },
+  "failures": {},
+  "clock_domain_failures": {},
+  "vehicle_frame_failures": {},
+  "incomplete_evidence": {},
+  "independent_reason_counts": {
+    "validated_source_stamp": 9563
+  },
+  "metrics": {
+    "diagnostic_receipt_to_recorder_s": {
+      "count": 9563,
+      "mean": 0.00020244693087944984,
+      "median": 0.0,
+      "p95": 7.105427357601002e-15,
+      "max": 0.01600000000000179,
+      "rmse": 0.0009255457564011828,
+      "mean_absolute": 0.0002024469308794499,
+      "p95_absolute": 7.105427357601002e-15,
+      "max_absolute": 0.01600000000000179
+    },
+    "source_to_adapter_receipt_s": {
+      "count": 9563,
+      "mean": 0.0028673010561540025,
+      "median": 0.003999999999997783,
+      "p95": 0.008000000000002672,
+      "max": 0.008000000000009777,
+      "rmse": 0.004042439299083107,
+      "mean_absolute": 0.0028806859772038816,
+      "p95_absolute": 0.008000000000002672,
+      "max_absolute": 0.008000000000009777
+    },
+    "source_to_raw_recorder_s": {
+      "count": 9563,
+      "mean": 0.002602112307853303,
+      "median": 0.003999999999990678,
+      "p95": 0.008000000000000007,
+      "max": 0.0239999999999867,
+      "rmse": 0.0037842030083281857,
+      "mean_absolute": 0.002622189689428122,
+      "p95_absolute": 0.008000000000000007,
+      "max_absolute": 0.0239999999999867
+    },
+    "sample_to_publication_s": {
+      "count": 9563,
+      "mean": 0.0,
+      "median": 0.0,
+      "p95": 0.0,
+      "max": 0.0,
+      "rmse": 0.0,
+      "mean_absolute": 0.0,
+      "p95_absolute": 0.0,
+      "max_absolute": 0.0
+    },
+    "source_to_odometry_recorder_s": {
+      "count": 9563,
+      "mean": 0.0030747673324271565,
+      "median": 0.003999999999997783,
+      "p95": 0.008000000000002672,
+      "max": 0.03599999999999781,
+      "rmse": 0.004253004547820353,
+      "mean_absolute": 0.003076440447558392,
+      "p95_absolute": 0.008000000000002672,
+      "max_absolute": 0.03599999999999781
+    },
+    "adapter_receipt_to_odometry_recorder_s": {
+      "count": 9563,
+      "mean": 0.0002074662762731542,
+      "median": 0.0,
+      "p95": 0.003999999999990678,
+      "max": 0.03599999999999781,
+      "rmse": 0.0009985873112632443,
+      "mean_absolute": 0.00020746627627315424,
+      "p95_absolute": 0.003999999999990678,
+      "max_absolute": 0.03599999999999781
+    }
+  },
+  "continuity": {
+    "raw_px4": {
+      "max_gap_s": 0.055999999999997385,
+      "threshold_s": 0.5,
+      "violations": [],
+      "tail_s": 0.007999999999995566
+    },
+    "matched_adapted_odometry": {
+      "max_gap_s": 0.055999999999997385,
+      "threshold_s": 0.5,
+      "violations": [],
+      "tail_s": 0.003999999999990678
+    }
+  },
+  "claim_boundary": "PASS only establishes this recorded source_sim timestamp/correspondence/continuity contract. A correct rejection of wrong-domain or regressing source clocks is reported as a failed clock trial, not a clock pass. Startup before the first raw delivery is outside the interval; all later silence through the last recorded /clock remains. Adapter receipt and recorder delivery are distinct; delivery uses latest /clock with 50ms quantization allowance. No affine offset, lag, GT or target fit is used. A near-receipt source timestamp does not independently certify hardware acquisition latency or physical pose accuracy.",
+  "bag": {
+    "storage_identifier": "sqlite3",
+    "compression_format": "zstd",
+    "compression_mode": "file",
+    "reader": "SequentialCompressionReader",
+    "source_bag_read_only": true,
+    "decompression_cache": "temporary directory, removed after reading",
+    "bag": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_person_extension_depth_noise_seed004/rosbag",
+    "topic_types": {
+      "/fmu/out/vehicle_odometry": "px4_msgs/msg/VehicleOdometry",
+      "/vehicle/odometry_timing": "std_msgs/msg/String",
+      "/clock": "rosgraph_msgs/msg/Clock",
+      "/vehicle/odometry": "nav_msgs/msg/Odometry"
+    },
+    "read_errors": {},
+    "scope": "Only clock/raw PX4/timing/adapted odometry, no images or truth. Latest recorded clock supplies delivery; no wall/sim subtraction."
+  },
+  "trial": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_extension16_probe01_person_extension_depth_noise_seed004",
+  "frames_path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_extension16_probe01_person_extension_depth_noise_seed004/px4_source_clock_report.frames.jsonl",
+  "evaluation_source": {
+    "script": "/root/uav_tracking_fullplan_v4_humble54/scripts/evaluate_px4_source_clock.py",
+    "script_sha256": "92b13e0a112546f10ff6e77d84aace0fc40126d1f5021a92464d47fc82c4ac4a",
+    "dependencies": {
+      "/root/uav_tracking_fullplan_v4_humble54/scripts/evaluate_stage1_flight.py": "655cf6fc7c0cc2a954db7d06d2fbb00a000f2fca80ba0930d153025e28efb7c1",
+      "/root/uav_tracking_fullplan_v4_humble54/ros2_ws/src/uav_tracking_px4_adapter/uav_tracking_px4_adapter/adapter_node.py": "5de4d83c8b780bbcf4b6bcadfc76e3ba5b9dc3fe344c6f92cc5c7c2c16c31622",
+      "/root/uav_tracking_fullplan_v4_humble54/ros2_ws/src/uav_tracking_px4_adapter/uav_tracking_px4_adapter/source_clock.py": "d9e94e63f39fe95479025904b8095ecdb88212354df262a1b3c6d1515915df33",
+      "/root/uav_tracking_fullplan_v4_humble54/ros2_ws/src/uav_tracking_px4_adapter/uav_tracking_px4_adapter/frame_guard.py": "e46c93474d53e1fc815c27d135c68b76b60117875e6294be3b9f75220eb168ba"
+    },
+    "scope": "Actual offline evaluator hashes; separate from flight-frozen code. Clock decisions are checked independently, not replayed through the online source-clock class."
+  }
+}
