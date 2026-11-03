@@ -365,7 +365,9 @@ def audit_slot(context, registry, trial, row):
     infra = runner.infrastructure_evidence(directory, [{"report": str(directory / report_files(trial)[kind]),
         "log": row["executions"][kind]["log"], "returncode": row["executions"][kind]["returncode"]} for kind in COMMANDS[1:]])
     require(infra.get("stop") is False, "Safety infrastructure/recording failed")
-    return "PASS" if all(report["result"] == "PASS" for report in reports.values()) else "FAIL"
+    # Source/native verdicts already passed the original normalized reader;
+    # their raw reports use evaluation_status rather than result.
+    return "PASS" if all(reports[kind]["result"] == "PASS" for kind in ("specialized", "terminal_speed")) else "FAIL"
 
 
 def summary_and_validate(context, registry_path, facts_path, summary_path):

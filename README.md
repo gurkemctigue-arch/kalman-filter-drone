@@ -1,8 +1,8 @@
 # RGB-D UAV target tracking and following
 
-**2026-11-03 08:06（北京时间）检查点：Humble54 核心 12/12 原始工程 PASS 已闭合；新的安全 02 批次正在运行，正式研究仍为 0/280。** 已核验新命令、监控器和 Linux owner 身份及新鲜心跳：首场 `person_auto_unique_multi_seed004` 于 08:01:32 开始，目前 1 场 START、0 场终态、3 场未开始，尚无安全 02 PASS。查看本机[安全 02 实时进度](results/project_progress/humble54_safety4_run02/index.html)及[核心 12 场闭合原件](tools/experiment_orchestration/humble54_core12_closed01/README.md)。
+**2026-11-03 08:08:49（北京时间）终止检查点：安全 02 批次已停止，原始结果为 1 场基础设施错误、3 场未执行；正式研究仍为 0/280。** Linux owner 于 08:08:48 记录 `STOPPED_FAULT`，被监控命令于 08:08:49 退出 2；首场 `person_auto_unique_multi_seed004` 的原状态为 `INFRASTRUCTURE_ERROR`，没有安全 02 PASS，也没有自动重试。此前 08:06 的运行快照已由本终态取代。查看本机[安全 02 命令终态](results/project_progress/humble54_safety4_run02/index.html)、[最终摘要](results/project_progress/humble54_safety4_run02/end_summary.json)及[原始执行终态](results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety02_audit/execution_terminal.json)。[核心 12/12 原始工程 PASS](tools/experiment_orchestration/humble54_core12_closed01/README.md)仍保留，不能代替安全关口。
 
-安全 01 的历史失败完整保留：07:42:37 `STOPPED_FAULT`、命令退出 2，首场原始 `INFRASTRUCTURE_ERROR`、其余 3 场未执行；5 条子命令退出 0 不能改记安全 PASS。已修正 results 符号链接下冻结评价器命令目录的路径绑定，并在真实 Humble 环境完成 2 项针对性测试（0.896 秒、全部通过、无跳过），仍拒绝替换 source/native 评价器。这仅验证工具修复，安全飞行须以新批次原始终态为准。见[修复与原生小测证据](tools/diagnostics/safety54_symlink_recovery02/README.md)及[安全 01 原终态](results/project_progress/humble54_safety4_run01/index.html)。
+安全 01 的历史失败完整保留：07:42:37 `STOPPED_FAULT`、命令退出 2，首场原始 `INFRASTRUCTURE_ERROR`、其余 3 场未执行；5 条子命令退出 0 不能改记安全 PASS。results 符号链接下冻结评价器命令目录的路径绑定修复，已在真实 Humble 环境完成 2 项针对性测试（0.896 秒、全部通过、无跳过），并保持对替换 source/native 评价器的拒绝。这仅验证工具修复，未使随后安全 02 通过；本次基础设施停止原因须依据原件继续诊断。见[修复与原生小测证据](tools/diagnostics/safety54_symlink_recovery02/README.md)及[安全 01 原终态](results/project_progress/humble54_safety4_run01/index.html)。
 
 已有开发录包的[时序与严格 lineage 分析](tools/diagnostics/humble54_dev_timing01/README.md)已实际完成导出和两项分析，三条命令均退出 0。48,104 条规范化事件由 47,177 条选定 bag 话题消息及 927 条 job 记录组成；10 Hz 是来源时钟速率，检测处理前缀墙钟中位数约 26 ms，采集至预发布来源时钟中位数 80 ms。真实端到端时延与工作线程墙钟 FPS 仍未观测；严格 lineage 的 1,857 条命令仍为 0 已知、1,857 未知，不能把共享图像时间戳的多个状态候选改为唯一因果关系。
 

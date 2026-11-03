@@ -59,6 +59,13 @@ def lifecycle_fixture(root, *, linked=False):
     _, old, runtime, _, facts, _ = fixtures.safety_fixture(root, linked=linked)
     plan, dev = old.development, Path(old.development["frozen_root"])
     plan["protocol"] = old.core["protocol"]
+    reader = guard.import_file("public_safety_actual_report_reader", ROOT / "scripts/run_reliability_v4.py")
+    evaluators = {"source_clock": "scripts/evaluate_px4_source_clock.py", "native_startup": "scripts/evaluate_native_startup.py"}
+    for relative in set(evaluators.values()) | {name for kind in evaluators for name in reader.REPORT_PROVENANCE_HELPERS[kind]}:
+        source = dev / relative
+        source.parent.mkdir(parents=True, exist_ok=True)
+        source.write_text("# Inert evaluator provenance fixture; never executed\n", encoding="utf-8")
+        plan["source_hashes"][relative] = guard.sha(source)
     registry = guard.load(facts["registry"]["path"])
     registry["split_clock_bridge"] = plan["split_clock_bridge"] = False
     audit = root / "audit"
@@ -72,8 +79,22 @@ def lifecycle_fixture(root, *, linked=False):
         config.update(split_clock_bridge=False, dds_runtime_registration=reg["path"])
         write(directory / "run_config.json", config)
         sources = guard.load(directory / "configuration/source_sha256.json")
+        sources.update({name: digest for name, digest in plan["source_hashes"].items()
+                        if name.startswith(("scripts/", "uav_tracking/", "ros2_ws/src/")) and Path(name).suffix in {".py", ".sh", ".msg"}})
         sources["config/dds_runtime_humble22.json"] = reg["sha256"]
         write(directory / "configuration/source_sha256.json", sources)
+        for kind, script in evaluators.items():
+            report = {"schema_version": 1, "evaluation_status": "PASS", "trial": str(directory),
+                "failures": {}, "incomplete_evidence": {}, "evaluation_source": {
+                    "script_sha256": plan["source_hashes"][script], "dependencies": {
+                        str(dev / name): plan["source_hashes"][name] for name in reader.REPORT_PROVENANCE_HELPERS[kind]}}}
+            if kind == "source_clock":
+                report.update(source_clock_pass=True, clock_domain_valid=True, vehicle_frame_continuity_valid=True,
+                    counts={"raw_px4": 3, "timing_diagnostics": 3, "adapted_odometry": 3, "claimed_accepted": 3,
+                            "claimed_rejected": 0, "independently_matched_triplets": 3})
+            else:
+                report.update(native_startup_pass=True, checks={name: True for name in reader.NATIVE_STARTUP_CHECKS})
+            write(directory / safety.report_files(trial)[kind], report)
         trial["flight_argv"].append("--no-split-clock-bridge")
         trial["execution_commands"] = {kind: list(value["argv"]) for kind, value in slot["executions"].items()}
         trial["execution_commands"]["flight"] = trial["flight_argv"]
@@ -115,6 +136,11 @@ def lifecycle_fixture(root, *, linked=False):
                 report["checks"][next(iter(report["checks"]))] = False
                 report["result"] = "FAIL"
                 write(directory / reports[kind], report)
+            if failure.get("mutate_report"):
+                path = directory / reports[kind]
+                report = guard.load(path)
+                failure["mutate_report"](report)
+                write(path, report)
         return {"command": list(argv), "returncode": code, "started_utc": fixtures.guard.now().isoformat(),
                 "finished_utc": fixtures.guard.now().isoformat(), "log": str(log), "error": failure.get("receipt_error")}
     runner = runtime.v4
@@ -124,6 +150,7 @@ def lifecycle_fixture(root, *, linked=False):
     runner.run_lock = lambda output: nullcontext()
     runner.simulation_processes = lambda: []
     runner.POSTPROCESSING_TIMEOUT_S = 10
+    runner.read_evaluation = reader.read_evaluation
     plan["evaluation_timeout_s"] = 10
     # Rebind the original input after the test-only timeout was added.
     write(old.development_path, plan)
@@ -146,6 +173,11 @@ class PublicSafetyLifecycleTests(unittest.TestCase):
             result = self.invoke(context, registry, path)
             self.assertEqual(result["status"], "COMPLETED", result)
             self.assertEqual(len(calls), 20)
+            for trial in registry["trials"]:
+                for kind in ("source_clock", "native_startup"):
+                    report = guard.load(Path(trial["directory"]) / safety.report_files(trial)[kind])
+                    self.assertEqual(report["evaluation_status"], "PASS")
+                    self.assertNotIn("result", report)
             with patch.object(safety, "checked_registry", return_value=(context, registry, path)):
                 checked = safety.check(path, guard.sha(path))
             self.assertTrue(checked["all_four_original_pass"])
@@ -206,6 +238,58 @@ class PublicSafetyLifecycleTests(unittest.TestCase):
                     receipt.write_text('{}', encoding="utf-8")
                 with patch.object(safety, "checked_registry", return_value=(context, registry, path)), self.assertRaises(ValueError):
                     safety.check(path, guard.sha(path))
+
+
+class RawEvaluatorSchemaSafetyTests(unittest.TestCase):
+    invoke = PublicSafetyLifecycleTests.invoke
+
+    def test_source_and_native_missing_confused_or_failed_status_never_pass(self):
+        for kind in ("source_clock", "native_startup"):
+            for variant in ("missing", "result_only", "failed_with_result_pass", "contradictory_pass"):
+                with self.subTest(kind=kind, variant=variant), tempfile.TemporaryDirectory() as folder:
+                    context, registry, path, calls, failure = lifecycle_fixture(Path(folder))
+                    def mutate(report):
+                        if variant in {"missing", "result_only"}:
+                            del report["evaluation_status"]
+                            if variant == "result_only":
+                                report.update(result="PASS", status="PASS")
+                        elif variant == "failed_with_result_pass":
+                            report.update(evaluation_status="FAIL", result="PASS", failures={"inert_failure": 1})
+                            report[kind + "_pass"] = False
+                            if kind == "native_startup":
+                                report["checks"][next(iter(report["checks"]))] = False
+                        else:
+                            report[kind + "_pass"] = False
+                    failure.update(kind=kind, mutate_report=mutate)
+                    result = self.invoke(context, registry, path)
+                    self.assertEqual(result["status"], "STOPPED_FAULT", result)
+                    self.assertEqual((result["attempted_count"], result["pending_count"]), (1, 3))
+                    self.assertEqual([command for _, command in calls], list(safety.COMMANDS))
+                    original = guard.load(path.parent / (registry["trials"][0]["id"] + ".json"))
+                    self.assertEqual(original["status"], "INFRASTRUCTURE_ERROR")
+                    self.assertIn("Independent safety clock/native evaluation did not PASS", original["error"])
+
+    def test_specialist_and_tail_still_require_result_and_preserve_algorithm_fail(self):
+        for kind in ("specialized", "terminal_speed"):
+            for variant in ("missing", "status_only", "fail_with_status_pass"):
+                with self.subTest(kind=kind, variant=variant), tempfile.TemporaryDirectory() as folder:
+                    context, registry, path, calls, failure = lifecycle_fixture(Path(folder))
+                    def mutate(report):
+                        if variant in {"missing", "status_only"}:
+                            del report["result"]
+                            if variant == "status_only":
+                                report.update(status="PASS", evaluation_status="PASS")
+                        else:
+                            report.update(result="FAIL", status="PASS", evaluation_status="PASS")
+                            report["checks"][next(iter(report["checks"]))] = False
+                    failure.update(kind=kind, mutate_report=mutate)
+                    result = self.invoke(context, registry, path)
+                    self.assertEqual(result["status"], "STOPPED_FAULT", result)
+                    self.assertEqual([command for _, command in calls], list(safety.COMMANDS))
+                    original = guard.load(path.parent / (registry["trials"][0]["id"] + ".json"))
+                    self.assertEqual(original["status"], "FAIL" if variant == "fail_with_status_pass" else "INFRASTRUCTURE_ERROR")
+                    if variant != "fail_with_status_pass":
+                        self.assertIn("Safety report verdict/complete check set contradicts evidence", original["error"])
 
 
 class ResultsSymlinkSafetyTests(unittest.TestCase):
