@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "reviewed_utc": "2026-11-03T12:55:57.169048+00:00",
+  "reviewer": "/root/continuation06_preparation",
+  "status": "CAPACITY_ONLY_REFRESH_NO_BLOCKING_ISSUE",
+  "source": {
+    "path": "D:\\基于yolo和卡尔曼滤波\\tools\\experiment_orchestration\\humble54_closed_measurement01\\refresh_capacity_after28.py",
+    "bytes": 27085,
+    "sha256": "a67a90f7786a1c8e918cd8953d2447f77d0667cb74404d44813917daf3534002"
+  },
+  "preserved_measurement_source_sha256": "f32bd4bc97e58a15417fb9757eceb7e7cf2de2cb4e16ac5df54d200a40bae3b0",
+  "review_finding_fixed": "Earlier2cd768 source had no total derived read limit. Final source enforces independent16MiB stat cap, bounded1MiB chunks, at most one sentinel growth byte, SHA and before/after stat checks. Earlier source is not approved.",
+  "checks": {
+    "authentic_first_7_step_size_refusal_window_required": true,
+    "authentic_continuation_6_zero_exit_final_capacity_refusal_window_required": true,
+    "all_1107_continuation_bindings_revalidated": true,
+    "full28_and_690_measurement_bindings_reused_and_revalidated": true,
+    "original_negative_budget_schema_and_final_known_physical_deficit_independently_verified": true,
+    "R0_two_class_export_evidence_digests_verified_from_real_small_R0": true,
+    "eight_derived_paths_restricted_to_authenticated_R0_outputs": true,
+    "independent_16MiB_streaming_hash_does_not_broaden_original_Inputs_gates": true,
+    "old_and_new_storage_object_and_digest_must_match": true,
+    "only_inventory_binding_and_actual_free_capacity_can_change_in_provenance_preview": true,
+    "negative_unknown_or_contract_changed_budget_retained_with_exit2": true,
+    "only_original_idle_physical_inventory_full280_budget_commands": true,
+    "same_original_machine_lock_and_fixed_sources": true,
+    "fresh_external_receipt_and_original_evidence_unchanged": true
+  },
+  "independent_validation": {
+    "targeted_author_fixtures_passed": 7,
+    "targeted_author_fixtures_failed": 0,
+    "additional_budget_contract_cases_passed": 7,
+    "additional_budget_contract_cases_failed": 0,
+    "real_derived_payload_reads": 0,
+    "real_bag_model_payload_reads": 0,
+    "native_or_WSL_commands_started": 0
+  },
+  "real_small_provenance": {
+    "negative_budget": {
+      "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\full280_storage_budget_probe02_after07_01\\budget.json",
+      "bytes": 94327,
+      "sha256": "2af067022931d87e5c1e74eccef8457f4d735dc7d17819d331ea9eadf6c94b4b"
+    },
+    "R0_candidate": {
+      "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_development_calibration_probe02_after07_01\\R0_candidate.json",
+      "bytes": 316797,
+      "sha256": "6e259c6491fcf61f608f3ca4f702e6dac3b3003ff22ef4dc8bf6fa9aeadc500b"
+    },
+    "budget_small_inputs_count": 144,
+    "budget_non_inventory_small_inputs_count": 143
+  },
+  "derived_metadata_only": [
+    {
+      "class": "person",
+      "name": "arrays.json",
+      "bytes_from_stat": 12343090,
+      "sha256_declared_by_authenticated_R0": "204826eab7ab25f70489c985cff864492d925c1b560b2ab61881805ddf7189f0",
+      "payload_read_by_reviewer": false
+    },
+    {
+      "class": "person",
+      "name": "online_equivalence.json",
+      "bytes_from_stat": 9715374,
+      "sha256_declared_by_authenticated_R0": "be1318bcad84636d710dbf8d63caba92f501a742bf46e03d39bffad0b2a3047c",
+      "payload_read_by_reviewer": false
+    },
+    {
+      "class": "person",
+      "name": "native_state_audit.json",
+      "bytes_from_stat": 1607093,
+      "sha256_declared_by_authenticated_R0": "b2a6c62b76447c4ae1523f9e6900d3422bc444d702dab181bfc3e8d8914342d3",
+      "payload_read_by_reviewer": false
+    },
+    {
+      "class": "person",
+      "name": "truth_alignment.json",
+      "bytes_from_stat": 113189,
+      "sha256_declared_by_authenticated_R0": "d0118999806719990b1351c893285716e11a15d79c09145763dacac2dc36e741",
+      "payload_read_by_reviewer": false
+    },
+    {
+      "class": "car",
+      "name": "arrays.json",
+      "bytes_from_stat": 13138558,
+      "sha256_declared_by_authenticated_R0": "03ffb72f0342a7160e4232ad171826f4314e4d0e6f53f191a683e2b62ff7383c",
+      "payload_read_by_reviewer": false
+    },
+    {
+      "class": "car",
+      "name": "online_equivalence.json",
+      "bytes_from_stat": 9713506,
+      "sha256_declared_by_authenticated_R0": "85de305ef429fccbdd7d9aa777926aabe67d0d59bdb15cc234f6b7db78e4c733",
+      "payload_read_by_reviewer": false
+    },
+    {
+      "class": "car",
+      "name": "native_state_audit.json",
+      "bytes_from_stat": 1605388,
+      "sha256_declared_by_authenticated_R0": "050f81a0d6b85d744f1f377ee1c2c43d82332ee70f3f776356f0b166e2012358",
+      "payload_read_by_reviewer": false
+    },
+    {
+      "class": "car",
+      "name": "truth_alignment.json",
+      "bytes_from_stat": 113102,
+      "sha256_declared_by_authenticated_R0": "5d0736f10538c19d9de71e22534076d1af48962842d289b6ddeac2fdf387d732",
+      "payload_read_by_reviewer": false
+    }
+  ],
+  "conclusion": "The fixed explicit capacity-only refresh may be executed after a real capacity change. This review does not solve the current deficit, establish native success, certify identity latency or authorize cleanup/formal admission."
+}

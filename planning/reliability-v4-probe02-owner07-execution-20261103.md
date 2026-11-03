@@ -1,5 +1,11 @@
 # probe02 剩余五场的实际续跑
 
+21:07（北京时间）检查：完整行人回放的五个workers已退出，原bench主进程仍在汇总约1GiB日志，session25910尚无最终输出。源审发现逐命令/逐RGB全表扫描等汇总热点，正在隔离候选中准备优化，不中途更换本次实现。新[离线计时诊断页](../results/diagnostics/humble54_pipeline_timing_view01/index.html)仅收录四次已闭合短回放，41项计数检查一致、Chrome交互验证通过；它不替代完整回放结果或正式验收。
+
+**软件计时更新：short04于20:47:24实际完成，五个进程全部exit0，清理错误为空，前台session83611已回收，线程45336同线程释放防休眠。** 三条DDS边分别76/453/504条，全部得到受控候选匹配；504条适配器命令中151条FOLLOW拥有完整软件链，353条FAILSAFE按非FOLLOW原样保留。252个收到的RGB中76个有FOLLOW链。全候选命令的回调到回调时间中位数753674083ns、p95为1158279926ns，命令可能复用同一图像，不能把该子集统计当总体性能或物理E2E。原summary副本及分母在[short04诊断](../results/diagnostics/humble54_pipeline_timing_run04/review01.json)。原short01/02停止、short03完整但0候选均保留；没有重分类历史strict未知。
+
+20:49:56，root实际启动完整行人原速回放，输出 `/root/humble54_pipeline_bench01_full_person01`，前台session25910、临时防休眠线程36824，50117条输入且不截断。完整行人/汽车的结果必须来自各自真实终态，不能由short04外推。当前容量清理选择仍待用户答复；独立容量刷新CLI已源审与必要回归通过，当前153GiB缺口仍未解决。
+
 **最新容量结论：20:16:32，显式after28续接真实结束。** 6个实际步骤（新idle、inventory、person export、car export、R0、full280 budget）均exit0，整体因原容量门保留exit2。所需244.936135 GiB，D盘快照可用92.117596 GiB，差152.818540 GiB；完整280槽、1.15系数、22 GiB后续开销和17.958118 GiB临时预留均保留。原始[预算与续接终态副本](../results/diagnostics/humble54_after28_budget_review01/review01.json)已保存，storage SHA为 `45dffb5746b38ee1fe96acab430a6799095c7fff239f381928af2c4b9440fe78`。前台session61617已回收，线程37816同线程释放临时防休眠。容量不足尚未解决，final55/正式0/280不变，不能套用旧“12步完整成功”的stage入口。
 
 person export含752次测量和4511个输出事件，car export含747次测量和4507个输出事件；两者原 `online_equivalence_status` 与 `native_state_audit_status` 均为PASS。R0文件316797B，状态 `CANDIDATE_NOT_REGISTERED`、范围 `DEVELOPMENT_ONLY`。它是正式比较前的候选，不是正式算法优势结论。

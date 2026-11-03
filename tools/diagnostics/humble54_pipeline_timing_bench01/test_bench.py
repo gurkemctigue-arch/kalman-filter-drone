@@ -40,6 +40,21 @@ def small_fields():
                             {'mode':1,'valid':True,'rate':-0.,'age':.0}))
 
 
+def restored_native_value(raw,encoded=None):
+    if raw['kind']=='message':
+        typed={item['name']:item['value'] for item in encoded['fields']} if encoded else {}
+        instance=message(raw['class_name'],raw['schema'],{k:restored_native_value(v,typed.get(k)) for k,v in raw['values'].items()},raw['python_module'].split('.')[0])
+        type(instance).__module__=raw['python_module']
+        if list(type(instance).__slots__)!=raw['slots']:raise ValueError('native slot evidence differs')
+        return instance
+    if raw['kind']=='sequence':return [restored_native_value(item,encoded['items'][i] if encoded else None) for i,item in enumerate(raw['items'])]
+    if raw['kind']=='float':return struct.unpack('>d',bytes.fromhex(raw['bits_be']))[0]
+    if raw['kind'] in {'bool','int','str'}:return raw['value']
+    if raw['kind']=='UNSUPPORTED' and raw['python_type']=='numpy.float32' and encoded and encoded['type'] in {'float','float32'}:
+        return struct.unpack('>f',bytes.fromhex(encoded['bits_be']))[0]
+    raise ValueError('unsupported native fixture value')
+
+
 def fixture():
     events=[];serial={}
     def emit(process,kind,when,**fields):
@@ -151,6 +166,25 @@ class AtomicWriteTests(unittest.TestCase):
 
 
 class TypedTests(unittest.TestCase):
+    def test_real_humble_cdr_schema_evidence_and_boolean_sequence_alias(self):
+        evidence=json.loads((HERE/'schema_verify07_native.json').read_bytes())
+        self.assertEqual(evidence['status'],'PASS_REAL_CDR_SCHEMA_AND_SYNTHETIC_C7_TYPED_CASES_ONLY')
+        for root in evidence['types']:
+            for side in ('original','cdr_roundtrip'):
+                with self.subTest(root=root['root'],side=side):
+                    fields=snapshot(restored_native_value(root[side]['raw_default_message'],root[side]['snapshot']['value']))
+                    self.assertEqual(fields,root[side]['snapshot']['value'])
+                    self.assertTrue(valid_snapshot(fields))
+        msg=message('TrackingCommand',{'valid':'boolean','flags':'sequence<boolean>'},{'valid':True,'flags':[True,False]})
+        fields=snapshot(msg);self.assertTrue(valid_snapshot(fields))
+        self.assertEqual(fields['fields'][0]['value']['type'],'boolean')
+        forged=deepcopy(fields);forged['fields'][1]['value']['items'][0]['value']=1
+        self.assertFalse(valid_snapshot(forged))
+        msg.flags=[True,1]
+        with self.assertRaises(TypeError):snapshot(msg)
+        msg.flags=[];msg.valid=1
+        with self.assertRaises(TypeError):snapshot(msg)
+
     def test_exact_width_scalar_buffers_preserve_numpy_style_fields_and_nan_bits(self):
         double=ctypes.c_double.from_buffer_copy(bytes.fromhex('010000000000f87f') if sys.byteorder=='little' else bytes.fromhex('7ff8000000000001'))
         single=ctypes.c_float.from_buffer_copy(bytes.fromhex('0100807f') if sys.byteorder=='little' else bytes.fromhex('7f800001'))
@@ -269,6 +303,25 @@ class HookTests(unittest.TestCase):
 
 
 class ReducerTests(unittest.TestCase):
+    def test_actual_humble_fields_traverse_all_c7_edges_without_coercing_boolean(self):
+        evidence=json.loads((HERE/'schema_verify07_native.json').read_bytes())
+        by_root={row['root']:row['original']['snapshot']['value'] for row in evidence['types']}
+        phases={'detection':'TargetObservationArray','state':'TargetState','command':'TrackingCommand'}
+        events,_,_=fixture()
+        for event in events:
+            if event['kind'] in {'publish','take','callback'}:
+                event['message_fields']=deepcopy(by_root[phases[event['phase']]])
+        result=reduced(events)
+        self.assertEqual(result['candidate_command_count'],1,result['unknown_reasons'])
+        self.assertTrue(all(result['edges'][p]['candidate_count']==1 for p in phases))
+        for event in events:
+            if event.get('phase')=='state' and event['kind'] in {'publish','take','callback'}:
+                target_visible=next(f for f in event['message_fields']['fields'] if f['name']=='target_visible')
+                target_visible['value']['value']=1
+        rejected=reduced(events)
+        self.assertEqual(rejected['candidate_command_count'],0)
+        self.assertEqual(rejected['adapter_callback_count'],1)
+
     def test_full_three_edge_candidate_has_actual_max_callback_t0_and_all_coverage(self):
         result=reduced(fixture()[0])
         self.assertEqual(result['candidate_command_count'],1,result['commands'])

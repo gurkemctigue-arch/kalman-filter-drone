@@ -1,6 +1,8 @@
 # 查看当前实验
 
-**最新执行结果：28/28 文件测量、两类导出、校准候选和完整280次预算均已实际产生；容量门因D盘缺152.82 GiB而拒绝进入后续正式流程，正式仍0/280。** 续接6个实际步骤均exit0，整体保留容量拒绝的exit2，20:16:32前台真实结束；没有在后台继续飞行。独立计时工具已完成两项修复，第三次短回放尚未执行，有效计时样本仍为0。详见[实际预算](../results/diagnostics/humble54_after28_budget_review01/review01.json)和[本轮执行记录](../planning/reliability-v4-probe02-owner07-execution-20261103.md)。下方按各记录时间阅读。
+**2026-11-03 21:07（北京时间）：完整行人软件回放的处理节点已全部退出，主进程仍在汇总日志，最终summary尚未生成。** 当前可打开[离线计时诊断页](../results/diagnostics/humble54_pipeline_timing_view01/index.html)，查看四次已闭合短回放的完整分母、候选链路和未知原因；页面已通过Chrome实际交互检查。此处是软件诊断，正式仍0/280，容量缺口仍约152.82 GiB。
+
+**最新执行结果：28/28 文件测量、两类导出、校准候选和完整280次预算均已实际产生；容量门因D盘缺152.82 GiB而拒绝进入后续正式流程，正式仍0/280。** 仿真采集已结束；当前执行独立软件录包回放。short04已实际exit0，151条FOLLOW命令有软件全链候选匹配，353条非FOLLOW命令保留，物理E2E仍未观测。完整行人回放于20:49:56实际开始，结果须等待其终态。详见[短回放原件](../results/diagnostics/humble54_pipeline_timing_run04/review01.json)、[实际预算](../results/diagnostics/humble54_after28_budget_review01/review01.json)和[本轮执行记录](../planning/reliability-v4-probe02-owner07-execution-20261103.md)。下方按各记录时间阅读。
 
 **2026-11-03 19:48:54（北京时间）检查点：扩展 probe02 已有全部 16/16 原终态，11 PASS、4 FAIL、1 INCOMPLETE_EVIDENCE；collector07、原 monitor 和 launcher 均真实 exit 0。** 最后汽车远距离场于 19:41:32 原始 PASS，距离/高度 RMSE 为 0.659361/0.154198 m，六项导航检查全 true。核心开发 12/12、安全 4/4 PASS，正式仍 0/280，项目尚未全部验收。打开[闭合进度页](../results/monitor_humble54_probe02_owner07/index.html)、[28 槽开发成果快照](../results/diagnostics/humble54_development_view01/index.html)和[本轮原件记录](../planning/reliability-v4-probe02-owner07-execution-20261103.md)。
 

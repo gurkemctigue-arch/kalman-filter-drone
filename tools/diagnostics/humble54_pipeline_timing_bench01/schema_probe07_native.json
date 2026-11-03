@@ -1,0 +1,2819 @@
+{
+  "scope": "REAL_GENERATED_TYPES_AND_ORIGINAL_CDR_ONLY_NOT_PIPELINE_OR_DDS_TIMING",
+  "python": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
+  "codec_path": "/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/typed_message.py",
+  "codec_sha256": "cf602133ba3f5aab5053e5dc79f7d57465eaf02b55dc504fac48c212ecae7fb3",
+  "ros_init_called": false,
+  "publishers_created": false,
+  "bags_opened": false,
+  "weights_opened": false,
+  "types": [
+    {
+      "declared_root": "TargetObservationArray",
+      "original": {
+        "python_module": "uav_tracking_interfaces.msg._target_observation_array",
+        "class_name": "TargetObservationArray",
+        "source_path": "/root/uav_tracking_fullplan_v4_humble54/ros2_ws/install/lib/python3.10/site-packages/uav_tracking_interfaces/msg/_target_observation_array.py",
+        "source_sha256": "6605d5cc6ee85a359cecedb0916d8d77650cf5c64a29a0fe4aacf9062162dc25",
+        "slots": [
+          "_header",
+          "_observations",
+          "_navigation_ground_points_camera_m",
+          "_navigation_overlaps"
+        ],
+        "schema": {
+          "header": "std_msgs/Header",
+          "observations": "sequence<uav_tracking_interfaces/TargetObservation>",
+          "navigation_ground_points_camera_m": "sequence<float>",
+          "navigation_overlaps": "sequence<uav_tracking_interfaces/NavigationOverlap>"
+        },
+        "type_name": {
+          "status": "PASS",
+          "value": "uav_tracking_interfaces/msg/TargetObservationArray"
+        },
+        "snapshot": {
+          "status": "PASS",
+          "value": {
+            "type": "uav_tracking_interfaces/msg/TargetObservationArray",
+            "fields": [
+              {
+                "name": "header",
+                "value": {
+                  "type": "std_msgs/msg/Header",
+                  "fields": [
+                    {
+                      "name": "stamp",
+                      "value": {
+                        "type": "builtin_interfaces/msg/Time",
+                        "fields": [
+                          {
+                            "name": "sec",
+                            "value": {
+                              "type": "int32",
+                              "value": 0
+                            }
+                          },
+                          {
+                            "name": "nanosec",
+                            "value": {
+                              "type": "uint32",
+                              "value": 0
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "name": "frame_id",
+                      "value": {
+                        "type": "string",
+                        "utf8_hex": ""
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "observations",
+                "value": {
+                  "type": "sequence<uav_tracking_interfaces/TargetObservation>",
+                  "length": 0,
+                  "items": []
+                }
+              },
+              {
+                "name": "navigation_ground_points_camera_m",
+                "value": {
+                  "type": "sequence<float>",
+                  "length": 0,
+                  "items": []
+                }
+              },
+              {
+                "name": "navigation_overlaps",
+                "value": {
+                  "type": "sequence<uav_tracking_interfaces/NavigationOverlap>",
+                  "length": 0,
+                  "items": []
+                }
+              }
+            ]
+          }
+        },
+        "raw_default_message": {
+          "kind": "message",
+          "python_module": "uav_tracking_interfaces.msg._target_observation_array",
+          "class_name": "TargetObservationArray",
+          "slots": [
+            "_header",
+            "_observations",
+            "_navigation_ground_points_camera_m",
+            "_navigation_overlaps"
+          ],
+          "schema": {
+            "header": "std_msgs/Header",
+            "observations": "sequence<uav_tracking_interfaces/TargetObservation>",
+            "navigation_ground_points_camera_m": "sequence<float>",
+            "navigation_overlaps": "sequence<uav_tracking_interfaces/NavigationOverlap>"
+          },
+          "values": {
+            "header": {
+              "kind": "message",
+              "python_module": "std_msgs.msg._header",
+              "class_name": "Header",
+              "slots": [
+                "_stamp",
+                "_frame_id"
+              ],
+              "schema": {
+                "stamp": "builtin_interfaces/Time",
+                "frame_id": "string"
+              },
+              "values": {
+                "stamp": {
+                  "kind": "message",
+                  "python_module": "builtin_interfaces.msg._time",
+                  "class_name": "Time",
+                  "slots": [
+                    "_sec",
+                    "_nanosec"
+                  ],
+                  "schema": {
+                    "sec": "int32",
+                    "nanosec": "uint32"
+                  },
+                  "values": {
+                    "sec": {
+                      "kind": "int",
+                      "value": 0
+                    },
+                    "nanosec": {
+                      "kind": "int",
+                      "value": 0
+                    }
+                  }
+                },
+                "frame_id": {
+                  "kind": "str",
+                  "value": ""
+                }
+              }
+            },
+            "observations": {
+              "kind": "sequence",
+              "items": []
+            },
+            "navigation_ground_points_camera_m": {
+              "kind": "sequence",
+              "items": []
+            },
+            "navigation_overlaps": {
+              "kind": "sequence",
+              "items": []
+            }
+          }
+        },
+        "fields": [
+          {
+            "name": "header",
+            "declared_type": "std_msgs/Header",
+            "value_python_type": "std_msgs.msg._header.Header",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "std_msgs/msg/Header",
+                "fields": [
+                  {
+                    "name": "stamp",
+                    "value": {
+                      "type": "builtin_interfaces/msg/Time",
+                      "fields": [
+                        {
+                          "name": "sec",
+                          "value": {
+                            "type": "int32",
+                            "value": 0
+                          }
+                        },
+                        {
+                          "name": "nanosec",
+                          "value": {
+                            "type": "uint32",
+                            "value": 0
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "name": "frame_id",
+                    "value": {
+                      "type": "string",
+                      "utf8_hex": ""
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "observations",
+            "declared_type": "sequence<uav_tracking_interfaces/TargetObservation>",
+            "value_python_type": "builtins.list",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "sequence<uav_tracking_interfaces/TargetObservation>",
+                "length": 0,
+                "items": []
+              }
+            }
+          },
+          {
+            "name": "navigation_ground_points_camera_m",
+            "declared_type": "sequence<float>",
+            "value_python_type": "array.array",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "sequence<float>",
+                "length": 0,
+                "items": []
+              }
+            }
+          },
+          {
+            "name": "navigation_overlaps",
+            "declared_type": "sequence<uav_tracking_interfaces/NavigationOverlap>",
+            "value_python_type": "builtins.list",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "sequence<uav_tracking_interfaces/NavigationOverlap>",
+                "length": 0,
+                "items": []
+              }
+            }
+          }
+        ]
+      },
+      "cdr_bytes": 32,
+      "cdr_sha256": "081974ef92e58f9c263256cb0f8930dda122de3b6fa03d9b4960a5b073acc8d9",
+      "cdr_hex": "0001000000000000000000000100000000726661000000000000000000000000",
+      "cdr_roundtrip": {
+        "python_module": "uav_tracking_interfaces.msg._target_observation_array",
+        "class_name": "TargetObservationArray",
+        "source_path": "/root/uav_tracking_fullplan_v4_humble54/ros2_ws/install/lib/python3.10/site-packages/uav_tracking_interfaces/msg/_target_observation_array.py",
+        "source_sha256": "6605d5cc6ee85a359cecedb0916d8d77650cf5c64a29a0fe4aacf9062162dc25",
+        "slots": [
+          "_header",
+          "_observations",
+          "_navigation_ground_points_camera_m",
+          "_navigation_overlaps"
+        ],
+        "schema": {
+          "header": "std_msgs/Header",
+          "observations": "sequence<uav_tracking_interfaces/TargetObservation>",
+          "navigation_ground_points_camera_m": "sequence<float>",
+          "navigation_overlaps": "sequence<uav_tracking_interfaces/NavigationOverlap>"
+        },
+        "type_name": {
+          "status": "PASS",
+          "value": "uav_tracking_interfaces/msg/TargetObservationArray"
+        },
+        "snapshot": {
+          "status": "PASS",
+          "value": {
+            "type": "uav_tracking_interfaces/msg/TargetObservationArray",
+            "fields": [
+              {
+                "name": "header",
+                "value": {
+                  "type": "std_msgs/msg/Header",
+                  "fields": [
+                    {
+                      "name": "stamp",
+                      "value": {
+                        "type": "builtin_interfaces/msg/Time",
+                        "fields": [
+                          {
+                            "name": "sec",
+                            "value": {
+                              "type": "int32",
+                              "value": 0
+                            }
+                          },
+                          {
+                            "name": "nanosec",
+                            "value": {
+                              "type": "uint32",
+                              "value": 0
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "name": "frame_id",
+                      "value": {
+                        "type": "string",
+                        "utf8_hex": ""
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "observations",
+                "value": {
+                  "type": "sequence<uav_tracking_interfaces/TargetObservation>",
+                  "length": 0,
+                  "items": []
+                }
+              },
+              {
+                "name": "navigation_ground_points_camera_m",
+                "value": {
+                  "type": "sequence<float>",
+                  "length": 0,
+                  "items": []
+                }
+              },
+              {
+                "name": "navigation_overlaps",
+                "value": {
+                  "type": "sequence<uav_tracking_interfaces/NavigationOverlap>",
+                  "length": 0,
+                  "items": []
+                }
+              }
+            ]
+          }
+        },
+        "raw_default_message": {
+          "kind": "message",
+          "python_module": "uav_tracking_interfaces.msg._target_observation_array",
+          "class_name": "TargetObservationArray",
+          "slots": [
+            "_header",
+            "_observations",
+            "_navigation_ground_points_camera_m",
+            "_navigation_overlaps"
+          ],
+          "schema": {
+            "header": "std_msgs/Header",
+            "observations": "sequence<uav_tracking_interfaces/TargetObservation>",
+            "navigation_ground_points_camera_m": "sequence<float>",
+            "navigation_overlaps": "sequence<uav_tracking_interfaces/NavigationOverlap>"
+          },
+          "values": {
+            "header": {
+              "kind": "message",
+              "python_module": "std_msgs.msg._header",
+              "class_name": "Header",
+              "slots": [
+                "_stamp",
+                "_frame_id"
+              ],
+              "schema": {
+                "stamp": "builtin_interfaces/Time",
+                "frame_id": "string"
+              },
+              "values": {
+                "stamp": {
+                  "kind": "message",
+                  "python_module": "builtin_interfaces.msg._time",
+                  "class_name": "Time",
+                  "slots": [
+                    "_sec",
+                    "_nanosec"
+                  ],
+                  "schema": {
+                    "sec": "int32",
+                    "nanosec": "uint32"
+                  },
+                  "values": {
+                    "sec": {
+                      "kind": "int",
+                      "value": 0
+                    },
+                    "nanosec": {
+                      "kind": "int",
+                      "value": 0
+                    }
+                  }
+                },
+                "frame_id": {
+                  "kind": "str",
+                  "value": ""
+                }
+              }
+            },
+            "observations": {
+              "kind": "sequence",
+              "items": []
+            },
+            "navigation_ground_points_camera_m": {
+              "kind": "sequence",
+              "items": []
+            },
+            "navigation_overlaps": {
+              "kind": "sequence",
+              "items": []
+            }
+          }
+        },
+        "fields": [
+          {
+            "name": "header",
+            "declared_type": "std_msgs/Header",
+            "value_python_type": "std_msgs.msg._header.Header",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "std_msgs/msg/Header",
+                "fields": [
+                  {
+                    "name": "stamp",
+                    "value": {
+                      "type": "builtin_interfaces/msg/Time",
+                      "fields": [
+                        {
+                          "name": "sec",
+                          "value": {
+                            "type": "int32",
+                            "value": 0
+                          }
+                        },
+                        {
+                          "name": "nanosec",
+                          "value": {
+                            "type": "uint32",
+                            "value": 0
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "name": "frame_id",
+                    "value": {
+                      "type": "string",
+                      "utf8_hex": ""
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "observations",
+            "declared_type": "sequence<uav_tracking_interfaces/TargetObservation>",
+            "value_python_type": "builtins.list",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "sequence<uav_tracking_interfaces/TargetObservation>",
+                "length": 0,
+                "items": []
+              }
+            }
+          },
+          {
+            "name": "navigation_ground_points_camera_m",
+            "declared_type": "sequence<float>",
+            "value_python_type": "array.array",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "sequence<float>",
+                "length": 0,
+                "items": []
+              }
+            }
+          },
+          {
+            "name": "navigation_overlaps",
+            "declared_type": "sequence<uav_tracking_interfaces/NavigationOverlap>",
+            "value_python_type": "builtins.list",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "sequence<uav_tracking_interfaces/NavigationOverlap>",
+                "length": 0,
+                "items": []
+              }
+            }
+          }
+        ]
+      },
+      "same_class_after_cdr": true
+    },
+    {
+      "declared_root": "TargetState",
+      "original": {
+        "python_module": "uav_tracking_interfaces.msg._target_state",
+        "class_name": "TargetState",
+        "source_path": "/root/uav_tracking_fullplan_v4_humble54/ros2_ws/install/lib/python3.10/site-packages/uav_tracking_interfaces/msg/_target_state.py",
+        "source_sha256": "bee423c2e6b369b8fb3799b1ba4d9e2440ba4d46ad3c6100737ca297b2d2ceaf",
+        "slots": [
+          "_header",
+          "_state",
+          "_track_id",
+          "_target_uuid",
+          "_class_name",
+          "_position_m",
+          "_velocity_mps",
+          "_acceleration_mps2",
+          "_covariance",
+          "_prediction_age_s",
+          "_rejected_measurements",
+          "_target_visible"
+        ],
+        "schema": {
+          "header": "std_msgs/Header",
+          "state": "uint8",
+          "track_id": "uint64",
+          "target_uuid": "string",
+          "class_name": "string",
+          "position_m": "geometry_msgs/Point",
+          "velocity_mps": "geometry_msgs/Vector3",
+          "acceleration_mps2": "geometry_msgs/Vector3",
+          "covariance": "float[36]",
+          "prediction_age_s": "float",
+          "rejected_measurements": "uint32",
+          "target_visible": "boolean"
+        },
+        "type_name": {
+          "status": "PASS",
+          "value": "uav_tracking_interfaces/msg/TargetState"
+        },
+        "snapshot": {
+          "status": "ERROR",
+          "exception_type": "TypeError",
+          "message": "unknown field type: boolean",
+          "traceback": "Traceback (most recent call last):\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/schema_probe07.py\", line 17, in captured\n    return {\"status\":\"PASS\",\"value\":call()}\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/schema_probe07.py\", line 50, in <lambda>\n    \"snapshot\":captured(lambda:codec.snapshot(message)),\"raw_default_message\":raw_message(message),\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/typed_message.py\", line 119, in snapshot\n    return _message(message, 0)\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/typed_message.py\", line 112, in _message\n    return {\"type\": type_name(message), \"fields\": [\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/typed_message.py\", line 113, in <listcomp>\n    {\"name\": name, \"value\": _value(kind, getattr(message, name), depth)} for name, kind in fields.items()]}\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/typed_message.py\", line 99, in _value\n    expected = _qualified(kind)\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/typed_message.py\", line 30, in _qualified\n    raise TypeError(\"unknown field type: \" + name)\nTypeError: unknown field type: boolean\n"
+        },
+        "raw_default_message": {
+          "kind": "message",
+          "python_module": "uav_tracking_interfaces.msg._target_state",
+          "class_name": "TargetState",
+          "slots": [
+            "_header",
+            "_state",
+            "_track_id",
+            "_target_uuid",
+            "_class_name",
+            "_position_m",
+            "_velocity_mps",
+            "_acceleration_mps2",
+            "_covariance",
+            "_prediction_age_s",
+            "_rejected_measurements",
+            "_target_visible"
+          ],
+          "schema": {
+            "header": "std_msgs/Header",
+            "state": "uint8",
+            "track_id": "uint64",
+            "target_uuid": "string",
+            "class_name": "string",
+            "position_m": "geometry_msgs/Point",
+            "velocity_mps": "geometry_msgs/Vector3",
+            "acceleration_mps2": "geometry_msgs/Vector3",
+            "covariance": "float[36]",
+            "prediction_age_s": "float",
+            "rejected_measurements": "uint32",
+            "target_visible": "boolean"
+          },
+          "values": {
+            "header": {
+              "kind": "message",
+              "python_module": "std_msgs.msg._header",
+              "class_name": "Header",
+              "slots": [
+                "_stamp",
+                "_frame_id"
+              ],
+              "schema": {
+                "stamp": "builtin_interfaces/Time",
+                "frame_id": "string"
+              },
+              "values": {
+                "stamp": {
+                  "kind": "message",
+                  "python_module": "builtin_interfaces.msg._time",
+                  "class_name": "Time",
+                  "slots": [
+                    "_sec",
+                    "_nanosec"
+                  ],
+                  "schema": {
+                    "sec": "int32",
+                    "nanosec": "uint32"
+                  },
+                  "values": {
+                    "sec": {
+                      "kind": "int",
+                      "value": 0
+                    },
+                    "nanosec": {
+                      "kind": "int",
+                      "value": 0
+                    }
+                  }
+                },
+                "frame_id": {
+                  "kind": "str",
+                  "value": ""
+                }
+              }
+            },
+            "state": {
+              "kind": "int",
+              "value": 0
+            },
+            "track_id": {
+              "kind": "int",
+              "value": 0
+            },
+            "target_uuid": {
+              "kind": "str",
+              "value": ""
+            },
+            "class_name": {
+              "kind": "str",
+              "value": ""
+            },
+            "position_m": {
+              "kind": "message",
+              "python_module": "geometry_msgs.msg._point",
+              "class_name": "Point",
+              "slots": [
+                "_x",
+                "_y",
+                "_z"
+              ],
+              "schema": {
+                "x": "double",
+                "y": "double",
+                "z": "double"
+              },
+              "values": {
+                "x": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                },
+                "y": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                },
+                "z": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                }
+              }
+            },
+            "velocity_mps": {
+              "kind": "message",
+              "python_module": "geometry_msgs.msg._vector3",
+              "class_name": "Vector3",
+              "slots": [
+                "_x",
+                "_y",
+                "_z"
+              ],
+              "schema": {
+                "x": "double",
+                "y": "double",
+                "z": "double"
+              },
+              "values": {
+                "x": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                },
+                "y": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                },
+                "z": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                }
+              }
+            },
+            "acceleration_mps2": {
+              "kind": "message",
+              "python_module": "geometry_msgs.msg._vector3",
+              "class_name": "Vector3",
+              "slots": [
+                "_x",
+                "_y",
+                "_z"
+              ],
+              "schema": {
+                "x": "double",
+                "y": "double",
+                "z": "double"
+              },
+              "values": {
+                "x": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                },
+                "y": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                },
+                "z": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                }
+              }
+            },
+            "covariance": {
+              "kind": "sequence",
+              "items": [
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                }
+              ]
+            },
+            "prediction_age_s": {
+              "kind": "float",
+              "bits_be": "0000000000000000"
+            },
+            "rejected_measurements": {
+              "kind": "int",
+              "value": 0
+            },
+            "target_visible": {
+              "kind": "bool",
+              "value": false
+            }
+          }
+        },
+        "fields": [
+          {
+            "name": "header",
+            "declared_type": "std_msgs/Header",
+            "value_python_type": "std_msgs.msg._header.Header",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "std_msgs/msg/Header",
+                "fields": [
+                  {
+                    "name": "stamp",
+                    "value": {
+                      "type": "builtin_interfaces/msg/Time",
+                      "fields": [
+                        {
+                          "name": "sec",
+                          "value": {
+                            "type": "int32",
+                            "value": 0
+                          }
+                        },
+                        {
+                          "name": "nanosec",
+                          "value": {
+                            "type": "uint32",
+                            "value": 0
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "name": "frame_id",
+                    "value": {
+                      "type": "string",
+                      "utf8_hex": ""
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "state",
+            "declared_type": "uint8",
+            "value_python_type": "builtins.int",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "uint8",
+                "value": 0
+              }
+            }
+          },
+          {
+            "name": "track_id",
+            "declared_type": "uint64",
+            "value_python_type": "builtins.int",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "uint64",
+                "value": 0
+              }
+            }
+          },
+          {
+            "name": "target_uuid",
+            "declared_type": "string",
+            "value_python_type": "builtins.str",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "string",
+                "utf8_hex": ""
+              }
+            }
+          },
+          {
+            "name": "class_name",
+            "declared_type": "string",
+            "value_python_type": "builtins.str",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "string",
+                "utf8_hex": ""
+              }
+            }
+          },
+          {
+            "name": "position_m",
+            "declared_type": "geometry_msgs/Point",
+            "value_python_type": "geometry_msgs.msg._point.Point",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "geometry_msgs/msg/Point",
+                "fields": [
+                  {
+                    "name": "x",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  },
+                  {
+                    "name": "y",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  },
+                  {
+                    "name": "z",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "velocity_mps",
+            "declared_type": "geometry_msgs/Vector3",
+            "value_python_type": "geometry_msgs.msg._vector3.Vector3",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "geometry_msgs/msg/Vector3",
+                "fields": [
+                  {
+                    "name": "x",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  },
+                  {
+                    "name": "y",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  },
+                  {
+                    "name": "z",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "acceleration_mps2",
+            "declared_type": "geometry_msgs/Vector3",
+            "value_python_type": "geometry_msgs.msg._vector3.Vector3",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "geometry_msgs/msg/Vector3",
+                "fields": [
+                  {
+                    "name": "x",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  },
+                  {
+                    "name": "y",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  },
+                  {
+                    "name": "z",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "covariance",
+            "declared_type": "float[36]",
+            "value_python_type": "numpy.ndarray",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "float[36]",
+                "length": 36,
+                "items": [
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "prediction_age_s",
+            "declared_type": "float",
+            "value_python_type": "builtins.float",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "float",
+                "bits_be": "00000000"
+              }
+            }
+          },
+          {
+            "name": "rejected_measurements",
+            "declared_type": "uint32",
+            "value_python_type": "builtins.int",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "uint32",
+                "value": 0
+              }
+            }
+          },
+          {
+            "name": "target_visible",
+            "declared_type": "boolean",
+            "value_python_type": "builtins.bool",
+            "typed_value": {
+              "status": "ERROR",
+              "exception_type": "TypeError",
+              "message": "unknown field type: boolean",
+              "traceback": "Traceback (most recent call last):\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/schema_probe07.py\", line 17, in captured\n    return {\"status\":\"PASS\",\"value\":call()}\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/schema_probe07.py\", line 53, in <lambda>\n    \"typed_value\":captured(lambda kind=kind,name=name:codec._value(kind,getattr(message,name),0))}\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/typed_message.py\", line 99, in _value\n    expected = _qualified(kind)\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/typed_message.py\", line 30, in _qualified\n    raise TypeError(\"unknown field type: \" + name)\nTypeError: unknown field type: boolean\n"
+            }
+          }
+        ]
+      },
+      "cdr_bytes": 269,
+      "cdr_sha256": "8e9d8aa5611fc9376b49adfdd04cac2300aca2b9bbff74bf1e58e0737b292440",
+      "cdr_hex": "0001000000000000000000000100000000006174000000000000000001000000000000000100000000723900000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "cdr_roundtrip": {
+        "python_module": "uav_tracking_interfaces.msg._target_state",
+        "class_name": "TargetState",
+        "source_path": "/root/uav_tracking_fullplan_v4_humble54/ros2_ws/install/lib/python3.10/site-packages/uav_tracking_interfaces/msg/_target_state.py",
+        "source_sha256": "bee423c2e6b369b8fb3799b1ba4d9e2440ba4d46ad3c6100737ca297b2d2ceaf",
+        "slots": [
+          "_header",
+          "_state",
+          "_track_id",
+          "_target_uuid",
+          "_class_name",
+          "_position_m",
+          "_velocity_mps",
+          "_acceleration_mps2",
+          "_covariance",
+          "_prediction_age_s",
+          "_rejected_measurements",
+          "_target_visible"
+        ],
+        "schema": {
+          "header": "std_msgs/Header",
+          "state": "uint8",
+          "track_id": "uint64",
+          "target_uuid": "string",
+          "class_name": "string",
+          "position_m": "geometry_msgs/Point",
+          "velocity_mps": "geometry_msgs/Vector3",
+          "acceleration_mps2": "geometry_msgs/Vector3",
+          "covariance": "float[36]",
+          "prediction_age_s": "float",
+          "rejected_measurements": "uint32",
+          "target_visible": "boolean"
+        },
+        "type_name": {
+          "status": "PASS",
+          "value": "uav_tracking_interfaces/msg/TargetState"
+        },
+        "snapshot": {
+          "status": "ERROR",
+          "exception_type": "TypeError",
+          "message": "unknown field type: boolean",
+          "traceback": "Traceback (most recent call last):\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/schema_probe07.py\", line 17, in captured\n    return {\"status\":\"PASS\",\"value\":call()}\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/schema_probe07.py\", line 50, in <lambda>\n    \"snapshot\":captured(lambda:codec.snapshot(message)),\"raw_default_message\":raw_message(message),\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/typed_message.py\", line 119, in snapshot\n    return _message(message, 0)\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/typed_message.py\", line 112, in _message\n    return {\"type\": type_name(message), \"fields\": [\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/typed_message.py\", line 113, in <listcomp>\n    {\"name\": name, \"value\": _value(kind, getattr(message, name), depth)} for name, kind in fields.items()]}\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/typed_message.py\", line 99, in _value\n    expected = _qualified(kind)\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/typed_message.py\", line 30, in _qualified\n    raise TypeError(\"unknown field type: \" + name)\nTypeError: unknown field type: boolean\n"
+        },
+        "raw_default_message": {
+          "kind": "message",
+          "python_module": "uav_tracking_interfaces.msg._target_state",
+          "class_name": "TargetState",
+          "slots": [
+            "_header",
+            "_state",
+            "_track_id",
+            "_target_uuid",
+            "_class_name",
+            "_position_m",
+            "_velocity_mps",
+            "_acceleration_mps2",
+            "_covariance",
+            "_prediction_age_s",
+            "_rejected_measurements",
+            "_target_visible"
+          ],
+          "schema": {
+            "header": "std_msgs/Header",
+            "state": "uint8",
+            "track_id": "uint64",
+            "target_uuid": "string",
+            "class_name": "string",
+            "position_m": "geometry_msgs/Point",
+            "velocity_mps": "geometry_msgs/Vector3",
+            "acceleration_mps2": "geometry_msgs/Vector3",
+            "covariance": "float[36]",
+            "prediction_age_s": "float",
+            "rejected_measurements": "uint32",
+            "target_visible": "boolean"
+          },
+          "values": {
+            "header": {
+              "kind": "message",
+              "python_module": "std_msgs.msg._header",
+              "class_name": "Header",
+              "slots": [
+                "_stamp",
+                "_frame_id"
+              ],
+              "schema": {
+                "stamp": "builtin_interfaces/Time",
+                "frame_id": "string"
+              },
+              "values": {
+                "stamp": {
+                  "kind": "message",
+                  "python_module": "builtin_interfaces.msg._time",
+                  "class_name": "Time",
+                  "slots": [
+                    "_sec",
+                    "_nanosec"
+                  ],
+                  "schema": {
+                    "sec": "int32",
+                    "nanosec": "uint32"
+                  },
+                  "values": {
+                    "sec": {
+                      "kind": "int",
+                      "value": 0
+                    },
+                    "nanosec": {
+                      "kind": "int",
+                      "value": 0
+                    }
+                  }
+                },
+                "frame_id": {
+                  "kind": "str",
+                  "value": ""
+                }
+              }
+            },
+            "state": {
+              "kind": "int",
+              "value": 0
+            },
+            "track_id": {
+              "kind": "int",
+              "value": 0
+            },
+            "target_uuid": {
+              "kind": "str",
+              "value": ""
+            },
+            "class_name": {
+              "kind": "str",
+              "value": ""
+            },
+            "position_m": {
+              "kind": "message",
+              "python_module": "geometry_msgs.msg._point",
+              "class_name": "Point",
+              "slots": [
+                "_x",
+                "_y",
+                "_z"
+              ],
+              "schema": {
+                "x": "double",
+                "y": "double",
+                "z": "double"
+              },
+              "values": {
+                "x": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                },
+                "y": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                },
+                "z": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                }
+              }
+            },
+            "velocity_mps": {
+              "kind": "message",
+              "python_module": "geometry_msgs.msg._vector3",
+              "class_name": "Vector3",
+              "slots": [
+                "_x",
+                "_y",
+                "_z"
+              ],
+              "schema": {
+                "x": "double",
+                "y": "double",
+                "z": "double"
+              },
+              "values": {
+                "x": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                },
+                "y": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                },
+                "z": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                }
+              }
+            },
+            "acceleration_mps2": {
+              "kind": "message",
+              "python_module": "geometry_msgs.msg._vector3",
+              "class_name": "Vector3",
+              "slots": [
+                "_x",
+                "_y",
+                "_z"
+              ],
+              "schema": {
+                "x": "double",
+                "y": "double",
+                "z": "double"
+              },
+              "values": {
+                "x": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                },
+                "y": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                },
+                "z": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                }
+              }
+            },
+            "covariance": {
+              "kind": "sequence",
+              "items": [
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                }
+              ]
+            },
+            "prediction_age_s": {
+              "kind": "float",
+              "bits_be": "0000000000000000"
+            },
+            "rejected_measurements": {
+              "kind": "int",
+              "value": 0
+            },
+            "target_visible": {
+              "kind": "bool",
+              "value": false
+            }
+          }
+        },
+        "fields": [
+          {
+            "name": "header",
+            "declared_type": "std_msgs/Header",
+            "value_python_type": "std_msgs.msg._header.Header",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "std_msgs/msg/Header",
+                "fields": [
+                  {
+                    "name": "stamp",
+                    "value": {
+                      "type": "builtin_interfaces/msg/Time",
+                      "fields": [
+                        {
+                          "name": "sec",
+                          "value": {
+                            "type": "int32",
+                            "value": 0
+                          }
+                        },
+                        {
+                          "name": "nanosec",
+                          "value": {
+                            "type": "uint32",
+                            "value": 0
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "name": "frame_id",
+                    "value": {
+                      "type": "string",
+                      "utf8_hex": ""
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "state",
+            "declared_type": "uint8",
+            "value_python_type": "builtins.int",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "uint8",
+                "value": 0
+              }
+            }
+          },
+          {
+            "name": "track_id",
+            "declared_type": "uint64",
+            "value_python_type": "builtins.int",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "uint64",
+                "value": 0
+              }
+            }
+          },
+          {
+            "name": "target_uuid",
+            "declared_type": "string",
+            "value_python_type": "builtins.str",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "string",
+                "utf8_hex": ""
+              }
+            }
+          },
+          {
+            "name": "class_name",
+            "declared_type": "string",
+            "value_python_type": "builtins.str",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "string",
+                "utf8_hex": ""
+              }
+            }
+          },
+          {
+            "name": "position_m",
+            "declared_type": "geometry_msgs/Point",
+            "value_python_type": "geometry_msgs.msg._point.Point",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "geometry_msgs/msg/Point",
+                "fields": [
+                  {
+                    "name": "x",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  },
+                  {
+                    "name": "y",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  },
+                  {
+                    "name": "z",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "velocity_mps",
+            "declared_type": "geometry_msgs/Vector3",
+            "value_python_type": "geometry_msgs.msg._vector3.Vector3",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "geometry_msgs/msg/Vector3",
+                "fields": [
+                  {
+                    "name": "x",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  },
+                  {
+                    "name": "y",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  },
+                  {
+                    "name": "z",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "acceleration_mps2",
+            "declared_type": "geometry_msgs/Vector3",
+            "value_python_type": "geometry_msgs.msg._vector3.Vector3",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "geometry_msgs/msg/Vector3",
+                "fields": [
+                  {
+                    "name": "x",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  },
+                  {
+                    "name": "y",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  },
+                  {
+                    "name": "z",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "covariance",
+            "declared_type": "float[36]",
+            "value_python_type": "numpy.ndarray",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "float[36]",
+                "length": 36,
+                "items": [
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "prediction_age_s",
+            "declared_type": "float",
+            "value_python_type": "builtins.float",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "float",
+                "bits_be": "00000000"
+              }
+            }
+          },
+          {
+            "name": "rejected_measurements",
+            "declared_type": "uint32",
+            "value_python_type": "builtins.int",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "uint32",
+                "value": 0
+              }
+            }
+          },
+          {
+            "name": "target_visible",
+            "declared_type": "boolean",
+            "value_python_type": "builtins.bool",
+            "typed_value": {
+              "status": "ERROR",
+              "exception_type": "TypeError",
+              "message": "unknown field type: boolean",
+              "traceback": "Traceback (most recent call last):\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/schema_probe07.py\", line 17, in captured\n    return {\"status\":\"PASS\",\"value\":call()}\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/schema_probe07.py\", line 53, in <lambda>\n    \"typed_value\":captured(lambda kind=kind,name=name:codec._value(kind,getattr(message,name),0))}\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/typed_message.py\", line 99, in _value\n    expected = _qualified(kind)\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/typed_message.py\", line 30, in _qualified\n    raise TypeError(\"unknown field type: \" + name)\nTypeError: unknown field type: boolean\n"
+            }
+          }
+        ]
+      },
+      "same_class_after_cdr": true
+    },
+    {
+      "declared_root": "TrackingCommand",
+      "original": {
+        "python_module": "uav_tracking_interfaces.msg._tracking_command",
+        "class_name": "TrackingCommand",
+        "source_path": "/root/uav_tracking_fullplan_v4_humble54/ros2_ws/install/lib/python3.10/site-packages/uav_tracking_interfaces/msg/_tracking_command.py",
+        "source_sha256": "ae0d70040c2692866cd088526b27f2dedb68820fbdd9d4bbc615195b94a8cee5",
+        "slots": [
+          "_header",
+          "_mode",
+          "_track_id",
+          "_linear_mps",
+          "_position_m",
+          "_yaw_rad",
+          "_yaw_rate_radps",
+          "_valid",
+          "_command_age_s"
+        ],
+        "schema": {
+          "header": "std_msgs/Header",
+          "mode": "uint8",
+          "track_id": "uint64",
+          "linear_mps": "geometry_msgs/Vector3",
+          "position_m": "geometry_msgs/Point",
+          "yaw_rad": "float",
+          "yaw_rate_radps": "float",
+          "valid": "boolean",
+          "command_age_s": "float"
+        },
+        "type_name": {
+          "status": "PASS",
+          "value": "uav_tracking_interfaces/msg/TrackingCommand"
+        },
+        "snapshot": {
+          "status": "ERROR",
+          "exception_type": "TypeError",
+          "message": "unknown field type: boolean",
+          "traceback": "Traceback (most recent call last):\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/schema_probe07.py\", line 17, in captured\n    return {\"status\":\"PASS\",\"value\":call()}\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/schema_probe07.py\", line 50, in <lambda>\n    \"snapshot\":captured(lambda:codec.snapshot(message)),\"raw_default_message\":raw_message(message),\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/typed_message.py\", line 119, in snapshot\n    return _message(message, 0)\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/typed_message.py\", line 112, in _message\n    return {\"type\": type_name(message), \"fields\": [\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/typed_message.py\", line 113, in <listcomp>\n    {\"name\": name, \"value\": _value(kind, getattr(message, name), depth)} for name, kind in fields.items()]}\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/typed_message.py\", line 99, in _value\n    expected = _qualified(kind)\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/typed_message.py\", line 30, in _qualified\n    raise TypeError(\"unknown field type: \" + name)\nTypeError: unknown field type: boolean\n"
+        },
+        "raw_default_message": {
+          "kind": "message",
+          "python_module": "uav_tracking_interfaces.msg._tracking_command",
+          "class_name": "TrackingCommand",
+          "slots": [
+            "_header",
+            "_mode",
+            "_track_id",
+            "_linear_mps",
+            "_position_m",
+            "_yaw_rad",
+            "_yaw_rate_radps",
+            "_valid",
+            "_command_age_s"
+          ],
+          "schema": {
+            "header": "std_msgs/Header",
+            "mode": "uint8",
+            "track_id": "uint64",
+            "linear_mps": "geometry_msgs/Vector3",
+            "position_m": "geometry_msgs/Point",
+            "yaw_rad": "float",
+            "yaw_rate_radps": "float",
+            "valid": "boolean",
+            "command_age_s": "float"
+          },
+          "values": {
+            "header": {
+              "kind": "message",
+              "python_module": "std_msgs.msg._header",
+              "class_name": "Header",
+              "slots": [
+                "_stamp",
+                "_frame_id"
+              ],
+              "schema": {
+                "stamp": "builtin_interfaces/Time",
+                "frame_id": "string"
+              },
+              "values": {
+                "stamp": {
+                  "kind": "message",
+                  "python_module": "builtin_interfaces.msg._time",
+                  "class_name": "Time",
+                  "slots": [
+                    "_sec",
+                    "_nanosec"
+                  ],
+                  "schema": {
+                    "sec": "int32",
+                    "nanosec": "uint32"
+                  },
+                  "values": {
+                    "sec": {
+                      "kind": "int",
+                      "value": 0
+                    },
+                    "nanosec": {
+                      "kind": "int",
+                      "value": 0
+                    }
+                  }
+                },
+                "frame_id": {
+                  "kind": "str",
+                  "value": ""
+                }
+              }
+            },
+            "mode": {
+              "kind": "int",
+              "value": 0
+            },
+            "track_id": {
+              "kind": "int",
+              "value": 0
+            },
+            "linear_mps": {
+              "kind": "message",
+              "python_module": "geometry_msgs.msg._vector3",
+              "class_name": "Vector3",
+              "slots": [
+                "_x",
+                "_y",
+                "_z"
+              ],
+              "schema": {
+                "x": "double",
+                "y": "double",
+                "z": "double"
+              },
+              "values": {
+                "x": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                },
+                "y": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                },
+                "z": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                }
+              }
+            },
+            "position_m": {
+              "kind": "message",
+              "python_module": "geometry_msgs.msg._point",
+              "class_name": "Point",
+              "slots": [
+                "_x",
+                "_y",
+                "_z"
+              ],
+              "schema": {
+                "x": "double",
+                "y": "double",
+                "z": "double"
+              },
+              "values": {
+                "x": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                },
+                "y": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                },
+                "z": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                }
+              }
+            },
+            "yaw_rad": {
+              "kind": "float",
+              "bits_be": "0000000000000000"
+            },
+            "yaw_rate_radps": {
+              "kind": "float",
+              "bits_be": "0000000000000000"
+            },
+            "valid": {
+              "kind": "bool",
+              "value": false
+            },
+            "command_age_s": {
+              "kind": "float",
+              "bits_be": "0000000000000000"
+            }
+          }
+        },
+        "fields": [
+          {
+            "name": "header",
+            "declared_type": "std_msgs/Header",
+            "value_python_type": "std_msgs.msg._header.Header",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "std_msgs/msg/Header",
+                "fields": [
+                  {
+                    "name": "stamp",
+                    "value": {
+                      "type": "builtin_interfaces/msg/Time",
+                      "fields": [
+                        {
+                          "name": "sec",
+                          "value": {
+                            "type": "int32",
+                            "value": 0
+                          }
+                        },
+                        {
+                          "name": "nanosec",
+                          "value": {
+                            "type": "uint32",
+                            "value": 0
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "name": "frame_id",
+                    "value": {
+                      "type": "string",
+                      "utf8_hex": ""
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "mode",
+            "declared_type": "uint8",
+            "value_python_type": "builtins.int",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "uint8",
+                "value": 0
+              }
+            }
+          },
+          {
+            "name": "track_id",
+            "declared_type": "uint64",
+            "value_python_type": "builtins.int",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "uint64",
+                "value": 0
+              }
+            }
+          },
+          {
+            "name": "linear_mps",
+            "declared_type": "geometry_msgs/Vector3",
+            "value_python_type": "geometry_msgs.msg._vector3.Vector3",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "geometry_msgs/msg/Vector3",
+                "fields": [
+                  {
+                    "name": "x",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  },
+                  {
+                    "name": "y",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  },
+                  {
+                    "name": "z",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "position_m",
+            "declared_type": "geometry_msgs/Point",
+            "value_python_type": "geometry_msgs.msg._point.Point",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "geometry_msgs/msg/Point",
+                "fields": [
+                  {
+                    "name": "x",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  },
+                  {
+                    "name": "y",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  },
+                  {
+                    "name": "z",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "yaw_rad",
+            "declared_type": "float",
+            "value_python_type": "builtins.float",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "float",
+                "bits_be": "00000000"
+              }
+            }
+          },
+          {
+            "name": "yaw_rate_radps",
+            "declared_type": "float",
+            "value_python_type": "builtins.float",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "float",
+                "bits_be": "00000000"
+              }
+            }
+          },
+          {
+            "name": "valid",
+            "declared_type": "boolean",
+            "value_python_type": "builtins.bool",
+            "typed_value": {
+              "status": "ERROR",
+              "exception_type": "TypeError",
+              "message": "unknown field type: boolean",
+              "traceback": "Traceback (most recent call last):\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/schema_probe07.py\", line 17, in captured\n    return {\"status\":\"PASS\",\"value\":call()}\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/schema_probe07.py\", line 53, in <lambda>\n    \"typed_value\":captured(lambda kind=kind,name=name:codec._value(kind,getattr(message,name),0))}\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/typed_message.py\", line 99, in _value\n    expected = _qualified(kind)\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/typed_message.py\", line 30, in _qualified\n    raise TypeError(\"unknown field type: \" + name)\nTypeError: unknown field type: boolean\n"
+            }
+          },
+          {
+            "name": "command_age_s",
+            "declared_type": "float",
+            "value_python_type": "builtins.float",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "float",
+                "bits_be": "00000000"
+              }
+            }
+          }
+        ]
+      },
+      "cdr_bytes": 92,
+      "cdr_sha256": "b2f684eaf6cd24aa886270e50500e99e27cdb4fadc36f774a88f2c13c2410e60",
+      "cdr_hex": "0001000000000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "cdr_roundtrip": {
+        "python_module": "uav_tracking_interfaces.msg._tracking_command",
+        "class_name": "TrackingCommand",
+        "source_path": "/root/uav_tracking_fullplan_v4_humble54/ros2_ws/install/lib/python3.10/site-packages/uav_tracking_interfaces/msg/_tracking_command.py",
+        "source_sha256": "ae0d70040c2692866cd088526b27f2dedb68820fbdd9d4bbc615195b94a8cee5",
+        "slots": [
+          "_header",
+          "_mode",
+          "_track_id",
+          "_linear_mps",
+          "_position_m",
+          "_yaw_rad",
+          "_yaw_rate_radps",
+          "_valid",
+          "_command_age_s"
+        ],
+        "schema": {
+          "header": "std_msgs/Header",
+          "mode": "uint8",
+          "track_id": "uint64",
+          "linear_mps": "geometry_msgs/Vector3",
+          "position_m": "geometry_msgs/Point",
+          "yaw_rad": "float",
+          "yaw_rate_radps": "float",
+          "valid": "boolean",
+          "command_age_s": "float"
+        },
+        "type_name": {
+          "status": "PASS",
+          "value": "uav_tracking_interfaces/msg/TrackingCommand"
+        },
+        "snapshot": {
+          "status": "ERROR",
+          "exception_type": "TypeError",
+          "message": "unknown field type: boolean",
+          "traceback": "Traceback (most recent call last):\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/schema_probe07.py\", line 17, in captured\n    return {\"status\":\"PASS\",\"value\":call()}\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/schema_probe07.py\", line 50, in <lambda>\n    \"snapshot\":captured(lambda:codec.snapshot(message)),\"raw_default_message\":raw_message(message),\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/typed_message.py\", line 119, in snapshot\n    return _message(message, 0)\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/typed_message.py\", line 112, in _message\n    return {\"type\": type_name(message), \"fields\": [\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/typed_message.py\", line 113, in <listcomp>\n    {\"name\": name, \"value\": _value(kind, getattr(message, name), depth)} for name, kind in fields.items()]}\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/typed_message.py\", line 99, in _value\n    expected = _qualified(kind)\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/typed_message.py\", line 30, in _qualified\n    raise TypeError(\"unknown field type: \" + name)\nTypeError: unknown field type: boolean\n"
+        },
+        "raw_default_message": {
+          "kind": "message",
+          "python_module": "uav_tracking_interfaces.msg._tracking_command",
+          "class_name": "TrackingCommand",
+          "slots": [
+            "_header",
+            "_mode",
+            "_track_id",
+            "_linear_mps",
+            "_position_m",
+            "_yaw_rad",
+            "_yaw_rate_radps",
+            "_valid",
+            "_command_age_s"
+          ],
+          "schema": {
+            "header": "std_msgs/Header",
+            "mode": "uint8",
+            "track_id": "uint64",
+            "linear_mps": "geometry_msgs/Vector3",
+            "position_m": "geometry_msgs/Point",
+            "yaw_rad": "float",
+            "yaw_rate_radps": "float",
+            "valid": "boolean",
+            "command_age_s": "float"
+          },
+          "values": {
+            "header": {
+              "kind": "message",
+              "python_module": "std_msgs.msg._header",
+              "class_name": "Header",
+              "slots": [
+                "_stamp",
+                "_frame_id"
+              ],
+              "schema": {
+                "stamp": "builtin_interfaces/Time",
+                "frame_id": "string"
+              },
+              "values": {
+                "stamp": {
+                  "kind": "message",
+                  "python_module": "builtin_interfaces.msg._time",
+                  "class_name": "Time",
+                  "slots": [
+                    "_sec",
+                    "_nanosec"
+                  ],
+                  "schema": {
+                    "sec": "int32",
+                    "nanosec": "uint32"
+                  },
+                  "values": {
+                    "sec": {
+                      "kind": "int",
+                      "value": 0
+                    },
+                    "nanosec": {
+                      "kind": "int",
+                      "value": 0
+                    }
+                  }
+                },
+                "frame_id": {
+                  "kind": "str",
+                  "value": ""
+                }
+              }
+            },
+            "mode": {
+              "kind": "int",
+              "value": 0
+            },
+            "track_id": {
+              "kind": "int",
+              "value": 0
+            },
+            "linear_mps": {
+              "kind": "message",
+              "python_module": "geometry_msgs.msg._vector3",
+              "class_name": "Vector3",
+              "slots": [
+                "_x",
+                "_y",
+                "_z"
+              ],
+              "schema": {
+                "x": "double",
+                "y": "double",
+                "z": "double"
+              },
+              "values": {
+                "x": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                },
+                "y": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                },
+                "z": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                }
+              }
+            },
+            "position_m": {
+              "kind": "message",
+              "python_module": "geometry_msgs.msg._point",
+              "class_name": "Point",
+              "slots": [
+                "_x",
+                "_y",
+                "_z"
+              ],
+              "schema": {
+                "x": "double",
+                "y": "double",
+                "z": "double"
+              },
+              "values": {
+                "x": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                },
+                "y": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                },
+                "z": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                }
+              }
+            },
+            "yaw_rad": {
+              "kind": "float",
+              "bits_be": "0000000000000000"
+            },
+            "yaw_rate_radps": {
+              "kind": "float",
+              "bits_be": "0000000000000000"
+            },
+            "valid": {
+              "kind": "bool",
+              "value": false
+            },
+            "command_age_s": {
+              "kind": "float",
+              "bits_be": "0000000000000000"
+            }
+          }
+        },
+        "fields": [
+          {
+            "name": "header",
+            "declared_type": "std_msgs/Header",
+            "value_python_type": "std_msgs.msg._header.Header",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "std_msgs/msg/Header",
+                "fields": [
+                  {
+                    "name": "stamp",
+                    "value": {
+                      "type": "builtin_interfaces/msg/Time",
+                      "fields": [
+                        {
+                          "name": "sec",
+                          "value": {
+                            "type": "int32",
+                            "value": 0
+                          }
+                        },
+                        {
+                          "name": "nanosec",
+                          "value": {
+                            "type": "uint32",
+                            "value": 0
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "name": "frame_id",
+                    "value": {
+                      "type": "string",
+                      "utf8_hex": ""
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "mode",
+            "declared_type": "uint8",
+            "value_python_type": "builtins.int",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "uint8",
+                "value": 0
+              }
+            }
+          },
+          {
+            "name": "track_id",
+            "declared_type": "uint64",
+            "value_python_type": "builtins.int",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "uint64",
+                "value": 0
+              }
+            }
+          },
+          {
+            "name": "linear_mps",
+            "declared_type": "geometry_msgs/Vector3",
+            "value_python_type": "geometry_msgs.msg._vector3.Vector3",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "geometry_msgs/msg/Vector3",
+                "fields": [
+                  {
+                    "name": "x",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  },
+                  {
+                    "name": "y",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  },
+                  {
+                    "name": "z",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "position_m",
+            "declared_type": "geometry_msgs/Point",
+            "value_python_type": "geometry_msgs.msg._point.Point",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "geometry_msgs/msg/Point",
+                "fields": [
+                  {
+                    "name": "x",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  },
+                  {
+                    "name": "y",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  },
+                  {
+                    "name": "z",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "yaw_rad",
+            "declared_type": "float",
+            "value_python_type": "builtins.float",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "float",
+                "bits_be": "00000000"
+              }
+            }
+          },
+          {
+            "name": "yaw_rate_radps",
+            "declared_type": "float",
+            "value_python_type": "builtins.float",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "float",
+                "bits_be": "00000000"
+              }
+            }
+          },
+          {
+            "name": "valid",
+            "declared_type": "boolean",
+            "value_python_type": "builtins.bool",
+            "typed_value": {
+              "status": "ERROR",
+              "exception_type": "TypeError",
+              "message": "unknown field type: boolean",
+              "traceback": "Traceback (most recent call last):\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/schema_probe07.py\", line 17, in captured\n    return {\"status\":\"PASS\",\"value\":call()}\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/schema_probe07.py\", line 53, in <lambda>\n    \"typed_value\":captured(lambda kind=kind,name=name:codec._value(kind,getattr(message,name),0))}\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/typed_message.py\", line 99, in _value\n    expected = _qualified(kind)\n  File \"/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_pipeline_timing_bench01/typed_message.py\", line 30, in _qualified\n    raise TypeError(\"unknown field type: \" + name)\nTypeError: unknown field type: boolean\n"
+            }
+          },
+          {
+            "name": "command_age_s",
+            "declared_type": "float",
+            "value_python_type": "builtins.float",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "float",
+                "bits_be": "00000000"
+              }
+            }
+          }
+        ]
+      },
+      "same_class_after_cdr": true
+    }
+  ]
+}

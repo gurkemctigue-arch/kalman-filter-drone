@@ -1,5 +1,9 @@
 # 当前工作交接（持续开发，非验收报告）
 
+**21:07补充：完整行人的原生workers已全部退出，仅原bench主进程仍在reduce_files汇总，session25910尚未闭合；不要并行启动汽车或压缩。** 离线诊断页已交付在 `results/diagnostics/humble54_pipeline_timing_view01/index.html`，4份闭合summary、41项计数检查一致，Chrome交互验证通过。隔离性能候选与容量刷新后的stage衔接候选正在准备，均不改当前fixed07或冻结源、不代表生产准入。
+
+**计时与容量刷新更新：short04已真实exit0并被回收（20:47:24），三条DDS边76/453/504条均形成受控候选匹配；151条FOLLOW全链、353条非FOLLOW保留。** 当前root持有完整行人回放session25910，20:49:56启动、timeout900，尚无最终结果。实际管线源固定07 map `4cbc8ad3a2fb04c25599b8df90cf66ff84f1aa7ff17d5b3965bfc96d1be04730`；历史strict1857/1857 UNKNOWN及physical E2E不变。容量刷新CLI `a67a90f7786a1c8e918cd8953d2447f77d0667cb74404d44813917daf3534002` 已独审通过，未执行；f32原源码和旧负预算不改。用户清理范围问题仍待答，禁止把私有40目录清单上传Git或自行删除其他目录。后续stage消费新刷新终态的适配尚未实现。
+
 **最新状态：显式after28续接已真实执行完毕，session61617于20:16:32回收，WSL exit2、临时防休眠线程37816同线程释放。** 原6个续步（新idle及剩余5工作流）全部exit0；唯一最终错误为原正预算容量门拒绝。actual28、person/car exports和R0齐全；完整预算需要244.936135 GiB，D盘当时可用92.117596 GiB，缺152.818540 GiB，ext4逻辑空间通过、宿主物理空间失败。原测量与两次短计时的失败保留。计时fixed06已源审与23项回归通过，第三次原生短回放待执行。正式仍0/280；当前正复核用户可判断的清理候选，不删除其他文件。详见[预算原件诊断](../results/diagnostics/humble54_after28_budget_review01/review01.json)和[执行记录](reliability-v4-probe02-owner07-execution-20261103.md)。下方均为历史快照。
 
 **2026-11-03 19:48:54（北京时间）检查点：核心开发 12/12、安全 03 为 4/4 PASS；扩展 probe02 已完成 16/16 原终态（11 PASS、4 FAIL、1 INCOMPLETE_EVIDENCE），正式仍 0/280。** 最后汽车 far_distance 原 PASS，距离/高度 RMSE 为 0.659361/0.154198 m，状态/真值覆盖率为 0.914894/1.0，原六项导航检查均通过。native collector07 于 19:42:07 COLLECTION_FINISHED/0；原 Windows monitor、launcher 已实际 exit 0，19:42:09 释放临时防休眠。查看[闭合进度](../results/monitor_humble54_probe02_owner07/index.html)、[开发成果快照](../results/diagnostics/humble54_development_view01/index.html)和[本轮原件及终态 SHA](reliability-v4-probe02-owner07-execution-20261103.md)。旧 owner06/observer07/trigger09 的 exit2、扩展原 FAIL/null/INCOMPLETE 全部保留，旧 runner08 不调用。

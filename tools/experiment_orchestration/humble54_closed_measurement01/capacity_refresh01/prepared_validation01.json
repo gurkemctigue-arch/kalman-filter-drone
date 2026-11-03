@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "kind": "CAPACITY_REFRESH_AUTHOR_PREPARATION_NOT_EXECUTION",
+  "created_utc": "2026-11-03T12:48:47.181937+00:00",
+  "status": "AUTHOR_VALIDATION_COMPLETED_AWAITING_INDEPENDENT_REVIEW",
+  "scope": "WINDOWS_SOURCE_AND_SMALL_JSON_ONLY",
+  "native_execution": false,
+  "git_commit_performed": false,
+  "formal_admission": false,
+  "automatic_retry": false,
+  "actual_windows": {
+    "original_seven_step_terminal_sha256": "fadaead9a3ba1b4f2d45c7df4ab05fd055fce33c24e8900b24d78112ab704b5c",
+    "continuation_six_step_terminal_sha256": "fa9278fbfd89fcba878c421bf4197edebaa816d57304395b2e317e3249b87b7b",
+    "both_returncodes": 2,
+    "old_negative_budget_sha256": "2af067022931d87e5c1e74eccef8457f4d735dc7d17819d331ea9eadf6c94b4b",
+    "old_storage_sha256": "45dffb5746b38ee1fe96acab430a6799095c7fff239f381928af2c4b9440fe78",
+    "R0_candidate_sha256": "6e259c6491fcf61f608f3ca4f702e6dac3b3003ff22ef4dc8bf6fa9aeadc500b"
+  },
+  "author_tests": {
+    "refresh_cases": 6,
+    "all_directory_cases": 21,
+    "failures": 0,
+    "errors": 0,
+    "duration_seconds": 4.85899999999674,
+    "real_processes_replaced_by_explicit_fixture_children": true
+  },
+  "authentic_negative_budget_check": {
+    "bytes": 94327,
+    "only_final_capacity_gate_refuses": true,
+    "known_physical_deficit": true,
+    "no_native_commands": true
+  },
+  "files": [
+    {
+      "path": "tools/experiment_orchestration/humble54_closed_measurement01/refresh_capacity_after28.py",
+      "bytes": 26601,
+      "sha256": "2cd7683092b4396c7ea57b529ab3632bf5141c12ef96cc7ac9818c80200a7613"
+    },
+    {
+      "path": "tools/experiment_orchestration/humble54_closed_measurement01/test_refresh_capacity_after28.py",
+      "bytes": 18773,
+      "sha256": "6ff073ef19667f9097cda87264086120bc1b14b1db78a2ed2d72099327328710"
+    },
+    {
+      "path": "tools/experiment_orchestration/humble54_closed_measurement01/capacity_refresh01/README.md",
+      "bytes": 3190,
+      "sha256": "30b8c1868affba383b209d0c4a97bc50f3f93890e5596cce6da95d5d3d896477"
+    },
+    {
+      "path": "tools/experiment_orchestration/humble54_closed_measurement01/capacity_refresh01/synthetic_tests01.log",
+      "bytes": 4217,
+      "sha256": "225caabdf785ca81442a376bbb650d1486565345be5089112f3015677e9e57b1"
+    },
+    {
+      "path": "tools/experiment_orchestration/humble54_closed_measurement01/run_closed_measurement.py",
+      "bytes": 46347,
+      "sha256": "f32bd4bc97e58a15417fb9757eceb7e7cf2de2cb4e16ac5df54d200a40bae3b0"
+    },
+    {
+      "path": "tools/experiment_orchestration/humble54_closed_measurement01/continue_after28_01/run_closed_measurement.executed_47fcbd.py",
+      "bytes": 28270,
+      "sha256": "47fcbd727debbdb418bb9fbb1cc6a5abeb9806855f6331709c8590c688232433"
+    }
+  ],
+  "limitations": [
+    "No native refresh has run.",
+    "No future receipt path, hash or positive result is registered.",
+    "No staging adapter is included.",
+    "The old hypothetical single12-step design card is superseded here by the authentic failed7 plus failed6 windows."
+  ]
+}

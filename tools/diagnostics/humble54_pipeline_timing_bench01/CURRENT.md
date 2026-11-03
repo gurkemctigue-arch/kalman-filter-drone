@@ -1,3 +1,15 @@
+# Current fixed07 / actual short03 outcome
+
+The current reviewed source candidate is source_sha256_windows07.json, SHA `4cbc8ad3a2fb04c25599b8df90cf66ff84f1aa7ff17d5b3965bfc96d1be04730`. Validation receipt SHA: `f1c8c72b05209afc376eb4b23b4a65e22cb3280955566f071b347d5f03aff54f`. Root review precedes the next native bench. No new bench was started by this change.
+
+Actual short03 finished normally: all five algorithm/replay workers exited 0 and cleanup completed, but its result is NOT_OBSERVED, with 0 candidates and 504 UNKNOWN command opportunities. The three DDS edges retained 76/454/504 UNKNOWN takes. Those original results remain unchanged. Its original summary SHA is `d893695df5ef0eabc764970aa31b2afdf410cbc65763211ca37baee77f8e0037`.
+
+The real lightweight Humble probe confirmed exact root modules/slots and the unsupported IDL declaration `boolean`. Fixed07 adds that spelling while preserving strict Python bool checks, declared type strings, all fields, bit widths and unknown rejection. A separately authorized real CDR compatibility check passed for all three actual root types, including one real nested TargetObservation; the private c7 typed compatibility cases also passed with synthetic DDS windows. This checks schema compatibility, not actual DDS edges or pipeline latency. See CHANGE_FIXED07.md, schema_probe07_native.json and schema_verify07_native.json. Windows tests: 25/25 PASS.
+
+Use a fresh output directory for any subsequent bench, e.g. `/root/humble54_pipeline_bench01_short04`; do not rerun into short01/02/03. The original short input manifest remains unchanged. Root controls actual execution after its own review. The Humble environment requirements below still apply. No uninstrumented baseline exists, and historical strict UNKNOWN / physical E2E conclusions do not change.
+
+## Earlier entry text retained for history
+
 # 当前可审查版本
 
 当前运行源码以 `source_sha256_windows06.json` 为准，清单原字节 SHA 为 `4c5bdb715448ea597405b41e2cb1d21c4fa7befec8d5a0a27e84f321b87f1226`。fixed05 修复新 JSON 发布竞态，fixed06 补齐动态导入前的模块注册。23项作者测试通过，root核对当前源码清单并独立通过新增的 dataclass 动态加载回归；此前也已独立通过两项真实文件系统并发回归。修复和旧实现失败负对照见对应 CHANGE、validation 与 negative_control 文件。

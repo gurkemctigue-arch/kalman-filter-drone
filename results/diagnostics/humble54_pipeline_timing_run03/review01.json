@@ -1,0 +1,93 @@
+{
+  "status": "NATIVE_SHORT_COMPLETE_TYPE_FIELDS_UNOBSERVED",
+  "original_summary": {
+    "path": "\\\\wsl.localhost\\UAVHumble22\\root\\humble54_pipeline_bench01_short03\\summary.json",
+    "sha256": "d893695df5ef0eabc764970aa31b2afdf410cbc65763211ca37baee77f8e0037"
+  },
+  "observed": {
+    "native_complete": true,
+    "status": "NOT_OBSERVED",
+    "error": null,
+    "process_exit_codes": {
+      "detector": 0,
+      "estimator": 0,
+      "controller": 0,
+      "adapter": 0,
+      "replay": 0
+    },
+    "cleanup_errors": [],
+    "opportunity_counts": {
+      "scope_begin": 1,
+      "fmu_scan": 39136,
+      "graph": 117408,
+      "process_start": 1,
+      "reader_opened": 1,
+      "replay_input": 16000,
+      "typed_unknown": 3102,
+      "publish": 1034,
+      "take": 1034,
+      "callback": 1034,
+      "sensor_callback": 504,
+      "snapshot": 250,
+      "worker_start": 250,
+      "submit": 250,
+      "worker_end": 250,
+      "navigation_clear": 1,
+      "navigation_update": 76,
+      "navigation_project": 454,
+      "replay_finished": 1,
+      "process_final": 1
+    },
+    "command_categories": {
+      "UNCLASSIFIED_MISSING_EDGE": 504
+    },
+    "replayed_input_counts_by_kind": {
+      "tf_static": 1,
+      "clock": 9804,
+      "phase": 504,
+      "camera_info": 252,
+      "rgb": 252,
+      "depth": 252,
+      "vehicle_odometry": 2468,
+      "tf": 2467
+    },
+    "adapter_callback_count": 504,
+    "candidate_command_count": 0,
+    "unknown_command_count": 504,
+    "unknown_reasons": {
+      "callback_original_take_object_or_fields_missing:command": 504
+    },
+    "received_rgb_count": 252,
+    "rgb_with_candidate_count": 0,
+    "candidate_subset_statistics_ns": {
+      "median": null,
+      "p95": null,
+      "max": null
+    },
+    "physical_e2e": "NOT_OBSERVED",
+    "historical_strict_unknown": "1857/1857_UNCHANGED",
+    "graph_boundary": "POLLED_EXTERNAL_WRITER_ABSENCE_NOT_PROVEN"
+  },
+  "groups_all_exited": true,
+  "edges": {
+    "detection": {
+      "publish_count": 76,
+      "take_count": 76,
+      "candidate_count": 0,
+      "unknown_count": 76
+    },
+    "state": {
+      "publish_count": 454,
+      "take_count": 454,
+      "candidate_count": 0,
+      "unknown_count": 454
+    },
+    "command": {
+      "publish_count": 504,
+      "take_count": 504,
+      "candidate_count": 0,
+      "unknown_count": 504
+    }
+  },
+  "formal_admission": false
+}

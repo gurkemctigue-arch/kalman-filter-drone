@@ -64,7 +64,7 @@ def _value(kind, value, depth):
                     {"type": element, "bits_be": (raw[i:i+width][::-1] if little else raw[i:i+width]).hex()}
                     for i in range(0, len(raw), width)]}
         return {"type": kind, "length": len(value), "items": [_value(element, item, depth+1) for item in value]}
-    if kind == "bool":
+    if kind in {"bool", "boolean"}:
         if type(value) is not bool:
             raise TypeError("bool field type differs")
         return {"type": kind, "value": value}
@@ -139,7 +139,7 @@ def valid_snapshot(value):
             if not parsed and not fixed:
                 return False
             base=(parsed or fixed)[1].strip();bound=(parsed or fixed)[2]
-            try:expected=base if base in INTEGERS or base in {"bool","float","float32","double","float64","string"} or re.fullmatch(r"string<=[0-9]+",base) else _qualified(base)
+            try:expected=base if base in INTEGERS or base in {"bool","boolean","float","float32","double","float64","string"} or re.fullmatch(r"string<=[0-9]+",base) else _qualified(base)
             except (TypeError,ValueError):return False
             return (set(item) == {"type", "length", "items"} and type(item["length"]) is int
                     and type(item["items"]) is list and item["length"] == len(item["items"])
@@ -148,7 +148,7 @@ def valid_snapshot(value):
                     and all(type(x) is dict for x in item["items"]))
         if kind in INTEGERS:
             return set(item) == {"type", "value"} and type(item["value"]) is int and INTEGERS[kind][0] <= item["value"] <= INTEGERS[kind][1]
-        if kind == "bool":
+        if kind in {"bool", "boolean"}:
             return set(item) == {"type", "value"} and type(item["value"]) is bool
         if kind in {"float", "float32", "double", "float64"}:
             width = 8 if kind in {"float", "float32"} else 16

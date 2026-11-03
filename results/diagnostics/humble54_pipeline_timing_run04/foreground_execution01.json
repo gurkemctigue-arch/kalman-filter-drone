@@ -1,0 +1,21 @@
+{
+  "scope": "FOREGROUND_SHORT_SOFTWARE_TIMING_REPLAY_FIXED07",
+  "started_utc": "2026-11-03T12:42:38.084974+00:00",
+  "source_map_sha256": "4cbc8ad3a2fb04c25599b8df90cf66ff84f1aa7ff17d5b3965bfc96d1be04730",
+  "command": [
+    "wsl.exe",
+    "--distribution",
+    "UAVHumble22",
+    "--exec",
+    "bash",
+    "-c",
+    "set -eo pipefail\nexport HUMBLE22_PROJECT_ROOT=/root/uav_tracking_fullplan_v4_humble54\nexport HUMBLE22_ROS_GZ_WS=/root/uav_humble22/ros_gz_shutdown_A01_ws\nexport HUMBLE22_PX4_ROOT=/root/uav_humble22/PX4-Autopilot-v4mag\nexport PYTHONDONTWRITEBYTECODE=1\nsource /root/uav_tracking_fullplan_v4_humble54/scripts/humble22_env.sh\nexec bash /root/uav_tracking_fullplan_v4_humble54/scripts/ros_python.sh '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/diagnostics/humble54_pipeline_timing_bench01/bench.py' native --manifest '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/diagnostics/humble54_pipeline_timing_bench01/person004_short01.manifest.json' --output /root/humble54_pipeline_bench01_short04 --domain-id 211 --timeout-s 480 --drain-s 2 --cleanup-s 30"
+  ],
+  "power_thread": 45336,
+  "power_request_return": 2147483648,
+  "windows_child_pid": 14428,
+  "returncode": 0,
+  "release_thread": 45336,
+  "power_release_return": 2147483651,
+  "finished_utc": "2026-11-03T12:47:24.895715+00:00"
+}

@@ -1,5 +1,12 @@
 # after07 实际负预算之后的容量刷新设计卡
 
+> 当前事实补充：原测量的真实终态为 `/mnt/d/WSL/UAVHumble22-validation/humble54_probe02_closed_measurement_after07_01/terminal.json`，只完成 7 个实际命令，因 `Refused: Refusing large input` 停止、整体退出 2。其后 f32 固定代码产生同级 `humble54_probe02_closed_measurement_after07_01_continue_after28_01/terminal.json`，6 个实际命令均退出 0，随后唯一错误是完整 full280 容量门拒绝、整体仍退出 2。两窗口必须分别保留，不能套用下文原先假设的单一“12 步成功测量”前提。
+>
+> 原完整预算 `results/frozen_fullplan_v4_humble54/full280_storage_budget_probe02_after07_01/budget.json` 的约 153 GiB 物理缺口尚未解除。现在已准备独立工具 `tools/experiment_orchestration/humble54_closed_measurement01/refresh_capacity_after28.py`，源码 SHA 为 `a67a90f7786a1c8e918cd8953d2447f77d0667cb74404d44813917daf3534002`，22 项作者合成测试及独立审查已通过；**尚未原生执行**。只有真实容量得到改善后，才显式运行该工具，重新执行原 idle、inventory 和 budget 三个命令，保持所有原 storage 和预留不变。
+>
+> 下文保留为早期设计记录，其中单一 12 步窗口、尚无刷新工具等描述不再代表当前实现。应以本段、新工具及其 `capacity_refresh01/README.md` 为准。新正预算产生之后所需的 staging 消费适配尚未实现；当前没有自动 staging、正式 admission 或正式运行。
+
+
 状态：**仅设计，未实施、未登记、未执行。** 本卡来自 Windows 小源码只读检查，不表示实际 measurement 已结束或负预算已产生。没有运行 WSL/native、inventory、budget、flight、staging 或正式验收；没有创建 owner、trigger、未来结果路径绑定或未来 SHA。当前 collector07 的实际独占执行保持不变。
 
 本设计仅适用于：原 after07 measurement 确实完成全部 12 个步骤，所有步骤真实 exit 0，actual28、两次具名 velocity export 和 R0 均完整，但最终因完整 full280 容量预算不足而保留负结果、整体 exit 2。它不是通用 resume，也不能放行其他停止原因。

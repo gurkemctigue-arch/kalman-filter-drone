@@ -1,0 +1,5700 @@
+{
+  "scope": "REAL_CDR_AND_TYPED_SCHEMA_COMPATIBILITY_NOT_ACTUAL_DDS_OR_PIPELINE_TIMING",
+  "python": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
+  "codec_sha256": "37ad634a56eb4dbd496b1dcc14dbf9a6b8cc7fdbf1f6f14af2b4e539839cd356",
+  "probe_source_sha256": "1aad1126ccbad6cc242a78401238b04b7e7ed4e9a4ed882a797f638fde8b755d",
+  "c7_source_sha256": "c7d0050cab71ce6a340c7fc5647531e92334029c8dc38b14393d2dc0058ae426",
+  "ros_init_called": false,
+  "publishers_created": false,
+  "bags_opened": false,
+  "weights_opened": false,
+  "actual_dds_edges": "NOT_OBSERVED_BY_THIS_PROBE",
+  "actual_pipeline_latency": "NOT_OBSERVED_BY_THIS_PROBE",
+  "historical_short03_reclassified": false,
+  "historical_strict_changed": false,
+  "physical_e2e": "NOT_OBSERVED",
+  "types": [
+    {
+      "root": "TargetObservationArray",
+      "original": {
+        "python_module": "uav_tracking_interfaces.msg._target_observation_array",
+        "class_name": "TargetObservationArray",
+        "source_path": "/root/uav_tracking_fullplan_v4_humble54/ros2_ws/install/lib/python3.10/site-packages/uav_tracking_interfaces/msg/_target_observation_array.py",
+        "source_sha256": "6605d5cc6ee85a359cecedb0916d8d77650cf5c64a29a0fe4aacf9062162dc25",
+        "slots": [
+          "_header",
+          "_observations",
+          "_navigation_ground_points_camera_m",
+          "_navigation_overlaps"
+        ],
+        "schema": {
+          "header": "std_msgs/Header",
+          "observations": "sequence<uav_tracking_interfaces/TargetObservation>",
+          "navigation_ground_points_camera_m": "sequence<float>",
+          "navigation_overlaps": "sequence<uav_tracking_interfaces/NavigationOverlap>"
+        },
+        "type_name": {
+          "status": "PASS",
+          "value": "uav_tracking_interfaces/msg/TargetObservationArray"
+        },
+        "snapshot": {
+          "status": "PASS",
+          "value": {
+            "type": "uav_tracking_interfaces/msg/TargetObservationArray",
+            "fields": [
+              {
+                "name": "header",
+                "value": {
+                  "type": "std_msgs/msg/Header",
+                  "fields": [
+                    {
+                      "name": "stamp",
+                      "value": {
+                        "type": "builtin_interfaces/msg/Time",
+                        "fields": [
+                          {
+                            "name": "sec",
+                            "value": {
+                              "type": "int32",
+                              "value": 0
+                            }
+                          },
+                          {
+                            "name": "nanosec",
+                            "value": {
+                              "type": "uint32",
+                              "value": 0
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "name": "frame_id",
+                      "value": {
+                        "type": "string",
+                        "utf8_hex": ""
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "observations",
+                "value": {
+                  "type": "sequence<uav_tracking_interfaces/TargetObservation>",
+                  "length": 1,
+                  "items": [
+                    {
+                      "type": "uav_tracking_interfaces/msg/TargetObservation",
+                      "fields": [
+                        {
+                          "name": "header",
+                          "value": {
+                            "type": "std_msgs/msg/Header",
+                            "fields": [
+                              {
+                                "name": "stamp",
+                                "value": {
+                                  "type": "builtin_interfaces/msg/Time",
+                                  "fields": [
+                                    {
+                                      "name": "sec",
+                                      "value": {
+                                        "type": "int32",
+                                        "value": 0
+                                      }
+                                    },
+                                    {
+                                      "name": "nanosec",
+                                      "value": {
+                                        "type": "uint32",
+                                        "value": 0
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "name": "frame_id",
+                                "value": {
+                                  "type": "string",
+                                  "utf8_hex": ""
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "name": "acquisition_epoch",
+                          "value": {
+                            "type": "uint64",
+                            "value": 0
+                          }
+                        },
+                        {
+                          "name": "candidate_id",
+                          "value": {
+                            "type": "uint64",
+                            "value": 0
+                          }
+                        },
+                        {
+                          "name": "class_name",
+                          "value": {
+                            "type": "string",
+                            "utf8_hex": ""
+                          }
+                        },
+                        {
+                          "name": "class_id",
+                          "value": {
+                            "type": "uint16",
+                            "value": 0
+                          }
+                        },
+                        {
+                          "name": "confidence",
+                          "value": {
+                            "type": "float",
+                            "bits_be": "00000000"
+                          }
+                        },
+                        {
+                          "name": "bbox_x_min_px",
+                          "value": {
+                            "type": "float",
+                            "bits_be": "00000000"
+                          }
+                        },
+                        {
+                          "name": "bbox_y_min_px",
+                          "value": {
+                            "type": "float",
+                            "bits_be": "00000000"
+                          }
+                        },
+                        {
+                          "name": "bbox_x_max_px",
+                          "value": {
+                            "type": "float",
+                            "bits_be": "00000000"
+                          }
+                        },
+                        {
+                          "name": "bbox_y_max_px",
+                          "value": {
+                            "type": "float",
+                            "bits_be": "00000000"
+                          }
+                        },
+                        {
+                          "name": "center_u_px",
+                          "value": {
+                            "type": "float",
+                            "bits_be": "00000000"
+                          }
+                        },
+                        {
+                          "name": "center_v_px",
+                          "value": {
+                            "type": "float",
+                            "bits_be": "00000000"
+                          }
+                        },
+                        {
+                          "name": "depth_valid",
+                          "value": {
+                            "type": "boolean",
+                            "value": true
+                          }
+                        },
+                        {
+                          "name": "depth_m",
+                          "value": {
+                            "type": "float",
+                            "bits_be": "00000000"
+                          }
+                        },
+                        {
+                          "name": "depth_valid_ratio",
+                          "value": {
+                            "type": "float",
+                            "bits_be": "00000000"
+                          }
+                        },
+                        {
+                          "name": "depth_std_m",
+                          "value": {
+                            "type": "float",
+                            "bits_be": "00000000"
+                          }
+                        },
+                        {
+                          "name": "depth_min_m",
+                          "value": {
+                            "type": "float",
+                            "bits_be": "00000000"
+                          }
+                        },
+                        {
+                          "name": "depth_max_m",
+                          "value": {
+                            "type": "float",
+                            "bits_be": "00000000"
+                          }
+                        },
+                        {
+                          "name": "position_camera_m",
+                          "value": {
+                            "type": "geometry_msgs/msg/Point",
+                            "fields": [
+                              {
+                                "name": "x",
+                                "value": {
+                                  "type": "double",
+                                  "bits_be": "0000000000000000"
+                                }
+                              },
+                              {
+                                "name": "y",
+                                "value": {
+                                  "type": "double",
+                                  "bits_be": "0000000000000000"
+                                }
+                              },
+                              {
+                                "name": "z",
+                                "value": {
+                                  "type": "double",
+                                  "bits_be": "0000000000000000"
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "name": "camera_frame",
+                          "value": {
+                            "type": "string",
+                            "utf8_hex": ""
+                          }
+                        },
+                        {
+                          "name": "surface_recovery_enabled",
+                          "value": {
+                            "type": "boolean",
+                            "value": false
+                          }
+                        },
+                        {
+                          "name": "surface_measurement_supported",
+                          "value": {
+                            "type": "boolean",
+                            "value": false
+                          }
+                        },
+                        {
+                          "name": "navigation_points_camera_m",
+                          "value": {
+                            "type": "sequence<float>",
+                            "length": 0,
+                            "items": []
+                          }
+                        },
+                        {
+                          "name": "navigation_bottom_ray_camera",
+                          "value": {
+                            "type": "geometry_msgs/msg/Vector3",
+                            "fields": [
+                              {
+                                "name": "x",
+                                "value": {
+                                  "type": "double",
+                                  "bits_be": "0000000000000000"
+                                }
+                              },
+                              {
+                                "name": "y",
+                                "value": {
+                                  "type": "double",
+                                  "bits_be": "0000000000000000"
+                                }
+                              },
+                              {
+                                "name": "z",
+                                "value": {
+                                  "type": "double",
+                                  "bits_be": "0000000000000000"
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "name": "navigation_bbox_complete",
+                          "value": {
+                            "type": "boolean",
+                            "value": false
+                          }
+                        },
+                        {
+                          "name": "navigation_bbox_inside_image",
+                          "value": {
+                            "type": "boolean",
+                            "value": false
+                          }
+                        },
+                        {
+                          "name": "navigation_overlap_count",
+                          "value": {
+                            "type": "uint32",
+                            "value": 0
+                          }
+                        },
+                        {
+                          "name": "navigation_visibility_support_camera_m",
+                          "value": {
+                            "type": "sequence<float>",
+                            "length": 0,
+                            "items": []
+                          }
+                        },
+                        {
+                          "name": "navigation_exclusive_depth_complete",
+                          "value": {
+                            "type": "boolean",
+                            "value": false
+                          }
+                        },
+                        {
+                          "name": "navigation_exclusive_expected_pixel_count",
+                          "value": {
+                            "type": "uint32",
+                            "value": 0
+                          }
+                        },
+                        {
+                          "name": "navigation_exclusive_valid_pixel_count",
+                          "value": {
+                            "type": "uint32",
+                            "value": 0
+                          }
+                        },
+                        {
+                          "name": "navigation_exclusive_reason",
+                          "value": {
+                            "type": "string",
+                            "utf8_hex": ""
+                          }
+                        },
+                        {
+                          "name": "navigation_exclusive_points_camera_m",
+                          "value": {
+                            "type": "sequence<float>",
+                            "length": 0,
+                            "items": []
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "navigation_ground_points_camera_m",
+                "value": {
+                  "type": "sequence<float>",
+                  "length": 0,
+                  "items": []
+                }
+              },
+              {
+                "name": "navigation_overlaps",
+                "value": {
+                  "type": "sequence<uav_tracking_interfaces/NavigationOverlap>",
+                  "length": 0,
+                  "items": []
+                }
+              }
+            ]
+          }
+        },
+        "raw_default_message": {
+          "kind": "message",
+          "python_module": "uav_tracking_interfaces.msg._target_observation_array",
+          "class_name": "TargetObservationArray",
+          "slots": [
+            "_header",
+            "_observations",
+            "_navigation_ground_points_camera_m",
+            "_navigation_overlaps"
+          ],
+          "schema": {
+            "header": "std_msgs/Header",
+            "observations": "sequence<uav_tracking_interfaces/TargetObservation>",
+            "navigation_ground_points_camera_m": "sequence<float>",
+            "navigation_overlaps": "sequence<uav_tracking_interfaces/NavigationOverlap>"
+          },
+          "values": {
+            "header": {
+              "kind": "message",
+              "python_module": "std_msgs.msg._header",
+              "class_name": "Header",
+              "slots": [
+                "_stamp",
+                "_frame_id"
+              ],
+              "schema": {
+                "stamp": "builtin_interfaces/Time",
+                "frame_id": "string"
+              },
+              "values": {
+                "stamp": {
+                  "kind": "message",
+                  "python_module": "builtin_interfaces.msg._time",
+                  "class_name": "Time",
+                  "slots": [
+                    "_sec",
+                    "_nanosec"
+                  ],
+                  "schema": {
+                    "sec": "int32",
+                    "nanosec": "uint32"
+                  },
+                  "values": {
+                    "sec": {
+                      "kind": "int",
+                      "value": 0
+                    },
+                    "nanosec": {
+                      "kind": "int",
+                      "value": 0
+                    }
+                  }
+                },
+                "frame_id": {
+                  "kind": "str",
+                  "value": ""
+                }
+              }
+            },
+            "observations": {
+              "kind": "sequence",
+              "items": [
+                {
+                  "kind": "message",
+                  "python_module": "uav_tracking_interfaces.msg._target_observation",
+                  "class_name": "TargetObservation",
+                  "slots": [
+                    "_header",
+                    "_acquisition_epoch",
+                    "_candidate_id",
+                    "_class_name",
+                    "_class_id",
+                    "_confidence",
+                    "_bbox_x_min_px",
+                    "_bbox_y_min_px",
+                    "_bbox_x_max_px",
+                    "_bbox_y_max_px",
+                    "_center_u_px",
+                    "_center_v_px",
+                    "_depth_valid",
+                    "_depth_m",
+                    "_depth_valid_ratio",
+                    "_depth_std_m",
+                    "_depth_min_m",
+                    "_depth_max_m",
+                    "_position_camera_m",
+                    "_camera_frame",
+                    "_surface_recovery_enabled",
+                    "_surface_measurement_supported",
+                    "_navigation_points_camera_m",
+                    "_navigation_bottom_ray_camera",
+                    "_navigation_bbox_complete",
+                    "_navigation_bbox_inside_image",
+                    "_navigation_overlap_count",
+                    "_navigation_visibility_support_camera_m",
+                    "_navigation_exclusive_depth_complete",
+                    "_navigation_exclusive_expected_pixel_count",
+                    "_navigation_exclusive_valid_pixel_count",
+                    "_navigation_exclusive_reason",
+                    "_navigation_exclusive_points_camera_m"
+                  ],
+                  "schema": {
+                    "header": "std_msgs/Header",
+                    "acquisition_epoch": "uint64",
+                    "candidate_id": "uint64",
+                    "class_name": "string",
+                    "class_id": "uint16",
+                    "confidence": "float",
+                    "bbox_x_min_px": "float",
+                    "bbox_y_min_px": "float",
+                    "bbox_x_max_px": "float",
+                    "bbox_y_max_px": "float",
+                    "center_u_px": "float",
+                    "center_v_px": "float",
+                    "depth_valid": "boolean",
+                    "depth_m": "float",
+                    "depth_valid_ratio": "float",
+                    "depth_std_m": "float",
+                    "depth_min_m": "float",
+                    "depth_max_m": "float",
+                    "position_camera_m": "geometry_msgs/Point",
+                    "camera_frame": "string",
+                    "surface_recovery_enabled": "boolean",
+                    "surface_measurement_supported": "boolean",
+                    "navigation_points_camera_m": "sequence<float>",
+                    "navigation_bottom_ray_camera": "geometry_msgs/Vector3",
+                    "navigation_bbox_complete": "boolean",
+                    "navigation_bbox_inside_image": "boolean",
+                    "navigation_overlap_count": "uint32",
+                    "navigation_visibility_support_camera_m": "sequence<float>",
+                    "navigation_exclusive_depth_complete": "boolean",
+                    "navigation_exclusive_expected_pixel_count": "uint32",
+                    "navigation_exclusive_valid_pixel_count": "uint32",
+                    "navigation_exclusive_reason": "string",
+                    "navigation_exclusive_points_camera_m": "sequence<float>"
+                  },
+                  "values": {
+                    "header": {
+                      "kind": "message",
+                      "python_module": "std_msgs.msg._header",
+                      "class_name": "Header",
+                      "slots": [
+                        "_stamp",
+                        "_frame_id"
+                      ],
+                      "schema": {
+                        "stamp": "builtin_interfaces/Time",
+                        "frame_id": "string"
+                      },
+                      "values": {
+                        "stamp": {
+                          "kind": "message",
+                          "python_module": "builtin_interfaces.msg._time",
+                          "class_name": "Time",
+                          "slots": [
+                            "_sec",
+                            "_nanosec"
+                          ],
+                          "schema": {
+                            "sec": "int32",
+                            "nanosec": "uint32"
+                          },
+                          "values": {
+                            "sec": {
+                              "kind": "int",
+                              "value": 0
+                            },
+                            "nanosec": {
+                              "kind": "int",
+                              "value": 0
+                            }
+                          }
+                        },
+                        "frame_id": {
+                          "kind": "str",
+                          "value": ""
+                        }
+                      }
+                    },
+                    "acquisition_epoch": {
+                      "kind": "int",
+                      "value": 0
+                    },
+                    "candidate_id": {
+                      "kind": "int",
+                      "value": 0
+                    },
+                    "class_name": {
+                      "kind": "str",
+                      "value": ""
+                    },
+                    "class_id": {
+                      "kind": "int",
+                      "value": 0
+                    },
+                    "confidence": {
+                      "kind": "float",
+                      "bits_be": "0000000000000000"
+                    },
+                    "bbox_x_min_px": {
+                      "kind": "float",
+                      "bits_be": "0000000000000000"
+                    },
+                    "bbox_y_min_px": {
+                      "kind": "float",
+                      "bits_be": "0000000000000000"
+                    },
+                    "bbox_x_max_px": {
+                      "kind": "float",
+                      "bits_be": "0000000000000000"
+                    },
+                    "bbox_y_max_px": {
+                      "kind": "float",
+                      "bits_be": "0000000000000000"
+                    },
+                    "center_u_px": {
+                      "kind": "float",
+                      "bits_be": "0000000000000000"
+                    },
+                    "center_v_px": {
+                      "kind": "float",
+                      "bits_be": "0000000000000000"
+                    },
+                    "depth_valid": {
+                      "kind": "bool",
+                      "value": true
+                    },
+                    "depth_m": {
+                      "kind": "float",
+                      "bits_be": "0000000000000000"
+                    },
+                    "depth_valid_ratio": {
+                      "kind": "float",
+                      "bits_be": "0000000000000000"
+                    },
+                    "depth_std_m": {
+                      "kind": "float",
+                      "bits_be": "0000000000000000"
+                    },
+                    "depth_min_m": {
+                      "kind": "float",
+                      "bits_be": "0000000000000000"
+                    },
+                    "depth_max_m": {
+                      "kind": "float",
+                      "bits_be": "0000000000000000"
+                    },
+                    "position_camera_m": {
+                      "kind": "message",
+                      "python_module": "geometry_msgs.msg._point",
+                      "class_name": "Point",
+                      "slots": [
+                        "_x",
+                        "_y",
+                        "_z"
+                      ],
+                      "schema": {
+                        "x": "double",
+                        "y": "double",
+                        "z": "double"
+                      },
+                      "values": {
+                        "x": {
+                          "kind": "float",
+                          "bits_be": "0000000000000000"
+                        },
+                        "y": {
+                          "kind": "float",
+                          "bits_be": "0000000000000000"
+                        },
+                        "z": {
+                          "kind": "float",
+                          "bits_be": "0000000000000000"
+                        }
+                      }
+                    },
+                    "camera_frame": {
+                      "kind": "str",
+                      "value": ""
+                    },
+                    "surface_recovery_enabled": {
+                      "kind": "bool",
+                      "value": false
+                    },
+                    "surface_measurement_supported": {
+                      "kind": "bool",
+                      "value": false
+                    },
+                    "navigation_points_camera_m": {
+                      "kind": "sequence",
+                      "items": []
+                    },
+                    "navigation_bottom_ray_camera": {
+                      "kind": "message",
+                      "python_module": "geometry_msgs.msg._vector3",
+                      "class_name": "Vector3",
+                      "slots": [
+                        "_x",
+                        "_y",
+                        "_z"
+                      ],
+                      "schema": {
+                        "x": "double",
+                        "y": "double",
+                        "z": "double"
+                      },
+                      "values": {
+                        "x": {
+                          "kind": "float",
+                          "bits_be": "0000000000000000"
+                        },
+                        "y": {
+                          "kind": "float",
+                          "bits_be": "0000000000000000"
+                        },
+                        "z": {
+                          "kind": "float",
+                          "bits_be": "0000000000000000"
+                        }
+                      }
+                    },
+                    "navigation_bbox_complete": {
+                      "kind": "bool",
+                      "value": false
+                    },
+                    "navigation_bbox_inside_image": {
+                      "kind": "bool",
+                      "value": false
+                    },
+                    "navigation_overlap_count": {
+                      "kind": "int",
+                      "value": 0
+                    },
+                    "navigation_visibility_support_camera_m": {
+                      "kind": "sequence",
+                      "items": []
+                    },
+                    "navigation_exclusive_depth_complete": {
+                      "kind": "bool",
+                      "value": false
+                    },
+                    "navigation_exclusive_expected_pixel_count": {
+                      "kind": "int",
+                      "value": 0
+                    },
+                    "navigation_exclusive_valid_pixel_count": {
+                      "kind": "int",
+                      "value": 0
+                    },
+                    "navigation_exclusive_reason": {
+                      "kind": "str",
+                      "value": ""
+                    },
+                    "navigation_exclusive_points_camera_m": {
+                      "kind": "sequence",
+                      "items": []
+                    }
+                  }
+                }
+              ]
+            },
+            "navigation_ground_points_camera_m": {
+              "kind": "sequence",
+              "items": []
+            },
+            "navigation_overlaps": {
+              "kind": "sequence",
+              "items": []
+            }
+          }
+        },
+        "fields": [
+          {
+            "name": "header",
+            "declared_type": "std_msgs/Header",
+            "value_python_type": "std_msgs.msg._header.Header",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "std_msgs/msg/Header",
+                "fields": [
+                  {
+                    "name": "stamp",
+                    "value": {
+                      "type": "builtin_interfaces/msg/Time",
+                      "fields": [
+                        {
+                          "name": "sec",
+                          "value": {
+                            "type": "int32",
+                            "value": 0
+                          }
+                        },
+                        {
+                          "name": "nanosec",
+                          "value": {
+                            "type": "uint32",
+                            "value": 0
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "name": "frame_id",
+                    "value": {
+                      "type": "string",
+                      "utf8_hex": ""
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "observations",
+            "declared_type": "sequence<uav_tracking_interfaces/TargetObservation>",
+            "value_python_type": "builtins.list",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "sequence<uav_tracking_interfaces/TargetObservation>",
+                "length": 1,
+                "items": [
+                  {
+                    "type": "uav_tracking_interfaces/msg/TargetObservation",
+                    "fields": [
+                      {
+                        "name": "header",
+                        "value": {
+                          "type": "std_msgs/msg/Header",
+                          "fields": [
+                            {
+                              "name": "stamp",
+                              "value": {
+                                "type": "builtin_interfaces/msg/Time",
+                                "fields": [
+                                  {
+                                    "name": "sec",
+                                    "value": {
+                                      "type": "int32",
+                                      "value": 0
+                                    }
+                                  },
+                                  {
+                                    "name": "nanosec",
+                                    "value": {
+                                      "type": "uint32",
+                                      "value": 0
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "name": "frame_id",
+                              "value": {
+                                "type": "string",
+                                "utf8_hex": ""
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "name": "acquisition_epoch",
+                        "value": {
+                          "type": "uint64",
+                          "value": 0
+                        }
+                      },
+                      {
+                        "name": "candidate_id",
+                        "value": {
+                          "type": "uint64",
+                          "value": 0
+                        }
+                      },
+                      {
+                        "name": "class_name",
+                        "value": {
+                          "type": "string",
+                          "utf8_hex": ""
+                        }
+                      },
+                      {
+                        "name": "class_id",
+                        "value": {
+                          "type": "uint16",
+                          "value": 0
+                        }
+                      },
+                      {
+                        "name": "confidence",
+                        "value": {
+                          "type": "float",
+                          "bits_be": "00000000"
+                        }
+                      },
+                      {
+                        "name": "bbox_x_min_px",
+                        "value": {
+                          "type": "float",
+                          "bits_be": "00000000"
+                        }
+                      },
+                      {
+                        "name": "bbox_y_min_px",
+                        "value": {
+                          "type": "float",
+                          "bits_be": "00000000"
+                        }
+                      },
+                      {
+                        "name": "bbox_x_max_px",
+                        "value": {
+                          "type": "float",
+                          "bits_be": "00000000"
+                        }
+                      },
+                      {
+                        "name": "bbox_y_max_px",
+                        "value": {
+                          "type": "float",
+                          "bits_be": "00000000"
+                        }
+                      },
+                      {
+                        "name": "center_u_px",
+                        "value": {
+                          "type": "float",
+                          "bits_be": "00000000"
+                        }
+                      },
+                      {
+                        "name": "center_v_px",
+                        "value": {
+                          "type": "float",
+                          "bits_be": "00000000"
+                        }
+                      },
+                      {
+                        "name": "depth_valid",
+                        "value": {
+                          "type": "boolean",
+                          "value": true
+                        }
+                      },
+                      {
+                        "name": "depth_m",
+                        "value": {
+                          "type": "float",
+                          "bits_be": "00000000"
+                        }
+                      },
+                      {
+                        "name": "depth_valid_ratio",
+                        "value": {
+                          "type": "float",
+                          "bits_be": "00000000"
+                        }
+                      },
+                      {
+                        "name": "depth_std_m",
+                        "value": {
+                          "type": "float",
+                          "bits_be": "00000000"
+                        }
+                      },
+                      {
+                        "name": "depth_min_m",
+                        "value": {
+                          "type": "float",
+                          "bits_be": "00000000"
+                        }
+                      },
+                      {
+                        "name": "depth_max_m",
+                        "value": {
+                          "type": "float",
+                          "bits_be": "00000000"
+                        }
+                      },
+                      {
+                        "name": "position_camera_m",
+                        "value": {
+                          "type": "geometry_msgs/msg/Point",
+                          "fields": [
+                            {
+                              "name": "x",
+                              "value": {
+                                "type": "double",
+                                "bits_be": "0000000000000000"
+                              }
+                            },
+                            {
+                              "name": "y",
+                              "value": {
+                                "type": "double",
+                                "bits_be": "0000000000000000"
+                              }
+                            },
+                            {
+                              "name": "z",
+                              "value": {
+                                "type": "double",
+                                "bits_be": "0000000000000000"
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "name": "camera_frame",
+                        "value": {
+                          "type": "string",
+                          "utf8_hex": ""
+                        }
+                      },
+                      {
+                        "name": "surface_recovery_enabled",
+                        "value": {
+                          "type": "boolean",
+                          "value": false
+                        }
+                      },
+                      {
+                        "name": "surface_measurement_supported",
+                        "value": {
+                          "type": "boolean",
+                          "value": false
+                        }
+                      },
+                      {
+                        "name": "navigation_points_camera_m",
+                        "value": {
+                          "type": "sequence<float>",
+                          "length": 0,
+                          "items": []
+                        }
+                      },
+                      {
+                        "name": "navigation_bottom_ray_camera",
+                        "value": {
+                          "type": "geometry_msgs/msg/Vector3",
+                          "fields": [
+                            {
+                              "name": "x",
+                              "value": {
+                                "type": "double",
+                                "bits_be": "0000000000000000"
+                              }
+                            },
+                            {
+                              "name": "y",
+                              "value": {
+                                "type": "double",
+                                "bits_be": "0000000000000000"
+                              }
+                            },
+                            {
+                              "name": "z",
+                              "value": {
+                                "type": "double",
+                                "bits_be": "0000000000000000"
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "name": "navigation_bbox_complete",
+                        "value": {
+                          "type": "boolean",
+                          "value": false
+                        }
+                      },
+                      {
+                        "name": "navigation_bbox_inside_image",
+                        "value": {
+                          "type": "boolean",
+                          "value": false
+                        }
+                      },
+                      {
+                        "name": "navigation_overlap_count",
+                        "value": {
+                          "type": "uint32",
+                          "value": 0
+                        }
+                      },
+                      {
+                        "name": "navigation_visibility_support_camera_m",
+                        "value": {
+                          "type": "sequence<float>",
+                          "length": 0,
+                          "items": []
+                        }
+                      },
+                      {
+                        "name": "navigation_exclusive_depth_complete",
+                        "value": {
+                          "type": "boolean",
+                          "value": false
+                        }
+                      },
+                      {
+                        "name": "navigation_exclusive_expected_pixel_count",
+                        "value": {
+                          "type": "uint32",
+                          "value": 0
+                        }
+                      },
+                      {
+                        "name": "navigation_exclusive_valid_pixel_count",
+                        "value": {
+                          "type": "uint32",
+                          "value": 0
+                        }
+                      },
+                      {
+                        "name": "navigation_exclusive_reason",
+                        "value": {
+                          "type": "string",
+                          "utf8_hex": ""
+                        }
+                      },
+                      {
+                        "name": "navigation_exclusive_points_camera_m",
+                        "value": {
+                          "type": "sequence<float>",
+                          "length": 0,
+                          "items": []
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "navigation_ground_points_camera_m",
+            "declared_type": "sequence<float>",
+            "value_python_type": "array.array",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "sequence<float>",
+                "length": 0,
+                "items": []
+              }
+            }
+          },
+          {
+            "name": "navigation_overlaps",
+            "declared_type": "sequence<uav_tracking_interfaces/NavigationOverlap>",
+            "value_python_type": "builtins.list",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "sequence<uav_tracking_interfaces/NavigationOverlap>",
+                "length": 0,
+                "items": []
+              }
+            }
+          }
+        ]
+      },
+      "cdr_roundtrip": {
+        "python_module": "uav_tracking_interfaces.msg._target_observation_array",
+        "class_name": "TargetObservationArray",
+        "source_path": "/root/uav_tracking_fullplan_v4_humble54/ros2_ws/install/lib/python3.10/site-packages/uav_tracking_interfaces/msg/_target_observation_array.py",
+        "source_sha256": "6605d5cc6ee85a359cecedb0916d8d77650cf5c64a29a0fe4aacf9062162dc25",
+        "slots": [
+          "_header",
+          "_observations",
+          "_navigation_ground_points_camera_m",
+          "_navigation_overlaps"
+        ],
+        "schema": {
+          "header": "std_msgs/Header",
+          "observations": "sequence<uav_tracking_interfaces/TargetObservation>",
+          "navigation_ground_points_camera_m": "sequence<float>",
+          "navigation_overlaps": "sequence<uav_tracking_interfaces/NavigationOverlap>"
+        },
+        "type_name": {
+          "status": "PASS",
+          "value": "uav_tracking_interfaces/msg/TargetObservationArray"
+        },
+        "snapshot": {
+          "status": "PASS",
+          "value": {
+            "type": "uav_tracking_interfaces/msg/TargetObservationArray",
+            "fields": [
+              {
+                "name": "header",
+                "value": {
+                  "type": "std_msgs/msg/Header",
+                  "fields": [
+                    {
+                      "name": "stamp",
+                      "value": {
+                        "type": "builtin_interfaces/msg/Time",
+                        "fields": [
+                          {
+                            "name": "sec",
+                            "value": {
+                              "type": "int32",
+                              "value": 0
+                            }
+                          },
+                          {
+                            "name": "nanosec",
+                            "value": {
+                              "type": "uint32",
+                              "value": 0
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "name": "frame_id",
+                      "value": {
+                        "type": "string",
+                        "utf8_hex": ""
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "observations",
+                "value": {
+                  "type": "sequence<uav_tracking_interfaces/TargetObservation>",
+                  "length": 1,
+                  "items": [
+                    {
+                      "type": "uav_tracking_interfaces/msg/TargetObservation",
+                      "fields": [
+                        {
+                          "name": "header",
+                          "value": {
+                            "type": "std_msgs/msg/Header",
+                            "fields": [
+                              {
+                                "name": "stamp",
+                                "value": {
+                                  "type": "builtin_interfaces/msg/Time",
+                                  "fields": [
+                                    {
+                                      "name": "sec",
+                                      "value": {
+                                        "type": "int32",
+                                        "value": 0
+                                      }
+                                    },
+                                    {
+                                      "name": "nanosec",
+                                      "value": {
+                                        "type": "uint32",
+                                        "value": 0
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "name": "frame_id",
+                                "value": {
+                                  "type": "string",
+                                  "utf8_hex": ""
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "name": "acquisition_epoch",
+                          "value": {
+                            "type": "uint64",
+                            "value": 0
+                          }
+                        },
+                        {
+                          "name": "candidate_id",
+                          "value": {
+                            "type": "uint64",
+                            "value": 0
+                          }
+                        },
+                        {
+                          "name": "class_name",
+                          "value": {
+                            "type": "string",
+                            "utf8_hex": ""
+                          }
+                        },
+                        {
+                          "name": "class_id",
+                          "value": {
+                            "type": "uint16",
+                            "value": 0
+                          }
+                        },
+                        {
+                          "name": "confidence",
+                          "value": {
+                            "type": "float",
+                            "bits_be": "00000000"
+                          }
+                        },
+                        {
+                          "name": "bbox_x_min_px",
+                          "value": {
+                            "type": "float",
+                            "bits_be": "00000000"
+                          }
+                        },
+                        {
+                          "name": "bbox_y_min_px",
+                          "value": {
+                            "type": "float",
+                            "bits_be": "00000000"
+                          }
+                        },
+                        {
+                          "name": "bbox_x_max_px",
+                          "value": {
+                            "type": "float",
+                            "bits_be": "00000000"
+                          }
+                        },
+                        {
+                          "name": "bbox_y_max_px",
+                          "value": {
+                            "type": "float",
+                            "bits_be": "00000000"
+                          }
+                        },
+                        {
+                          "name": "center_u_px",
+                          "value": {
+                            "type": "float",
+                            "bits_be": "00000000"
+                          }
+                        },
+                        {
+                          "name": "center_v_px",
+                          "value": {
+                            "type": "float",
+                            "bits_be": "00000000"
+                          }
+                        },
+                        {
+                          "name": "depth_valid",
+                          "value": {
+                            "type": "boolean",
+                            "value": true
+                          }
+                        },
+                        {
+                          "name": "depth_m",
+                          "value": {
+                            "type": "float",
+                            "bits_be": "00000000"
+                          }
+                        },
+                        {
+                          "name": "depth_valid_ratio",
+                          "value": {
+                            "type": "float",
+                            "bits_be": "00000000"
+                          }
+                        },
+                        {
+                          "name": "depth_std_m",
+                          "value": {
+                            "type": "float",
+                            "bits_be": "00000000"
+                          }
+                        },
+                        {
+                          "name": "depth_min_m",
+                          "value": {
+                            "type": "float",
+                            "bits_be": "00000000"
+                          }
+                        },
+                        {
+                          "name": "depth_max_m",
+                          "value": {
+                            "type": "float",
+                            "bits_be": "00000000"
+                          }
+                        },
+                        {
+                          "name": "position_camera_m",
+                          "value": {
+                            "type": "geometry_msgs/msg/Point",
+                            "fields": [
+                              {
+                                "name": "x",
+                                "value": {
+                                  "type": "double",
+                                  "bits_be": "0000000000000000"
+                                }
+                              },
+                              {
+                                "name": "y",
+                                "value": {
+                                  "type": "double",
+                                  "bits_be": "0000000000000000"
+                                }
+                              },
+                              {
+                                "name": "z",
+                                "value": {
+                                  "type": "double",
+                                  "bits_be": "0000000000000000"
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "name": "camera_frame",
+                          "value": {
+                            "type": "string",
+                            "utf8_hex": ""
+                          }
+                        },
+                        {
+                          "name": "surface_recovery_enabled",
+                          "value": {
+                            "type": "boolean",
+                            "value": false
+                          }
+                        },
+                        {
+                          "name": "surface_measurement_supported",
+                          "value": {
+                            "type": "boolean",
+                            "value": false
+                          }
+                        },
+                        {
+                          "name": "navigation_points_camera_m",
+                          "value": {
+                            "type": "sequence<float>",
+                            "length": 0,
+                            "items": []
+                          }
+                        },
+                        {
+                          "name": "navigation_bottom_ray_camera",
+                          "value": {
+                            "type": "geometry_msgs/msg/Vector3",
+                            "fields": [
+                              {
+                                "name": "x",
+                                "value": {
+                                  "type": "double",
+                                  "bits_be": "0000000000000000"
+                                }
+                              },
+                              {
+                                "name": "y",
+                                "value": {
+                                  "type": "double",
+                                  "bits_be": "0000000000000000"
+                                }
+                              },
+                              {
+                                "name": "z",
+                                "value": {
+                                  "type": "double",
+                                  "bits_be": "0000000000000000"
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "name": "navigation_bbox_complete",
+                          "value": {
+                            "type": "boolean",
+                            "value": false
+                          }
+                        },
+                        {
+                          "name": "navigation_bbox_inside_image",
+                          "value": {
+                            "type": "boolean",
+                            "value": false
+                          }
+                        },
+                        {
+                          "name": "navigation_overlap_count",
+                          "value": {
+                            "type": "uint32",
+                            "value": 0
+                          }
+                        },
+                        {
+                          "name": "navigation_visibility_support_camera_m",
+                          "value": {
+                            "type": "sequence<float>",
+                            "length": 0,
+                            "items": []
+                          }
+                        },
+                        {
+                          "name": "navigation_exclusive_depth_complete",
+                          "value": {
+                            "type": "boolean",
+                            "value": false
+                          }
+                        },
+                        {
+                          "name": "navigation_exclusive_expected_pixel_count",
+                          "value": {
+                            "type": "uint32",
+                            "value": 0
+                          }
+                        },
+                        {
+                          "name": "navigation_exclusive_valid_pixel_count",
+                          "value": {
+                            "type": "uint32",
+                            "value": 0
+                          }
+                        },
+                        {
+                          "name": "navigation_exclusive_reason",
+                          "value": {
+                            "type": "string",
+                            "utf8_hex": ""
+                          }
+                        },
+                        {
+                          "name": "navigation_exclusive_points_camera_m",
+                          "value": {
+                            "type": "sequence<float>",
+                            "length": 0,
+                            "items": []
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "navigation_ground_points_camera_m",
+                "value": {
+                  "type": "sequence<float>",
+                  "length": 0,
+                  "items": []
+                }
+              },
+              {
+                "name": "navigation_overlaps",
+                "value": {
+                  "type": "sequence<uav_tracking_interfaces/NavigationOverlap>",
+                  "length": 0,
+                  "items": []
+                }
+              }
+            ]
+          }
+        },
+        "raw_default_message": {
+          "kind": "message",
+          "python_module": "uav_tracking_interfaces.msg._target_observation_array",
+          "class_name": "TargetObservationArray",
+          "slots": [
+            "_header",
+            "_observations",
+            "_navigation_ground_points_camera_m",
+            "_navigation_overlaps"
+          ],
+          "schema": {
+            "header": "std_msgs/Header",
+            "observations": "sequence<uav_tracking_interfaces/TargetObservation>",
+            "navigation_ground_points_camera_m": "sequence<float>",
+            "navigation_overlaps": "sequence<uav_tracking_interfaces/NavigationOverlap>"
+          },
+          "values": {
+            "header": {
+              "kind": "message",
+              "python_module": "std_msgs.msg._header",
+              "class_name": "Header",
+              "slots": [
+                "_stamp",
+                "_frame_id"
+              ],
+              "schema": {
+                "stamp": "builtin_interfaces/Time",
+                "frame_id": "string"
+              },
+              "values": {
+                "stamp": {
+                  "kind": "message",
+                  "python_module": "builtin_interfaces.msg._time",
+                  "class_name": "Time",
+                  "slots": [
+                    "_sec",
+                    "_nanosec"
+                  ],
+                  "schema": {
+                    "sec": "int32",
+                    "nanosec": "uint32"
+                  },
+                  "values": {
+                    "sec": {
+                      "kind": "int",
+                      "value": 0
+                    },
+                    "nanosec": {
+                      "kind": "int",
+                      "value": 0
+                    }
+                  }
+                },
+                "frame_id": {
+                  "kind": "str",
+                  "value": ""
+                }
+              }
+            },
+            "observations": {
+              "kind": "sequence",
+              "items": [
+                {
+                  "kind": "message",
+                  "python_module": "uav_tracking_interfaces.msg._target_observation",
+                  "class_name": "TargetObservation",
+                  "slots": [
+                    "_header",
+                    "_acquisition_epoch",
+                    "_candidate_id",
+                    "_class_name",
+                    "_class_id",
+                    "_confidence",
+                    "_bbox_x_min_px",
+                    "_bbox_y_min_px",
+                    "_bbox_x_max_px",
+                    "_bbox_y_max_px",
+                    "_center_u_px",
+                    "_center_v_px",
+                    "_depth_valid",
+                    "_depth_m",
+                    "_depth_valid_ratio",
+                    "_depth_std_m",
+                    "_depth_min_m",
+                    "_depth_max_m",
+                    "_position_camera_m",
+                    "_camera_frame",
+                    "_surface_recovery_enabled",
+                    "_surface_measurement_supported",
+                    "_navigation_points_camera_m",
+                    "_navigation_bottom_ray_camera",
+                    "_navigation_bbox_complete",
+                    "_navigation_bbox_inside_image",
+                    "_navigation_overlap_count",
+                    "_navigation_visibility_support_camera_m",
+                    "_navigation_exclusive_depth_complete",
+                    "_navigation_exclusive_expected_pixel_count",
+                    "_navigation_exclusive_valid_pixel_count",
+                    "_navigation_exclusive_reason",
+                    "_navigation_exclusive_points_camera_m"
+                  ],
+                  "schema": {
+                    "header": "std_msgs/Header",
+                    "acquisition_epoch": "uint64",
+                    "candidate_id": "uint64",
+                    "class_name": "string",
+                    "class_id": "uint16",
+                    "confidence": "float",
+                    "bbox_x_min_px": "float",
+                    "bbox_y_min_px": "float",
+                    "bbox_x_max_px": "float",
+                    "bbox_y_max_px": "float",
+                    "center_u_px": "float",
+                    "center_v_px": "float",
+                    "depth_valid": "boolean",
+                    "depth_m": "float",
+                    "depth_valid_ratio": "float",
+                    "depth_std_m": "float",
+                    "depth_min_m": "float",
+                    "depth_max_m": "float",
+                    "position_camera_m": "geometry_msgs/Point",
+                    "camera_frame": "string",
+                    "surface_recovery_enabled": "boolean",
+                    "surface_measurement_supported": "boolean",
+                    "navigation_points_camera_m": "sequence<float>",
+                    "navigation_bottom_ray_camera": "geometry_msgs/Vector3",
+                    "navigation_bbox_complete": "boolean",
+                    "navigation_bbox_inside_image": "boolean",
+                    "navigation_overlap_count": "uint32",
+                    "navigation_visibility_support_camera_m": "sequence<float>",
+                    "navigation_exclusive_depth_complete": "boolean",
+                    "navigation_exclusive_expected_pixel_count": "uint32",
+                    "navigation_exclusive_valid_pixel_count": "uint32",
+                    "navigation_exclusive_reason": "string",
+                    "navigation_exclusive_points_camera_m": "sequence<float>"
+                  },
+                  "values": {
+                    "header": {
+                      "kind": "message",
+                      "python_module": "std_msgs.msg._header",
+                      "class_name": "Header",
+                      "slots": [
+                        "_stamp",
+                        "_frame_id"
+                      ],
+                      "schema": {
+                        "stamp": "builtin_interfaces/Time",
+                        "frame_id": "string"
+                      },
+                      "values": {
+                        "stamp": {
+                          "kind": "message",
+                          "python_module": "builtin_interfaces.msg._time",
+                          "class_name": "Time",
+                          "slots": [
+                            "_sec",
+                            "_nanosec"
+                          ],
+                          "schema": {
+                            "sec": "int32",
+                            "nanosec": "uint32"
+                          },
+                          "values": {
+                            "sec": {
+                              "kind": "int",
+                              "value": 0
+                            },
+                            "nanosec": {
+                              "kind": "int",
+                              "value": 0
+                            }
+                          }
+                        },
+                        "frame_id": {
+                          "kind": "str",
+                          "value": ""
+                        }
+                      }
+                    },
+                    "acquisition_epoch": {
+                      "kind": "int",
+                      "value": 0
+                    },
+                    "candidate_id": {
+                      "kind": "int",
+                      "value": 0
+                    },
+                    "class_name": {
+                      "kind": "str",
+                      "value": ""
+                    },
+                    "class_id": {
+                      "kind": "int",
+                      "value": 0
+                    },
+                    "confidence": {
+                      "kind": "float",
+                      "bits_be": "0000000000000000"
+                    },
+                    "bbox_x_min_px": {
+                      "kind": "float",
+                      "bits_be": "0000000000000000"
+                    },
+                    "bbox_y_min_px": {
+                      "kind": "float",
+                      "bits_be": "0000000000000000"
+                    },
+                    "bbox_x_max_px": {
+                      "kind": "float",
+                      "bits_be": "0000000000000000"
+                    },
+                    "bbox_y_max_px": {
+                      "kind": "float",
+                      "bits_be": "0000000000000000"
+                    },
+                    "center_u_px": {
+                      "kind": "float",
+                      "bits_be": "0000000000000000"
+                    },
+                    "center_v_px": {
+                      "kind": "float",
+                      "bits_be": "0000000000000000"
+                    },
+                    "depth_valid": {
+                      "kind": "bool",
+                      "value": true
+                    },
+                    "depth_m": {
+                      "kind": "float",
+                      "bits_be": "0000000000000000"
+                    },
+                    "depth_valid_ratio": {
+                      "kind": "float",
+                      "bits_be": "0000000000000000"
+                    },
+                    "depth_std_m": {
+                      "kind": "float",
+                      "bits_be": "0000000000000000"
+                    },
+                    "depth_min_m": {
+                      "kind": "float",
+                      "bits_be": "0000000000000000"
+                    },
+                    "depth_max_m": {
+                      "kind": "float",
+                      "bits_be": "0000000000000000"
+                    },
+                    "position_camera_m": {
+                      "kind": "message",
+                      "python_module": "geometry_msgs.msg._point",
+                      "class_name": "Point",
+                      "slots": [
+                        "_x",
+                        "_y",
+                        "_z"
+                      ],
+                      "schema": {
+                        "x": "double",
+                        "y": "double",
+                        "z": "double"
+                      },
+                      "values": {
+                        "x": {
+                          "kind": "float",
+                          "bits_be": "0000000000000000"
+                        },
+                        "y": {
+                          "kind": "float",
+                          "bits_be": "0000000000000000"
+                        },
+                        "z": {
+                          "kind": "float",
+                          "bits_be": "0000000000000000"
+                        }
+                      }
+                    },
+                    "camera_frame": {
+                      "kind": "str",
+                      "value": ""
+                    },
+                    "surface_recovery_enabled": {
+                      "kind": "bool",
+                      "value": false
+                    },
+                    "surface_measurement_supported": {
+                      "kind": "bool",
+                      "value": false
+                    },
+                    "navigation_points_camera_m": {
+                      "kind": "sequence",
+                      "items": []
+                    },
+                    "navigation_bottom_ray_camera": {
+                      "kind": "message",
+                      "python_module": "geometry_msgs.msg._vector3",
+                      "class_name": "Vector3",
+                      "slots": [
+                        "_x",
+                        "_y",
+                        "_z"
+                      ],
+                      "schema": {
+                        "x": "double",
+                        "y": "double",
+                        "z": "double"
+                      },
+                      "values": {
+                        "x": {
+                          "kind": "float",
+                          "bits_be": "0000000000000000"
+                        },
+                        "y": {
+                          "kind": "float",
+                          "bits_be": "0000000000000000"
+                        },
+                        "z": {
+                          "kind": "float",
+                          "bits_be": "0000000000000000"
+                        }
+                      }
+                    },
+                    "navigation_bbox_complete": {
+                      "kind": "bool",
+                      "value": false
+                    },
+                    "navigation_bbox_inside_image": {
+                      "kind": "bool",
+                      "value": false
+                    },
+                    "navigation_overlap_count": {
+                      "kind": "int",
+                      "value": 0
+                    },
+                    "navigation_visibility_support_camera_m": {
+                      "kind": "sequence",
+                      "items": []
+                    },
+                    "navigation_exclusive_depth_complete": {
+                      "kind": "bool",
+                      "value": false
+                    },
+                    "navigation_exclusive_expected_pixel_count": {
+                      "kind": "int",
+                      "value": 0
+                    },
+                    "navigation_exclusive_valid_pixel_count": {
+                      "kind": "int",
+                      "value": 0
+                    },
+                    "navigation_exclusive_reason": {
+                      "kind": "str",
+                      "value": ""
+                    },
+                    "navigation_exclusive_points_camera_m": {
+                      "kind": "sequence",
+                      "items": []
+                    }
+                  }
+                }
+              ]
+            },
+            "navigation_ground_points_camera_m": {
+              "kind": "sequence",
+              "items": []
+            },
+            "navigation_overlaps": {
+              "kind": "sequence",
+              "items": []
+            }
+          }
+        },
+        "fields": [
+          {
+            "name": "header",
+            "declared_type": "std_msgs/Header",
+            "value_python_type": "std_msgs.msg._header.Header",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "std_msgs/msg/Header",
+                "fields": [
+                  {
+                    "name": "stamp",
+                    "value": {
+                      "type": "builtin_interfaces/msg/Time",
+                      "fields": [
+                        {
+                          "name": "sec",
+                          "value": {
+                            "type": "int32",
+                            "value": 0
+                          }
+                        },
+                        {
+                          "name": "nanosec",
+                          "value": {
+                            "type": "uint32",
+                            "value": 0
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "name": "frame_id",
+                    "value": {
+                      "type": "string",
+                      "utf8_hex": ""
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "observations",
+            "declared_type": "sequence<uav_tracking_interfaces/TargetObservation>",
+            "value_python_type": "builtins.list",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "sequence<uav_tracking_interfaces/TargetObservation>",
+                "length": 1,
+                "items": [
+                  {
+                    "type": "uav_tracking_interfaces/msg/TargetObservation",
+                    "fields": [
+                      {
+                        "name": "header",
+                        "value": {
+                          "type": "std_msgs/msg/Header",
+                          "fields": [
+                            {
+                              "name": "stamp",
+                              "value": {
+                                "type": "builtin_interfaces/msg/Time",
+                                "fields": [
+                                  {
+                                    "name": "sec",
+                                    "value": {
+                                      "type": "int32",
+                                      "value": 0
+                                    }
+                                  },
+                                  {
+                                    "name": "nanosec",
+                                    "value": {
+                                      "type": "uint32",
+                                      "value": 0
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "name": "frame_id",
+                              "value": {
+                                "type": "string",
+                                "utf8_hex": ""
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "name": "acquisition_epoch",
+                        "value": {
+                          "type": "uint64",
+                          "value": 0
+                        }
+                      },
+                      {
+                        "name": "candidate_id",
+                        "value": {
+                          "type": "uint64",
+                          "value": 0
+                        }
+                      },
+                      {
+                        "name": "class_name",
+                        "value": {
+                          "type": "string",
+                          "utf8_hex": ""
+                        }
+                      },
+                      {
+                        "name": "class_id",
+                        "value": {
+                          "type": "uint16",
+                          "value": 0
+                        }
+                      },
+                      {
+                        "name": "confidence",
+                        "value": {
+                          "type": "float",
+                          "bits_be": "00000000"
+                        }
+                      },
+                      {
+                        "name": "bbox_x_min_px",
+                        "value": {
+                          "type": "float",
+                          "bits_be": "00000000"
+                        }
+                      },
+                      {
+                        "name": "bbox_y_min_px",
+                        "value": {
+                          "type": "float",
+                          "bits_be": "00000000"
+                        }
+                      },
+                      {
+                        "name": "bbox_x_max_px",
+                        "value": {
+                          "type": "float",
+                          "bits_be": "00000000"
+                        }
+                      },
+                      {
+                        "name": "bbox_y_max_px",
+                        "value": {
+                          "type": "float",
+                          "bits_be": "00000000"
+                        }
+                      },
+                      {
+                        "name": "center_u_px",
+                        "value": {
+                          "type": "float",
+                          "bits_be": "00000000"
+                        }
+                      },
+                      {
+                        "name": "center_v_px",
+                        "value": {
+                          "type": "float",
+                          "bits_be": "00000000"
+                        }
+                      },
+                      {
+                        "name": "depth_valid",
+                        "value": {
+                          "type": "boolean",
+                          "value": true
+                        }
+                      },
+                      {
+                        "name": "depth_m",
+                        "value": {
+                          "type": "float",
+                          "bits_be": "00000000"
+                        }
+                      },
+                      {
+                        "name": "depth_valid_ratio",
+                        "value": {
+                          "type": "float",
+                          "bits_be": "00000000"
+                        }
+                      },
+                      {
+                        "name": "depth_std_m",
+                        "value": {
+                          "type": "float",
+                          "bits_be": "00000000"
+                        }
+                      },
+                      {
+                        "name": "depth_min_m",
+                        "value": {
+                          "type": "float",
+                          "bits_be": "00000000"
+                        }
+                      },
+                      {
+                        "name": "depth_max_m",
+                        "value": {
+                          "type": "float",
+                          "bits_be": "00000000"
+                        }
+                      },
+                      {
+                        "name": "position_camera_m",
+                        "value": {
+                          "type": "geometry_msgs/msg/Point",
+                          "fields": [
+                            {
+                              "name": "x",
+                              "value": {
+                                "type": "double",
+                                "bits_be": "0000000000000000"
+                              }
+                            },
+                            {
+                              "name": "y",
+                              "value": {
+                                "type": "double",
+                                "bits_be": "0000000000000000"
+                              }
+                            },
+                            {
+                              "name": "z",
+                              "value": {
+                                "type": "double",
+                                "bits_be": "0000000000000000"
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "name": "camera_frame",
+                        "value": {
+                          "type": "string",
+                          "utf8_hex": ""
+                        }
+                      },
+                      {
+                        "name": "surface_recovery_enabled",
+                        "value": {
+                          "type": "boolean",
+                          "value": false
+                        }
+                      },
+                      {
+                        "name": "surface_measurement_supported",
+                        "value": {
+                          "type": "boolean",
+                          "value": false
+                        }
+                      },
+                      {
+                        "name": "navigation_points_camera_m",
+                        "value": {
+                          "type": "sequence<float>",
+                          "length": 0,
+                          "items": []
+                        }
+                      },
+                      {
+                        "name": "navigation_bottom_ray_camera",
+                        "value": {
+                          "type": "geometry_msgs/msg/Vector3",
+                          "fields": [
+                            {
+                              "name": "x",
+                              "value": {
+                                "type": "double",
+                                "bits_be": "0000000000000000"
+                              }
+                            },
+                            {
+                              "name": "y",
+                              "value": {
+                                "type": "double",
+                                "bits_be": "0000000000000000"
+                              }
+                            },
+                            {
+                              "name": "z",
+                              "value": {
+                                "type": "double",
+                                "bits_be": "0000000000000000"
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "name": "navigation_bbox_complete",
+                        "value": {
+                          "type": "boolean",
+                          "value": false
+                        }
+                      },
+                      {
+                        "name": "navigation_bbox_inside_image",
+                        "value": {
+                          "type": "boolean",
+                          "value": false
+                        }
+                      },
+                      {
+                        "name": "navigation_overlap_count",
+                        "value": {
+                          "type": "uint32",
+                          "value": 0
+                        }
+                      },
+                      {
+                        "name": "navigation_visibility_support_camera_m",
+                        "value": {
+                          "type": "sequence<float>",
+                          "length": 0,
+                          "items": []
+                        }
+                      },
+                      {
+                        "name": "navigation_exclusive_depth_complete",
+                        "value": {
+                          "type": "boolean",
+                          "value": false
+                        }
+                      },
+                      {
+                        "name": "navigation_exclusive_expected_pixel_count",
+                        "value": {
+                          "type": "uint32",
+                          "value": 0
+                        }
+                      },
+                      {
+                        "name": "navigation_exclusive_valid_pixel_count",
+                        "value": {
+                          "type": "uint32",
+                          "value": 0
+                        }
+                      },
+                      {
+                        "name": "navigation_exclusive_reason",
+                        "value": {
+                          "type": "string",
+                          "utf8_hex": ""
+                        }
+                      },
+                      {
+                        "name": "navigation_exclusive_points_camera_m",
+                        "value": {
+                          "type": "sequence<float>",
+                          "length": 0,
+                          "items": []
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "navigation_ground_points_camera_m",
+            "declared_type": "sequence<float>",
+            "value_python_type": "array.array",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "sequence<float>",
+                "length": 0,
+                "items": []
+              }
+            }
+          },
+          {
+            "name": "navigation_overlaps",
+            "declared_type": "sequence<uav_tracking_interfaces/NavigationOverlap>",
+            "value_python_type": "builtins.list",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "sequence<uav_tracking_interfaces/NavigationOverlap>",
+                "length": 0,
+                "items": []
+              }
+            }
+          }
+        ]
+      },
+      "cdr_bytes": 232,
+      "cdr_sha256": "9eee7f95c133caea215e8fccd11e6b52e562584fee1674549bd6d68778db88cd",
+      "cdr_typed_fields_equal": true,
+      "new_validator_accepts_original": true,
+      "new_validator_accepts_cdr": true,
+      "original_pose_validator_accepts_tracking_type": false,
+      "c7_private_typed_compatibility_case": {
+        "scope": "INDEPENDENT_SOFTWARE_TIMING_CAPABILITY_ONLY_NOT_E2E_NOT_ACCEPTANCE",
+        "phase": "real_cdr_schema_compatibility",
+        "pairs": [
+          {
+            "take_event_index": 3,
+            "publish_event_indices": [
+              2
+            ],
+            "source_timestamp": 1002001,
+            "status": "OBSERVED_CANDIDATE",
+            "reasons": []
+          }
+        ],
+        "publish_count": 1,
+        "take_count": 1,
+        "unmatched_publish_event_indices": [],
+        "graph_sample_count": 2,
+        "graph_max_observed_gap_ns": 2000,
+        "graph_gap_limit_ns": 200000000,
+        "graph_observation": "POLLED_NOT_CONTINUOUS_EXTERNAL_WRITER_ABSENCE_NOT_PROVEN",
+        "timestamp_uncertainty_ns": 2,
+        "offset_tolerance_ns": 100000,
+        "candidate_count": 1,
+        "unknown_count": 0
+      }
+    },
+    {
+      "root": "TargetState",
+      "original": {
+        "python_module": "uav_tracking_interfaces.msg._target_state",
+        "class_name": "TargetState",
+        "source_path": "/root/uav_tracking_fullplan_v4_humble54/ros2_ws/install/lib/python3.10/site-packages/uav_tracking_interfaces/msg/_target_state.py",
+        "source_sha256": "bee423c2e6b369b8fb3799b1ba4d9e2440ba4d46ad3c6100737ca297b2d2ceaf",
+        "slots": [
+          "_header",
+          "_state",
+          "_track_id",
+          "_target_uuid",
+          "_class_name",
+          "_position_m",
+          "_velocity_mps",
+          "_acceleration_mps2",
+          "_covariance",
+          "_prediction_age_s",
+          "_rejected_measurements",
+          "_target_visible"
+        ],
+        "schema": {
+          "header": "std_msgs/Header",
+          "state": "uint8",
+          "track_id": "uint64",
+          "target_uuid": "string",
+          "class_name": "string",
+          "position_m": "geometry_msgs/Point",
+          "velocity_mps": "geometry_msgs/Vector3",
+          "acceleration_mps2": "geometry_msgs/Vector3",
+          "covariance": "float[36]",
+          "prediction_age_s": "float",
+          "rejected_measurements": "uint32",
+          "target_visible": "boolean"
+        },
+        "type_name": {
+          "status": "PASS",
+          "value": "uav_tracking_interfaces/msg/TargetState"
+        },
+        "snapshot": {
+          "status": "PASS",
+          "value": {
+            "type": "uav_tracking_interfaces/msg/TargetState",
+            "fields": [
+              {
+                "name": "header",
+                "value": {
+                  "type": "std_msgs/msg/Header",
+                  "fields": [
+                    {
+                      "name": "stamp",
+                      "value": {
+                        "type": "builtin_interfaces/msg/Time",
+                        "fields": [
+                          {
+                            "name": "sec",
+                            "value": {
+                              "type": "int32",
+                              "value": 0
+                            }
+                          },
+                          {
+                            "name": "nanosec",
+                            "value": {
+                              "type": "uint32",
+                              "value": 0
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "name": "frame_id",
+                      "value": {
+                        "type": "string",
+                        "utf8_hex": ""
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "state",
+                "value": {
+                  "type": "uint8",
+                  "value": 0
+                }
+              },
+              {
+                "name": "track_id",
+                "value": {
+                  "type": "uint64",
+                  "value": 0
+                }
+              },
+              {
+                "name": "target_uuid",
+                "value": {
+                  "type": "string",
+                  "utf8_hex": ""
+                }
+              },
+              {
+                "name": "class_name",
+                "value": {
+                  "type": "string",
+                  "utf8_hex": ""
+                }
+              },
+              {
+                "name": "position_m",
+                "value": {
+                  "type": "geometry_msgs/msg/Point",
+                  "fields": [
+                    {
+                      "name": "x",
+                      "value": {
+                        "type": "double",
+                        "bits_be": "0000000000000000"
+                      }
+                    },
+                    {
+                      "name": "y",
+                      "value": {
+                        "type": "double",
+                        "bits_be": "0000000000000000"
+                      }
+                    },
+                    {
+                      "name": "z",
+                      "value": {
+                        "type": "double",
+                        "bits_be": "0000000000000000"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "velocity_mps",
+                "value": {
+                  "type": "geometry_msgs/msg/Vector3",
+                  "fields": [
+                    {
+                      "name": "x",
+                      "value": {
+                        "type": "double",
+                        "bits_be": "0000000000000000"
+                      }
+                    },
+                    {
+                      "name": "y",
+                      "value": {
+                        "type": "double",
+                        "bits_be": "0000000000000000"
+                      }
+                    },
+                    {
+                      "name": "z",
+                      "value": {
+                        "type": "double",
+                        "bits_be": "0000000000000000"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "acceleration_mps2",
+                "value": {
+                  "type": "geometry_msgs/msg/Vector3",
+                  "fields": [
+                    {
+                      "name": "x",
+                      "value": {
+                        "type": "double",
+                        "bits_be": "0000000000000000"
+                      }
+                    },
+                    {
+                      "name": "y",
+                      "value": {
+                        "type": "double",
+                        "bits_be": "0000000000000000"
+                      }
+                    },
+                    {
+                      "name": "z",
+                      "value": {
+                        "type": "double",
+                        "bits_be": "0000000000000000"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "covariance",
+                "value": {
+                  "type": "float[36]",
+                  "length": 36,
+                  "items": [
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "prediction_age_s",
+                "value": {
+                  "type": "float",
+                  "bits_be": "00000000"
+                }
+              },
+              {
+                "name": "rejected_measurements",
+                "value": {
+                  "type": "uint32",
+                  "value": 0
+                }
+              },
+              {
+                "name": "target_visible",
+                "value": {
+                  "type": "boolean",
+                  "value": true
+                }
+              }
+            ]
+          }
+        },
+        "raw_default_message": {
+          "kind": "message",
+          "python_module": "uav_tracking_interfaces.msg._target_state",
+          "class_name": "TargetState",
+          "slots": [
+            "_header",
+            "_state",
+            "_track_id",
+            "_target_uuid",
+            "_class_name",
+            "_position_m",
+            "_velocity_mps",
+            "_acceleration_mps2",
+            "_covariance",
+            "_prediction_age_s",
+            "_rejected_measurements",
+            "_target_visible"
+          ],
+          "schema": {
+            "header": "std_msgs/Header",
+            "state": "uint8",
+            "track_id": "uint64",
+            "target_uuid": "string",
+            "class_name": "string",
+            "position_m": "geometry_msgs/Point",
+            "velocity_mps": "geometry_msgs/Vector3",
+            "acceleration_mps2": "geometry_msgs/Vector3",
+            "covariance": "float[36]",
+            "prediction_age_s": "float",
+            "rejected_measurements": "uint32",
+            "target_visible": "boolean"
+          },
+          "values": {
+            "header": {
+              "kind": "message",
+              "python_module": "std_msgs.msg._header",
+              "class_name": "Header",
+              "slots": [
+                "_stamp",
+                "_frame_id"
+              ],
+              "schema": {
+                "stamp": "builtin_interfaces/Time",
+                "frame_id": "string"
+              },
+              "values": {
+                "stamp": {
+                  "kind": "message",
+                  "python_module": "builtin_interfaces.msg._time",
+                  "class_name": "Time",
+                  "slots": [
+                    "_sec",
+                    "_nanosec"
+                  ],
+                  "schema": {
+                    "sec": "int32",
+                    "nanosec": "uint32"
+                  },
+                  "values": {
+                    "sec": {
+                      "kind": "int",
+                      "value": 0
+                    },
+                    "nanosec": {
+                      "kind": "int",
+                      "value": 0
+                    }
+                  }
+                },
+                "frame_id": {
+                  "kind": "str",
+                  "value": ""
+                }
+              }
+            },
+            "state": {
+              "kind": "int",
+              "value": 0
+            },
+            "track_id": {
+              "kind": "int",
+              "value": 0
+            },
+            "target_uuid": {
+              "kind": "str",
+              "value": ""
+            },
+            "class_name": {
+              "kind": "str",
+              "value": ""
+            },
+            "position_m": {
+              "kind": "message",
+              "python_module": "geometry_msgs.msg._point",
+              "class_name": "Point",
+              "slots": [
+                "_x",
+                "_y",
+                "_z"
+              ],
+              "schema": {
+                "x": "double",
+                "y": "double",
+                "z": "double"
+              },
+              "values": {
+                "x": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                },
+                "y": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                },
+                "z": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                }
+              }
+            },
+            "velocity_mps": {
+              "kind": "message",
+              "python_module": "geometry_msgs.msg._vector3",
+              "class_name": "Vector3",
+              "slots": [
+                "_x",
+                "_y",
+                "_z"
+              ],
+              "schema": {
+                "x": "double",
+                "y": "double",
+                "z": "double"
+              },
+              "values": {
+                "x": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                },
+                "y": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                },
+                "z": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                }
+              }
+            },
+            "acceleration_mps2": {
+              "kind": "message",
+              "python_module": "geometry_msgs.msg._vector3",
+              "class_name": "Vector3",
+              "slots": [
+                "_x",
+                "_y",
+                "_z"
+              ],
+              "schema": {
+                "x": "double",
+                "y": "double",
+                "z": "double"
+              },
+              "values": {
+                "x": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                },
+                "y": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                },
+                "z": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                }
+              }
+            },
+            "covariance": {
+              "kind": "sequence",
+              "items": [
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                }
+              ]
+            },
+            "prediction_age_s": {
+              "kind": "float",
+              "bits_be": "0000000000000000"
+            },
+            "rejected_measurements": {
+              "kind": "int",
+              "value": 0
+            },
+            "target_visible": {
+              "kind": "bool",
+              "value": true
+            }
+          }
+        },
+        "fields": [
+          {
+            "name": "header",
+            "declared_type": "std_msgs/Header",
+            "value_python_type": "std_msgs.msg._header.Header",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "std_msgs/msg/Header",
+                "fields": [
+                  {
+                    "name": "stamp",
+                    "value": {
+                      "type": "builtin_interfaces/msg/Time",
+                      "fields": [
+                        {
+                          "name": "sec",
+                          "value": {
+                            "type": "int32",
+                            "value": 0
+                          }
+                        },
+                        {
+                          "name": "nanosec",
+                          "value": {
+                            "type": "uint32",
+                            "value": 0
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "name": "frame_id",
+                    "value": {
+                      "type": "string",
+                      "utf8_hex": ""
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "state",
+            "declared_type": "uint8",
+            "value_python_type": "builtins.int",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "uint8",
+                "value": 0
+              }
+            }
+          },
+          {
+            "name": "track_id",
+            "declared_type": "uint64",
+            "value_python_type": "builtins.int",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "uint64",
+                "value": 0
+              }
+            }
+          },
+          {
+            "name": "target_uuid",
+            "declared_type": "string",
+            "value_python_type": "builtins.str",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "string",
+                "utf8_hex": ""
+              }
+            }
+          },
+          {
+            "name": "class_name",
+            "declared_type": "string",
+            "value_python_type": "builtins.str",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "string",
+                "utf8_hex": ""
+              }
+            }
+          },
+          {
+            "name": "position_m",
+            "declared_type": "geometry_msgs/Point",
+            "value_python_type": "geometry_msgs.msg._point.Point",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "geometry_msgs/msg/Point",
+                "fields": [
+                  {
+                    "name": "x",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  },
+                  {
+                    "name": "y",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  },
+                  {
+                    "name": "z",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "velocity_mps",
+            "declared_type": "geometry_msgs/Vector3",
+            "value_python_type": "geometry_msgs.msg._vector3.Vector3",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "geometry_msgs/msg/Vector3",
+                "fields": [
+                  {
+                    "name": "x",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  },
+                  {
+                    "name": "y",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  },
+                  {
+                    "name": "z",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "acceleration_mps2",
+            "declared_type": "geometry_msgs/Vector3",
+            "value_python_type": "geometry_msgs.msg._vector3.Vector3",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "geometry_msgs/msg/Vector3",
+                "fields": [
+                  {
+                    "name": "x",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  },
+                  {
+                    "name": "y",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  },
+                  {
+                    "name": "z",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "covariance",
+            "declared_type": "float[36]",
+            "value_python_type": "numpy.ndarray",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "float[36]",
+                "length": 36,
+                "items": [
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "prediction_age_s",
+            "declared_type": "float",
+            "value_python_type": "builtins.float",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "float",
+                "bits_be": "00000000"
+              }
+            }
+          },
+          {
+            "name": "rejected_measurements",
+            "declared_type": "uint32",
+            "value_python_type": "builtins.int",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "uint32",
+                "value": 0
+              }
+            }
+          },
+          {
+            "name": "target_visible",
+            "declared_type": "boolean",
+            "value_python_type": "builtins.bool",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "boolean",
+                "value": true
+              }
+            }
+          }
+        ]
+      },
+      "cdr_roundtrip": {
+        "python_module": "uav_tracking_interfaces.msg._target_state",
+        "class_name": "TargetState",
+        "source_path": "/root/uav_tracking_fullplan_v4_humble54/ros2_ws/install/lib/python3.10/site-packages/uav_tracking_interfaces/msg/_target_state.py",
+        "source_sha256": "bee423c2e6b369b8fb3799b1ba4d9e2440ba4d46ad3c6100737ca297b2d2ceaf",
+        "slots": [
+          "_header",
+          "_state",
+          "_track_id",
+          "_target_uuid",
+          "_class_name",
+          "_position_m",
+          "_velocity_mps",
+          "_acceleration_mps2",
+          "_covariance",
+          "_prediction_age_s",
+          "_rejected_measurements",
+          "_target_visible"
+        ],
+        "schema": {
+          "header": "std_msgs/Header",
+          "state": "uint8",
+          "track_id": "uint64",
+          "target_uuid": "string",
+          "class_name": "string",
+          "position_m": "geometry_msgs/Point",
+          "velocity_mps": "geometry_msgs/Vector3",
+          "acceleration_mps2": "geometry_msgs/Vector3",
+          "covariance": "float[36]",
+          "prediction_age_s": "float",
+          "rejected_measurements": "uint32",
+          "target_visible": "boolean"
+        },
+        "type_name": {
+          "status": "PASS",
+          "value": "uav_tracking_interfaces/msg/TargetState"
+        },
+        "snapshot": {
+          "status": "PASS",
+          "value": {
+            "type": "uav_tracking_interfaces/msg/TargetState",
+            "fields": [
+              {
+                "name": "header",
+                "value": {
+                  "type": "std_msgs/msg/Header",
+                  "fields": [
+                    {
+                      "name": "stamp",
+                      "value": {
+                        "type": "builtin_interfaces/msg/Time",
+                        "fields": [
+                          {
+                            "name": "sec",
+                            "value": {
+                              "type": "int32",
+                              "value": 0
+                            }
+                          },
+                          {
+                            "name": "nanosec",
+                            "value": {
+                              "type": "uint32",
+                              "value": 0
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "name": "frame_id",
+                      "value": {
+                        "type": "string",
+                        "utf8_hex": ""
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "state",
+                "value": {
+                  "type": "uint8",
+                  "value": 0
+                }
+              },
+              {
+                "name": "track_id",
+                "value": {
+                  "type": "uint64",
+                  "value": 0
+                }
+              },
+              {
+                "name": "target_uuid",
+                "value": {
+                  "type": "string",
+                  "utf8_hex": ""
+                }
+              },
+              {
+                "name": "class_name",
+                "value": {
+                  "type": "string",
+                  "utf8_hex": ""
+                }
+              },
+              {
+                "name": "position_m",
+                "value": {
+                  "type": "geometry_msgs/msg/Point",
+                  "fields": [
+                    {
+                      "name": "x",
+                      "value": {
+                        "type": "double",
+                        "bits_be": "0000000000000000"
+                      }
+                    },
+                    {
+                      "name": "y",
+                      "value": {
+                        "type": "double",
+                        "bits_be": "0000000000000000"
+                      }
+                    },
+                    {
+                      "name": "z",
+                      "value": {
+                        "type": "double",
+                        "bits_be": "0000000000000000"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "velocity_mps",
+                "value": {
+                  "type": "geometry_msgs/msg/Vector3",
+                  "fields": [
+                    {
+                      "name": "x",
+                      "value": {
+                        "type": "double",
+                        "bits_be": "0000000000000000"
+                      }
+                    },
+                    {
+                      "name": "y",
+                      "value": {
+                        "type": "double",
+                        "bits_be": "0000000000000000"
+                      }
+                    },
+                    {
+                      "name": "z",
+                      "value": {
+                        "type": "double",
+                        "bits_be": "0000000000000000"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "acceleration_mps2",
+                "value": {
+                  "type": "geometry_msgs/msg/Vector3",
+                  "fields": [
+                    {
+                      "name": "x",
+                      "value": {
+                        "type": "double",
+                        "bits_be": "0000000000000000"
+                      }
+                    },
+                    {
+                      "name": "y",
+                      "value": {
+                        "type": "double",
+                        "bits_be": "0000000000000000"
+                      }
+                    },
+                    {
+                      "name": "z",
+                      "value": {
+                        "type": "double",
+                        "bits_be": "0000000000000000"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "covariance",
+                "value": {
+                  "type": "float[36]",
+                  "length": 36,
+                  "items": [
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    },
+                    {
+                      "type": "float",
+                      "bits_be": "00000000"
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "prediction_age_s",
+                "value": {
+                  "type": "float",
+                  "bits_be": "00000000"
+                }
+              },
+              {
+                "name": "rejected_measurements",
+                "value": {
+                  "type": "uint32",
+                  "value": 0
+                }
+              },
+              {
+                "name": "target_visible",
+                "value": {
+                  "type": "boolean",
+                  "value": true
+                }
+              }
+            ]
+          }
+        },
+        "raw_default_message": {
+          "kind": "message",
+          "python_module": "uav_tracking_interfaces.msg._target_state",
+          "class_name": "TargetState",
+          "slots": [
+            "_header",
+            "_state",
+            "_track_id",
+            "_target_uuid",
+            "_class_name",
+            "_position_m",
+            "_velocity_mps",
+            "_acceleration_mps2",
+            "_covariance",
+            "_prediction_age_s",
+            "_rejected_measurements",
+            "_target_visible"
+          ],
+          "schema": {
+            "header": "std_msgs/Header",
+            "state": "uint8",
+            "track_id": "uint64",
+            "target_uuid": "string",
+            "class_name": "string",
+            "position_m": "geometry_msgs/Point",
+            "velocity_mps": "geometry_msgs/Vector3",
+            "acceleration_mps2": "geometry_msgs/Vector3",
+            "covariance": "float[36]",
+            "prediction_age_s": "float",
+            "rejected_measurements": "uint32",
+            "target_visible": "boolean"
+          },
+          "values": {
+            "header": {
+              "kind": "message",
+              "python_module": "std_msgs.msg._header",
+              "class_name": "Header",
+              "slots": [
+                "_stamp",
+                "_frame_id"
+              ],
+              "schema": {
+                "stamp": "builtin_interfaces/Time",
+                "frame_id": "string"
+              },
+              "values": {
+                "stamp": {
+                  "kind": "message",
+                  "python_module": "builtin_interfaces.msg._time",
+                  "class_name": "Time",
+                  "slots": [
+                    "_sec",
+                    "_nanosec"
+                  ],
+                  "schema": {
+                    "sec": "int32",
+                    "nanosec": "uint32"
+                  },
+                  "values": {
+                    "sec": {
+                      "kind": "int",
+                      "value": 0
+                    },
+                    "nanosec": {
+                      "kind": "int",
+                      "value": 0
+                    }
+                  }
+                },
+                "frame_id": {
+                  "kind": "str",
+                  "value": ""
+                }
+              }
+            },
+            "state": {
+              "kind": "int",
+              "value": 0
+            },
+            "track_id": {
+              "kind": "int",
+              "value": 0
+            },
+            "target_uuid": {
+              "kind": "str",
+              "value": ""
+            },
+            "class_name": {
+              "kind": "str",
+              "value": ""
+            },
+            "position_m": {
+              "kind": "message",
+              "python_module": "geometry_msgs.msg._point",
+              "class_name": "Point",
+              "slots": [
+                "_x",
+                "_y",
+                "_z"
+              ],
+              "schema": {
+                "x": "double",
+                "y": "double",
+                "z": "double"
+              },
+              "values": {
+                "x": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                },
+                "y": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                },
+                "z": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                }
+              }
+            },
+            "velocity_mps": {
+              "kind": "message",
+              "python_module": "geometry_msgs.msg._vector3",
+              "class_name": "Vector3",
+              "slots": [
+                "_x",
+                "_y",
+                "_z"
+              ],
+              "schema": {
+                "x": "double",
+                "y": "double",
+                "z": "double"
+              },
+              "values": {
+                "x": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                },
+                "y": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                },
+                "z": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                }
+              }
+            },
+            "acceleration_mps2": {
+              "kind": "message",
+              "python_module": "geometry_msgs.msg._vector3",
+              "class_name": "Vector3",
+              "slots": [
+                "_x",
+                "_y",
+                "_z"
+              ],
+              "schema": {
+                "x": "double",
+                "y": "double",
+                "z": "double"
+              },
+              "values": {
+                "x": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                },
+                "y": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                },
+                "z": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                }
+              }
+            },
+            "covariance": {
+              "kind": "sequence",
+              "items": [
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                },
+                {
+                  "kind": "UNSUPPORTED",
+                  "python_type": "numpy.float32"
+                }
+              ]
+            },
+            "prediction_age_s": {
+              "kind": "float",
+              "bits_be": "0000000000000000"
+            },
+            "rejected_measurements": {
+              "kind": "int",
+              "value": 0
+            },
+            "target_visible": {
+              "kind": "bool",
+              "value": true
+            }
+          }
+        },
+        "fields": [
+          {
+            "name": "header",
+            "declared_type": "std_msgs/Header",
+            "value_python_type": "std_msgs.msg._header.Header",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "std_msgs/msg/Header",
+                "fields": [
+                  {
+                    "name": "stamp",
+                    "value": {
+                      "type": "builtin_interfaces/msg/Time",
+                      "fields": [
+                        {
+                          "name": "sec",
+                          "value": {
+                            "type": "int32",
+                            "value": 0
+                          }
+                        },
+                        {
+                          "name": "nanosec",
+                          "value": {
+                            "type": "uint32",
+                            "value": 0
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "name": "frame_id",
+                    "value": {
+                      "type": "string",
+                      "utf8_hex": ""
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "state",
+            "declared_type": "uint8",
+            "value_python_type": "builtins.int",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "uint8",
+                "value": 0
+              }
+            }
+          },
+          {
+            "name": "track_id",
+            "declared_type": "uint64",
+            "value_python_type": "builtins.int",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "uint64",
+                "value": 0
+              }
+            }
+          },
+          {
+            "name": "target_uuid",
+            "declared_type": "string",
+            "value_python_type": "builtins.str",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "string",
+                "utf8_hex": ""
+              }
+            }
+          },
+          {
+            "name": "class_name",
+            "declared_type": "string",
+            "value_python_type": "builtins.str",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "string",
+                "utf8_hex": ""
+              }
+            }
+          },
+          {
+            "name": "position_m",
+            "declared_type": "geometry_msgs/Point",
+            "value_python_type": "geometry_msgs.msg._point.Point",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "geometry_msgs/msg/Point",
+                "fields": [
+                  {
+                    "name": "x",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  },
+                  {
+                    "name": "y",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  },
+                  {
+                    "name": "z",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "velocity_mps",
+            "declared_type": "geometry_msgs/Vector3",
+            "value_python_type": "geometry_msgs.msg._vector3.Vector3",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "geometry_msgs/msg/Vector3",
+                "fields": [
+                  {
+                    "name": "x",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  },
+                  {
+                    "name": "y",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  },
+                  {
+                    "name": "z",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "acceleration_mps2",
+            "declared_type": "geometry_msgs/Vector3",
+            "value_python_type": "geometry_msgs.msg._vector3.Vector3",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "geometry_msgs/msg/Vector3",
+                "fields": [
+                  {
+                    "name": "x",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  },
+                  {
+                    "name": "y",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  },
+                  {
+                    "name": "z",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "covariance",
+            "declared_type": "float[36]",
+            "value_python_type": "numpy.ndarray",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "float[36]",
+                "length": 36,
+                "items": [
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  },
+                  {
+                    "type": "float",
+                    "bits_be": "00000000"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "prediction_age_s",
+            "declared_type": "float",
+            "value_python_type": "builtins.float",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "float",
+                "bits_be": "00000000"
+              }
+            }
+          },
+          {
+            "name": "rejected_measurements",
+            "declared_type": "uint32",
+            "value_python_type": "builtins.int",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "uint32",
+                "value": 0
+              }
+            }
+          },
+          {
+            "name": "target_visible",
+            "declared_type": "boolean",
+            "value_python_type": "builtins.bool",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "boolean",
+                "value": true
+              }
+            }
+          }
+        ]
+      },
+      "cdr_bytes": 269,
+      "cdr_sha256": "6517224c6eea0335248ac3d5eff055ea364d16a70703c9c2d9d902f55bbbcfd3",
+      "cdr_typed_fields_equal": true,
+      "new_validator_accepts_original": true,
+      "new_validator_accepts_cdr": true,
+      "original_pose_validator_accepts_tracking_type": false,
+      "c7_private_typed_compatibility_case": {
+        "scope": "INDEPENDENT_SOFTWARE_TIMING_CAPABILITY_ONLY_NOT_E2E_NOT_ACCEPTANCE",
+        "phase": "real_cdr_schema_compatibility",
+        "pairs": [
+          {
+            "take_event_index": 3,
+            "publish_event_indices": [
+              2
+            ],
+            "source_timestamp": 1002001,
+            "status": "OBSERVED_CANDIDATE",
+            "reasons": []
+          }
+        ],
+        "publish_count": 1,
+        "take_count": 1,
+        "unmatched_publish_event_indices": [],
+        "graph_sample_count": 2,
+        "graph_max_observed_gap_ns": 2000,
+        "graph_gap_limit_ns": 200000000,
+        "graph_observation": "POLLED_NOT_CONTINUOUS_EXTERNAL_WRITER_ABSENCE_NOT_PROVEN",
+        "timestamp_uncertainty_ns": 2,
+        "offset_tolerance_ns": 100000,
+        "candidate_count": 1,
+        "unknown_count": 0
+      }
+    },
+    {
+      "root": "TrackingCommand",
+      "original": {
+        "python_module": "uav_tracking_interfaces.msg._tracking_command",
+        "class_name": "TrackingCommand",
+        "source_path": "/root/uav_tracking_fullplan_v4_humble54/ros2_ws/install/lib/python3.10/site-packages/uav_tracking_interfaces/msg/_tracking_command.py",
+        "source_sha256": "ae0d70040c2692866cd088526b27f2dedb68820fbdd9d4bbc615195b94a8cee5",
+        "slots": [
+          "_header",
+          "_mode",
+          "_track_id",
+          "_linear_mps",
+          "_position_m",
+          "_yaw_rad",
+          "_yaw_rate_radps",
+          "_valid",
+          "_command_age_s"
+        ],
+        "schema": {
+          "header": "std_msgs/Header",
+          "mode": "uint8",
+          "track_id": "uint64",
+          "linear_mps": "geometry_msgs/Vector3",
+          "position_m": "geometry_msgs/Point",
+          "yaw_rad": "float",
+          "yaw_rate_radps": "float",
+          "valid": "boolean",
+          "command_age_s": "float"
+        },
+        "type_name": {
+          "status": "PASS",
+          "value": "uav_tracking_interfaces/msg/TrackingCommand"
+        },
+        "snapshot": {
+          "status": "PASS",
+          "value": {
+            "type": "uav_tracking_interfaces/msg/TrackingCommand",
+            "fields": [
+              {
+                "name": "header",
+                "value": {
+                  "type": "std_msgs/msg/Header",
+                  "fields": [
+                    {
+                      "name": "stamp",
+                      "value": {
+                        "type": "builtin_interfaces/msg/Time",
+                        "fields": [
+                          {
+                            "name": "sec",
+                            "value": {
+                              "type": "int32",
+                              "value": 0
+                            }
+                          },
+                          {
+                            "name": "nanosec",
+                            "value": {
+                              "type": "uint32",
+                              "value": 0
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "name": "frame_id",
+                      "value": {
+                        "type": "string",
+                        "utf8_hex": ""
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "mode",
+                "value": {
+                  "type": "uint8",
+                  "value": 1
+                }
+              },
+              {
+                "name": "track_id",
+                "value": {
+                  "type": "uint64",
+                  "value": 0
+                }
+              },
+              {
+                "name": "linear_mps",
+                "value": {
+                  "type": "geometry_msgs/msg/Vector3",
+                  "fields": [
+                    {
+                      "name": "x",
+                      "value": {
+                        "type": "double",
+                        "bits_be": "0000000000000000"
+                      }
+                    },
+                    {
+                      "name": "y",
+                      "value": {
+                        "type": "double",
+                        "bits_be": "0000000000000000"
+                      }
+                    },
+                    {
+                      "name": "z",
+                      "value": {
+                        "type": "double",
+                        "bits_be": "0000000000000000"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "position_m",
+                "value": {
+                  "type": "geometry_msgs/msg/Point",
+                  "fields": [
+                    {
+                      "name": "x",
+                      "value": {
+                        "type": "double",
+                        "bits_be": "0000000000000000"
+                      }
+                    },
+                    {
+                      "name": "y",
+                      "value": {
+                        "type": "double",
+                        "bits_be": "0000000000000000"
+                      }
+                    },
+                    {
+                      "name": "z",
+                      "value": {
+                        "type": "double",
+                        "bits_be": "0000000000000000"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "yaw_rad",
+                "value": {
+                  "type": "float",
+                  "bits_be": "00000000"
+                }
+              },
+              {
+                "name": "yaw_rate_radps",
+                "value": {
+                  "type": "float",
+                  "bits_be": "00000000"
+                }
+              },
+              {
+                "name": "valid",
+                "value": {
+                  "type": "boolean",
+                  "value": true
+                }
+              },
+              {
+                "name": "command_age_s",
+                "value": {
+                  "type": "float",
+                  "bits_be": "00000000"
+                }
+              }
+            ]
+          }
+        },
+        "raw_default_message": {
+          "kind": "message",
+          "python_module": "uav_tracking_interfaces.msg._tracking_command",
+          "class_name": "TrackingCommand",
+          "slots": [
+            "_header",
+            "_mode",
+            "_track_id",
+            "_linear_mps",
+            "_position_m",
+            "_yaw_rad",
+            "_yaw_rate_radps",
+            "_valid",
+            "_command_age_s"
+          ],
+          "schema": {
+            "header": "std_msgs/Header",
+            "mode": "uint8",
+            "track_id": "uint64",
+            "linear_mps": "geometry_msgs/Vector3",
+            "position_m": "geometry_msgs/Point",
+            "yaw_rad": "float",
+            "yaw_rate_radps": "float",
+            "valid": "boolean",
+            "command_age_s": "float"
+          },
+          "values": {
+            "header": {
+              "kind": "message",
+              "python_module": "std_msgs.msg._header",
+              "class_name": "Header",
+              "slots": [
+                "_stamp",
+                "_frame_id"
+              ],
+              "schema": {
+                "stamp": "builtin_interfaces/Time",
+                "frame_id": "string"
+              },
+              "values": {
+                "stamp": {
+                  "kind": "message",
+                  "python_module": "builtin_interfaces.msg._time",
+                  "class_name": "Time",
+                  "slots": [
+                    "_sec",
+                    "_nanosec"
+                  ],
+                  "schema": {
+                    "sec": "int32",
+                    "nanosec": "uint32"
+                  },
+                  "values": {
+                    "sec": {
+                      "kind": "int",
+                      "value": 0
+                    },
+                    "nanosec": {
+                      "kind": "int",
+                      "value": 0
+                    }
+                  }
+                },
+                "frame_id": {
+                  "kind": "str",
+                  "value": ""
+                }
+              }
+            },
+            "mode": {
+              "kind": "int",
+              "value": 1
+            },
+            "track_id": {
+              "kind": "int",
+              "value": 0
+            },
+            "linear_mps": {
+              "kind": "message",
+              "python_module": "geometry_msgs.msg._vector3",
+              "class_name": "Vector3",
+              "slots": [
+                "_x",
+                "_y",
+                "_z"
+              ],
+              "schema": {
+                "x": "double",
+                "y": "double",
+                "z": "double"
+              },
+              "values": {
+                "x": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                },
+                "y": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                },
+                "z": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                }
+              }
+            },
+            "position_m": {
+              "kind": "message",
+              "python_module": "geometry_msgs.msg._point",
+              "class_name": "Point",
+              "slots": [
+                "_x",
+                "_y",
+                "_z"
+              ],
+              "schema": {
+                "x": "double",
+                "y": "double",
+                "z": "double"
+              },
+              "values": {
+                "x": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                },
+                "y": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                },
+                "z": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                }
+              }
+            },
+            "yaw_rad": {
+              "kind": "float",
+              "bits_be": "0000000000000000"
+            },
+            "yaw_rate_radps": {
+              "kind": "float",
+              "bits_be": "0000000000000000"
+            },
+            "valid": {
+              "kind": "bool",
+              "value": true
+            },
+            "command_age_s": {
+              "kind": "float",
+              "bits_be": "0000000000000000"
+            }
+          }
+        },
+        "fields": [
+          {
+            "name": "header",
+            "declared_type": "std_msgs/Header",
+            "value_python_type": "std_msgs.msg._header.Header",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "std_msgs/msg/Header",
+                "fields": [
+                  {
+                    "name": "stamp",
+                    "value": {
+                      "type": "builtin_interfaces/msg/Time",
+                      "fields": [
+                        {
+                          "name": "sec",
+                          "value": {
+                            "type": "int32",
+                            "value": 0
+                          }
+                        },
+                        {
+                          "name": "nanosec",
+                          "value": {
+                            "type": "uint32",
+                            "value": 0
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "name": "frame_id",
+                    "value": {
+                      "type": "string",
+                      "utf8_hex": ""
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "mode",
+            "declared_type": "uint8",
+            "value_python_type": "builtins.int",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "uint8",
+                "value": 1
+              }
+            }
+          },
+          {
+            "name": "track_id",
+            "declared_type": "uint64",
+            "value_python_type": "builtins.int",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "uint64",
+                "value": 0
+              }
+            }
+          },
+          {
+            "name": "linear_mps",
+            "declared_type": "geometry_msgs/Vector3",
+            "value_python_type": "geometry_msgs.msg._vector3.Vector3",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "geometry_msgs/msg/Vector3",
+                "fields": [
+                  {
+                    "name": "x",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  },
+                  {
+                    "name": "y",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  },
+                  {
+                    "name": "z",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "position_m",
+            "declared_type": "geometry_msgs/Point",
+            "value_python_type": "geometry_msgs.msg._point.Point",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "geometry_msgs/msg/Point",
+                "fields": [
+                  {
+                    "name": "x",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  },
+                  {
+                    "name": "y",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  },
+                  {
+                    "name": "z",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "yaw_rad",
+            "declared_type": "float",
+            "value_python_type": "builtins.float",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "float",
+                "bits_be": "00000000"
+              }
+            }
+          },
+          {
+            "name": "yaw_rate_radps",
+            "declared_type": "float",
+            "value_python_type": "builtins.float",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "float",
+                "bits_be": "00000000"
+              }
+            }
+          },
+          {
+            "name": "valid",
+            "declared_type": "boolean",
+            "value_python_type": "builtins.bool",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "boolean",
+                "value": true
+              }
+            }
+          },
+          {
+            "name": "command_age_s",
+            "declared_type": "float",
+            "value_python_type": "builtins.float",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "float",
+                "bits_be": "00000000"
+              }
+            }
+          }
+        ]
+      },
+      "cdr_roundtrip": {
+        "python_module": "uav_tracking_interfaces.msg._tracking_command",
+        "class_name": "TrackingCommand",
+        "source_path": "/root/uav_tracking_fullplan_v4_humble54/ros2_ws/install/lib/python3.10/site-packages/uav_tracking_interfaces/msg/_tracking_command.py",
+        "source_sha256": "ae0d70040c2692866cd088526b27f2dedb68820fbdd9d4bbc615195b94a8cee5",
+        "slots": [
+          "_header",
+          "_mode",
+          "_track_id",
+          "_linear_mps",
+          "_position_m",
+          "_yaw_rad",
+          "_yaw_rate_radps",
+          "_valid",
+          "_command_age_s"
+        ],
+        "schema": {
+          "header": "std_msgs/Header",
+          "mode": "uint8",
+          "track_id": "uint64",
+          "linear_mps": "geometry_msgs/Vector3",
+          "position_m": "geometry_msgs/Point",
+          "yaw_rad": "float",
+          "yaw_rate_radps": "float",
+          "valid": "boolean",
+          "command_age_s": "float"
+        },
+        "type_name": {
+          "status": "PASS",
+          "value": "uav_tracking_interfaces/msg/TrackingCommand"
+        },
+        "snapshot": {
+          "status": "PASS",
+          "value": {
+            "type": "uav_tracking_interfaces/msg/TrackingCommand",
+            "fields": [
+              {
+                "name": "header",
+                "value": {
+                  "type": "std_msgs/msg/Header",
+                  "fields": [
+                    {
+                      "name": "stamp",
+                      "value": {
+                        "type": "builtin_interfaces/msg/Time",
+                        "fields": [
+                          {
+                            "name": "sec",
+                            "value": {
+                              "type": "int32",
+                              "value": 0
+                            }
+                          },
+                          {
+                            "name": "nanosec",
+                            "value": {
+                              "type": "uint32",
+                              "value": 0
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "name": "frame_id",
+                      "value": {
+                        "type": "string",
+                        "utf8_hex": ""
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "mode",
+                "value": {
+                  "type": "uint8",
+                  "value": 1
+                }
+              },
+              {
+                "name": "track_id",
+                "value": {
+                  "type": "uint64",
+                  "value": 0
+                }
+              },
+              {
+                "name": "linear_mps",
+                "value": {
+                  "type": "geometry_msgs/msg/Vector3",
+                  "fields": [
+                    {
+                      "name": "x",
+                      "value": {
+                        "type": "double",
+                        "bits_be": "0000000000000000"
+                      }
+                    },
+                    {
+                      "name": "y",
+                      "value": {
+                        "type": "double",
+                        "bits_be": "0000000000000000"
+                      }
+                    },
+                    {
+                      "name": "z",
+                      "value": {
+                        "type": "double",
+                        "bits_be": "0000000000000000"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "position_m",
+                "value": {
+                  "type": "geometry_msgs/msg/Point",
+                  "fields": [
+                    {
+                      "name": "x",
+                      "value": {
+                        "type": "double",
+                        "bits_be": "0000000000000000"
+                      }
+                    },
+                    {
+                      "name": "y",
+                      "value": {
+                        "type": "double",
+                        "bits_be": "0000000000000000"
+                      }
+                    },
+                    {
+                      "name": "z",
+                      "value": {
+                        "type": "double",
+                        "bits_be": "0000000000000000"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "yaw_rad",
+                "value": {
+                  "type": "float",
+                  "bits_be": "00000000"
+                }
+              },
+              {
+                "name": "yaw_rate_radps",
+                "value": {
+                  "type": "float",
+                  "bits_be": "00000000"
+                }
+              },
+              {
+                "name": "valid",
+                "value": {
+                  "type": "boolean",
+                  "value": true
+                }
+              },
+              {
+                "name": "command_age_s",
+                "value": {
+                  "type": "float",
+                  "bits_be": "00000000"
+                }
+              }
+            ]
+          }
+        },
+        "raw_default_message": {
+          "kind": "message",
+          "python_module": "uav_tracking_interfaces.msg._tracking_command",
+          "class_name": "TrackingCommand",
+          "slots": [
+            "_header",
+            "_mode",
+            "_track_id",
+            "_linear_mps",
+            "_position_m",
+            "_yaw_rad",
+            "_yaw_rate_radps",
+            "_valid",
+            "_command_age_s"
+          ],
+          "schema": {
+            "header": "std_msgs/Header",
+            "mode": "uint8",
+            "track_id": "uint64",
+            "linear_mps": "geometry_msgs/Vector3",
+            "position_m": "geometry_msgs/Point",
+            "yaw_rad": "float",
+            "yaw_rate_radps": "float",
+            "valid": "boolean",
+            "command_age_s": "float"
+          },
+          "values": {
+            "header": {
+              "kind": "message",
+              "python_module": "std_msgs.msg._header",
+              "class_name": "Header",
+              "slots": [
+                "_stamp",
+                "_frame_id"
+              ],
+              "schema": {
+                "stamp": "builtin_interfaces/Time",
+                "frame_id": "string"
+              },
+              "values": {
+                "stamp": {
+                  "kind": "message",
+                  "python_module": "builtin_interfaces.msg._time",
+                  "class_name": "Time",
+                  "slots": [
+                    "_sec",
+                    "_nanosec"
+                  ],
+                  "schema": {
+                    "sec": "int32",
+                    "nanosec": "uint32"
+                  },
+                  "values": {
+                    "sec": {
+                      "kind": "int",
+                      "value": 0
+                    },
+                    "nanosec": {
+                      "kind": "int",
+                      "value": 0
+                    }
+                  }
+                },
+                "frame_id": {
+                  "kind": "str",
+                  "value": ""
+                }
+              }
+            },
+            "mode": {
+              "kind": "int",
+              "value": 1
+            },
+            "track_id": {
+              "kind": "int",
+              "value": 0
+            },
+            "linear_mps": {
+              "kind": "message",
+              "python_module": "geometry_msgs.msg._vector3",
+              "class_name": "Vector3",
+              "slots": [
+                "_x",
+                "_y",
+                "_z"
+              ],
+              "schema": {
+                "x": "double",
+                "y": "double",
+                "z": "double"
+              },
+              "values": {
+                "x": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                },
+                "y": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                },
+                "z": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                }
+              }
+            },
+            "position_m": {
+              "kind": "message",
+              "python_module": "geometry_msgs.msg._point",
+              "class_name": "Point",
+              "slots": [
+                "_x",
+                "_y",
+                "_z"
+              ],
+              "schema": {
+                "x": "double",
+                "y": "double",
+                "z": "double"
+              },
+              "values": {
+                "x": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                },
+                "y": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                },
+                "z": {
+                  "kind": "float",
+                  "bits_be": "0000000000000000"
+                }
+              }
+            },
+            "yaw_rad": {
+              "kind": "float",
+              "bits_be": "0000000000000000"
+            },
+            "yaw_rate_radps": {
+              "kind": "float",
+              "bits_be": "0000000000000000"
+            },
+            "valid": {
+              "kind": "bool",
+              "value": true
+            },
+            "command_age_s": {
+              "kind": "float",
+              "bits_be": "0000000000000000"
+            }
+          }
+        },
+        "fields": [
+          {
+            "name": "header",
+            "declared_type": "std_msgs/Header",
+            "value_python_type": "std_msgs.msg._header.Header",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "std_msgs/msg/Header",
+                "fields": [
+                  {
+                    "name": "stamp",
+                    "value": {
+                      "type": "builtin_interfaces/msg/Time",
+                      "fields": [
+                        {
+                          "name": "sec",
+                          "value": {
+                            "type": "int32",
+                            "value": 0
+                          }
+                        },
+                        {
+                          "name": "nanosec",
+                          "value": {
+                            "type": "uint32",
+                            "value": 0
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "name": "frame_id",
+                    "value": {
+                      "type": "string",
+                      "utf8_hex": ""
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "mode",
+            "declared_type": "uint8",
+            "value_python_type": "builtins.int",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "uint8",
+                "value": 1
+              }
+            }
+          },
+          {
+            "name": "track_id",
+            "declared_type": "uint64",
+            "value_python_type": "builtins.int",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "uint64",
+                "value": 0
+              }
+            }
+          },
+          {
+            "name": "linear_mps",
+            "declared_type": "geometry_msgs/Vector3",
+            "value_python_type": "geometry_msgs.msg._vector3.Vector3",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "geometry_msgs/msg/Vector3",
+                "fields": [
+                  {
+                    "name": "x",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  },
+                  {
+                    "name": "y",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  },
+                  {
+                    "name": "z",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "position_m",
+            "declared_type": "geometry_msgs/Point",
+            "value_python_type": "geometry_msgs.msg._point.Point",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "geometry_msgs/msg/Point",
+                "fields": [
+                  {
+                    "name": "x",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  },
+                  {
+                    "name": "y",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  },
+                  {
+                    "name": "z",
+                    "value": {
+                      "type": "double",
+                      "bits_be": "0000000000000000"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "yaw_rad",
+            "declared_type": "float",
+            "value_python_type": "builtins.float",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "float",
+                "bits_be": "00000000"
+              }
+            }
+          },
+          {
+            "name": "yaw_rate_radps",
+            "declared_type": "float",
+            "value_python_type": "builtins.float",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "float",
+                "bits_be": "00000000"
+              }
+            }
+          },
+          {
+            "name": "valid",
+            "declared_type": "boolean",
+            "value_python_type": "builtins.bool",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "boolean",
+                "value": true
+              }
+            }
+          },
+          {
+            "name": "command_age_s",
+            "declared_type": "float",
+            "value_python_type": "builtins.float",
+            "typed_value": {
+              "status": "PASS",
+              "value": {
+                "type": "float",
+                "bits_be": "00000000"
+              }
+            }
+          }
+        ]
+      },
+      "cdr_bytes": 92,
+      "cdr_sha256": "c781b01e0dfc0083f96ef54c9feaff71b58530ed259b82fd3b95d0e96e985f32",
+      "cdr_typed_fields_equal": true,
+      "new_validator_accepts_original": true,
+      "new_validator_accepts_cdr": true,
+      "original_pose_validator_accepts_tracking_type": false,
+      "c7_private_typed_compatibility_case": {
+        "scope": "INDEPENDENT_SOFTWARE_TIMING_CAPABILITY_ONLY_NOT_E2E_NOT_ACCEPTANCE",
+        "phase": "real_cdr_schema_compatibility",
+        "pairs": [
+          {
+            "take_event_index": 3,
+            "publish_event_indices": [
+              2
+            ],
+            "source_timestamp": 1002001,
+            "status": "OBSERVED_CANDIDATE",
+            "reasons": []
+          }
+        ],
+        "publish_count": 1,
+        "take_count": 1,
+        "unmatched_publish_event_indices": [],
+        "graph_sample_count": 2,
+        "graph_max_observed_gap_ns": 2000,
+        "graph_gap_limit_ns": 200000000,
+        "graph_observation": "POLLED_NOT_CONTINUOUS_EXTERNAL_WRITER_ABSENCE_NOT_PROVEN",
+        "timestamp_uncertainty_ns": 2,
+        "offset_tolerance_ns": 100000,
+        "candidate_count": 1,
+        "unknown_count": 0
+      }
+    }
+  ],
+  "status": "PASS_REAL_CDR_SCHEMA_AND_SYNTHETIC_C7_TYPED_CASES_ONLY"
+}

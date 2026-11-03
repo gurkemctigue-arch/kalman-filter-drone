@@ -1,0 +1,97 @@
+{
+  "verified_utc": "2026-11-03T13:05:04.023437+00:00",
+  "scope": "WINDOWS_OFFLINE_RENDER_ONLY_NO_NATIVE_RUN",
+  "source_sha256": "79a3e839121275bd0acea3a2e65ebfc5e32f4d51d11bd53a7a610626c631e30d",
+  "output_sha256": "ffac9ec9b74d79e7cf49c9c4f17751f22483707e9297d8c4109265de21e46a26",
+  "manifest_output_matches": true,
+  "checks": [
+    {
+      "check": "python_ast_and_embedded_js_syntax",
+      "pass": true
+    },
+    {
+      "check": "headless_chrome_default01",
+      "pass": true
+    },
+    {
+      "check": "headless_chrome_rgb_first01",
+      "pass": true
+    },
+    {
+      "check": "headless_chrome_failed01",
+      "pass": true
+    }
+  ],
+  "cases": [
+    {
+      "body": {
+        "data-rendered": "true",
+        "data-run": "humble54_pipeline_timing_run04",
+        "data-denominator": "commands",
+        "data-population": "commands"
+      },
+      "svg_count": 2,
+      "ecdf_step_paths": 1,
+      "text": {
+        "coverage": "候选 / 完整分母151 / 504覆盖比例30.0%候选 151其余 / UNKNOWN 353",
+        "status": "run04CANDIDATE_OBSERVED_IN_THIS_BENCH_ONLY执行完整全部适配器命令回调504FOLLOW 全链候选 / 全部命令151 / 50430.0%收到的全部 RGB252形成候选的 RGB / 全部 RGB76 / 25230.2%",
+        "provenance": "打开原始摘要results/diagnostics/humble54_pipeline_timing_run04/native_summary.original.jsonSHA-256 2da658d00856e300c402b41d3aa019f6303cd733543a913ff1f28fcc17e1f978进程退出码：{\"detector\":0,\"estimator\":0,\"controller\":0,\"adapter\":0,\"replay\":0}清理错误：[]；物理 E2E：NOT_OBSERVED",
+        "detail-caption": "保留所有已记录机会，分页只改变显示范围。",
+        "pageinfo": "1–25 / 504",
+        "metrics": "样本数 / 完整分母151 / 504中位数753.67 msP951158.28 ms最大值1169.31 ms",
+        "distribution-caption": "151 条候选命令进入分布；全部命令为 504。同一 RGB 可被多条控制命令复用，因此这些命令不是独立图像样本。"
+      },
+      "name": "default01",
+      "browser_exit": 0,
+      "dom_bytes": 338131,
+      "dom_sha256": "905b8ecd51b943b0d749c1a51c540eb3d4fd60c315576a5304885d76ba9ea4e2"
+    },
+    {
+      "body": {
+        "data-rendered": "true",
+        "data-run": "humble54_pipeline_timing_run04",
+        "data-denominator": "rgb",
+        "data-population": "first"
+      },
+      "svg_count": 2,
+      "ecdf_step_paths": 1,
+      "text": {
+        "coverage": "候选 / 完整分母76 / 252覆盖比例30.2%候选 76其余 / UNKNOWN 176",
+        "status": "run04CANDIDATE_OBSERVED_IN_THIS_BENCH_ONLY执行完整全部适配器命令回调504FOLLOW 全链候选 / 全部命令151 / 50430.0%收到的全部 RGB252形成候选的 RGB / 全部 RGB76 / 25230.2%",
+        "provenance": "打开原始摘要results/diagnostics/humble54_pipeline_timing_run04/native_summary.original.jsonSHA-256 2da658d00856e300c402b41d3aa019f6303cd733543a913ff1f28fcc17e1f978进程退出码：{\"detector\":0,\"estimator\":0,\"controller\":0,\"adapter\":0,\"replay\":0}清理错误：[]；物理 E2E：NOT_OBSERVED",
+        "detail-caption": "保留所有已记录机会，分页只改变显示范围。",
+        "pageinfo": "1–25 / 252",
+        "metrics": "样本数 / 完整分母76 / 252中位数733.95 msP95743.13 ms最大值753.67 ms",
+        "distribution-caption": "仅使用摘要已有 first_candidate_latency_ns：76 个 RGB 有首候选，全部收到 RGB 为 252。不为缺失图像补值。"
+      },
+      "name": "rgb_first01",
+      "browser_exit": 0,
+      "dom_bytes": 336674,
+      "dom_sha256": "4b191dbc5fb8389a49c00f1c3cc356a98bc80bd9df3427e4dd8435c5154fc1cb"
+    },
+    {
+      "body": {
+        "data-rendered": "true",
+        "data-run": "humble54_pipeline_timing_run01",
+        "data-denominator": "commands",
+        "data-population": "commands"
+      },
+      "svg_count": 0,
+      "ecdf_step_paths": 0,
+      "text": {
+        "coverage": "候选 / 完整分母— / —覆盖比例—该运行没有可用的分母计数。候选 —其余 / UNKNOWN —",
+        "status": "run01NOT_OBSERVED_INCOMPLETE_EXECUTION执行未完成JSONDecodeError: Expecting value: line 1 column 1 (char 0)全部适配器命令回调—FOLLOW 全链候选 / 全部命令— / ——收到的全部 RGB—形成候选的 RGB / 全部 RGB— / ——",
+        "provenance": "打开原始摘要results/diagnostics/humble54_pipeline_timing_run01/native_summary.original.jsonSHA-256 3043b5958a623000b1a8627fe01a80fee9591f7d3839f21dfb952840415733f9进程退出码：{\"detector\":-9,\"estimator\":0,\"controller\":0,\"adapter\":-2}清理错误：[]；物理 E2E：NOT_OBSERVED",
+        "detail-caption": "该运行未取得可评价明细；不把缺失明细填为零。",
+        "pageinfo": "不可用",
+        "metrics": "样本数 / 完整分母— / —中位数—P95—最大值—",
+        "distribution-caption": "本次未取得该口径的时延明细，不填零，也不绘制时延分布。"
+      },
+      "name": "failed01",
+      "browser_exit": 0,
+      "dom_bytes": 321988,
+      "dom_sha256": "71089ac2d52396af5632061af1635db49efe3ca12afd3bfd6693b758eb8107c8"
+    }
+  ],
+  "screenshot_sha256": "d5b1f2cea1924622642500bf5e1038e11a2fe3d73db0590c8f6a7b23cca1be43"
+}
