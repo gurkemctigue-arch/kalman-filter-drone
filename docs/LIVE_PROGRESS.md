@@ -1,6 +1,6 @@
 # 查看当前实验
 
-**2026-11-03 15:03（北京时间）检查点：扩展 probe02 已有 4 个原终态（3 PASS、1 INCOMPLETE_EVIDENCE）；第 5 场行人组合故障正在评价，11 场未尝试。** 核心开发 12/12、安全 4/4 PASS，正式研究仍 0/280。打开[当前实时页](../results/monitor_humble54_probe02_owner06/index.html)查看真实心跳和最新计数。07 持有原 owner06 三个活进程句柄等待退出；09 已实际启动并取得临时防休眠请求，等待完整 16 场闭合后串行触发 28 条空间测量、两类数据导出、R0 定标和 280 场容量预算。08 尚未启动，最终构建与正式实验尚未准入。见[真实09启动](../tools/experiment_orchestration/humble54_durable_followon09/actual_start01/snapshot_receipt.json)。下面均为带时间的历史快照。
+**2026-11-03 15:30（北京时间）检查点：扩展 probe02 已有 6 个原终态（4 PASS、1 FAIL、1 INCOMPLETE_EVIDENCE）；第七场行人加减速位置控制正在执行，9 场未尝试。** 第六场速度控制通过，距离/高度 RMSE 为0.643/0.145 m，末段均持续稳定。核心开发12/12、安全4/4 PASS，正式仍0/280。打开[当前实时页](../results/monitor_humble54_probe02_owner06/index.html)查看实际心跳。07仍等待原owner06三个进程退出，09已真实启动并取得临时防休眠，等完整16闭合后触发08的测量/定标/预算；08尚未启动，正式尚未准入。[第五场失败复核](../planning/reliability-v4-probe02-combined-review-20261103.md)、[空间风险](../planning/reliability-v4-space-risk-20261103.md)、[真实09启动](../tools/experiment_orchestration/humble54_durable_followon09/actual_start01/snapshot_receipt.json)。下面均为带时间的历史快照。
 
 **2026-11-03 14:20（北京时间）历史检查点：owner06 已从第四场行人延迟接续同一 probe02。** 当时为4 START、3个原终态（2 PASS、1 INCOMPLETE）、12未尝试；Windows/Linux完整准入记录一致。第三场未知保留，前三场不重飞。
 

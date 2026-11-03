@@ -1,6 +1,6 @@
 # 当前工作交接（持续开发，非验收报告）
 
-**2026-11-03 15:03（北京时间）检查点：probe02 为 5 START、4 个原终态（3 PASS、1 INCOMPLETE_EVIDENCE）、11 未尝试；第五场行人组合故障正在评价。** 核心12/12、安全03 4/4 PASS，正式0/280。活跃 owner06、观察07和触发09源码均已固定；09于07:02:37 UTC真实启动，已取得临时防休眠，等待完整16原件后串行触发08的实际28测量、物理容量清单、两类velocity开发导出、R0候选和完整280预算。尚未full16闭合、08执行、final55构建或正式准入。[实时页](../results/monitor_humble54_probe02_owner06/index.html)、[09真实启动](../tools/experiment_orchestration/humble54_durable_followon09/actual_start01/snapshot_receipt.json)。后续只在实际正预算等前提成立后继续，不把代码准备或测试算作飞行通过。
+**2026-11-03 15:30（北京时间）检查点：probe02为7 START、6个原终态（4 PASS、1 FAIL、1 INCOMPLETE_EVIDENCE）、9未尝试；第七场行人加减速位置控制正在执行。** 核心12/12、安全03 4/4 PASS，正式0/280。第六场速度控制通过，距离/高度RMSE0.643/0.145 m、末段稳定。owner06、观察07和触发09源码均已固定；09于07:02:37 UTC实际启动，取得临时防休眠，等待完整16原件后串行触发08的实际28测量、物理容量清单、两类velocity开发导出、R0候选和完整280预算。尚未full16闭合、08执行、final55构建或正式准入。[实时页](../results/monitor_humble54_probe02_owner06/index.html)、[第五场原FAIL复核](reliability-v4-probe02-combined-review-20261103.md)、[容量风险与部分元数据实测](reliability-v4-space-risk-20261103.md)。后续执行次序见[已有命令索引](../tools/experiment_orchestration/humble54_closed_followon_runner08/FINAL55_NEXT.md)。GitHub已同步60e1f09，本文此次更新另行提交。
 
 **2026-11-03 14:20（北京时间）历史检查点：owner06 已从第四场行人延迟接续同一 probe02。** 当时为4 START、3个原终态（2 PASS、1 INCOMPLETE）、12未尝试；Windows/Linux完整准入记录一致。第三场未知保留，前三场不重飞。
 

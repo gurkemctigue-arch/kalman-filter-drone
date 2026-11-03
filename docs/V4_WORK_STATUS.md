@@ -1,6 +1,6 @@
 # v4 开发与验证状态
 
-**2026-11-03 15:03（北京时间）检查点：Humble54 核心开发 12/12、安全 03 为 4/4 PASS；扩展 probe02 为 5 START、4 个原终态（3 PASS、1 INCOMPLETE_EVIDENCE）、11 未尝试，正式仍 0/280。** 第五场行人组合故障的飞行窗口已结束，评价尚未闭合。原第三场缺证不改判，导航通过不代替原工程结果。owner06 与退出观察07均有新鲜心跳；接续09已真实启动，等待完整16原件后触发测量/定标/容量预算。当前尚未08原生执行、最终构建或正式重复。[实时页](../results/monitor_humble54_probe02_owner06/index.html)、[09启动证据](../tools/experiment_orchestration/humble54_durable_followon09/actual_start01/snapshot_receipt.json)。
+**2026-11-03 15:30（北京时间）检查点：Humble54核心开发12/12、安全03 4/4 PASS；扩展probe02为7 START、6个原终态（4 PASS、1 FAIL、1 INCOMPLETE_EVIDENCE）、9未尝试，正式仍0/280。** 第七场行人加减速位置控制已开始，第六场速度控制距离/高度RMSE为0.643/0.145 m且末段稳定。第五场组合故障长窗预测与全窗距离失败，丢失悬停保护通过；原第三场缺证保留。owner06继续采集，07等待真实闭合，09等待完整16后触发08。当前尚无08原生执行、最终构建或正式重复。[实时页](../results/monitor_humble54_probe02_owner06/index.html)、[组合故障复核](../planning/reliability-v4-probe02-combined-review-20261103.md)、[未解决的容量风险](../planning/reliability-v4-space-risk-20261103.md)。
 
 **2026-11-03 14:20（北京时间）历史检查点：owner06 已从第四场行人延迟接续同一 probe02。** 当时为4 START、3个原终态（2 PASS、1 INCOMPLETE）、12未尝试；Windows/Linux完整准入记录一致。第三场未知保留，前三场不重飞。
 
