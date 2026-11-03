@@ -1,6 +1,8 @@
 # v4 开发与验证状态
 
-**2026-11-03 14:20????????????Humble54 ????12/12???03 4/4 PASS????probe02???????2 PASS?1 INCOMPLETE????????????owner06?????12??????0/280?** ???????????????????????????????????UNKNOWN?INCOMPLETE??????????????Windows/Linux???????????[????](../results/monitor_humble54_probe02_owner06/index.html)?[?????](../planning/reliability-v4-probe02-unknown-review-20261103.md)?
+**2026-11-03 15:03（北京时间）检查点：Humble54 核心开发 12/12、安全 03 为 4/4 PASS；扩展 probe02 为 5 START、4 个原终态（3 PASS、1 INCOMPLETE_EVIDENCE）、11 未尝试，正式仍 0/280。** 第五场行人组合故障的飞行窗口已结束，评价尚未闭合。原第三场缺证不改判，导航通过不代替原工程结果。owner06 与退出观察07均有新鲜心跳；接续09已真实启动，等待完整16原件后触发测量/定标/容量预算。当前尚未08原生执行、最终构建或正式重复。[实时页](../results/monitor_humble54_probe02_owner06/index.html)、[09启动证据](../tools/experiment_orchestration/humble54_durable_followon09/actual_start01/snapshot_receipt.json)。
+
+**2026-11-03 14:20（北京时间）历史检查点：owner06 已从第四场行人延迟接续同一 probe02。** 当时为4 START、3个原终态（2 PASS、1 INCOMPLETE）、12未尝试；Windows/Linux完整准入记录一致。第三场未知保留，前三场不重飞。
 
 **2026-11-03 13:44（北京时间）：核心12、独立安全03已通过；扩展 probe02 为3 START、2 PASS、13未尝试，第三场检测丢帧正在运行，正式0/280。** 原监督器04已完整退出，新监督器05经真实前缀审查和原生检查后续接同一计划。前两场不重跑，原04停止状态不改写。GitHub已恢复连接并核实远端main到`b1f1197`；本段之后新增的续接记录仍须提交推送。[当前实时页](../results/monitor_humble54_probe02_owner05/index.html)及[续接记录](../planning/reliability-v4-probe02-rollover-20261103.md)是最新入口。下方各检查点保留历史含义。
 

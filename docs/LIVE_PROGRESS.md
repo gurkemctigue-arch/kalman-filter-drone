@@ -1,6 +1,8 @@
 # 查看当前实验
 
-**2026-11-03 14:20???????owner06 ???????????????** ? probe02 ? 4 START?3 ?????2 PASS?1 INCOMPLETE??12 ??????[???????](../results/monitor_humble54_probe02_owner06/index.html)?Windows ? Linux ?????????????????????????? 12/12??? 4/4 PASS???? 0/280??[???????](../planning/reliability-v4-probe02-unknown-review-20261103.md)??????????????
+**2026-11-03 15:03（北京时间）检查点：扩展 probe02 已有 4 个原终态（3 PASS、1 INCOMPLETE_EVIDENCE）；第 5 场行人组合故障正在评价，11 场未尝试。** 核心开发 12/12、安全 4/4 PASS，正式研究仍 0/280。打开[当前实时页](../results/monitor_humble54_probe02_owner06/index.html)查看真实心跳和最新计数。07 持有原 owner06 三个活进程句柄等待退出；09 已实际启动并取得临时防休眠请求，等待完整 16 场闭合后串行触发 28 条空间测量、两类数据导出、R0 定标和 280 场容量预算。08 尚未启动，最终构建与正式实验尚未准入。见[真实09启动](../tools/experiment_orchestration/humble54_durable_followon09/actual_start01/snapshot_receipt.json)。下面均为带时间的历史快照。
+
+**2026-11-03 14:20（北京时间）历史检查点：owner06 已从第四场行人延迟接续同一 probe02。** 当时为4 START、3个原终态（2 PASS、1 INCOMPLETE）、12未尝试；Windows/Linux完整准入记录一致。第三场未知保留，前三场不重飞。
 
 **2026-11-03 14:13（北京时间）：新 probe02 已完成 3/16，2 PASS、1 INCOMPLETE_EVIDENCE、13 未尝试；当前飞行已停止，正在审核续接。** 第三场缺证已由实际原包核实：短窗两帧被预设丢帧故障丢弃；原未知和原结果保留。导航距离/高度及长时安全通过。详见[缺证复核与剩余工作](../planning/reliability-v4-probe02-unknown-review-20261103.md)。核心开发 12/12、安全 4/4 PASS，正式研究仍 0/280。下方 owner05 的运行中描述为历史检查点。
 
