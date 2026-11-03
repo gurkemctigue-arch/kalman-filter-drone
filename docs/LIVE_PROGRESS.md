@@ -1,5 +1,7 @@
 # 查看当前实验
 
+**2026-11-03 13:26（北京时间）：probe02 当前 2 START、1 PASS、14 未尝试，第二场正在归档评价；正式 0/280。** 打开[当前实时页](../results/monitor_humble54_probe02_owner04/index.html)。监督器已收到“等待本场完整退出后停止”的受控请求，后续将审核真实闭合证据并以修正后的监督器续接同一计划未尝试槽，不重复飞行。核心12与独立安全03已分别12/12、4/4 PASS；其余扩展、正式重复、统计和新交付尚待完成。[最新交接](../planning/reliability-v4-current-state.md)说明本轮边界；下方计数按各自时间阅读。
+
 **2026-11-03 12:48（北京时间）：新完整 16 场开发矩阵 probe02 已实际启动。** 当前打开[实时进度页](../results/monitor_humble54_probe02_owner04/index.html)，以最新心跳、进程创建身份及原终态计数为准。启动检查点为 1 START、0 终态、15 未尝试，首场为行人深度噪声；此计数不冒充之后的实时值。监督状态在 Linux ext4，Windows 外层持有本次 monitor/WSL 原始进程句柄，并已实际申请临时防休眠。闭合证据尚未产生，正式研究仍 **0/280**。
 
 旧 probe01 已停止并保留 8 个原终态（3 PASS、2 INCOMPLETE_EVIDENCE、2 FAIL、1 INTERRUPTED）和 8 个未尝试槽；下方旧页面“运行中”的文字仅为各时间的历史快照。第八场因上层 flight command 返回码丢失，由原公开 runner 登记 INTERRUPTED，未从飞行摘要推算完成。新16不拼接旧成功槽。恢复修复和原件见[恢复记录](../tools/experiment_orchestration/humble54_probe02_recovery01/README.md)，本次真实启动身份见[启动快照](../tools/experiment_orchestration/humble54_probe02_windows_owner04/actual_start01/snapshot_receipt.json)。

@@ -1,5 +1,11 @@
 # 当前工作交接（持续开发，非验收报告）
 
+**2026-11-03 13:26（北京时间）：新 probe02 目前 2 START、1 PASS、14 未尝试；正式 0/280。** 第一场行人深度噪声原始 PASS，第二场行人深度空洞飞行已结束，正在归档评价。原核心12和独立安全03分别为12/12、4/4 PASS。当前 Windows 外层 session82237 仍持有 monitor46244 和 WSL54036 的原始进程句柄；临时防休眠尚未释放。[实时页](../results/monitor_humble54_probe02_owner04/index.html)不能代替最终退出证据。
+
+13:23:30.924010 已按实际 intent 单独向 Linux collector154647 请求 SIGINT，让其等待当前原 child164983 完整结束后退出，避免启动下一槽。目的是修正 person/car 所选模型对应的 capture 校验；冻结飞行源码和原计划不变，不重跑已尝试槽。原 intent SHA256 为 `28c27195edb860f832be72b599c244d2fd06db939f502a4b3d6b216a975fc374`，原件位于 `results/diagnostics/humble54_probe02_rollover04_to05_intent01/`。此时尚无第二场终态、owner闭合或续接登记，禁止预填。collector05、registered入口与owner-chain校验仍在独立准备和审核；只有真实原件闭合、前缀审核、原生空闲后才能继续。
+
+GitHub 最近一次推送因连接 github.com:443 失败，本地 `0b1e54f`、`5d72c09` 尚不能称已同步；远端最近确认 `3d8514a`。D盘此刻约102.36 GiB可用，18.297 GiB历史稳定文本只是透明压缩候选，尚未压缩或回收；完整正式容量仍待实际28格测量。以下旧probe01及早期版本描述均保留为历史。
+
 **2026-11-03 11:50（北京时间）：新外置collector已显式启动原剩余10场，session52906，当前第7槽行人position。** [新进度页](../results/project_progress/humble54_pending_collection03/index.html)已含原6终态：3PASS/2INC/1FAIL，当前7START/9未尝试；遇到新未知/来源/安全异常停，不改旧owner/waiter。第6原PASS、距/高RMSE0.696673/0.169817m；组合原nav距离2.296435m超门与longpredictionFalse均保留。两person真实输入附件已得到CORROBORATED及N/A+knownFAIL，首次path绑定INC保留、四格未齐。完整28nav登记/复评、容量/R0/final55/正式280仍未执行。实际身份、receipt08及字节原件见[执行记录](reliability-v4-execution-20261103.md)。下方均为历史快照。
 
 **2026-11-03 11:26（北京时间）：原扩展 6 START、5 终态（2 PASS / 2 INCOMPLETE_EVIDENCE / 1 FAIL）、10 PENDING；第六槽 `person_extension_speed_changes_velocity_seed004` 正在 normal CLI 单槽运行，session65985。** [当前命令监督](../results/project_progress/humble54_extension_speed_velocity04/index.html)只证明该进程状态，不代表矩阵计数或验收。组合槽原 FAIL 保留（long prediction=False、安全九项True）；真实通信延迟网格诊断数值已 PASS，尚非全28注册复评，旧终态不变。两份行人输入证据已真实提取与阅图；汽车两槽/完整四槽附件未齐。正式0/280、容量/导出/R0/final55/正式研究仍待执行，具体身份与原件见[接续执行记录](reliability-v4-execution-20261103.md)。以下均为历史快照，不得重启旧owner/waiter。
