@@ -1,6 +1,6 @@
 # RGB-D UAV target tracking and following
 
-**2026-11-03 15:30（北京时间）检查点：核心开发 12/12、安全 4/4 PASS；新扩展 probe02 已完成 6 场（4 PASS、1 FAIL、1 INCOMPLETE_EVIDENCE），第七场行人加减速位置控制正在执行，正式研究仍为 0/280。** 第六场速度控制通过，距离/高度 RMSE 为 0.643/0.145 m，末段均持续稳定。[当前实时页](results/monitor_humble54_probe02_owner06/index.html)显示实际心跳和计数，[工作交接](planning/reliability-v4-current-state.md)记录边界。第五场组合故障的原 FAIL 与丢失悬停保护均如实保留，见[失败复核](planning/reliability-v4-probe02-combined-review-20261103.md)。完整扩展结束后已安排自动串行定标与容量核算；[空间风险](planning/reliability-v4-space-risk-20261103.md)尚未解决，不能据此宣称正式实验可以全部容纳。
+**2026-11-03 15:58（北京时间）检查点：核心开发12/12、安全4/4 PASS；扩展probe02已完成7场（4 PASS、2 FAIL、1 INCOMPLETE_EVIDENCE），第八场行人远距离跟随正在执行，正式仍0/280。** 第七场位置控制距离/高度RMSE为0.649/0.166 m，末段距离稳定检查失败，原结果保留。查看[实时进度](results/monitor_humble54_probe02_owner06/index.html)、[位置/速度对照复核](planning/reliability-v4-probe02-position-speed-review-20261103.md)及[组合故障复核](planning/reliability-v4-probe02-combined-review-20261103.md)。自动接续程序等待完整16原件后执行测量/定标/预算；[容量风险](planning/reliability-v4-space-risk-20261103.md)仍未解决。
 
 <details>
 <summary>此前检查点（按记录时间阅读，不代表当前进程状态）</summary>
