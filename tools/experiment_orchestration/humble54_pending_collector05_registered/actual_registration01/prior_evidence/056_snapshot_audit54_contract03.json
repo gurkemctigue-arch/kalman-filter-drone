@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "kind": "RELIABILITY_V4_FROZEN_SNAPSHOT_AUDIT_CONTRACT",
+  "created_utc": "2026-11-03T00:17:18.833974+00:00",
+  "rule": "ORIGINAL_RUN_STAGE1_PY_SH_MSG_SCAN_PLUS_SELECTED_MODEL_AND_EXPLICIT_DDS",
+  "frozen_root": "/root/uav_tracking_fullplan_v4_humble54",
+  "audit_tool_root": "/root/uav_tracking_snapshot_audit54_tools01",
+  "core_plan": {
+    "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/plan.json",
+    "sha256": "ed88783162991c151ab3d537d4eb7d3546b3688339a06db6f35b7f2ef7c48d4b",
+    "plan_sha256": "3e34bdfae710f7b518a5f5fd1506054b03d3275c89e2f827ae136bfa2f682a31"
+  },
+  "freeze_report": {
+    "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/freeze_validation/source_integrity/source_frozen_integrity.json",
+    "sha256": "2d845e262201c6264b9f466b4f77eef4e30c9ec19e17a178e0a65c2db0b940f8"
+  },
+  "import_isolation": {
+    "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/freeze_validation/import_isolation.json",
+    "sha256": "a8f43e840275763b83f8f8794fd5882d2d2ec02cec397a2bf5e4ed6d570c8576"
+  },
+  "source_before": {
+    "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/freeze_validation/source_integrity/source_before.json",
+    "sha256": "cdb4111738f2f51c9911e3e7cebaf9f69aafd92d5cef39d8839a1e5dbb27c82f"
+  },
+  "source_after": {
+    "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/freeze_validation/source_integrity/source_after.json",
+    "sha256": "56523188d5613b87a4dcac6daef124ceb039736b40095a3c1526e2b11581c6a5"
+  },
+  "frozen_map": {
+    "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/freeze_validation/source_integrity/frozen_actual.json",
+    "sha256": "7c81219e94b774723e135fa0a696cab603811b298e24900de158f199a414a102"
+  },
+  "audit_tools": {
+    "driver": {
+      "path": "/root/uav_tracking_snapshot_audit54_tools01/tools/run_reliability_v4_safety.py",
+      "sha256": "6f93e58d6281aa882c4b89273fcfaa1dc1897d9651174e2b947d82bd28d5c172"
+    },
+    "validator": {
+      "path": "/root/uav_tracking_snapshot_audit54_tools01/tools/reliability_v4_guard.py",
+      "sha256": "e64e9da6a5180d70b32c6b2b3076abe4bbc52d4b748395bf7f8af61e6a7e3a8e"
+    },
+    "helper": {
+      "path": "/root/uav_tracking_snapshot_audit54_tools01/tools/reliability_v4_snapshot_audit.py",
+      "sha256": "9339fe72a67b36f987b81a20833953a50ca59302b4157a1230424e8145497ba6"
+    },
+    "registrar": {
+      "path": "/root/uav_tracking_snapshot_audit54_tools01/tools/reliability_v4_register.py",
+      "sha256": "fe2b37738ba07016dc1551abe273e5309e702b14df6e3d707b2788d3f3ef992c"
+    }
+  },
+  "base_tools": {
+    "driver": {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/tools/run_reliability_v4_safety.py",
+      "sha256": "147847a4ed5743f8f77af33bebb66c910af1fe6a4d7715149a21aee5c8a5e1d6"
+    },
+    "validator": {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/tools/reliability_v4_guard.py",
+      "sha256": "f503b03ac82dc3c599bfb57fa862dc417c279cf54e96939a2ba1d02bcdb53bea"
+    },
+    "registrar": {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/tools/reliability_v4_register.py",
+      "sha256": "fe2b37738ba07016dc1551abe273e5309e702b14df6e3d707b2788d3f3ef992c"
+    }
+  },
+  "evidence_limitations": "The original import receipt records core/nodes packages and generated interfaces, plus the adapter ament prefix. It does not record every flight process module, the eight differing historical copies, or adapter_node.__file__."
+}

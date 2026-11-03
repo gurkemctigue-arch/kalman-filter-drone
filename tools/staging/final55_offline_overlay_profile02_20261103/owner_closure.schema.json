@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:uav-tracking:final55-profile02-owner-closure-design:1",
+  "title": "Prospective owner launch and independent closure evidence design",
+  "$comment": "Schema only. No actual launch/closure instance or future digest, status or UTC is supplied. Cross-file digests, exact pins, chronology, process ownership and complete unique slot coverage require a separately reviewed production validator.",
+  "oneOf": [
+    {"$ref": "#/$defs/launch_binding"},
+    {"$ref": "#/$defs/closure_receipt"}
+  ],
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "utc": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "(Z|[+]00:00)$"
+    },
+    "file_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "plan_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "plan_sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "plan_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "windows_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pid", "creation_filetime"],
+      "properties": {
+        "pid": {"type": "integer", "minimum": 1},
+        "creation_filetime": {"type": "string", "pattern": "^[1-9][0-9]{0,19}$"}
+      }
+    },
+    "linux_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pid", "start_ticks", "boot_id"],
+      "properties": {
+        "pid": {"type": "integer", "minimum": 1},
+        "start_ticks": {"type": "integer", "minimum": 1},
+        "boot_id": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"}
+      }
+    },
+    "argv": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string"}
+    },
+    "launch_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_version", "document_type", "scope", "created_utc", "started_utc", "source_plan", "collector_source", "entry_source", "windows_monitor_source", "external_observer_source", "windows_monitor", "owned_wsl_child", "linux_collector", "monitor_argv", "wsl_argv", "collector_argv", "record_sha256"],
+      "properties": {
+        "schema_version": {"const": 1},
+        "document_type": {"const": "ACTUAL_OWNER_LAUNCH_BINDING"},
+        "scope": {"const": "DEVELOPMENT_OWNER_EXECUTION_EVIDENCE_NOT_FORMAL_ADMISSION"},
+        "created_utc": {"$ref": "#/$defs/utc"},
+        "started_utc": {
+          "$ref": "#/$defs/utc",
+          "description": "Actual monitor task start UTC, verified against its original task.started_utc; not this document's creation time."
+        },
+        "source_plan": {"$ref": "#/$defs/plan_binding"},
+        "collector_source": {"$ref": "#/$defs/file_binding"},
+        "entry_source": {"$ref": "#/$defs/file_binding"},
+        "windows_monitor_source": {"$ref": "#/$defs/file_binding"},
+        "external_observer_source": {"$ref": "#/$defs/file_binding"},
+        "windows_monitor": {"$ref": "#/$defs/windows_identity"},
+        "owned_wsl_child": {"$ref": "#/$defs/windows_identity"},
+        "linux_collector": {"$ref": "#/$defs/linux_identity"},
+        "monitor_argv": {"$ref": "#/$defs/argv"},
+        "wsl_argv": {"$ref": "#/$defs/argv"},
+        "collector_argv": {"$ref": "#/$defs/argv"},
+        "record_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "held_handle_exit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["identity", "method", "exit_code", "observed_utc", "launch_identity_matches"],
+      "properties": {
+        "identity": {"$ref": "#/$defs/windows_identity"},
+        "method": {"const": "WINDOWS_HELD_PROCESS_HANDLE_WAIT_AND_GETEXITCODEPROCESS"},
+        "exit_code": {"type": "integer", "const": 0},
+        "observed_utc": {"$ref": "#/$defs/utc"},
+        "launch_identity_matches": {"const": true}
+      }
+    },
+    "collector_assertions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "current_slot", "returncode", "child_may_still_be_active", "active_owned_children", "finished_utc"],
+      "properties": {
+        "status": {"const": "COLLECTION_FINISHED"},
+        "current_slot": {"type": "null"},
+        "returncode": {"type": "integer", "const": 0},
+        "child_may_still_be_active": {"const": false},
+        "active_owned_children": {"type": "array", "maxItems": 0},
+        "finished_utc": {"$ref": "#/$defs/utc"}
+      }
+    },
+    "slot_closure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["slot_id", "original_marker", "original_terminal", "original_status", "execution_status", "infrastructure_stop", "flight_exit_code", "finished_utc"],
+      "properties": {
+        "slot_id": {"type": "string", "minLength": 1},
+        "original_marker": {"$ref": "#/$defs/file_binding"},
+        "original_terminal": {"$ref": "#/$defs/file_binding"},
+        "original_status": {"enum": ["PASS", "FAIL", "INCOMPLETE_EVIDENCE", "EVALUATION_PENDING"]},
+        "execution_status": {"const": "COMPLETED"},
+        "infrastructure_stop": {"const": false},
+        "flight_exit_code": {"type": "integer", "const": 0},
+        "finished_utc": {"$ref": "#/$defs/utc"}
+      }
+    },
+    "closure_receipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_version", "document_type", "scope", "created_utc", "source_plan", "launch_binding", "collector_terminal", "windows_end_summary", "external_observer_source", "external_observer", "owned_wsl_exit", "monitor_exit", "collector_assertions", "closed_slots", "record_sha256"],
+      "properties": {
+        "schema_version": {"const": 1},
+        "document_type": {"const": "ACTUAL_INDEPENDENT_OWNER_CLOSURE_RECEIPT"},
+        "scope": {"const": "DEVELOPMENT_OWNER_EXECUTION_EVIDENCE_NOT_FORMAL_ADMISSION"},
+        "created_utc": {"$ref": "#/$defs/utc"},
+        "source_plan": {"$ref": "#/$defs/plan_binding"},
+        "launch_binding": {"$ref": "#/$defs/file_binding"},
+        "collector_terminal": {"$ref": "#/$defs/file_binding"},
+        "windows_end_summary": {"$ref": "#/$defs/file_binding"},
+        "external_observer_source": {"$ref": "#/$defs/file_binding"},
+        "external_observer": {"$ref": "#/$defs/windows_identity"},
+        "owned_wsl_exit": {"$ref": "#/$defs/held_handle_exit"},
+        "monitor_exit": {"$ref": "#/$defs/held_handle_exit"},
+        "collector_assertions": {"$ref": "#/$defs/collector_assertions"},
+        "closed_slots": {
+          "type": "array",
+          "minItems": 16,
+          "maxItems": 16,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/slot_closure"}
+        },
+        "record_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    }
+  }
+}

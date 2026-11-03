@@ -1,0 +1,142 @@
+{
+  "captured_source_sha256": "0094a5013801e67fb6ae692cef785b190272708d71bfb0cd4a3349a0eb09ee46",
+  "claim_boundary": "Binds only actual existing immutable started/first-state bytes and source files. No terminal, exit, closure, future SHA or future UTC is instantiated. Production full validation and staging remain disabled.",
+  "created_utc": "2026-11-03T04:53:02.612858+00:00",
+  "description": {
+    "automatic_retry": false,
+    "canonical_native_plan": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/plan.json",
+    "claim_boundary": "Execution closure only; original engineering FAIL/INCOMPLETE remain unchanged. No formal readiness claim.",
+    "global_power_policy_changed": false,
+    "monitor_command": [
+      "C:\\Program Files\\Python312\\python.exe",
+      "-B",
+      "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\scripts\\monitor_project_progress.py",
+      "run",
+      "--output",
+      "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\monitor_humble54_probe02_owner04",
+      "--phase",
+      "simulation",
+      "--task-id",
+      "humble54_probe02_full16_owner04",
+      "--label",
+      "humble54_probe02_full16_owner04",
+      "--interval",
+      "1",
+      "--stale-after",
+      "10",
+      "--events",
+      "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_collection54_probe02_owner04\\events.jsonl",
+      "--ledger",
+      "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_collection54_probe02_owner04\\state.json",
+      "--plan",
+      "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_extension16_probe02_matrix\\plan.json",
+      "--",
+      "wsl.exe",
+      "--distribution",
+      "UAVHumble22",
+      "--exec",
+      "python3",
+      "-B",
+      "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/experiment_orchestration/humble54_pending_collector04_source/collect_humble54_pending04.py",
+      "--plan",
+      "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_extension16_probe02_matrix/plan.json",
+      "--entry",
+      "/mnt/d/WSL/UAVHumble22-validation/run_humble54_pending_probe02_one03.sh",
+      "--after-slot",
+      "__before_first__",
+      "--output",
+      "/root/uav_tracking_collection54_probe02_owner04",
+      "--execute"
+    ],
+    "monitor_output": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\monitor_humble54_probe02_owner04",
+    "native_command": [
+      "wsl.exe",
+      "--distribution",
+      "UAVHumble22",
+      "--exec",
+      "python3",
+      "-B",
+      "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/experiment_orchestration/humble54_pending_collector04_source/collect_humble54_pending04.py",
+      "--plan",
+      "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_extension16_probe02_matrix/plan.json",
+      "--entry",
+      "/mnt/d/WSL/UAVHumble22-validation/run_humble54_pending_probe02_one03.sh",
+      "--after-slot",
+      "__before_first__",
+      "--output",
+      "/root/uav_tracking_collection54_probe02_owner04",
+      "--execute"
+    ],
+    "native_owner": "/root/uav_tracking_collection54_probe02_owner04",
+    "owner_unc": "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_collection54_probe02_owner04",
+    "pins": {
+      "collector": {
+        "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\experiment_orchestration\\humble54_pending_collector04_source\\collect_humble54_pending04.py",
+        "sha256": "bf9168f2b5b6dc31e43c187d894f860a4d77e780ded6a4b453c2545c5b5aee0e"
+      },
+      "entry": {
+        "path": "D:\\WSL\\UAVHumble22-validation\\run_humble54_pending_probe02_one03.sh",
+        "sha256": "d9cc1f1876a5ed9a358697b29644e7aa7a3c192e0bdd2a2a7d37c208e74f06a6"
+      },
+      "monitor": {
+        "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\scripts\\monitor_project_progress.py",
+        "sha256": "759136d0eda40bb3a61c9e30e0272e1f6b8810b351dbe4c75dc17db5951bfd98"
+      },
+      "plan": {
+        "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_extension16_probe02_matrix\\plan.json",
+        "sha256": "1f7ff9559bcf9b1b02528a771f046481712a0ff5ec33eb961fe90310d1dcca54"
+      }
+    },
+    "power_flags": 2147483651,
+    "power_scope": "TEMPORARY_SYSTEM_AND_DISPLAY_REQUEST_ON_THIS_OWNER_THREAD",
+    "receipt_output": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_probe02_windows_owner04",
+    "scope": "WINDOWS_OWNER_OF_PINNED_NEW_COMPLETE_DEVELOPMENT_MATRIX",
+    "sources": {
+      "events": "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_collection54_probe02_owner04\\events.jsonl",
+      "ledger": "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_collection54_probe02_owner04\\state.json",
+      "plan": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_extension16_probe02_matrix\\plan.json"
+    },
+    "task_id": "humble54_probe02_full16_owner04"
+  },
+  "launch_files": {
+    "first_monitor": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_probe02_windows_owner04\\first_monitor_state.json",
+      "sha256": "f6cdb2364bc9b81846faec2ff2f0a05eec34b87869d65bf29dd5bdaaa9e5591e"
+    },
+    "first_native": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_probe02_windows_owner04\\first_native_state.json",
+      "sha256": "9175c78857368b972b3ad86f9b583bc15da27abc8acd946647828f4fdca7b6ef"
+    },
+    "started": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_probe02_windows_owner04\\started.json",
+      "sha256": "6f91c157fbdc76d3ce8476f35f0395df993910a34cbe84366531fa6358139718"
+    }
+  },
+  "native_plan_alias": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_extension16_probe02_matrix/plan.json",
+  "plan_digest": "837e533b75800c4c3fdd19f4937d55d92e50fe833da5c6b8801494dfbc77d15b",
+  "schema_version": 1,
+  "scope": "ACTUAL_LAUNCH_BINDING_ONLY_NOT_CLOSURE_OR_STAGING",
+  "source_digest": "8a11b73428d6d4adacc042a41072a2e4da1dd7ed17756760073958f44ed21cb9",
+  "source_files": {
+    "collector": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\experiment_orchestration\\humble54_pending_collector04_source\\collect_humble54_pending04.py",
+      "sha256": "bf9168f2b5b6dc31e43c187d894f860a4d77e780ded6a4b453c2545c5b5aee0e"
+    },
+    "entry": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\run_humble54_pending_probe02_one03.sh",
+      "sha256": "d9cc1f1876a5ed9a358697b29644e7aa7a3c192e0bdd2a2a7d37c208e74f06a6"
+    },
+    "launcher": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\experiment_orchestration\\humble54_probe02_windows_owner04\\start_owner04.py",
+      "sha256": "8f6ceb38bc8ce7fb6aa6bec80f02b260b551082bde1d0a700ea1561a87ac79a1"
+    },
+    "monitor": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\scripts\\monitor_project_progress.py",
+      "sha256": "759136d0eda40bb3a61c9e30e0272e1f6b8810b351dbe4c75dc17db5951bfd98"
+    },
+    "plan": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_extension16_probe02_matrix\\plan.json",
+      "sha256": "1f7ff9559bcf9b1b02528a771f046481712a0ff5ec33eb961fe90310d1dcca54"
+    }
+  }
+}

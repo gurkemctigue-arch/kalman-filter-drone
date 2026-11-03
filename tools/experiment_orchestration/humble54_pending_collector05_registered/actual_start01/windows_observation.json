@@ -1,0 +1,161 @@
+{
+  "scope": "WINDOWS_OWNER_OF_REGISTERED_PRESERVED_PREFIX_CONTINUATION",
+  "claim_boundary": "Execution closure only; original engineering FAIL/INCOMPLETE remain unchanged. No formal readiness claim.",
+  "pins": {
+    "monitor": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\scripts\\monitor_project_progress.py",
+      "sha256": "759136d0eda40bb3a61c9e30e0272e1f6b8810b351dbe4c75dc17db5951bfd98"
+    },
+    "collector": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\experiment_orchestration\\humble54_pending_collector05_source\\collect_humble54_pending05.py",
+      "sha256": "f6a01ac6d106ed89914745341b6faba6f1fe6dab92df6a651ae86e90adeb9ce1"
+    },
+    "gate": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\experiment_orchestration\\humble54_pending_collector05_registered\\run_registered05.py",
+      "sha256": "cc22295766da78ff345f502e2f369af6527e359639a32b3d4d2f820ffc0989e3"
+    },
+    "chain_validator": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\staging\\final55_offline_overlay_profile02_20261103\\validate_owner_chain.py",
+      "sha256": "9cbbfbbfccccac9096a5cc122a21d8578e0fcbb3148357602dcdb834b143d97a"
+    },
+    "registered_profile": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\experiment_orchestration\\humble54_pending_collector05_registered\\registered_profile05.json",
+      "sha256": "5ac96b104ac1e7ad24500657f38b329c968f9440e61f23e79d7bc27fc1df0bd0"
+    },
+    "entry": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\run_humble54_pending_probe02_one03.sh",
+      "sha256": "d9cc1f1876a5ed9a358697b29644e7aa7a3c192e0bdd2a2a7d37c208e74f06a6"
+    },
+    "plan": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_extension16_probe02_matrix\\plan.json",
+      "sha256": "1f7ff9559bcf9b1b02528a771f046481712a0ff5ec33eb961fe90310d1dcca54"
+    }
+  },
+  "task_id": "humble54_probe02_preserved_pending_owner05",
+  "native_owner": "/root/uav_tracking_collection54_probe02_owner05",
+  "owner_unc": "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_collection54_probe02_owner05",
+  "registered_admission_unc": "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_collection54_probe02_owner05.admission.json",
+  "canonical_native_plan": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/plan.json",
+  "monitor_output": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\monitor_humble54_probe02_owner05",
+  "receipt_output": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_probe02_windows_owner05",
+  "sources": {
+    "events": "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_collection54_probe02_owner05\\events.jsonl",
+    "ledger": "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_collection54_probe02_owner05\\state.json",
+    "plan": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_extension16_probe02_matrix\\plan.json"
+  },
+  "native_command": [
+    "wsl.exe",
+    "--distribution",
+    "UAVHumble22",
+    "--exec",
+    "python3",
+    "-B",
+    "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/experiment_orchestration/humble54_pending_collector05_registered/run_registered05.py",
+    "--profile",
+    "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/experiment_orchestration/humble54_pending_collector05_registered/registered_profile05.json",
+    "--output",
+    "/root/uav_tracking_collection54_probe02_owner05",
+    "--execute"
+  ],
+  "monitor_command": [
+    "C:\\Program Files\\Python312\\python.exe",
+    "-B",
+    "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\scripts\\monitor_project_progress.py",
+    "run",
+    "--output",
+    "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\monitor_humble54_probe02_owner05",
+    "--phase",
+    "simulation",
+    "--task-id",
+    "humble54_probe02_preserved_pending_owner05",
+    "--label",
+    "humble54_probe02_preserved_pending_owner05",
+    "--interval",
+    "1",
+    "--stale-after",
+    "10",
+    "--events",
+    "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_collection54_probe02_owner05\\events.jsonl",
+    "--ledger",
+    "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_collection54_probe02_owner05\\state.json",
+    "--plan",
+    "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_extension16_probe02_matrix\\plan.json",
+    "--",
+    "wsl.exe",
+    "--distribution",
+    "UAVHumble22",
+    "--exec",
+    "python3",
+    "-B",
+    "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/experiment_orchestration/humble54_pending_collector05_registered/run_registered05.py",
+    "--profile",
+    "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/experiment_orchestration/humble54_pending_collector05_registered/registered_profile05.json",
+    "--output",
+    "/root/uav_tracking_collection54_probe02_owner05",
+    "--execute"
+  ],
+  "power_flags": 2147483651,
+  "power_scope": "TEMPORARY_SYSTEM_AND_DISPLAY_REQUEST_ON_THIS_OWNER_THREAD",
+  "global_power_policy_changed": false,
+  "automatic_retry": false,
+  "status": "RUNNING",
+  "started_utc": "2026-11-03T05:40:42.221727+00:00",
+  "launcher_source": {
+    "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\experiment_orchestration\\humble54_probe02_windows_owner05\\start_owner05.py",
+    "sha256": "32479281e080e900f6eb7d5a98f2fd94865219672e59d35732ec387de53013fc"
+  },
+  "launcher_identity": {
+    "pid": 9872,
+    "alive": true,
+    "start_token": "windows_filetime:134381580420153869",
+    "created_utc": "2026-11-03T05:40:42.015387+00:00"
+  },
+  "errors": [],
+  "monitor_identity": {
+    "pid": 29440,
+    "alive": true,
+    "start_token": "windows_filetime:134381580422253602",
+    "created_utc": "2026-11-03T05:40:42.225360+00:00"
+  },
+  "monitor_handle_acquired_utc": "2026-11-03T05:40:42.231747+00:00",
+  "power_lease": {
+    "monitor_identity": {
+      "pid": 29440,
+      "alive": true,
+      "start_token": "windows_filetime:134381580422253602",
+      "created_utc": "2026-11-03T05:40:42.225360+00:00"
+    },
+    "accepted_utc": "2026-11-03T05:40:42.231747+00:00",
+    "request_return": 2147483648,
+    "flags": 2147483651,
+    "global_power_policy_changed": false
+  },
+  "heartbeat_utc": "2026-11-03T05:41:37.130034+00:00",
+  "monitor_exit_code": null,
+  "wsl_exit_code": null,
+  "wsl_identity": {
+    "pid": 47940,
+    "alive": true,
+    "start_token": "windows_filetime:134381580424256581",
+    "created_utc": "2026-11-03T05:40:42.425658+00:00"
+  },
+  "wsl_handle_acquired_utc": "2026-11-03T05:40:42.543973+00:00",
+  "first_registered_admission_sha256": "cf4145310ca5193f4780b510e8f7a8f1cf757146937e12de4e9d89451c861da0",
+  "first_registered_admission_owner_identity": {
+    "pid": 176129,
+    "boot_id": "f79204a4-99cd-42cf-b886-aa905b1cac6a",
+    "start_ticks": 9429181
+  },
+  "first_registered_admission_observed_utc": "2026-11-03T05:40:47.902584+00:00",
+  "first_native_owner_identity": {
+    "pid": 176129,
+    "boot_id": "f79204a4-99cd-42cf-b886-aa905b1cac6a",
+    "start_ticks": 9429181
+  },
+  "first_native_owner_source": {
+    "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/experiment_orchestration/humble54_pending_collector05_source/collect_humble54_pending05.py",
+    "sha256": "f6a01ac6d106ed89914745341b6faba6f1fe6dab92df6a651ae86e90adeb9ce1"
+  },
+  "first_native_started_utc": "2026-11-03T05:40:51.248249+00:00",
+  "first_native_state_observed_utc": "2026-11-03T05:40:51.290505+00:00"
+}

@@ -1,0 +1,81 @@
+{
+  "scope": "SUPERVISED_PENDING_COLLECTION",
+  "claim_boundary": "Collection only; original FAIL/INCOMPLETE remain unchanged. No readiness, capacity, export, final or formal execution.",
+  "started_utc": "2026-11-03T04:47:47.149637+00:00",
+  "status": "STOPPED_FAULT",
+  "plan": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/plan.json",
+  "plan_sha256": "837e533b75800c4c3fdd19f4937d55d92e50fe833da5c6b8801494dfbc77d15b",
+  "plan_file_sha256": "1f7ff9559bcf9b1b02528a771f046481712a0ff5ec33eb961fe90310d1dcca54",
+  "entry_sha256": "d9cc1f1876a5ed9a358697b29644e7aa7a3c192e0bdd2a2a7d37c208e74f06a6",
+  "initial_closed": [],
+  "collected": [
+    {
+      "slot_id": "person_extension_depth_noise_seed004",
+      "original_status": "PASS",
+      "terminal_sha256": "571c1c9638e1e2705bc4bbd0cc75afcea8d038e7014c03ea155732a57faa596d",
+      "original_terminal": {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_depth_noise_seed004.json",
+        "sha256": "571c1c9638e1e2705bc4bbd0cc75afcea8d038e7014c03ea155732a57faa596d"
+      },
+      "original_marker": {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_depth_noise_seed004.started.json",
+        "sha256": "258fe4b592de042abd039ccd824aff00c78dbc91f7089104bd18bd5ef766c456"
+      },
+      "original_started_utc": "2026-11-03T04:47:53.727684+00:00",
+      "original_finished_utc": "2026-11-03T05:10:26.593154+00:00",
+      "record_sha256": "3b3a18f02c564eb115ef5b3ebc11a65f717fce69fc692ef0dcf52b10e4934544",
+      "known_algorithm_failures": [],
+      "unobserved_checks": [],
+      "original_navigation_verdict": "PASS",
+      "original_navigation_evidence": {
+        "checks": {
+          "base_link_distance": true,
+          "base_link_height": true,
+          "navigation_coverage": true,
+          "truth_coverage": true,
+          "final_distance_settled": true,
+          "final_height_settled": true
+        },
+        "measured": {
+          "base_link_distance_rmse_m": 0.7666335725574795,
+          "base_link_height_rmse_m": 0.16044733174465917,
+          "valid_state_coverage": 0.9162234042553191,
+          "truth_coverage": 1.0
+        }
+      }
+    }
+  ],
+  "current_slot": "person_extension_depth_holes_seed004",
+  "owner_pid": 154647,
+  "owner_identity": {
+    "pid": 154647,
+    "boot_id": "f79204a4-99cd-42cf-b886-aa905b1cac6a",
+    "start_ticks": 9111573
+  },
+  "owner_source": {
+    "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/experiment_orchestration/humble54_pending_collector04_source/collect_humble54_pending04.py",
+    "sha256": "bf9168f2b5b6dc31e43c187d894f860a4d77e780ded6a4b453c2545c5b5aee0e"
+  },
+  "automatic_retry": false,
+  "heartbeat_utc": "2026-11-03T05:35:14.167950+00:00",
+  "current_child": {
+    "pid": 164983,
+    "command": [
+      "bash",
+      "/mnt/d/WSL/UAVHumble22-validation/run_humble54_pending_probe02_one03.sh",
+      "person_extension_depth_holes_seed004"
+    ],
+    "started_utc": "2026-11-03T05:10:30.217576+00:00",
+    "returncode": 0,
+    "identity": {
+      "pid": 164983,
+      "boot_id": "f79204a4-99cd-42cf-b886-aa905b1cac6a",
+      "start_ticks": 9247948
+    },
+    "finished_utc": "2026-11-03T05:35:14.167857+00:00"
+  },
+  "metadata_fault_child_exit_observed": true,
+  "finished_utc": "2026-11-03T05:35:14.167917+00:00",
+  "returncode": 2,
+  "error": "KeyboardInterrupt: "
+}

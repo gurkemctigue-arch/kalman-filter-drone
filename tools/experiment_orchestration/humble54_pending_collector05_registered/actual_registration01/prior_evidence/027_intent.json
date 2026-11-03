@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "status": "INTENT_REGISTERED_NOT_SIGNALLED",
+  "registered_utc": "2026-11-03T05:23:24.555365+00:00",
+  "scope": "CONTROLLED_COLLECTOR_ROLLOVER_WAIT_CURRENT_ORIGINAL_COMMAND_EXIT",
+  "reason": "Correct already established person/car selected-model capture binding in the supervisor; preserve flight sources, this plan and all attempts.",
+  "pins": {
+    "collector04": "bf9168f2b5b6dc31e43c187d894f860a4d77e780ded6a4b453c2545c5b5aee0e",
+    "prepared05": "f6a01ac6d106ed89914745341b6faba6f1fe6dab92df6a651ae86e90adeb9ce1",
+    "plan": "1f7ff9559bcf9b1b02528a771f046481712a0ff5ec33eb961fe90310d1dcca54"
+  },
+  "signal_tool_sha256": "1468042efcccc43fc377f150f0e7149c0f15502b0355e723a2848efccdf7431c",
+  "native_owner": "/root/uav_tracking_collection54_probe02_owner04",
+  "owner_identity": {
+    "pid": 154647,
+    "boot_id": "f79204a4-99cd-42cf-b886-aa905b1cac6a",
+    "start_ticks": 9111573
+  },
+  "current_slot": "person_extension_depth_holes_seed004",
+  "current_child": {
+    "pid": 164983,
+    "command": [
+      "bash",
+      "/mnt/d/WSL/UAVHumble22-validation/run_humble54_pending_probe02_one03.sh",
+      "person_extension_depth_holes_seed004"
+    ],
+    "started_utc": "2026-11-03T05:10:30.217576+00:00",
+    "returncode": null,
+    "identity": {
+      "pid": 164983,
+      "boot_id": "f79204a4-99cd-42cf-b886-aa905b1cac6a",
+      "start_ticks": 9247948
+    }
+  },
+  "closed_prefix": [
+    {
+      "slot_id": "person_extension_depth_noise_seed004",
+      "original_status": "PASS",
+      "terminal_sha256": "571c1c9638e1e2705bc4bbd0cc75afcea8d038e7014c03ea155732a57faa596d",
+      "original_terminal": {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_depth_noise_seed004.json",
+        "sha256": "571c1c9638e1e2705bc4bbd0cc75afcea8d038e7014c03ea155732a57faa596d"
+      },
+      "original_marker": {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_depth_noise_seed004.started.json",
+        "sha256": "258fe4b592de042abd039ccd824aff00c78dbc91f7089104bd18bd5ef766c456"
+      },
+      "original_started_utc": "2026-11-03T04:47:53.727684+00:00",
+      "original_finished_utc": "2026-11-03T05:10:26.593154+00:00",
+      "record_sha256": "3b3a18f02c564eb115ef5b3ebc11a65f717fce69fc692ef0dcf52b10e4934544",
+      "known_algorithm_failures": [],
+      "unobserved_checks": [],
+      "original_navigation_verdict": "PASS",
+      "original_navigation_evidence": {
+        "checks": {
+          "base_link_distance": true,
+          "base_link_height": true,
+          "navigation_coverage": true,
+          "truth_coverage": true,
+          "final_distance_settled": true,
+          "final_height_settled": true
+        },
+        "measured": {
+          "base_link_distance_rmse_m": 0.7666335725574795,
+          "base_link_height_rmse_m": 0.16044733174465917,
+          "valid_state_coverage": 0.9162234042553191,
+          "truth_coverage": 1.0
+        }
+      }
+    }
+  ],
+  "native_command": [
+    "wsl.exe",
+    "--distribution",
+    "UAVHumble22",
+    "--exec",
+    "python3",
+    "-B",
+    "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/experiment_orchestration/humble54_pending_collector04_source/collect_humble54_pending04.py",
+    "--plan",
+    "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_extension16_probe02_matrix/plan.json",
+    "--entry",
+    "/mnt/d/WSL/UAVHumble22-validation/run_humble54_pending_probe02_one03.sh",
+    "--after-slot",
+    "__before_first__",
+    "--output",
+    "/root/uav_tracking_collection54_probe02_owner04",
+    "--execute"
+  ],
+  "monitor_identity": {
+    "pid": 46244,
+    "alive": true,
+    "start_token": "windows_filetime:134381548661261043",
+    "created_utc": "2026-11-03T04:47:46.126104+00:00"
+  },
+  "signal": "SIGINT",
+  "signal_target": "POSITIVE_COLLECTOR_PID_ONLY",
+  "native_state_snapshot_sha256": "6461f08f46f25b67a923a567dc8f7544032247747a475670f2c3c48c109f3b35",
+  "windows_started_snapshot_sha256": "6f91c157fbdc76d3ce8476f35f0395df993910a34cbe84366531fa6358139718",
+  "claim_boundary": "Intent only. Current second result, parent/child exit and continuation prefix are not yet known. No child/group signal, retry, re-flight, source or original verdict changes are authorized by this record."
+}

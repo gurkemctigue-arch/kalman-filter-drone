@@ -1,5 +1,7 @@
 # 当前工作交接（持续开发，非验收报告）
 
+**2026-11-03 13:44（北京时间）：真实受控续接已完成，probe02第三槽检测丢帧运行，3 START、2 PASS、13未尝试；正式0/280。** 新Windows外层session23853，monitor29440／FILETIME134381580422253602，WSL47940／FILETIME134381580424256581；Linux gate/collector同一进程176129／start_ticks9429181／原boot ID，当前child176148。[新实时页](../results/monitor_humble54_probe02_owner05/index.html)取代已闭合的04页。新owner只准入原两场前缀，继续原十四场PENDING，HISTORY仍空。实际注册、62份小原件归档、原04闭合、Linux检查与剩余顺序详见[本轮记录](reliability-v4-probe02-rollover-20261103.md)。源注册后禁止修改gate/outer/chain/slot库或f6a collector运行字节。
+
 **2026-11-03 13:26（北京时间）：新 probe02 目前 2 START、1 PASS、14 未尝试；正式 0/280。** 第一场行人深度噪声原始 PASS，第二场行人深度空洞飞行已结束，正在归档评价。原核心12和独立安全03分别为12/12、4/4 PASS。当前 Windows 外层 session82237 仍持有 monitor46244 和 WSL54036 的原始进程句柄；临时防休眠尚未释放。[实时页](../results/monitor_humble54_probe02_owner04/index.html)不能代替最终退出证据。
 
 13:23:30.924010 已按实际 intent 单独向 Linux collector154647 请求 SIGINT，让其等待当前原 child164983 完整结束后退出，避免启动下一槽。目的是修正 person/car 所选模型对应的 capture 校验；冻结飞行源码和原计划不变，不重跑已尝试槽。原 intent SHA256 为 `28c27195edb860f832be72b599c244d2fd06db939f502a4b3d6b216a975fc374`，原件位于 `results/diagnostics/humble54_probe02_rollover04_to05_intent01/`。此时尚无第二场终态、owner闭合或续接登记，禁止预填。collector05、registered入口与owner-chain校验仍在独立准备和审核；只有真实原件闭合、前缀审核、原生空闲后才能继续。
