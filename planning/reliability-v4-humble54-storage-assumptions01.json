@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "kind": "RELIABILITY_V4_STORAGE_ASSUMPTIONS_NOT_ADMISSION",
+  "basis": "2026-11-03 prospective planning allowance, chosen before full28 measurement and before all formal STARTs. Applies only if the actual storage-probe confirms results and the UAVHumble22 VHD are both on the single drive_D physical volume. These are explicit engineering allowances, not observed future sizes or a capacity approval. Recompute the real budget from all28 completed 75s development cells; retain an insufficient-space result rather than decreasing margins to fit.",
+  "persistent_growth_factor": 1.15,
+  "raw_growth_factor": 1.15,
+  "compressed_growth_factor": 1.15,
+  "persistent_extra_bytes_by_volume": {"drive_D": 16777216},
+  "persistent_basis": "Use each condition's complete measured trial bytes with 15 percent growth for held-out seed variation, plus16 MiB per formal slot for small receipts and metadata. The factor is a planning choice, not a measured upper bound; no compression saving, deduplication, deletion or successful-only selection is assumed.",
+  "temporary_extra_bytes_by_volume": {"drive_D": 2147483648},
+  "temporary_basis": "Keep the existing three-raw/two-compressed bound with15 percent growth on both measured raw and compressed bytes, plus2 GiB on the physical volume for temporary bookkeeping and one serial analysis operation. No parallel simulation/export/build work is allowed. The original guard still reserves at least8 GiB and checks actual capacity before every formal slot.",
+  "additional_remaining_bytes": {"drive_D": 4294967296},
+  "additional_remaining_basis": "Reserve4 GiB beyond current usage for the new final55 source, cold-build products, isolated delivery tools, two development calibration exports and registration artifacts. Already existing VHD allocation and historical results are not counted again as future permanent growth. This is a fixed planning allowance, not a completed-build measurement.",
+  "delivery_reservations": {
+    "offline_replay20": {
+      "bytes_by_volume": {"drive_D": 8589934592},
+      "basis": "Reserve8 GiB for20 formal velocity recordings' arrays, online/native/truth sidecars, four estimator outputs and audit tables; roughly409.6 MiB per source. Original bags are already in per-slot persistent storage. Serial decompression uses the separate temporary reserve. This does not assert any export or replay has run."
+    },
+    "videos12": {
+      "bytes_by_volume": {"drive_D": 2147483648},
+      "basis": "Reserve2 GiB for12 selected seed1000 browser video copies and indexes, roughly170.7 MiB per clip. Immutable onboard originals are already in measured trial bytes. Preserve the complete recorded duration and failures; no shorter successful-only clip is assumed."
+    },
+    "detection_audit": {
+      "bytes_by_volume": {"drive_D": 4294967296},
+      "basis": "Reserve4 GiB for both original single-target detection subsets plus all12 prospective full-task supplementary sources: original sampled RGB, prediction-free all-actor overlays, independent review, schema2 caches, evaluation and timing/lineage attachments. Sampling remains FOLLOW+1s then every2s to final recorded Clock with no image cap; approximately40 opportunities per75s source is only a planning scale, not a fixed count or license to truncate tails."
+    },
+    "figures_documents": {
+      "bytes_by_volume": {"drive_D": 2147483648},
+      "basis": "Reserve2 GiB for statistics, figures, unified HTML, Word/PDF, per-page rendering images and the small shareable delivery package. Document rendering and visual review remain required."
+    },
+    "runtime_logs": {
+      "bytes_by_volume": {"drive_D": 2147483648},
+      "basis": "Reserve2 GiB for remaining external owner/monitor/registration and document-tool logs beyond per-trial measured logs. Raw experiment failures remain preserved. No deletion or NTFS savings are assumed."
+    }
+  }
+}
