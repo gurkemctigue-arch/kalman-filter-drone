@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "reviewed_utc": "2026-11-03T10:04:33+00:00",
+  "status": "ACTUAL_STARTED_PATHS_CANONICAL_NO_UNC_EXCEPTION_NEEDED",
+  "reviewer": "/root/continuation06_preparation",
+  "source": {
+    "path": "tools/experiment_orchestration/humble54_pending_collector07/launch_windows07.py",
+    "sha256": "3cfd98f01d6d9373aa01c45fd691ffd5a34e8dd1d3363edd12a990280322c923"
+  },
+  "actual_started": {
+    "path": "results/diagnostics/humble54_pending_collector07_launcher01/started.json",
+    "sha256": "e0831acf00cd79e2ffd3fcacc505e9f2a686601a407a9b63f2cf9943654d4778"
+  },
+  "independent_checks": {
+    "source_ast_pure_owner_and_terminal_expression_evaluation": "Canonical UNC: two leading slash characters and one separator character per segment.",
+    "actual_started_native_terminal_unc": {"leading_slash_count": 2, "double_separator_count_after_leading_pair": 0},
+    "actual_started_command_events": {"leading_slash_count": 2, "double_separator_count_after_leading_pair": 0},
+    "actual_started_command_ledger": {"leading_slash_count": 2, "double_separator_count_after_leading_pair": 0}
+  },
+  "conclusion": "JSON escaping is not the actual character count. The alleged four-leading/two-separator UNC defect is not present in either the pinned source expression or the actual Windows started record. No exception or looser closure interface was implemented.",
+  "original_f5ce_source_and_seven_test_receipt_preserved_at": "prepared_snapshot01/",
+  "production_enabled": false,
+  "registered_inputs": {},
+  "claim_boundary": "Small Windows source and started metadata only. No native read, WSL launch, bag/model access, final process closure or engineering acceptance is established."
+}

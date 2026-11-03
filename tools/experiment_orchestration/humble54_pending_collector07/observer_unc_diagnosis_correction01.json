@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "status": "NO_UNC_ESCAPING_DEFECT_OBSERVED_DIAGNOSIS_WITHDRAWN",
+  "utc": "2026-11-03T10:05:19.992683+00:00",
+  "original_snapshot_manifest": {
+    "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\experiment_orchestration\\humble54_pending_collector07\\archive\\observer_unc_fault_20261103T100343Z\\manifest.json",
+    "sha256": "e769d496a63ddff98dafb4c390886bb1c30dc734bb423370753d19809b02ce8e"
+  },
+  "original_snapshot_scope_label": "LIVE_ORIGINAL_LAUNCHER_OBSERVER_UNC_DEFECT_SNAPSHOT_NOT_EXIT_EVIDENCE",
+  "correction": "The original snapshot scope label and earlier diagnosis assumed a defect before character-level verification. Actual strings have two leading backslashes and single path separators. JSON rendering escapes were not actual extra characters. Original snapshot bytes are retained unchanged.",
+  "inputs": {
+    "launcher_source": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\experiment_orchestration\\humble54_pending_collector07\\launch_windows07.py",
+      "sha256": "3cfd98f01d6d9373aa01c45fd691ffd5a34e8dd1d3363edd12a990280322c923"
+    },
+    "started": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_pending_collector07_launcher01\\started.json",
+      "sha256": "e0831acf00cd79e2ffd3fcacc505e9f2a686601a407a9b63f2cf9943654d4778"
+    },
+    "monitor_state_observed_copy": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\experiment_orchestration\\humble54_pending_collector07\\archive\\observer_unc_fault_20261103T100343Z\\monitor_state.observed.json",
+      "sha256": "42f53a9c35bcc0b438c5f1ae5b55a3f939c20d6dbb8cea9f285d05de468ea582"
+    }
+  },
+  "actual_paths": {
+    "events": "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_collection54_probe02_owner07\\events.jsonl",
+    "ledger": "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_collection54_probe02_owner07\\state.json",
+    "native_terminal_unc": "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_collection54_probe02_owner07\\terminal.json"
+  },
+  "canonical_paths": {
+    "events": "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_collection54_probe02_owner07\\events.jsonl",
+    "ledger": "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_collection54_probe02_owner07\\state.json",
+    "native_terminal_unc": "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_collection54_probe02_owner07\\terminal.json"
+  },
+  "observations": {
+    "events": {
+      "leading_backslashes": 2,
+      "equal_to_canonical": true,
+      "exists_at_observation": true
+    },
+    "ledger": {
+      "leading_backslashes": 2,
+      "equal_to_canonical": true,
+      "exists_at_observation": true
+    },
+    "native_terminal_unc": {
+      "leading_backslashes": 2,
+      "equal_to_canonical": true,
+      "exists_at_observation": false
+    }
+  },
+  "original_owner_changed": false,
+  "source_or_profile_changed": false,
+  "process_kill_or_restart": false,
+  "supplement_created": false,
+  "claim_boundary": "Character-level live path diagnosis only; no process-exit, experiment-success or engineering-readiness claim. No exception or workaround is authorized or needed by this diagnosis."
+}

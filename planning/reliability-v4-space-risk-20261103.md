@@ -4,7 +4,7 @@
 
 按原预算规则，每条件 10 次、1.15 增长系数，这部分已知条件贡献 123,989,598,253 字节；再加全部 280 槽每槽 16 MiB 和原定 22 GiB 构建/交付预留，已达 **152,309,538,861 字节，约 141.85 GiB**。当时 D 盘可用 107,069,296,640 字节，约 99.72 GiB。尚未计入剩余 11 个条件、所选文件以外的持久内容及全部临时空间，按同一规则的缺口已超过 **42.13 GiB**。
 
-这是一项提前发现风险的部分计算，不是对未来文件大小的保证。正式预算仍由 runner08 在完整 16 场闭合后，依据真实 28 格测量、物理卷清单和原假设生成；原假设、余量和实验数量均未修改。
+这是一项提前发现风险的部分计算，不是对未来文件大小的保证。旧 07/09 链已因 owner06 的真实非零退出而停止，旧 runner08 不可直接启动。完整 16 场闭合后，新直接入口复用 runner08 原有测量、物理卷清单、定标及预算六步实现；原假设、余量和实验数量均未修改。
 
 可用优化及边界：
 
@@ -19,3 +19,5 @@
 宿主只读核查补充：本机 WSL 2.7.3.0 的帮助没有 `--compact`，当前进程非管理员，亦没有 `Optimize-VHD` / Hyper-V PowerShell 模块。微软 [DiskPart compact vdisk](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/compact-vdisk) 要求动态 VHD 已分离或以只读方式连接，且执行成功也未必减少文件大小。`--resize` 不能当作空间回收命令。因此须在项目任务全部退出后，先测 guest 实际使用量与宿主分配量，再评估停机和管理员工具；当前可计回收收益仍为零，没有执行这些操作。
 
 元数据原收据为 `results/diagnostics/humble54_partial_storage_metadata17_01/receipt.json`，[Git 中的原字节副本](../tools/diagnostics/humble54_partial_storage_metadata17_01/receipt.json)可独立查看。该收据只使用闭合槽的文件长度和修改时间，不代替完整 storage measurement 工具的产物。
+
+18:09（北京时间）的补充只读检查未发现两个明确默认位置的 WSL swap 文件，不能据此预期重启可释放 swap 空间。Win32 分配长度实测：UAVHumble22 VHD 为 58,949,894,144 B（54.90 GiB），Ubuntu VHD 为 37,372,297,216 B（34.81 GiB）；这些仍不是可回收量。当时 D 盘可用 95.39 GiB。[原字节回执](../tools/diagnostics/humble54_partial_storage_metadata17_01/wsl_swap_metadata01.json)未读取二进制内容、未调用 WSL、未停止或修改虚拟盘。尚无新增可计入预算的空间收益。

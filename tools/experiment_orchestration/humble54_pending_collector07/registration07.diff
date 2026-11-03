@@ -1,0 +1,29 @@
+--- prepared_collector07
++++ registered_collector07
+@@ -27,9 +27,9 @@
+ sys.dont_write_bytecode = True  # Importing the original validator must not write into its frozen tree.
+ 
+ SCOPE = "SUPERVISED_PENDING_COLLECTION"
+-PRODUCTION_ENABLED = False
+-REGISTERED_PROFILE_SHA256 = None
+-PROFILE_STATUS = "PREPARED_NOT_REGISTERED"
++PRODUCTION_ENABLED = True
++REGISTERED_PROFILE_SHA256 = "c36f17363874173ee7fed08d482a68f518fd44cffd581d757de09ccd649ded55"
++PROFILE_STATUS = "REGISTERED_DEVELOPMENT_PREFIX11"
+ ROOT = Path(__file__).resolve().parents[3]
+ EXPECTED_PREFIX_COUNT = 11
+ EXPECTED_AFTER_SLOT = "car_extension_dropout_seed004"
+
+--- prepared_profile07
++++ registered_profile07
+@@ -1,8 +1,8 @@
+ {
+   "schema_version": 1,
+   "scope": "DEVELOPMENT_REMAINING_FIVE_AFTER_TRUE_STOPPED06",
+-  "status": "PREPARED_NOT_REGISTERED",
+-  "production_enabled": false,
++  "status": "REGISTERED_DEVELOPMENT_PREFIX11",
++  "production_enabled": true,
+   "formal_admission": false,
+   "automatic_retry": false,
+   "conditional_identity_rule": "CONDITIONAL_UNOBSERVED_AFTER_DEMONSTRATED_SHORT_LOSS",

@@ -1,0 +1,116 @@
+{
+  "scope": "SINGLE_WINDOWS_OWNED_MONITOR_REGISTERED_REMAINING_FIVE_ONLY",
+  "command": [
+    "C:\\Program Files\\Python312\\python.exe",
+    "-B",
+    "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\scripts\\monitor_project_progress.py",
+    "run",
+    "--output",
+    "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\monitor_humble54_probe02_owner07",
+    "--phase",
+    "simulation",
+    "--task-id",
+    "humble54_probe02_remaining5_owner07",
+    "--label",
+    "humble54_probe02_remaining5_owner07",
+    "--interval",
+    "1",
+    "--stale-after",
+    "10",
+    "--events",
+    "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_collection54_probe02_owner07\\events.jsonl",
+    "--ledger",
+    "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_collection54_probe02_owner07\\state.json",
+    "--plan",
+    "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_extension16_probe02_matrix\\plan.json",
+    "--",
+    "wsl.exe",
+    "--distribution",
+    "UAVHumble22",
+    "--exec",
+    "python3",
+    "-B",
+    "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/experiment_orchestration/humble54_pending_collector07/collect_humble54_pending07.py",
+    "--profile",
+    "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/experiment_orchestration/humble54_pending_collector07/registered_profile07.json",
+    "--output",
+    "/root/uav_tracking_collection54_probe02_owner07",
+    "--execute"
+  ],
+  "pins": {
+    "collector": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\experiment_orchestration\\humble54_pending_collector07\\collect_humble54_pending07.py",
+      "sha256": "7d2523325bca8ef520fe0e5a7bd78da355943099e3f45efee2c3ad4e870cdd9b"
+    },
+    "registered_profile": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\experiment_orchestration\\humble54_pending_collector07\\registered_profile07.json",
+      "sha256": "c36f17363874173ee7fed08d482a68f518fd44cffd581d757de09ccd649ded55"
+    },
+    "monitor": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\scripts\\monitor_project_progress.py",
+      "sha256": "759136d0eda40bb3a61c9e30e0272e1f6b8810b351dbe4c75dc17db5951bfd98"
+    },
+    "plan": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_extension16_probe02_matrix\\plan.json",
+      "sha256": "1f7ff9559bcf9b1b02528a771f046481712a0ff5ec33eb961fe90310d1dcca54"
+    }
+  },
+  "source": {
+    "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\experiment_orchestration\\humble54_pending_collector07\\launch_windows07.py",
+    "sha256": "3cfd98f01d6d9373aa01c45fd691ffd5a34e8dd1d3363edd12a990280322c923"
+  },
+  "monitor_output": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\monitor_humble54_probe02_owner07",
+  "receipt_output": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_pending_collector07_launcher01",
+  "native_output": "/root/uav_tracking_collection54_probe02_owner07",
+  "native_terminal_unc": "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_collection54_probe02_owner07\\terminal.json",
+  "closed_ids": [
+    "person_extension_depth_noise_seed004",
+    "person_extension_depth_holes_seed004",
+    "person_extension_dropout_seed004",
+    "person_extension_latency_seed004",
+    "person_extension_combined_seed004",
+    "person_extension_speed_changes_velocity_seed004",
+    "person_extension_speed_changes_position_seed004",
+    "person_extension_far_distance_seed004",
+    "car_extension_depth_noise_seed004",
+    "car_extension_depth_holes_seed004",
+    "car_extension_dropout_seed004"
+  ],
+  "pending_ids": [
+    "car_extension_latency_seed004",
+    "car_extension_combined_seed004",
+    "car_extension_speed_changes_velocity_seed004",
+    "car_extension_speed_changes_position_seed004",
+    "car_extension_far_distance_seed004"
+  ],
+  "creationflags": 134218240,
+  "automatic_retry": false,
+  "global_power_policy_changed": false,
+  "started_utc": "2026-11-03T09:59:33.133118+00:00",
+  "status": "RUNNING",
+  "launcher_identity": {
+    "pid": 46384,
+    "alive": true,
+    "start_token": "windows_filetime:134381735724447624",
+    "created_utc": "2026-11-03T09:59:32.444762+00:00"
+  },
+  "owned_monitor_identity": {
+    "pid": 50912,
+    "alive": true,
+    "start_token": "windows_filetime:134381735731401795",
+    "created_utc": "2026-11-03T09:59:33.140180+00:00"
+  },
+  "owned_monitor_returncode": null,
+  "closure_verified": false,
+  "errors": [],
+  "interruptions": [],
+  "returncode": 2,
+  "power_lease": {
+    "thread_id": 41076,
+    "flags": 2147483651,
+    "request_return": 2147483648,
+    "requested_utc": "2026-11-03T09:59:33.135118+00:00",
+    "global_power_policy_changed": false
+  },
+  "monitor_started_utc": "2026-11-03T09:59:33.147774+00:00"
+}

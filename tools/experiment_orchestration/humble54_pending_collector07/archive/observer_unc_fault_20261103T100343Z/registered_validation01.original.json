@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "scope": "REGISTERED_WINDOWS_CHECK_ONLY_AND_FAKE_LIFECYCLES_NOT_NATIVE_START",
+  "utc": "2026-11-03T10:00:17.686884+00:00",
+  "source_files": {
+    "collect_humble54_pending07.py": "7d2523325bca8ef520fe0e5a7bd78da355943099e3f45efee2c3ad4e870cdd9b",
+    "registered_profile07.json": "c36f17363874173ee7fed08d482a68f518fd44cffd581d757de09ccd649ded55",
+    "launch_windows07.py": "3cfd98f01d6d9373aa01c45fd691ffd5a34e8dd1d3363edd12a990280322c923",
+    "test_pending07.py": "c2038038c055f61f46ff91cf0ae60012ffc092e385fb1cd2916f95c0ec3ece24",
+    "test_launcher07.py": "f59796139b554ea2f0f372db3a57820bb545c0ce466af13e2e81a9cb9978667e",
+    "registration07.json": "757c38336572cd55997969b399222d62a065d4c0cc576ae487c14603a5e32a5e",
+    "registration07.diff": "79e4ec33f43b1ba4880405e686d0293ccf67f0cf2fab931fe839c30e36c58505"
+  },
+  "results": [
+    {
+      "command": [
+        "python",
+        "-B",
+        "test_pending07.py"
+      ],
+      "tool_chunk": "0a8772",
+      "returncode": 0,
+      "tests": 10,
+      "result": "PASS"
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "test_launcher07.py"
+      ],
+      "tool_chunk": "0b7c84",
+      "returncode": 0,
+      "tests": 6,
+      "result": "PASS"
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "launch_windows07.py"
+      ],
+      "tool_chunk": "0cfbd1",
+      "returncode": 0,
+      "result": "REGISTERED_LAUNCH_CHECK_ONLY_NOT_STARTED"
+    }
+  ],
+  "actual_wsl_launch": "NOT_PERFORMED_BY_THIS_VALIDATION",
+  "launcher_receipt_when_run": "results/diagnostics/humble54_pending_collector07_launcher01/terminal.json",
+  "claim_boundary": "Literal development registration and Windows safety fixtures only. Original native check02 preserved separately. Root must perform the reviewed explicit launch."
+}

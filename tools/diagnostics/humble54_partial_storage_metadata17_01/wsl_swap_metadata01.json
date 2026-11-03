@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "created_utc": "2026-11-03T10:09:30.059177+00:00",
+  "status": "WINDOWS_WSL_VHD_SWAP_METADATA_ONLY_NO_MUTATION",
+  "configuration": {
+    "path": "C:\\Users\\李东易\\.wslconfig",
+    "exists": false,
+    "selected_fields": {
+      "swap": null,
+      "swapFile": null,
+      "sparseVhd": null
+    },
+    "read_scope": "Only swap/swapFile/sparseVhd selected; no other configuration values published"
+  },
+  "files": [
+    {
+      "source": "registered UAVHumble22 VhdFileName/BasePath",
+      "path": "D:\\WSL\\UAVHumble22\\ext4.vhdx",
+      "kind": "distribution_vhd",
+      "exists": true,
+      "logical_bytes": 58949894144,
+      "mtime_ns": 1793700570056177000,
+      "attributes": 32,
+      "metadata_stable_during_query": true,
+      "allocated_bytes_GetCompressedFileSizeW": 58949894144
+    },
+    {
+      "source": "registered Ubuntu VhdFileName/BasePath",
+      "path": "D:\\work\\SysYToolchain\\wsl\\Ubuntu\\ext4.vhdx",
+      "kind": "distribution_vhd",
+      "exists": true,
+      "logical_bytes": 37372297216,
+      "mtime_ns": 1793548361943604300,
+      "attributes": 32,
+      "metadata_stable_during_query": true,
+      "allocated_bytes_GetCompressedFileSizeW": 37372297216
+    },
+    {
+      "source": "WSL documented default swap path under process TEMP",
+      "path": "D:\\微信小~1\\INSTAL~1\\temp\\swap.vhdx",
+      "kind": "default_swap_candidate",
+      "exists": false
+    },
+    {
+      "source": "WSL default Temp swap location under explicit LOCALAPPDATA",
+      "path": "C:\\Users\\李东易\\AppData\\Local\\Temp\\swap.vhdx",
+      "kind": "default_swap_candidate",
+      "exists": false
+    }
+  ],
+  "volume_free_bytes": {
+    "C:": 13406552064,
+    "D:": 102427828224
+  },
+  "read_binary_payload": false,
+  "wsl_native_invoked": false,
+  "deleted_compacted_trimmed_or_stopped": false,
+  "reclaimable_bytes_proven": 0,
+  "interpretation": "Distribution VHD logical/allocated size is not reclaimable space. Absent explicit default swap candidates prove no current reclaimable file at those exact paths, not absence of all possible active swap. No restart benefit has been established."
+}

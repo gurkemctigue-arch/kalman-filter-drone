@@ -1,5 +1,7 @@
 # runner08 之后的 final55 执行索引
 
+**当前状态更正（2026-11-03）：旧 owner06、observer07、trigger09 已真实以 exit 2 停止，runner08 未启动。旧 runner08 必须取得旧07的三个真实 exit 0及其完整闭合，当前条件不成立，禁止直接调用08或把旧失败改写为成功。** 新 collector07 仅续原计划剩余5槽；必须等待其实际退出、16槽原件复核和新闭合审计后，才可使用 [新直接测量准备入口](../humble54_closed_measurement01/README.md)复用原08的28格测量、具名 velocity exports、R0 与完整280槽预算。该入口仍 `PRODUCTION_ENABLED=False`、`REGISTERED_INPUTS={}`，没有预登记未来结果。下文涉及旧07 full profile、旧08结果路径及 candidate04 旧chain接口的内容仅保留为原技术索引，须由真实新闭合和后续已审适配替代，不能直接执行；原120+160=280范围、容量预留、正式验收条件全部保留。
+
 本卡只整理已存在的源码、CLI 和顺序；未启动 WSL、读取 bag/模型、登记任何未来证据或修改 06/07/08/09。以下均为未来动作，`ACTUAL_*` 只能来自当时真实原件。已有完整卡无需重写：
 
 - [离线叠加、navigation28 与 sensor4](../../../planning/reliability-v4-final55-offline-overlay-20261103.md)，其中 probe01 示例须由下述已审 candidate04 的 probe02 固定绑定替代。

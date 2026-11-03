@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "scope": "LIVE_ORIGINAL_LAUNCHER_OBSERVER_UNC_DEFECT_SNAPSHOT_NOT_EXIT_EVIDENCE",
+  "utc": "2026-11-03T10:03:43.179626+00:00",
+  "files": [
+    {
+      "source": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\experiment_orchestration\\humble54_pending_collector07\\launch_windows07.py",
+      "copy": "launch_windows07.original.py",
+      "sha256": "3cfd98f01d6d9373aa01c45fd691ffd5a34e8dd1d3363edd12a990280322c923",
+      "bytes": 13551
+    },
+    {
+      "source": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\experiment_orchestration\\humble54_pending_collector07\\registered_profile07.json",
+      "copy": "registered_profile07.original.json",
+      "sha256": "c36f17363874173ee7fed08d482a68f518fd44cffd581d757de09ccd649ded55",
+      "bytes": 56281
+    },
+    {
+      "source": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\experiment_orchestration\\humble54_pending_collector07\\registration07.json",
+      "copy": "registration07.original.json",
+      "sha256": "757c38336572cd55997969b399222d62a065d4c0cc576ae487c14603a5e32a5e",
+      "bytes": 2058
+    },
+    {
+      "source": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\experiment_orchestration\\humble54_pending_collector07\\registered_validation01.json",
+      "copy": "registered_validation01.original.json",
+      "sha256": "32d64a4dbfdc2e74cfeee0ada2049df8e96d014f80a2160186b37f1ed91d2ee9",
+      "bytes": 1882
+    },
+    {
+      "source": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_pending_collector07_launcher01\\started.json",
+      "copy": "launcher_started.original.json",
+      "sha256": "e0831acf00cd79e2ffd3fcacc505e9f2a686601a407a9b63f2cf9943654d4778",
+      "bytes": 5109
+    },
+    {
+      "source": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_pending_collector07_launcher01\\state.json",
+      "copy": "launcher_state.observed.json",
+      "sha256": "581e1b65ea02307147086a913ea621a5b8942bbf32d4a3a1465e4fccf8d82e58",
+      "bytes": 5165
+    },
+    {
+      "source": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\monitor_humble54_probe02_owner07\\monitor_state.json",
+      "copy": "monitor_state.observed.json",
+      "sha256": "42f53a9c35bcc0b438c5f1ae5b55a3f939c20d6dbb8cea9f285d05de468ea582",
+      "bytes": 1724
+    },
+    {
+      "source": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\monitor_humble54_probe02_owner07\\progress.json",
+      "copy": "monitor_progress.observed.json",
+      "sha256": "f7fe9f63d26a92c5eef322d59f0bfe46360c3f0a2d7068c382f3117221fbbe22",
+      "bytes": 4090
+    }
+  ],
+  "erroneous_paths": {
+    "events": "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_collection54_probe02_owner07\\events.jsonl",
+    "ledger": "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_collection54_probe02_owner07\\state.json",
+    "native_terminal_unc": "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_collection54_probe02_owner07\\terminal.json"
+  },
+  "canonical_paths": {
+    "events": "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_collection54_probe02_owner07\\events.jsonl",
+    "ledger": "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_collection54_probe02_owner07\\state.json",
+    "native_terminal_unc": "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_collection54_probe02_owner07\\terminal.json"
+  },
+  "affected_fields": [
+    "monitor argv --events",
+    "monitor argv --ledger",
+    "monitor state sources.events",
+    "monitor state sources.ledger",
+    "launcher native_terminal_unc"
+  ],
+  "unaffected_execution_paths": {
+    "native_output": "/root/uav_tracking_collection54_probe02_owner07",
+    "command_native_tail": [
+      "wsl.exe",
+      "--distribution",
+      "UAVHumble22",
+      "--exec",
+      "python3",
+      "-B",
+      "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/experiment_orchestration/humble54_pending_collector07/collect_humble54_pending07.py",
+      "--profile",
+      "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/experiment_orchestration/humble54_pending_collector07/registered_profile07.json",
+      "--output",
+      "/root/uav_tracking_collection54_probe02_owner07",
+      "--execute"
+    ]
+  },
+  "claim_boundary": "Live observer-path defect only. Original source and processes unchanged. No original final terminal or supplemental closure is created."
+}
