@@ -1,6 +1,6 @@
 # 查看当前实验
 
-**2026-11-03 08:22（北京时间）检查点：新的安全 03 批次已实际开始，当前 1 场 START、0 场终态、3 场未开始；正式研究仍为 0/280。** 首场 `person_auto_unique_multi_seed004` 于 08:21:54 记录 START。命令 PID 51320、监控器 PID 15484 的创建身份均匹配；Linux owner PID 126381 的 start ticks/boot ID、活动槽及 08:22:17 心跳已核对。当前没有安全 03 PASS，START 不等于验收；Humble54 核心 12/12 工程 PASS 保留。
+**2026-11-03 09:02（北京时间）检查点：Humble54 安全 03 四场全部闭合，4 个原始工程 PASS、0 场待执行；正式研究仍为 0/280。** 原 guard 为开发范围 PASS，Linux 执行终态与 owner 均为 `COMPLETED`，命令退出 0，owner 无活动槽，原终态清理残留列表为空。Windows 最终摘要记录命令退出 0、原命令进程已结束且创建身份匹配。Humble54 核心 12/12 工程 PASS 保留；扩展 16 尚未开始，当前准备系统盘维护，之后再实际启动。
 
 安全 02 原终态保持 `STOPPED_FAULT`、08:08:49 命令退出 2：首场原始 `INFRASTRUCTURE_ERROR`、其余 3 场未执行，无自动重试。其 `KeyError: 'result'` 已复现；修复保持 source/native 通过原公共 reader 严格解释 `evaluation_status`，专属及末端报告严格使用 `result`。08:17:42 完成的实际原生合同与只读诊断，及另行 5 项 Humble 单元测试（2.692 秒、全部通过、无跳过），都不构成旧槽重新验收或新飞行通过。安全 03 使用新 registry、新 driver 及 contract03 独立登记执行。
 
@@ -10,7 +10,7 @@
 
 已有身份报告的每任务提取现已完成：四个多目标场景首次请求的已知覆盖率为 0.621–0.680，显式重选后为 0.961–0.998。首次分母包括计划短/长遮挡和等待重选区间，不能当作纯可见画面的识别准确率；原报告理由也不证明所有未知的因果来源。没有应用每 UUID 验收阈值，未知不改为正确。汽车多目标主动云台完整 753 格仍为 614 正确、0 已知错误、139 未知，诊断 714 帧（619/0/95）单独保留。
 
-- [安全 03 实时进度](../results/project_progress/humble54_safety4_run03/index.html)：新批次已开始，以页面最新时间、心跳和原终态为准，当前未预记通过。
+- [安全 03 原件与闭合核验](../tools/experiment_orchestration/humble54_safety4_closed03/README.md)、[命令终态页](../results/project_progress/humble54_safety4_run03/index.html)及[最终摘要](../results/project_progress/humble54_safety4_run03/end_summary.json)：4 场原始 PASS，开发 guard 通过，Linux owner 与 Windows 命令均闭合；不代表正式研究完成。
 - [schema03 原生合同、诊断、5 项单测及前瞻 registry 原件](../tools/diagnostics/safety54_schema_recovery03_archive01/README.md)：工具修复与新飞行验收分开，旧失败不改写。
 - [安全 02 命令终态](../results/project_progress/humble54_safety4_run02/index.html)与[最终摘要](../results/project_progress/humble54_safety4_run02/end_summary.json)：历史批次已停止，1 场原始基础设施错误、3 场未执行。
 - [安全 02 原始执行终态](../results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety02_audit/execution_terminal.json)及[owner 终态](../results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety02_audit/owner_terminal.json)：退出 2，无自动重试，原终态记录清理残留列表为空。
@@ -20,7 +20,7 @@
 - [每个请求任务的身份计数、遮挡请求范围与未知理由](../tools/diagnostics/humble54_identity_per_uuid_audit01/README.md)：四份已有报告的描述性提取，不是重新评价或新增飞行。
 - [汽车云台原件与同种子比较](../tools/experiment_orchestration/humble54_car_gimbal_pair01/README_PAIR.md)及[当前环境与原生验证](../planning/reliability-v4-humble54-native-validation-20261103.md)：画面居中改善不等于物理跟随改善，工具验证不计为飞行通过。
 
-核心 12 是同一个开发种子的工程结果；安全 4、扩展 16、定标、容量、正式协议准入与重复研究仍须独立完成。安全 01、02 及更早运行快照均为历史记录，不能用于判断安全 03 当前状态。
+核心 12 和安全 4 是同一个开发种子的独立工程结果，现均已闭合；扩展 16、定标、容量、最终冷构建与正式协议准入、重复研究仍须独立完成。安全 01、02 及更早运行快照均为历史记录，不能用于判断当前状态。
 
 实时页面、录包及录像位于本机，GitHub 保存代码和小证据快照。批处理可以独立运行，网页不会主动向聊天发送完成消息。PASS/FAIL 以每个原始终态为准；命令退出或报告文件生成不等于整个项目验收完成。
 

@@ -1,0 +1,203 @@
+{
+  "schema_version": 1,
+  "kind": "HUMBLE54_SAFETY03_MINIMAL_ARCHIVE_READ_ONLY_REVIEW",
+  "created_utc": "2026-11-03T01:09:17.323160+00:00",
+  "result": "PASS",
+  "scope": "Small saved originals and their bindings only; no guard, WSL, simulator, bag, model, or large telemetry read or execution.",
+  "planned_count": 4,
+  "attempted_count": 4,
+  "pending_count": 0,
+  "original_status_counts": {
+    "PASS": 4
+  },
+  "execution_terminal_status": "COMPLETED",
+  "execution_returncode": 0,
+  "original_guard_result": "PASS",
+  "original_guard_validation_scope": "DEVELOPMENT_ONLY_NOT_FORMAL_ADMISSION",
+  "owner_terminal_equals_state_bytes": true,
+  "owner_all_engineering_pass": true,
+  "residual_processes_in_original_terminal": [],
+  "windows_command_returncode": 0,
+  "windows_saved_process_verified_alive": false,
+  "windows_saved_identity_matches": true,
+  "windows_end_generated_utc": "2026-11-03T01:02:08.992463+00:00",
+  "formal_completed": 0,
+  "formal_planned": 280,
+  "extension16_started": false,
+  "historical_safety01_02_failures_overwritten": false,
+  "original_terminal_finished_utc": "2026-11-03T01:02:08.411129+00:00",
+  "independently_checked": [
+    "Stable pre/post source stats; every selected source at most 1 MiB; original bytes and SHA-256 preserved",
+    "Registry, owner, terminal, facts, original guard, original summary bindings and all four slot/start records",
+    "Twenty execution receipts equal embedded original executions and exact prospective registered commands; all returncode 0/error null",
+    "Sixteen report SHA bindings and verdict schemas: evaluation_status for source/native; result for specialized/tail",
+    "Windows saved terminal counts and command exit; historical task.process.alive is not used as present state",
+    "Tail script parsed with Python 3.10 syntax grammar only"
+  ],
+  "trials": [
+    {
+      "id": "person_auto_unique_multi_seed004",
+      "original_status": "PASS",
+      "original_terminal_sha256": "94a608e778643ccbac31709d18f14fc9d450b86a7965f8f446cae809aff655a8",
+      "executions_returncode": {
+        "flight": 0,
+        "source_clock": 0,
+        "native_startup": 0,
+        "specialized": 0,
+        "terminal_speed": 0
+      },
+      "raw_reports": [
+        {
+          "report": "px4_source_clock_report.json",
+          "verdict_field": "evaluation_status",
+          "verdict": "PASS",
+          "sha256": "a1a7a99265cf7c807df63673f76a6f0ec9200990fcd85ac2c812aaab4ee3008f"
+        },
+        {
+          "report": "native_startup_report.json",
+          "verdict_field": "evaluation_status",
+          "verdict": "PASS",
+          "sha256": "d24ee23a8dec4822679b307c7893ca6037dff71a4a2c7226374e251b38fb0146"
+        },
+        {
+          "report": "terminal_hover_speed_evaluation.json",
+          "verdict_field": "result",
+          "verdict": "PASS",
+          "sha256": "40d01b0fccbe34bd223f5c7fc2fd45ca5b831e238bcef1a693e7b50f16164ac5"
+        },
+        {
+          "report": "auto_unique_evaluation_v2.json",
+          "verdict_field": "result",
+          "verdict": "PASS",
+          "sha256": "9027138747577e1de049b80dae754aa25ab28b85e4aa722540e2047a7d403ef4"
+        }
+      ]
+    },
+    {
+      "id": "person_locked_ambiguity_seed004",
+      "original_status": "PASS",
+      "original_terminal_sha256": "4fb2498af50278794e7e226f42a43eb2b2285ebafa93458274cde8a1a70e0baa",
+      "executions_returncode": {
+        "flight": 0,
+        "source_clock": 0,
+        "native_startup": 0,
+        "specialized": 0,
+        "terminal_speed": 0
+      },
+      "raw_reports": [
+        {
+          "report": "px4_source_clock_report.json",
+          "verdict_field": "evaluation_status",
+          "verdict": "PASS",
+          "sha256": "e8848be660261bd6b51c5b69de8bc62417e276c3d67943af8c68325926fa1506"
+        },
+        {
+          "report": "native_startup_report.json",
+          "verdict_field": "evaluation_status",
+          "verdict": "PASS",
+          "sha256": "e4f14b786503cce1d94726cfea456d600f5b7588ea238c2f548381f4f9982417"
+        },
+        {
+          "report": "terminal_hover_speed_evaluation.json",
+          "verdict_field": "result",
+          "verdict": "PASS",
+          "sha256": "abe3cc4866552069d527822b0840eeed891ddc879c3882452320b9f7fa354112"
+        },
+        {
+          "report": "stage2_evaluation.json",
+          "verdict_field": "result",
+          "verdict": "PASS",
+          "sha256": "b73a7a2c8fb7fcd1b3431ce9c0a1bf4fbd908778449f74b29897970425dfbed9"
+        }
+      ]
+    },
+    {
+      "id": "car_auto_unique_multi_seed004",
+      "original_status": "PASS",
+      "original_terminal_sha256": "67dd8378237a38392545eb22fd8cb32bbc24ba398b0a22ba958758ec306d5ead",
+      "executions_returncode": {
+        "flight": 0,
+        "source_clock": 0,
+        "native_startup": 0,
+        "specialized": 0,
+        "terminal_speed": 0
+      },
+      "raw_reports": [
+        {
+          "report": "px4_source_clock_report.json",
+          "verdict_field": "evaluation_status",
+          "verdict": "PASS",
+          "sha256": "2e34dd0a5106109117123eb4ae270dfeba4df9bf650cc55131a39242a2f87ac1"
+        },
+        {
+          "report": "native_startup_report.json",
+          "verdict_field": "evaluation_status",
+          "verdict": "PASS",
+          "sha256": "23a75d0f22853033f8e0d5de8cadcbbac1f95cf6e088e224fbf2b1b6154273da"
+        },
+        {
+          "report": "terminal_hover_speed_evaluation.json",
+          "verdict_field": "result",
+          "verdict": "PASS",
+          "sha256": "1a9eae2e52e65884757abca849015c942b02302d593675f7f38f44dad4acd889"
+        },
+        {
+          "report": "auto_unique_evaluation_v2.json",
+          "verdict_field": "result",
+          "verdict": "PASS",
+          "sha256": "1a0c6ca6cb8191295f0a2e2e6dba48ca57461b8ae0a0592b0c030829f0ddbaac"
+        }
+      ]
+    },
+    {
+      "id": "car_locked_ambiguity_seed004",
+      "original_status": "PASS",
+      "original_terminal_sha256": "7675129f1e745189099c1f2f8d779dc6b327c5086abaf364c7b765609e61a68f",
+      "executions_returncode": {
+        "flight": 0,
+        "source_clock": 0,
+        "native_startup": 0,
+        "specialized": 0,
+        "terminal_speed": 0
+      },
+      "raw_reports": [
+        {
+          "report": "px4_source_clock_report.json",
+          "verdict_field": "evaluation_status",
+          "verdict": "PASS",
+          "sha256": "486e911503e7665f7f3e7c02d4a1e40194327b0df2e55f03e69a787438c4fb3d"
+        },
+        {
+          "report": "native_startup_report.json",
+          "verdict_field": "evaluation_status",
+          "verdict": "PASS",
+          "sha256": "5694d8671370a7fc9d8cece99ccd339a172672974568d5ffc9f60c10891cc83a"
+        },
+        {
+          "report": "terminal_hover_speed_evaluation.json",
+          "verdict_field": "result",
+          "verdict": "PASS",
+          "sha256": "f7f0232353e28bf532499c9a5362760deed526aee7e03c6ef7d1d4d96de31572"
+        },
+        {
+          "report": "stage2_evaluation.json",
+          "verdict_field": "result",
+          "verdict": "PASS",
+          "sha256": "3a338ceadf6ea459ceb9a4904e8fe1e594bbfe394156e4d11fc3a4741f0212f5"
+        }
+      ]
+    }
+  ],
+  "not_reverified": [
+    "Original guard execution",
+    "Full source/model payloads and every evidence entry",
+    "Bag contents, video, telemetry, and current live process state",
+    "Formal admission, repeated reliability, adaptive KF superiority, identity unknown resolution"
+  ],
+  "independent_external_review": {
+    "source_relative": "tools/diagnostics/humble54_safety03_closed_external_review01/review_receipt.json",
+    "sha256": "c2fc0ac53b1b6e09bfe37ffe87d3164c65d365fe79bbc6e15181399d6424dc68",
+    "result": "PASS_SAFETY03_CLOSURE_PREREQUISITE_FOR_EXTENSION",
+    "scope": "Saved small external metadata review; no rerun of native/guard/current process query"
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "schema_version": 2,
+  "source": "OFFLINE_AUTO_UNIQUE_MULTIPLE_CANDIDATE_SAFETY",
+  "evaluator_version": "2_projected_source_age_is_not_detection_freshness",
+  "result": "PASS",
+  "target_class": "person",
+  "checks": {
+    "clock_recorded": true,
+    "input_decodes_without_errors": true,
+    "fresh_multi_box_evidence_is_persistent": true,
+    "track_snapshot_messages_valid": true,
+    "no_explicit_selection": true,
+    "never_automatically_tracks_a_candidate": true,
+    "never_issues_follow_control": true,
+    "all_motion_commands_invalid": true,
+    "armed_and_offboard_observed": true,
+    "all_final_streams_span_five_seconds": true,
+    "all_final_streams_cover_tail": true,
+    "final_state_is_ambiguous": true,
+    "final_controller_is_hover": true,
+    "actual_final_vehicle_speed_below_threshold": true
+  },
+  "inputs": {
+    "bag": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_auto_unique_multi_seed004/rosbag",
+    "storage_identifier": "sqlite3",
+    "compression_format": "zstd",
+    "compression_mode": "file",
+    "reader": "SequentialCompressionReader",
+    "source_bag_read_only": true,
+    "decompression_cache": "temporary directory, removed after reading",
+    "topic_types": {
+      "/tracking/detection_diagnostics": "std_msgs/msg/String",
+      "/tracking/selection": "uav_tracking_interfaces/msg/TargetSelection",
+      "/ground_truth/poses": "tf2_msgs/msg/TFMessage",
+      "/tracking/observations": "uav_tracking_interfaces/msg/TargetObservation",
+      "/tracking/state": "uav_tracking_interfaces/msg/TargetState",
+      "/tracking/tracks": "std_msgs/msg/String",
+      "/fmu/out/vehicle_status_v1": "px4_msgs/msg/VehicleStatus",
+      "/tracking/flight_phase": "std_msgs/msg/String",
+      "/tracking/status": "uav_tracking_interfaces/msg/TrackingStatus",
+      "/vehicle/odometry": "nav_msgs/msg/Odometry",
+      "/clock": "rosgraph_msgs/msg/Clock",
+      "/tracking/command": "uav_tracking_interfaces/msg/TrackingCommand",
+      "/ground_truth/vehicle_poses": "tf2_msgs/msg/TFMessage"
+    },
+    "unavailable_types": {},
+    "read_errors": {},
+    "time_sources": {
+      "transform_header": 35138,
+      "header": 6480,
+      "latest_clock": 1866,
+      "diagnostic_completed_s": 347
+    },
+    "clock_recorded": true,
+    "clock_samples_read": 11843,
+    "clock_records_preserved": false,
+    "startup_unclocked_messages": {},
+    "startup_unclocked_records": [],
+    "startup_unclocked_note": "Successfully decoded messages before the first recorded /clock remain here with original recorder timestamps and exact CDR bytes; no simulation timestamp is assigned and they are excluded from timed metrics",
+    "receive_time_note": "received_sim_s uses the latest recorded /clock; recorder wall timestamps are not compared with sim time",
+    "record_sequence_note": "Zero-based filtered reader order, including clock/unreadable entries; equal operational timestamps retain this order"
+  },
+  "interval": {
+    "start_s": 29.94,
+    "recorded_end_s": 35.14
+  },
+  "fresh_multi_box_acquisitions": 180,
+  "snapshot_errors": [],
+  "projected_snapshot_count": 897,
+  "snapshot_timestamp_policy": "All snapshots require valid acquisition/output/receive timing; only non-projected detections require source age <= 0.75 s. Projections never count as fresh multi-box evidence.",
+  "final_stream_spans_s": {
+    "/tracking/state": 5.199999999999999,
+    "/tracking/status": 5.148,
+    "/tracking/command": 5.148,
+    "/vehicle/odometry": 5.199999999999999
+  },
+  "final_stream_maximum_gap_s": {
+    "/tracking/state": 0.020000000000003126,
+    "/tracking/status": 0.052000000000003155,
+    "/tracking/command": 0.052000000000003155,
+    "/vehicle/odometry": 0.012000000000000455
+  },
+  "actual_final_vehicle_speed_mps": {
+    "count": 521,
+    "mean": 0.005460836602071011,
+    "median": 0.005466702104641936,
+    "p95": 0.00988772404162896,
+    "max": 0.010260887239292554,
+    "rmse": 0.00604454188066141,
+    "mean_absolute": 0.005460836602071011,
+    "p95_absolute": 0.00988772404162896,
+    "max_absolute": 0.010260887239292554
+  },
+  "scope": "Multiple candidates must cause ambiguity, suspended follow control and an actual sustained hover; UUID emptiness is not identity/safety evidence"
+}

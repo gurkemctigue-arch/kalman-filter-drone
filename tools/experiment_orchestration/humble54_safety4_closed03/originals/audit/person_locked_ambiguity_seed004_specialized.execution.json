@@ -1,0 +1,25 @@
+{
+  "command": [
+    "bash",
+    "/root/uav_tracking_fullplan_v4_humble54/scripts/run_research_session.sh",
+    "/root/uav_tracking_fullplan_v4_humble54/scripts/evaluate_stage2_flight.py",
+    "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004/rosbag",
+    "--telemetry-jsonl",
+    "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004/telemetry.jsonl",
+    "--monitor-summary",
+    "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004/summary.json",
+    "--no-require-occlusions",
+    "--require-ambiguity",
+    "--terminal-expectation",
+    "hover",
+    "--target-class",
+    "person",
+    "--output",
+    "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004/stage2_evaluation.json"
+  ],
+  "returncode": 0,
+  "started_utc": "2026-11-03T00:41:00.584625+00:00",
+  "finished_utc": "2026-11-03T00:41:18.416573+00:00",
+  "log": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/person_locked_ambiguity_seed004_specialized.log",
+  "error": null
+}

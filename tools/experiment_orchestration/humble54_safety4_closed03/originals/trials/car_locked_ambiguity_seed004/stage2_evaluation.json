@@ -1,0 +1,359 @@
+{
+  "schema_version": 1,
+  "evaluation_revision": 3,
+  "source": "OFFLINE_STAGE2_SAFETY_EVALUATION",
+  "result": "PASS",
+  "scope": "Observed designated-target selection, state freshness, ambiguity suspension and loss/reselection control only",
+  "configuration": {
+    "target_class": "car",
+    "require_occlusions": false,
+    "require_ambiguity": true,
+    "max_prediction_s": 0.75,
+    "control_grace_s": 0.1,
+    "max_evidence_gap_s": 0.5,
+    "terminal_expectation": "hover"
+  },
+  "inputs": {
+    "bag": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/rosbag",
+    "storage_identifier": "sqlite3",
+    "compression_format": "zstd",
+    "compression_mode": "file",
+    "reader": "SequentialCompressionReader",
+    "source_bag_read_only": true,
+    "decompression_cache": "temporary directory, removed after reading",
+    "topic_types": {
+      "/tracking/detection_diagnostics": "std_msgs/msg/String",
+      "/tracking/selection": "uav_tracking_interfaces/msg/TargetSelection",
+      "/tracking/observations": "uav_tracking_interfaces/msg/TargetObservation",
+      "/tracking/state": "uav_tracking_interfaces/msg/TargetState",
+      "/fmu/out/vehicle_status_v1": "px4_msgs/msg/VehicleStatus",
+      "/tracking/flight_phase": "std_msgs/msg/String",
+      "/tracking/status": "uav_tracking_interfaces/msg/TrackingStatus",
+      "/vehicle/odometry": "nav_msgs/msg/Odometry",
+      "/clock": "rosgraph_msgs/msg/Clock",
+      "/tracking/tracks": "std_msgs/msg/String",
+      "/ground_truth/poses": "tf2_msgs/msg/TFMessage",
+      "/tracking/command": "uav_tracking_interfaces/msg/TrackingCommand",
+      "/ground_truth/vehicle_poses": "tf2_msgs/msg/TFMessage"
+    },
+    "unavailable_types": {},
+    "read_errors": {},
+    "time_sources": {
+      "transform_header": 67964,
+      "header": 13854,
+      "latest_clock": 4525,
+      "diagnostic_completed_s": 676
+    },
+    "clock_recorded": true,
+    "clock_samples_read": 19684,
+    "clock_records_preserved": false,
+    "startup_unclocked_messages": {},
+    "startup_unclocked_records": [],
+    "startup_unclocked_note": "Successfully decoded messages before the first recorded /clock remain here with original recorder timestamps and exact CDR bytes; no simulation timestamp is assigned and they are excluded from timed metrics",
+    "receive_time_note": "received_sim_s uses the latest recorded /clock; recorder wall timestamps are not compared with sim time",
+    "record_sequence_note": "Zero-based filtered reader order, including clock/unreadable entries; equal operational timestamps retain this order",
+    "telemetry_jsonl": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/telemetry.jsonl",
+    "monitor_summary": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/summary.json"
+  },
+  "interval": {
+    "recorded_end_s": 67.964,
+    "covers_recorded_trial_end": true
+  },
+  "checks": {
+    "clock_recorded": true,
+    "input_decodes_without_errors": true,
+    "armed_and_offboard_observed": true,
+    "initial_explicit_box_confirmed_fresh": true,
+    "initial_box_matches_selected_track_snapshot": true,
+    "no_tracking_before_initial_selection": true,
+    "multiple_same_class_fresh_tracks_observed": true,
+    "all_tracks_snapshots_present_and_valid": true,
+    "task_uuid_changes_require_explicit_selection": true,
+    "long_loss_cannot_reactivate_without_explicit_selection": true,
+    "long_loss_cannot_control_before_explicit_selection": true,
+    "active_states_remain_fresh": true,
+    "selected_geometric_ambiguity_observed_if_required": true,
+    "observed_ambiguities_suspend_control": true,
+    "required_short_and_long_occlusions_present": true,
+    "recorded_occlusions_pass": true,
+    "detection_diagnostics_valid": true,
+    "terminal_hover_follows_selected_ambiguity": true,
+    "final_sustained_hover": true
+  },
+  "selections": [
+    {
+      "request_s": 17.68,
+      "target_uuid": "b43a983c-fb82-4b51-94d0-7f801dc292a2",
+      "confirmed": true,
+      "request_record_sequence": 27582,
+      "first_active_s": 17.76,
+      "first_active_record_sequence": 27708,
+      "confirmation_s": 17.76,
+      "confirmation_record_sequence": 27708,
+      "confirmation_state_index": 5,
+      "image_stamp_s": 17.7,
+      "track_id": 2
+    }
+  ],
+  "uuid_changes": [
+    {
+      "time_s": 17.76,
+      "old_uuid": "",
+      "new_uuid": "b43a983c-fb82-4b51-94d0-7f801dc292a2",
+      "explicit_selection": true
+    }
+  ],
+  "unauthorized_uuid_changes": [],
+  "fresh_multi_track_acquisitions": 270,
+  "tracks_snapshot_count": 3013,
+  "tracks_snapshot_errors": [],
+  "invalid_active_state_times_s": [],
+  "unauthorized_recovery_times_s": [],
+  "unauthorized_control_after_loss_times_s": [],
+  "ambiguity_windows": [
+    {
+      "start_s": 43.896,
+      "end_s": 43.992,
+      "duration_s": 0.09599999999999653,
+      "ambiguity_evaluation_revision": 2,
+      "start_record_sequence": 68790,
+      "end_record_sequence": 68942,
+      "control_grace_deadline_s": 43.996,
+      "boundary_evidence": "RECORD_SEQUENCE_AND_AS_OF_OUTPUT",
+      "chronology_valid": true,
+      "controller_hover_and_invalid_motion_commands": null,
+      "control_samples": 0,
+      "command_samples": 0,
+      "streams": {},
+      "errors": [],
+      "semantics": "Last recorded output at or before the response deadline plus every later output before the exact ambiguity-exit record; future records cannot backfill and each held output must remain fresh",
+      "result": "WITHIN_RESPONSE_GRACE"
+    },
+    {
+      "start_s": 44.196,
+      "end_s": 44.296,
+      "duration_s": 0.10000000000000142,
+      "ambiguity_evaluation_revision": 2,
+      "start_record_sequence": 69265,
+      "end_record_sequence": 69423,
+      "control_grace_deadline_s": 44.296,
+      "boundary_evidence": "RECORD_SEQUENCE_AND_AS_OF_OUTPUT",
+      "chronology_valid": true,
+      "controller_hover_and_invalid_motion_commands": true,
+      "control_samples": 1,
+      "command_samples": 1,
+      "streams": {
+        "control": {
+          "boundary_record_sequence": 69353,
+          "boundary_received_s": 44.252,
+          "boundary_source_s": 44.252,
+          "samples_after_deadline": 0,
+          "audited_samples": 1,
+          "maximum_evidence_gap_s": 0.04399999999999693,
+          "first_unsafe_record_sequence": null
+        },
+        "command": {
+          "boundary_record_sequence": 69352,
+          "boundary_received_s": 44.252,
+          "boundary_source_s": 44.252,
+          "samples_after_deadline": 0,
+          "audited_samples": 1,
+          "maximum_evidence_gap_s": 0.04399999999999693,
+          "first_unsafe_record_sequence": null
+        }
+      },
+      "errors": [],
+      "semantics": "Last recorded output at or before the response deadline plus every later output before the exact ambiguity-exit record; future records cannot backfill and each held output must remain fresh",
+      "result": "PASS"
+    },
+    {
+      "start_s": 44.488,
+      "end_s": 44.604,
+      "duration_s": 0.11599999999999966,
+      "ambiguity_evaluation_revision": 2,
+      "start_record_sequence": 69728,
+      "end_record_sequence": 69910,
+      "control_grace_deadline_s": 44.588,
+      "boundary_evidence": "RECORD_SEQUENCE_AND_AS_OF_OUTPUT",
+      "chronology_valid": true,
+      "controller_hover_and_invalid_motion_commands": true,
+      "control_samples": 2,
+      "command_samples": 2,
+      "streams": {
+        "control": {
+          "boundary_record_sequence": 69827,
+          "boundary_received_s": 44.552,
+          "boundary_source_s": 44.552,
+          "samples_after_deadline": 1,
+          "audited_samples": 2,
+          "maximum_evidence_gap_s": 0.04800000000000182,
+          "first_unsafe_record_sequence": null
+        },
+        "command": {
+          "boundary_record_sequence": 69826,
+          "boundary_received_s": 44.552,
+          "boundary_source_s": 44.552,
+          "samples_after_deadline": 1,
+          "audited_samples": 2,
+          "maximum_evidence_gap_s": 0.04800000000000182,
+          "first_unsafe_record_sequence": null
+        }
+      },
+      "errors": [],
+      "semantics": "Last recorded output at or before the response deadline plus every later output before the exact ambiguity-exit record; future records cannot backfill and each held output must remain fresh",
+      "result": "PASS"
+    },
+    {
+      "start_s": 44.7,
+      "end_s": 44.892,
+      "duration_s": 0.19200000000000017,
+      "ambiguity_evaluation_revision": 2,
+      "start_record_sequence": 70059,
+      "end_record_sequence": 70366,
+      "control_grace_deadline_s": 44.800000000000004,
+      "boundary_evidence": "RECORD_SEQUENCE_AND_AS_OF_OUTPUT",
+      "chronology_valid": true,
+      "controller_hover_and_invalid_motion_commands": true,
+      "control_samples": 2,
+      "command_samples": 2,
+      "streams": {
+        "control": {
+          "boundary_record_sequence": 70214,
+          "boundary_received_s": 44.8,
+          "boundary_source_s": 44.8,
+          "samples_after_deadline": 1,
+          "audited_samples": 2,
+          "maximum_evidence_gap_s": 0.0519999999999996,
+          "first_unsafe_record_sequence": null
+        },
+        "command": {
+          "boundary_record_sequence": 70213,
+          "boundary_received_s": 44.8,
+          "boundary_source_s": 44.8,
+          "samples_after_deadline": 1,
+          "audited_samples": 2,
+          "maximum_evidence_gap_s": 0.0519999999999996,
+          "first_unsafe_record_sequence": null
+        }
+      },
+      "errors": [],
+      "semantics": "Last recorded output at or before the response deadline plus every later output before the exact ambiguity-exit record; future records cannot backfill and each held output must remain fresh",
+      "result": "PASS"
+    },
+    {
+      "start_s": 44.992,
+      "end_s": 45.296,
+      "duration_s": 0.30400000000000205,
+      "ambiguity_evaluation_revision": 2,
+      "start_record_sequence": 70523,
+      "end_record_sequence": 71001,
+      "control_grace_deadline_s": 45.092,
+      "boundary_evidence": "RECORD_SEQUENCE_AND_AS_OF_OUTPUT",
+      "chronology_valid": true,
+      "controller_hover_and_invalid_motion_commands": true,
+      "control_samples": 5,
+      "command_samples": 5,
+      "streams": {
+        "control": {
+          "boundary_record_sequence": 70616,
+          "boundary_received_s": 45.052,
+          "boundary_source_s": 45.052,
+          "samples_after_deadline": 4,
+          "audited_samples": 5,
+          "maximum_evidence_gap_s": 0.0519999999999996,
+          "first_unsafe_record_sequence": null
+        },
+        "command": {
+          "boundary_record_sequence": 70615,
+          "boundary_received_s": 45.052,
+          "boundary_source_s": 45.052,
+          "samples_after_deadline": 4,
+          "audited_samples": 5,
+          "maximum_evidence_gap_s": 0.0519999999999996,
+          "first_unsafe_record_sequence": null
+        }
+      },
+      "errors": [],
+      "semantics": "Last recorded output at or before the response deadline plus every later output before the exact ambiguity-exit record; future records cannot backfill and each held output must remain fresh",
+      "result": "PASS"
+    },
+    {
+      "start_s": 45.396,
+      "end_s": 45.96,
+      "duration_s": 0.5640000000000001,
+      "ambiguity_evaluation_revision": 2,
+      "start_record_sequence": 71158,
+      "end_record_sequence": 72045,
+      "control_grace_deadline_s": 45.496,
+      "boundary_evidence": "RECORD_SEQUENCE_AND_AS_OF_OUTPUT",
+      "chronology_valid": true,
+      "controller_hover_and_invalid_motion_commands": true,
+      "control_samples": 11,
+      "command_samples": 11,
+      "streams": {
+        "control": {
+          "boundary_record_sequence": 71246,
+          "boundary_received_s": 45.452,
+          "boundary_source_s": 45.452,
+          "samples_after_deadline": 10,
+          "audited_samples": 11,
+          "maximum_evidence_gap_s": 0.0519999999999996,
+          "first_unsafe_record_sequence": null
+        },
+        "command": {
+          "boundary_record_sequence": 71245,
+          "boundary_received_s": 45.452,
+          "boundary_source_s": 45.452,
+          "samples_after_deadline": 10,
+          "audited_samples": 11,
+          "maximum_evidence_gap_s": 0.0519999999999996,
+          "first_unsafe_record_sequence": null
+        }
+      },
+      "errors": [],
+      "semantics": "Last recorded output at or before the response deadline plus every later output before the exact ambiguity-exit record; future records cannot backfill and each held output must remain fresh",
+      "result": "PASS"
+    }
+  ],
+  "geometric_ambiguity_observed": true,
+  "sustained_tracking": null,
+  "terminal_hover": {
+    "result": "PASS",
+    "start_s": 62.763999999999996,
+    "end_s": 67.964,
+    "scope": "Final ambiguity/loss stop; full recorded end retained",
+    "checks": {
+      "all_streams_span_at_least_five_seconds": true,
+      "all_streams_cover_tail_without_gaps": true,
+      "states_remain_ambiguous_or_lost": true,
+      "same_explicit_task_retained": true,
+      "controller_remains_hover": true,
+      "all_motion_commands_invalid": true
+    },
+    "sample_counts": {
+      "states": 312,
+      "statuses": 104,
+      "commands": 104
+    },
+    "spans_s": {
+      "states": 5.1839999999999975,
+      "statuses": 5.152000000000001,
+      "commands": 5.152000000000001
+    },
+    "maximum_evidence_gaps_s": {
+      "states": 0.020000000000010232,
+      "statuses": 0.05200000000000671,
+      "commands": 0.05200000000000671
+    },
+    "expected_target_uuid": "b43a983c-fb82-4b51-94d0-7f801dc292a2"
+  },
+  "occlusions": [],
+  "physical_identity": {
+    "evaluated": false,
+    "reason": "Requires independently validated visible GT/image labels; unchanged task UUID is not evidence of physical identity"
+  },
+  "limitations": [
+    "No GT identity, IDF1, HOTA, mAP or three-dimensional accuracy is certified by this safety report.",
+    "PASS is limited to the requested scenario coverage flags; full stage two requires both classes and separate crossing/ambiguity evidence."
+  ]
+}

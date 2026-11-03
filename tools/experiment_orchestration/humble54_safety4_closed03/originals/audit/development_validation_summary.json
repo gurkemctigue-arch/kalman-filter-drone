@@ -1,0 +1,1623 @@
+{
+  "schema_version": 1,
+  "kind": "RELIABILITY_V4_FINAL_SAFETY_SUMMARY",
+  "result": "PASS",
+  "evidence_scope": "REAL_RECORDED_DEVELOPMENT_EVIDENCE",
+  "created_utc": "2026-11-03T01:01:44.992749+00:00",
+  "bindings": {
+    "flight_source_hashes": {
+      "config/car_sim_train20_04_dataset_manifest.json": "c7abb224412bd550f32dadc0e99c3ed627effc4f3d41e3769a6bf5ede143c128",
+      "config/car_sim_train20_04_m512_resource_receipt.json": "9abeaca3a892e61761564bc7116bb8aed34d9864f4f7406bd9f3a4bc59f3c26c",
+      "config/car_sim_train20_04_m640_resource_receipt.json": "0bccbdc96ce8d09d8f396fc283c7b08eb5457ccc84065cb493e74c4b45771549",
+      "config/car_sim_train20_04_training_receipt.json": "8b0d87baebd54f3ee46f0fd3d91fbd11354c723adbc1406d8bcc69a888e028a5",
+      "config/dds_runtime_humble22.json": "4e517b62e823585b53dd2ac503f65eaf9bc3fd4c59d9d8fdb900d985f99d030d",
+      "config/gazebo_magnetic_reference.json": "e53bf39273da3af8acd82ca63831be1ba4854db2732797ceac137e7bb693c058",
+      "config/gazebo_magnetic_runtime.json": "ccbb19930d3f7323f4e7024bd201b268022e5f44f34dca7196bcc80bf45a1cfd",
+      "config/gazebo_magnetic_runtime_humble22.json": "0e80e51994948b5186c3a76c7e5c9651d27cf3d9acf63109f3f66544de801e6a",
+      "config/px4_magnetic_runtime.json": "3c4f9693cfab51c6b2049af619bfb6e3edbd22a8328468b7e84f75053485c66b",
+      "config/px4_wmm_reference.json": "34ae2f6b48a6dc94e3eecbf4bc4e6d806b46533921fee20d71bb1f78ce6abede",
+      "config/recording_qos.yaml": "ce16165db2b41d7a3b057cf202e6fdc32e4908e727808c10b14c5fc44ad5b3bc",
+      "config/ros_gz_clock_runtime_humble22.json": "908f8b7e18154377e57ce6f92922b63b36f7d4fb90ac79e61cc1b8dd95d3e4e4",
+      "config/ros_gz_runtime_humble22.json": "08cbc9ea8a2b6e50b71efc4910e5adef7c309b742fb0e9177cd803e934a028af",
+      "config/tracking.yaml": "a61ee966c6d146b616dbe45137337c6993c1a95ac05026ded59c9dbfff9c6b59",
+      "launch/tracking_sim.launch.py": "9b53d2853664214dcb22ccf13238534f55d0464b1021e86b37b00ce2847f9cc9",
+      "models/yolo11m.pt": "d5ffc1a674953a08e11a8d21e022781b1b23a19b730afc309290bd9fb5305b95",
+      "models/yolo11m_car_sim_train20_04.pt": "bf7a56de4ae1658f8101fc6089247e8b984c2965b58d6b4963b4b5977e9ca00c",
+      "models/yolo11n.pt": "0ebbc80d4a7680d14987a577cd21342b65ecfd94632bd9a8da63ae6417644ee1",
+      "models/yolo11s-seg.pt": "1caa81c0195412efa411b632bcfb8c184939dddb6ae41f6a80c41b211ff257c3",
+      "models/yolo11s.pt": "85a76fe86dd8afe384648546b56a7a78580c7cb7b404fc595f97969322d502d5",
+      "patches/fastdds_2_6_12_listener_lifecycle_A01.patch": "a1de559704415dd11045cc30b7b51720c2740bcf4baf23f44fd4da382f17bddc",
+      "patches/px4/gazebo_enu_flu_to_frd.patch": "28ed1dd9a46d4470e782e606bf7d2ce3c7b86b905c9b4c67ef486868c184d871",
+      "patches/ros_gz_bridge_ownership_shutdown_A01.patch": "1cec98304620e06f4b9b283abb904620a94132623f874c0d9dbde0f92e62239e",
+      "pyproject.toml": "bc0ee5a68710a2bc41fd1b0668d42b09137a91aa1f4f16b106cd773b2ce8cd0f",
+      "ros2_ws/src/uav_tracking_bringup/config/clock_bridge.yaml": "539dc2c96be7dd4a4504f12214ffe84ab984e3306ad26429c147752840806f81",
+      "ros2_ws/src/uav_tracking_bringup/config/stage1_bridge.yaml": "9cbf57b156a38519da5310980d5ffc22e84b9c747e59468a3b82b584c88927e2",
+      "ros2_ws/src/uav_tracking_bringup/config/stage1_car_bridge.yaml": "1e7d13778f20cddba5fc371590141dad2026b35ee3fbfb497b35ce36048d7019",
+      "ros2_ws/src/uav_tracking_bringup/config/stage1_flight_bridge.yaml": "c1aca2657d9b2fcb1d46dc293dc70a1d92ec92c30c0f8a4714e54bb9d384dfcb",
+      "ros2_ws/src/uav_tracking_bringup/config/stage1_flight_data_bridge.yaml": "26a9b83657d8d49698fb0b1028c826e4b0367b718cbaab71aa831897e77d12c6",
+      "ros2_ws/src/uav_tracking_bringup/config/stage1_tracking_car.yaml": "b62401331e4d5f077548612431417ed358c58a1c85aca65e712e76ab22f36d04",
+      "ros2_ws/src/uav_tracking_bringup/config/stage1_tracking_person.yaml": "1e4d5384939d6e4741dbad35c93953aaa28b68d6dd81f90251b28b0ce274110b",
+      "ros2_ws/src/uav_tracking_bringup/config/stage2_bridge.yaml": "3a8b4706aa109c5f2a16d555a9a5be7f7e10d9860afadb5723223ee59cb9aea4",
+      "ros2_ws/src/uav_tracking_bringup/config/stage2_data_bridge.yaml": "5153a62cb6bd9e4e2e795af113a3c9e09af8ff1da37f5d4dbeca8ca2746a9d46",
+      "ros2_ws/src/uav_tracking_bringup/config/stage2_tracking_car.yaml": "12431197b00a4be53735b0487a9cb30e06ca49c160a88d0b9ae75b55e3af297d",
+      "ros2_ws/src/uav_tracking_bringup/config/stage2_tracking_person.yaml": "44e537415ef086745ce9dc577a512acd940575682e4d7f2e15fe682f6e02698b",
+      "ros2_ws/src/uav_tracking_bringup/config/stage3_bridge.yaml": "ef633976c2fea24b0d9b4363b904a79d85a05068b89460e2220a362990478653",
+      "ros2_ws/src/uav_tracking_bringup/config/stage3_data_bridge.yaml": "4591ee75aee5f0b75ab53bb47cd979deb5a6605afba7df9593625faa3547ee1a",
+      "ros2_ws/src/uav_tracking_bringup/config/stage3_tracking_car.yaml": "efc4c7cc23d6d70b28bb2f15c760ee0156471f85fc413fd5f986fe56c43f906e",
+      "ros2_ws/src/uav_tracking_bringup/config/stage3_tracking_person.yaml": "104c72446cdc6c8ffd21092b7e8c39f970ecea8eb530562a567f3438af586f31",
+      "ros2_ws/src/uav_tracking_bringup/config/tracking.yaml": "93a6e7996e3f9d623c4422f3c982246db59aa40fb6ce4e66f97adcf1597b3385",
+      "ros2_ws/src/uav_tracking_bringup/launch/stage1_flight.launch.py": "4622c60c523de9a9a6f46a77547041016620cde5bff6be2f16f0e996197c4d05",
+      "ros2_ws/src/uav_tracking_bringup/launch/stage2_flight.launch.py": "c88d29b7b4686570759f0eaaeef9db7d3c6241c71d3f319fd9c7dd2b829fda04",
+      "ros2_ws/src/uav_tracking_bringup/launch/stage3_flight.launch.py": "63f0616d6c66457cce9cf615c492f3c27bd0d1b681cb0bb54a11be90ee6a2d78",
+      "ros2_ws/src/uav_tracking_bringup/launch/tracking_sim.launch.py": "057727fabb78610bb78ad032e9a884d267289d73fd3b17a749356c374c7332f3",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_hatchback/materials/textures/hatchback.png": "c38fb8c07a745471e07895a3ef95d098f3049865b0cc22d0e07ad0318d0c14c9",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_hatchback/materials/textures/wheels3.png": "048b7037fdf2803842680fb51ba0261c59919e30c43b93a0ff12d2bf26525317",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_hatchback/meshes/hatchback.mtl": "249104df3778229da4413e713dd77a9c2385eb71ac090280ec34a28278c4d1e3",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_hatchback/meshes/hatchback.obj": "75d609dee9b8c2467ddac0cc1fc0b23c750b250f50cc75d6480a21302358d4d8",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_hatchback/model.config": "4942fc4d90ea8abb076915b591813c5ee1789a790045c6625e278a3eddb2a546",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_hatchback/model.sdf": "1919fa731880f9b789cef2f3dfb02d9a0cace463c32c8d2a38176cceb996c931",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_hatchback/thumbnails/1.png": "e69ddbede94f3a8e0a23efa9bcd2fe32548efa2ca7f730e300b80f017392d6f8",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_hatchback/thumbnails/2.png": "9939e833cac9f877eee2b3050487e2349fd1ed6795242b710b1fb0ba925a9d55",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_hatchback/thumbnails/3.png": "90bfd09143bde6cf52178c91c6741164763c76780a9c6d1bd4c4c069dacdbf34",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_hatchback/thumbnails/4.png": "bbae0e524cd97939d609d54e0e4828c399dd732a694af7d975ed34f55ba7ae54",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_hatchback/thumbnails/5.png": "ef303fdc77505ac4fd116eea001bdad7711ec27637039eba62bd4fbc8c7d6844",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_prius_hybrid/materials/textures/Hybrid.png": "e6474fd1cf90afe11936d86d2c52264dea26cd18cdc5e59f28d4d918ecb1eebd",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_prius_hybrid/materials/textures/Hybrid_Interior.png": "6f0da0f51944ce26a8a8cb6ac094b35268a1ba53b0cba3279a38346c413bb811",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_prius_hybrid/materials/textures/Wheels3.png": "048b7037fdf2803842680fb51ba0261c59919e30c43b93a0ff12d2bf26525317",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_prius_hybrid/meshes/Hybrid.mtl": "68a78ecb4e27994597a5b8f664726ca6b4a129c6c49fee1db7249ddfb8297892",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_prius_hybrid/meshes/Hybrid.obj": "557684ee2f60e162ec016944e026e362c21ad185839458d9148170035779ab56",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_prius_hybrid/model.config": "802d6eef0a1243c064bea77d98558843520ee50fd39586f9f241ebc6b7357254",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_prius_hybrid/model.sdf": "eae7b0895a9c84bf68b51e2016c791dbf2925d18c3a225bf24520ec540563905",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_prius_hybrid/thumbnails/1.png": "64bba68451b6bd38ff978d96dc43a097ac1199d0c209562959fa912ef3204dea",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_prius_hybrid/thumbnails/2.png": "be5836c79eb86ca65da79708d654779b97d146979e765d846ee9ceee067e8796",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_prius_hybrid/thumbnails/3.png": "5ca555f2cf3cd6d9ecf7271cd02e6199445c269eaf30d8524241a2e724e7a2cd",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_prius_hybrid/thumbnails/4.png": "bc42eb21a79b63de6f0aba4ca83d37c378ea92c17f3a7c19c639f946fc4e3ccb",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_prius_hybrid/thumbnails/5.png": "34c32e0b3c404ffca51fa30b3535cd04c9d525bf28931afe0ed8ab6a1bbc279c",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_suv/materials/textures/suv.png": "ddf8c7c2646190e7f315fbc4a523dda92c1172a510eff2bdbe9898e7495ebcee",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_suv/materials/textures/wheels_01.png": "9b76e5f5e37f226d1fc9ff31c9d91c904a104bf930833c0c8b5cf4bb24793d85",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_suv/meshes/suv.mtl": "5591535188369ef07f515c54358e42f88e7d10d8f22d8069be7d8a5c3d6e0b60",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_suv/meshes/suv.obj": "37ab9ef37a4880f9c4f191e441f51d3afa05973793c004a7606a893f19b63e7c",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_suv/model.config": "2a0dc091922174fde22b6a97e0cd811e85b9a8c04122300fe2620f3d11e061ea",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_suv/model.sdf": "0a5c05e4671a65311cce18276e6dc49dd96e1657b33a61cce4186192dac95963",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_suv/thumbnails/1.png": "1e49e60d5bfaa142885a632f160c9b6ccd9d3b113e63c985cb8695031e5e0f4c",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_suv/thumbnails/2.png": "e33d649fb83f3e680bd69e843a92f7ff280117eee93fbebc679dfda8f037c66a",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_suv/thumbnails/3.png": "9bb8d3e131313cbc78944cbd6ff025875e5b6c22f681300b845ece2b846a9d72",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_suv/thumbnails/4.png": "383006f2dadd5423bfa66b5cfad3a9b9b6925199a14e51f24e7a607dd02ed3ae",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_suv/thumbnails/5.png": "a700774a57f5aed6021694aa4c93ab23a106928da45767d739c2e6086f3b88df",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_walking_person/materials/textures/eyebrow001-unmodified.png": "bd9d94033a85c16af38fb135f5fed4ab2e1a26982db952826e58a2672c8c9a9c",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_walking_person/materials/textures/eyebrow001.png": "b2b15dd52470d6d073d18ebf56bcb1f3b45567cd42a2c75557c0ed2adc0f1ec1",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_walking_person/materials/textures/green_eye.png": "97b79fb62dde7211c142ce398b9506d42a74bdc478230e90ec69377ffdce4e22",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_walking_person/materials/textures/jeans01_normals.png": "2aa953834fa0bcf240fe069dc1ef283d801573e077bc5f9da04847370e9837d1",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_walking_person/materials/textures/jeans_basic_diffuse.png": "c4b2f9126873078ecf8a3678e28622196fa6cb47e131b6067d6ffe81919b0ca6",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_walking_person/materials/textures/male02_diffuse_black-unmodified.png": "d3ef0f625df4d5cea6c9cd89e00b9e86c3b488d63672f9ed5b1327a17abd60dc",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_walking_person/materials/textures/male02_diffuse_black.png": "37c166c53575369f57cf233e775f87ef225b3fe9f66ff7ba34b3abb12dcd46be",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_walking_person/materials/textures/teeth.png": "d0afb57869c6fbb56b98f5efc4aec629ee7593e70d8dd2bfb9de923acfb65f43",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_walking_person/materials/textures/tshirt02_normals.png": "f31407a3f8ae20736f8f9693906f6ad64569032bc4afd0798c305526fa51d33d",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_walking_person/materials/textures/tshirt02_texture.png": "932e21f76307fda21692a3b4db03fcddc68127d410b4ccbf9fb5cf95ecfbc1b1",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_walking_person/materials/textures/young_lightskinned_male_diffuse.png": "4233a4e1e2d423daf8e5aa25521df93253be54b0ab6490147afae39b076f4fcb",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_walking_person/meshes/walking.dae": "e2ae109264af6d8a625523a72e30a5ffa1a4ec34278f9bf1e10e614fa074c379",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_walking_person/model.config": "413e06f05598f816bb70332fdca95acfadfa544f8f7f781874c2644f94e78f84",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_walking_person/model.sdf": "edebb13dae917fb3f07814e5182d0fca7cdcc61fde918d8b69815391e07b3e59",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_walking_person/thumbnails/1.png": "ed82e25b8db081e9f81e273bd5e54efbe499c30438aa50704a6e31663cbb8978",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_walking_person/thumbnails/2.png": "2723f451b4368031f427ff04d06f754660edc7d0e23bf3ca7ef6515ed7cc32df",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_walking_person/thumbnails/3.png": "6fcee6e58e40187e356584966e4b3c2686b675fe7087b8488f3a90a1666e1063",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_walking_person/thumbnails/4.png": "52a605096d8614a79a59757ccb38ddbcf9f9708ec1ca5572491be81b486bd6f6",
+      "ros2_ws/src/uav_tracking_bringup/models/fuel_walking_person/thumbnails/5.png": "191c24476270ea58952cd0cc5aa145a2463eb39d9bca8a929e79c16f68d7cdd1",
+      "ros2_ws/src/uav_tracking_bringup/models/target_car/meshes/target_car.dae": "ff3dd3e73648b69a819af7abd18e53be45717307225e851b7328d0a5e3cfee71",
+      "ros2_ws/src/uav_tracking_bringup/models/target_car/model.config": "669ae408ee148fc62bcfd01a07d5ed04b522997e2612fa788216d4e4c3de1a75",
+      "ros2_ws/src/uav_tracking_bringup/models/target_car/model.sdf": "7a8e8b89a99f7cdc7ab7e18a2c97de69944a7611a2c2f9c10574372a72f3aa92",
+      "ros2_ws/src/uav_tracking_bringup/models/target_person/meshes/target_person.dae": "a1d6d216a6395aef7d57474b21be5eda185a416daa9ac8aa64d29bc4447baf2d",
+      "ros2_ws/src/uav_tracking_bringup/models/target_person/model.config": "1272d5cfef0fbf59e1b1428c63a19bfd9d943161c43a5d351a3480a59db59a9a",
+      "ros2_ws/src/uav_tracking_bringup/models/target_person/model.sdf": "95fb0060cd30ffb16c34ec44ff1e4b55a1342332b65f6cf760a7e730d6e8bdb0",
+      "ros2_ws/src/uav_tracking_bringup/models/x500_stage1/model.config": "cc377bbe70aa467ab6addfc124ba5cdeb683d9c890021d6463c2a6a188373192",
+      "ros2_ws/src/uav_tracking_bringup/models/x500_stage1/model.sdf": "3c27bec2e851e219538bcf5e087c44e8b0b6713abb43791091a5e5cd964336f4",
+      "ros2_ws/src/uav_tracking_bringup/models/x500_stage3/model.config": "ffbfd3769f071fe7f9a30ef314130d9d27d0939aed95a791006f6fe7eee16945",
+      "ros2_ws/src/uav_tracking_bringup/models/x500_stage3/model.sdf": "93d9e6a3c05fc0451c2999cbbf238544aa04c17864cabe54456424c16dc4c2c2",
+      "ros2_ws/src/uav_tracking_bringup/models/yolo11n.pt": "0ebbc80d4a7680d14987a577cd21342b65ecfd94632bd9a8da63ae6417644ee1",
+      "ros2_ws/src/uav_tracking_bringup/package.xml": "4df5e73daac5e5531903ce8d0474693406a615beada0a0c0387c8bc824733f27",
+      "ros2_ws/src/uav_tracking_bringup/setup.cfg": "d88b3cf9c32420fb242dca5b752cb5af1ae345dd6a383319840d66de4891bb19",
+      "ros2_ws/src/uav_tracking_bringup/setup.py": "045790b382e1aba97cb456e94531c6caaf5faeaf4f031bb0bc388bceec2b0724",
+      "ros2_ws/src/uav_tracking_bringup/uav_tracking_bringup/__init__.py": "4ffd78f3cfd35700ec314e34613febe3c3774e1ea6a51bde294fa9a88f3acec8",
+      "ros2_ws/src/uav_tracking_bringup/uav_tracking_bringup/fake_vehicle_state.py": "b60938ff2c62d78820d5e9b3d8f96fd25ff99230c4a4d1cd4e801c6104838552",
+      "ros2_ws/src/uav_tracking_bringup/uav_tracking_bringup/flight_tf_node.py": "a46326d65cacfba4ed460f27343236a35d52d8331a4bff0c60462c615979a25e",
+      "ros2_ws/src/uav_tracking_bringup/uav_tracking_bringup/gimbal_adapter_node.py": "3361e15ea3eee1b8aca4d3518f3691ac25909a3f0945d4960724fd8d1817a621",
+      "ros2_ws/src/uav_tracking_bringup/uav_tracking_bringup/scenario_motion.py": "77a52f0cb2eedca98e32f9f6fd7ed61ba59bfa1615cbb753a9ceb83917013078",
+      "ros2_ws/src/uav_tracking_bringup/uav_tracking_bringup/stage1_smoke_test.py": "7523a1cbec7c0d8c306afaeab1bea6989dec4756da2bf5fee9c5f72eb2ce4152",
+      "ros2_ws/src/uav_tracking_bringup/uav_tracking_bringup/stage2_motion.py": "21838f75499b6309a032abb57af3e5384fc3f0275c08c16e09bd4a0a77ccec1d",
+      "ros2_ws/src/uav_tracking_bringup/worlds/stage1_flight_car.sdf": "a703e4bd24aadc97846fd6798212cf88ed46c621efe2f408cd9303c9531b67f1",
+      "ros2_ws/src/uav_tracking_bringup/worlds/stage1_flight_person.sdf": "daf55756085816c0dde85f092198a8604de4a313a5bb8402c19b8a74a28f0f9c",
+      "ros2_ws/src/uav_tracking_bringup/worlds/stage1_single_car.sdf": "65f8d3737be5173feffbab4577029e9198d0a70615c68ec187713f604d9346a5",
+      "ros2_ws/src/uav_tracking_bringup/worlds/stage1_single_target.sdf": "4512ae242f8ad0b3a10856e9802b1c933f68e9893a7bf9ab9ee8a2a1a9ae9260",
+      "ros2_ws/src/uav_tracking_bringup/worlds/stage2_flight_car.sdf": "40c4e5351efbd948c3a7615f079af68013274c2c09a5f0622e4abd2bf68a3afe",
+      "ros2_ws/src/uav_tracking_bringup/worlds/stage2_flight_person.sdf": "1ed6b5ef8468b7cf68af55186de3fa1326fba0ecc56cce5ded2202cdc6022479",
+      "ros2_ws/src/uav_tracking_bringup/worlds/stage3_flight_car.sdf": "8f49de7aca8b24f490fd134e4c986dc6036c8f242cf396cd9e3c62e938072eed",
+      "ros2_ws/src/uav_tracking_bringup/worlds/stage3_flight_person.sdf": "2577c63a802e51db7f800d5492b6b0cecf350f520cb619c02bedab6e94ea029a",
+      "ros2_ws/src/uav_tracking_bringup/worlds/stage3_multi_car.sdf": "3cfa9dcdde1c8f5d6ba88675a591afd30c644b33651cafc4f2c62be04372f868",
+      "ros2_ws/src/uav_tracking_bringup/worlds/stage3_multi_person.sdf": "5df48eb4f0a55461c60461f5484a36081f587d519f5b5121a8dfcca5df834d1b",
+      "ros2_ws/src/uav_tracking_interfaces/CMakeLists.txt": "7f35c09d0f15e20a53912ae3a4d6511b76e14d2013b73bd6270e7ad81504be4e",
+      "ros2_ws/src/uav_tracking_interfaces/msg/NavigationOverlap.msg": "a18a359efeae5d9b14509f6346864738ee6a63faf2bcd7f53b88cf006416bf76",
+      "ros2_ws/src/uav_tracking_interfaces/msg/TargetObservation.msg": "5dd36466a5b2e98bd79e2fad952727243c005012867fa08ef179a2f19d2384e5",
+      "ros2_ws/src/uav_tracking_interfaces/msg/TargetObservationArray.msg": "68687bae96f70b1b3c26093cd6a4c5250bc84f75c7ef027617a440d8ec4c226d",
+      "ros2_ws/src/uav_tracking_interfaces/msg/TargetSelection.msg": "ad7426a38093e990b61c6c1798f536111e735f8903b5cba5e8075f12a22b7e8c",
+      "ros2_ws/src/uav_tracking_interfaces/msg/TargetState.msg": "b1967b3f2a0f31f298c2205a1c3defd0dcbea892745d9a6f3ea1c2fd97d84271",
+      "ros2_ws/src/uav_tracking_interfaces/msg/TrackingCommand.msg": "f7156a45aae6000ef70178eb46d27f2830d98c3369b1114961bceef63c04f172",
+      "ros2_ws/src/uav_tracking_interfaces/msg/TrackingStatus.msg": "f9d29ba33ee852f1bb301fa42f7d6e57aac92159f73961098d08e5a8f65a2f79",
+      "ros2_ws/src/uav_tracking_interfaces/package.xml": "7ef755dc3a12fbff9a20f5fc79413a4299ab803ca70c2ff6d09fc13ca282aa29",
+      "ros2_ws/src/uav_tracking_nodes/package.xml": "9034958c1765422b222ac4c84af3931982beee587f315e2c98471a8bec3c7dd7",
+      "ros2_ws/src/uav_tracking_nodes/setup.cfg": "3ea1c5a2aae453063c1805659a27d2df75ef0acc808d7accaa0837164428df6d",
+      "ros2_ws/src/uav_tracking_nodes/setup.py": "6d9655bde52566b2fea4f5f2004a08f0e2357c35ed0689d983354c20f41cc6ba",
+      "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/__init__.py": "9214ca3d6b02eac3bbdf6673e566b4a8c5aa067a7fa5e80d5fc771b2c3a9e627",
+      "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/controller_node.py": "fa37a4de445896f8fd08b0bfa2c99a200623c39d98427ccedfe16cc9c6361959",
+      "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/detector_node.py": "2316a7f331afec55844da65f6d6b4bb76de551e1bad262bd26ad3728a4636510",
+      "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/inference_timing.py": "9439cf0985b0244eccc437f26fdb1691e7a48d3518c1b7faa2b8372d18742d72",
+      "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/inference_worker.py": "d75643c2b902ec815abbca789a8547eb935ecacf37586fa08e0972933122e39d",
+      "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/navigation_estimator.py": "8d1abef9fe9d623f4cd43b0874e7c7843238a79920f198b17942d6cc8ebe2114",
+      "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/stage2_telemetry.py": "b74e8e9835c81b7e90ea2f7a0d549e8c85ce6f9221551122926f881ad98d80d9",
+      "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/state_estimator_node.py": "696184b13ebb21307f1091171f15f5f628e6b46b101c692f1dcacea77861fbd0",
+      "ros2_ws/src/uav_tracking_px4_adapter/package.xml": "75642bace4b6ec23ff52ce1691056fdc13180f5ca250a7c02e404792cfa87e57",
+      "ros2_ws/src/uav_tracking_px4_adapter/setup.cfg": "95227c198a5b8d8726a5a370b7c2b3bcc7e266d4ae2d1933750503a7466004bf",
+      "ros2_ws/src/uav_tracking_px4_adapter/setup.py": "099159a3643b77471a9cc18b6bd893b6cf3e50399b2c435f850f38d35798a263",
+      "ros2_ws/src/uav_tracking_px4_adapter/uav_tracking_px4_adapter/__init__.py": "eeb4bcf3619dc97c2bde8797b4ec0a0440496e07ce731d10be97d735801d48e5",
+      "ros2_ws/src/uav_tracking_px4_adapter/uav_tracking_px4_adapter/adapter_node.py": "5de4d83c8b780bbcf4b6bcadfc76e3ba5b9dc3fe344c6f92cc5c7c2c16c31622",
+      "ros2_ws/src/uav_tracking_px4_adapter/uav_tracking_px4_adapter/flight_supervisor.py": "9ea9b08d456f59618f14533cdecb8c2315263af4860e3cb570615746cc889064",
+      "ros2_ws/src/uav_tracking_px4_adapter/uav_tracking_px4_adapter/frame_guard.py": "e46c93474d53e1fc815c27d135c68b76b60117875e6294be3b9f75220eb168ba",
+      "ros2_ws/src/uav_tracking_px4_adapter/uav_tracking_px4_adapter/shutdown_guard.py": "f449421c69a9301751aac8d6bf557764a84b8fe22cb4b9f962d6cdc84e32da67",
+      "ros2_ws/src/uav_tracking_px4_adapter/uav_tracking_px4_adapter/source_clock.py": "d9e94e63f39fe95479025904b8095ecdb88212354df262a1b3c6d1515915df33",
+      "ros2_ws/src/uav_tracking_px4_adapter/uav_tracking_px4_adapter/startup_readiness.py": "40f46e2ffe3aab9fd148bb6ce66b7d1488de604d0141eb93d99873a9171a5dcd",
+      "ros2_ws/src/uav_tracking_px4_adapter/uav_tracking_px4_adapter/supervisor_audit.py": "4003d6ae14a10a77e08dda38191891bf72a4afdacf7dcf336475b1a27f1e765c",
+      "scripts/apply_humble22_dds_runtime.sh": "db4cf741ddda918727793496f7831cf0a3e6b51d7078a48876758cd517e721cb",
+      "scripts/assetcheck.world.sdf": "fa3cf5e68f2620920ad92b0dc604fd08c445c992773fb9257d15ea4a77b30c46",
+      "scripts/audit_compressed_rosbag.py": "b175658395a901d1a78fd9fc94b33521bfe01919450df8ccf63bae53d5e6dd12",
+      "scripts/audit_status_only_failure.py": "e901ccb0562f79f2fc5eba1adc1319546956aa0f2751754efa979c6d8857940d",
+      "scripts/benchmark_detector_cpu.py": "1cc130dd5b88de9e9a9e384a363fd15e7b3d796896f245049dea2feacde1fa82",
+      "scripts/benchmark_inference_tail.py": "127756a06e5fe7370c645d79ba41edd095094bdee6a951e63edadce7a3ad5508",
+      "scripts/benchmark_openvino_car.py": "0395d83ab678fed3ea373acb4dc84e1e36365a1834a912e8661488bd1f80e21d",
+      "scripts/build_acceptance_dashboard.py": "3a685e8adf0c48245007696fdbe212270978abbb93ab8733f08e41f093c3fa31",
+      "scripts/build_browser_demos.py": "159ef5ec1ba9857978ae4c0fc438ed8458ee349e5f54b23f0c5b0199f43aa227",
+      "scripts/build_full_plan_report.py": "6623798f583bc351bfec97483d82433bffcde9d8f409f2be8a1d9bd4fb50ae1b",
+      "scripts/build_humble22_fastdds_listener.sh": "e85dadb592ac908cda185f5c1a34863c0cb6bccf75a97710e7a65d55756ed089",
+      "scripts/build_humble22_ros_gz_shutdown.sh": "3ca1df508e06897af0d68679c90d90876585b105af73a7e59dc89121729052bc",
+      "scripts/build_metric_supplement.py": "222c45e5898c597199d1db5da5340c2139c08bfff64153f81aba97010a2954d6",
+      "scripts/build_px4_magnetic_runtime.sh": "2a1a3e3e08068399bbc4c58aec026e3d9f099df79bdf7843d386827b18aabed6",
+      "scripts/capture_environment.py": "fda13ebdc2dcc41945089814706231e6f00ff8a5a462654a8ce234f2ede1a623",
+      "scripts/capture_gazebo_magnetic_libraries.py": "3581ba75f3cd18be78e080b8bc1237fc30d21c33c52c2bf5fd85cd275d8959fd",
+      "scripts/capture_gazebo_rendering.py": "f0c1af3821864a33f7989ff3a2b453f7b9dffe2a92e4902358f605f3e5c7bdef",
+      "scripts/capture_ros_image.py": "673af4bada6a3e0b8c8710463e6c064130547c03629324f427119eca008aa734",
+      "scripts/close_stage1_recording.py": "56c1f8c51a24db30c52b1c291028a53a174ee781c5e57edd39dbdb7b45a0cb56",
+      "scripts/compare_bag_derivatives.py": "26bf74938f649706549829e370b643c5687092de9df92fe3660d97cc1435ebe6",
+      "scripts/compare_car_detectors.py": "5717fdcba0f962e1ecc6e73db85857188b897f39e40ce01c056e7ec3748f20ec",
+      "scripts/configure_gazebo_magnetic_contract.py": "5c6c55f3529da8428f8d7301134d57605d1253ddf7fc463c933fb54e8e15213a",
+      "scripts/configure_sim_magnetic_field.py": "0cc7e04d75d7d508f01fc5783ef093a742b0188cafb8e05d0dcfd790c6103d6a",
+      "scripts/copy_px4_sitl_source.py": "5851e6e9ff462664fd70bdaa7bf0376b02573e0fd3878eaf1acc0ececb511910",
+      "scripts/create_asset_viewpoint_world.py": "8d8bd94e59d40648031fa63b9604ea629490529021ff9ee25e177826c0a1f4d0",
+      "scripts/create_final_plan_docx.py": "8a72bf83365f5326d3d75d31dc7f0c53888daed460137705b262ba09f29a7dc5",
+      "scripts/dds_runtime.py": "d10bebf10f3e1e6ba91d4cdb4304b1ab80c5cedc2c8626c09c9f60bf5afcad5e",
+      "scripts/debug_gz_bridge.sh": "91103547251358698c61477f1ada843808601cba6b32f60d8243d448d123431e",
+      "scripts/diagnose_px4_camera_timing.py": "d9ea7fb5db11013d71fff06d3d20fe7fbb8b47974e1350994455f95516e5e25b",
+      "scripts/diagnose_stage1_loss.py": "10413c464900db3daa070e12f0884cb160d0c49f1e3d212604b2b633607dc0c0",
+      "scripts/download_visual_assets.sh": "763e7bb0b78ba9490390a80beabd6e29c538bfe78de164c5e06807b0412d55f0",
+      "scripts/export_failure_timeline.py": "c04d842ce4b8c17a2038255e3f6423ae9f95805ffde0d1e4f7f00bd82d29260c",
+      "scripts/export_inference_tail_inputs.py": "631014c859314fb08988669aa295c43b58d6314857a41f7b1bdc473bb1f269b7",
+      "scripts/freeze_full_plan_workspace.sh": "c2b4e4e74621685b6219f561d1929cdbeece86aceb78e4b9a9e463e9b3e09bbe",
+      "scripts/humble22_env.sh": "f4e5d0db8f4a4d46debafdfe52ffdb69aa6970ad3d79e77bd23b81afa795cf1a",
+      "scripts/measure_camera_rate.py": "8aa6fbda30b6c890dd9ec6ff787fe3a59fd96edf5299c3d65effd963bb4e5e23",
+      "scripts/monitor_project_progress.py": "759136d0eda40bb3a61c9e30e0272e1f6b8810b351dbe4c75dc17db5951bfd98",
+      "scripts/observe_ros_link.py": "60838838b15c07233e9bed9bce078b02ea700f74b8350106c60f2d26e20d14b5",
+      "scripts/observe_runtime_health.py": "f174ec21ebf962f156d76f8d35f802eebf318163555815527a3e2227b914f180",
+      "scripts/plot_research_results.py": "6fa7e0ef30fa6b4f323f34d6d0708dacf84f90d4ccc485bf59a0526542027346",
+      "scripts/plot_stage1_acceptance.py": "c4eb276d47f2ceaee87a584f6ee87f53fcdab447e66adf0191561912a7db614f",
+      "scripts/plot_stage23_acceptance.py": "bdb0e45ed7e25789eb41543973e0bc58f2a92e6ae276856f0ce034a4f241d905",
+      "scripts/prepare_humble22_rosdep_cache.py": "a8d0f6b493dd64abb259a461359f1aba21c82ba86b2c2f92ce89281ea1f560d4",
+      "scripts/prepare_px4_magnetic_compatibility.py": "f4342d88caae38f70a291ce6c55c422cee763eac6120a4c213ea647e89f4f774",
+      "scripts/prepare_px4_microcdr_cache.py": "795f3517debc5f5aacf1d9c6d8fbf086de60a090f1439488ed9e705bff944b38",
+      "scripts/probe_gazebo_shutdown.py": "cb9e6d946cb31a6aa8b0af09ef283d07060bf3d2650f5b8915936491e805f61c",
+      "scripts/probe_scenario_motion.py": "7e5b629fe6cfcdb01ed57b4c97cc1b59cb9767a77898337e31e902036a57c666",
+      "scripts/px4_stage1_startup.sh": "303958da1be769942679b1f2cb1ba6d45f52e94e15e1d9c3250526767f202094",
+      "scripts/research_env.sh": "dd319ac8e369de4215d2b8f29d6de7f67741f6ceec1ebe833540bb331c39fb18",
+      "scripts/ros_gz_runtime.py": "da103796a3da2466ddf2b3b40566d558544e09f8b64a52af026684bd20b7ebdc",
+      "scripts/ros_python.sh": "17a7029b6622946a6eaac25534732be4ff521b8cdf099f1e9214ae4906670f41",
+      "scripts/run_asset_viewpoints.sh": "2031c7060407c70b90aae962af74db9d14adfde8d1c865ad9f2791d9b534ffe8",
+      "scripts/run_assetcheck.sh": "faa822d7483a02453f4c193149fd435f1573579c5130c71710a7846f5c85a927",
+      "scripts/run_bag_reader_audit.sh": "aa317eb8bc3cb158598b9267d8072d92abb02192cdeec6f37dc2bda592b07ab8",
+      "scripts/run_car_detector_comparison.sh": "7cbe1b90d39b49401a254e9e2e543686ee00c24c82de2fff462ba6f7b65d8650",
+      "scripts/run_cleanup_probe.py": "6dfd4d6627295c365b1713b1b70cece4dd6997d1a6ff2948153d2d6feec6ab74",
+      "scripts/run_extended_engineering.py": "5f33e6514f89f7acf4d4b14a01e8780e314918b3521725dd068b8800d2b70d45",
+      "scripts/run_full_plan_research.py": "7949eb7b75a552a3cfb421cb8f09254d585fe0014f8d130834e3073e046135d8",
+      "scripts/run_full_plan_supplement.py": "09f476d10a4def1c5505182ef08f5079d2b4dd5a033421a45435f29c386a51ed",
+      "scripts/run_guarded_engineering.py": "3e7beddf87d023a05f374a52d8f82f8100bc19e1d9f60672d322f39c8f05ded5",
+      "scripts/run_guarded_full_plan.py": "0fa188462276f68786c435abcbd52caa2d0e1149e787bfb5d9218438bc1a699d",
+      "scripts/run_link_stability_probe.py": "77cec50c83331fa52d7882c60ae0a127c607a398cdbf6ba08ad3b0c152d843c5",
+      "scripts/run_recorded_research.py": "1dec71568bb844f11bd36cc3bc28dd3dd2f31a406d8a63381fb431635bbc96d9",
+      "scripts/run_reliability_v4_batch.py": "8d0701596a846f4b8cf6ea008ecf5fac04f885c22d951a3f501f67be99b852c4",
+      "scripts/run_render_benchmark.sh": "0132a2e85557e2e11765a6941a28663778a979413516cfd60cc234109c58d4b2",
+      "scripts/run_research_recordings.py": "85f1a98bedd4ae340a638764f597f42a0372e9e87ce87bb3adf0613f57a03328",
+      "scripts/run_research_session.sh": "31cab510fc713a7e9e5dd3b349e92acce97d8fe958480abec924ad3a88a39610",
+      "scripts/run_stage1_acceptance_matrix.sh": "cb09efa3a31f3605edc85a51e0e11d659e815315cd4d8c571c840aec1b2ff8a8",
+      "scripts/run_stage1_flight.sh": "d82bb2b411f16ac7a8a287f9f1aeaff38163300545cca045bced19cb91e460e5",
+      "scripts/run_stage1_repetitions.py": "e386eead058050836edda816ede0556744ea6ac9169809979850810cd676b353",
+      "scripts/run_stage1_trial.py": "28efa96a8e24f26b170953d8f8441a36b11080e88581e18a0d279ff0b34ea012",
+      "scripts/run_stage1_trial.sh": "54e86c7a3c9ef2b8570ea9650d3d9b140fc5c48d2186159a74054332000cba25",
+      "scripts/run_stage23_matrix.py": "10fee2080d4c1f5511b0f1231160ccf4f071c7e3a8bd4e109b68b0ad862455fb",
+      "scripts/run_synthetic_experiments.py": "84cea8e37c1961286f099664cec48ece795b57f1ef4da8bb847f3d8e1d1bf10e",
+      "scripts/sensor_fault_bridge.py": "c07b1b5e7a7addbe2b7b4ad63cb798503646a8f92cf14aa66a1fd35582a486f0",
+      "scripts/setup_humble22.sh": "18fc66dd7ec3dd9b0f835439cc3b47905777151598e9bb207a60e81a63340f27",
+      "scripts/source_ros_environment.sh": "17ccc095fbd90a9d38526782554ade1db8181f112e455e7ab8f539c348a55b0c",
+      "scripts/stage1_flight_monitor.py": "a0f8d28492c2275f045226f6b1fea1fb95cd6afcf7b8f4d64aa4543813eca6f2",
+      "scripts/stage2_identity_contact_sheet.py": "5d41cbbea6d7725e85e139fd1c5df3ad2383a2751bf19f4c20f9c860f47db59c",
+      "scripts/summarize_full_plan_failure_taxonomy.py": "a94b67983e84b9bfd7cfb8a3f3b9abb6f6048cd47c46a5eafc506748b127e653",
+      "scripts/summarize_stage1_acceptance.py": "b18174f41e2d44f4347c6c9b09be8710928bd2821402bcd7b06b51c6c0b50626",
+      "scripts/summarize_stage1_failure_taxonomy.py": "241d5fa22d2ee68113aa8e3aa35da769f2d74e1eceba930b615d07da08276e09",
+      "scripts/summarize_stage23_matrix.py": "9b6ba03c7c64ef4f50a173a1095c22041fac72e5bc799dc69c30dce7a5804d70",
+      "scripts/validate_visual_assets.py": "538f672837b54dcd5e2c236498c1331227f00f20e032edbd9add4e2326baca36",
+      "scripts/verify_humble22_bridge.sh": "76b6a2e026f6de8847676376cdee970f6d74c3b239efa603d92792d73c00d4ef",
+      "scripts/verify_stage1.sh": "ec7ac2894b75ea0bfd97cb3ea6ff8070a911475400f366c2b2a582b74ca1bca8",
+      "scripts/verify_tracking_metrics_reference.py": "9fca73fa3fd241442a81f4872e5b7d4bcfea411ee4776ff842c9c8416aed663a",
+      "scripts/wait_stage1_graph.py": "a16d5494ef1e3ed18f50d15eba8a616453ca86a044f4a4bf792fa31630327d8a",
+      "scripts/watch_sim_resources.py": "3632535f09fd161a5d85bb6f8e7481c8451c25d85e06fa7d1c53bd8888383d16",
+      "scripts/wsl_sync_build.sh": "6478f6df219694762dceeb6b7b32410be0f1bdace4c74ea71851a31739b83b01",
+      "uav_tracking/__init__.py": "9662d07f49e633c6fa87127566a06ec928b227efe706ac6f5183e7c1e77fe5dd",
+      "uav_tracking/bridge_process_contract.py": "df7e12ee1ca5cfc1db88e4d309748af60099b5cb992fe6e6624f1c47a80d01e6",
+      "uav_tracking/control/__init__.py": "3dd25f981ecbd1d24a5bebd47b878fe81c9e81215c0a2ca2c8b9437ed1e93b2b",
+      "uav_tracking/control/follow_controller.py": "ef7f6c634fc6c5cb0cf40149ed72b45d47d99aa1d8aeeebefb669ea51050f8aa",
+      "uav_tracking/control/gimbal_controller.py": "eb0e9219ed530ba0cca743680aeeb5a5b67e7277711902c759ef28db0862d492",
+      "uav_tracking/control/gimbal_geometry.py": "7d5cc18178c2e1db85ad5cb0e95a7114db1a6675be61d6705b3986a2f2353d08",
+      "uav_tracking/core/__init__.py": "b9a309fb1e06013a931fa6a54c95c073b383834254744b73d44f389ecb8bc4fd",
+      "uav_tracking/core/body_bounds.py": "898c99a0741d5c3d188d133fdeb39cd324cda8dce7df8fac3353c36f96f60b7c",
+      "uav_tracking/core/car_surface_measurement.py": "69121a73215efc908f40a6c2a1a7e7d9dc131048d4727deb8524700a30ad927d",
+      "uav_tracking/core/estimator_strategies.py": "565a30ba49313cf87bbd74605d924113e0af73d9054766646f086f927193fa21",
+      "uav_tracking/core/exclusive_navigation.py": "2cb9ea147281e5456f8ed453c13a01edc11484935bdeb3990f29a7568fff69c4",
+      "uav_tracking/core/geometry.py": "19f2c58901e4a13b8c4de46b14a99f4a3e5835d7fab1ad614d42efea5252c38c",
+      "uav_tracking/core/kalman.py": "815631741083071c8758db5079e83e9c0404724d21abbe8dc680d762a3e58d12",
+      "uav_tracking/core/models.py": "839056848001a7039656e21a4541fefb14c9d61237b2851f9a2f6f9c7ad303f2",
+      "uav_tracking/core/navigation.py": "35decccf1186c6db156084ddf66cf2615f05cd0e97f5dbe4bd54310bb4a3f396",
+      "uav_tracking/core/target_manager.py": "b5931d4d20dc025c60cda845aa4c8e151eb8d28e76a55e8c67ce227cd2edbf3b",
+      "uav_tracking/core/uncertainty.py": "0bd0642b40471c26fc6f1982303ba7550a3468065beef44ae17079f651f0cab0",
+      "uav_tracking/core/visibility.py": "dc40a86a7a161923c73c907b19f9d8d2789c0907c8dfe452df0f9e955d28702a",
+      "uav_tracking/dds_runtime.py": "f89c73293d6dad8405a0f3a61c3cbce000d8af94a715566e5f09f9f3072342c2",
+      "uav_tracking/experiments.py": "4382b64695124922115f57a455e7f48949891e4af3d705941fb1ce1d30cba588",
+      "uav_tracking/recording_archive.py": "a68686d09109fcb8599160b862f5ad563b7261c988c6557056b2e3e5be0287a4",
+      "uav_tracking/recording_closure.py": "7c6b4cbfe55eceb806890ac1a8ee344fbacf17447670e1868186be403023848f",
+      "uav_tracking/research_replay.py": "1eebc6302c8bb02eb2381f1516f382e8d525469a7c3d4fa825a12a355203a80f",
+      "uav_tracking/ros_gz_runtime.py": "8edc809b1db6da0929269facc9650468b8458f0d5fd6eaca5ba3db5b01185cc0",
+      "uav_tracking/ros_lifecycle.py": "f615983e974908348bdaacba70d7783a7ebbd4d34c02601b74828e9c6ccdb5a1",
+      "uav_tracking/simulation.py": "5e24586fc847aa557f076f7b3c5c4f529feb9175747b717e051f93276b068e07",
+      "uav_tracking/startup_readiness.py": "fe7ddecc95bcd8acc8134b61228f25f9fb94a4fb900fde22a99602b46b9ccc47",
+      "uav_tracking/stop_observer.py": "7109b924f3e58d63f3b0b8af700c27c870086379b8226d4fa07520a46b6ae1a8"
+    },
+    "evaluation_source_hashes": {
+      "scripts/analyze_task_phases_v4.py": "9c1e1f647c663f9772820b56d406ee5910c489bc9ad1727d1cfb3871e98c0e91",
+      "scripts/audit_car_model_regressions.py": "705089c05eea40a26f149beb33563b91f625a88a911e3a6b53a69349052c4087",
+      "scripts/build_reliability_v4_figures.py": "44f45e4c52a4647e81ea9a2d5b055e4f6fe26251abb45c0f5339a0f047e667e8",
+      "scripts/build_reliability_v4_probe_gate.py": "cf28d5455ceaa1eb52c498ba1048782c2fea35b65a0c8b2af4bddffae633d36f",
+      "scripts/build_reliability_v4_report.py": "dd7a1e45c49695f0505facec6bcfe62b5d7cbf8c279ef0c1cd7f1e5059b165d0",
+      "scripts/calibrate_estimator_replay_v4.py": "0a6f3982e395024d7abf3da43e2e685dc0d88157686496dd2cd3e0296f462fe9",
+      "scripts/evaluate_detection_recordings.py": "c3fba39c436adb70ad0c0086dddb7cd4458601cfffc920962fbd240360516167",
+      "scripts/evaluate_follow_dynamics.py": "c9b0c54242c4860b463d2df09ab7b1fcde9079ca1aa120d75b711856cb47c72b",
+      "scripts/evaluate_native_startup.py": "0a1d9b4de56b0bd5f3bc100275f4b3216717624db9bfb8607cecb5e03fb65d51",
+      "scripts/evaluate_navigation_reference.py": "bbff6c746ed76d0139c194cdfc1409f38dc422d64ddbc73da2995a0838df4422",
+      "scripts/evaluate_online_state_accuracy.py": "96f8dbd0a587bb4012203e474a765ab5c74d37503f55fd6ca7f0983ba56ddf9b",
+      "scripts/evaluate_physical_identity.py": "3a0b640a309ad811cc13687482bf6b0992fcc56c9a939bdccccaf5b9c1af57d8",
+      "scripts/evaluate_px4_source_clock.py": "92b13e0a112546f10ff6e77d84aace0fc40126d1f5021a92464d47fc82c4ac4a",
+      "scripts/evaluate_stage1_flight.py": "655cf6fc7c0cc2a954db7d06d2fbb00a000f2fca80ba0930d153025e28efb7c1",
+      "scripts/evaluate_stage1_flight.sh": "0cde3ee11724a5f092f0a32c23c377cc2ad198a36672a33f414dcf03da93c057",
+      "scripts/evaluate_stage2_flight.py": "2ba8a607103dff6be39571f6c35119eca7c2b56be709dc46d43ea355590edab9",
+      "scripts/evaluate_stage3_gimbal.py": "2152d67025846a6fd760c3556f9b6eb986658453a985b8e1a61cbc5398d38228",
+      "scripts/export_estimator_replay_v4.py": "08edc1f57a5f1d8de4e93d3a00f8aefdc6b7fb72aab52f815c756d017d1a72ac",
+      "scripts/extract_research_recording.py": "0a7b91f4c59d925544fed4e514e59fec3d26eadd754e131633ba56cae7941fa7",
+      "scripts/prepare_document_node24.py": "dbcfaef966af72cc156b7bf8ff46251683e02e2ae0bad5db6261b3a65957dc9c",
+      "scripts/run_estimator_replay_v4.py": "f96f2d3f2453b72d044ed756f4162b9357ecb982dd80da1f55d93008f22e90f1",
+      "scripts/summarize_reliability_v4.py": "a5bc78ce2cf54508c21e3173fbef26956df73ef317c3d91305d913767ba7b106",
+      "uav_tracking/navigation_reproduction.py": "cb0a485ea0360c4253b732f85dc81936fcce7994d0e0efffc34b169d25ce7cd8",
+      "uav_tracking/replay_comparison.py": "17bc689055f37984add6ae46314b3a9670281925a87997b38976ccf673b2bf5f",
+      "uav_tracking/replay_export.py": "a6fa0967430141cab883a6917233cee0241313382d1cea0850e2e25b6a7d1911",
+      "uav_tracking/research_dynamics.py": "03c81478632f38ba2ca49b91b14cf5b43e0c6f8c545c6cbf037f2f62fb118cb9",
+      "uav_tracking/research_failures.py": "6fe1a4015ea8b42fb5c430bfa46f9dc8ced4277c0cd43d327e0138bfcba65e85",
+      "uav_tracking/research_labels.py": "e1a12d5cf440857733e9f07e532853fbeb47006945094141ac7ee847f284adf8",
+      "uav_tracking/research_metrics.py": "0e0fb51e7a3213ea244accf04755c04cdeb0eb4e5bd61b02a6a41b57cf6d884d",
+      "uav_tracking/stage2_identity.py": "4ea4e6660ac9aad6dd2d414142d8625796a7f736bc42a912b4a1c3c9f91e6d02"
+    },
+    "model_hashes": {
+      "models/yolo11m.pt": "d5ffc1a674953a08e11a8d21e022781b1b23a19b730afc309290bd9fb5305b95",
+      "models/yolo11m_car_sim_train20_04.pt": "bf7a56de4ae1658f8101fc6089247e8b984c2965b58d6b4963b4b5977e9ca00c",
+      "models/yolo11n.pt": "0ebbc80d4a7680d14987a577cd21342b65ecfd94632bd9a8da63ae6417644ee1",
+      "models/yolo11s-seg.pt": "1caa81c0195412efa411b632bcfb8c184939dddb6ae41f6a80c41b211ff257c3",
+      "models/yolo11s.pt": "85a76fe86dd8afe384648546b56a7a78580c7cb7b404fc595f97969322d502d5",
+      "ros2_ws/src/uav_tracking_bringup/models/yolo11n.pt": "0ebbc80d4a7680d14987a577cd21342b65ecfd94632bd9a8da63ae6417644ee1"
+    },
+    "magnetic_runtime_manifest_sha256": "3c4f9693cfab51c6b2049af619bfb6e3edbd22a8328468b7e84f75053485c66b",
+    "magnetic_library_registration_sha256": "0e80e51994948b5186c3a76c7e5c9651d27cf3d9acf63109f3f66544de801e6a",
+    "navigation_acceptance_sha256": "9cb12c3da06706c6f68bce0f6f5ae5f659035a8e542741556cc61d7870960dc7",
+    "car_surface_recovery_sha256": "7d9878704a155a0c5322a0bd76eca9db286f9c2251894bf83a115882fab97aed",
+    "exclusive_navigation_sha256": "07957e3f2e953c64de81ebe4375e307bb93fc14fc3d8ae54f686146d8530dc14",
+    "simulation_pacing_sha256": "00de1c8720af2d04eec32cebb68c5a77428b46d8a24373cc4ef029fb74ac82cf",
+    "supervisor_stream_timing_sha256": "9dfa4791fc4f115cee60c660ecd528e2187cc3e82f7e7aee433b7efe0177a2f9",
+    "split_clock_bridge": true
+  },
+  "source_facts": {
+    "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/slots_facts.json",
+    "sha256": "0b440f26f8902773d30b222b9189283b8cc8b3e2e7cc8c6074b6cfdd6310d29a"
+  },
+  "slots": [
+    {
+      "id": "person_auto_unique_multi_seed004",
+      "target_class": "person",
+      "case": "auto_unique_multi",
+      "seed": 4,
+      "trial_directory": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_person_auto_unique_multi_seed004",
+      "result": "PASS",
+      "original_status": "PASS",
+      "evidence": {
+        "run_config": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_auto_unique_multi_seed004/run_config.json",
+          "sha256": "c0630d3e16854ee5011289cdbc70fed35c674f802a9cfbf0566f902497cc6aac"
+        },
+        "source_snapshot": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_auto_unique_multi_seed004/configuration/source_sha256.json",
+          "sha256": "0094a5013801e67fb6ae692cef785b190272708d71bfb0cd4a3349a0eb09ee46"
+        },
+        "runtime_parameters": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_auto_unique_multi_seed004/configuration/runtime_parameters.yaml",
+          "sha256": "9ca672625240606a24703f6280661d6d6fa8d51203221a33cc5010ca28fcd696"
+        },
+        "bag_integrity": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_auto_unique_multi_seed004/bag_integrity.json",
+          "sha256": "6b2225f241ee6d89d6b8a7aeb6d7f9fd8cbd48713eafacf594827eed02ba3a63"
+        },
+        "recording_closure": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_auto_unique_multi_seed004/recording_closure.json",
+          "sha256": "41d5c7ad1655a8cc6459431d7174cfa5fd82552ab4bc59986a6b163bab100c44"
+        },
+        "process_exit_codes": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_auto_unique_multi_seed004/process_exit_codes.json",
+          "sha256": "71bb8487608afe6c28385f5b082d043d0d055cdff8adfb6a6746ada18049954f"
+        },
+        "source_clock": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_auto_unique_multi_seed004/px4_source_clock_report.json",
+          "sha256": "a1a7a99265cf7c807df63673f76a6f0ec9200990fcd85ac2c812aaab4ee3008f"
+        },
+        "native_startup": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_auto_unique_multi_seed004/native_startup_report.json",
+          "sha256": "d24ee23a8dec4822679b307c7893ca6037dff71a4a2c7226374e251b38fb0146"
+        },
+        "terminal_speed": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_auto_unique_multi_seed004/terminal_hover_speed_evaluation.json",
+          "sha256": "40d01b0fccbe34bd223f5c7fc2fd45ca5b831e238bcef1a693e7b50f16164ac5"
+        },
+        "rendering": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_auto_unique_multi_seed004/configuration/gazebo_rendering_libraries.json",
+          "sha256": "f4e6040b1d55a849b20e016979b0eca73249a7863c84affd07e4ed0e75491cd0"
+        },
+        "magnetic": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_auto_unique_multi_seed004/configuration/magnetic_environment.json",
+          "sha256": "6f6156c9e51da84142384a919aebd999d4fabd90d98af9ec45fadb897a5c635e"
+        },
+        "specialized": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_auto_unique_multi_seed004/auto_unique_evaluation_v2.json",
+          "sha256": "9027138747577e1de049b80dae754aa25ab28b85e4aa722540e2047a7d403ef4"
+        },
+        "ros_gz_runtime_registration": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_auto_unique_multi_seed004/configuration/ros_gz_runtime_registration.json",
+          "sha256": "08cbc9ea8a2b6e50b71efc4910e5adef7c309b742fb0e9177cd803e934a028af"
+        },
+        "ros_gz_runtime_preflight": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_auto_unique_multi_seed004/configuration/ros_gz_runtime_preflight.json",
+          "sha256": "4e61cb57921277d8bca992c53b3a57c61a886c13767886a1b05f95d7b8c5cf44"
+        },
+        "ros_gz_runtime_actual": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_auto_unique_multi_seed004/configuration/ros_gz_runtime_actual.json",
+          "sha256": "b71f7c720eced53bb9811b9408c5b7d1fae5cc57c963a142e1693f9bb8ec5de5"
+        },
+        "ros_gz_runtime_after": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_auto_unique_multi_seed004/configuration/ros_gz_runtime_after.json",
+          "sha256": "1b6f6cbbe1f0b1b3e297c0429b57cdba63dfbf3293f6acc32653ccc297965778"
+        },
+        "ros_gz_clock_runtime_registration": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_auto_unique_multi_seed004/configuration/ros_gz_clock_runtime_registration.json",
+          "sha256": "908f8b7e18154377e57ce6f92922b63b36f7d4fb90ac79e61cc1b8dd95d3e4e4"
+        },
+        "ros_gz_clock_runtime_preflight": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_auto_unique_multi_seed004/configuration/ros_gz_clock_runtime_preflight.json",
+          "sha256": "8843672c9217024f788267db1826299f94d32492d316ed1664f56fbb3008c4c8"
+        },
+        "ros_gz_clock_runtime_actual": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_auto_unique_multi_seed004/configuration/ros_gz_clock_runtime_actual.json",
+          "sha256": "31d5a81e2dfd48694e0b88e857f8b70eb26013d4e41df14dd787f8520a6f1122"
+        },
+        "ros_gz_clock_runtime_after": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_auto_unique_multi_seed004/configuration/ros_gz_clock_runtime_after.json",
+          "sha256": "045e75a07a6fd0e21a70026727f2298b686b1d4005ec6d3d1c5b86e617aa389d"
+        },
+        "dds_runtime_registration": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_auto_unique_multi_seed004/configuration/dds_runtime_registration.json",
+          "sha256": "4e517b62e823585b53dd2ac503f65eaf9bc3fd4c59d9d8fdb900d985f99d030d"
+        },
+        "dds_runtime_preflight": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_auto_unique_multi_seed004/configuration/dds_runtime_preflight.json",
+          "sha256": "938fb3407b972ba90bfc9a5d0f679af9eb42629af04ab37a46862a5fcc72e66a"
+        },
+        "dds_runtime_actual": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_auto_unique_multi_seed004/configuration/dds_runtime_actual.json",
+          "sha256": "ed7754ba7cd8e36b6414f1ff8c6b02b0b23185583e4337a0e506c5eddcbb4081"
+        },
+        "dds_runtime_after": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_auto_unique_multi_seed004/configuration/dds_runtime_after.json",
+          "sha256": "1c2f57b7279dfaa8eeea4aad12d09b345b4a70df00bb40291af8eb89075fbbd3"
+        },
+        "dds_runtime_summary": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_auto_unique_multi_seed004/configuration/dds_runtime_summary.json",
+          "sha256": "135800915788fcbe8d5f3df07bc9aa8147853c9d9dc90c312e052684d995cdb0"
+        }
+      },
+      "executions": {
+        "flight": {
+          "argv": [
+            "bash",
+            "/root/uav_tracking_fullplan_v4_humble54/scripts/run_research_session.sh",
+            "/root/uav_tracking_fullplan_v4_humble54/scripts/run_stage1_trial.py",
+            "--name",
+            "reliability_v4_humble54_safety03_person_auto_unique_multi_seed004",
+            "--class",
+            "person",
+            "--stage",
+            "2",
+            "--seed",
+            "4",
+            "--condition",
+            "clean",
+            "--estimator-method",
+            "adaptive_kf",
+            "--command-mode",
+            "velocity",
+            "--gimbal-mode",
+            "midpoint",
+            "--real-time-factor",
+            "0.125",
+            "--max-inference-rate-hz",
+            "10.0",
+            "--monitor-tick-s",
+            "0.02",
+            "--control-reference",
+            "ground_footprint",
+            "--motion-profile-kind",
+            "standard",
+            "--model-path",
+            "/root/uav_tracking_fullplan_v4_humble54/models/yolo11n.pt",
+            "--inference-image-size",
+            "320",
+            "--inference-threads",
+            "2",
+            "--desired-distance-m",
+            "5.0",
+            "--takeoff-height-m",
+            "3.0",
+            "--takeoff-mode",
+            "px4_native",
+            "--wall-timeout",
+            "1000.0",
+            "--render-backend",
+            "egl",
+            "--gazebo-render-driver",
+            "llvmpipe",
+            "--magnetic-environment",
+            "gazebo_enu",
+            "--magnetic-runtime-manifest",
+            "/root/uav_tracking_fullplan_v4_humble54/config/px4_magnetic_runtime.json",
+            "--magnetic-library-registration",
+            "/root/uav_tracking_fullplan_v4_humble54/config/gazebo_magnetic_runtime_humble22.json",
+            "--propagate-vehicle-uncertainty",
+            "--px4-time-mode",
+            "source_sim",
+            "--target-mode",
+            "auto_unique",
+            "--association-mode",
+            "legacy",
+            "--scenario-kind",
+            "parallel",
+            "--initial-select",
+            "none",
+            "--initial-min-candidates",
+            "2",
+            "--duration",
+            "35.0",
+            "--no-follow-duration-s",
+            "35.0",
+            "--px4-adapter-publish-rate-hz",
+            "50.0",
+            "--split-clock-bridge",
+            "--ros-gz-runtime-registration",
+            "/root/uav_tracking_fullplan_v4_humble54/config/ros_gz_runtime_humble22.json",
+            "--dds-runtime-registration",
+            "/root/uav_tracking_fullplan_v4_humble54/config/dds_runtime_humble22.json",
+            "--ros-gz-clock-runtime-registration",
+            "/root/uav_tracking_fullplan_v4_humble54/config/ros_gz_clock_runtime_humble22.json",
+            "--supervisor-stream-timestamp-mode",
+            "source_sim"
+          ],
+          "started_utc": "2026-11-03T00:21:54.328038+00:00",
+          "finished_utc": "2026-11-03T00:28:16.318271+00:00",
+          "returncode": 0,
+          "error": null,
+          "outer_cleanup_actions": [],
+          "log": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/person_auto_unique_multi_seed004_flight.log",
+            "sha256": "eb2478287c3c371052b9e07b8af487004334258acaeef58a67a8e5e9f9e5f6b3"
+          },
+          "outer_receipt": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/person_auto_unique_multi_seed004_flight.execution.json",
+            "sha256": "ef6f2ba0b23b01b1b34a3752620fb86454a082c0977c53bb0e2b98fcba59c888"
+          }
+        },
+        "source_clock": {
+          "argv": [
+            "bash",
+            "/root/uav_tracking_fullplan_v4_humble54/scripts/run_research_session.sh",
+            "/root/uav_tracking_fullplan_v4_humble54/scripts/evaluate_px4_source_clock.py",
+            "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_person_auto_unique_multi_seed004",
+            "--output",
+            "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_person_auto_unique_multi_seed004/px4_source_clock_report.json"
+          ],
+          "started_utc": "2026-11-03T00:28:16.333571+00:00",
+          "finished_utc": "2026-11-03T00:28:23.377629+00:00",
+          "returncode": 0,
+          "error": null,
+          "outer_cleanup_actions": [],
+          "log": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/person_auto_unique_multi_seed004_source_clock.log",
+            "sha256": "621c6561b674c2ebd55e168711e0887504596cb06eeb7936c6770575dd79bc6f"
+          },
+          "outer_receipt": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/person_auto_unique_multi_seed004_source_clock.execution.json",
+            "sha256": "864181dcef86d1d0288fe7ade89c2b65b2e7ca5c1c203cfd0be1bb9b35441023"
+          }
+        },
+        "native_startup": {
+          "argv": [
+            "bash",
+            "/root/uav_tracking_fullplan_v4_humble54/scripts/run_research_session.sh",
+            "/root/uav_tracking_fullplan_v4_humble54/scripts/evaluate_native_startup.py",
+            "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_person_auto_unique_multi_seed004",
+            "--output",
+            "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_person_auto_unique_multi_seed004/native_startup_report.json"
+          ],
+          "started_utc": "2026-11-03T00:28:23.392136+00:00",
+          "finished_utc": "2026-11-03T00:28:29.431560+00:00",
+          "returncode": 0,
+          "error": null,
+          "outer_cleanup_actions": [],
+          "log": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/person_auto_unique_multi_seed004_native_startup.log",
+            "sha256": "52ec1f471f6eda6238aab798b43d3dac243dc2415c156929bc2cb841fe2cb2d3"
+          },
+          "outer_receipt": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/person_auto_unique_multi_seed004_native_startup.execution.json",
+            "sha256": "ba424719f4f0d81e86417eeacdc14d4bed796f27ca9ce57b9cc0f6d8dbd397c4"
+          }
+        },
+        "specialized": {
+          "argv": [
+            "bash",
+            "/root/uav_tracking_fullplan_v4_humble54/scripts/run_research_session.sh",
+            "/root/uav_tracking_fullplan_v4_humble54/scripts/run_stage23_matrix.py",
+            "--evaluate-auto-unique",
+            "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_person_auto_unique_multi_seed004/rosbag",
+            "--target-class",
+            "person",
+            "--output",
+            "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_person_auto_unique_multi_seed004/auto_unique_evaluation_v2.json"
+          ],
+          "started_utc": "2026-11-03T00:28:29.451729+00:00",
+          "finished_utc": "2026-11-03T00:28:38.303226+00:00",
+          "returncode": 0,
+          "error": null,
+          "outer_cleanup_actions": [],
+          "log": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/person_auto_unique_multi_seed004_specialized.log",
+            "sha256": "82821341318ec6432329501d6b6791e3a31601a837793cf017d7b72f659d954f"
+          },
+          "outer_receipt": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/person_auto_unique_multi_seed004_specialized.execution.json",
+            "sha256": "9a09c3754b797c051c4332e5beacfb3e03a8386997bfca30f49bc7d8acb5c6c0"
+          }
+        },
+        "terminal_speed": {
+          "argv": [
+            "bash",
+            "/root/uav_tracking_fullplan_v4_humble54/scripts/run_research_session.sh",
+            "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/terminal_hover_speed.py",
+            "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_person_auto_unique_multi_seed004",
+            "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/execution_card.md"
+          ],
+          "started_utc": "2026-11-03T00:28:38.324736+00:00",
+          "finished_utc": "2026-11-03T00:28:54.615586+00:00",
+          "returncode": 0,
+          "error": null,
+          "outer_cleanup_actions": [],
+          "log": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/person_auto_unique_multi_seed004_terminal_speed.log",
+            "sha256": "3e97b44a963a0ececd1f4c4871e57756c9bc55d0844c68b64ea630404715575d"
+          },
+          "outer_receipt": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/person_auto_unique_multi_seed004_terminal_speed.execution.json",
+            "sha256": "42e6dcd2f3aab834e9abdb21bb512aaaae6b4087d7b8663fbe70c3edfdbc4b3f"
+          },
+          "code_script": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/terminal_hover_speed.py",
+            "sha256": "05d1d11b6357db83a9805fc96f013e01c1c7741d109d6c10501e497215c2b612"
+          }
+        }
+      },
+      "missing_evidence": [],
+      "infrastructure_stop": false,
+      "original_error": null,
+      "original_terminal": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/person_auto_unique_multi_seed004.json",
+        "sha256": "94a608e778643ccbac31709d18f14fc9d450b86a7965f8f446cae809aff655a8"
+      }
+    },
+    {
+      "id": "person_locked_ambiguity_seed004",
+      "target_class": "person",
+      "case": "locked_ambiguity",
+      "seed": 4,
+      "trial_directory": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004",
+      "result": "PASS",
+      "original_status": "PASS",
+      "evidence": {
+        "run_config": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004/run_config.json",
+          "sha256": "8233d44fd954cbb4f2b8fd3ac02b6903ac26f08b518838f93e61094dccceac53"
+        },
+        "source_snapshot": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004/configuration/source_sha256.json",
+          "sha256": "0094a5013801e67fb6ae692cef785b190272708d71bfb0cd4a3349a0eb09ee46"
+        },
+        "runtime_parameters": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004/configuration/runtime_parameters.yaml",
+          "sha256": "238f651e2ae343de7cb83f12bb5b20dcd8196a039e9c1ac988e51df59bf7b98a"
+        },
+        "bag_integrity": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004/bag_integrity.json",
+          "sha256": "0c8d60cea523af1c3b1013011a8508540e7271bb52a1816e4b79ea6d5432e90b"
+        },
+        "recording_closure": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004/recording_closure.json",
+          "sha256": "7073ecdbfa6df43dce8ccda7545398ddfc05c71d0cf20165da967fbdbaaacdca"
+        },
+        "process_exit_codes": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004/process_exit_codes.json",
+          "sha256": "71bb8487608afe6c28385f5b082d043d0d055cdff8adfb6a6746ada18049954f"
+        },
+        "source_clock": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004/px4_source_clock_report.json",
+          "sha256": "e8848be660261bd6b51c5b69de8bc62417e276c3d67943af8c68325926fa1506"
+        },
+        "native_startup": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004/native_startup_report.json",
+          "sha256": "e4f14b786503cce1d94726cfea456d600f5b7588ea238c2f548381f4f9982417"
+        },
+        "terminal_speed": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004/terminal_hover_speed_evaluation.json",
+          "sha256": "abe3cc4866552069d527822b0840eeed891ddc879c3882452320b9f7fa354112"
+        },
+        "rendering": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004/configuration/gazebo_rendering_libraries.json",
+          "sha256": "44237d5217cc06eec407948d643b766835d540c4e9e8612e570d7b023be5e907"
+        },
+        "magnetic": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004/configuration/magnetic_environment.json",
+          "sha256": "60bad25c6b545198024cb22c73f4721d8de4f09f0c38eff2e735f9992ae7cda0"
+        },
+        "specialized": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004/stage2_evaluation.json",
+          "sha256": "b73a7a2c8fb7fcd1b3431ce9c0a1bf4fbd908778449f74b29897970425dfbed9"
+        },
+        "ros_gz_runtime_registration": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004/configuration/ros_gz_runtime_registration.json",
+          "sha256": "08cbc9ea8a2b6e50b71efc4910e5adef7c309b742fb0e9177cd803e934a028af"
+        },
+        "ros_gz_runtime_preflight": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004/configuration/ros_gz_runtime_preflight.json",
+          "sha256": "4e61cb57921277d8bca992c53b3a57c61a886c13767886a1b05f95d7b8c5cf44"
+        },
+        "ros_gz_runtime_actual": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004/configuration/ros_gz_runtime_actual.json",
+          "sha256": "3f32480eab26432d2fc7a0444ee17c5f9a6f72336efe668add0ae3c6359ba75a"
+        },
+        "ros_gz_runtime_after": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004/configuration/ros_gz_runtime_after.json",
+          "sha256": "1b6f6cbbe1f0b1b3e297c0429b57cdba63dfbf3293f6acc32653ccc297965778"
+        },
+        "ros_gz_clock_runtime_registration": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004/configuration/ros_gz_clock_runtime_registration.json",
+          "sha256": "908f8b7e18154377e57ce6f92922b63b36f7d4fb90ac79e61cc1b8dd95d3e4e4"
+        },
+        "ros_gz_clock_runtime_preflight": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004/configuration/ros_gz_clock_runtime_preflight.json",
+          "sha256": "8843672c9217024f788267db1826299f94d32492d316ed1664f56fbb3008c4c8"
+        },
+        "ros_gz_clock_runtime_actual": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004/configuration/ros_gz_clock_runtime_actual.json",
+          "sha256": "e02aa757e60f793973fd628040db06ed5c8ab087154ee001286d0cff9af1b17b"
+        },
+        "ros_gz_clock_runtime_after": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004/configuration/ros_gz_clock_runtime_after.json",
+          "sha256": "045e75a07a6fd0e21a70026727f2298b686b1d4005ec6d3d1c5b86e617aa389d"
+        },
+        "dds_runtime_registration": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004/configuration/dds_runtime_registration.json",
+          "sha256": "4e517b62e823585b53dd2ac503f65eaf9bc3fd4c59d9d8fdb900d985f99d030d"
+        },
+        "dds_runtime_preflight": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004/configuration/dds_runtime_preflight.json",
+          "sha256": "e64dcb6530edeaf50a46d321cbf61dced420b796b4b80c8d37593c76c0ea4e12"
+        },
+        "dds_runtime_actual": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004/configuration/dds_runtime_actual.json",
+          "sha256": "911106cecea03cd663bf7a76d4d3ec7854f79a288d746a9c3286b8fdae6f92aa"
+        },
+        "dds_runtime_after": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004/configuration/dds_runtime_after.json",
+          "sha256": "571521c249bc83de2f4f75a15fd132891da2e0ebabca58e8c574450c39217a59"
+        },
+        "dds_runtime_summary": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004/configuration/dds_runtime_summary.json",
+          "sha256": "135800915788fcbe8d5f3df07bc9aa8147853c9d9dc90c312e052684d995cdb0"
+        }
+      },
+      "executions": {
+        "flight": {
+          "argv": [
+            "bash",
+            "/root/uav_tracking_fullplan_v4_humble54/scripts/run_research_session.sh",
+            "/root/uav_tracking_fullplan_v4_humble54/scripts/run_stage1_trial.py",
+            "--name",
+            "reliability_v4_humble54_safety03_person_locked_ambiguity_seed004",
+            "--class",
+            "person",
+            "--stage",
+            "2",
+            "--seed",
+            "4",
+            "--condition",
+            "clean",
+            "--estimator-method",
+            "adaptive_kf",
+            "--command-mode",
+            "velocity",
+            "--gimbal-mode",
+            "midpoint",
+            "--real-time-factor",
+            "0.125",
+            "--max-inference-rate-hz",
+            "10.0",
+            "--monitor-tick-s",
+            "0.02",
+            "--control-reference",
+            "ground_footprint",
+            "--motion-profile-kind",
+            "standard",
+            "--model-path",
+            "/root/uav_tracking_fullplan_v4_humble54/models/yolo11n.pt",
+            "--inference-image-size",
+            "320",
+            "--inference-threads",
+            "2",
+            "--desired-distance-m",
+            "5.0",
+            "--takeoff-height-m",
+            "3.0",
+            "--takeoff-mode",
+            "px4_native",
+            "--wall-timeout",
+            "1000.0",
+            "--render-backend",
+            "egl",
+            "--gazebo-render-driver",
+            "llvmpipe",
+            "--magnetic-environment",
+            "gazebo_enu",
+            "--magnetic-runtime-manifest",
+            "/root/uav_tracking_fullplan_v4_humble54/config/px4_magnetic_runtime.json",
+            "--magnetic-library-registration",
+            "/root/uav_tracking_fullplan_v4_humble54/config/gazebo_magnetic_runtime_humble22.json",
+            "--propagate-vehicle-uncertainty",
+            "--px4-time-mode",
+            "source_sim",
+            "--target-mode",
+            "locked_target",
+            "--association-mode",
+            "hybrid_3d",
+            "--scenario-kind",
+            "ambiguity",
+            "--initial-select",
+            "middle",
+            "--initial-min-candidates",
+            "3",
+            "--duration",
+            "50.0",
+            "--px4-adapter-publish-rate-hz",
+            "50.0",
+            "--split-clock-bridge",
+            "--ros-gz-runtime-registration",
+            "/root/uav_tracking_fullplan_v4_humble54/config/ros_gz_runtime_humble22.json",
+            "--dds-runtime-registration",
+            "/root/uav_tracking_fullplan_v4_humble54/config/dds_runtime_humble22.json",
+            "--ros-gz-clock-runtime-registration",
+            "/root/uav_tracking_fullplan_v4_humble54/config/ros_gz_clock_runtime_humble22.json",
+            "--supervisor-stream-timestamp-mode",
+            "source_sim"
+          ],
+          "started_utc": "2026-11-03T00:29:02.815019+00:00",
+          "finished_utc": "2026-11-03T00:40:38.508605+00:00",
+          "returncode": 0,
+          "error": null,
+          "outer_cleanup_actions": [],
+          "log": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/person_locked_ambiguity_seed004_flight.log",
+            "sha256": "9fa65919003c822e800d8d61fb414e708940fc039135c1c8d4035dd2acb6ea25"
+          },
+          "outer_receipt": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/person_locked_ambiguity_seed004_flight.execution.json",
+            "sha256": "46aa23cb79c00403e97d5498178f4c68f6a8719b8794cd032db8c113d2f53840"
+          }
+        },
+        "source_clock": {
+          "argv": [
+            "bash",
+            "/root/uav_tracking_fullplan_v4_humble54/scripts/run_research_session.sh",
+            "/root/uav_tracking_fullplan_v4_humble54/scripts/evaluate_px4_source_clock.py",
+            "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004",
+            "--output",
+            "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004/px4_source_clock_report.json"
+          ],
+          "started_utc": "2026-11-03T00:40:38.529475+00:00",
+          "finished_utc": "2026-11-03T00:40:50.540033+00:00",
+          "returncode": 0,
+          "error": null,
+          "outer_cleanup_actions": [],
+          "log": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/person_locked_ambiguity_seed004_source_clock.log",
+            "sha256": "8bfbb166ad8ebb86bdf2711b51853edc14b61dad7c851d805e709bc67e6b02e9"
+          },
+          "outer_receipt": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/person_locked_ambiguity_seed004_source_clock.execution.json",
+            "sha256": "fd2f036e28990debb755ab13ab4ad1145658a3d4c862a1d02e7c3ffa761f821d"
+          }
+        },
+        "native_startup": {
+          "argv": [
+            "bash",
+            "/root/uav_tracking_fullplan_v4_humble54/scripts/run_research_session.sh",
+            "/root/uav_tracking_fullplan_v4_humble54/scripts/evaluate_native_startup.py",
+            "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004",
+            "--output",
+            "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004/native_startup_report.json"
+          ],
+          "started_utc": "2026-11-03T00:40:50.714676+00:00",
+          "finished_utc": "2026-11-03T00:41:00.565405+00:00",
+          "returncode": 0,
+          "error": null,
+          "outer_cleanup_actions": [],
+          "log": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/person_locked_ambiguity_seed004_native_startup.log",
+            "sha256": "627cd0a547b21b626539d3654e2798c031edec90a49198b6de4d9acd9b1e20cd"
+          },
+          "outer_receipt": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/person_locked_ambiguity_seed004_native_startup.execution.json",
+            "sha256": "bb92251da5def369fa15db7707fcfa87329f8c646f10fbe26e04eb9004b72c6c"
+          }
+        },
+        "specialized": {
+          "argv": [
+            "bash",
+            "/root/uav_tracking_fullplan_v4_humble54/scripts/run_research_session.sh",
+            "/root/uav_tracking_fullplan_v4_humble54/scripts/evaluate_stage2_flight.py",
+            "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004/rosbag",
+            "--telemetry-jsonl",
+            "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004/telemetry.jsonl",
+            "--monitor-summary",
+            "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004/summary.json",
+            "--no-require-occlusions",
+            "--require-ambiguity",
+            "--terminal-expectation",
+            "hover",
+            "--target-class",
+            "person",
+            "--output",
+            "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004/stage2_evaluation.json"
+          ],
+          "started_utc": "2026-11-03T00:41:00.584625+00:00",
+          "finished_utc": "2026-11-03T00:41:18.416573+00:00",
+          "returncode": 0,
+          "error": null,
+          "outer_cleanup_actions": [],
+          "log": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/person_locked_ambiguity_seed004_specialized.log",
+            "sha256": "f076a08ab9922d3b11bb6b0762533931f804b69a2fdbd32d6377d27cf04b7a59"
+          },
+          "outer_receipt": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/person_locked_ambiguity_seed004_specialized.execution.json",
+            "sha256": "846ea95aa06e135f7078648b3a06f76dd30501b2d0ab78ae1e56f1ca60ab3bba"
+          }
+        },
+        "terminal_speed": {
+          "argv": [
+            "bash",
+            "/root/uav_tracking_fullplan_v4_humble54/scripts/run_research_session.sh",
+            "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/terminal_hover_speed.py",
+            "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004",
+            "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/execution_card.md"
+          ],
+          "started_utc": "2026-11-03T00:41:18.430684+00:00",
+          "finished_utc": "2026-11-03T00:41:38.417881+00:00",
+          "returncode": 0,
+          "error": null,
+          "outer_cleanup_actions": [],
+          "log": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/person_locked_ambiguity_seed004_terminal_speed.log",
+            "sha256": "9c0d1889b425a449704490b35f3cf27394063e0cef961251cf1b6890c2f690e4"
+          },
+          "outer_receipt": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/person_locked_ambiguity_seed004_terminal_speed.execution.json",
+            "sha256": "8e41dd75b6e3ff3eecd2bffdd086a8779e1e5ae0dc37743337250eee4c582ac3"
+          },
+          "code_script": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/terminal_hover_speed.py",
+            "sha256": "05d1d11b6357db83a9805fc96f013e01c1c7741d109d6c10501e497215c2b612"
+          }
+        }
+      },
+      "missing_evidence": [],
+      "infrastructure_stop": false,
+      "original_error": null,
+      "original_terminal": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/person_locked_ambiguity_seed004.json",
+        "sha256": "4fb2498af50278794e7e226f42a43eb2b2285ebafa93458274cde8a1a70e0baa"
+      }
+    },
+    {
+      "id": "car_auto_unique_multi_seed004",
+      "target_class": "car",
+      "case": "auto_unique_multi",
+      "seed": 4,
+      "trial_directory": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_car_auto_unique_multi_seed004",
+      "result": "PASS",
+      "original_status": "PASS",
+      "evidence": {
+        "run_config": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_auto_unique_multi_seed004/run_config.json",
+          "sha256": "89afcff320492afb9dd494a87aeffdd2cf9baadc7d43035830a6d6b4efd25fe7"
+        },
+        "source_snapshot": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_auto_unique_multi_seed004/configuration/source_sha256.json",
+          "sha256": "c003f1b86e56bc548b4a1f50d890950320d879dbf205b7c86c574c427c28009c"
+        },
+        "runtime_parameters": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_auto_unique_multi_seed004/configuration/runtime_parameters.yaml",
+          "sha256": "2e1741c5aa08ba9fc4342db1300e5b5f3f9c497ab8f5853b02b7771a8b9a786a"
+        },
+        "bag_integrity": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_auto_unique_multi_seed004/bag_integrity.json",
+          "sha256": "97cb946cc6dbfb217384d0e4a38510d8511119820c3ff6e64686e8048d1aebd7"
+        },
+        "recording_closure": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_auto_unique_multi_seed004/recording_closure.json",
+          "sha256": "ed9b233e4672681bfb7e672ca10e61fa39d339bda28579368eaf81cde4a72bf3"
+        },
+        "process_exit_codes": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_auto_unique_multi_seed004/process_exit_codes.json",
+          "sha256": "71bb8487608afe6c28385f5b082d043d0d055cdff8adfb6a6746ada18049954f"
+        },
+        "source_clock": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_auto_unique_multi_seed004/px4_source_clock_report.json",
+          "sha256": "2e34dd0a5106109117123eb4ae270dfeba4df9bf650cc55131a39242a2f87ac1"
+        },
+        "native_startup": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_auto_unique_multi_seed004/native_startup_report.json",
+          "sha256": "23a75d0f22853033f8e0d5de8cadcbbac1f95cf6e088e224fbf2b1b6154273da"
+        },
+        "terminal_speed": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_auto_unique_multi_seed004/terminal_hover_speed_evaluation.json",
+          "sha256": "1a9eae2e52e65884757abca849015c942b02302d593675f7f38f44dad4acd889"
+        },
+        "rendering": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_auto_unique_multi_seed004/configuration/gazebo_rendering_libraries.json",
+          "sha256": "820e673f5e37b7913d830fbab91f97161c0dd2eeb0d63346c1cb0f2f2a715635"
+        },
+        "magnetic": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_auto_unique_multi_seed004/configuration/magnetic_environment.json",
+          "sha256": "010638da8b37ee66070923b771726a47d0436bc451c1d4189ba6cdd4f031aaca"
+        },
+        "specialized": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_auto_unique_multi_seed004/auto_unique_evaluation_v2.json",
+          "sha256": "1a0c6ca6cb8191295f0a2e2e6dba48ca57461b8ae0a0592b0c030829f0ddbaac"
+        },
+        "ros_gz_runtime_registration": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_auto_unique_multi_seed004/configuration/ros_gz_runtime_registration.json",
+          "sha256": "08cbc9ea8a2b6e50b71efc4910e5adef7c309b742fb0e9177cd803e934a028af"
+        },
+        "ros_gz_runtime_preflight": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_auto_unique_multi_seed004/configuration/ros_gz_runtime_preflight.json",
+          "sha256": "4e61cb57921277d8bca992c53b3a57c61a886c13767886a1b05f95d7b8c5cf44"
+        },
+        "ros_gz_runtime_actual": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_auto_unique_multi_seed004/configuration/ros_gz_runtime_actual.json",
+          "sha256": "61386fe3b6a309b65934d9e268ef713df2a095ed62fac0f34a88edff32d969e0"
+        },
+        "ros_gz_runtime_after": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_auto_unique_multi_seed004/configuration/ros_gz_runtime_after.json",
+          "sha256": "1b6f6cbbe1f0b1b3e297c0429b57cdba63dfbf3293f6acc32653ccc297965778"
+        },
+        "ros_gz_clock_runtime_registration": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_auto_unique_multi_seed004/configuration/ros_gz_clock_runtime_registration.json",
+          "sha256": "908f8b7e18154377e57ce6f92922b63b36f7d4fb90ac79e61cc1b8dd95d3e4e4"
+        },
+        "ros_gz_clock_runtime_preflight": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_auto_unique_multi_seed004/configuration/ros_gz_clock_runtime_preflight.json",
+          "sha256": "8843672c9217024f788267db1826299f94d32492d316ed1664f56fbb3008c4c8"
+        },
+        "ros_gz_clock_runtime_actual": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_auto_unique_multi_seed004/configuration/ros_gz_clock_runtime_actual.json",
+          "sha256": "d648f2d2b89f59abacf8e2d58b301abd1cfcb07208f2daaeb6bb33588db3445c"
+        },
+        "ros_gz_clock_runtime_after": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_auto_unique_multi_seed004/configuration/ros_gz_clock_runtime_after.json",
+          "sha256": "045e75a07a6fd0e21a70026727f2298b686b1d4005ec6d3d1c5b86e617aa389d"
+        },
+        "dds_runtime_registration": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_auto_unique_multi_seed004/configuration/dds_runtime_registration.json",
+          "sha256": "4e517b62e823585b53dd2ac503f65eaf9bc3fd4c59d9d8fdb900d985f99d030d"
+        },
+        "dds_runtime_preflight": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_auto_unique_multi_seed004/configuration/dds_runtime_preflight.json",
+          "sha256": "454913f02eb6b160c2b93569e694065f4ac3058c42f3d71e0d7f9aff86700e40"
+        },
+        "dds_runtime_actual": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_auto_unique_multi_seed004/configuration/dds_runtime_actual.json",
+          "sha256": "6a3f9fe24c8a2834de03a43dc8fde7430833751da1016770182431c342773361"
+        },
+        "dds_runtime_after": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_auto_unique_multi_seed004/configuration/dds_runtime_after.json",
+          "sha256": "473bba0d1add5267e79386ae8321840cd225ff2c7abe435560c877111bb49c68"
+        },
+        "dds_runtime_summary": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_auto_unique_multi_seed004/configuration/dds_runtime_summary.json",
+          "sha256": "135800915788fcbe8d5f3df07bc9aa8147853c9d9dc90c312e052684d995cdb0"
+        }
+      },
+      "executions": {
+        "flight": {
+          "argv": [
+            "bash",
+            "/root/uav_tracking_fullplan_v4_humble54/scripts/run_research_session.sh",
+            "/root/uav_tracking_fullplan_v4_humble54/scripts/run_stage1_trial.py",
+            "--name",
+            "reliability_v4_humble54_safety03_car_auto_unique_multi_seed004",
+            "--class",
+            "car",
+            "--stage",
+            "2",
+            "--seed",
+            "4",
+            "--condition",
+            "clean",
+            "--estimator-method",
+            "adaptive_kf",
+            "--command-mode",
+            "velocity",
+            "--gimbal-mode",
+            "midpoint",
+            "--real-time-factor",
+            "0.125",
+            "--max-inference-rate-hz",
+            "10.0",
+            "--monitor-tick-s",
+            "0.02",
+            "--control-reference",
+            "ground_footprint",
+            "--motion-profile-kind",
+            "standard",
+            "--model-path",
+            "/root/uav_tracking_fullplan_v4_humble54/models/yolo11m_car_sim_train20_04.pt",
+            "--inference-image-size",
+            "512",
+            "--inference-threads",
+            "4",
+            "--desired-distance-m",
+            "9.0",
+            "--takeoff-height-m",
+            "3.0",
+            "--takeoff-mode",
+            "px4_native",
+            "--wall-timeout",
+            "1000.0",
+            "--render-backend",
+            "egl",
+            "--gazebo-render-driver",
+            "llvmpipe",
+            "--magnetic-environment",
+            "gazebo_enu",
+            "--magnetic-runtime-manifest",
+            "/root/uav_tracking_fullplan_v4_humble54/config/px4_magnetic_runtime.json",
+            "--magnetic-library-registration",
+            "/root/uav_tracking_fullplan_v4_humble54/config/gazebo_magnetic_runtime_humble22.json",
+            "--propagate-vehicle-uncertainty",
+            "--px4-time-mode",
+            "source_sim",
+            "--target-mode",
+            "auto_unique",
+            "--association-mode",
+            "legacy",
+            "--scenario-kind",
+            "parallel",
+            "--initial-select",
+            "none",
+            "--initial-min-candidates",
+            "2",
+            "--duration",
+            "35.0",
+            "--no-follow-duration-s",
+            "35.0",
+            "--correlated-two-face-bound",
+            "--car-surface-recovery",
+            "--exclusive-navigation-reference",
+            "--px4-adapter-publish-rate-hz",
+            "50.0",
+            "--split-clock-bridge",
+            "--ros-gz-runtime-registration",
+            "/root/uav_tracking_fullplan_v4_humble54/config/ros_gz_runtime_humble22.json",
+            "--dds-runtime-registration",
+            "/root/uav_tracking_fullplan_v4_humble54/config/dds_runtime_humble22.json",
+            "--ros-gz-clock-runtime-registration",
+            "/root/uav_tracking_fullplan_v4_humble54/config/ros_gz_clock_runtime_humble22.json",
+            "--supervisor-stream-timestamp-mode",
+            "source_sim"
+          ],
+          "started_utc": "2026-11-03T00:41:49.014752+00:00",
+          "finished_utc": "2026-11-03T00:47:57.135209+00:00",
+          "returncode": 0,
+          "error": null,
+          "outer_cleanup_actions": [],
+          "log": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/car_auto_unique_multi_seed004_flight.log",
+            "sha256": "54086659ebd68b172abc626d6d7295c0946b7d1886345a65fdcba4fe4e7a9cf3"
+          },
+          "outer_receipt": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/car_auto_unique_multi_seed004_flight.execution.json",
+            "sha256": "35df9385f72288a5f56fd0a269946166576eff237a912f69f84a7ab1b4cd4ac9"
+          }
+        },
+        "source_clock": {
+          "argv": [
+            "bash",
+            "/root/uav_tracking_fullplan_v4_humble54/scripts/run_research_session.sh",
+            "/root/uav_tracking_fullplan_v4_humble54/scripts/evaluate_px4_source_clock.py",
+            "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_car_auto_unique_multi_seed004",
+            "--output",
+            "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_car_auto_unique_multi_seed004/px4_source_clock_report.json"
+          ],
+          "started_utc": "2026-11-03T00:47:57.147155+00:00",
+          "finished_utc": "2026-11-03T00:48:02.732102+00:00",
+          "returncode": 0,
+          "error": null,
+          "outer_cleanup_actions": [],
+          "log": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/car_auto_unique_multi_seed004_source_clock.log",
+            "sha256": "5f974aa419562896277e3bc68398b7ee2874e41ac5f5a23d77282980c71d6a99"
+          },
+          "outer_receipt": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/car_auto_unique_multi_seed004_source_clock.execution.json",
+            "sha256": "0d53f6377bc07b90b8a1959c9368e8ecd30524efc6088c08c2d8bc9d1de38925"
+          }
+        },
+        "native_startup": {
+          "argv": [
+            "bash",
+            "/root/uav_tracking_fullplan_v4_humble54/scripts/run_research_session.sh",
+            "/root/uav_tracking_fullplan_v4_humble54/scripts/evaluate_native_startup.py",
+            "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_car_auto_unique_multi_seed004",
+            "--output",
+            "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_car_auto_unique_multi_seed004/native_startup_report.json"
+          ],
+          "started_utc": "2026-11-03T00:48:02.752756+00:00",
+          "finished_utc": "2026-11-03T00:48:08.540343+00:00",
+          "returncode": 0,
+          "error": null,
+          "outer_cleanup_actions": [],
+          "log": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/car_auto_unique_multi_seed004_native_startup.log",
+            "sha256": "1166de1b3bddeba70e3ab86022783fef73a126d50abe39b51cf7623f21dafd05"
+          },
+          "outer_receipt": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/car_auto_unique_multi_seed004_native_startup.execution.json",
+            "sha256": "86e678dcf7da03aa81d56ad9b8c2a043824a56d9853dba0e5df6a0f7c46b7ae6"
+          }
+        },
+        "specialized": {
+          "argv": [
+            "bash",
+            "/root/uav_tracking_fullplan_v4_humble54/scripts/run_research_session.sh",
+            "/root/uav_tracking_fullplan_v4_humble54/scripts/run_stage23_matrix.py",
+            "--evaluate-auto-unique",
+            "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_car_auto_unique_multi_seed004/rosbag",
+            "--target-class",
+            "car",
+            "--output",
+            "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_car_auto_unique_multi_seed004/auto_unique_evaluation_v2.json"
+          ],
+          "started_utc": "2026-11-03T00:48:08.555902+00:00",
+          "finished_utc": "2026-11-03T00:48:15.947786+00:00",
+          "returncode": 0,
+          "error": null,
+          "outer_cleanup_actions": [],
+          "log": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/car_auto_unique_multi_seed004_specialized.log",
+            "sha256": "1f53ba695a7514a6bf0b0920dd7835b1c7ff8906da9794111579184af7234978"
+          },
+          "outer_receipt": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/car_auto_unique_multi_seed004_specialized.execution.json",
+            "sha256": "5d1f5a052a38a0551d71a31258b5baf04809b9be783d95b6dd59e79a11884935"
+          }
+        },
+        "terminal_speed": {
+          "argv": [
+            "bash",
+            "/root/uav_tracking_fullplan_v4_humble54/scripts/run_research_session.sh",
+            "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/terminal_hover_speed.py",
+            "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_car_auto_unique_multi_seed004",
+            "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/execution_card.md"
+          ],
+          "started_utc": "2026-11-03T00:48:15.974706+00:00",
+          "finished_utc": "2026-11-03T00:48:25.771359+00:00",
+          "returncode": 0,
+          "error": null,
+          "outer_cleanup_actions": [],
+          "log": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/car_auto_unique_multi_seed004_terminal_speed.log",
+            "sha256": "4a85e372057d84f244f626b8fcb29b8ae4057f7d2cfbb348db9418e5ff4f9ebf"
+          },
+          "outer_receipt": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/car_auto_unique_multi_seed004_terminal_speed.execution.json",
+            "sha256": "6c0d6d9221ff9688fa970ce7cd6bcb7a49b37268d0937dfe0888f789e5c20839"
+          },
+          "code_script": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/terminal_hover_speed.py",
+            "sha256": "05d1d11b6357db83a9805fc96f013e01c1c7741d109d6c10501e497215c2b612"
+          }
+        }
+      },
+      "missing_evidence": [],
+      "infrastructure_stop": false,
+      "original_error": null,
+      "original_terminal": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/car_auto_unique_multi_seed004.json",
+        "sha256": "67dd8378237a38392545eb22fd8cb32bbc24ba398b0a22ba958758ec306d5ead"
+      }
+    },
+    {
+      "id": "car_locked_ambiguity_seed004",
+      "target_class": "car",
+      "case": "locked_ambiguity",
+      "seed": 4,
+      "trial_directory": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004",
+      "result": "PASS",
+      "original_status": "PASS",
+      "evidence": {
+        "run_config": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/run_config.json",
+          "sha256": "0607d082caca695ec49b39961af249819cc621e86ed89304f9c43006e7c641f1"
+        },
+        "source_snapshot": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/configuration/source_sha256.json",
+          "sha256": "c003f1b86e56bc548b4a1f50d890950320d879dbf205b7c86c574c427c28009c"
+        },
+        "runtime_parameters": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/configuration/runtime_parameters.yaml",
+          "sha256": "7a1de23950c218832a7c15d7515cc1dc52378ccc9e642c1a89a0028f40b5d06f"
+        },
+        "bag_integrity": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/bag_integrity.json",
+          "sha256": "8b95cf6fc42f4adc52904b96552c0bb556d86c2ba73087490fed7723516a6598"
+        },
+        "recording_closure": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/recording_closure.json",
+          "sha256": "7c1d3065922f03159eda41b61855ce5b52b17ccedfdc33fc91800681660cc2e0"
+        },
+        "process_exit_codes": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/process_exit_codes.json",
+          "sha256": "71bb8487608afe6c28385f5b082d043d0d055cdff8adfb6a6746ada18049954f"
+        },
+        "source_clock": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/px4_source_clock_report.json",
+          "sha256": "486e911503e7665f7f3e7c02d4a1e40194327b0df2e55f03e69a787438c4fb3d"
+        },
+        "native_startup": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/native_startup_report.json",
+          "sha256": "5694d8671370a7fc9d8cece99ccd339a172672974568d5ffc9f60c10891cc83a"
+        },
+        "terminal_speed": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/terminal_hover_speed_evaluation.json",
+          "sha256": "f7f0232353e28bf532499c9a5362760deed526aee7e03c6ef7d1d4d96de31572"
+        },
+        "rendering": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/configuration/gazebo_rendering_libraries.json",
+          "sha256": "cbf1a02729bda1d182d9281a771bd99bd84003e0da78917c46ea83ee39816e52"
+        },
+        "magnetic": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/configuration/magnetic_environment.json",
+          "sha256": "ced77dc30f1d498cac72550abcba0a6f6f699aa96b29263397a79e375681bd39"
+        },
+        "specialized": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/stage2_evaluation.json",
+          "sha256": "3a338ceadf6ea459ceb9a4904e8fe1e594bbfe394156e4d11fc3a4741f0212f5"
+        },
+        "ros_gz_runtime_registration": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/configuration/ros_gz_runtime_registration.json",
+          "sha256": "08cbc9ea8a2b6e50b71efc4910e5adef7c309b742fb0e9177cd803e934a028af"
+        },
+        "ros_gz_runtime_preflight": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/configuration/ros_gz_runtime_preflight.json",
+          "sha256": "4e61cb57921277d8bca992c53b3a57c61a886c13767886a1b05f95d7b8c5cf44"
+        },
+        "ros_gz_runtime_actual": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/configuration/ros_gz_runtime_actual.json",
+          "sha256": "e876e95dabe4b1c12cf5150a38e14f8ddae7584e806097c1c99f2ee385094681"
+        },
+        "ros_gz_runtime_after": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/configuration/ros_gz_runtime_after.json",
+          "sha256": "1b6f6cbbe1f0b1b3e297c0429b57cdba63dfbf3293f6acc32653ccc297965778"
+        },
+        "ros_gz_clock_runtime_registration": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/configuration/ros_gz_clock_runtime_registration.json",
+          "sha256": "908f8b7e18154377e57ce6f92922b63b36f7d4fb90ac79e61cc1b8dd95d3e4e4"
+        },
+        "ros_gz_clock_runtime_preflight": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/configuration/ros_gz_clock_runtime_preflight.json",
+          "sha256": "8843672c9217024f788267db1826299f94d32492d316ed1664f56fbb3008c4c8"
+        },
+        "ros_gz_clock_runtime_actual": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/configuration/ros_gz_clock_runtime_actual.json",
+          "sha256": "18578ffe2a627edc4393f391e7b5f97a2e224bdde2dd668dde153c4eafb53fef"
+        },
+        "ros_gz_clock_runtime_after": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/configuration/ros_gz_clock_runtime_after.json",
+          "sha256": "045e75a07a6fd0e21a70026727f2298b686b1d4005ec6d3d1c5b86e617aa389d"
+        },
+        "dds_runtime_registration": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/configuration/dds_runtime_registration.json",
+          "sha256": "4e517b62e823585b53dd2ac503f65eaf9bc3fd4c59d9d8fdb900d985f99d030d"
+        },
+        "dds_runtime_preflight": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/configuration/dds_runtime_preflight.json",
+          "sha256": "bdb98d5ed181dad415d020e8d8861c7ddea8ce3ff8288ada6420a4a558aa8b87"
+        },
+        "dds_runtime_actual": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/configuration/dds_runtime_actual.json",
+          "sha256": "e72aa8c4e55a09b5076860ea6523bc67defadcc99e6ebb14d656a4e3415ac85b"
+        },
+        "dds_runtime_after": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/configuration/dds_runtime_after.json",
+          "sha256": "44acd274a09d95414b9226636f49d9f87280ce5b6042dcca9343fc78bf29958a"
+        },
+        "dds_runtime_summary": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/configuration/dds_runtime_summary.json",
+          "sha256": "135800915788fcbe8d5f3df07bc9aa8147853c9d9dc90c312e052684d995cdb0"
+        }
+      },
+      "executions": {
+        "flight": {
+          "argv": [
+            "bash",
+            "/root/uav_tracking_fullplan_v4_humble54/scripts/run_research_session.sh",
+            "/root/uav_tracking_fullplan_v4_humble54/scripts/run_stage1_trial.py",
+            "--name",
+            "reliability_v4_humble54_safety03_car_locked_ambiguity_seed004",
+            "--class",
+            "car",
+            "--stage",
+            "2",
+            "--seed",
+            "4",
+            "--condition",
+            "clean",
+            "--estimator-method",
+            "adaptive_kf",
+            "--command-mode",
+            "velocity",
+            "--gimbal-mode",
+            "midpoint",
+            "--real-time-factor",
+            "0.125",
+            "--max-inference-rate-hz",
+            "10.0",
+            "--monitor-tick-s",
+            "0.02",
+            "--control-reference",
+            "ground_footprint",
+            "--motion-profile-kind",
+            "standard",
+            "--model-path",
+            "/root/uav_tracking_fullplan_v4_humble54/models/yolo11m_car_sim_train20_04.pt",
+            "--inference-image-size",
+            "512",
+            "--inference-threads",
+            "4",
+            "--desired-distance-m",
+            "9.0",
+            "--takeoff-height-m",
+            "3.0",
+            "--takeoff-mode",
+            "px4_native",
+            "--wall-timeout",
+            "1000.0",
+            "--render-backend",
+            "egl",
+            "--gazebo-render-driver",
+            "llvmpipe",
+            "--magnetic-environment",
+            "gazebo_enu",
+            "--magnetic-runtime-manifest",
+            "/root/uav_tracking_fullplan_v4_humble54/config/px4_magnetic_runtime.json",
+            "--magnetic-library-registration",
+            "/root/uav_tracking_fullplan_v4_humble54/config/gazebo_magnetic_runtime_humble22.json",
+            "--propagate-vehicle-uncertainty",
+            "--px4-time-mode",
+            "source_sim",
+            "--target-mode",
+            "locked_target",
+            "--association-mode",
+            "hybrid_3d",
+            "--scenario-kind",
+            "ambiguity",
+            "--initial-select",
+            "middle",
+            "--initial-min-candidates",
+            "3",
+            "--duration",
+            "50.0",
+            "--correlated-two-face-bound",
+            "--car-surface-recovery",
+            "--exclusive-navigation-reference",
+            "--px4-adapter-publish-rate-hz",
+            "50.0",
+            "--split-clock-bridge",
+            "--ros-gz-runtime-registration",
+            "/root/uav_tracking_fullplan_v4_humble54/config/ros_gz_runtime_humble22.json",
+            "--dds-runtime-registration",
+            "/root/uav_tracking_fullplan_v4_humble54/config/dds_runtime_humble22.json",
+            "--ros-gz-clock-runtime-registration",
+            "/root/uav_tracking_fullplan_v4_humble54/config/ros_gz_clock_runtime_humble22.json",
+            "--supervisor-stream-timestamp-mode",
+            "source_sim"
+          ],
+          "started_utc": "2026-11-03T00:48:32.112540+00:00",
+          "finished_utc": "2026-11-03T01:00:30.523315+00:00",
+          "returncode": 0,
+          "error": null,
+          "outer_cleanup_actions": [],
+          "log": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/car_locked_ambiguity_seed004_flight.log",
+            "sha256": "4071f37139029602a5bab33f5984d7f4d8fe18d30b9bb44ec20db316317c989f"
+          },
+          "outer_receipt": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/car_locked_ambiguity_seed004_flight.execution.json",
+            "sha256": "cbf9401008302c768c8291f91c76caa750fcc0acae7ffdb39acf52c5c082215c"
+          }
+        },
+        "source_clock": {
+          "argv": [
+            "bash",
+            "/root/uav_tracking_fullplan_v4_humble54/scripts/run_research_session.sh",
+            "/root/uav_tracking_fullplan_v4_humble54/scripts/evaluate_px4_source_clock.py",
+            "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004",
+            "--output",
+            "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/px4_source_clock_report.json"
+          ],
+          "started_utc": "2026-11-03T01:00:30.534878+00:00",
+          "finished_utc": "2026-11-03T01:00:42.543611+00:00",
+          "returncode": 0,
+          "error": null,
+          "outer_cleanup_actions": [],
+          "log": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/car_locked_ambiguity_seed004_source_clock.log",
+            "sha256": "2e115d3a03020f93f821deb6d50bb2019c8ae4a8f2f5e00871b11bb61e98809c"
+          },
+          "outer_receipt": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/car_locked_ambiguity_seed004_source_clock.execution.json",
+            "sha256": "244dbdef0fbd591a77bd4d3702df46f70d205ddf6709b24a157269b84db0cea7"
+          }
+        },
+        "native_startup": {
+          "argv": [
+            "bash",
+            "/root/uav_tracking_fullplan_v4_humble54/scripts/run_research_session.sh",
+            "/root/uav_tracking_fullplan_v4_humble54/scripts/evaluate_native_startup.py",
+            "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004",
+            "--output",
+            "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/native_startup_report.json"
+          ],
+          "started_utc": "2026-11-03T01:00:42.558692+00:00",
+          "finished_utc": "2026-11-03T01:00:54.771149+00:00",
+          "returncode": 0,
+          "error": null,
+          "outer_cleanup_actions": [],
+          "log": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/car_locked_ambiguity_seed004_native_startup.log",
+            "sha256": "98c90bc53b5d0370c216d2501af757ec86ea114dd6395bb3141bb0c6c95a32a7"
+          },
+          "outer_receipt": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/car_locked_ambiguity_seed004_native_startup.execution.json",
+            "sha256": "eb03a60fa693fec009caa03d01f754951c4cf045ba207720117e1c00af102e57"
+          }
+        },
+        "specialized": {
+          "argv": [
+            "bash",
+            "/root/uav_tracking_fullplan_v4_humble54/scripts/run_research_session.sh",
+            "/root/uav_tracking_fullplan_v4_humble54/scripts/evaluate_stage2_flight.py",
+            "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/rosbag",
+            "--telemetry-jsonl",
+            "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/telemetry.jsonl",
+            "--monitor-summary",
+            "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/summary.json",
+            "--no-require-occlusions",
+            "--require-ambiguity",
+            "--terminal-expectation",
+            "hover",
+            "--target-class",
+            "car",
+            "--output",
+            "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/stage2_evaluation.json"
+          ],
+          "started_utc": "2026-11-03T01:00:54.791768+00:00",
+          "finished_utc": "2026-11-03T01:01:12.621802+00:00",
+          "returncode": 0,
+          "error": null,
+          "outer_cleanup_actions": [],
+          "log": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/car_locked_ambiguity_seed004_specialized.log",
+            "sha256": "e56bc6878a90792be2c53beda64716a35158a68150356c1e542c4615ab85d4c8"
+          },
+          "outer_receipt": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/car_locked_ambiguity_seed004_specialized.execution.json",
+            "sha256": "ce8e88de6520772906c06d6cf63f7299221b37e4bacaee9250c9e16cb72f233c"
+          }
+        },
+        "terminal_speed": {
+          "argv": [
+            "bash",
+            "/root/uav_tracking_fullplan_v4_humble54/scripts/run_research_session.sh",
+            "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/terminal_hover_speed.py",
+            "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004",
+            "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/execution_card.md"
+          ],
+          "started_utc": "2026-11-03T01:01:12.635466+00:00",
+          "finished_utc": "2026-11-03T01:01:34.980844+00:00",
+          "returncode": 0,
+          "error": null,
+          "outer_cleanup_actions": [],
+          "log": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/car_locked_ambiguity_seed004_terminal_speed.log",
+            "sha256": "0ce37735dd51305bb078ab4022c296ddbf5fe25bcabd14bc6604f00e4ae5e6ac"
+          },
+          "outer_receipt": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/car_locked_ambiguity_seed004_terminal_speed.execution.json",
+            "sha256": "b161bf92029884e08a28d86dacd56a919a5080fdff5d9f44d87d1278a96c124f"
+          },
+          "code_script": {
+            "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/terminal_hover_speed.py",
+            "sha256": "05d1d11b6357db83a9805fc96f013e01c1c7741d109d6c10501e497215c2b612"
+          }
+        }
+      },
+      "missing_evidence": [],
+      "infrastructure_stop": false,
+      "original_error": null,
+      "original_terminal": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/car_locked_ambiguity_seed004.json",
+        "sha256": "7675129f1e745189099c1f2f8d779dc6b327c5086abaf364c7b765609e61a68f"
+      }
+    }
+  ],
+  "validation_scope": "DEVELOPMENT_ONLY_NOT_FORMAL_ADMISSION"
+}

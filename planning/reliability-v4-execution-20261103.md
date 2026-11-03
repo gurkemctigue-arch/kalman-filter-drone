@@ -26,6 +26,8 @@
 
 08:45:25 核对：两场行人安全验证均已原始 PASS，第三场 `car_auto_unique_multi_seed004` 正在运行，检测采集时间约 24.1 仿真秒，第四场未开始。没有将运行中的汽车场景预记通过。
 
+09:02:08 整批已完成：四场原始 PASS、20 条命令退出 0、完整 guard PASS，原生 owner 与 Windows 命令均退出 0，无待执行或未闭合槽。随后 root 串行原生查询确认无仿真进程残留，防休眠 observer 已正常释放。上述 PID/session 是已结束的历史身份，不应重启。[闭合原件快照](../tools/experiment_orchestration/humble54_safety4_closed03/README.md)已独立复核，正式仍为 0/280；扩展 16 待系统盘空闲窗口维护后启动。
+
 ## 后续按实际结果推进
 
 1. 安全 03 四场原始 PASS，完整 guard、owner 和清理闭合后，执行已独审的 `D:/WSL/UAVHumble22-validation/run_humble54_extension16_probe02.sh`。该文件明确检查实际安全 03 registry，随后公开 CLI 新建、串行运行扩展 16 场；目前尚未执行。

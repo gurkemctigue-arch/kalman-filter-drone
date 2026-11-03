@@ -1,6 +1,6 @@
 # RGB-D UAV target tracking and following
 
-**2026-11-03 08:22（北京时间）检查点：新的安全 03 批次已实际开始，当前 1 场 START、0 场终态、3 场未开始；正式研究仍为 0/280。** 首场 `person_auto_unique_multi_seed004` 于 08:21:54 记录 START；已核对命令和监控器创建身份、Linux owner 身份及 08:22:17 心跳，尚无安全 03 PASS。查看本机[安全 03 实时进度](results/project_progress/humble54_safety4_run03/index.html)。[核心 12/12 原始工程 PASS](tools/experiment_orchestration/humble54_core12_closed01/README.md)仍保留，不能代替安全四场。
+**2026-11-03 09:02（北京时间）检查点：Humble54 安全 03 四场已全部闭合，4 个原始工程 PASS、0 场待执行；正式研究仍为 0/280。** 原 guard 为开发范围 PASS，Linux 执行终态与 owner 均为 `COMPLETED`，命令退出 0，原终态残留列表为空；Windows 保存的最终摘要亦确认命令退出 0、原命令进程已结束且创建身份匹配。见[安全四场原件与闭合核验](tools/experiment_orchestration/humble54_safety4_closed03/README.md)、[最终摘要](results/project_progress/humble54_safety4_run03/end_summary.json)及[核心 12/12 原始工程 PASS](tools/experiment_orchestration/humble54_core12_closed01/README.md)。扩展 16 尚未开始，当前准备系统盘维护，随后再实际启动。
 
 安全 02 原失败保持不变：08:08:49 `STOPPED_FAULT`、命令退出 2，首场原始 `INFRASTRUCTURE_ERROR`、其余 3 场未执行，无自动重试。其 `KeyError: 'result'` 已复现并修正：source/native 原报告通过公共 reader 读取 `evaluation_status`，专属及末端速度报告继续严格要求 `result`。实际原生合同与只读诊断已完成；另有 5 项 Humble 单元测试通过（2.692 秒、无跳过），均不能把旧槽改判通过，也不是新飞行。见[schema03 原始证据与边界](tools/diagnostics/safety54_schema_recovery03_archive01/README.md)、[安全 02 最终摘要](results/project_progress/humble54_safety4_run02/end_summary.json)及[原执行终态](results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety02_audit/execution_terminal.json)。
 
@@ -10,7 +10,7 @@
 
 新增[已有身份报告的每任务审计](tools/diagnostics/humble54_identity_per_uuid_audit01/README.md)：四个多目标场景首次请求的已知覆盖率为 0.621–0.680，显式重选后为 0.961–0.998。首次分母包括计划遮挡及等待重选区间，不是仅对可见画面计算的准确率；未知保留，不引入每 UUID 门槛或新的 PASS。汽车多目标主动云台仍保留完整 753 格＝614 正确、0 已知错误、139 未知，诊断 714 帧单列。
 
-核心是同一个开发种子的工程结果；安全 4、扩展 16、定标、容量、正式协议准入与重复研究仍须各自完成。下方更早检查点按其记录时间阅读，不能用于判断新批次当前进程状态。
+核心 12 和安全 4 是同一个开发种子的独立工程结果，现均已闭合；扩展 16、定标、容量、最终冷构建与正式协议准入、重复研究仍须各自完成。下方更早检查点按其记录时间阅读，不能用于判断当前进程状态。
 
 **2026-11-03 07:08（北京时间）检查点：Humble54 核心开发批次已有 11 个原始 PASS，最后一场汽车多目标主动云台正在运行；正式仍为 0/280。** 行人六组和汽车速度、位置、交叉、云台中位与主动模式已通过。汽车云台配对的检测框中心归一化 RMSE 从 0.169347 降至 0.020650；距离/高度 RMSE 从中位的 0.733114/0.151189 米变为主动的 0.739092/0.152861 米，两场末端均持续稳定。因此本次画面居中改善，物理跟随误差略增；单个开发种子不能证明总体可靠性或统计优势。身份未知和删失继续保留。见[本轮验证与边界](planning/reliability-v4-humble54-native-validation-20261103.md)、[汽车云台原件与比较](tools/experiment_orchestration/humble54_car_gimbal_pair01/README_PAIR.md)、[六个行人原件](tools/experiment_orchestration/humble54_person6_closed01/README.md)、[前三个汽车原件](tools/experiment_orchestration/humble54_car3_closed01/README.md)及本机[当前批次进度](results/project_progress/humble54_core12_run01/index.html)。下方均为历史检查点，原失败不变。
 

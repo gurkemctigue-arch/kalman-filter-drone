@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "result": "PASS",
+  "trial": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004",
+  "interval": {
+    "start_s": 62.763999999999996,
+    "end_s": 67.964
+  },
+  "checks": {
+    "input_decode_complete": true,
+    "odom_tail_spans_five_seconds": true,
+    "odom_tail_covers_original_end": true,
+    "all_observed_odom_speeds_le_0_30_mps": true,
+    "gt_tail_spans_five_seconds": true,
+    "gt_tail_covers_original_end": true,
+    "last_gt_equals_final_clock": true,
+    "all_gt_secant_speeds_le_0_30_mps": true
+  },
+  "odom_speed_mps": {
+    "count": 521,
+    "mean": 0.005692125183212914,
+    "median": 0.0061733988997737955,
+    "p95": 0.008436587029170382,
+    "max": 0.008754817979264825,
+    "rmse": 0.006047835494283105,
+    "mean_absolute": 0.005692125183212914,
+    "p95_absolute": 0.008436587029170382,
+    "max_absolute": 0.008754817979264825
+  },
+  "independent_gt_base_link_secant_speed_mps": {
+    "count": 1300,
+    "mean": 0.013059886340272997,
+    "median": 0.013022185243145468,
+    "p95": 0.0189322857358521,
+    "max": 0.019999128928873056,
+    "rmse": 0.013584997390657945,
+    "mean_absolute": 0.013059886340272997,
+    "p95_absolute": 0.0189322857358521,
+    "max_absolute": 0.019999128928873056
+  },
+  "declared_body_offset_flu_m": [
+    0.0,
+    0.0,
+    0.24
+  ],
+  "source_sha256": {
+    "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/run_config.json": "0607d082caca695ec49b39961af249819cc621e86ed89304f9c43006e7c641f1",
+    "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/bag_integrity.json": "8b95cf6fc42f4adc52904b96552c0bb556d86c2ba73087490fed7723516a6598",
+    "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/recording_closure.json": "7c1d3065922f03159eda41b61855ce5b52b17ccedfdc33fc91800681660cc2e0",
+    "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_audit/execution_card.md": "2be642e854de7c3c02ed82f567cc03af8de1bfd209551af6212444a0da6db393",
+    "/root/uav_tracking_fullplan_v4_humble54/scripts/evaluate_stage1_flight.py": "655cf6fc7c0cc2a954db7d06d2fbb00a000f2fca80ba0930d153025e28efb7c1",
+    "/root/uav_tracking_fullplan_v4_humble54/scripts/evaluate_stage2_flight.py": "2ba8a607103dff6be39571f6c35119eca7c2b56be709dc46d43ea355590edab9",
+    "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/rosbag/metadata.yaml": "879b439dd872fd3db613f8bf5646645a95e5f08e7399f77ae040e4b31c63ce8c",
+    "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/rosbag/rosbag_0.db3.zstd": "4e00449e1f5858a4ed1dd57834422e37e319a337bb488e217e08a9ef368b4425"
+  },
+  "bag_reader": {
+    "bag": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/rosbag",
+    "storage_identifier": "sqlite3",
+    "compression_format": "zstd",
+    "compression_mode": "file",
+    "reader": "SequentialCompressionReader",
+    "source_bag_read_only": true,
+    "decompression_cache": "temporary directory, removed after reading",
+    "topic_types": {
+      "/tracking/detection_diagnostics": "std_msgs/msg/String",
+      "/tracking/selection": "uav_tracking_interfaces/msg/TargetSelection",
+      "/tracking/observations": "uav_tracking_interfaces/msg/TargetObservation",
+      "/tracking/state": "uav_tracking_interfaces/msg/TargetState",
+      "/fmu/out/vehicle_status_v1": "px4_msgs/msg/VehicleStatus",
+      "/tracking/flight_phase": "std_msgs/msg/String",
+      "/tracking/status": "uav_tracking_interfaces/msg/TrackingStatus",
+      "/vehicle/odometry": "nav_msgs/msg/Odometry",
+      "/clock": "rosgraph_msgs/msg/Clock",
+      "/ground_truth/poses": "tf2_msgs/msg/TFMessage",
+      "/tracking/command": "uav_tracking_interfaces/msg/TrackingCommand",
+      "/ground_truth/vehicle_poses": "tf2_msgs/msg/TFMessage"
+    },
+    "unavailable_types": {},
+    "read_errors": {},
+    "time_sources": {
+      "transform_header": 67964,
+      "header": 13854,
+      "latest_clock": 1512,
+      "diagnostic_completed_s": 676
+    },
+    "clock_recorded": true,
+    "clock_samples_read": 19684,
+    "clock_records_preserved": true,
+    "startup_unclocked_messages": {},
+    "startup_unclocked_records": [],
+    "startup_unclocked_note": "Successfully decoded messages before the first recorded /clock remain here with original recorder timestamps and exact CDR bytes; no simulation timestamp is assigned and they are excluded from timed metrics",
+    "receive_time_note": "received_sim_s uses the latest recorded /clock; recorder wall timestamps are not compared with sim time",
+    "record_sequence_note": "Zero-based filtered reader order, including clock/unreadable entries; equal operational timestamps retain this order"
+  },
+  "vehicle_gt_names": [
+    "stage1_uav"
+  ],
+  "original_published_archive_sha256": {
+    "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/rosbag/metadata.yaml": "879b439dd872fd3db613f8bf5646645a95e5f08e7399f77ae040e4b31c63ce8c",
+    "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_locked_ambiguity_seed004/rosbag/rosbag_0.db3.zstd": "4e00449e1f5858a4ed1dd57834422e37e319a337bb488e217e08a9ef368b4425"
+  },
+  "scope": "Independent offline speed supplement only; full original tail retained. Does not certify ambiguity, physical target identity, continuous-time peak speed or flight safety."
+}

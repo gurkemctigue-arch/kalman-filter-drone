@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "evaluation_status": "PASS",
+  "source_clock_pass": true,
+  "clock_domain_valid": true,
+  "vehicle_frame_continuity_valid": true,
+  "configuration": {
+    "px4_time_mode": "source_sim",
+    "use_sim_time": true,
+    "command_topic": "/tracking/flight_command",
+    "trajectory_setpoint_topic": "/fmu/in/trajectory_setpoint",
+    "offboard_control_mode_topic": "/fmu/in/offboard_control_mode",
+    "vehicle_odometry_topic": "/fmu/out/vehicle_odometry",
+    "vehicle_odom_topic": "/vehicle/odometry",
+    "vehicle_status_topic": "/fmu/out/vehicle_status_v1",
+    "vehicle_command_ack_topic": "/fmu/out/vehicle_command_ack",
+    "require_vehicle_status": true,
+    "vehicle_status_timeout_s": 1.0,
+    "publish_rate_hz": 50.0,
+    "command_timeout_s": 0.5,
+    "odometry_timestamp_mode": "source_sim",
+    "odometry_source_max_age_s": 0.5,
+    "odometry_source_max_future_s": 0.05,
+    "odometry_timing_topic": "/vehicle/odometry_timing",
+    "uxrce_dds_synct": 0,
+    "recorded_configuration_evidence": {
+      "run_config": {
+        "path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_car_auto_unique_multi_seed004/run_config.json",
+        "sha256": "89afcff320492afb9dd494a87aeffdd2cf9baadc7d43035830a6d6b4efd25fe7"
+      },
+      "runtime_parameters": {
+        "path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_car_auto_unique_multi_seed004/configuration/runtime_parameters.yaml",
+        "sha256": "2e1741c5aa08ba9fc4342db1300e5b5f3f9c497ab8f5853b02b7771a8b9a786a"
+      },
+      "px4_parameters": {
+        "path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_car_auto_unique_multi_seed004/configuration/px4_parameters.json",
+        "sha256": "7cff81c7c3e022770dd3668ae19d4b6296a1d8b84cea6f1d9de1423f23f3be9f"
+      }
+    }
+  },
+  "interval": {
+    "start_s": 0.5720000000000001,
+    "end_s": 35.108,
+    "basis": "first raw delivery through full recorded /clock end; loss tails retained"
+  },
+  "counts": {
+    "raw_px4": 3455,
+    "timing_diagnostics": 3455,
+    "adapted_odometry": 3455,
+    "claimed_accepted": 3455,
+    "claimed_rejected": 0,
+    "independently_matched_triplets": 3455
+  },
+  "failures": {},
+  "clock_domain_failures": {},
+  "vehicle_frame_failures": {},
+  "incomplete_evidence": {},
+  "independent_reason_counts": {
+    "validated_source_stamp": 3455
+  },
+  "metrics": {
+    "diagnostic_receipt_to_recorder_s": {
+      "count": 3455,
+      "mean": 5.788712011617628e-06,
+      "median": 0.0,
+      "p95": 0.0,
+      "max": 0.0040000000000048885,
+      "rmse": 0.00020415368349201423,
+      "mean_absolute": 1.0419681620878158e-05,
+      "p95_absolute": 0.0,
+      "max_absolute": 0.0040000000000048885
+    },
+    "source_to_adapter_receipt_s": {
+      "count": 3455,
+      "mean": 0.0004642547033285039,
+      "median": 0.0,
+      "p95": 0.004000000000001336,
+      "max": 0.008000000000002672,
+      "rmse": 0.0017202295138493192,
+      "mean_absolute": 0.00048046309696091893,
+      "p95_absolute": 0.004000000000001336,
+      "max_absolute": 0.008000000000002672
+    },
+    "source_to_raw_recorder_s": {
+      "count": 3455,
+      "mean": 0.00040636758321277,
+      "median": 0.0,
+      "p95": 0.004000000000001336,
+      "max": 0.008000000000002672,
+      "rmse": 0.0017229194756391993,
+      "mean_absolute": 0.0004920405209841171,
+      "p95_absolute": 0.004000000000001336,
+      "max_absolute": 0.008000000000002672
+    },
+    "sample_to_publication_s": {
+      "count": 3455,
+      "mean": 0.0,
+      "median": 0.0,
+      "p95": 0.0,
+      "max": 0.0,
+      "rmse": 0.0,
+      "mean_absolute": 0.0,
+      "p95_absolute": 0.0,
+      "max_absolute": 0.0
+    },
+    "source_to_odometry_recorder_s": {
+      "count": 3455,
+      "mean": 0.0004758321273516968,
+      "median": 0.0,
+      "p95": 0.004000000000001336,
+      "max": 0.008000000000002672,
+      "rmse": 0.0017175353391123498,
+      "mean_absolute": 0.00047583212735169693,
+      "p95_absolute": 0.004000000000001336,
+      "max_absolute": 0.008000000000002672
+    },
+    "adapter_receipt_to_odometry_recorder_s": {
+      "count": 3455,
+      "mean": 1.1577424023192873e-05,
+      "median": 0.0,
+      "p95": 0.0,
+      "max": 0.0040000000000048885,
+      "rmse": 0.00021519687751594895,
+      "mean_absolute": 1.1577424023193001e-05,
+      "p95_absolute": 0.0,
+      "max_absolute": 0.0040000000000048885
+    }
+  },
+  "continuity": {
+    "raw_px4": {
+      "max_gap_s": 0.020000000000003126,
+      "threshold_s": 0.5,
+      "violations": [],
+      "tail_s": 0.0
+    },
+    "matched_adapted_odometry": {
+      "max_gap_s": 0.016000000000005343,
+      "threshold_s": 0.5,
+      "violations": [],
+      "tail_s": 0.0
+    }
+  },
+  "claim_boundary": "PASS only establishes this recorded source_sim timestamp/correspondence/continuity contract. A correct rejection of wrong-domain or regressing source clocks is reported as a failed clock trial, not a clock pass. Startup before the first raw delivery is outside the interval; all later silence through the last recorded /clock remains. Adapter receipt and recorder delivery are distinct; delivery uses latest /clock with 50ms quantization allowance. No affine offset, lag, GT or target fit is used. A near-receipt source timestamp does not independently certify hardware acquisition latency or physical pose accuracy.",
+  "bag": {
+    "storage_identifier": "sqlite3",
+    "compression_format": "zstd",
+    "compression_mode": "file",
+    "reader": "SequentialCompressionReader",
+    "source_bag_read_only": true,
+    "decompression_cache": "temporary directory, removed after reading",
+    "bag": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_car_auto_unique_multi_seed004/rosbag",
+    "topic_types": {
+      "/fmu/out/vehicle_odometry": "px4_msgs/msg/VehicleOdometry",
+      "/vehicle/odometry": "nav_msgs/msg/Odometry",
+      "/vehicle/odometry_timing": "std_msgs/msg/String",
+      "/clock": "rosgraph_msgs/msg/Clock"
+    },
+    "read_errors": {},
+    "scope": "Only clock/raw PX4/timing/adapted odometry, no images or truth. Latest recorded clock supplies delivery; no wall/sim subtraction."
+  },
+  "trial": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_car_auto_unique_multi_seed004",
+  "frames_path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_car_auto_unique_multi_seed004/px4_source_clock_report.frames.jsonl",
+  "evaluation_source": {
+    "script": "/root/uav_tracking_fullplan_v4_humble54/scripts/evaluate_px4_source_clock.py",
+    "script_sha256": "92b13e0a112546f10ff6e77d84aace0fc40126d1f5021a92464d47fc82c4ac4a",
+    "dependencies": {
+      "/root/uav_tracking_fullplan_v4_humble54/scripts/evaluate_stage1_flight.py": "655cf6fc7c0cc2a954db7d06d2fbb00a000f2fca80ba0930d153025e28efb7c1",
+      "/root/uav_tracking_fullplan_v4_humble54/ros2_ws/src/uav_tracking_px4_adapter/uav_tracking_px4_adapter/adapter_node.py": "5de4d83c8b780bbcf4b6bcadfc76e3ba5b9dc3fe344c6f92cc5c7c2c16c31622",
+      "/root/uav_tracking_fullplan_v4_humble54/ros2_ws/src/uav_tracking_px4_adapter/uav_tracking_px4_adapter/source_clock.py": "d9e94e63f39fe95479025904b8095ecdb88212354df262a1b3c6d1515915df33",
+      "/root/uav_tracking_fullplan_v4_humble54/ros2_ws/src/uav_tracking_px4_adapter/uav_tracking_px4_adapter/frame_guard.py": "e46c93474d53e1fc815c27d135c68b76b60117875e6294be3b9f75220eb168ba"
+    },
+    "scope": "Actual offline evaluator hashes; separate from flight-frozen code. Clock decisions are checked independently, not replayed through the online source-clock class."
+  }
+}

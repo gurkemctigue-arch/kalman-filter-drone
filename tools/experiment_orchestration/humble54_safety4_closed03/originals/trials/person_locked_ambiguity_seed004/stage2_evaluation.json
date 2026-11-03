@@ -1,0 +1,193 @@
+{
+  "schema_version": 1,
+  "evaluation_revision": 3,
+  "source": "OFFLINE_STAGE2_SAFETY_EVALUATION",
+  "result": "PASS",
+  "scope": "Observed designated-target selection, state freshness, ambiguity suspension and loss/reselection control only",
+  "configuration": {
+    "target_class": "person",
+    "require_occlusions": false,
+    "require_ambiguity": true,
+    "max_prediction_s": 0.75,
+    "control_grace_s": 0.1,
+    "max_evidence_gap_s": 0.5,
+    "terminal_expectation": "hover"
+  },
+  "inputs": {
+    "bag": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004/rosbag",
+    "storage_identifier": "sqlite3",
+    "compression_format": "zstd",
+    "compression_mode": "file",
+    "reader": "SequentialCompressionReader",
+    "source_bag_read_only": true,
+    "decompression_cache": "temporary directory, removed after reading",
+    "topic_types": {
+      "/tracking/detection_diagnostics": "std_msgs/msg/String",
+      "/tracking/tracks": "std_msgs/msg/String",
+      "/vehicle/odometry": "nav_msgs/msg/Odometry",
+      "/tracking/status": "uav_tracking_interfaces/msg/TrackingStatus",
+      "/tracking/selection": "uav_tracking_interfaces/msg/TargetSelection",
+      "/tracking/flight_phase": "std_msgs/msg/String",
+      "/fmu/out/vehicle_status_v1": "px4_msgs/msg/VehicleStatus",
+      "/tracking/observations": "uav_tracking_interfaces/msg/TargetObservation",
+      "/tracking/state": "uav_tracking_interfaces/msg/TargetState",
+      "/ground_truth/poses": "tf2_msgs/msg/TFMessage",
+      "/tracking/command": "uav_tracking_interfaces/msg/TrackingCommand",
+      "/ground_truth/vehicle_poses": "tf2_msgs/msg/TFMessage",
+      "/clock": "rosgraph_msgs/msg/Clock"
+    },
+    "unavailable_types": {},
+    "read_errors": {},
+    "time_sources": {
+      "transform_header": 67956,
+      "header": 13766,
+      "latest_clock": 4529,
+      "diagnostic_completed_s": 678
+    },
+    "clock_recorded": true,
+    "clock_samples_read": 20531,
+    "clock_records_preserved": false,
+    "startup_unclocked_messages": {},
+    "startup_unclocked_records": [],
+    "startup_unclocked_note": "Successfully decoded messages before the first recorded /clock remain here with original recorder timestamps and exact CDR bytes; no simulation timestamp is assigned and they are excluded from timed metrics",
+    "receive_time_note": "received_sim_s uses the latest recorded /clock; recorder wall timestamps are not compared with sim time",
+    "record_sequence_note": "Zero-based filtered reader order, including clock/unreadable entries; equal operational timestamps retain this order",
+    "telemetry_jsonl": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004/telemetry.jsonl",
+    "monitor_summary": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_safety03_person_locked_ambiguity_seed004/summary.json"
+  },
+  "interval": {
+    "recorded_end_s": 67.956,
+    "covers_recorded_trial_end": true
+  },
+  "checks": {
+    "clock_recorded": true,
+    "input_decodes_without_errors": true,
+    "armed_and_offboard_observed": true,
+    "initial_explicit_box_confirmed_fresh": true,
+    "initial_box_matches_selected_track_snapshot": true,
+    "no_tracking_before_initial_selection": true,
+    "multiple_same_class_fresh_tracks_observed": true,
+    "all_tracks_snapshots_present_and_valid": true,
+    "task_uuid_changes_require_explicit_selection": true,
+    "long_loss_cannot_reactivate_without_explicit_selection": true,
+    "long_loss_cannot_control_before_explicit_selection": true,
+    "active_states_remain_fresh": true,
+    "selected_geometric_ambiguity_observed_if_required": true,
+    "observed_ambiguities_suspend_control": true,
+    "required_short_and_long_occlusions_present": true,
+    "recorded_occlusions_pass": true,
+    "detection_diagnostics_valid": true,
+    "terminal_hover_follows_selected_ambiguity": true,
+    "final_sustained_hover": true
+  },
+  "selections": [
+    {
+      "request_s": 17.68,
+      "target_uuid": "c3ba7125-947b-4400-b576-1b9e692acc55",
+      "confirmed": true,
+      "request_record_sequence": 28359,
+      "first_active_s": 17.764,
+      "first_active_record_sequence": 28495,
+      "confirmation_s": 17.764,
+      "confirmation_record_sequence": 28495,
+      "confirmation_state_index": 6,
+      "image_stamp_s": 17.7,
+      "track_id": 1
+    }
+  ],
+  "uuid_changes": [
+    {
+      "time_s": 17.764,
+      "old_uuid": "",
+      "new_uuid": "c3ba7125-947b-4400-b576-1b9e692acc55",
+      "explicit_selection": true
+    }
+  ],
+  "unauthorized_uuid_changes": [],
+  "fresh_multi_track_acquisitions": 163,
+  "tracks_snapshot_count": 3017,
+  "tracks_snapshot_errors": [],
+  "invalid_active_state_times_s": [],
+  "unauthorized_recovery_times_s": [],
+  "unauthorized_control_after_loss_times_s": [],
+  "ambiguity_windows": [
+    {
+      "start_s": 34.04,
+      "end_s": 34.66,
+      "duration_s": 0.6199999999999974,
+      "ambiguity_evaluation_revision": 2,
+      "start_record_sequence": 54072,
+      "end_record_sequence": 55041,
+      "control_grace_deadline_s": 34.14,
+      "boundary_evidence": "RECORD_SEQUENCE_AND_AS_OF_OUTPUT",
+      "chronology_valid": true,
+      "controller_hover_and_invalid_motion_commands": true,
+      "control_samples": 12,
+      "command_samples": 12,
+      "streams": {
+        "control": {
+          "boundary_record_sequence": 54163,
+          "boundary_received_s": 34.1,
+          "boundary_source_s": 34.1,
+          "samples_after_deadline": 11,
+          "audited_samples": 12,
+          "maximum_evidence_gap_s": 0.0519999999999996,
+          "first_unsafe_record_sequence": null
+        },
+        "command": {
+          "boundary_record_sequence": 54162,
+          "boundary_received_s": 34.1,
+          "boundary_source_s": 34.1,
+          "samples_after_deadline": 11,
+          "audited_samples": 12,
+          "maximum_evidence_gap_s": 0.0519999999999996,
+          "first_unsafe_record_sequence": null
+        }
+      },
+      "errors": [],
+      "semantics": "Last recorded output at or before the response deadline plus every later output before the exact ambiguity-exit record; future records cannot backfill and each held output must remain fresh",
+      "result": "PASS"
+    }
+  ],
+  "geometric_ambiguity_observed": true,
+  "sustained_tracking": null,
+  "terminal_hover": {
+    "result": "PASS",
+    "start_s": 62.756,
+    "end_s": 67.956,
+    "scope": "Final ambiguity/loss stop; full recorded end retained",
+    "checks": {
+      "all_streams_span_at_least_five_seconds": true,
+      "all_streams_cover_tail_without_gaps": true,
+      "states_remain_ambiguous_or_lost": true,
+      "same_explicit_task_retained": true,
+      "controller_remains_hover": true,
+      "all_motion_commands_invalid": true
+    },
+    "sample_counts": {
+      "states": 312,
+      "statuses": 104,
+      "commands": 104
+    },
+    "spans_s": {
+      "states": 5.18,
+      "statuses": 5.152000000000001,
+      "commands": 5.152000000000001
+    },
+    "maximum_evidence_gaps_s": {
+      "states": 0.020000000000010232,
+      "statuses": 0.05200000000000671,
+      "commands": 0.05200000000000671
+    },
+    "expected_target_uuid": "c3ba7125-947b-4400-b576-1b9e692acc55"
+  },
+  "occlusions": [],
+  "physical_identity": {
+    "evaluated": false,
+    "reason": "Requires independently validated visible GT/image labels; unchanged task UUID is not evidence of physical identity"
+  },
+  "limitations": [
+    "No GT identity, IDF1, HOTA, mAP or three-dimensional accuracy is certified by this safety report.",
+    "PASS is limited to the requested scenario coverage flags; full stage two requires both classes and separate crossing/ambiguity evidence."
+  ]
+}
