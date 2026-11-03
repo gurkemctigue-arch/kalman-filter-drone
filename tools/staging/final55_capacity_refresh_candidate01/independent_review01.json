@@ -1,0 +1,193 @@
+{
+  "reviewed_utc": "2026-11-03T13:26:06.747534+00:00",
+  "status": "PASS_DISABLED_CANDIDATE_PREPARATION_ONLY_NOT_EXECUTED",
+  "source": {
+    "path": "D:\\基于yolo和卡尔曼滤波\\tools\\staging\\final55_capacity_refresh_candidate01\\stage_after_refresh.py",
+    "bytes": 22468,
+    "sha256": "c745c85530f8516eb7120954febf6d0fa20418e3ad482dc2db017f94c0b0cf88"
+  },
+  "author_tests": {
+    "tests": 10,
+    "exit_code": 0,
+    "sha256": "fa1aefbd32cf67b639d2f856c85d3234ed94a618cebba277affa109a37470e3e",
+    "captured_output_sha256": "9d40cb120cb336e16efc1feae0115a661b266535d717f0f51e8e11d6ecd13c09"
+  },
+  "independent_checks": [
+    {
+      "name": "wrong_source_path",
+      "pass": true,
+      "rejection": "ValueError"
+    },
+    {
+      "name": "wrong_commit",
+      "pass": true,
+      "rejection": "ValueError"
+    },
+    {
+      "name": "boolean_owner_pid",
+      "pass": true,
+      "rejection": "Refused"
+    },
+    {
+      "name": "one_child_boot_differs",
+      "pass": true,
+      "rejection": "ValueError"
+    },
+    {
+      "name": "nonzero_terminal",
+      "pass": true,
+      "rejection": "ValueError"
+    },
+    {
+      "name": "boolean_terminal_exit",
+      "pass": true,
+      "rejection": "ValueError"
+    },
+    {
+      "name": "automatic_retry",
+      "pass": true,
+      "rejection": "ValueError"
+    },
+    {
+      "name": "formal_admission",
+      "pass": true,
+      "rejection": "ValueError"
+    },
+    {
+      "name": "erased_original_error",
+      "pass": true,
+      "rejection": "ValueError"
+    },
+    {
+      "name": "wrong_negative_budget_sha",
+      "pass": true,
+      "rejection": "ValueError"
+    },
+    {
+      "name": "wrong_R0_sha",
+      "pass": true,
+      "rejection": "ValueError"
+    },
+    {
+      "name": "missing_derived_binding",
+      "pass": true,
+      "rejection": "ValueError"
+    },
+    {
+      "name": "reordered_derived_binding",
+      "pass": true,
+      "rejection": "ValueError"
+    },
+    {
+      "name": "reordered_refresh_steps",
+      "pass": true,
+      "rejection": "ValueError"
+    },
+    {
+      "name": "missing_original_family_binding",
+      "pass": true,
+      "rejection": "ValueError"
+    },
+    {
+      "name": "fresh_separate_outputs_accepted_without_writing",
+      "pass": true
+    },
+    {
+      "name": "protected_00_stage",
+      "pass": true
+    },
+    {
+      "name": "protected_00_receipt",
+      "pass": true
+    },
+    {
+      "name": "protected_01_stage",
+      "pass": true
+    },
+    {
+      "name": "protected_01_receipt",
+      "pass": true
+    },
+    {
+      "name": "protected_02_stage",
+      "pass": true
+    },
+    {
+      "name": "protected_02_receipt",
+      "pass": true
+    },
+    {
+      "name": "protected_03_stage",
+      "pass": true
+    },
+    {
+      "name": "protected_03_receipt",
+      "pass": true
+    },
+    {
+      "name": "protected_04_stage",
+      "pass": true
+    },
+    {
+      "name": "protected_04_receipt",
+      "pass": true
+    },
+    {
+      "name": "protected_05_stage",
+      "pass": true
+    },
+    {
+      "name": "protected_05_receipt",
+      "pass": true
+    },
+    {
+      "name": "protected_06_stage",
+      "pass": true
+    },
+    {
+      "name": "protected_06_receipt",
+      "pass": true
+    },
+    {
+      "name": "protected_07_stage",
+      "pass": true
+    },
+    {
+      "name": "protected_07_receipt",
+      "pass": true
+    },
+    {
+      "name": "protected_08_stage",
+      "pass": true
+    },
+    {
+      "name": "protected_08_receipt",
+      "pass": true
+    },
+    {
+      "name": "preexisting_admission_refused",
+      "pass": true
+    },
+    {
+      "name": "preexisting_driver_outcome_refused",
+      "pass": true
+    }
+  ],
+  "original_source_pins_unchanged": {
+    "D:\\基于yolo和卡尔曼滤波\\tools\\staging\\final55_after07_stage01\\stage_after07.py": "a7915583503beb87ed40ab0309df810558098a2cf157f36e766fbf2ba495069e",
+    "D:\\基于yolo和卡尔曼滤波\\tools\\experiment_orchestration\\humble54_closed_measurement01\\refresh_capacity_after28.py": "a67a90f7786a1c8e918cd8953d2447f77d0667cb74404d44813917daf3534002",
+    "D:\\基于yolo和卡尔曼滤波\\tools\\experiment_orchestration\\humble54_closed_measurement01\\run_closed_measurement.py": "f32bd4bc97e58a15417fb9757eceb7e7cf2de2cb4e16ac5df54d200a40bae3b0",
+    "D:\\基于yolo和卡尔曼滤波\\tools\\staging\\final55_offline_overlay_20261103\\stage.py": "25a88f5ba369c918c5d891828b5e2434c61f75f33eb5485749f1ec0fda632268",
+    "D:\\基于yolo和卡尔曼滤波\\tools\\staging\\final55_profile03_driver_candidate04\\stage_profile02.py": "082ed8b6fc229cc1d188f27e4b896a4864695dfbcaf65c57fe06fcf9d28e4f7f"
+  },
+  "resolved_finding": "New candidate output isolation rejects stage, receipt and sidecars inside original7, continuation6, refresh3 and other protected evidence trees.",
+  "production_enabled": false,
+  "registered_inputs": {},
+  "native_started": false,
+  "real_bag_model_or_derived_read": false,
+  "limits": [
+    "Only Windows source and small temporary fixtures were inspected or executed.",
+    "No real positive budget exists or is registered by this review.",
+    "Positive capacity remains a historical snapshot, not current capacity or formal admission."
+  ]
+}

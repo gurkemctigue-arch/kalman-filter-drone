@@ -1,0 +1,58 @@
+{
+  "verified_utc": "2026-11-03T13:18:20.113863+00:00",
+  "status": "PASS_SMALL_SYNTHETIC_WINDOWS_REVIEW_ONLY",
+  "scope": "NO_NATIVE_NO_REAL_TRACE_NO_BAG_NO_MODEL_NO_PERFORMANCE_CLAIM",
+  "inputs": [
+    {
+      "path": "D:\\基于yolo和卡尔曼滤波\\tools\\diagnostics\\humble54_pipeline_timing_perf01\\reducer_candidate.py",
+      "bytes": 14516,
+      "sha256": "6fb6aec8e4d395f21fc3cf664f56007fa1836cc073b507f2a9e0a3e4e5588f64"
+    },
+    {
+      "path": "D:\\基于yolo和卡尔曼滤波\\tools\\diagnostics\\humble54_pipeline_timing_perf01\\indexed_reduction.py",
+      "bytes": 4700,
+      "sha256": "f2ea139adb69add9e113e38096e10831dcf7a130988f3ecacd84968684d5d4ca"
+    },
+    {
+      "path": "D:\\基于yolo和卡尔曼滤波\\tools\\diagnostics\\humble54_pipeline_timing_perf01\\build_candidate.py",
+      "bytes": 2944,
+      "sha256": "f72f7d6d670d0c61fb2bfea53682221ef457d3cb89d52b4a4e5f1fa6b5f7676f"
+    },
+    {
+      "path": "D:\\基于yolo和卡尔曼滤波\\tools\\diagnostics\\humble54_pipeline_timing_perf01\\test_candidate.py",
+      "bytes": 10609,
+      "sha256": "5994da2f074ee15ce82f44718438d7032adfa71b9bffa1bc9e2e3ae4ce7826c8"
+    },
+    {
+      "path": "D:\\基于yolo和卡尔曼滤波\\tools\\diagnostics\\humble54_pipeline_timing_bench01\\reducer.py",
+      "bytes": 14982,
+      "sha256": "628271811d1454b1521586cbe332d4d3636f24434ce783fb8f437a51edcb1351"
+    },
+    {
+      "path": "D:\\基于yolo和卡尔曼滤波\\tools\\diagnostics\\humble54_timing_capability_probe01\\probe.py",
+      "bytes": 40007,
+      "sha256": "c7d0050cab71ce6a340c7fc5647531e92334029c8dc38b14393d2dc0058ae426"
+    }
+  ],
+  "independent_checks": {
+    "event_index_queries": 91,
+    "outcome_index_queries": 13,
+    "navigation_predicates": 343,
+    "stream_cases": 792,
+    "whole_outputs": 20,
+    "multifile_outputs": 1
+  },
+  "candidate_exact_rebuild_in_memory": true,
+  "sources_unchanged": true,
+  "author_suite_observed": {
+    "command": "python -B tools/diagnostics/humble54_pipeline_timing_perf01/test_candidate.py",
+    "exit_code": 0,
+    "tests": 11,
+    "whole_output_comparisons": 131
+  },
+  "limits": [
+    "All EventIndex navigation inputs are sorted by the reducer before indexing.",
+    "Independent stream cases use positive chunk_bytes and closed synthetic files.",
+    "Large recorded-trace equality and native performance remain unverified."
+  ]
+}

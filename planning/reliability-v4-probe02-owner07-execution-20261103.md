@@ -1,5 +1,9 @@
 # probe02 剩余五场的实际续跑
 
+21:25:36至21:26:34，完整行人的六路真实trace已在原机器锁下离线复算，session35081 exit0、线程46700同线程释放防休眠；27项归约字段精确一致、所有原件前后SHA/identity未变，归约调用耗时55.483605695秒，采样RSS最大6544707584B（并非进程峰值差）。[原验证收据](../results/diagnostics/humble54_pipeline_timing_perf_verify_full_person01/verification_receipt.original.json)保留。随后单独复制出bench02，保留bench01；bench、observer、typed三文件字节相同，只有归约器及索引helper变化，25项回归通过。21:30:06开始完整汽车回放，session83906，输出 `/root/humble54_pipeline_bench02_full_car01`，线程34172，最终结果仍待原终态；不并行压缩或仿真。容量衔接候选已独审通过，仍禁用，尚无真实正预算。
+
+21:15:35，完整行人软件回放原进程实际exit0，session25910回收，线程36824同线程释放防休眠。原summary SHA `2975ba128d784bc6c2dc1d0aa55029035be5e3a4050cb54a3bc4d59133d77277`，2729724B；[完整副本及精简诊断](../results/diagnostics/humble54_pipeline_timing_full_person01/review01.json)已保存。三条DDS边752/4511/1857全部候选、50117输入全量、1377条FOLLOW全链/480条非FOLLOW，五进程全0、无清理错误。汇总总耗时包含原平方级扫描，不把前台26分钟当算法延迟；候选命令的RGB-D回调到适配器回调中位数1.006360150秒、p95 1.157933436秒、最大5.523512446秒，候选子集不能代表总体或物理E2E。下一步是独立候选对完整trace的实际全字段复算，再决定只优化归约实现；原运行和strict未知均保留。
+
 21:07（北京时间）检查：完整行人回放的五个workers已退出，原bench主进程仍在汇总约1GiB日志，session25910尚无最终输出。源审发现逐命令/逐RGB全表扫描等汇总热点，正在隔离候选中准备优化，不中途更换本次实现。新[离线计时诊断页](../results/diagnostics/humble54_pipeline_timing_view01/index.html)仅收录四次已闭合短回放，41项计数检查一致、Chrome交互验证通过；它不替代完整回放结果或正式验收。
 
 **软件计时更新：short04于20:47:24实际完成，五个进程全部exit0，清理错误为空，前台session83611已回收，线程45336同线程释放防休眠。** 三条DDS边分别76/453/504条，全部得到受控候选匹配；504条适配器命令中151条FOLLOW拥有完整软件链，353条FAILSAFE按非FOLLOW原样保留。252个收到的RGB中76个有FOLLOW链。全候选命令的回调到回调时间中位数753674083ns、p95为1158279926ns，命令可能复用同一图像，不能把该子集统计当总体性能或物理E2E。原summary副本及分母在[short04诊断](../results/diagnostics/humble54_pipeline_timing_run04/review01.json)。原short01/02停止、short03完整但0候选均保留；没有重分类历史strict未知。

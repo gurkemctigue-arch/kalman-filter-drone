@@ -1,5 +1,7 @@
 # Current fixed07 / actual short03 outcome
 
+Actual later executions: short04 completed cleanly with 151 FOLLOW candidates / 504 command callbacks; full person01 completed cleanly at 2026-11-03T13:15:35 UTC with 1,377 FOLLOW candidates / 1,857 callbacks and all 50,117 selected inputs replayed. All five workers exited 0, all owned groups exited, and cleanup errors were empty. Full summary SHA is `2975ba128d784bc6c2dc1d0aa55029035be5e3a4050cb54a3bc4d59133d77277`. These are controlled software candidates only; physical E2E and historical strict UNKNOWN remain unchanged. The paragraphs below retain their earlier preparation snapshots. An isolated reducer optimization is under review, not adopted in fixed07.
+
 The current reviewed source candidate is source_sha256_windows07.json, SHA `4cbc8ad3a2fb04c25599b8df90cf66ff84f1aa7ff17d5b3965bfc96d1be04730`. Validation receipt SHA: `f1c8c72b05209afc376eb4b23b4a65e22cb3280955566f071b347d5f03aff54f`. Root review precedes the next native bench. No new bench was started by this change.
 
 Actual short03 finished normally: all five algorithm/replay workers exited 0 and cleanup completed, but its result is NOT_OBSERVED, with 0 candidates and 504 UNKNOWN command opportunities. The three DDS edges retained 76/454/504 UNKNOWN takes. Those original results remain unchanged. Its original summary SHA is `d893695df5ef0eabc764970aa31b2afdf410cbc65763211ca37baee77f8e0037`.

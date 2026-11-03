@@ -1,5 +1,13 @@
 # runner08 之后的 final55 执行索引
 
+**当前真实路径与最新准备入口，优先于下方历史原卡：** 原测量 receipt 为 `/mnt/d/WSL/UAVHumble22-validation/humble54_probe02_closed_measurement_after07_01`，7 个实际命令后因 `Refused: Refusing large input` 停止；其同级 `_continue_after28_01` receipt 记录 f32 续接的 6 个命令全部退出 0，但整体仅因最终容量门拒绝而退出 2。两份失败终态、原 28 份测量、两个具名导出和 R0 均保留，不能称为单一“12 步成功测量”。原 `full280_storage_budget_probe02_after07_01/budget.json` 的约 153 GiB 物理缺口尚未解除，当前没有真实新正预算，正式实验仍未启动。
+
+1. 真实空间改善之后，由 root 显式运行已准备的[容量复核工具及说明](../humble54_closed_measurement01/capacity_refresh01/README.md)。源码固定 SHA 为 `a67a90f7786a1c8e918cd8953d2447f77d0667cb74404d44813917daf3534002`；当前仅代码、测试和独审通过，尚未原生执行。它只新做原 idle、inventory、budget 三步，保持原 280 槽、`storage` 和全部预留不变；再次负预算或未知仍停止。
+2. 只有真实容量复核成功终态和真实新正预算产生后，才可考虑[隔离 staging 消费候选](../../staging/final55_capacity_refresh_candidate01/README.md)。新源码 SHA 为 `c83cc666cdf8924f53033446c075d284eeccaafe5f9cbd95fb9253d8262f8e12`，10 项作者测试及 43 项最终独立检查通过；**仍为 `PRODUCTION_ENABLED=False`、`REGISTERED_INPUTS={}`，不得直接 execute**。root 须在登记前再源码审查，登记实际 `capacity_refresh_terminal`、`capacity_refresh_budget` 和显式 stage/receipt 输出；本次没有预造这些未来 pins。
+3. 新候选只读核对真实 **失败 7 步＋失败 6 步＋容量复核成功 3 步**，保留两次原退出码 2，再复用原 10 overlay/profile、`base.prepare()` 和 staging outcome 核心。它不启动 WSL、构建、飞行、owner 或自动续接；staging 通过也不是正式 admission。记录的正预算仍是历史采样快照，当前容量须由后续原 guard 独立核对。
+
+以下从“当前状态更正（2026-11-03）”开始保留为历史技术索引；其中旧链、旧成功 12 步前提、旧 flags 和旧路径不代表当前已执行状态，不得越过上述真实容量与新窗口检查直接套用。
+
 **当前状态更正（2026-11-03）：旧 owner06、observer07、trigger09 已真实以 exit 2 停止，runner08 未启动。旧 runner08 必须取得旧07的三个真实 exit 0及其完整闭合，当前条件不成立，禁止直接调用08或把旧失败改写为成功。** 新 collector07 仅续原计划剩余5槽；必须等待其实际退出、16槽原件复核和新闭合审计后，才可使用 [新直接测量准备入口](../humble54_closed_measurement01/README.md)复用原08的28格测量、具名 velocity exports、R0 与完整280槽预算。该入口仍 `PRODUCTION_ENABLED=False`、`REGISTERED_INPUTS={}`，没有预登记未来结果。下文涉及旧07 full profile、旧08结果路径及 candidate04 旧chain接口的内容仅保留为原技术索引，须由真实新闭合和后续已审适配替代，不能直接执行；原120+160=280范围、容量预留、正式验收条件全部保留。
 
 当前实际续接路径（优先于下文旧链示例）：

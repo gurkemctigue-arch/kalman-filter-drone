@@ -1,0 +1,72 @@
+{
+  "started_utc": "2026-11-03T13:15:21.154380+00:00",
+  "finished_utc": "2026-11-03T13:15:25.902633+00:00",
+  "scope": "ISOLATED_SYNTHETIC_DIFFERENTIAL_ONLY_NOT_REAL_TRACE_EQUIVALENCE",
+  "native_started": false,
+  "real_trace_or_bag_or_model_read": false,
+  "fixed07_modified": false,
+  "c7_assess_unchanged": true,
+  "passed": true,
+  "test_count": 11,
+  "failures": 0,
+  "errors": 0,
+  "whole_output_differential_comparisons": 131,
+  "all_bound_sources_unchanged_during_test": true,
+  "source_bindings": [
+    {
+      "path": "tools/diagnostics/humble54_pipeline_timing_perf01/build_candidate.py",
+      "bytes": 2944,
+      "sha256": "f72f7d6d670d0c61fb2bfea53682221ef457d3cb89d52b4a4e5f1fa6b5f7676f"
+    },
+    {
+      "path": "tools/diagnostics/humble54_pipeline_timing_perf01/indexed_reduction.py",
+      "bytes": 4700,
+      "sha256": "f2ea139adb69add9e113e38096e10831dcf7a130988f3ecacd84968684d5d4ca"
+    },
+    {
+      "path": "tools/diagnostics/humble54_pipeline_timing_perf01/reducer_candidate.py",
+      "bytes": 14516,
+      "sha256": "6fb6aec8e4d395f21fc3cf664f56007fa1836cc073b507f2a9e0a3e4e5588f64"
+    },
+    {
+      "path": "tools/diagnostics/humble54_pipeline_timing_perf01/test_candidate.py",
+      "bytes": 10609,
+      "sha256": "5994da2f074ee15ce82f44718438d7032adfa71b9bffa1bc9e2e3ae4ce7826c8"
+    },
+    {
+      "path": "tools/diagnostics/humble54_pipeline_timing_perf01/validate_candidate.py",
+      "bytes": 2713,
+      "sha256": "1026480a8b98683b4c75110290bb03d74b9082df1f6e8816d8a85f775b928a37"
+    },
+    {
+      "path": "tools/diagnostics/humble54_pipeline_timing_bench01/reducer.py",
+      "bytes": 14982,
+      "sha256": "628271811d1454b1521586cbe332d4d3636f24434ce783fb8f437a51edcb1351"
+    },
+    {
+      "path": "tools/diagnostics/humble54_timing_capability_probe01/probe.py",
+      "bytes": 40007,
+      "sha256": "c7d0050cab71ce6a340c7fc5647531e92334029c8dc38b14393d2dc0058ae426"
+    },
+    {
+      "path": "tools/diagnostics/humble54_pipeline_timing_bench01/test_bench.py",
+      "bytes": 32349,
+      "sha256": "25f2e035e0142513e803ff8e4f2aa8fbf093d2f8048b8185c88666fd11bcd864"
+    }
+  ],
+  "synthetic_benchmark": {
+    "events": 4027,
+    "commands": 161,
+    "times_seconds": {
+      "fixed07": 0.29805169999599457,
+      "candidate": 0.04787410004064441
+    },
+    "speedup": 6.225740008542261,
+    "scope": "SMALL_SYNTHETIC_WINDOWS_ONLY_NOT_NATIVE_PERFORMANCE",
+    "whole_output_equal": true
+  },
+  "test_log_sha256": "7417142f99daa4abf22236e091b4cf5848c706f5e19d70867eaa5e5be64ec914",
+  "real_trace_equivalence": "NOT_TESTED_WAIT_FOR_ORIGINAL_FULLPERSON_CLOSURE_AND_SERIAL_REDUCTION",
+  "physical_e2e": "NOT_OBSERVED",
+  "formal_progress": "0/280_UNCHANGED"
+}

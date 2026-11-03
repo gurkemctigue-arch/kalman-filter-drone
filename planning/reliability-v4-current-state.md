@@ -1,5 +1,9 @@
 # 当前工作交接（持续开发，非验收报告）
 
+**21:30:06更新：当前唯一原生重任务为完整汽车独立回放，session83906，线程34172持临时防休眠，输出 `/root/humble54_pipeline_bench02_full_car01`。** 新bench02源码清单SHA `ac5cdc19d91fcb25b467151088ea66967debc179152b25cb1857673db67b4e8c`；只归约器和索引helper变化，bench/observer/typed三者与07字节相同，原bench01保留。此前真实完整行人27项全字段复算相同，原件前后未变，收据SHA `941b94518bff74d53ee2316c60364868d84973430d9d9314fff9fc0d40b01d79`，session35081已exit0并释放线程46700防休眠。隔离stage消费候选 `c83cc666cdf8924f53033446c075d284eeccaafe5f9cbd95fb9253d8262f8e12` 已通过作者10项及独立43项检查，生产仍关闭、注册表空；真实正预算尚无。正式0/280与容量缺口不变。
+
+**21:15:35完整行人回放真实exit0，session25910已回收，线程36824同线程释放临时防休眠。** 原summary 2,729,724B，SHA `2975ba128d784bc6c2dc1d0aa55029035be5e3a4050cb54a3bc4d59133d77277`，副本在 `results/diagnostics/humble54_pipeline_timing_full_person01/`。五进程全0、全部组退出、无清理错误；50117输入，三DDS边752/4511/1857候选，FOLLOW全链1377/1857、非FOLLOW480保留；RGB有链680/928。当前无该回放后台任务；独立性能候选通过作者11项/131次输出差分和外部反例复核，尚需完整原trace实际复算，原fixed07/c7不动。阶段衔接候选仍默认禁用，容量缺152.82GiB、正式0/280。
+
 **21:07补充：完整行人的原生workers已全部退出，仅原bench主进程仍在reduce_files汇总，session25910尚未闭合；不要并行启动汽车或压缩。** 离线诊断页已交付在 `results/diagnostics/humble54_pipeline_timing_view01/index.html`，4份闭合summary、41项计数检查一致，Chrome交互验证通过。隔离性能候选与容量刷新后的stage衔接候选正在准备，均不改当前fixed07或冻结源、不代表生产准入。
 
 **计时与容量刷新更新：short04已真实exit0并被回收（20:47:24），三条DDS边76/453/504条均形成受控候选匹配；151条FOLLOW全链、353条非FOLLOW保留。** 当前root持有完整行人回放session25910，20:49:56启动、timeout900，尚无最终结果。实际管线源固定07 map `4cbc8ad3a2fb04c25599b8df90cf66ff84f1aa7ff17d5b3965bfc96d1be04730`；历史strict1857/1857 UNKNOWN及physical E2E不变。容量刷新CLI `a67a90f7786a1c8e918cd8953d2447f77d0667cb74404d44813917daf3534002` 已独审通过，未执行；f32原源码和旧负预算不改。用户清理范围问题仍待答，禁止把私有40目录清单上传Git或自行删除其他目录。后续stage消费新刷新终态的适配尚未实现。
