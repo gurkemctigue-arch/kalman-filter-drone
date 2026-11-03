@@ -1,5 +1,7 @@
 # RGB-D UAV target tracking and following
 
+**2026-11-03 19:23（北京时间）检查点：核心开发 12/12、安全 4/4 PASS；扩展 probe02 完成 15/16，10 PASS、4 FAIL、1 INCOMPLETE_EVIDENCE，最后一场汽车远距离运行中；正式 0/280。** 汽车变速的速度和位置模式均已通过，距离/高度 RMSE 分别为 0.643/0.161 m 和 0.618/0.169 m。当前看本机 [collector07 实时页](results/monitor_humble54_probe02_owner07/index.html)、[开发录像和报告入口](results/diagnostics/humble54_development_view01/index.html)及[实际执行记录](planning/reliability-v4-probe02-owner07-execution-20261103.md)。完整容量预算、final55 与正式重复研究仍待执行；原失败和未知保留。独立计时台架及后续重评工具已通过源码和假对象复核，尚未执行对应原生回放或 nav28/sensor4 重评。下方检查点均按其记录时间阅读，旧 owner06/等待器已停止，不能用于判断当前运行状态。
+
 **2026-11-03 16:38（北京时间）检查点：核心开发12/12、安全4/4 PASS；扩展probe02已完成9场（6 PASS、2 FAIL、1 INCOMPLETE_EVIDENCE），第十场汽车深度空洞运行中，正式0/280。** 汽车深度噪声通过，距离/高度RMSE0.736/0.148 m，末段稳定；行人7m远距离场也通过。查看[实时进度](results/monitor_humble54_probe02_owner06/index.html)、[工作交接](planning/reliability-v4-current-state.md)与[容量风险](planning/reliability-v4-space-risk-20261103.md)。新增[历史开发录包占用清单](tools/diagnostics/historical_dev_bag_metadata01/README.md)，245包逻辑98.73GiB，全部保留。
 
 <details>

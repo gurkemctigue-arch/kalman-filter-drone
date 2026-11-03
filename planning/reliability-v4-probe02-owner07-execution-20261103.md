@@ -31,3 +31,5 @@ collector07 复核原第 13 场后于 18:46:42 实际启动汽车 `speed_changes
 独立软件时延台架的 windows04 已完成源码和假对象复核，当前入口见 `tools/diagnostics/humble54_pipeline_timing_bench01/CURRENT.md`。它保留原检测、导航估计、控制和 adapter 代码路径，仅在隔离回放中观测对象来源及三条 DDS 边；尚未进行该完整管线的原生实测。其候选软件时延不能替代原飞行时延或物理 E2E，观察开销也尚未单独测量。root 的只读 Linux 路径查询已确认 frozen54/results 符号链接和原 core person/car velocity 路径均存在并解析至原发布目录，无需路径补救；后续实际执行仍须原逐件 SHA 核查。
 
 后续 nav28/sensor4 的外置直接 producer 已通过 14 项作者假对象测试及独立复核，源码 SHA 为 `e1c439d51a5ae6569ae7efe34b3eb899228977a2fbf27d9d1f3bf2aa88bd3f75`，独审回执在 `tools/experiment_orchestration/final55_nav_sensor_after07_producer_review01/independent_review01.json`。它按原注册逐条执行并调用原完成清单校验器，sensor 部分只消费真实提取与阅图材料，不生成身份成功或人工审图结论。尚无任何实际 nav28 或 sensor4 producer 执行；必须在完整终态、实际容量预算、新 cold 构建与真实 target/注册之后再执行，原 FAIL/null 和准入门保持不变。
+
+19:22:19，第 15 场汽车 `speed_changes_position` 产生原始 PASS，终态 SHA 为 `057534448a7e4da809e8f84dc09705f1c3d016f5ace6e0cb10b06ab4b8c4ebab`。距离 RMSE 为 0.617890 m，高度 RMSE 为 0.169138 m，状态覆盖率为 0.914894，真值覆盖率为 1.0，原六项导航检查均通过。collector07 随后实际启动最后一场汽车 `far_distance`；扩展原终态累计 15/16：10 PASS、4 FAIL、1 INCOMPLETE_EVIDENCE。开发成果页按原终态重生成，尚不能把原 collector、monitor 或 launcher 计为已退出。
