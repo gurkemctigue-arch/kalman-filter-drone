@@ -1,0 +1,95 @@
+{
+  "kind": "INDEPENDENT_IMAGE_AND_INPUT_OPPORTUNITY_REVIEW_NOT_ORIGINAL_ACCEPTANCE",
+  "created_utc": "2026-11-03T02:49:42.954303+00:00",
+  "reviewers": [
+    "root assistant: contact sheet and both full-resolution obscured frames",
+    "clock_split_external_review assistant: independently viewed the same originals and checked all image hashes"
+  ],
+  "manifest": {
+    "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_dropout_gap01_extract01\\manifest.json",
+    "sha256": "50c0316564d169231e4598918e83601070f67d6c94bc3e41ad2816fb085706e9"
+  },
+  "images": [
+    {
+      "file": "raw_rgb_01_seq013059_ns31000000000.png",
+      "sha256": "dfb0eec2031c18e5a8a33404c869c725a9ea38381087e637dfa182e664ce9763",
+      "acquisition_ns": 31000000000,
+      "observation": "ONE_PERSON_AND_SCENE_VISIBLE_IN_CONTACT_SHEET"
+    },
+    {
+      "file": "raw_rgb_02_seq013089_ns31100000000.png",
+      "sha256": "f643997703d915e5c8bbab0f9d92f05ba84c1488939989fa546149a7b3bc460e",
+      "acquisition_ns": 31100000000,
+      "observation": "ONE_PERSON_AND_SCENE_VISIBLE_IN_CONTACT_SHEET"
+    },
+    {
+      "file": "raw_rgb_03_seq013119_ns31200000000.png",
+      "sha256": "f3e58941fcb9d3b4f620fa3375f9a55dce5206a78189a7c662271cf65d5caa1f",
+      "acquisition_ns": 31200000000,
+      "observation": "ONE_PERSON_AND_SCENE_VISIBLE_IN_CONTACT_SHEET"
+    },
+    {
+      "file": "raw_rgb_04_seq013147_ns31300000000.png",
+      "sha256": "e08b2e5abea16e9b88c156d394ad8e85917df9bacdac6da314c924c998b227be",
+      "acquisition_ns": 31300000000,
+      "observation": "ONE_PERSON_AND_SCENE_VISIBLE_IN_CONTACT_SHEET"
+    },
+    {
+      "file": "raw_rgb_05_seq013173_ns31400000000.png",
+      "sha256": "c1ad4f88f55632d509b990c605d0113ae7087a66d0f1119c8378cce2dd26b523",
+      "acquisition_ns": 31400000000,
+      "observation": "SCENE_OBSCURED_NEAR_BLACK_TARGET_NOT_VISIBLE"
+    },
+    {
+      "file": "raw_rgb_06_seq013200_ns31500000000.png",
+      "sha256": "52184bf8ad3c5aaf4d2d3c8371a20dcbd7b5c8a3a42e00ad41656153a3ededf8",
+      "acquisition_ns": 31500000000,
+      "observation": "SCENE_OBSCURED_NEAR_BLACK_TARGET_NOT_VISIBLE"
+    },
+    {
+      "file": "raw_rgb_07_seq013226_ns31600000000.png",
+      "sha256": "65e8a37bf3bdc17b28d2b732b60935f05b68182eec558d8620e3b1cafd5312a9",
+      "acquisition_ns": 31600000000,
+      "observation": "ONE_PERSON_AND_SCENE_VISIBLE_IN_CONTACT_SHEET"
+    },
+    {
+      "file": "raw_rgb_08_seq013257_ns31700000000.png",
+      "sha256": "69b65c7320ff922ffe95dc3635f92cfc1f6bd696dbfe0f91524c20f262d0ba69",
+      "acquisition_ns": 31700000000,
+      "observation": "ONE_PERSON_AND_SCENE_VISIBLE_IN_CONTACT_SHEET"
+    },
+    {
+      "file": "raw_rgb_09_seq013288_ns31800000000.png",
+      "sha256": "3ffe975f9c38e1c547b089cacfc4fc24dd3f51eae8dd41e98ae61f74597b5331",
+      "acquisition_ns": 31800000000,
+      "observation": "ONE_PERSON_AND_SCENE_VISIBLE_IN_CONTACT_SHEET"
+    }
+  ],
+  "short_request_window_s": [
+    31.3,
+    31.580000000000002
+  ],
+  "close_ack_s": 31.32,
+  "within_request_raw_rgb_ns": [
+    31300000000,
+    31400000000,
+    31500000000
+  ],
+  "within_request_raw_depth_ns": [
+    31300000000,
+    31400000000,
+    31500000000
+  ],
+  "within_request_research_rgb_count": 0,
+  "within_request_research_depth_count": 0,
+  "within_request_diagnostic_count": 0,
+  "raw_31_3_frame_precedes_close_ack": true,
+  "original_detector_interruption_observed": null,
+  "original_terminal_status": "INCOMPLETE_EVIDENCE",
+  "interpretation": "Two raw frames after successful close ACK and before open request show an obscured near-black scene; the downstream fault input and detector have no recorded frame opportunity in this request interval. This directly supplies upstream image evidence without inventing an empty detector result.",
+  "limits": [
+    "Does not isolate the separate effects of occlusion and injected dropout on state prediction.",
+    "Does not establish complete physical identity truth, original engineering PASS or formal readiness.",
+    "Original terminal, original checks and extraction manifest remain unchanged."
+  ]
+}

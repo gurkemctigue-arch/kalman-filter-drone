@@ -1,5 +1,11 @@
 # RGB-D UAV target tracking and following
 
+**2026-11-03 10:53（北京时间）检查点：原扩展计划为 5 START、4 个原终态（2 PASS、2 INCOMPLETE_EVIDENCE）、11 个未尝试槽；正式仍 0/280。** 第五槽 `person_extension_combined_seed004` 已于 `2026-11-03T02:50:53.012521Z` 由新 normal CLI 单槽启动。查看[监督进度页](results/project_progress/humble54_extension_supervised02/index.html)；它由旧 owner 的历史观测拷贝和实际新 START/终态 marker 派生，不是新 owner、正式准入或扩展全批通过证明。精确进程身份、session 和临时防休眠 receipt06 见[执行记录](planning/reliability-v4-execution-20261103.md)。
+
+第三槽 dropout 的原 `INCOMPLETE_EVIDENCE` 保留：独立阅图记录已实际完成，31.4/31.5 秒原图近黑、前后可见行人，见[联系图](results/diagnostics/humble54_dropout_gap01_extract01/contact_sheet.png)及[独立阅图记录](results/diagnostics/humble54_dropout_gap01_extract01/visual_review01.json)。这项新观察没有修复或准入原缺证，原提取 manifest 仍为 `PENDING_VISUAL_REVIEW`。第四槽 latency 亦保留原 `INCOMPLETE_EVIDENCE`；已定位末端浮点时间越界一 ULP 导致瞬态统计 751 行、整段 752 行的分母不一致。工作区候选修复已有 35 项测试通过，但尚无真实录包的新命名复评，冻结 54 和当前批次仍使用原源码。
+
+旧 owner 保持 `STOPPED_FAULT`；旧等待器保持 `STOPPED_REFUSED_NO_RETRY`、`followon_launched=false`，句柄已关闭。上一 latency 调用 session95312 正常退出 0，不改变原槽判定。仅对原 PENDING 槽逐一监督执行，每槽结束先核原终态及安全证据再决定下一槽。完整 28 格容量、两类导出/R0、final55 和正式 280 次仍待执行。以下 10:31 及更早内容均为历史检查点。
+
 **2026-11-03 10:31（北京时间）检查点：原扩展计划已用新 normal CLI 单槽续跑，当前 4 START、3 个原终态（2 PASS、1 INCOMPLETE_EVIDENCE）、12 个未尝试槽，正式仍 0/280。** 本次仅以 `--max-new-trials 1` 执行下一个 PENDING 通信延迟槽，实际 START 为 10:25:24.728624；第三场 dropout 的缺证原判保留，未重试、未修复完成。新[监督进度页](results/project_progress/humble54_extension_supervised02/index.html)由旧 owner 历史观测与新 START marker 派生，不是新 owner 或准入。原 owner 仍 `STOPPED_FAULT`，原等待器已 `STOPPED_REFUSED_NO_RETRY`、不再等待或启动后续；当前槽结束须核原终态和安全证据后再决定下一槽。容量、导出和定标尚未由此启动，见[实际执行与身份绑定](planning/reliability-v4-execution-20261103.md)。下方较早运行中描述均为历史检查点。
 
 **2026-11-03 09:44（北京时间）检查点：Humble54 扩展 16 正在运行，2 场 START、1 场原始 PASS、14 场未开始；正式研究仍为 0/280。** 09:44:07 的实际进度为 `RUNNING`，命令与监控器的创建身份及新鲜心跳核验通过；当前为 `person_extension_depth_holes_seed004`。首场深度噪声于 09:38:26 记录原始工程 PASS，距离/高度 RMSE 为 0.757915/0.161986 m，末端持续稳定均通过；navigation 原状态 `RECORDED_WITH_CENSORED_FAILURES` 保留。查看[首场原件与哈希](tools/experiment_orchestration/humble54_extension_first01/README.md)、[扩展 16 实时进度](results/project_progress/humble54_extension16_run01/index.html)及[本轮执行记录](planning/reliability-v4-execution-20261103.md)。[核心 12/12](tools/experiment_orchestration/humble54_core12_closed01/README.md)和[独立安全 03 四场](tools/experiment_orchestration/humble54_safety4_closed03/README.md)原始工程 PASS 均已闭合。

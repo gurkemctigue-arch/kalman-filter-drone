@@ -377,7 +377,9 @@ def evaluate(records, config, *, physical=None, events=None):
     distance = float(config["desired_distance_m"]); height = float(config["desired_height_m"])
     samples = []; kf_counts = Counter(); truth_counts = Counter()
     for index in range(int(math.floor((end - follow) / GRID_DT_S + 1e-8)) + 1):
-        timestamp = follow + index * GRID_DT_S
+        # A grid endpoint admitted by the count tolerance must not round past
+        # the recorded end and disappear from strict transient/truth queries.
+        timestamp = min(end, follow + index * GRID_DT_S)
         state = _preceding(states, state_times, timestamp, STREAM_TIMEOUT_S)
         status = _preceding(statuses, status_times, timestamp, STREAM_TIMEOUT_S)
         task = request_at(timestamp)

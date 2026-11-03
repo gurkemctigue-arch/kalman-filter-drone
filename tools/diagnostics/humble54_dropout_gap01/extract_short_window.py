@@ -83,8 +83,8 @@ def bind_inputs(source: Path, plan_path: Path, slot_id: str) -> tuple[dict, Path
     if Path(plan["output"]).resolve() != plan_path.parent:
         raise ValueError("Use the original plan in its original matrix directory")
     trial = one(plan["trials"], lambda row: row["id"] == slot_id, "planned slot")
-    if trial.get("condition") != "dropout":
-        raise ValueError("This diagnostic is restricted to the planned dropout condition")
+    if trial.get("condition") not in {"dropout", "combined"}:
+        raise ValueError("This diagnostic is restricted to planned dropout/combined conditions")
     directory = Path(trial["directory"]).resolve(strict=True)
     if directory.name != trial["name"] or directory.parent != Path(plan["results_root"]).resolve():
         raise ValueError("Original trial name/directory/results-root binding differs")
@@ -115,7 +115,7 @@ def bind_inputs(source: Path, plan_path: Path, slot_id: str) -> tuple[dict, Path
                         artifacts["configuration/sensor_faults.json"])
     if (type(faults.get("seed")) is not int or faults["seed"] != trial["seed"]
             or decimal_time(faults.get("drop_fraction")) != Decimal("0.10")):
-        raise ValueError("Original sensor fault seed/drop fraction differs from the planned dropout")
+        raise ValueError("Original sensor fault seed/drop fraction differs from the planned input loss")
     for name in ("recording_closure.json", "bag_integrity.json"):
         report = load_small(directory / name, evidence, artifacts[name])
         if report.get("status") != "PASS":

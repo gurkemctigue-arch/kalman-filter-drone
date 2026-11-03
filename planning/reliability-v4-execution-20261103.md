@@ -2,6 +2,18 @@
 
 本记录是执行检查点，不是全项目验收报告。用户已授权继续修复、仿真、统计、交付及 GitHub 同步。正式研究仍为 **0/280**。
 
+**10:53（北京时间）实际检查点：原扩展计划 5 START、4 个原终态（2 PASS、2 INCOMPLETE_EVIDENCE）、11 个未尝试槽。** 第五槽 `person_extension_combined_seed004` 已在新 normal CLI 单槽调用中实际 START：`2026-11-03T02:50:53.012521Z`。本次 Windows monitor owned child 为 PID **50620** / creation FILETIME `134381478446741119`，WSL 命令为 PID **47440** / FILETIME `134381478448326284`，unified-exec session **90558**。上一 latency 调用 session **95312** 已正常退出 **0**，不把其原槽改判 PASS。
+
+临时防休眠 `D:/WSL/UAVHumble22-validation/power_owner54/receipt06/state.json` 已实读核验：observer PID **52092**，monitor PID **50620** / FILETIME `134381478446741119`，`status=ACTIVE`，心跳 `2026-11-03T02:52:52.1797843Z`，`scope=TEMPORARY_SYSTEM_SLEEP_REQUEST_ONLY`、`global_power_policy_changed=false`。这是本轮临时系统休眠请求，不是全局电源策略变更。
+
+当前[监督进度页](../results/project_progress/humble54_extension_supervised02/index.html)继续汇合旧 owner 历史观测的拷贝及实际新 START/终态 marker，只是派生观察，不是新 owner、正式准入或扩展全批 PASS。旧扩展 owner 仍 `STOPPED_FAULT`；旧 waiter/followon01 仍 `STOPPED_REFUSED_NO_RETRY`、`followon_launched=false`，句柄关闭。不得伪造或复用其 `COMPLETED` 状态。仅逐一使用 normal CLI 监督原 PENDING 槽，每个新终态先核原件与安全证据，再决定下一槽；不自动重试失败或缺证槽。
+
+第四槽 `person_extension_latency_seed004` 原终态为 `INCOMPLETE_EVIDENCE`，完成时间 `2026-11-03T02:42:57.447159+00:00`，原件 SHA256 `c411dd9f7cd0e5db64cd4e12404d424a01ab91a5598073a05c80c90cda47b93a`；flight_exit0、非 infrastructure stop、cleanup residual `[]`，source-clock/native-startup/surface 均 PASS，navigation 原标签 `RECORDED_WITH_CENSORED_FAILURES` 不变。工程原因 `Transient denominator differs from the whole interval` 已定位：19.0–94.1 秒、0.1 秒网格共 752 行，末行 `94.10000000000001` 比上界高 `1.4210854715202004e-14` 秒，严格区间过滤使四个瞬态块均只剩 751 行。这是统计实现不一致，并非算法性能阈值失败证据。候选网格修复已有 35 项测试通过，但尚无真实 bag 的新命名复评；冻结 54 未变，当前批次仍用原源码，原终态不改。
+
+第三槽 `person_extension_dropout_seed004` 的原 `INCOMPLETE_EVIDENCE`、短窗 research/diagnostic=0 及 interruption=null 均保留。新抽图实际 `COMPLETED`、exit0（session62132）；独立阅图已实际记录九张原图，31.4/31.5 秒近黑，前后可见行人，见[联系图](../results/diagnostics/humble54_dropout_gap01_extract01/contact_sheet.png)和[独立阅图原件](../results/diagnostics/humble54_dropout_gap01_extract01/visual_review01.json)。原提取 manifest 仍为 `PENDING_VISUAL_REVIEW`，不能称原缺证已修复或准入。
+
+正式仍 **0/280**。完整 actual28 容量、两类开发录包导出/R0、final55 及正式重复研究均待各自实际执行。以下 10:31 及更早块全部保留为历史记录，不能用于判断本轮进程状态。
+
 **10:31（北京时间）实际单槽续跑：原计划已有 4 START、3 个原终态（2 PASS、1 INCOMPLETE_EVIDENCE）、12 个未尝试槽。** 新 normal CLI 使用 `--max-new-trials 1`，仅执行原计划下一个 PENDING 通信延迟槽；实际 START 为 `2026-11-03T02:25:24.728624Z`，不重试第三场 dropout，不改其缺证判定。新[监督进度页](../results/project_progress/humble54_extension_supervised02/index.html)使用拷贝的旧 owner 历史观测及实际新 START marker 派生观察，不是新 owner、准入或扩展全批通过证明。
 
 本次 Windows monitor owned child 为 PID **16816** / creation FILETIME `134381463176279356`，WSL 命令为 PID **18688** / FILETIME `134381463178057290`，unified-exec session **95312**；独立 watch session **1323**。新临时防休眠 observer PID **51192**，`power_owner54/receipt05/state.json` 为 `ACTIVE`，不改全局电源策略。当前槽结束后须先核新原终态及安全证据，才决定下一个 PENDING 槽；未授权用自动重试覆盖旧缺证。

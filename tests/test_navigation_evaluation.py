@@ -35,16 +35,17 @@ def header(timestamp, frame="map"):
     return NS(stamp=stamp(timestamp), frame_id=frame)
 
 
-def fixture(*, multi=False, roll=0.):
+def fixture(*, multi=False, roll=0., follow=6., end=12.):
     shift = np.array([3., -2., 1.])
     offset = np.array([0., 0., .24])
     q = [math.sin(roll / 2), 0, 0, math.cos(roll / 2)]
     rotation = quaternion_matrix(q)
-    records = [Record("/tracking/flight_phase", 6., NS(data="FOLLOW"), 6.)]
+    records = [Record("/tracking/flight_phase", follow, NS(data="FOLLOW"), follow)]
     if multi:
-        records.append(Record("/tracking/selection", 5.9, NS(action=0, target_uuid="task"), 5.9))
-    for index in range(241):
-        timestamp = index * .05
+        records.append(Record("/tracking/selection", follow - .1, NS(action=0, target_uuid="task"), follow - .1))
+    last_index = round(end / .05)
+    for index in range(last_index + 1):
+        timestamp = end if index == last_index else index * .05
         model = np.array([timestamp, 0, 2. - (rotation @ offset)[2]])
         body = model + rotation @ offset
         target = np.array([body[0] + 9., body[1], 0.])
@@ -56,7 +57,7 @@ def fixture(*, multi=False, roll=0.):
         records.append(Record("/ground_truth/poses", timestamp, NS(transforms=transforms), timestamp))
         pose = NS(position=xyz(body - shift), orientation=NS(x=q[0], y=q[1], z=q[2], w=q[3]))
         records.append(Record("/vehicle/odometry", timestamp, NS(header=header(timestamp), child_frame_id="base_link", pose=NS(pose=pose)), timestamp))
-        if timestamp < 6. - 1e-9:
+        if timestamp < follow - 1e-9:
             continue
         state = NS(header=header(timestamp), state=1, track_id=1, target_uuid="task", prediction_age_s=0.,
                    position_m=xyz(target - shift), velocity_mps=xyz([1, 0, 0]))
@@ -152,6 +153,69 @@ class NavigationEvaluationTests(unittest.TestCase):
         self.assertFalse(result["frames"][-1]["navigation_valid"])
         self.assertTrue(result["whole_interval"]["transients"]["base_link"]["distance"]["settling_right_censored"])
         self.assertLess(result["kf_navigation"]["valid_state_coverage"],baseline["kf_navigation"]["valid_state_coverage"])
+
+    def test_grid_endpoint_roundoff_keeps_real_end_in_every_denominator(self):
+        records, config, _ = fixture(follow=19., end=94.1)
+        self.assertGreater(19. + 751 * .1, 94.1)  # The observed one-ULP boundary.
+        result = evaluation.evaluate(records, config)
+        self.assertEqual(result["interval"]["end_s"], 94.1)
+        self.assertEqual(result["frames"][-1]["time_s"], 94.1)
+        self.assertTrue(all(row["time_s"] <= 94.1 for row in result["frames"]))
+        self.assertEqual(result["whole_interval"]["scheduled_samples"], 752)
+        self.assertEqual(result["whole_interval"]["matched_truth_samples"], 752)
+        self.assertEqual(result["kf_navigation"]["counts"]["scheduled_samples"], 752)
+        for reference in ("base_link", "model_origin"):
+            for transient in result["whole_interval"]["transients"][reference].values():
+                self.assertEqual(transient["scheduled_samples"], 752)
+                self.assertEqual(transient["valid_truth_samples"], 752)
+
+    def test_grid_endpoint_preserves_inactive_missing_truth_and_unstable_tail(self):
+        for failure in ("inactive", "missing_truth", "unstable"):
+            with self.subTest(failure=failure):
+                records, config, _ = fixture(follow=19., end=94.1)
+                for row in records:
+                    if row.time_s != 94.1:
+                        continue
+                    if failure == "inactive" and row.topic == "/tracking/status":
+                        row.message.lifecycle = 4
+                    if row.topic == "/ground_truth/poses":
+                        if failure == "missing_truth":
+                            row.message.transforms = row.message.transforms[:1]
+                        elif failure == "unstable":
+                            row.message.transforms[1].transform.translation.x += 2.
+                            row.message.transforms[1].transform.translation.z += 1.
+                result = evaluation.evaluate(records, config)
+                last = result["frames"][-1]
+                self.assertEqual(last["time_s"], 94.1)
+                self.assertEqual(result["whole_interval"]["scheduled_samples"], 752)
+                self.assertEqual(result["kf_navigation"]["counts"]["scheduled_samples"], 752)
+                self.assertEqual(result["whole_interval"]["inactive_control_samples"], int(failure == "inactive"))
+                self.assertEqual(result["whole_interval"]["matched_truth_samples"], 751 if failure == "missing_truth" else 752)
+                if failure == "missing_truth":
+                    self.assertIsNone(last["base_link_distance_error_m"])
+                elif failure == "unstable":
+                    self.assertGreater(abs(last["base_link_distance_error_m"]), .9)
+                    self.assertGreater(abs(last["base_link_height_error_m"]), .25)
+                else:
+                    self.assertFalse(last["active"])
+                for reference in ("base_link", "model_origin"):
+                    for transient in result["whole_interval"]["transients"][reference].values():
+                        self.assertEqual(transient["scheduled_samples"], 752)
+                        self.assertFalse(transient["settled_through_interval_end"])
+                        self.assertTrue(transient["settling_right_censored"])
+                        self.assertIsNone(transient["settling_time_s"])
+
+    def test_non_grid_endpoint_tail_does_not_invent_an_extra_sample(self):
+        records, config, _ = fixture(follow=19., end=94.15)
+        result = evaluation.evaluate(records, config)
+        self.assertEqual(result["interval"]["end_s"], 94.15)
+        self.assertEqual(result["whole_interval"]["scheduled_samples"], 752)
+        self.assertEqual(result["kf_navigation"]["counts"]["scheduled_samples"], 752)
+        self.assertEqual(result["frames"][-1]["time_s"], 19. + 751 * .1)
+        self.assertLess(result["frames"][-1]["time_s"], 94.15)
+        for reference in ("base_link", "model_origin"):
+            for transient in result["whole_interval"]["transients"][reference].values():
+                self.assertEqual(transient["scheduled_samples"], 752)
 
     def test_cli_explicitly_requests_clock_records_and_restores_topic_filter(self):
         records, config, _ = fixture()

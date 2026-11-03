@@ -1,5 +1,11 @@
 # 查看当前实验
 
+**2026-11-03 10:53（北京时间）实际检查点：原扩展计划为 5 START、4 个原终态（2 PASS、2 INCOMPLETE_EVIDENCE）、11 个未尝试槽；正式仍 0/280。** 第五槽 `person_extension_combined_seed004` 已于 `2026-11-03T02:50:53.012521Z` 在新 normal CLI 单槽调用中启动。请打开[监督进度页](../results/project_progress/humble54_extension_supervised02/index.html)；它汇合旧 owner 历史观测的拷贝和实际新 START/终态 marker，仅是派生观察，不是新 owner、正式准入或扩展全批 PASS。
+
+第三槽 dropout 与第四槽 latency 的原 `INCOMPLETE_EVIDENCE` 均保留。独立阅图已记录 31.4/31.5 秒近黑、前后可见行人，见[联系图](../results/diagnostics/humble54_dropout_gap01_extract01/contact_sheet.png)和[阅图原件](../results/diagnostics/humble54_dropout_gap01_extract01/visual_review01.json)；原提取 manifest 仍为 `PENDING_VISUAL_REVIEW`，不能称原缺证已修复。latency 已定位浮点端点导致的 751/752 行统计分母不一致；候选修复有 35 项测试通过，真实录包的新命名复评尚未执行，冻结 54 和当前批次仍用原源码。
+
+旧 owner 为 `STOPPED_FAULT`，旧等待器为 `STOPPED_REFUSED_NO_RETRY` / `followon_launched=false` 且句柄关闭；上一 session95312 退出 0 不改变原槽判定。当前 session90558 及精确进程身份、receipt06 的临时防休眠状态见[执行记录](../planning/reliability-v4-execution-20261103.md)。每个原 PENDING 槽单独执行后须核原终态与安全证据，再决定下一槽。完整 28 格容量、导出/R0、final55 和正式 280 次均待执行。以下 10:31 及更早块保留为历史描述。
+
 **2026-11-03 10:31（北京时间）实际检查点：新 normal CLI 正在原计划中单独执行下一个 PENDING 通信延迟槽，4 START、3 个原终态（2 PASS、1 INCOMPLETE_EVIDENCE）、12 个未尝试槽；正式仍 0/280。** 本次使用 `--max-new-trials 1`，实际 START 为 10:25:24.728624，第三场 dropout 不重试、缺证未解决。请打开新的[监督进度页](../results/project_progress/humble54_extension_supervised02/index.html)；其事件来自旧 owner 历史观测的拷贝及实际新 START marker，仅为派生观察，不是新 owner、准入或通过结论。
 
 旧 owner 仍 `STOPPED_FAULT`，旧等待器已 `STOPPED_REFUSED_NO_RETRY`、`followon_launched=false` 且句柄关闭，不再等待自动续接。新槽结束须先核原终态和安全证据，再决定下一 PENDING 槽；后续容量/导出/定标须另用新 CLI，当前未启动。当前进程身份、session 与临时防休眠 receipt05 见[执行记录](../planning/reliability-v4-execution-20261103.md)。以下 09:44 及更早块中的“当前/等待”均保留为历史描述。

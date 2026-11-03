@@ -1,5 +1,13 @@
 # 当前工作交接（持续开发，非验收报告）
 
+**2026-11-03 10:53（北京时间）当前快照：原扩展计划 5 START、4 个原终态（2 PASS、2 INCOMPLETE_EVIDENCE）、11 个未尝试槽；正式仍 0/280。** 第五槽 `person_extension_combined_seed004` 已于 `2026-11-03T02:50:53.012521Z` 由新 normal CLI 单槽启动。新[监督进度页](../results/project_progress/humble54_extension_supervised02/index.html)由旧 owner 历史观测拷贝和实际新 START/终态 marker 派生，不是新 owner、正式准入或扩展全批通过证明。进程/session 与 receipt06 见[执行记录](reliability-v4-execution-20261103.md)。
+
+第三槽 dropout 保留原 `INCOMPLETE_EVIDENCE` 和原 interruption=null：31.3–31.58 秒短窗被 seed004 的两次 200 ms 检测丢帧覆盖，短 research/diagnostic 计数为 0。新独立阅图记录已实际完成，31.4/31.5 秒近黑、前后可见行人，见[联系图](../results/diagnostics/humble54_dropout_gap01_extract01/contact_sheet.png)及[阅图记录](../results/diagnostics/humble54_dropout_gap01_extract01/visual_review01.json)；原提取 manifest 仍为 `PENDING_VISUAL_REVIEW`。新观察不等于修复或准入原缺证。
+
+第四槽 latency 也保留原 `INCOMPLETE_EVIDENCE`，上一 session95312 已正常退出 0。其瞬态 751 行与整段 752 行的差异已定位到末端时间高于区间上界一 ULP，属于统计实现不一致，不能据此认定算法性能阈值失败。工作区候选修复已有 35 项测试通过；真实录包的新命名复评尚未执行，冻结 54 和当前运行批次仍用原源码。
+
+旧 owner 仍 `STOPPED_FAULT`，旧等待器仍 `STOPPED_REFUSED_NO_RETRY` / `followon_launched=false`、句柄关闭；禁止复用或伪造其 `COMPLETED` 状态。继续只逐一监督原 PENDING 槽，每个终态先核安全证据再决定下一槽，不自动重试旧缺证槽。完整 28 格容量、两类导出/R0、final55 与正式 280 次仍待执行。以下 10:31 及更早“当前/运行中/等待器”段落均为历史检查点。
+
 **2026-11-03 10:31（北京时间）当前快照：原扩展计划以新 normal CLI 单槽续跑，4 START、3 个原终态（2 PASS、1 INCOMPLETE_EVIDENCE）、12 个未尝试槽；正式仍 0/280。** 本次 `--max-new-trials 1` 仅执行下一个 PENDING 通信延迟槽，实际 START 为 `2026-11-03T02:25:24.728624Z`，没有重试或改判第三场 dropout。其短窗证据冲突仍待最小修复。新[监督进度](../results/project_progress/humble54_extension_supervised02/index.html)使用旧 owner 历史观测拷贝及新 START marker，属于派生观察，不是新 owner 或准入；精确进程/session 及 receipt05 见[执行记录](reliability-v4-execution-20261103.md)。
 
 原 owner 保持 `STOPPED_FAULT`，原等待器保持 `STOPPED_REFUSED_NO_RETRY` / `followon_launched=false`，句柄已关闭，不再等待自动续接。每个新槽结束后先核原终态与安全证据，再决定下一槽；后续容量、导出及定标需另用新 CLI，目前未由此启动。以下较早“当前/运行中/等待器”段落全部保留为历史检查点，不覆盖本段状态。
