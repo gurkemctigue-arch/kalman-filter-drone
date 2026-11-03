@@ -12,6 +12,7 @@ from datetime import datetime
 from decimal import Decimal
 import hashlib
 import json
+import math
 from pathlib import Path
 import re
 import struct
@@ -21,6 +22,7 @@ REVISION = "sensor_input_interruption_v1"
 CORROBORATED = "UPSTREAM_INPUT_INTERRUPTION_CORROBORATED"
 NOT_APPLICABLE = "NOT_APPLICABLE"
 INCOMPLETE = "INCOMPLETE"
+CONDITIONAL_IDENTITY = "CONDITIONAL_UNOBSERVED_AFTER_DEMONSTRATED_SHORT_LOSS"
 SCOPE = "DEVELOPMENT_EVIDENCE_ONLY_NOT_FORMAL_ADMISSION"
 FAULT_ALGORITHM = "SHA256_SEED_COLON_WINDOW_FIRST8_UINT64_DIV_2POW64_LT_FLOAT_FRACTION_V1"
 RAW_RGB = "/camera/color/image_raw"
@@ -144,6 +146,9 @@ def _contract(contract):
     _require(isinstance(contract, dict), "An explicit contract is required")
     _require(contract.get("schema_version") == 1 and contract.get("revision") == REVISION
              and contract.get("scope") == SCOPE, "Wrong explicit evidence contract revision/scope")
+    _require("conditional_identity_rule" not in contract
+             or contract["conditional_identity_rule"] == CONDITIONAL_IDENTITY,
+             "Conditional identity classification requires the exact explicit opt-in rule")
     _require(contract.get("fault_algorithm") == FAULT_ALGORITHM
              and type(contract.get("drop_window_ns")) is int and contract["drop_window_ns"] == 200_000_000,
              "Contract must bind the original 200 ms SHA256 dropout algorithm")
@@ -179,7 +184,44 @@ def _contract(contract):
 def _report(contract):
     return {"schema_version": 1, "revision": REVISION, "scope": SCOPE, "status": INCOMPLETE,
             "contract_sha256": _digest(contract), "module_sha256": _hash(__file__),
-            "claim_boundary": BOUNDARY, "errors": [], "known_algorithm_failures": []}
+            "claim_boundary": BOUNDARY, "errors": [], "known_algorithm_failures": [],
+            "conditional_identity_rule": contract.get("conditional_identity_rule"),
+            "conditional_nonobservations": []}
+
+
+def conditional_identity_nonobservation(surface, row, record):
+    """Reuse collector07's strict short-loss predicate; never infer identity success."""
+    checks = row["checks"]
+    required_nulls = ("first_measured_after_open_s", "recovery_after_open_s")
+    _require(row.get("kind") == "short" and row.get("complete") is True
+             and row.get("result") == "FAIL"
+             and "identity_preserved_on_observed_recovery" in checks
+             and checks["identity_preserved_on_observed_recovery"] is None
+             and checks.get("no_loss_during_short_occlusion") is False
+             and all(key in row and row[key] is None for key in required_nulls)
+             and record.get("status") == record.get("engineering_result") == "FAIL"
+             and surface["acceptance"].get("result") == "FAIL",
+             "Conditional identity null lacks its unchanged demonstrated-loss FAIL")
+    missing = row.get("post_open_measured_missing_receive_time_count")
+    _require(type(missing) is int and missing == 0,
+             "Conditional identity null has missing recovery receive-clock evidence")
+    start, end, lost = row.get("start_s"), row.get("end_s"), row.get("first_lost_s")
+    trial_end, recovery_window = surface["interval"].get("end_s"), surface["configuration"].get("recovery_window_s")
+    values = (start, end, lost, trial_end, recovery_window, row.get("duration_s"),
+              surface["configuration"].get("max_prediction_s"))
+    _require(all(type(value) in {int, float} and math.isfinite(value) for value in values),
+             "Conditional identity null has missing/nonfinite/boolean window clocks")
+    _require(0 <= start <= end <= trial_end and recovery_window > 0
+             and 0 <= row["duration_s"] <= surface["configuration"]["max_prediction_s"]
+             and math.isclose(row["duration_s"], end - start, rel_tol=1e-9, abs_tol=1e-9)
+             and start <= lost <= min(trial_end, end + recovery_window),
+             "Conditional identity null contradicts the frozen short-loss time predicate")
+    return {"classification": CONDITIONAL_IDENTITY,
+            "field": "surface:short:identity_preserved_on_observed_recovery",
+            "value": None, "original_status": "FAIL", "original_engineering_result": "FAIL", "short_result": "FAIL",
+            "first_lost_s": lost, "recovery_observation_end_s": min(trial_end, end + recovery_window),
+            "identity_result": "UNOBSERVED", "identity_switch_observed_or_excluded": "NEITHER",
+            "claim_boundary": "Development collection only; observed recovery comparison unavailable. Original FAIL/null retained."}
 
 
 def _artifact(directory, terminal, relative):
@@ -189,7 +231,7 @@ def _artifact(directory, terminal, relative):
     return path
 
 
-def _original(plan_path, plan, slot_id, result):
+def _original(plan_path, plan, slot_id, result, *, conditional_identity_rule=None):
     trial = _one(plan["trials"], lambda row: row.get("id") == slot_id, "planned slot")
     directory = Path(trial["directory"]).resolve(strict=True)
     _require(directory.name == trial["name"] and _same(directory.parent, plan["results_root"]), "Original trial directory/name differs")
@@ -273,6 +315,10 @@ def _original(plan_path, plan, slot_id, result):
     for row, keys in ((short, SHORT_ALGORITHM), (long, LONG_ALGORITHM)):
         for key in keys:
             value = row["checks"].get(key)
+            if (row["kind"] == "short" and key == "identity_preserved_on_observed_recovery"
+                    and key in row["checks"] and value is None and conditional_identity_rule == CONDITIONAL_IDENTITY):
+                result["conditional_nonobservations"].append(conditional_identity_nonobservation(surface, row, terminal))
+                continue
             _require(type(value) is bool, "Additional required behavior check is unknown: " + row["kind"] + ":" + key)
             if value is False:
                 result["known_algorithm_failures"].append("surface:" + row["kind"] + ":" + key + "=FAIL")
@@ -429,7 +475,8 @@ def evaluate_slot(plan_path: Path, slot_id: str, extraction_manifest_path: Path,
                   visual_review_path: Path, contract: dict) -> dict:
     """Return stimulus corroboration separately from preserved behavior outcomes.
 
-    Known algorithm False values remain known failures. Other required nulls,
+    Known algorithm False values remain known failures. Only an explicitly opted-in,
+    strictly demonstrated short loss may classify its recovery identity null. Other required nulls,
     source/recording failures, long safety failures or binding problems are
     INCOMPLETE. NOT_APPLICABLE is only a fully checked existing detector outcome.
     """
@@ -439,7 +486,8 @@ def evaluate_slot(plan_path: Path, slot_id: str, extraction_manifest_path: Path,
         original_plan, plan = _contract(contract)
         _require(_same(original_plan, plan_path), "Caller plan differs from explicit four-slot contract")
         _one(contract["dev_slots"], lambda row: row["slot_id"] == slot_id, "contract slot")
-        trial, directory, terminal, surface, short, faults = _original(original_plan, plan, slot_id, result)
+        trial, directory, terminal, surface, short, faults = _original(original_plan, plan, slot_id, result,
+            conditional_identity_rule=contract.get("conditional_identity_rule"))
         observed = short["checks"].get("detector_interruption_observed")
         count = _int(short["diagnostic_frames_inside"], "original short diagnostic count")
         if type(observed) is bool and count > 0:

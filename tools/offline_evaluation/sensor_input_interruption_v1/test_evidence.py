@@ -1,6 +1,7 @@
 """Tiny synthetic file fixtures; never ROS, real bags, actual images or inference."""
 
 from collections import Counter
+from copy import deepcopy
 import importlib.util
 import json
 from pathlib import Path
@@ -198,6 +199,23 @@ class EvidenceTests(unittest.TestCase):
     def run_slot(self, slot="person_dropout"):
         return e.evaluate_slot(self.plan_path, slot, self.extracts[slot], self.reviews[slot], self.contract)
 
+    def make_conditional_short_loss(self, slot="person_dropout"):
+        def mutate(surface):
+            surface["interval"] = {"end_s": 60.0}
+            surface["configuration"]["recovery_window_s"] = 3.0
+            short = surface["occlusions"][0]
+            short.update(duration_s=short["end_s"] - short["start_s"], first_lost_s=32.0,
+                         first_measured_after_open_s=None, recovery_after_open_s=None,
+                         post_open_measured_missing_receive_time_count=0, result="FAIL")
+            short["checks"].update(no_loss_during_short_occlusion=False, identity_preserved_on_observed_recovery=None)
+            surface["acceptance"]["result"] = "FAIL"
+        self.edit_surface(mutate, terminal_status="FAIL", slot=slot)
+        trial = next(row for row in self.trials if row["id"] == slot)
+        terminal = e._json(self.matrix / "slots" / (slot + ".json"))
+        terminal["engineering_result"] = "FAIL"
+        self.write_terminal(trial, terminal)
+        self.refresh(trial)
+
     def edit_manifest(self, mutate, slot="person_dropout"):
         value = e._json(self.extracts[slot])
         mutate(value)
@@ -309,6 +327,86 @@ class EvidenceTests(unittest.TestCase):
     def test_unknown_short_behavior_is_not_replaced(self):
         self.edit_surface(lambda value: value["occlusions"][0]["checks"].update(prediction_observed=None))
         self.assertEqual(self.run_slot()["status"], e.INCOMPLETE)
+
+    def test_conditional_short_loss_requires_exact_opt_in_and_preserves_original_failure(self):
+        self.make_conditional_short_loss()
+        self.assertEqual(self.run_slot()["status"], e.INCOMPLETE)
+        for invalid in (None, True, False, "", "ALLOW_UNKNOWN_IDENTITY"):
+            with self.subTest(invalid=invalid):
+                self.contract["conditional_identity_rule"] = invalid
+                self.assertEqual(self.run_slot()["status"], e.INCOMPLETE)
+        self.contract["conditional_identity_rule"] = e.CONDITIONAL_IDENTITY
+        before = {str(path): e._hash(path) for path in self.root.rglob("*") if path.is_file()}
+        report = self.run_slot()
+        self.assertEqual(report["status"], e.CORROBORATED, report)
+        self.assertEqual(report["original"]["terminal_status"], "FAIL")
+        self.assertEqual(report["original"]["acceptance"]["result"], "FAIL")
+        self.assertIsNone(report["original"]["occlusions"][0]["checks"]["identity_preserved_on_observed_recovery"])
+        self.assertEqual(report["known_algorithm_failures"], ["surface:short:no_loss_during_short_occlusion=FAIL"])
+        self.assertEqual(len(report["conditional_nonobservations"]), 1)
+        proof = report["conditional_nonobservations"][0]
+        self.assertEqual(proof["classification"], e.CONDITIONAL_IDENTITY)
+        self.assertEqual(proof["original_engineering_result"], "FAIL")
+        self.assertEqual(proof["identity_result"], "UNOBSERVED")
+        self.assertEqual(proof["identity_switch_observed_or_excluded"], "NEITHER")
+        self.assertIsNone(proof["value"])
+        self.assertEqual(before, {str(path): e._hash(path) for path in self.root.rglob("*") if path.is_file()})
+        matrix = e.evaluate_development_manifest(self.matrix_manifest(), self.contract)
+        self.assertEqual(matrix["status"], e.CORROBORATED, matrix)
+        self.assertEqual(len(matrix["per_slot"]), 4)
+        self.assertEqual(sum(len(row["conditional_nonobservations"]) for row in matrix["per_slot"]), 1)
+
+    def test_conditional_predicate_rejects_recovery_missing_clocks_and_undemonstrated_loss(self):
+        self.make_conditional_short_loss()
+        trial = self.trials[0]
+        surface = e._json(Path(trial["directory"]) / "flight_evaluation.json")
+        record = e._json(self.matrix / "slots" / (trial["id"] + ".json"))
+        mutations = [
+            lambda s, r: s["occlusions"][0]["checks"].update(no_loss_during_short_occlusion=True),
+            lambda s, r: s["occlusions"][0]["checks"].update(no_loss_during_short_occlusion=None),
+            lambda s, r: s["occlusions"][0].update(first_measured_after_open_s=32.0),
+            lambda s, r: s["occlusions"][0].update(recovery_after_open_s=0.8),
+            lambda s, r: s["occlusions"][0].pop("first_measured_after_open_s"),
+            lambda s, r: s["occlusions"][0]["checks"].pop("identity_preserved_on_observed_recovery"),
+            lambda s, r: s["occlusions"][0].update(post_open_measured_missing_receive_time_count=1),
+            lambda s, r: s["occlusions"][0].update(post_open_measured_missing_receive_time_count=False),
+            lambda s, r: s["occlusions"][0].pop("post_open_measured_missing_receive_time_count"),
+            lambda s, r: s["occlusions"][0].update(first_lost_s=None),
+            lambda s, r: s["occlusions"][0].update(first_lost_s=True),
+            lambda s, r: s["occlusions"][0].update(first_lost_s=float("nan")),
+            lambda s, r: s["occlusions"][0].update(first_lost_s=float("inf")),
+            lambda s, r: s["occlusions"][0].update(first_lost_s=30.0),
+            lambda s, r: s["occlusions"][0].update(first_lost_s=60.0),
+            lambda s, r: s["occlusions"][0].update(duration_s=0.1),
+            lambda s, r: s["configuration"].update(max_prediction_s=0.1),
+            lambda s, r: s["configuration"].update(recovery_window_s=0.0),
+            lambda s, r: s["interval"].update(end_s=30.0),
+            lambda s, r: s["occlusions"][0].update(result="PASS"),
+            lambda s, r: s["occlusions"][0].update(complete=False),
+            lambda s, r: s["acceptance"].update(result="INCOMPLETE_EVIDENCE"),
+            lambda s, r: r.update(status="PASS"),
+            lambda s, r: r.update(engineering_result="PASS"),
+        ]
+        for index, mutate in enumerate(mutations):
+            with self.subTest(case=index):
+                changed, terminal = deepcopy(surface), deepcopy(record)
+                mutate(changed, terminal)
+                with self.assertRaises((ValueError, KeyError, TypeError)):
+                    e.conditional_identity_nonobservation(changed, changed["occlusions"][0], terminal)
+
+    def test_conditional_opt_in_does_not_replace_other_nulls_or_safety_failures(self):
+        self.make_conditional_short_loss()
+        self.contract["conditional_identity_rule"] = e.CONDITIONAL_IDENTITY
+        trial = self.trials[0]
+        surface = e._json(Path(trial["directory"]) / "flight_evaluation.json")
+        for index, key, value in ((0, "prediction_observed", None), (0, "no_loss_during_short_occlusion", None),
+                                  (1, "prediction_observed", None), (1, "hover_observed_for_long_occlusion", False)):
+            with self.subTest(index=index, key=key):
+                changed = deepcopy(surface)
+                changed["occlusions"][index]["checks"][key] = value
+                write_json(Path(trial["directory"]) / "flight_evaluation.json", changed)
+                self.refresh(trial)
+                self.assertEqual(self.run_slot()["status"], e.INCOMPLETE)
 
     def test_known_short_algorithm_failure_is_preserved_not_censored(self):
         def mutate(value):

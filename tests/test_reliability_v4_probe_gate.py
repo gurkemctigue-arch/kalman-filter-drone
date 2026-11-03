@@ -221,6 +221,8 @@ def evaluate_development_manifest(path, contract):
         surface_path = next(row["report"] for row in trial["evaluations"] if row["kind"] == "surface_flight")
         surface = load(surface_path)
         rows.append({"slot_id":item["slot_id"], "status":item.get("synthetic_status", "UPSTREAM_INPUT_INTERRUPTION_CORROBORATED"),
+            "conditional_identity_rule":contract.get("conditional_identity_rule"),
+            "conditional_nonobservations":item.get("synthetic_conditional_nonobservations", []),
             "errors":[], "original":{"terminal_status":terminal["status"], "engineering_evidence":terminal["engineering_evidence"],
                 "acceptance":surface["acceptance"], "occlusions":surface["occlusions"]},
             "input_bindings":{"plan":binding(contract["source_plan"]["path"]), "terminal":binding(terminal_path),
@@ -582,6 +584,129 @@ class SensorInputEvidenceTests(unittest.TestCase):
         v4.persist_plan(target)
         return root, original, source, target, manifest, declaration
 
+    def conditional_fixture(self, tmp, *, opt_in=True):
+        values = self.fixture(tmp)
+        _, original, source, target, manifest_path, _ = values
+        trial = next(row for row in original["trials"]
+                     if row["target_class"] == "person" and row.get("extension_condition") == "dropout")
+        surface_path = Path(next(spec["report"] for spec in trial["evaluations"] if spec["kind"] == "surface_flight"))
+        surface = v4.load(surface_path)
+        short = next(row for row in surface["occlusions"] if row["kind"] == "short")
+        surface.setdefault("configuration", {}).update(max_prediction_s=0.75, recovery_window_s=3.0)
+        short.update(start_s=2.0, end_s=2.2, complete=True)
+        surface["interval"] = {"end_s": short["end_s"] + 10.0}
+        short.update(duration_s=short["end_s"] - short["start_s"], first_lost_s=short["end_s"] + 0.2,
+                     first_measured_after_open_s=None, recovery_after_open_s=None,
+                     post_open_measured_missing_receive_time_count=0, result="FAIL")
+        short["checks"].update(no_loss_during_short_occlusion=False, identity_preserved_on_observed_recovery=None)
+        surface["acceptance"]["result"] = "FAIL"
+        fixtures.write(surface_path, surface)
+        terminal_path = v4.record_path(original, trial)
+        terminal = v4.load(terminal_path)
+        terminal.update(status="FAIL", engineering_result="FAIL")
+        terminal["artifact_hashes"][surface_path.name] = v4.sha(surface_path)
+        entry = next(row for row in terminal["evaluations"] if row["kind"] == "surface_flight")
+        entry.update(result="FAIL", reported_verdict="FAIL", report_sha256=v4.sha(surface_path))
+        terminal["record_sha256"] = v4.digest(terminal, ("record_sha256",))
+        fixtures.write(terminal_path, terminal)
+        declaration = target["protocol"][v4.SENSOR_INPUT_EVIDENCE_FIELD]
+        contract_path = Path(declaration["contract"]["path"])
+        contract = v4.load(contract_path)
+        if opt_in:
+            contract["conditional_identity_rule"] = v4.CONDITIONAL_IDENTITY
+        fixtures.write(contract_path, contract)
+        declaration["contract"].update(sha256=v4.sha(contract_path), canonical_sha256=v4.digest(contract))
+        manifest = v4.load(manifest_path)
+        manifest["contract_sha256"] = v4.digest(contract)
+        next(row for row in manifest["slots"] if row["slot_id"] == trial["id"])["synthetic_conditional_nonobservations"] = [
+            v4._conditional_identity_nonobservation(surface, short, terminal)]
+        fixtures.write(manifest_path, manifest)
+        return (*values, trial)
+
+    def test_bound_conditional_identity_retains_fail_and_unobserved_denominator(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _, original, source, target, manifest, _, trial = self.conditional_fixture(tmp)
+            before = preserved_hashes(original)
+            mapping, _ = v4.read_sensor_input_evidence_manifest(target, manifest, [source])
+            proof = mapping[str(source.resolve()), trial["id"]]
+            terminal = v4.load(v4.record_path(original, trial))
+            flight = next(row for row in terminal["commands"] if row["kind"] == "flight")
+            failures = v4.extension_algorithm_failures(target, trial, flight, terminal["evaluations"], sensor_input_evidence=proof)
+            self.assertIn("surface:short:no_loss_during_short_occlusion=FAIL", failures)
+            self.assertIn("surface:short:identity_preserved_on_observed_recovery=UNOBSERVED", failures)
+            self.assertEqual(terminal["status"], "FAIL")
+            self.assertEqual(terminal["engineering_result"], "FAIL")
+            self.assertIsNone(proof["original"]["occlusions"][0]["checks"]["identity_preserved_on_observed_recovery"])
+            appendix = v4.sensor_input_unobserved_checks(mapping)
+            self.assertEqual(len(appendix), 5)
+            identities = [row for row in appendix if row["check"].endswith("identity_preserved_on_observed_recovery")]
+            self.assertEqual(len(identities), 1)
+            self.assertEqual(identities[0]["outcome"], "UNOBSERVED")
+            self.assertEqual(identities[0]["identity_switch_observed_or_excluded"], "NEITHER")
+            self.assertEqual(preserved_hashes(original), before)
+
+    def test_bound_conditional_rule_requires_contract_opt_in_and_exact_recomputed_product(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _, _, source, target, manifest, _, _ = self.conditional_fixture(tmp, opt_in=False)
+            with self.assertRaisesRegex(ValueError, "explicit contract opt-in"):
+                v4.read_sensor_input_evidence_manifest(target, manifest, [source])
+        with tempfile.TemporaryDirectory() as tmp:
+            _, _, source, target, manifest, _, trial = self.conditional_fixture(tmp)
+            original = v4.load(manifest)
+            for field, value in (("identity_result", "PASS"), ("value", True),
+                                 ("original_engineering_result", "PASS"), ("first_lost_s", 0.0)):
+                changed = deepcopy(original)
+                row = next(row for row in changed["slots"] if row["slot_id"] == trial["id"])
+                row["synthetic_conditional_nonobservations"][0][field] = value
+                fixtures.write(manifest, changed)
+                with self.subTest(field=field), self.assertRaisesRegex(ValueError, "differs from original values"):
+                    v4.read_sensor_input_evidence_manifest(target, manifest, [source])
+
+    def test_conditional_runner_rechecks_recovery_clocks_other_unknowns_and_physical_gate(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _, original, source, target, manifest, _, trial = self.conditional_fixture(tmp)
+            mapping, _ = v4.read_sensor_input_evidence_manifest(target, manifest, [source])
+            proof = mapping[str(source.resolve()), trial["id"]]
+            terminal = v4.load(v4.record_path(original, trial))
+            flight = next(row for row in terminal["commands"] if row["kind"] == "flight")
+            entries = terminal["evaluations"]
+            path = Path(next(row["report"] for row in trial["evaluations"] if row["kind"] == "surface_flight"))
+            surface = v4.load(path)
+            mutations = [
+                lambda s:s["occlusions"][0].update(first_measured_after_open_s=10.0),
+                lambda s:s["occlusions"][0].update(recovery_after_open_s=0.2),
+                lambda s:s["occlusions"][0].update(post_open_measured_missing_receive_time_count=1),
+                lambda s:s["occlusions"][0].update(post_open_measured_missing_receive_time_count=False),
+                lambda s:s["occlusions"][0].update(first_lost_s=None),
+                lambda s:s["occlusions"][0]["checks"].update(no_loss_during_short_occlusion=True),
+                lambda s:s["occlusions"][0]["checks"].update(prediction_observed=None),
+                lambda s:s["occlusions"][1]["checks"].update(hover_observed_for_long_occlusion=False),
+            ]
+            for index, mutate in enumerate(mutations):
+                altered = deepcopy(surface)
+                mutate(altered)
+                fixtures.write(path, altered)
+                changed = deepcopy(entries)
+                next(row for row in changed if row["kind"] == "surface_flight")["report_sha256"] = v4.sha(path)
+                evidence = deepcopy(proof)
+                evidence["original"]["occlusions"] = altered["occlusions"]
+                with self.subTest(case=index), self.assertRaises((ValueError, TypeError, KeyError)):
+                    v4.extension_algorithm_failures(target, trial, flight, changed, sensor_input_evidence=evidence)
+            fixtures.write(path, surface)
+            nav_path = Path(next(row["report"] for row in trial["evaluations"] if row["kind"] == "navigation"))
+            nav = v4.load(nav_path)
+            nav["whole_interval"]["metrics"]["base_link_distance_error_m"]["rmse"] = 100.0
+            fixtures.write(nav_path, nav)
+            next(row for row in entries if row["kind"] == "navigation")["report_sha256"] = v4.sha(nav_path)
+            failures = v4.extension_algorithm_failures(target, trial, flight, entries, sensor_input_evidence=proof)
+            self.assertIn("navigation:REGISTERED_PERFORMANCE_GATES_FAILED", failures)
+            self.assertIn("surface:short:identity_preserved_on_observed_recovery=UNOBSERVED", failures)
+            nav["whole_interval"]["scheduled_samples"] -= 1
+            fixtures.write(nav_path, nav)
+            next(row for row in entries if row["kind"] == "navigation")["report_sha256"] = v4.sha(nav_path)
+            with self.assertRaisesRegex(ValueError, "not independently evaluable"):
+                v4.extension_algorithm_failures(target, trial, flight, entries, sensor_input_evidence=proof)
+
     def test_complete_attachment_preserves_failures_nulls_and_original_files(self):
         with tempfile.TemporaryDirectory() as tmp:
             root, original, source, target, manifest, _ = self.fixture(tmp)
@@ -754,6 +879,32 @@ class SensorInputEvidenceTests(unittest.TestCase):
         synthetic.edit_surface(lambda surface:surface["occlusions"][0].update(diagnostic_frames_inside=0))
         with self.assertRaisesRegex(ValueError, "all four independently complete"):
             v4.read_sensor_input_evidence_manifest(target, synthetic.matrix_manifest(), [synthetic.plan_path])
+
+    def test_actual_bound_module_conditional_output_matches_runner_recomputation(self):
+        module_path = fixtures.ROOT / "tools/offline_evaluation/sensor_input_interruption_v1/evidence.py"
+        spec = importlib.util.spec_from_file_location("conditional_sensor_input_fixture", module_path.with_name("test_evidence.py"))
+        helpers = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(helpers)
+        synthetic = helpers.EvidenceTests("test_conditional_short_loss_requires_exact_opt_in_and_preserves_original_failure")
+        synthetic.setUp()
+        self.addCleanup(synthetic.doCleanups)
+        synthetic.make_conditional_short_loss("car_dropout")
+        synthetic.contract["conditional_identity_rule"] = v4.CONDITIONAL_IDENTITY
+        contract_path = synthetic.root / "conditional_contract.json"
+        fixtures.write(contract_path, synthetic.contract)
+        declaration = {"schema_version":1, "revision":"sensor_input_interruption_v1", "scope":v4.SENSOR_INPUT_EVIDENCE_SCOPE,
+            "evidence_basis":v4.SENSOR_INPUT_EVIDENCE_BASIS, "module":{"path":str(module_path.resolve()), "sha256":v4.sha(module_path)},
+            "contract":{"path":str(contract_path), "sha256":v4.sha(contract_path), "canonical_sha256":v4.digest(synthetic.contract)},
+            "source_plan":synthetic.contract["source_plan"], "dev_slots":synthetic.contract["dev_slots"]}
+        target = {"frozen_root":str(synthetic.root / "future_source"), "protocol":{v4.SENSOR_INPUT_EVIDENCE_FIELD:declaration}}
+        mapping, binding = v4.read_sensor_input_evidence_manifest(target, synthetic.matrix_manifest(), [synthetic.plan_path])
+        self.assertEqual(len(mapping), 4)
+        self.assertEqual(binding["evidence"]["status"], "UPSTREAM_INPUT_INTERRUPTION_CORROBORATED")
+        proof = mapping[str(synthetic.plan_path), "car_dropout"]
+        self.assertEqual(proof["original"]["terminal_status"], "FAIL")
+        self.assertEqual(len(proof["conditional_nonobservations"]), 1)
+        self.assertEqual(proof["conditional_nonobservations"][0]["identity_result"], "UNOBSERVED")
+        self.assertEqual(len(v4.sensor_input_unobserved_checks(mapping)), 5)
 
 
 if __name__ == "__main__":

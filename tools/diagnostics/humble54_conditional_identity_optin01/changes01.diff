@@ -1,0 +1,575 @@
+--- before/scripts/run_reliability_v4.py
++++ after/scripts/run_reliability_v4.py
+@@ -82,6 +82,7 @@
+ SENSOR_INPUT_EVIDENCE_FIELD = "development_input_interruption_evidence"
+ SENSOR_INPUT_EVIDENCE_SCOPE = "DEVELOPMENT_EVIDENCE_ONLY_NOT_FORMAL_ADMISSION"
+ SENSOR_INPUT_EVIDENCE_BASIS = "POST_HOC_DEVELOPMENT_SOURCE_BINDING_NOT_FORMAL_PREREGISTRATION"
++CONDITIONAL_IDENTITY = "CONDITIONAL_UNOBSERVED_AFTER_DEMONSTRATED_SHORT_LOSS"
+ CORRELATED_BOUND_FIELD = "navigation_correlated_two_face_bound"
+ CORRELATED_BOUND_FLAG = "--correlated-two-face-bound"
+ EXCLUSIVE_NAVIGATION_FIELD = "navigation_exclusive_reference"
+@@ -2080,6 +2081,44 @@
+             if path.is_file() and path.suffix in {".json", ".jsonl", ".yaml", ".yml", ".sdf", ".log", ".bson"}}
+ 
+ 
++def _conditional_identity_nonobservation(surface, row, record):
++    """Independently recheck collector07's predicate against original values."""
++    def require(value, message):
++        if not value:
++            raise ValueError(message)
++    checks = row["checks"]
++    required_nulls = ("first_measured_after_open_s", "recovery_after_open_s")
++    require(row.get("kind") == "short" and row.get("complete") is True
++            and row.get("result") == "FAIL"
++            and "identity_preserved_on_observed_recovery" in checks
++            and checks["identity_preserved_on_observed_recovery"] is None
++            and checks.get("no_loss_during_short_occlusion") is False
++            and all(key in row and row[key] is None for key in required_nulls)
++            and record.get("status") == record.get("engineering_result") == "FAIL"
++            and surface["acceptance"].get("result") == "FAIL",
++            "Conditional identity null lacks its unchanged demonstrated-loss FAIL")
++    missing = row.get("post_open_measured_missing_receive_time_count")
++    require(type(missing) is int and missing == 0,
++            "Conditional identity null has missing recovery receive-clock evidence")
++    start, end, lost = row.get("start_s"), row.get("end_s"), row.get("first_lost_s")
++    trial_end, recovery_window = surface["interval"].get("end_s"), surface["configuration"].get("recovery_window_s")
++    values = (start, end, lost, trial_end, recovery_window, row.get("duration_s"),
++              surface["configuration"].get("max_prediction_s"))
++    require(all(type(value) in {int, float} and math.isfinite(value) for value in values),
++            "Conditional identity null has missing/nonfinite/boolean window clocks")
++    require(0 <= start <= end <= trial_end and recovery_window > 0
++            and 0 <= row["duration_s"] <= surface["configuration"]["max_prediction_s"]
++            and math.isclose(row["duration_s"], end - start, rel_tol=1e-9, abs_tol=1e-9)
++            and start <= lost <= min(trial_end, end + recovery_window),
++            "Conditional identity null contradicts the frozen short-loss time predicate")
++    return {"classification": CONDITIONAL_IDENTITY,
++            "field": "surface:short:identity_preserved_on_observed_recovery",
++            "value": None, "original_status": "FAIL", "original_engineering_result": "FAIL", "short_result": "FAIL",
++            "first_lost_s": lost, "recovery_observation_end_s": min(trial_end, end + recovery_window),
++            "identity_result": "UNOBSERVED", "identity_switch_observed_or_excluded": "NEITHER",
++            "claim_boundary": "Development collection only; observed recovery comparison unavailable. Original FAIL/null retained."}
++
++
+ def read_sensor_input_evidence_manifest(plan, path, probe_paths):
+     """Recompute all four post-hoc stimulus checks with an explicitly bound tool.
+ 
+@@ -2124,6 +2163,8 @@
+             or len({module_path, contract_path, source, manifest_path}) != 4):
+         raise ValueError("Sensor input module/contract/manifest must stay external to frozen and original evidence roots")
+     contract = load(contract_path)
++    if "conditional_identity_rule" in contract and contract["conditional_identity_rule"] != CONDITIONAL_IDENTITY:
++        raise ValueError("Conditional identity classification requires the exact explicit opt-in rule")
+     cells = declared.get("dev_slots")
+     if (digest(contract) != declared["contract"].get("canonical_sha256")
+             or contract.get("revision") != declared["revision"] or contract.get("scope") != declared["scope"]
+@@ -2180,6 +2221,20 @@
+                 or originals.get("terminal") != {"path":str(terminal_path.resolve()), "sha256":sha(terminal_path)}
+                 or originals.get("flight_evaluation.json") != {"path":str(surface_path.resolve()), "sha256":sha(surface_path)}):
+             raise ValueError("Sensor input result must retain its exact original terminal/report/null evidence")
++        conditional = row.get("conditional_nonobservations", [])
++        expected_conditional = []
++        opted_in = contract.get("conditional_identity_rule") == CONDITIONAL_IDENTITY
++        if row.get("conditional_identity_rule") != contract.get("conditional_identity_rule"):
++            raise ValueError("Bound module conditional identity rule differs from explicit contract")
++        for short in surface.get("occlusions", []):
++            checks = short.get("checks", {})
++            if (short.get("kind") == "short" and "identity_preserved_on_observed_recovery" in checks
++                    and checks["identity_preserved_on_observed_recovery"] is None):
++                if not opted_in:
++                    raise ValueError("Conditional identity null requires explicit contract opt-in")
++                expected_conditional.append(_conditional_identity_nonobservation(surface, short, terminal))
++        if conditional != expected_conditional:
++            raise ValueError("Bound module conditional identity classification differs from original values")
+     if (sha(module_path) != declared["module"]["sha256"] or sha(contract_path) != declared["contract"]["sha256"]
+             or sha(source) != declared["source_plan"]["sha256"] or sha(manifest_path) != manifest_sha):
+         raise ValueError("Sensor input source/contract/manifest changed during validation")
+@@ -2190,9 +2245,14 @@
+ 
+ def sensor_input_unobserved_checks(mapping):
+     """Keep the original null as an unobserved stimulus appendix, never False/True."""
+-    return [{"plan_path":key[0], "slot_id":key[1], "check":"surface:short:detector_interruption_observed",
++    result = [{"plan_path":key[0], "slot_id":key[1], "check":"surface:short:detector_interruption_observed",
+              "original_value":None, "outcome":"UNOBSERVED", "stimulus_evidence":row["status"]}
+             for key, row in sorted(mapping.items()) if row["status"] == "UPSTREAM_INPUT_INTERRUPTION_CORROBORATED"]
++    result.extend({"plan_path":key[0], "slot_id":key[1], "check":item["field"], "original_value":None,
++                   "outcome":"UNOBSERVED", "classification":item["classification"],
++                   "identity_result":"UNOBSERVED", "identity_switch_observed_or_excluded":"NEITHER"}
++                  for key, row in sorted(mapping.items()) for item in row.get("conditional_nonobservations", []))
++    return result
+ 
+ 
+ def extension_algorithm_failures(plan, trial, flight, entries, *, sensor_input_evidence=None):
+@@ -2246,10 +2306,24 @@
+             and all(type(row.get(key)) is int and row[key] == 0
+                     for key in ("diagnostic_frames_inside", "candidate_free_frames_inside", "valid_depth_frames_inside"))
+             and sensor_input_evidence is not None and sensor_input_evidence.get("status") == "UPSTREAM_INPUT_INTERRUPTION_CORROBORATED")
++        conditional_identity_null = False
++        if (row["kind"] == "short" and "identity_preserved_on_observed_recovery" in checks
++                and checks["identity_preserved_on_observed_recovery"] is None and sensor_input_evidence is not None
++                and sensor_input_evidence.get("conditional_identity_rule") == CONDITIONAL_IDENTITY):
++            conditional = sensor_input_evidence.get("conditional_nonobservations")
++            if not isinstance(conditional, list) or len(conditional) != 1 or not isinstance(conditional[0], dict):
++                raise ValueError("Conditional identity null requires its exact bound classification")
++            # read_sensor_input_evidence_manifest has independently bound both
++            # original terminal fields; recheck the complete predicate here too.
++            original_record = {"status":sensor_input_evidence.get("original", {}).get("terminal_status"),
++                               "engineering_result":conditional[0].get("original_engineering_result")}
++            if conditional[0] != _conditional_identity_nonobservation(surface, row, original_record):
++                raise ValueError("Conditional identity classification differs from original values")
++            conditional_identity_null = True
+         if (type(checks.get("detector_interruption_observed")) is not bool and not corroborated_null) or type(checks.get("prediction_observed")) is not bool:
+             raise ValueError("Extension probe lacks recorded detector/state evidence during shutter")
+-        if corroborated_null and any(type(checks.get(key)) is not bool for key in
+-                ("no_loss_during_short_occlusion", "identity_preserved_on_observed_recovery")):
++        if corroborated_null and (type(checks.get("no_loss_during_short_occlusion")) is not bool
++                or (type(checks.get("identity_preserved_on_observed_recovery")) is not bool and not conditional_identity_null)):
+             raise ValueError("Sensor input corroboration cannot replace another unknown behavior check")
+         algorithm = ("detector_interruption_observed", "prediction_observed",
+                      *( ("sustained_tracking_after_reselection",) if row["kind"] == "long" else
+--- before/tools/offline_evaluation/sensor_input_interruption_v1/evidence.py
++++ after/tools/offline_evaluation/sensor_input_interruption_v1/evidence.py
+@@ -12,6 +12,7 @@
+ from decimal import Decimal
+ import hashlib
+ import json
++import math
+ from pathlib import Path
+ import re
+ import struct
+@@ -21,6 +22,7 @@
+ CORROBORATED = "UPSTREAM_INPUT_INTERRUPTION_CORROBORATED"
+ NOT_APPLICABLE = "NOT_APPLICABLE"
+ INCOMPLETE = "INCOMPLETE"
++CONDITIONAL_IDENTITY = "CONDITIONAL_UNOBSERVED_AFTER_DEMONSTRATED_SHORT_LOSS"
+ SCOPE = "DEVELOPMENT_EVIDENCE_ONLY_NOT_FORMAL_ADMISSION"
+ FAULT_ALGORITHM = "SHA256_SEED_COLON_WINDOW_FIRST8_UINT64_DIV_2POW64_LT_FLOAT_FRACTION_V1"
+ RAW_RGB = "/camera/color/image_raw"
+@@ -144,6 +146,9 @@
+     _require(isinstance(contract, dict), "An explicit contract is required")
+     _require(contract.get("schema_version") == 1 and contract.get("revision") == REVISION
+              and contract.get("scope") == SCOPE, "Wrong explicit evidence contract revision/scope")
++    _require("conditional_identity_rule" not in contract
++             or contract["conditional_identity_rule"] == CONDITIONAL_IDENTITY,
++             "Conditional identity classification requires the exact explicit opt-in rule")
+     _require(contract.get("fault_algorithm") == FAULT_ALGORITHM
+              and type(contract.get("drop_window_ns")) is int and contract["drop_window_ns"] == 200_000_000,
+              "Contract must bind the original 200 ms SHA256 dropout algorithm")
+@@ -179,7 +184,44 @@
+ def _report(contract):
+     return {"schema_version": 1, "revision": REVISION, "scope": SCOPE, "status": INCOMPLETE,
+             "contract_sha256": _digest(contract), "module_sha256": _hash(__file__),
+-            "claim_boundary": BOUNDARY, "errors": [], "known_algorithm_failures": []}
++            "claim_boundary": BOUNDARY, "errors": [], "known_algorithm_failures": [],
++            "conditional_identity_rule": contract.get("conditional_identity_rule"),
++            "conditional_nonobservations": []}
++
++
++def conditional_identity_nonobservation(surface, row, record):
++    """Reuse collector07's strict short-loss predicate; never infer identity success."""
++    checks = row["checks"]
++    required_nulls = ("first_measured_after_open_s", "recovery_after_open_s")
++    _require(row.get("kind") == "short" and row.get("complete") is True
++             and row.get("result") == "FAIL"
++             and "identity_preserved_on_observed_recovery" in checks
++             and checks["identity_preserved_on_observed_recovery"] is None
++             and checks.get("no_loss_during_short_occlusion") is False
++             and all(key in row and row[key] is None for key in required_nulls)
++             and record.get("status") == record.get("engineering_result") == "FAIL"
++             and surface["acceptance"].get("result") == "FAIL",
++             "Conditional identity null lacks its unchanged demonstrated-loss FAIL")
++    missing = row.get("post_open_measured_missing_receive_time_count")
++    _require(type(missing) is int and missing == 0,
++             "Conditional identity null has missing recovery receive-clock evidence")
++    start, end, lost = row.get("start_s"), row.get("end_s"), row.get("first_lost_s")
++    trial_end, recovery_window = surface["interval"].get("end_s"), surface["configuration"].get("recovery_window_s")
++    values = (start, end, lost, trial_end, recovery_window, row.get("duration_s"),
++              surface["configuration"].get("max_prediction_s"))
++    _require(all(type(value) in {int, float} and math.isfinite(value) for value in values),
++             "Conditional identity null has missing/nonfinite/boolean window clocks")
++    _require(0 <= start <= end <= trial_end and recovery_window > 0
++             and 0 <= row["duration_s"] <= surface["configuration"]["max_prediction_s"]
++             and math.isclose(row["duration_s"], end - start, rel_tol=1e-9, abs_tol=1e-9)
++             and start <= lost <= min(trial_end, end + recovery_window),
++             "Conditional identity null contradicts the frozen short-loss time predicate")
++    return {"classification": CONDITIONAL_IDENTITY,
++            "field": "surface:short:identity_preserved_on_observed_recovery",
++            "value": None, "original_status": "FAIL", "original_engineering_result": "FAIL", "short_result": "FAIL",
++            "first_lost_s": lost, "recovery_observation_end_s": min(trial_end, end + recovery_window),
++            "identity_result": "UNOBSERVED", "identity_switch_observed_or_excluded": "NEITHER",
++            "claim_boundary": "Development collection only; observed recovery comparison unavailable. Original FAIL/null retained."}
+ 
+ 
+ def _artifact(directory, terminal, relative):
+@@ -189,7 +231,7 @@
+     return path
+ 
+ 
+-def _original(plan_path, plan, slot_id, result):
++def _original(plan_path, plan, slot_id, result, *, conditional_identity_rule=None):
+     trial = _one(plan["trials"], lambda row: row.get("id") == slot_id, "planned slot")
+     directory = Path(trial["directory"]).resolve(strict=True)
+     _require(directory.name == trial["name"] and _same(directory.parent, plan["results_root"]), "Original trial directory/name differs")
+@@ -273,6 +315,10 @@
+     for row, keys in ((short, SHORT_ALGORITHM), (long, LONG_ALGORITHM)):
+         for key in keys:
+             value = row["checks"].get(key)
++            if (row["kind"] == "short" and key == "identity_preserved_on_observed_recovery"
++                    and key in row["checks"] and value is None and conditional_identity_rule == CONDITIONAL_IDENTITY):
++                result["conditional_nonobservations"].append(conditional_identity_nonobservation(surface, row, terminal))
++                continue
+             _require(type(value) is bool, "Additional required behavior check is unknown: " + row["kind"] + ":" + key)
+             if value is False:
+                 result["known_algorithm_failures"].append("surface:" + row["kind"] + ":" + key + "=FAIL")
+@@ -429,7 +475,8 @@
+                   visual_review_path: Path, contract: dict) -> dict:
+     """Return stimulus corroboration separately from preserved behavior outcomes.
+ 
+-    Known algorithm False values remain known failures. Other required nulls,
++    Known algorithm False values remain known failures. Only an explicitly opted-in,
++    strictly demonstrated short loss may classify its recovery identity null. Other required nulls,
+     source/recording failures, long safety failures or binding problems are
+     INCOMPLETE. NOT_APPLICABLE is only a fully checked existing detector outcome.
+     """
+@@ -439,7 +486,8 @@
+         original_plan, plan = _contract(contract)
+         _require(_same(original_plan, plan_path), "Caller plan differs from explicit four-slot contract")
+         _one(contract["dev_slots"], lambda row: row["slot_id"] == slot_id, "contract slot")
+-        trial, directory, terminal, surface, short, faults = _original(original_plan, plan, slot_id, result)
++        trial, directory, terminal, surface, short, faults = _original(original_plan, plan, slot_id, result,
++            conditional_identity_rule=contract.get("conditional_identity_rule"))
+         observed = short["checks"].get("detector_interruption_observed")
+         count = _int(short["diagnostic_frames_inside"], "original short diagnostic count")
+         if type(observed) is bool and count > 0:
+--- before/tools/offline_evaluation/sensor_input_interruption_v1/test_evidence.py
++++ after/tools/offline_evaluation/sensor_input_interruption_v1/test_evidence.py
+@@ -1,6 +1,7 @@
+ """Tiny synthetic file fixtures; never ROS, real bags, actual images or inference."""
+ 
+ from collections import Counter
++from copy import deepcopy
+ import importlib.util
+ import json
+ from pathlib import Path
+@@ -198,6 +199,23 @@
+     def run_slot(self, slot="person_dropout"):
+         return e.evaluate_slot(self.plan_path, slot, self.extracts[slot], self.reviews[slot], self.contract)
+ 
++    def make_conditional_short_loss(self, slot="person_dropout"):
++        def mutate(surface):
++            surface["interval"] = {"end_s": 60.0}
++            surface["configuration"]["recovery_window_s"] = 3.0
++            short = surface["occlusions"][0]
++            short.update(duration_s=short["end_s"] - short["start_s"], first_lost_s=32.0,
++                         first_measured_after_open_s=None, recovery_after_open_s=None,
++                         post_open_measured_missing_receive_time_count=0, result="FAIL")
++            short["checks"].update(no_loss_during_short_occlusion=False, identity_preserved_on_observed_recovery=None)
++            surface["acceptance"]["result"] = "FAIL"
++        self.edit_surface(mutate, terminal_status="FAIL", slot=slot)
++        trial = next(row for row in self.trials if row["id"] == slot)
++        terminal = e._json(self.matrix / "slots" / (slot + ".json"))
++        terminal["engineering_result"] = "FAIL"
++        self.write_terminal(trial, terminal)
++        self.refresh(trial)
++
+     def edit_manifest(self, mutate, slot="person_dropout"):
+         value = e._json(self.extracts[slot])
+         mutate(value)
+@@ -309,6 +327,86 @@
+     def test_unknown_short_behavior_is_not_replaced(self):
+         self.edit_surface(lambda value: value["occlusions"][0]["checks"].update(prediction_observed=None))
+         self.assertEqual(self.run_slot()["status"], e.INCOMPLETE)
++
++    def test_conditional_short_loss_requires_exact_opt_in_and_preserves_original_failure(self):
++        self.make_conditional_short_loss()
++        self.assertEqual(self.run_slot()["status"], e.INCOMPLETE)
++        for invalid in (None, True, False, "", "ALLOW_UNKNOWN_IDENTITY"):
++            with self.subTest(invalid=invalid):
++                self.contract["conditional_identity_rule"] = invalid
++                self.assertEqual(self.run_slot()["status"], e.INCOMPLETE)
++        self.contract["conditional_identity_rule"] = e.CONDITIONAL_IDENTITY
++        before = {str(path): e._hash(path) for path in self.root.rglob("*") if path.is_file()}
++        report = self.run_slot()
++        self.assertEqual(report["status"], e.CORROBORATED, report)
++        self.assertEqual(report["original"]["terminal_status"], "FAIL")
++        self.assertEqual(report["original"]["acceptance"]["result"], "FAIL")
++        self.assertIsNone(report["original"]["occlusions"][0]["checks"]["identity_preserved_on_observed_recovery"])
++        self.assertEqual(report["known_algorithm_failures"], ["surface:short:no_loss_during_short_occlusion=FAIL"])
++        self.assertEqual(len(report["conditional_nonobservations"]), 1)
++        proof = report["conditional_nonobservations"][0]
++        self.assertEqual(proof["classification"], e.CONDITIONAL_IDENTITY)
++        self.assertEqual(proof["original_engineering_result"], "FAIL")
++        self.assertEqual(proof["identity_result"], "UNOBSERVED")
++        self.assertEqual(proof["identity_switch_observed_or_excluded"], "NEITHER")
++        self.assertIsNone(proof["value"])
++        self.assertEqual(before, {str(path): e._hash(path) for path in self.root.rglob("*") if path.is_file()})
++        matrix = e.evaluate_development_manifest(self.matrix_manifest(), self.contract)
++        self.assertEqual(matrix["status"], e.CORROBORATED, matrix)
++        self.assertEqual(len(matrix["per_slot"]), 4)
++        self.assertEqual(sum(len(row["conditional_nonobservations"]) for row in matrix["per_slot"]), 1)
++
++    def test_conditional_predicate_rejects_recovery_missing_clocks_and_undemonstrated_loss(self):
++        self.make_conditional_short_loss()
++        trial = self.trials[0]
++        surface = e._json(Path(trial["directory"]) / "flight_evaluation.json")
++        record = e._json(self.matrix / "slots" / (trial["id"] + ".json"))
++        mutations = [
++            lambda s, r: s["occlusions"][0]["checks"].update(no_loss_during_short_occlusion=True),
++            lambda s, r: s["occlusions"][0]["checks"].update(no_loss_during_short_occlusion=None),
++            lambda s, r: s["occlusions"][0].update(first_measured_after_open_s=32.0),
++            lambda s, r: s["occlusions"][0].update(recovery_after_open_s=0.8),
++            lambda s, r: s["occlusions"][0].pop("first_measured_after_open_s"),
++            lambda s, r: s["occlusions"][0]["checks"].pop("identity_preserved_on_observed_recovery"),
++            lambda s, r: s["occlusions"][0].update(post_open_measured_missing_receive_time_count=1),
++            lambda s, r: s["occlusions"][0].update(post_open_measured_missing_receive_time_count=False),
++            lambda s, r: s["occlusions"][0].pop("post_open_measured_missing_receive_time_count"),
++            lambda s, r: s["occlusions"][0].update(first_lost_s=None),
++            lambda s, r: s["occlusions"][0].update(first_lost_s=True),
++            lambda s, r: s["occlusions"][0].update(first_lost_s=float("nan")),
++            lambda s, r: s["occlusions"][0].update(first_lost_s=float("inf")),
++            lambda s, r: s["occlusions"][0].update(first_lost_s=30.0),
++            lambda s, r: s["occlusions"][0].update(first_lost_s=60.0),
++            lambda s, r: s["occlusions"][0].update(duration_s=0.1),
++            lambda s, r: s["configuration"].update(max_prediction_s=0.1),
++            lambda s, r: s["configuration"].update(recovery_window_s=0.0),
++            lambda s, r: s["interval"].update(end_s=30.0),
++            lambda s, r: s["occlusions"][0].update(result="PASS"),
++            lambda s, r: s["occlusions"][0].update(complete=False),
++            lambda s, r: s["acceptance"].update(result="INCOMPLETE_EVIDENCE"),
++            lambda s, r: r.update(status="PASS"),
++            lambda s, r: r.update(engineering_result="PASS"),
++        ]
++        for index, mutate in enumerate(mutations):
++            with self.subTest(case=index):
++                changed, terminal = deepcopy(surface), deepcopy(record)
++                mutate(changed, terminal)
++                with self.assertRaises((ValueError, KeyError, TypeError)):
++                    e.conditional_identity_nonobservation(changed, changed["occlusions"][0], terminal)
++
++    def test_conditional_opt_in_does_not_replace_other_nulls_or_safety_failures(self):
++        self.make_conditional_short_loss()
++        self.contract["conditional_identity_rule"] = e.CONDITIONAL_IDENTITY
++        trial = self.trials[0]
++        surface = e._json(Path(trial["directory"]) / "flight_evaluation.json")
++        for index, key, value in ((0, "prediction_observed", None), (0, "no_loss_during_short_occlusion", None),
++                                  (1, "prediction_observed", None), (1, "hover_observed_for_long_occlusion", False)):
++            with self.subTest(index=index, key=key):
++                changed = deepcopy(surface)
++                changed["occlusions"][index]["checks"][key] = value
++                write_json(Path(trial["directory"]) / "flight_evaluation.json", changed)
++                self.refresh(trial)
++                self.assertEqual(self.run_slot()["status"], e.INCOMPLETE)
+ 
+     def test_known_short_algorithm_failure_is_preserved_not_censored(self):
+         def mutate(value):
+--- before/tools/offline_evaluation/sensor_input_interruption_v1/README.md
++++ after/tools/offline_evaluation/sensor_input_interruption_v1/README.md
+@@ -8,6 +8,35 @@
+ evaluate_slot(plan_path, slot_id, extraction_manifest_path, visual_review_path, contract) -> dict
+ evaluate_development_manifest(manifest_path, contract) -> dict
+ ```
++
++## 可选的短时丢失后身份不可评价分类
++
++默认继续拒绝额外的身份 `null`。仅当另一个明确绑定 SHA 的新合同含以下精确字符串时，
++才启用条件分类；`true`、`null`、拼写近似值均不接受：
++
++```json
++{"conditional_identity_rule": "CONDITIONAL_UNOBSERVED_AFTER_DEMONSTRATED_SHORT_LOSS"}
++```
++
++这完整复用 collector07 的严格短窗谓词：short 必须 complete 且结果 FAIL，
++`no_loss_during_short_occlusion` 必须是 False，身份键必须存在且为 null；
++`first_measured_after_open_s`、`recovery_after_open_s` 必须均显式存在且为 null，
++`post_open_measured_missing_receive_time_count` 必须是严格整数 0。原 terminal 的
++status/engineering_result 和 surface acceptance 必须仍全部为 FAIL。
++start/end/first_lost/trial_end/recovery_window/duration/max_prediction 都必须是有限、
++非 bool 的原始数值；duration 必须与 end-start 一致且不超过 max_prediction，
++first_lost 必须位于 start 到 min(trial_end, end+recovery_window) 内。
++
++`conditional_nonobservations` 单独保留该分类、原 null、原 FAIL、原 engineering_result、
++first_lost、恢复观察窗口端点，以及 `identity_result=UNOBSERVED` 和
++`identity_switch_observed_or_excluded=NEITHER`。它表示没有可比较的恢复事件，不能声称
++身份保持成功、没有发生身份切换，或从身份评价分母删除该机会。
++已知 False 继续进入 `known_algorithm_failures`；其他必要 null、缺时钟、shutter 或
++长时丢失安全 False 仍拒绝。上游输入旁证不升级成物理身份或导航成功。
++
++runner 在重新执行已绑定 module 后，对原始 SHA 绑定的 terminal/report 再计算完整谓词，
++要求条件产物与原值精确一致。该身份 null 仍作为 UNOBSERVED 保留在失败披露和单独附表中；
++所有物理导航门、原终态和原始文件不变。旧合同、frozen54 和已暂存版本不会自动启用新规则。
+ 
+ 所有路径都必须在调用环境中真实可解析。模块不转换 Windows/Linux 路径，不解码路径里的字面 `\\u...`，不修改旧审图文件。原提取清单使用 Linux 绝对来源路径时，应在具备这些真实路径的环境中校验；Windows 单元测试只使用临时合成文件。
+ 
+--- before/tests/test_reliability_v4_probe_gate.py
++++ after/tests/test_reliability_v4_probe_gate.py
+@@ -221,6 +221,8 @@
+         surface_path = next(row["report"] for row in trial["evaluations"] if row["kind"] == "surface_flight")
+         surface = load(surface_path)
+         rows.append({"slot_id":item["slot_id"], "status":item.get("synthetic_status", "UPSTREAM_INPUT_INTERRUPTION_CORROBORATED"),
++            "conditional_identity_rule":contract.get("conditional_identity_rule"),
++            "conditional_nonobservations":item.get("synthetic_conditional_nonobservations", []),
+             "errors":[], "original":{"terminal_status":terminal["status"], "engineering_evidence":terminal["engineering_evidence"],
+                 "acceptance":surface["acceptance"], "occlusions":surface["occlusions"]},
+             "input_bindings":{"plan":binding(contract["source_plan"]["path"]), "terminal":binding(terminal_path),
+@@ -581,6 +583,129 @@
+         target = extensions.make(root, seeds=[7], output="results/sensor_target", prefix="reliability_v4_sensor_target")
+         v4.persist_plan(target)
+         return root, original, source, target, manifest, declaration
++
++    def conditional_fixture(self, tmp, *, opt_in=True):
++        values = self.fixture(tmp)
++        _, original, source, target, manifest_path, _ = values
++        trial = next(row for row in original["trials"]
++                     if row["target_class"] == "person" and row.get("extension_condition") == "dropout")
++        surface_path = Path(next(spec["report"] for spec in trial["evaluations"] if spec["kind"] == "surface_flight"))
++        surface = v4.load(surface_path)
++        short = next(row for row in surface["occlusions"] if row["kind"] == "short")
++        surface.setdefault("configuration", {}).update(max_prediction_s=0.75, recovery_window_s=3.0)
++        short.update(start_s=2.0, end_s=2.2, complete=True)
++        surface["interval"] = {"end_s": short["end_s"] + 10.0}
++        short.update(duration_s=short["end_s"] - short["start_s"], first_lost_s=short["end_s"] + 0.2,
++                     first_measured_after_open_s=None, recovery_after_open_s=None,
++                     post_open_measured_missing_receive_time_count=0, result="FAIL")
++        short["checks"].update(no_loss_during_short_occlusion=False, identity_preserved_on_observed_recovery=None)
++        surface["acceptance"]["result"] = "FAIL"
++        fixtures.write(surface_path, surface)
++        terminal_path = v4.record_path(original, trial)
++        terminal = v4.load(terminal_path)
++        terminal.update(status="FAIL", engineering_result="FAIL")
++        terminal["artifact_hashes"][surface_path.name] = v4.sha(surface_path)
++        entry = next(row for row in terminal["evaluations"] if row["kind"] == "surface_flight")
++        entry.update(result="FAIL", reported_verdict="FAIL", report_sha256=v4.sha(surface_path))
++        terminal["record_sha256"] = v4.digest(terminal, ("record_sha256",))
++        fixtures.write(terminal_path, terminal)
++        declaration = target["protocol"][v4.SENSOR_INPUT_EVIDENCE_FIELD]
++        contract_path = Path(declaration["contract"]["path"])
++        contract = v4.load(contract_path)
++        if opt_in:
++            contract["conditional_identity_rule"] = v4.CONDITIONAL_IDENTITY
++        fixtures.write(contract_path, contract)
++        declaration["contract"].update(sha256=v4.sha(contract_path), canonical_sha256=v4.digest(contract))
++        manifest = v4.load(manifest_path)
++        manifest["contract_sha256"] = v4.digest(contract)
++        next(row for row in manifest["slots"] if row["slot_id"] == trial["id"])["synthetic_conditional_nonobservations"] = [
++            v4._conditional_identity_nonobservation(surface, short, terminal)]
++        fixtures.write(manifest_path, manifest)
++        return (*values, trial)
++
++    def test_bound_conditional_identity_retains_fail_and_unobserved_denominator(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            _, original, source, target, manifest, _, trial = self.conditional_fixture(tmp)
++            before = preserved_hashes(original)
++            mapping, _ = v4.read_sensor_input_evidence_manifest(target, manifest, [source])
++            proof = mapping[str(source.resolve()), trial["id"]]
++            terminal = v4.load(v4.record_path(original, trial))
++            flight = next(row for row in terminal["commands"] if row["kind"] == "flight")
++            failures = v4.extension_algorithm_failures(target, trial, flight, terminal["evaluations"], sensor_input_evidence=proof)
++            self.assertIn("surface:short:no_loss_during_short_occlusion=FAIL", failures)
++            self.assertIn("surface:short:identity_preserved_on_observed_recovery=UNOBSERVED", failures)
++            self.assertEqual(terminal["status"], "FAIL")
++            self.assertEqual(terminal["engineering_result"], "FAIL")
++            self.assertIsNone(proof["original"]["occlusions"][0]["checks"]["identity_preserved_on_observed_recovery"])
++            appendix = v4.sensor_input_unobserved_checks(mapping)
++            self.assertEqual(len(appendix), 5)
++            identities = [row for row in appendix if row["check"].endswith("identity_preserved_on_observed_recovery")]
++            self.assertEqual(len(identities), 1)
++            self.assertEqual(identities[0]["outcome"], "UNOBSERVED")
++            self.assertEqual(identities[0]["identity_switch_observed_or_excluded"], "NEITHER")
++            self.assertEqual(preserved_hashes(original), before)
++
++    def test_bound_conditional_rule_requires_contract_opt_in_and_exact_recomputed_product(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            _, _, source, target, manifest, _, _ = self.conditional_fixture(tmp, opt_in=False)
++            with self.assertRaisesRegex(ValueError, "explicit contract opt-in"):
++                v4.read_sensor_input_evidence_manifest(target, manifest, [source])
++        with tempfile.TemporaryDirectory() as tmp:
++            _, _, source, target, manifest, _, trial = self.conditional_fixture(tmp)
++            original = v4.load(manifest)
++            for field, value in (("identity_result", "PASS"), ("value", True),
++                                 ("original_engineering_result", "PASS"), ("first_lost_s", 0.0)):
++                changed = deepcopy(original)
++                row = next(row for row in changed["slots"] if row["slot_id"] == trial["id"])
++                row["synthetic_conditional_nonobservations"][0][field] = value
++                fixtures.write(manifest, changed)
++                with self.subTest(field=field), self.assertRaisesRegex(ValueError, "differs from original values"):
++                    v4.read_sensor_input_evidence_manifest(target, manifest, [source])
++
++    def test_conditional_runner_rechecks_recovery_clocks_other_unknowns_and_physical_gate(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            _, original, source, target, manifest, _, trial = self.conditional_fixture(tmp)
++            mapping, _ = v4.read_sensor_input_evidence_manifest(target, manifest, [source])
++            proof = mapping[str(source.resolve()), trial["id"]]
++            terminal = v4.load(v4.record_path(original, trial))
++            flight = next(row for row in terminal["commands"] if row["kind"] == "flight")
++            entries = terminal["evaluations"]
++            path = Path(next(row["report"] for row in trial["evaluations"] if row["kind"] == "surface_flight"))
++            surface = v4.load(path)
++            mutations = [
++                lambda s:s["occlusions"][0].update(first_measured_after_open_s=10.0),
++                lambda s:s["occlusions"][0].update(recovery_after_open_s=0.2),
++                lambda s:s["occlusions"][0].update(post_open_measured_missing_receive_time_count=1),
++                lambda s:s["occlusions"][0].update(post_open_measured_missing_receive_time_count=False),
++                lambda s:s["occlusions"][0].update(first_lost_s=None),
++                lambda s:s["occlusions"][0]["checks"].update(no_loss_during_short_occlusion=True),
++                lambda s:s["occlusions"][0]["checks"].update(prediction_observed=None),
++                lambda s:s["occlusions"][1]["checks"].update(hover_observed_for_long_occlusion=False),
++            ]
++            for index, mutate in enumerate(mutations):
++                altered = deepcopy(surface)
++                mutate(altered)
++                fixtures.write(path, altered)
++                changed = deepcopy(entries)
++                next(row for row in changed if row["kind"] == "surface_flight")["report_sha256"] = v4.sha(path)
++                evidence = deepcopy(proof)
++                evidence["original"]["occlusions"] = altered["occlusions"]
++                with self.subTest(case=index), self.assertRaises((ValueError, TypeError, KeyError)):
++                    v4.extension_algorithm_failures(target, trial, flight, changed, sensor_input_evidence=evidence)
++            fixtures.write(path, surface)
++            nav_path = Path(next(row["report"] for row in trial["evaluations"] if row["kind"] == "navigation"))
++            nav = v4.load(nav_path)
++            nav["whole_interval"]["metrics"]["base_link_distance_error_m"]["rmse"] = 100.0
++            fixtures.write(nav_path, nav)
++            next(row for row in entries if row["kind"] == "navigation")["report_sha256"] = v4.sha(nav_path)
++            failures = v4.extension_algorithm_failures(target, trial, flight, entries, sensor_input_evidence=proof)
++            self.assertIn("navigation:REGISTERED_PERFORMANCE_GATES_FAILED", failures)
++            self.assertIn("surface:short:identity_preserved_on_observed_recovery=UNOBSERVED", failures)
++            nav["whole_interval"]["scheduled_samples"] -= 1
++            fixtures.write(nav_path, nav)
++            next(row for row in entries if row["kind"] == "navigation")["report_sha256"] = v4.sha(nav_path)
++            with self.assertRaisesRegex(ValueError, "not independently evaluable"):
++                v4.extension_algorithm_failures(target, trial, flight, entries, sensor_input_evidence=proof)
+ 
+     def test_complete_attachment_preserves_failures_nulls_and_original_files(self):
+         with tempfile.TemporaryDirectory() as tmp:
+@@ -755,6 +880,32 @@
+         with self.assertRaisesRegex(ValueError, "all four independently complete"):
+             v4.read_sensor_input_evidence_manifest(target, synthetic.matrix_manifest(), [synthetic.plan_path])
+ 
++    def test_actual_bound_module_conditional_output_matches_runner_recomputation(self):
++        module_path = fixtures.ROOT / "tools/offline_evaluation/sensor_input_interruption_v1/evidence.py"
++        spec = importlib.util.spec_from_file_location("conditional_sensor_input_fixture", module_path.with_name("test_evidence.py"))
++        helpers = importlib.util.module_from_spec(spec)
++        spec.loader.exec_module(helpers)
++        synthetic = helpers.EvidenceTests("test_conditional_short_loss_requires_exact_opt_in_and_preserves_original_failure")
++        synthetic.setUp()
++        self.addCleanup(synthetic.doCleanups)
++        synthetic.make_conditional_short_loss("car_dropout")
++        synthetic.contract["conditional_identity_rule"] = v4.CONDITIONAL_IDENTITY
++        contract_path = synthetic.root / "conditional_contract.json"
++        fixtures.write(contract_path, synthetic.contract)
++        declaration = {"schema_version":1, "revision":"sensor_input_interruption_v1", "scope":v4.SENSOR_INPUT_EVIDENCE_SCOPE,
++            "evidence_basis":v4.SENSOR_INPUT_EVIDENCE_BASIS, "module":{"path":str(module_path.resolve()), "sha256":v4.sha(module_path)},
++            "contract":{"path":str(contract_path), "sha256":v4.sha(contract_path), "canonical_sha256":v4.digest(synthetic.contract)},
++            "source_plan":synthetic.contract["source_plan"], "dev_slots":synthetic.contract["dev_slots"]}
++        target = {"frozen_root":str(synthetic.root / "future_source"), "protocol":{v4.SENSOR_INPUT_EVIDENCE_FIELD:declaration}}
++        mapping, binding = v4.read_sensor_input_evidence_manifest(target, synthetic.matrix_manifest(), [synthetic.plan_path])
++        self.assertEqual(len(mapping), 4)
++        self.assertEqual(binding["evidence"]["status"], "UPSTREAM_INPUT_INTERRUPTION_CORROBORATED")
++        proof = mapping[str(synthetic.plan_path), "car_dropout"]
++        self.assertEqual(proof["original"]["terminal_status"], "FAIL")
++        self.assertEqual(len(proof["conditional_nonobservations"]), 1)
++        self.assertEqual(proof["conditional_nonobservations"][0]["identity_result"], "UNOBSERVED")
++        self.assertEqual(len(v4.sensor_input_unobserved_checks(mapping)), 5)
++
+ 
+ if __name__ == "__main__":
+     unittest.main()

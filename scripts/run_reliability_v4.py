@@ -82,6 +82,7 @@ NAVIGATION_REEVALUATION_FILENAME = "navigation_reference_grid_endpoint_rev2.json
 SENSOR_INPUT_EVIDENCE_FIELD = "development_input_interruption_evidence"
 SENSOR_INPUT_EVIDENCE_SCOPE = "DEVELOPMENT_EVIDENCE_ONLY_NOT_FORMAL_ADMISSION"
 SENSOR_INPUT_EVIDENCE_BASIS = "POST_HOC_DEVELOPMENT_SOURCE_BINDING_NOT_FORMAL_PREREGISTRATION"
+CONDITIONAL_IDENTITY = "CONDITIONAL_UNOBSERVED_AFTER_DEMONSTRATED_SHORT_LOSS"
 CORRELATED_BOUND_FIELD = "navigation_correlated_two_face_bound"
 CORRELATED_BOUND_FLAG = "--correlated-two-face-bound"
 EXCLUSIVE_NAVIGATION_FIELD = "navigation_exclusive_reference"
@@ -2080,6 +2081,44 @@ def artifact_hashes(directory):
             if path.is_file() and path.suffix in {".json", ".jsonl", ".yaml", ".yml", ".sdf", ".log", ".bson"}}
 
 
+def _conditional_identity_nonobservation(surface, row, record):
+    """Independently recheck collector07's predicate against original values."""
+    def require(value, message):
+        if not value:
+            raise ValueError(message)
+    checks = row["checks"]
+    required_nulls = ("first_measured_after_open_s", "recovery_after_open_s")
+    require(row.get("kind") == "short" and row.get("complete") is True
+            and row.get("result") == "FAIL"
+            and "identity_preserved_on_observed_recovery" in checks
+            and checks["identity_preserved_on_observed_recovery"] is None
+            and checks.get("no_loss_during_short_occlusion") is False
+            and all(key in row and row[key] is None for key in required_nulls)
+            and record.get("status") == record.get("engineering_result") == "FAIL"
+            and surface["acceptance"].get("result") == "FAIL",
+            "Conditional identity null lacks its unchanged demonstrated-loss FAIL")
+    missing = row.get("post_open_measured_missing_receive_time_count")
+    require(type(missing) is int and missing == 0,
+            "Conditional identity null has missing recovery receive-clock evidence")
+    start, end, lost = row.get("start_s"), row.get("end_s"), row.get("first_lost_s")
+    trial_end, recovery_window = surface["interval"].get("end_s"), surface["configuration"].get("recovery_window_s")
+    values = (start, end, lost, trial_end, recovery_window, row.get("duration_s"),
+              surface["configuration"].get("max_prediction_s"))
+    require(all(type(value) in {int, float} and math.isfinite(value) for value in values),
+            "Conditional identity null has missing/nonfinite/boolean window clocks")
+    require(0 <= start <= end <= trial_end and recovery_window > 0
+            and 0 <= row["duration_s"] <= surface["configuration"]["max_prediction_s"]
+            and math.isclose(row["duration_s"], end - start, rel_tol=1e-9, abs_tol=1e-9)
+            and start <= lost <= min(trial_end, end + recovery_window),
+            "Conditional identity null contradicts the frozen short-loss time predicate")
+    return {"classification": CONDITIONAL_IDENTITY,
+            "field": "surface:short:identity_preserved_on_observed_recovery",
+            "value": None, "original_status": "FAIL", "original_engineering_result": "FAIL", "short_result": "FAIL",
+            "first_lost_s": lost, "recovery_observation_end_s": min(trial_end, end + recovery_window),
+            "identity_result": "UNOBSERVED", "identity_switch_observed_or_excluded": "NEITHER",
+            "claim_boundary": "Development collection only; observed recovery comparison unavailable. Original FAIL/null retained."}
+
+
 def read_sensor_input_evidence_manifest(plan, path, probe_paths):
     """Recompute all four post-hoc stimulus checks with an explicitly bound tool.
 
@@ -2124,6 +2163,8 @@ def read_sensor_input_evidence_manifest(plan, path, probe_paths):
             or len({module_path, contract_path, source, manifest_path}) != 4):
         raise ValueError("Sensor input module/contract/manifest must stay external to frozen and original evidence roots")
     contract = load(contract_path)
+    if "conditional_identity_rule" in contract and contract["conditional_identity_rule"] != CONDITIONAL_IDENTITY:
+        raise ValueError("Conditional identity classification requires the exact explicit opt-in rule")
     cells = declared.get("dev_slots")
     if (digest(contract) != declared["contract"].get("canonical_sha256")
             or contract.get("revision") != declared["revision"] or contract.get("scope") != declared["scope"]
@@ -2180,6 +2221,20 @@ def read_sensor_input_evidence_manifest(plan, path, probe_paths):
                 or originals.get("terminal") != {"path":str(terminal_path.resolve()), "sha256":sha(terminal_path)}
                 or originals.get("flight_evaluation.json") != {"path":str(surface_path.resolve()), "sha256":sha(surface_path)}):
             raise ValueError("Sensor input result must retain its exact original terminal/report/null evidence")
+        conditional = row.get("conditional_nonobservations", [])
+        expected_conditional = []
+        opted_in = contract.get("conditional_identity_rule") == CONDITIONAL_IDENTITY
+        if row.get("conditional_identity_rule") != contract.get("conditional_identity_rule"):
+            raise ValueError("Bound module conditional identity rule differs from explicit contract")
+        for short in surface.get("occlusions", []):
+            checks = short.get("checks", {})
+            if (short.get("kind") == "short" and "identity_preserved_on_observed_recovery" in checks
+                    and checks["identity_preserved_on_observed_recovery"] is None):
+                if not opted_in:
+                    raise ValueError("Conditional identity null requires explicit contract opt-in")
+                expected_conditional.append(_conditional_identity_nonobservation(surface, short, terminal))
+        if conditional != expected_conditional:
+            raise ValueError("Bound module conditional identity classification differs from original values")
     if (sha(module_path) != declared["module"]["sha256"] or sha(contract_path) != declared["contract"]["sha256"]
             or sha(source) != declared["source_plan"]["sha256"] or sha(manifest_path) != manifest_sha):
         raise ValueError("Sensor input source/contract/manifest changed during validation")
@@ -2190,9 +2245,14 @@ def read_sensor_input_evidence_manifest(plan, path, probe_paths):
 
 def sensor_input_unobserved_checks(mapping):
     """Keep the original null as an unobserved stimulus appendix, never False/True."""
-    return [{"plan_path":key[0], "slot_id":key[1], "check":"surface:short:detector_interruption_observed",
+    result = [{"plan_path":key[0], "slot_id":key[1], "check":"surface:short:detector_interruption_observed",
              "original_value":None, "outcome":"UNOBSERVED", "stimulus_evidence":row["status"]}
             for key, row in sorted(mapping.items()) if row["status"] == "UPSTREAM_INPUT_INTERRUPTION_CORROBORATED"]
+    result.extend({"plan_path":key[0], "slot_id":key[1], "check":item["field"], "original_value":None,
+                   "outcome":"UNOBSERVED", "classification":item["classification"],
+                   "identity_result":"UNOBSERVED", "identity_switch_observed_or_excluded":"NEITHER"}
+                  for key, row in sorted(mapping.items()) for item in row.get("conditional_nonobservations", []))
+    return result
 
 
 def extension_algorithm_failures(plan, trial, flight, entries, *, sensor_input_evidence=None):
@@ -2246,10 +2306,24 @@ def extension_algorithm_failures(plan, trial, flight, entries, *, sensor_input_e
             and all(type(row.get(key)) is int and row[key] == 0
                     for key in ("diagnostic_frames_inside", "candidate_free_frames_inside", "valid_depth_frames_inside"))
             and sensor_input_evidence is not None and sensor_input_evidence.get("status") == "UPSTREAM_INPUT_INTERRUPTION_CORROBORATED")
+        conditional_identity_null = False
+        if (row["kind"] == "short" and "identity_preserved_on_observed_recovery" in checks
+                and checks["identity_preserved_on_observed_recovery"] is None and sensor_input_evidence is not None
+                and sensor_input_evidence.get("conditional_identity_rule") == CONDITIONAL_IDENTITY):
+            conditional = sensor_input_evidence.get("conditional_nonobservations")
+            if not isinstance(conditional, list) or len(conditional) != 1 or not isinstance(conditional[0], dict):
+                raise ValueError("Conditional identity null requires its exact bound classification")
+            # read_sensor_input_evidence_manifest has independently bound both
+            # original terminal fields; recheck the complete predicate here too.
+            original_record = {"status":sensor_input_evidence.get("original", {}).get("terminal_status"),
+                               "engineering_result":conditional[0].get("original_engineering_result")}
+            if conditional[0] != _conditional_identity_nonobservation(surface, row, original_record):
+                raise ValueError("Conditional identity classification differs from original values")
+            conditional_identity_null = True
         if (type(checks.get("detector_interruption_observed")) is not bool and not corroborated_null) or type(checks.get("prediction_observed")) is not bool:
             raise ValueError("Extension probe lacks recorded detector/state evidence during shutter")
-        if corroborated_null and any(type(checks.get(key)) is not bool for key in
-                ("no_loss_during_short_occlusion", "identity_preserved_on_observed_recovery")):
+        if corroborated_null and (type(checks.get("no_loss_during_short_occlusion")) is not bool
+                or (type(checks.get("identity_preserved_on_observed_recovery")) is not bool and not conditional_identity_null)):
             raise ValueError("Sensor input corroboration cannot replace another unknown behavior check")
         algorithm = ("detector_interruption_observed", "prediction_observed",
                      *( ("sustained_tracking_after_reselection",) if row["kind"] == "long" else

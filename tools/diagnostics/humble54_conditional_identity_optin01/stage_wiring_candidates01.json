@@ -1,0 +1,164 @@
+{
+  "schema_version": 1,
+  "scope": "READ_ONLY_WORKSPACE_STAGE_WIRING_CANDIDATES_NOT_REGISTRATION_OR_EXECUTION",
+  "created_utc": "2026-11-03T10:17:46.162892+00:00",
+  "inputs": {
+    "base_stage": {
+      "path": "tools/staging/final55_offline_overlay_20261103/stage.py",
+      "bytes": 32413,
+      "sha256": "25a88f5ba369c918c5d891828b5e2434c61f75f33eb5485749f1ec0fda632268"
+    },
+    "candidate04": {
+      "path": "tools/staging/final55_profile03_driver_candidate04/stage_profile02.py",
+      "bytes": 11082,
+      "sha256": "082ed8b6fc229cc1d188f27e4b896a4864695dfbcaf65c57fe06fcf9d28e4f7f"
+    },
+    "existing_chain03": {
+      "path": "tools/staging/final55_offline_overlay_profile03_20261103/validate_owner_chain.py",
+      "bytes": 44790,
+      "sha256": "b5aae1e007b009848555bbe3a9d9dfc4e6974f8afe4452c8b94e0aa31c547705"
+    },
+    "core_plan": {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/plan.json",
+      "bytes": 207807,
+      "sha256": "ed88783162991c151ab3d537d4eb7d3546b3688339a06db6f35b7f2ef7c48d4b"
+    },
+    "extension_probe02_plan": {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/plan.json",
+      "bytes": 240125,
+      "sha256": "1f7ff9559bcf9b1b02528a771f046481712a0ff5ec33eb961fe90310d1dcca54"
+    },
+    "original_full_map_metadata": {
+      "path": "results/frozen_fullplan_v4_humble54/freeze_validation/source_integrity/source_before.json",
+      "bytes": 339580,
+      "sha256": "cdb4111738f2f51c9911e3e7cebaf9f69aafd92d5cef39d8839a1e5dbb27c82f"
+    }
+  },
+  "base_overlay_constant_name": "OVERLAYS",
+  "validated_overlay_rows": 10,
+  "after_pins_requiring_update": [
+    {
+      "path": "scripts/run_reliability_v4.py",
+      "registered_after_bytes": 182356,
+      "registered_after_sha256": "eab5c1b9ed8a5d3c304f6986aaf959a49a4349356aedb6335c36683895a217ba",
+      "candidate_after": {
+        "path": "scripts/run_reliability_v4.py",
+        "bytes": 188147,
+        "sha256": "32c4cd091a6aa09a56135b4f7d69dd4f70e8e693f1d76878aa61f5a72f45182d"
+      }
+    },
+    {
+      "path": "tests/test_reliability_v4_probe_gate.py",
+      "registered_after_bytes": 53086,
+      "registered_after_sha256": "38c88e55f5d8b75c3c4f8c7e90ba4920a29fbd02fda21979dfe44886bb64a5ea",
+      "candidate_after": {
+        "path": "tests/test_reliability_v4_probe_gate.py",
+        "bytes": 64300,
+        "sha256": "ada5732b074780bc48d70341d453e8e4e82c5838ca6db4b3832df353fbe963f8"
+      }
+    },
+    {
+      "path": "tools/offline_evaluation/sensor_input_interruption_v1/evidence.py",
+      "registered_after_bytes": 33761,
+      "registered_after_sha256": "f3ce374272d750fc058cb98c5c8782f96a977c59aeade59afe0c5a2a80b4a5ba",
+      "candidate_after": {
+        "path": "tools/offline_evaluation/sensor_input_interruption_v1/evidence.py",
+        "bytes": 37420,
+        "sha256": "aca8932895eb44361265347164f5cd62fe427ccb61907c5844309162b33a7ffc"
+      }
+    },
+    {
+      "path": "tools/offline_evaluation/sensor_input_interruption_v1/test_evidence.py",
+      "registered_after_bytes": 28796,
+      "registered_after_sha256": "c577a1010381d2cd3afb698a18fb25c1849aea5b454c503aa7d16310688b8154",
+      "candidate_after": {
+        "path": "tools/offline_evaluation/sensor_input_interruption_v1/test_evidence.py",
+        "bytes": 35404,
+        "sha256": "2e044202630513f27b60250986ef027f7d8fc25f5025273644dc90e46563ba2d"
+      }
+    }
+  ],
+  "six_other_overlay_paths_match_registered_after_pins": [
+    "scripts/evaluate_navigation_reference.py",
+    "scripts/build_reliability_v4_probe_gate.py",
+    "tests/test_navigation_evaluation.py",
+    "tests/test_reliability_v4_runner.py",
+    "tools/diagnostics/reliability54_build01/record_native_validation.py",
+    "tests/test_frozen_fastcdr_selection.py"
+  ],
+  "external_module_sha_candidate": "aca8932895eb44361265347164f5cd62fe427ccb61907c5844309162b33a7ffc",
+  "contract_derivation": {
+    "original_unchanged": {
+      "path": "tools/diagnostics/humble54_input_evidence02/contracts/contract_canonical_probe02_20261103.json",
+      "bytes": 1314,
+      "sha256": "11bcebbe460eecc24c9c5bc920f977b421013c9df862f60e667e5ee07f3625e3"
+    },
+    "semantic_added_keys": [
+      "conditional_identity_rule"
+    ],
+    "all_original_fields_equal": true,
+    "candidate_materialized_as_contract_file": false,
+    "candidate_utf8": "{\n  \"schema_version\": 1,\n  \"revision\": \"sensor_input_interruption_v1\",\n  \"scope\": \"DEVELOPMENT_EVIDENCE_ONLY_NOT_FORMAL_ADMISSION\",\n  \"fault_algorithm\": \"SHA256_SEED_COLON_WINDOW_FIRST8_UINT64_DIV_2POW64_LT_FLOAT_FRACTION_V1\",\n  \"drop_window_ns\": 200000000,\n  \"drop_fraction\": \"0.10\",\n  \"padding_s\": \"0.3\",\n  \"extractor_sha256_by_condition\": {\n    \"dropout\": \"364156694a5db1777b7b3615614ae32b5cc128a7f8bbc09e213e1a168854fbf4\",\n    \"combined\": \"364156694a5db1777b7b3615614ae32b5cc128a7f8bbc09e213e1a168854fbf4\"\n  },\n  \"source_plan\": {\n    \"path\": \"/mnt/d/\\u57fa\\u4e8eyolo\\u548c\\u5361\\u5c14\\u66fc\\u6ee4\\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/plan.json\",\n    \"sha256\": \"1f7ff9559bcf9b1b02528a771f046481712a0ff5ec33eb961fe90310d1dcca54\"\n  },\n  \"dev_slots\": [\n    {\n      \"slot_id\": \"person_extension_dropout_seed004\",\n      \"target_class\": \"person\",\n      \"condition\": \"dropout\"\n    },\n    {\n      \"slot_id\": \"person_extension_combined_seed004\",\n      \"target_class\": \"person\",\n      \"condition\": \"combined\"\n    },\n    {\n      \"slot_id\": \"car_extension_dropout_seed004\",\n      \"target_class\": \"car\",\n      \"condition\": \"dropout\"\n    },\n    {\n      \"slot_id\": \"car_extension_combined_seed004\",\n      \"target_class\": \"car\",\n      \"condition\": \"combined\"\n    }\n  ],\n  \"conditional_identity_rule\": \"CONDITIONAL_UNOBSERVED_AFTER_DEMONSTRATED_SHORT_LOSS\"\n}\n",
+    "candidate_bytes": 1401,
+    "candidate_sha256": "ca7eacc64aace573f14790b23ca6b4b4b6a26000c67147fef9fb3f38eb0251e7",
+    "candidate_canonical_sha256": "cdba3fc3e6470effa329407742cc10f4c72d139a0d8f37e93b069ed22096dfed",
+    "encoding": "UTF-8 no BOM; json.dumps(indent=2, ensure_ascii=True, allow_nan=False) plus one LF; existing field order retained, conditional_identity_rule appended",
+    "action_for_root": "Write candidate_utf8 bytes to a separately named external contract file, verify its raw/canonical SHA, then bind its actual native canonical path. Do not replace the original contract."
+  },
+  "candidate04_four_overrides": {
+    "registered": {
+      "extension_sha": "1f7ff9559bcf9b1b02528a771f046481712a0ff5ec33eb961fe90310d1dcca54",
+      "extension_digest": "837e533b75800c4c3fdd19f4937d55d92e50fe833da5c6b8801494dfbc77d15b",
+      "contract_sha": "11bcebbe460eecc24c9c5bc920f977b421013c9df862f60e667e5ee07f3625e3",
+      "contract_digest": "7c689e742d0a5451ac995b1a1bd2efa14ad6f74c14e2056359877f18cafd868e"
+    },
+    "candidate": {
+      "extension_sha": "1f7ff9559bcf9b1b02528a771f046481712a0ff5ec33eb961fe90310d1dcca54",
+      "extension_digest": "837e533b75800c4c3fdd19f4937d55d92e50fe833da5c6b8801494dfbc77d15b",
+      "contract_sha": "ca7eacc64aace573f14790b23ca6b4b4b6a26000c67147fef9fb3f38eb0251e7",
+      "contract_digest": "cdba3fc3e6470effa329407742cc10f4c72d139a0d8f37e93b069ed22096dfed"
+    },
+    "unchanged_keys": [
+      "extension_sha",
+      "extension_digest"
+    ],
+    "changed_keys": [
+      "contract_sha",
+      "contract_digest"
+    ]
+  },
+  "metadata_derived_stage_profile_candidates": {
+    "overlay_source_digest": "49918bff9fc9b03991cfdd1dad388e822e28c3ebf8a189a6929f17f3e26825d0",
+    "overlay_scanner_digest": "76585c4fe5b997e9ea399f642cda56c27ee8c68db73641ae08fa9f2308364880",
+    "source_entries": 308,
+    "scanner_entries": 185,
+    "flight_entries": 277,
+    "flight_map_unchanged": true,
+    "basis": "Derived only from existing source_hashes metadata plus current ten overlay payload hashes; old overlay digests reproduced. This is not a native source/stage/cold map verification."
+  },
+  "frozen_scan_file_set": {
+    "classifier_constants_and_OFFLINE_HELPERS_equal_pre_optin": true,
+    "source_key_set_changed": false,
+    "scanner_key_set_changed": false,
+    "base_overlay_path_set_changed": false,
+    "runtime_scanner_changed_hash_paths": [
+      "scripts/run_reliability_v4.py"
+    ],
+    "tests_and_external_tools_outside_runtime_scanner": true,
+    "README_is_documentation_only_not_an_existing_overlay_row": true,
+    "no_new_scan_exclusion_or_denominator_change": true
+  },
+  "root_followup": {
+    "update_base_or_unified_driver_after_pins": true,
+    "update_base_module_sha_and_derived_overlay_digests": true,
+    "bind_new_contract_file_and_four_overrides": true,
+    "refresh_base_driver_sha_after_root_edits": true,
+    "replace_old_chain03_binding_only_after_actual_new_closure_review": true,
+    "candidate04_production_enabled_observed": false,
+    "future_full16_closure": "NOT_ASSERTED",
+    "future_budget": "NOT_ASSERTED",
+    "actual_stage_result": "NOT_RUN",
+    "cold_build_or_native_result": "NOT_RUN"
+  },
+  "claim_boundary": "Candidate metadata only. No base/candidate04/chain source, original contract, frozen source, historical trial, production switch, registered pins, future budget/full16 or stage result was changed or invented."
+}

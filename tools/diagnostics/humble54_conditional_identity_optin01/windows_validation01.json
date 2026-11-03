@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "scope": "WINDOWS_STDLIB_SYNTHETIC_FIXTURES_ONLY_NOT_NATIVE_OR_FORMAL_EVIDENCE",
+  "created_utc": "2026-11-03T10:13:18.395928+00:00",
+  "source_bindings": [
+    {
+      "path": "scripts/run_reliability_v4.py",
+      "sha256": "32c4cd091a6aa09a56135b4f7d69dd4f70e8e693f1d76878aa61f5a72f45182d",
+      "bytes": 188147
+    },
+    {
+      "path": "tools/offline_evaluation/sensor_input_interruption_v1/evidence.py",
+      "sha256": "aca8932895eb44361265347164f5cd62fe427ccb61907c5844309162b33a7ffc",
+      "bytes": 37420
+    },
+    {
+      "path": "tools/offline_evaluation/sensor_input_interruption_v1/test_evidence.py",
+      "sha256": "2e044202630513f27b60250986ef027f7d8fc25f5025273644dc90e46563ba2d",
+      "bytes": 35404
+    },
+    {
+      "path": "tools/offline_evaluation/sensor_input_interruption_v1/README.md",
+      "sha256": "4634a84b0b788d673630ff5e59c84aaa19289b588ed602342d4d8612518753b3",
+      "bytes": 11195
+    },
+    {
+      "path": "tests/test_reliability_v4_probe_gate.py",
+      "sha256": "ada5732b074780bc48d70341d453e8e4e82c5838ca6db4b3832df353fbe963f8",
+      "bytes": 64300
+    }
+  ],
+  "pre_optin_archive": {
+    "path": "tools/diagnostics/humble54_conditional_identity_optin01/archive/pre_optin_20261103T100350Z",
+    "manifest_sha256": "d15efec6820bc54f96345c5fca45b3f1a5dd0fb6fe8d29a3b26f06ecfd671da3"
+  },
+  "checks": [
+    {
+      "command": [
+        "python",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/offline_evaluation/sensor_input_interruption_v1",
+        "-p",
+        "test_evidence.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "tests_run": 38,
+      "duration_s": 24.378,
+      "result": "OK"
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_reliability_v4_probe_gate.py",
+        "-k",
+        "SensorInputEvidenceTests",
+        "-v"
+      ],
+      "exit_code": 0,
+      "tests_run": 9,
+      "duration_s": 66.213,
+      "result": "OK"
+    },
+    {
+      "check": "Python AST comparison of module and runner strict helpers to collector07",
+      "result": "IDENTICAL_PREDICATE_AFTER_REQUIRE_ADAPTER_DOCSTRING_AND_EXTRA_ORIGINAL_ENGINEERING_RESULT_OUTPUT_NORMALIZATION"
+    }
+  ],
+  "earlier_local_attempt": {
+    "scope": "NEW_RUNNER_FIXTURE_INITIALIZATION_ONLY",
+    "result": "FAILED",
+    "tests_run": 9,
+    "errors": 3,
+    "reason": "New synthetic extension fixture lacked start_s/end_s; errors occurred before conditional predicate execution. Added explicit synthetic start/end/complete, then reran all nine related tests successfully.",
+    "historical_trial_verdict_changed": false
+  },
+  "historical_results_changed": false,
+  "frozen_or_staging_changed": false,
+  "new_stage_registered": false,
+  "wsl_ros_native_flight_run": false,
+  "identity_success_asserted": false,
+  "physical_gates_relaxed": false,
+  "claim_boundary": "Only the five workspace files are revised; opt-in requires a separately rebound contract and module SHA. FAIL/null/UNOBSERVED and all original opportunity denominators remain. Historical validation does not cover this new source; this receipt covers only the two stated Windows fixture suites."
+}

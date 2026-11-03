@@ -9,6 +9,35 @@ evaluate_slot(plan_path, slot_id, extraction_manifest_path, visual_review_path, 
 evaluate_development_manifest(manifest_path, contract) -> dict
 ```
 
+## 可选的短时丢失后身份不可评价分类
+
+默认继续拒绝额外的身份 `null`。仅当另一个明确绑定 SHA 的新合同含以下精确字符串时，
+才启用条件分类；`true`、`null`、拼写近似值均不接受：
+
+```json
+{"conditional_identity_rule": "CONDITIONAL_UNOBSERVED_AFTER_DEMONSTRATED_SHORT_LOSS"}
+```
+
+这完整复用 collector07 的严格短窗谓词：short 必须 complete 且结果 FAIL，
+`no_loss_during_short_occlusion` 必须是 False，身份键必须存在且为 null；
+`first_measured_after_open_s`、`recovery_after_open_s` 必须均显式存在且为 null，
+`post_open_measured_missing_receive_time_count` 必须是严格整数 0。原 terminal 的
+status/engineering_result 和 surface acceptance 必须仍全部为 FAIL。
+start/end/first_lost/trial_end/recovery_window/duration/max_prediction 都必须是有限、
+非 bool 的原始数值；duration 必须与 end-start 一致且不超过 max_prediction，
+first_lost 必须位于 start 到 min(trial_end, end+recovery_window) 内。
+
+`conditional_nonobservations` 单独保留该分类、原 null、原 FAIL、原 engineering_result、
+first_lost、恢复观察窗口端点，以及 `identity_result=UNOBSERVED` 和
+`identity_switch_observed_or_excluded=NEITHER`。它表示没有可比较的恢复事件，不能声称
+身份保持成功、没有发生身份切换，或从身份评价分母删除该机会。
+已知 False 继续进入 `known_algorithm_failures`；其他必要 null、缺时钟、shutter 或
+长时丢失安全 False 仍拒绝。上游输入旁证不升级成物理身份或导航成功。
+
+runner 在重新执行已绑定 module 后，对原始 SHA 绑定的 terminal/report 再计算完整谓词，
+要求条件产物与原值精确一致。该身份 null 仍作为 UNOBSERVED 保留在失败披露和单独附表中；
+所有物理导航门、原终态和原始文件不变。旧合同、frozen54 和已暂存版本不会自动启用新规则。
+
 所有路径都必须在调用环境中真实可解析。模块不转换 Windows/Linux 路径，不解码路径里的字面 `\\u...`，不修改旧审图文件。原提取清单使用 Linux 绝对来源路径时，应在具备这些真实路径的环境中校验；Windows 单元测试只使用临时合成文件。
 
 ## 三种结果的含义
