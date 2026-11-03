@@ -17,4 +17,4 @@ dropout 的九个原始 RGB/depth 机会逐一复算原 seed004、200 ms、10% S
 
 合同始终固定 person/car × dropout/combined 四格。汽车两格尚未运行，因此这两份真实结果不构成完整四槽附件、工程 readiness、正式预注册或正式执行准入。导航与其他既有门继续单独校验，所有失败、未知和完整分母继续保留。
 
-原六槽 collector 的后续实际核对还确认：combined 的导航距离 RMSE 为 2.296435 m，超过原1.0m门，原 navigation 为 FAIL。本附件只校验输入证据，不将这项控制失败纳入其局部 `known_algorithm_failures`，也没有使它通过导航门。
+原六槽 collector 的后续实际核对还确认：combined 的导航距离 RMSE 为 2.296435 m，按原1.0m门复核数值为 FAIL。原 navigation 报告标签仍为 `RECORDED_WITH_CENSORED_FAILURES`，原 terminal 的顶层负面 evaluator 只有 `surface_flight`；此处不新增或改写原字段。本附件只校验输入证据，不将这项控制失败纳入其局部 `known_algorithm_failures`，也没有使它通过导航门。

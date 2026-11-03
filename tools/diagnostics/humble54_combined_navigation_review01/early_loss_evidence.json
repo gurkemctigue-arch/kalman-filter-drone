@@ -1,0 +1,521 @@
+{
+  "schema_version": 1,
+  "created_utc": "2026-11-03T04:04:24.701270+00:00",
+  "status": "NARROW_OFFLINE_CAUSAL_CHAIN_WITH_UNVERIFIED_RAW_INPUT_DELIVERY",
+  "scope": "Original33.0?35.2telemetry small-field extraction, original tiny runtime/source configuration and exactly SHA-matching sensor_fault_bridge.py deterministic function recomputation. No ROS/Gazebo/WSL/bag/new flight, algorithm edits, threshold changes, re-evaluation or original artifact changes.",
+  "input_bindings": [
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_person_extension_combined_seed004/configuration/source_sha256.json",
+      "bytes": 23847,
+      "sha256": "0094a5013801e67fb6ae692cef785b190272708d71bfb0cd4a3349a0eb09ee46",
+      "matches_original_terminal_sha256": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_person_extension_combined_seed004/configuration/sensor_faults.json",
+      "bytes": 105,
+      "sha256": "cc5b4c6413537d24bb402d9295182647d773ee540de0fd1524a9bdbb5ad73f36",
+      "matches_original_terminal_sha256": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_person_extension_combined_seed004/configuration/runtime_parameters.yaml",
+      "bytes": 4643,
+      "sha256": "aaacecfd529532c2caa93bb6f8648ba6af4237524cee0e68c5d77c3df918678b",
+      "matches_original_terminal_sha256": true
+    }
+  ],
+  "original_telemetry_input": {
+    "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_person_extension_combined_seed004/telemetry.jsonl",
+    "bytes": 83507959,
+    "sha256": "398c4b9ea5c6979d4451e2925c8344a21b58a517a295f01b6fe4ff98b712bbfc",
+    "original_terminal_sha256": "398c4b9ea5c6979d4451e2925c8344a21b58a517a295f01b6fe4ff98b712bbfc",
+    "matches_original_terminal_sha256": true
+  },
+  "fault_source_binding": {
+    "current_path": "scripts/sensor_fault_bridge.py",
+    "sha256": "c07b1b5e7a7addbe2b7b4ad63cb798503646a8f92cf14aa66a1fd35582a486f0",
+    "original_runtime_source_manifest_sha256": "c07b1b5e7a7addbe2b7b4ad63cb798503646a8f92cf14aa66a1fd35582a486f0",
+    "original_plan_source_sha256": "c07b1b5e7a7addbe2b7b4ad63cb798503646a8f92cf14aa66a1fd35582a486f0",
+    "exact_match": true,
+    "method": "frame_dropped: window=stamp_ns//200000000; digest=sha256(f\"{seed}:{window}\".encode()).digest(); return int.from_bytes(digest[:8],\"big\")/2**64 < fraction",
+    "no_import_or_ros_execution": true
+  },
+  "original_fault_parameters": {
+    "seed": 4,
+    "noise_std_m": 0.05,
+    "hole_fraction": 0.2,
+    "drop_fraction": 0.1,
+    "delay_s": 0.08
+  },
+  "original_parameters_protection": {
+    "max_prediction_duration_s": 0.75,
+    "max_observation_age_s": 0.6,
+    "prediction_timeout_s": 0.75,
+    "source": "Original recorded runtime_parameters.yaml lines50,52,109; retained without changes."
+  },
+  "deterministic_injection_expectations": [
+    {
+      "source_acquisition_ns": 34100000000,
+      "source_acquisition_s": 34.1,
+      "window": 170,
+      "digest_sha256": "d55da1077421c6536afdea3e0be67f5e745fc793540f00891c0e439ea7dbf42a",
+      "uniform_u64_over_2p64": 0.8334599154660572,
+      "drop_fraction": 0.1,
+      "expected_action": "KEEP"
+    },
+    {
+      "source_acquisition_ns": 34200000000,
+      "source_acquisition_s": 34.2,
+      "window": 171,
+      "digest_sha256": "01dc3068d324986422d2f13a4ea07bbd8e8110139bd26043553bc02b868348f6",
+      "uniform_u64_over_2p64": 0.007266069023119553,
+      "drop_fraction": 0.1,
+      "expected_action": "DROP"
+    },
+    {
+      "source_acquisition_ns": 34300000000,
+      "source_acquisition_s": 34.3,
+      "window": 171,
+      "digest_sha256": "01dc3068d324986422d2f13a4ea07bbd8e8110139bd26043553bc02b868348f6",
+      "uniform_u64_over_2p64": 0.007266069023119553,
+      "drop_fraction": 0.1,
+      "expected_action": "DROP"
+    },
+    {
+      "source_acquisition_ns": 34400000000,
+      "source_acquisition_s": 34.4,
+      "window": 172,
+      "digest_sha256": "126a8dcf0b693feb34d5ee887c544243e391920ec41145086c0e93ea69a451bd",
+      "uniform_u64_over_2p64": 0.07193838410185993,
+      "drop_fraction": 0.1,
+      "expected_action": "DROP"
+    },
+    {
+      "source_acquisition_ns": 34500000000,
+      "source_acquisition_s": 34.5,
+      "window": 172,
+      "digest_sha256": "126a8dcf0b693feb34d5ee887c544243e391920ec41145086c0e93ea69a451bd",
+      "uniform_u64_over_2p64": 0.07193838410185993,
+      "drop_fraction": 0.1,
+      "expected_action": "DROP"
+    },
+    {
+      "source_acquisition_ns": 34600000000,
+      "source_acquisition_s": 34.6,
+      "window": 173,
+      "digest_sha256": "03b97c096b65e95d56d5885a1cac7b21144b588d9099b04f31bd0aac6c06f531",
+      "uniform_u64_over_2p64": 0.014549019145668437,
+      "drop_fraction": 0.1,
+      "expected_action": "DROP"
+    },
+    {
+      "source_acquisition_ns": 34700000000,
+      "source_acquisition_s": 34.7,
+      "window": 173,
+      "digest_sha256": "03b97c096b65e95d56d5885a1cac7b21144b588d9099b04f31bd0aac6c06f531",
+      "uniform_u64_over_2p64": 0.014549019145668437,
+      "drop_fraction": 0.1,
+      "expected_action": "DROP"
+    },
+    {
+      "source_acquisition_ns": 34800000000,
+      "source_acquisition_s": 34.8,
+      "window": 174,
+      "digest_sha256": "9d58f4a54b8a658d8be26a4d9c628f9af91c68115cebb81f9bf88116cc7a7b67",
+      "uniform_u64_over_2p64": 0.6146386054565852,
+      "drop_fraction": 0.1,
+      "expected_action": "KEEP"
+    }
+  ],
+  "observed_detection_boundary": {
+    "last_before_gap": {
+      "time_s": 34.204,
+      "kind": "detection",
+      "stamp_s": 34.1,
+      "clock_epoch": 0,
+      "acquisition_ns": 34100000000,
+      "completed_s": 34.204,
+      "rgb_received_s": 34.192,
+      "depth_stamp_s": 34.1,
+      "depth_received_s": 34.192,
+      "submitted_s": 34.2,
+      "worker_started_s": 34.2,
+      "worker_wait_wall_s": 0.001019777002511546,
+      "input_age_at_submit_s": 0.10000000000000142,
+      "acquisition_gap_s": 0.10000000000000142,
+      "inference_wall_s": 0.034084718994563445,
+      "rgb_depth_sync_error_s": 0.0,
+      "class_name": "person",
+      "initialization_confidence_threshold": 0.45,
+      "maintenance_confidence_threshold": 0.45,
+      "tracking_active": true,
+      "detections": [
+        {
+          "candidate_id": 0,
+          "class_id": 0,
+          "confidence": 0.8508350849151611,
+          "maintenance_only": false,
+          "bbox": [
+            291.1531982421875,
+            95.1461181640625,
+            340.9859619140625,
+            266.12005615234375
+          ],
+          "depth_valid": true,
+          "depth_m": 5.13736629486084,
+          "depth_valid_ratio": 0.8025210084033614,
+          "depth_std_m": 2.0352151193930643,
+          "navigation_bbox_complete": true,
+          "navigation_bbox_inside_image": true,
+          "navigation_overlap_count": 0
+        }
+      ],
+      "original_line_1based": 5232
+    },
+    "first_after_gap": {
+      "time_s": 34.904,
+      "kind": "detection",
+      "stamp_s": 34.8,
+      "clock_epoch": 0,
+      "acquisition_ns": 34800000000,
+      "completed_s": 34.904,
+      "rgb_received_s": 34.892,
+      "depth_stamp_s": 34.8,
+      "depth_received_s": 34.892,
+      "submitted_s": 34.900000000000006,
+      "worker_started_s": 34.900000000000006,
+      "worker_wait_wall_s": 0.000796049993368797,
+      "input_age_at_submit_s": 0.10000000000000853,
+      "acquisition_gap_s": 0.6999999999999957,
+      "inference_wall_s": 0.03945594100514427,
+      "rgb_depth_sync_error_s": 0.0,
+      "class_name": "person",
+      "initialization_confidence_threshold": 0.45,
+      "maintenance_confidence_threshold": 0.45,
+      "tracking_active": true,
+      "detections": [
+        {
+          "candidate_id": 0,
+          "class_id": 0,
+          "confidence": 0.8304644823074341,
+          "maintenance_only": false,
+          "bbox": [
+            288.901123046875,
+            108.09105682373047,
+            341.1529541015625,
+            279.31646728515625
+          ],
+          "depth_valid": true,
+          "depth_m": 5.210407257080078,
+          "depth_valid_ratio": 0.7962184873949579,
+          "depth_std_m": 1.9319322487198218,
+          "navigation_bbox_complete": true,
+          "navigation_bbox_inside_image": true,
+          "navigation_overlap_count": 0
+        }
+      ],
+      "original_line_1based": 5396
+    },
+    "source_acquisition_gap_s": 0.6999999999999957,
+    "output_to_output_gap_s": 0.7000000000000028,
+    "return_source_to_detector_output_s": 0.10400000000000631,
+    "source_age_of_previous_measurement_at_return_output_s": 0.804000000000002,
+    "expected_drop_acquisitions_missing_from_processed_detections": [
+      34.2,
+      34.3,
+      34.4,
+      34.5,
+      34.6,
+      34.7
+    ],
+    "detector_input_delivery_caveat": "Processed diagnostic absence is not proof of actual input absence; deterministic DROP expected actions need original recorded input stream or equivalent provenance evidence for actual delivery corroboration."
+  },
+  "observed_protection_chain": {
+    "last_navigation_accepted": {
+      "time_s": 34.204,
+      "kind": "navigation_diagnostics",
+      "diagnostic_schema_version": 2,
+      "acquisition_s": 34.1,
+      "target_uuid": "18ce49c4-75be-4bd3-9c56-f69dbe42f1b9",
+      "track_id": 1,
+      "candidate_id": 0,
+      "class_name": "person",
+      "confidence": 0.8508350849151611,
+      "depth_valid_ratio": 0.8025209903717041,
+      "depth_std_m": 2.035215139389038,
+      "missing_quality_fields": [],
+      "invalid_quality_fields": [],
+      "navigation_reference_path": "legacy_full_support",
+      "camera_frame": "camera_link",
+      "camera_transform_source_s": 34.1,
+      "ground_valid": true,
+      "ground_reason": "ground_fit",
+      "ground_inliers": 1127,
+      "ground_samples": 1200,
+      "ground_residual_std_m": 0.01985549440117084,
+      "visibility": {
+        "reason": "original_strict_bbox_complete"
+      },
+      "reference_valid": true,
+      "reference_reason": "person_ground_contact",
+      "measurement_processing_s": 34.204,
+      "fusion_accepted": true,
+      "fusion_reason": "accepted",
+      "output_s": 34.1,
+      "valid": true,
+      "output_publication_s": 34.204,
+      "output_surface_status": "tracking",
+      "output_target_uuid": "18ce49c4-75be-4bd3-9c56-f69dbe42f1b9",
+      "output_track_id": 1,
+      "output_measurement_source_s": 34.1,
+      "output_state": 1,
+      "state_reason": "tracking",
+      "measurement_age_s": 0.0,
+      "original_line_1based": 5235
+    },
+    "last_navigation_predictions_before_loss": [
+      {
+        "time_s": 34.82,
+        "kind": "navigation_diagnostics",
+        "diagnostic_schema_version": 2,
+        "acquisition_s": 34.1,
+        "target_uuid": "18ce49c4-75be-4bd3-9c56-f69dbe42f1b9",
+        "track_id": 1,
+        "candidate_id": 0,
+        "class_name": "person",
+        "confidence": 0.8508350849151611,
+        "depth_valid_ratio": 0.8025209903717041,
+        "depth_std_m": 2.035215139389038,
+        "missing_quality_fields": [],
+        "invalid_quality_fields": [],
+        "navigation_reference_path": "legacy_full_support",
+        "camera_frame": "camera_link",
+        "camera_transform_source_s": 34.1,
+        "ground_valid": true,
+        "ground_reason": "ground_fit",
+        "ground_inliers": 1127,
+        "ground_samples": 1200,
+        "ground_residual_std_m": 0.01985549440117084,
+        "visibility": {
+          "reason": "original_strict_bbox_complete"
+        },
+        "reference_valid": true,
+        "reference_reason": "person_ground_contact",
+        "measurement_processing_s": 34.204,
+        "fusion_accepted": true,
+        "fusion_reason": "accepted",
+        "output_s": 34.82,
+        "valid": true,
+        "output_publication_s": 34.82,
+        "output_surface_status": "coasting",
+        "output_target_uuid": "18ce49c4-75be-4bd3-9c56-f69dbe42f1b9",
+        "output_track_id": 1,
+        "output_measurement_source_s": 34.1,
+        "output_state": 2,
+        "state_reason": "prediction",
+        "measurement_age_s": 0.7199999999999989,
+        "original_line_1based": 5374
+      },
+      {
+        "time_s": 34.84,
+        "kind": "navigation_diagnostics",
+        "diagnostic_schema_version": 2,
+        "acquisition_s": 34.1,
+        "target_uuid": "18ce49c4-75be-4bd3-9c56-f69dbe42f1b9",
+        "track_id": 1,
+        "candidate_id": 0,
+        "class_name": "person",
+        "confidence": 0.8508350849151611,
+        "depth_valid_ratio": 0.8025209903717041,
+        "depth_std_m": 2.035215139389038,
+        "missing_quality_fields": [],
+        "invalid_quality_fields": [],
+        "navigation_reference_path": "legacy_full_support",
+        "camera_frame": "camera_link",
+        "camera_transform_source_s": 34.1,
+        "ground_valid": true,
+        "ground_reason": "ground_fit",
+        "ground_inliers": 1127,
+        "ground_samples": 1200,
+        "ground_residual_std_m": 0.01985549440117084,
+        "visibility": {
+          "reason": "original_strict_bbox_complete"
+        },
+        "reference_valid": true,
+        "reference_reason": "person_ground_contact",
+        "measurement_processing_s": 34.204,
+        "fusion_accepted": true,
+        "fusion_reason": "accepted",
+        "output_s": 34.84,
+        "valid": true,
+        "output_publication_s": 34.84,
+        "output_surface_status": "coasting",
+        "output_target_uuid": "18ce49c4-75be-4bd3-9c56-f69dbe42f1b9",
+        "output_track_id": 1,
+        "output_measurement_source_s": 34.1,
+        "output_state": 2,
+        "state_reason": "prediction",
+        "measurement_age_s": 0.740000000000002,
+        "original_line_1based": 5378
+      }
+    ],
+    "first_controller_hover_stale_target": {
+      "time_s": 34.852000000000004,
+      "kind": "control_status",
+      "lifecycle": 4,
+      "reason": "stale_target",
+      "track_id": 1,
+      "measurement_age_s": 0.7520000338554382,
+      "original_line_1based": 5380
+    },
+    "first_track_lost": {
+      "time_s": 34.86,
+      "kind": "tracks",
+      "acquisition_s": 34.1,
+      "output_s": 34.86,
+      "target_uuid": "18ce49c4-75be-4bd3-9c56-f69dbe42f1b9",
+      "target_track_id": 1,
+      "target_status": "lost",
+      "associations": [],
+      "ambiguous_track_ids": [],
+      "ambiguous_detection_indices": [],
+      "merge_uncertainty_detection_indices": [],
+      "spawn_deferred_detection_indices": [],
+      "spawn_deferred_reasons": [],
+      "tracks": [
+        {
+          "track_id": 1,
+          "class_name": "person",
+          "confidence": 0.8508350849151611,
+          "state": "lost",
+          "matched": false,
+          "depth_valid": true,
+          "last_detection_s": 34.1,
+          "last_measurement_s": 34.1,
+          "candidate_id": 0,
+          "selected": true,
+          "ambiguous": false,
+          "rejected_measurements": 0,
+          "measurement_diagnostics": {
+            "schema_version": 1,
+            "measurement_timestamp_s": 34.1,
+            "mahalanobis_squared": 0.003331300029223082,
+            "gate_threshold": 9.21,
+            "gate_applied": true,
+            "accepted": true,
+            "reason": "ACCEPTED"
+          }
+        }
+      ],
+      "original_line_1based": 5384
+    },
+    "source_age_at_first_track_loss_s": 0.759999999999998,
+    "first_returned_frame_navigation": {
+      "time_s": 34.904,
+      "kind": "navigation_diagnostics",
+      "diagnostic_schema_version": 2,
+      "acquisition_s": 34.8,
+      "target_uuid": "18ce49c4-75be-4bd3-9c56-f69dbe42f1b9",
+      "track_id": 1,
+      "reference_valid": false,
+      "reference_reason": "no_accepted_selected_measurement",
+      "measurement_processing_s": 34.904,
+      "fusion_accepted": false,
+      "fusion_reason": "invalid_navigation_reference",
+      "output_s": 34.904,
+      "valid": false,
+      "output_publication_s": 34.904,
+      "output_surface_status": "lost",
+      "output_target_uuid": "18ce49c4-75be-4bd3-9c56-f69dbe42f1b9",
+      "output_track_id": 1,
+      "output_measurement_source_s": null,
+      "output_state": 3,
+      "state_reason": "surface_lost",
+      "measurement_age_s": null,
+      "original_line_1based": 5399
+    },
+    "first_returned_frame_tracks": {
+      "time_s": 34.904,
+      "kind": "tracks",
+      "acquisition_s": 34.8,
+      "output_s": 34.904,
+      "target_uuid": "18ce49c4-75be-4bd3-9c56-f69dbe42f1b9",
+      "target_track_id": 1,
+      "target_status": "lost",
+      "associations": [],
+      "ambiguous_track_ids": [],
+      "ambiguous_detection_indices": [],
+      "merge_uncertainty_detection_indices": [],
+      "spawn_deferred_detection_indices": [],
+      "spawn_deferred_reasons": [],
+      "tracks": [
+        {
+          "track_id": 1,
+          "class_name": "person",
+          "confidence": 0.8508350849151611,
+          "state": "lost",
+          "matched": false,
+          "depth_valid": true,
+          "last_detection_s": 34.1,
+          "last_measurement_s": 34.1,
+          "candidate_id": 0,
+          "selected": true,
+          "ambiguous": false,
+          "rejected_measurements": 0,
+          "measurement_diagnostics": {
+            "schema_version": 1,
+            "measurement_timestamp_s": 34.1,
+            "mahalanobis_squared": 0.003331300029223082,
+            "gate_threshold": 9.21,
+            "gate_applied": true,
+            "accepted": true,
+            "reason": "ACCEPTED"
+          }
+        },
+        {
+          "track_id": 2,
+          "class_name": "person",
+          "confidence": 0.8304644823074341,
+          "state": "coasting",
+          "matched": false,
+          "depth_valid": true,
+          "last_detection_s": 34.8,
+          "last_measurement_s": 34.8,
+          "candidate_id": 0,
+          "selected": false,
+          "ambiguous": false,
+          "rejected_measurements": 0,
+          "measurement_diagnostics": {
+            "schema_version": 1,
+            "measurement_timestamp_s": 34.8,
+            "mahalanobis_squared": null,
+            "gate_threshold": 9.21,
+            "gate_applied": false,
+            "accepted": true,
+            "reason": "INITIALIZED"
+          }
+        }
+      ],
+      "original_line_1based": 5400
+    }
+  },
+  "established": [
+    "Original configuration and exact source hashing deterministically expect DROP at34.2,34.3,34.4,34.5,34.6,34.7, with KEEP34.1and34.8; three consecutive200ms windows171?173 are allDROP.",
+    "Observed last accepted acquisition34.1/output34.204 and next processed acquisition34.8/output34.904 match the expected boundary schedule. Both boundary detections have valid depth/complete bbox and confidence>0.83.",
+    "At34.852 controller reports stale_target with measurement_age.7520000338554382 and enters lifecycle4; at34.86 selected track1 becomesLOST with last_measurement_s34.1 and rejected_measurements0.",
+    "No target/track gate rejection, depth invalidity, ground-fit rejection or ambiguity is recorded in the final accepted payload; navigation remains accepted prediction from acquisition34.1 until its surface_lost transition.",
+    "Return acquisition34.8is onlyoutput34.904, which is.804safter previous accepted acquisition and.044safter firstLOST. It spawns track2while selectedtrack1staysLOST; navigation rejects no_accepted_selected_measurement. This preserves the prohibition against automatic target switching.",
+    "Original.75sprotection reacts as configured. The originaldesign expected.7ssourcegap plus observed.104sreturn-output delay, exceeding.75s; this is a prospective fault-design/protection interaction, not evidence supporting relaxed protection thresholds."
+  ],
+  "not_established": [
+    "Whether all six original raw input messages actually existed on native streams and were omitted from research streams, or whether other upstream/asynchronous factors also contributed. No original bag or native/research message payload has been read for this window.",
+    "A root-cause proof based only on absent processed diagnostics; absence is observational and not complete input provenance.",
+    "A repair success, revised terminal verdict, formal experimental readiness or general car-follow improvement."
+  ],
+  "preservation": {
+    "original_combined_terminal": "FAIL",
+    "original_long_prediction_observed": false,
+    "original_navigation_full_distance_rmse_m": 2.29643482982561,
+    "original_maximum_distance_rmse_m": 1.0,
+    "no_trial_upgraded": true
+  }
+}

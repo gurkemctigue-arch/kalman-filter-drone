@@ -1,0 +1,196 @@
+{
+  "schema_version": 1,
+  "created_utc": "2026-11-03T04:09:59.144540+00:00",
+  "kind": "DESCRIPTIVE_ORIGINAL_SUFFIX_REPRODUCTION_NOT_NEW_EVALUATION",
+  "inputs": [
+    {
+      "original_path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_matrix/plan.json",
+      "copy": "source_plan.json",
+      "bytes": 240125,
+      "sha256": "f32fb17a77670f5c774076ff9bf4b752b3e91eea4f28021efb826ed9b8520055"
+    },
+    {
+      "original_path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_matrix/slots/person_extension_speed_changes_velocity_seed004.json",
+      "copy": "velocity_terminal.json",
+      "bytes": 55397,
+      "sha256": "a152e62b340e4ebbc55613cad93a938f1cfe010ed9b4cd0bb4602e19e5a0855d"
+    },
+    {
+      "original_path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_person_extension_speed_changes_velocity_seed004/navigation_reference_evaluation.json",
+      "copy": "velocity_navigation_reference_evaluation.json",
+      "bytes": 145087,
+      "sha256": "4989e7ecf0ab2c58a535188abca20367d98a49f429e83fd63937948014f40dc5"
+    },
+    {
+      "original_path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_person_extension_speed_changes_velocity_seed004/navigation_reference_evaluation.frames.jsonl",
+      "copy": "velocity_navigation_reference_evaluation.frames.jsonl",
+      "bytes": 414712,
+      "sha256": "6763b11ec38c98479ce0664ffd06524457e3dded6a8a84ffba08adefec73f415"
+    },
+    {
+      "original_path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_matrix/slots/person_extension_speed_changes_position_seed004.json",
+      "copy": "position_terminal.json",
+      "bytes": 55419,
+      "sha256": "ec7e46918d6677b9359a63df5b40f898020e4fb0759fdd1ef98e834b81a31729"
+    },
+    {
+      "original_path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_person_extension_speed_changes_position_seed004/navigation_reference_evaluation.json",
+      "copy": "position_navigation_reference_evaluation.json",
+      "bytes": 145691,
+      "sha256": "c0cfb10f32d6dcd2ea3b889d23efa0e3417d7bb9c7ad4b51361e5a7e375fd972"
+    },
+    {
+      "original_path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_person_extension_speed_changes_position_seed004/navigation_reference_evaluation.frames.jsonl",
+      "copy": "position_navigation_reference_evaluation.frames.jsonl",
+      "bytes": 412535,
+      "sha256": "251ccb86e5407c03f22bb16cef0b92c6134a554d9d0c7d5af5c29f5a833d0a83"
+    }
+  ],
+  "results": {
+    "velocity": {
+      "slot_id": "person_extension_speed_changes_velocity_seed004",
+      "original_status": "PASS",
+      "started_utc": "2026-11-03T03:21:54.939210+00:00",
+      "finished_utc": "2026-11-03T03:40:24.461884+00:00",
+      "original_engineering_evidence": {
+        "checks": {
+          "base_link_distance": true,
+          "base_link_height": true,
+          "navigation_coverage": true,
+          "truth_coverage": true,
+          "final_distance_settled": true,
+          "final_height_settled": true
+        },
+        "measured": {
+          "base_link_distance_rmse_m": 0.6966731642371402,
+          "base_link_height_rmse_m": 0.16981679263697372,
+          "valid_state_coverage": 0.9148936170212766,
+          "truth_coverage": 1.0
+        }
+      },
+      "report_status": "RECORDED_WITH_CENSORED_FAILURES",
+      "full_samples": 752,
+      "distance_rmse_m": 0.6966731642371402,
+      "height_rmse_m": 0.16981679263697372,
+      "registered_distance_transient": {
+        "scheduled_samples": 752,
+        "valid_truth_samples": 752,
+        "truth_coverage": 1.0,
+        "initial_error_m": 0.006307669628945689,
+        "initial_direction": 1.0,
+        "opposite_side_overshoot_m": 0.041424442465030076,
+        "band_m": 0.5,
+        "minimum_in_band_duration_s": 3.0,
+        "first_sustained_in_band_time_s": 4.100000000000001,
+        "settled_through_interval_end": true,
+        "settling_time_s": 36.0,
+        "settling_right_censored": false,
+        "observed_interval_s": 75.152,
+        "duplicate_source_times": false,
+        "definition": "Absolute opposite-side crossing relative to initial error sign; no percent step normalization. Settling is the start of the final active, in-band, continuously evidenced suffix lasting >=3 s through the interval end. Missing truth, inactive control and gaps interrupt the suffix; null settling is right-censored, never zero."
+      },
+      "last_outside_or_inactive": {
+        "time_s": 53.251999999999995,
+        "target_uuid": "4434112c-ec15-4bfa-a633-b88cdfc71db0",
+        "reference_task_uuid": "4434112c-ec15-4bfa-a633-b88cdfc71db0",
+        "expected_physical_id": "target_person",
+        "base_link_distance_error_m": 0.5631789623843604,
+        "base_link_height_error_m": -0.017270124306891788,
+        "model_origin_distance_error_m": 0.5504890550386605,
+        "model_origin_height_error_m": -0.25693436436504147,
+        "navigation_valid": true,
+        "navigation_state": 2,
+        "navigation_reason": "valid",
+        "active": true,
+        "kf_position_error_m": 0.14422842557483426,
+        "kf_velocity_error_mps": 0.05360879377070751
+      },
+      "final_inside_suffix_start_s": 53.352000000000004,
+      "final_inside_suffix_samples": 392,
+      "final_inside_suffix_duration_to_original_end_s": 39.152,
+      "original_end_s": 92.504,
+      "relative_suffix_start_s": 36.0,
+      "reproduced_settled": true,
+      "final_sample_distance_error_m": 0.27778162110984184
+    },
+    "position": {
+      "slot_id": "person_extension_speed_changes_position_seed004",
+      "original_status": "FAIL",
+      "started_utc": "2026-11-03T03:46:42.954338+00:00",
+      "finished_utc": "2026-11-03T04:04:47.689033+00:00",
+      "original_engineering_evidence": {
+        "checks": {
+          "base_link_distance": true,
+          "base_link_height": true,
+          "navigation_coverage": true,
+          "truth_coverage": true,
+          "final_distance_settled": false,
+          "final_height_settled": true
+        },
+        "measured": {
+          "base_link_distance_rmse_m": 0.6571473871349427,
+          "base_link_height_rmse_m": 0.16285936900630835,
+          "valid_state_coverage": 0.9162234042553191,
+          "truth_coverage": 1.0
+        }
+      },
+      "report_status": "RECORDED_WITH_CENSORED_FAILURES",
+      "full_samples": 752,
+      "distance_rmse_m": 0.6571473871349428,
+      "height_rmse_m": 0.16285936900630835,
+      "registered_distance_transient": {
+        "scheduled_samples": 752,
+        "valid_truth_samples": 752,
+        "truth_coverage": 1.0,
+        "initial_error_m": 0.0069733406341931925,
+        "initial_direction": 1.0,
+        "opposite_side_overshoot_m": 0.527035045184312,
+        "band_m": 0.5,
+        "minimum_in_band_duration_s": 3.0,
+        "first_sustained_in_band_time_s": 4.900000000000002,
+        "settled_through_interval_end": false,
+        "settling_time_s": null,
+        "settling_right_censored": true,
+        "observed_interval_s": 75.136,
+        "duplicate_source_times": false,
+        "definition": "Absolute opposite-side crossing relative to initial error sign; no percent step normalization. Settling is the start of the final active, in-band, continuously evidenced suffix lasting >=3 s through the interval end. Missing truth, inactive control and gaps interrupt the suffix; null settling is right-censored, never zero."
+      },
+      "last_outside_or_inactive": {
+        "time_s": 90.60000000000001,
+        "target_uuid": "5dd4556a-4675-4a1f-8132-68627dbb2827",
+        "reference_task_uuid": "5dd4556a-4675-4a1f-8132-68627dbb2827",
+        "expected_physical_id": "target_person",
+        "base_link_distance_error_m": 0.501160965113872,
+        "base_link_height_error_m": 0.019047407343382616,
+        "model_origin_distance_error_m": 0.5060103208781035,
+        "model_origin_height_error_m": -0.2209019026680923,
+        "navigation_valid": true,
+        "navigation_state": 2,
+        "navigation_reason": "valid",
+        "active": true,
+        "kf_position_error_m": 0.23646778357305534,
+        "kf_velocity_error_mps": 0.02916713144882912
+      },
+      "final_inside_suffix_start_s": 90.7,
+      "final_inside_suffix_samples": 22,
+      "final_inside_suffix_duration_to_original_end_s": 2.1359999999999957,
+      "original_end_s": 92.836,
+      "relative_suffix_start_s": 73.0,
+      "reproduced_settled": false,
+      "final_sample_distance_error_m": 0.1304348030535465
+    }
+  },
+  "plots": [
+    {
+      "file": "distance_comparison.png",
+      "bytes": 156154,
+      "sha256": "3420d3ef524d6ecccb2cc7ff6789eaaeee2a3289b68acd7487845ec22f0067e6"
+    },
+    {
+      "file": "distance_comparison.pdf",
+      "bytes": 47171,
+      "sha256": "5256c9c007f36df636e64f28833adaaf7446a8adc4de18a9e46924438d8e0062"
+    }
+  ],
+  "claim_boundary": "Two original development flights, not a repeated causal comparison. All original samples, thresholds, windows and verdicts retained. This diagnoses failure; it does not certify a controller repair."
+}

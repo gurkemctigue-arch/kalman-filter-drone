@@ -1,0 +1,434 @@
+{
+  "schema_version": 1,
+  "created_utc": "2026-11-03T03:59:07.661250+00:00",
+  "status": "DESCRIPTIVE_READ_ONLY_DIAGNOSIS_NOT_A_REEVALUATION",
+  "scope": "Original person combined frozen54 terminal/navigation/flight JSON and saved small frame sidecars; original reports, verdicts, thresholds and complete primary grid unchanged; no bag, WSL, ROS, flight or source edits.",
+  "inputs": [
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_matrix/plan.json",
+      "bytes": 240125,
+      "sha256": "f32fb17a77670f5c774076ff9bf4b752b3e91eea4f28021efb826ed9b8520055"
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_matrix/slots/person_extension_combined_seed004.json",
+      "bytes": 54603,
+      "sha256": "596db684d39afe1eb561b710550541728a71e5e6c564118a1206d204c557c677"
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_person_extension_combined_seed004/navigation_reference_evaluation.json",
+      "bytes": 144870,
+      "sha256": "4d9e8005df1da2c94a0bb4f501d0adace346b46d1bf7f38b0ca4f67a236db371",
+      "original_terminal_sha256": "4d9e8005df1da2c94a0bb4f501d0adace346b46d1bf7f38b0ca4f67a236db371",
+      "matches_original_terminal_sha256": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_person_extension_combined_seed004/navigation_reference_evaluation.frames.jsonl",
+      "bytes": 404355,
+      "sha256": "40e1e6786ec4f575e1ef0d8171fb5a442c05495f44894f5abbcb5206c7a488f1",
+      "original_terminal_sha256": "40e1e6786ec4f575e1ef0d8171fb5a442c05495f44894f5abbcb5206c7a488f1",
+      "matches_original_terminal_sha256": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_person_extension_combined_seed004/navigation_reference_evaluation.raw_frames.jsonl",
+      "bytes": 200869,
+      "sha256": "8d2d538820b0037819266694b624471c9f91dda71ab9c40373528276656e47d5",
+      "original_terminal_sha256": "8d2d538820b0037819266694b624471c9f91dda71ab9c40373528276656e47d5",
+      "matches_original_terminal_sha256": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_person_extension_combined_seed004/navigation_reference_evaluation.message_frames.jsonl",
+      "bytes": 903018,
+      "sha256": "f030de481f291328a0de80545b90631423584d8f51578d8731534797187aad64",
+      "original_terminal_sha256": "f030de481f291328a0de80545b90631423584d8f51578d8731534797187aad64",
+      "matches_original_terminal_sha256": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_person_extension_combined_seed004/flight_evaluation.json",
+      "bytes": 24353,
+      "sha256": "5b2946c2aad931f53c70bcd4f7bdbfd31195637bb3ec0fb99bfd74630a1e8266",
+      "original_terminal_sha256": "5b2946c2aad931f53c70bcd4f7bdbfd31195637bb3ec0fb99bfd74630a1e8266",
+      "matches_original_terminal_sha256": true
+    }
+  ],
+  "original_verdicts": {
+    "terminal": "FAIL",
+    "engineering_result": "FAIL",
+    "surface_flight": {
+      "result": "FAIL",
+      "scope": "Observed flight/occlusion behavior only; no ground-truth accuracy threshold is asserted",
+      "short_occlusion_recorded": true,
+      "long_occlusion_recorded": true,
+      "clock_timebase_available": true,
+      "missing_topics": [],
+      "input_read_error_count": 0,
+      "failed_events_retained": true
+    },
+    "navigation_evaluation_status": "RECORDED_WITH_CENSORED_FAILURES",
+    "navigation_performance_comparison": "Original whole-interval physical distance RMSE exceeds original plan registered 1.0 m maximum; this comparison is diagnostic and does not add or rewrite a terminal evaluator result."
+  },
+  "original_navigation_acceptance": {
+    "status": "REGISTERED",
+    "registered_utc": "2026-10-29T19:40:23.479593+00:00",
+    "maximum_base_link_distance_rmse_m": 1.0,
+    "maximum_base_link_height_rmse_m": 0.4,
+    "minimum_valid_state_coverage": 0.8,
+    "minimum_truth_coverage": 0.99,
+    "minimum_physical_identity_coverage": 0.8,
+    "require_final_window_settled": true,
+    "requirements_source": "planning/reliability-v4-engineering-requirements-decision-20261030.md",
+    "requirements_source_sha256": "1a31cd93b47991489ea57ea11ae3ee98a5f5a53e5eba9c52cc3e03f48868c2c6",
+    "physical_identity_required_groups": [
+      "stage2_crossing",
+      "stage3_multi_active"
+    ],
+    "note": "Prospective project engineering requirements selected before held-out outcomes, for complete 75 s tasks. Full denominators, unknowns, original safety gates and final active settled suffix are retained. Numeric registration alone does not authorize formal flights: full final-source 12-core and 16-extension development readiness, calibration, protocol sealing and actual capacity admission remain mandatory. No adaptive-KF superiority or real-flight claim."
+  },
+  "definitions": {
+    "primary_interval": {
+      "start_s": 17.8,
+      "end_s": 92.928,
+      "navigation_evaluation_start_s": 17.8,
+      "sample_period_s": 0.1
+    },
+    "physical_distance_error": "Horizontal independent-GT target-to-base_link distance minus 5.0 m. Uses declared FLU [0,0,0.24] vehicle control-point offset. Physical truth metric retains LOST/inactive samples.",
+    "estimator_position_error": "Separate independent-GT target state-estimate error; defined only on valid target state grid samples, not the physical following error.",
+    "active": "Original offline valid-navigation and matching FOLLOW/PREDICT lifecycle/track classification; inactive does not itself locate actual HOVER entry or prove low physical speed.",
+    "phase_boundaries": "Half-open [start,end); exact original serialized float values retained without tolerance or snapping. Original primary sample 42.8 is numerically less than long request 42.800000000000004 and therefore belongs to the pre-long phase; 49.8 remains LOST even though explicit selection is requested then.",
+    "settling": "Uses the original explicit_selection window settling=6.300000000000011 s after request49.8; the phase boundary is56.10000000000001. No new settling rule or alternate gate is introduced."
+  },
+  "whole_physical_distance": {
+    "samples": 752,
+    "first_grid_time_s": 17.8,
+    "last_grid_time_s": 92.9,
+    "active_samples": 602,
+    "sse_m2": 3965.756921582407,
+    "rmse_m": 2.29643482982561,
+    "mean_m": 1.2474029806218405,
+    "first_error_m": 0.02740418316728732,
+    "last_error_m": 0.2724168660868962,
+    "max_absolute_error_m": 7.087985935152048,
+    "max_absolute_error_time_s": 51.0
+  },
+  "whole_height_rmse_m": 0.14950812092949312,
+  "grid_navigation_reason_counts": {
+    "valid": 602,
+    "lost": 150
+  },
+  "original_valid_state_coverage": 0.800531914893617,
+  "active_descriptive_only": {
+    "samples": 602,
+    "first_grid_time_s": 17.8,
+    "last_grid_time_s": 92.9,
+    "active_samples": 602,
+    "sse_m2": 1794.1408236527593,
+    "rmse_m": 1.7263546482447374,
+    "mean_m": 0.7445813497404565,
+    "first_error_m": 0.02740418316728732,
+    "last_error_m": 0.2724168660868962,
+    "max_absolute_error_m": 7.087985935152048,
+    "max_absolute_error_time_s": 51.0
+  },
+  "lost_inactive_descriptive_only": {
+    "samples": 150,
+    "first_grid_time_s": 34.900000000000006,
+    "last_grid_time_s": 49.8,
+    "active_samples": 0,
+    "sse_m2": 2171.616097929648,
+    "rmse_m": 3.804923212479369,
+    "mean_m": 3.2653937925591285,
+    "first_error_m": 0.2495915193852296,
+    "last_error_m": 6.670601770393425,
+    "max_absolute_error_m": 6.670601770393425,
+    "max_absolute_error_time_s": 49.8
+  },
+  "phases": [
+    {
+      "samples": 120,
+      "first_grid_time_s": 17.8,
+      "last_grid_time_s": 29.700000000000003,
+      "active_samples": 120,
+      "sse_m2": 19.76175802452695,
+      "rmse_m": 0.4058094588240372,
+      "mean_m": 0.34667473498543394,
+      "first_error_m": 0.02740418316728732,
+      "last_error_m": 0.28107716242252767,
+      "max_absolute_error_m": 0.820126196187621,
+      "max_absolute_error_time_s": 20.6,
+      "name": "before_short_shutter",
+      "interval_start_inclusive_s": 17.8,
+      "interval_end_exclusive_s": 29.8,
+      "sse_share": 0.004983098665724994
+    },
+    {
+      "samples": 3,
+      "first_grid_time_s": 29.8,
+      "last_grid_time_s": 30.0,
+      "active_samples": 3,
+      "sse_m2": 0.23312305581653234,
+      "rmse_m": 0.27876098233464713,
+      "mean_m": 0.2787588934622572,
+      "first_error_m": 0.2800226389008307,
+      "last_error_m": 0.2773860130419701,
+      "max_absolute_error_m": 0.2800226389008307,
+      "max_absolute_error_time_s": 29.8,
+      "name": "short_shutter_requested_interval",
+      "interval_start_inclusive_s": 29.8,
+      "interval_end_exclusive_s": 30.080000000000002,
+      "sse_share": 5.878400023658337e-05
+    },
+    {
+      "samples": 48,
+      "first_grid_time_s": 30.1,
+      "last_grid_time_s": 34.8,
+      "active_samples": 48,
+      "sse_m2": 2.6686601398179763,
+      "rmse_m": 0.2357903438358065,
+      "mean_m": 0.23404622504482328,
+      "first_error_m": 0.2753163520196251,
+      "last_error_m": 0.25103212654001883,
+      "max_absolute_error_m": 0.2753163520196251,
+      "max_absolute_error_time_s": 30.1,
+      "name": "after_short_until_first_grid_lost",
+      "interval_start_inclusive_s": 30.080000000000002,
+      "interval_end_exclusive_s": 34.900000000000006,
+      "sse_share": 0.000672925797669196
+    },
+    {
+      "samples": 80,
+      "first_grid_time_s": 34.900000000000006,
+      "last_grid_time_s": 42.8,
+      "active_samples": 0,
+      "sse_m2": 301.6874222124551,
+      "rmse_m": 1.9419301680687924,
+      "mean_m": 1.6747499511359412,
+      "first_error_m": 0.2495915193852296,
+      "last_error_m": 3.432372432050016,
+      "max_absolute_error_m": 3.432372432050016,
+      "max_absolute_error_time_s": 42.8,
+      "name": "lost_before_long_shutter_request",
+      "interval_start_inclusive_s": 34.900000000000006,
+      "interval_end_exclusive_s": 42.800000000000004,
+      "sse_share": 0.07607309983388404
+    },
+    {
+      "samples": 30,
+      "first_grid_time_s": 42.900000000000006,
+      "last_grid_time_s": 45.8,
+      "active_samples": 0,
+      "sse_m2": 523.0465994399248,
+      "rmse_m": 4.17551034581373,
+      "mean_m": 4.155650357388703,
+      "first_error_m": 3.4785869049119693,
+      "last_error_m": 4.839167436399485,
+      "max_absolute_error_m": 4.839167436399485,
+      "max_absolute_error_time_s": 45.8,
+      "name": "long_shutter_requested_interval_already_lost",
+      "interval_start_inclusive_s": 42.800000000000004,
+      "interval_end_exclusive_s": 45.88,
+      "sse_share": 0.13189073606438287
+    },
+    {
+      "samples": 40,
+      "first_grid_time_s": 45.900000000000006,
+      "last_grid_time_s": 49.8,
+      "active_samples": 0,
+      "sse_m2": 1346.8820762772677,
+      "rmse_m": 5.802762437575029,
+      "mean_m": 5.778989051783322,
+      "first_error_m": 4.886221969572009,
+      "last_error_m": 6.670601770393425,
+      "max_absolute_error_m": 6.670601770393425,
+      "max_absolute_error_time_s": 49.8,
+      "name": "after_long_open_through_reselection_until_first_grid_valid",
+      "interval_start_inclusive_s": 45.88,
+      "interval_end_exclusive_s": 49.900000000000006,
+      "sse_share": 0.3396279960950905
+    },
+    {
+      "samples": 62,
+      "first_grid_time_s": 49.900000000000006,
+      "last_grid_time_s": 56.0,
+      "active_samples": 62,
+      "sse_m2": 1737.5064593729996,
+      "rmse_m": 5.293798044109973,
+      "mean_m": 4.830643967089348,
+      "first_error_m": 6.7180936124929005,
+      "last_error_m": 0.6071153625520038,
+      "max_absolute_error_m": 7.087985935152048,
+      "max_absolute_error_time_s": 51.0,
+      "name": "active_reselection_recovery_until_original_settled_suffix",
+      "interval_start_inclusive_s": 49.900000000000006,
+      "interval_end_exclusive_s": 56.10000000000001,
+      "sse_share": 0.43812732190345743
+    },
+    {
+      "samples": 369,
+      "first_grid_time_s": 56.10000000000001,
+      "last_grid_time_s": 92.9,
+      "active_samples": 369,
+      "sse_m2": 33.97082305959813,
+      "rmse_m": 0.30341695916679084,
+      "mean_m": 0.2576330159984413,
+      "first_error_m": 0.4893449451218981,
+      "last_error_m": 0.2724168660868962,
+      "max_absolute_error_m": 0.4893449451218981,
+      "max_absolute_error_time_s": 56.10000000000001,
+      "name": "final_settled_active_suffix",
+      "interval_start_inclusive_s": 56.10000000000001,
+      "interval_end_exclusive_s": 92.928,
+      "sse_share": 0.008566037639554361
+    }
+  ],
+  "reconciliation": {
+    "original_samples": 752,
+    "partition_samples": 752,
+    "each_original_row_exactly_once": true,
+    "partition_sse_m2": 3965.756921582407,
+    "whole_sse_m2": 3965.756921582407,
+    "sse_roundoff_residual_m2": 0.0,
+    "reproduces_original_rmse_exactly": true
+  },
+  "events": {
+    "short_requested_interval": {
+      "start_s": 29.8,
+      "end_s": 30.080000000000002,
+      "result": "PASS",
+      "first_predicted_s": 29.8
+    },
+    "last_accepted_raw_before_first_lost": {
+      "time_s": 34.1,
+      "received_sim_s": 34.204,
+      "target_uuid": "18ce49c4-75be-4bd3-9c56-f69dbe42f1b9",
+      "track_id": 1,
+      "fusion_accepted": true,
+      "fusion_reason": "accepted",
+      "reason": "valid",
+      "position_error_m": 0.20341682258034247,
+      "velocity_pair_dt_s": 0.10000000000000142,
+      "velocity_error_mps": 0.23842963138018491
+    },
+    "first_lost_message": {
+      "time_s": 34.86,
+      "received_sim_s": 34.86,
+      "reason": "lost",
+      "target_uuid": "18ce49c4-75be-4bd3-9c56-f69dbe42f1b9"
+    },
+    "first_lost_primary_grid": {
+      "time_s": 34.900000000000006,
+      "target_uuid": "18ce49c4-75be-4bd3-9c56-f69dbe42f1b9",
+      "reference_task_uuid": null,
+      "expected_physical_id": "target_person",
+      "base_link_distance_error_m": 0.2495915193852296,
+      "base_link_height_error_m": -0.00012428713185963502,
+      "model_origin_distance_error_m": 0.24942586331983474,
+      "model_origin_height_error_m": -0.24012363676205917,
+      "navigation_valid": false,
+      "navigation_state": 3,
+      "navigation_reason": "lost",
+      "active": false
+    },
+    "long_requested_interval": {
+      "start_s": 42.800000000000004,
+      "end_s": 45.88,
+      "first_lost_observed_within_long_window_s": 42.804,
+      "first_hover_observed_within_long_window_s": 42.852,
+      "prediction_observed": false,
+      "checks": {
+        "recorded_close_event": true,
+        "shutter_close_service_succeeded": true,
+        "shutter_open_service_succeeded": true,
+        "shutter_close_ack_before_open_request": true,
+        "detector_interruption_observed": true,
+        "prediction_observed": false,
+        "lost_observed_for_long_occlusion": true,
+        "hover_observed_for_long_occlusion": true,
+        "sustained_low_speed_after_hover": true,
+        "no_automatic_recovery_after_long_loss": true,
+        "no_tracking_control_before_reselection_after_long_loss": true,
+        "sustained_tracking_after_reselection": true,
+        "no_loss_during_short_occlusion": null,
+        "identity_preserved_on_observed_recovery": null
+      },
+      "braking_from_motion_demonstrated": false,
+      "speed_at_shutter_start_mps": 0.011869636935800844,
+      "speed_at_window_hover_observation_mps": 0.011746576302391778
+    },
+    "reselection": {
+      "confirmed": true,
+      "original_target_uuid": "18ce49c4-75be-4bd3-9c56-f69dbe42f1b9",
+      "requested_target_uuid": "d12ccf22-d307-42bd-8acd-fc9ef2d00890",
+      "confirmed_target_uuid": "d12ccf22-d307-42bd-8acd-fc9ef2d00890",
+      "selection_time_s": 49.8,
+      "confirmation_time_s": 49.804,
+      "confirmation_record_sequence": 52035,
+      "confirmation_state_index": 1879,
+      "confirmation_image_stamp_s": 49.7,
+      "confirmed_track_id": 3,
+      "action": "SELECT",
+      "selection_action_code": 0,
+      "first_valid_request_s": 49.8,
+      "invalid_candidates": []
+    },
+    "first_new_valid_message": {
+      "time_s": 49.7,
+      "received_sim_s": 49.804,
+      "reason": "valid",
+      "target_uuid": "d12ccf22-d307-42bd-8acd-fc9ef2d00890",
+      "position_error_m": 0.1038254101960557,
+      "velocity_error_mps": 0.029318883486664185,
+      "delivery_age_s": 0.1039999999999992
+    },
+    "first_new_valid_grid": {
+      "time_s": 49.900000000000006,
+      "target_uuid": "d12ccf22-d307-42bd-8acd-fc9ef2d00890",
+      "reference_task_uuid": "d12ccf22-d307-42bd-8acd-fc9ef2d00890",
+      "expected_physical_id": "target_person",
+      "base_link_distance_error_m": 6.7180936124929005,
+      "base_link_height_error_m": 0.007890861806353566,
+      "model_origin_distance_error_m": 6.717665070832492,
+      "model_origin_height_error_m": -0.23210875556294885,
+      "navigation_valid": true,
+      "navigation_state": 2,
+      "navigation_reason": "valid",
+      "active": true,
+      "kf_position_error_m": 0.10520900959122897,
+      "kf_velocity_error_mps": 0.0336740338272578
+    },
+    "original_reselection_distance_settling_s": 6.300000000000011,
+    "original_settled_suffix_start_s": 56.10000000000001,
+    "original_reselection_opposite_side_overshoot_m": 0.43350026305560085
+  },
+  "separate_state_estimation": {
+    "position": {
+      "count": 602,
+      "mean": 0.27882887957654084,
+      "median": 0.29017046886941733,
+      "p95": 0.3898037038852839,
+      "max": 0.4453441858649137,
+      "rmse": 0.28993897417937853,
+      "mean_absolute": 0.27882887957654084,
+      "p95_absolute": 0.3898037038852839,
+      "max_absolute": 0.4453441858649137
+    },
+    "velocity": {
+      "count": 601,
+      "mean": 0.06600500585800116,
+      "median": 0.051159491069015135,
+      "p95": 0.18338697246517974,
+      "max": 0.4505018049577625,
+      "rmse": 0.08401776994266319,
+      "mean_absolute": 0.06600500585800116,
+      "p95_absolute": 0.18338697246517974,
+      "max_absolute": 0.4505018049577625
+    },
+    "note": "LOST rows have no valid target estimate and remain absent from this estimator metric denominator, while all752 physical samples remain in the following-distance denominator."
+  },
+  "findings": [
+    "Early LOST through recovery before original settled suffix covers 212/752 samples and contributes 98.571915390% of full physical-distance SSE.",
+    "LOST/inactive contributes 54.759183199% of full SSE. Active-only descriptive RMSE=1.726354648 m also exceeds1m because active recovery remains large; it does not replace the original full metric.",
+    "First observed LOST34.86 precedes long shutter request42.800000000000004 by7.94s. The long-window first_lost42.804 and first_hover42.852 are first within-window observations, not global onsets.",
+    "The whole physical-error maximum7.087985935152048m occurs51.0s after reselection, with valid estimate, before final suffix56.10000000000001.",
+    "The short window passes. Long-window prediction unobserved remainsFalse; later safety/reselection checksTrue and low speed in that window do not demonstrate braking from moving flight because braking_from_motion_demonstrated=False.",
+    "This decomposition associates error with observed phases; it does not isolate causality of the initial early loss or prove that a controller-only change would repair it. No trial outcome is upgraded."
+  ]
+}
