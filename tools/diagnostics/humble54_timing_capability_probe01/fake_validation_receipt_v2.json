@@ -1,0 +1,43 @@
+{
+  "schema_version": 2,
+  "scope": "NO_ROS_FAKE_OBJECT_AND_FIXED_SOURCE_VALIDATION_ONLY",
+  "created_utc": "2026-11-03T09:15:43.358607+00:00",
+  "native_executed": false,
+  "wsl_executed": false,
+  "test_count": 18,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "success": true,
+  "test_execution_evidence": {
+    "command": "python -m unittest discover -s tools/diagnostics/humble54_timing_capability_probe01 -p test_probe.py -v",
+    "exit_code": 0,
+    "observed_result": "Ran 18 tests in 0.004s; OK",
+    "tool_output_chunk_id": "dabbac"
+  },
+  "review_fixes": [
+    "Preserve executor.shutdown actual bool return; false/non-bool/exception means UNKNOWN",
+    "Reject missing/reversed monotonic clocks and already-ended take matched to future publish",
+    "Allow take to overlap synchronous publish; no publish-end-before-take-start requirement"
+  ],
+  "files": {
+    "probe.py": {
+      "bytes": 31372,
+      "sha256": "4032859d48116748d531344dd9e4eabed0a2ac8c177073de899f672f8886db09"
+    },
+    "test_probe.py": {
+      "bytes": 15389,
+      "sha256": "362576c6d7f6bb8efd8b3ec1bd841df696700d107dc311a0e14998a54510cd8a"
+    },
+    "README.md": {
+      "bytes": 5840,
+      "sha256": "dff59c5892048cc03539adaf720b987d73924ce4ad23bd67deb761b290a5ea3d"
+    }
+  },
+  "prior_receipt_sha256": "100f4e2e7639cca33c38c39f9fcc3bda7d9fd0ed7c94424782e84d5bb3b63244",
+  "prior_source_archive": "tools/diagnostics/humble54_timing_capability_probe01/archive/pre_review_20261103T090726Z",
+  "prior_archive_source_hashes_verified": true,
+  "fixed_actual_saved_executor_source_sha256": "cfd24d4952d061299d395820bfffae3afb95a87ac186ca131194be349846e7fd",
+  "physical_e2e": "NOT_OBSERVED",
+  "historical_strict_changed": false
+}

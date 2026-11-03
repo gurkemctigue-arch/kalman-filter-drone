@@ -1,6 +1,6 @@
 # probe02 第 7 场 position 加减速复核（2026-11-03）
 
-仅读取原终态、小报告与记录参数，对照第 6 场 velocity；未读 telemetry/bag、启动 WSL、重推理或修改代码、阈值、原判定。
+仅读取原终态、小报告、记录参数与已闭合的小型 navigation sidecar，对照第 6 场 velocity；未读 telemetry/bag、启动 WSL、重推理或修改代码、阈值、原判定。
 
 **原件**
 
@@ -36,14 +36,19 @@
 
 距离稳定要求误差位于 ±0.5 m，控制有效、证据连续，并形成至少 3 s 且一直延续至录制结束的末段。position 全窗及重选窗口均 `settled_through_interval_end=false`、`settling_time_s=null`、`settling_right_censored=true`，不能把 null 解释为零。
 
-position 并非从未入带：初始窗约 22.452 s 起已稳定至首次遮挡；重选后约 59.452 s 出现首段持续入带，但没有取得延续到 92.472 s 的合格末段。重选窗口中至少曾出现向近侧 0.530153 m 的超调，较 0.5 m 带宽多约 0.030153 m；小报告没有给出其发生时刻或最终误差，不能直接认定该次超调就是末段失败原因。
+position 并非从未入带：初始窗约 22.452 s 起已稳定至首次遮挡；重选后约 59.452 s 起又持续入带。实际 sidecar 随后记录末次超上界为 **88.652–90.052 s** 的 15 个采样点：首点误差 +0.500515562 m，89.352 s 达峰值 **+0.560628353 m**，末点 +0.508939842 m。
 
-velocity 的最终距离稳定始于绝对时刻约 58.100 s，并保持到结束。两场重选后的连续状态/控制检查均 PASS；position 该段约 43.088 s，末状态/控制距录制终点仅约 0.008/0.020 s。因此不能将 position 的末段失败直接描述为再次完全丢失或未恢复。
+90.152 s 误差降至 +0.493616500 m，之后 24 个采样点保持入带；末样本 92.452 s 仅 **+0.102679216 m**。但至录制结束 92.472 s 的末段驻留仅 **2.320 s**，不足原定 3 s，直接解释了 final=false。该段采样间隔约 0.1 s、至录制终点差 0.020 s，满足 0.15 s 连续性容限；失败来自晚期超带后驻留不足，而不是末误差很大、缺真值或末段掉状态。上述时刻是固定 10 Hz 观察值，真实跨界仅能界定于相邻采样之间。
+
+position 的导航/控制仅在 43.052 s 因 stale 变为无效、43.152 s 转 LOST，49.452 s 网格点恢复后一直有效到末尾；89 s 后 35 个样本全部 active/navigation_valid=true。早先向近侧 0.530153 m 的超调不是最后一次中断。velocity 自 58.100 s 连续入带，至录制末尾驻留 **34.760 s**；89 s 后 39 点均有效且误差为 +0.229685851～+0.426458917 m，末样本 92.800 s 为 +0.249388455 m，距结束 0.060 s。
 
 **参数、不能归因之处及待核**
 
 - 两场 `run_config.json` 仅试验名与 `command_mode` 不同；记录的 runtime_parameters.yaml 也只有 `command_mode` 不同。均 seed=4/Gazebo seed=5、clean、speed_changes、adaptive_kf、legacy 关联，目标距离 5 m。
-- navigation 评价脚本及全部依赖的来源绑定一致；这是同一指标定义下的一对试验，不能据单对结果断言 position 普遍较差或两者差异具有统计意义。
+- 两原报告的 navigation 评价脚本及依赖绑定一致；本次实际执行的稳定函数 SHA256 `03c81478632f38ba2ca49b91b14cf5b43e0c6f8c545c6cbf037f2f62fb118cb9` 与原报告依赖一致，重算两场全窗、初始窗、重选窗全部稳定字段均精确吻合。当前 Windows navigation 外层脚本 SHA 为 `b49984d495ec7b12e623e961f3d606958aaef682ddfbc636f9c21ed2d52abcb4`，不同于原冻结 `bbff6c746ed76d0139c194cdfc1409f38dc422d64ddbc73da2995a0838df4422`；本次未执行该外层脚本。
 - position 记录 `slew_position=true`、position lead 限幅 [2,2,0.5] m、position acceleration 限幅 [3,3,3] m/s²；这些参数仅构成后续检查线索，尚未证实具体因果。
-- 待原生窄窗：position 先查 89.000–92.472 s，必要时沿重选后 49.360–92.472 s 的小型评价 sidecar 定位最后一次条件中断；对照 velocity 末尾 89.000–92.860 s。
-- 需输出最后一次超带/入带时刻、末段驻留时间、控制有效性与导航新鲜度，区分误差超带、驻留不足 3 s、导航/证据连续性中断；再核目标变速、估计、限幅设定值和实际机体响应是否同步。上述窄窗本次尚未执行，原 FAIL 不改判。
+- 末段判据诊断已由 sidecar 完成，无需为确认该失败原因读包；sidecar 不含目标瞬时加速度、无人机速度和控制设定值，尚不能归因于某个控制限幅、变速相位或估计延迟。此单对 seed=4 也不足以支持总体或显著性结论。
+- 实际证据：[actual_sidecar_evidence.json](../results/diagnostics/humble54_probe02_position_speed_tail_review01/actual_sidecar_evidence.json)，创建 UTC `2026-11-03T08:59:22.370819+00:00`，SHA256 `e9e3c2ad60ca5a4117b964921f67084aa1a8a5d9635c60167b262a43f20febe0`；保存输入路径/SHA/mtime、全窗条件转变及两场 89 s 后原 sidecar 行与行号。
+- 原 position sidecar 为 414581 bytes、SHA256 `33866893a65779b6bbc2105d2dcda51905ba659345926480609f5e83d4520fa5`；velocity 为 412621 bytes、SHA256 `b94152e657d20e96df4673e351e9bdc18628160a6415ee30fd76dcbf48fbd758`。原工程 FAIL/PASS 均保持，不延长原试验窗口或放宽阈值。
+- GitHub 可审查的[原字节证据副本](../tools/diagnostics/humble54_probe02_position_speed_tail_review01/actual_sidecar_evidence.json)及两份小 sidecar 已另存 tools；[复制回执](../tools/diagnostics/humble54_probe02_position_speed_tail_review01/publication_receipt.json)保留来源与相等性，原 results 证据不变。
+- 末段对比图：[PNG](../tools/diagnostics/humble54_probe02_position_speed_tail_review01/artifacts/position_velocity_tail_distance.png)、[PDF](../tools/diagnostics/humble54_probe02_position_speed_tail_review01/artifacts/position_velocity_tail_distance.pdf)；明确 ±0.5 m、90.152 s 观察入带、92.472 s 结束及 2.320<3.000 s，并将跨界显示为相邻采样间的区间。[绘图脚本](../tools/diagnostics/humble54_probe02_position_speed_tail_review01/plot_tail_comparison.py)与[实际回执](../tools/diagnostics/humble54_probe02_position_speed_tail_review01/artifacts/plot_receipt.json)可供复核重跑。

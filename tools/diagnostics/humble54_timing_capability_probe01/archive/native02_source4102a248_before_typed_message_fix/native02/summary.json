@@ -1,0 +1,449 @@
+{
+  "scope": "INDEPENDENT_SOFTWARE_TIMING_CAPABILITY_ONLY_NOT_E2E_NOT_ACCEPTANCE",
+  "status": "UNKNOWN",
+  "native_experiment": true,
+  "physical_e2e": "NOT_OBSERVED",
+  "historical_strict_changed": false,
+  "probe_source_sha256": "4102a24849952181317ded821a79f60a46a57302fdf606b8feb6b8c7848e2633",
+  "python": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
+  "platform": "Linux-6.6.114.1-microsoft-standard-WSL2-x86_64-with-glibc2.35",
+  "pid": 266639,
+  "configured_domain_id": 211,
+  "started_at": {
+    "monotonic_before_ns": 108493772083537,
+    "realtime_ns": 1793698644505578414,
+    "monotonic_after_ns": 108493772088524
+  },
+  "profile_overhead": "TEMPORARY_PER_THREAD_ALL_CALLS_DURING_ORIGINAL_TAKE_NOT_QUANTIFIED",
+  "limits": [
+    "No flight, detector, inference, original pipeline or physical latency measured",
+    "Graph is polled throughout; transient external writers cannot be excluded",
+    "Observed source clock/window behavior does not prove every future sample",
+    "Any candidate remains supplementary; no KNOWN/strict promotion"
+  ],
+  "previous_process_environment": {
+    "ROS_DOMAIN_ID": "73",
+    "ROS_LOCALHOST_ONLY": "0",
+    "RMW_IMPLEMENTATION": "rmw_fastrtps_cpp"
+  },
+  "runtime_binding": {
+    "executor_path": "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py",
+    "executor_sha256": "cfd24d4952d061299d395820bfffae3afb95a87ac186ca131194be349846e7fd",
+    "take_source": "    def _take_subscription(self, sub):\n        with sub.handle:\n            msg_info = sub.handle.take_message(sub.msg_type, sub.raw)\n            if msg_info is not None:\n                return msg_info[0]\n        return None\n",
+    "take_sha256": "a4a44c7de81c0de9e031b7bfbb839508e6d4d77aec015b52a29689afa82eb03a",
+    "rmw_identifier": "rmw_fastrtps_cpp",
+    "packages": {
+      "rclpy": "3.3.22",
+      "rmw_fastrtps_cpp": "6.2.10",
+      "rmw_fastrtps_shared_cpp": "6.2.10"
+    },
+    "method_is_original_shape": true,
+    "loaded_library_map_entries": [
+      "71a1e1c00000-71a1e1dac000 r--p 00000000 08:30 373375                     /root/uav_humble22/fastdds_listener_A01/install/lib/libfastrtps.so.2.6.12",
+      "71a1e1dac000-71a1e2408000 r-xp 001ac000 08:30 373375                     /root/uav_humble22/fastdds_listener_A01/install/lib/libfastrtps.so.2.6.12",
+      "71a1e2408000-71a1e254c000 r--p 00808000 08:30 373375                     /root/uav_humble22/fastdds_listener_A01/install/lib/libfastrtps.so.2.6.12",
+      "71a1e254c000-71a1e254d000 ---p 0094c000 08:30 373375                     /root/uav_humble22/fastdds_listener_A01/install/lib/libfastrtps.so.2.6.12",
+      "71a1e254d000-71a1e2561000 r--p 0094c000 08:30 373375                     /root/uav_humble22/fastdds_listener_A01/install/lib/libfastrtps.so.2.6.12",
+      "71a1e2561000-71a1e2570000 rw-p 00960000 08:30 373375                     /root/uav_humble22/fastdds_listener_A01/install/lib/libfastrtps.so.2.6.12",
+      "71a1e28a3000-71a1e28b8000 r--p 00000000 08:30 133776                     /opt/ros/humble/lib/librmw_fastrtps_shared_cpp.so",
+      "71a1e28b8000-71a1e28fb000 r-xp 00015000 08:30 133776                     /opt/ros/humble/lib/librmw_fastrtps_shared_cpp.so",
+      "71a1e28fb000-71a1e2909000 r--p 00058000 08:30 133776                     /opt/ros/humble/lib/librmw_fastrtps_shared_cpp.so",
+      "71a1e2909000-71a1e290b000 r--p 00065000 08:30 133776                     /opt/ros/humble/lib/librmw_fastrtps_shared_cpp.so",
+      "71a1e290b000-71a1e290c000 rw-p 00067000 08:30 133776                     /opt/ros/humble/lib/librmw_fastrtps_shared_cpp.so",
+      "71a1e291c000-71a1e2929000 r--p 00000000 08:30 133828                     /opt/ros/humble/lib/librmw_fastrtps_cpp.so",
+      "71a1e2929000-71a1e2950000 r-xp 0000d000 08:30 133828                     /opt/ros/humble/lib/librmw_fastrtps_cpp.so",
+      "71a1e2950000-71a1e2959000 r--p 00034000 08:30 133828                     /opt/ros/humble/lib/librmw_fastrtps_cpp.so",
+      "71a1e2959000-71a1e295b000 r--p 0003c000 08:30 133828                     /opt/ros/humble/lib/librmw_fastrtps_cpp.so",
+      "71a1e295b000-71a1e295c000 rw-p 0003e000 08:30 133828                     /opt/ros/humble/lib/librmw_fastrtps_cpp.so",
+      "71a1e311c000-71a1e3134000 r--p 00000000 08:30 135068                     /opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/_rclpy_pybind11.cpython-310-x86_64-linux-gnu.so",
+      "71a1e3134000-71a1e31cb000 r-xp 00018000 08:30 135068                     /opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/_rclpy_pybind11.cpython-310-x86_64-linux-gnu.so",
+      "71a1e31cb000-71a1e31f9000 r--p 000af000 08:30 135068                     /opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/_rclpy_pybind11.cpython-310-x86_64-linux-gnu.so",
+      "71a1e31f9000-71a1e31fa000 ---p 000dd000 08:30 135068                     /opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/_rclpy_pybind11.cpython-310-x86_64-linux-gnu.so",
+      "71a1e31fa000-71a1e31fe000 r--p 000dd000 08:30 135068                     /opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/_rclpy_pybind11.cpython-310-x86_64-linux-gnu.so",
+      "71a1e31fe000-71a1e3200000 rw-p 000e1000 08:30 135068                     /opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/_rclpy_pybind11.cpython-310-x86_64-linux-gnu.so"
+    ],
+    "loaded_library_binary_hashes": "NOT_OBSERVED_BY_THIS_SMALL_PROBE",
+    "fastdds": {
+      "expected_version": "2.6.12",
+      "gate_passed": true,
+      "source_kind": "ACTUAL_MAPPED_LIBRARY_PREFIX_AND_PINNED_CMAKE_VERSION_FILE",
+      "mapped_library_paths": [
+        "/root/uav_humble22/fastdds_listener_A01/install/lib/libfastrtps.so.2.6.12"
+      ],
+      "errors": [],
+      "mapped_library_version": "2.6.12",
+      "cmake_version_path": "/root/uav_humble22/fastdds_listener_A01/install/share/fastrtps/cmake/fastrtps-config-version.cmake",
+      "cmake_version_bytes": 2881,
+      "cmake_version_sha256": "8edb8f6935ce6eb8e383c40d785156fcca62f3834852e5a0cb8f5377d3bd5001",
+      "cmake_package_version": "2.6.12"
+    },
+    "gate_passed": true,
+    "executor_sha256_after": "cfd24d4952d061299d395820bfffae3afb95a87ac186ca131194be349846e7fd",
+    "executor_source_unchanged": true
+  },
+  "topic": "/timing_capability_probe_b15a0d038c22",
+  "monotonic_clock": {
+    "implementation": "clock_gettime(CLOCK_MONOTONIC)",
+    "monotonic": true,
+    "adjustable": false,
+    "resolution": 1e-09
+  },
+  "realtime_clock": {
+    "implementation": "clock_gettime(CLOCK_REALTIME)",
+    "monotonic": false,
+    "adjustable": true,
+    "resolution": 1e-09
+  },
+  "boot_id": "f79204a4-99cd-42cf-b886-aa905b1cac6a",
+  "phases": [
+    {
+      "scope": "INDEPENDENT_SOFTWARE_TIMING_CAPABILITY_ONLY_NOT_E2E_NOT_ACCEPTANCE",
+      "phase": "single_writer_identical_payload",
+      "pairs": [
+        {
+          "take_event_index": 33,
+          "publish_event_indices": [
+            32
+          ],
+          "source_timestamp": 1793698645032207365,
+          "status": "UNKNOWN",
+          "reasons": [
+            "whole_message_bytes_mismatch"
+          ]
+        },
+        {
+          "take_event_index": 40,
+          "publish_event_indices": [
+            39
+          ],
+          "source_timestamp": 1793698645065856627,
+          "status": "UNKNOWN",
+          "reasons": [
+            "whole_message_bytes_mismatch"
+          ]
+        },
+        {
+          "take_event_index": 47,
+          "publish_event_indices": [
+            46
+          ],
+          "source_timestamp": 1793698645098623095,
+          "status": "UNKNOWN",
+          "reasons": [
+            "whole_message_bytes_mismatch"
+          ]
+        },
+        {
+          "take_event_index": 54,
+          "publish_event_indices": [
+            53
+          ],
+          "source_timestamp": 1793698645131363978,
+          "status": "UNKNOWN",
+          "reasons": [
+            "whole_message_bytes_mismatch"
+          ]
+        },
+        {
+          "take_event_index": 61,
+          "publish_event_indices": [
+            60
+          ],
+          "source_timestamp": 1793698645164418719,
+          "status": "UNKNOWN",
+          "reasons": [
+            "whole_message_bytes_mismatch"
+          ]
+        },
+        {
+          "take_event_index": 68,
+          "publish_event_indices": [
+            67
+          ],
+          "source_timestamp": 1793698645197629029,
+          "status": "UNKNOWN",
+          "reasons": [
+            "whole_message_bytes_mismatch"
+          ]
+        },
+        {
+          "take_event_index": 75,
+          "publish_event_indices": [
+            74
+          ],
+          "source_timestamp": 1793698645230849875,
+          "status": "UNKNOWN",
+          "reasons": [
+            "whole_message_bytes_mismatch"
+          ]
+        },
+        {
+          "take_event_index": 82,
+          "publish_event_indices": [
+            81
+          ],
+          "source_timestamp": 1793698645263787466,
+          "status": "UNKNOWN",
+          "reasons": [
+            "whole_message_bytes_mismatch"
+          ]
+        }
+      ],
+      "publish_count": 8,
+      "take_count": 8,
+      "unmatched_publish_event_indices": [],
+      "graph_sample_count": 53,
+      "graph_max_observed_gap_ns": 11075775,
+      "graph_gap_limit_ns": 200000000,
+      "graph_observation": "POLLED_NOT_CONTINUOUS_EXTERNAL_WRITER_ABSENCE_NOT_PROVEN",
+      "timestamp_uncertainty_ns": 2,
+      "offset_tolerance_ns": 100000,
+      "candidate_count": 0,
+      "unknown_count": 8
+    },
+    {
+      "scope": "INDEPENDENT_SOFTWARE_TIMING_CAPABILITY_ONLY_NOT_E2E_NOT_ACCEPTANCE",
+      "phase": "competing_writer_identical_payload",
+      "pairs": [
+        {
+          "take_event_index": 143,
+          "publish_event_indices": [
+            141
+          ],
+          "source_timestamp": 1793698645652241973,
+          "status": "UNKNOWN",
+          "reasons": [
+            "controlled_writer_count_not_one",
+            "observed_competing_or_missing_writer",
+            "whole_message_bytes_mismatch"
+          ]
+        },
+        {
+          "take_event_index": 146,
+          "publish_event_indices": [
+            142
+          ],
+          "source_timestamp": 1793698645652363383,
+          "status": "UNKNOWN",
+          "reasons": [
+            "controlled_writer_count_not_one",
+            "observed_competing_or_missing_writer",
+            "whole_message_bytes_mismatch"
+          ]
+        },
+        {
+          "take_event_index": 154,
+          "publish_event_indices": [
+            152
+          ],
+          "source_timestamp": 1793698645688003689,
+          "status": "UNKNOWN",
+          "reasons": [
+            "controlled_writer_count_not_one",
+            "observed_competing_or_missing_writer",
+            "whole_message_bytes_mismatch"
+          ]
+        },
+        {
+          "take_event_index": 157,
+          "publish_event_indices": [
+            153
+          ],
+          "source_timestamp": 1793698645688130605,
+          "status": "UNKNOWN",
+          "reasons": [
+            "controlled_writer_count_not_one",
+            "observed_competing_or_missing_writer",
+            "whole_message_bytes_mismatch"
+          ]
+        },
+        {
+          "take_event_index": 165,
+          "publish_event_indices": [
+            163
+          ],
+          "source_timestamp": 1793698645722722466,
+          "status": "UNKNOWN",
+          "reasons": [
+            "controlled_writer_count_not_one",
+            "observed_competing_or_missing_writer",
+            "whole_message_bytes_mismatch"
+          ]
+        },
+        {
+          "take_event_index": 168,
+          "publish_event_indices": [
+            164
+          ],
+          "source_timestamp": 1793698645722865374,
+          "status": "UNKNOWN",
+          "reasons": [
+            "controlled_writer_count_not_one",
+            "observed_competing_or_missing_writer",
+            "whole_message_bytes_mismatch"
+          ]
+        },
+        {
+          "take_event_index": 176,
+          "publish_event_indices": [
+            174
+          ],
+          "source_timestamp": 1793698645757417619,
+          "status": "UNKNOWN",
+          "reasons": [
+            "controlled_writer_count_not_one",
+            "observed_competing_or_missing_writer",
+            "whole_message_bytes_mismatch"
+          ]
+        },
+        {
+          "take_event_index": 179,
+          "publish_event_indices": [
+            175
+          ],
+          "source_timestamp": 1793698645757646141,
+          "status": "UNKNOWN",
+          "reasons": [
+            "controlled_writer_count_not_one",
+            "observed_competing_or_missing_writer",
+            "whole_message_bytes_mismatch"
+          ]
+        },
+        {
+          "take_event_index": 187,
+          "publish_event_indices": [
+            185
+          ],
+          "source_timestamp": 1793698645792264005,
+          "status": "UNKNOWN",
+          "reasons": [
+            "controlled_writer_count_not_one",
+            "observed_competing_or_missing_writer",
+            "whole_message_bytes_mismatch"
+          ]
+        },
+        {
+          "take_event_index": 190,
+          "publish_event_indices": [
+            186
+          ],
+          "source_timestamp": 1793698645792418676,
+          "status": "UNKNOWN",
+          "reasons": [
+            "controlled_writer_count_not_one",
+            "observed_competing_or_missing_writer",
+            "whole_message_bytes_mismatch"
+          ]
+        },
+        {
+          "take_event_index": 198,
+          "publish_event_indices": [
+            196
+          ],
+          "source_timestamp": 1793698645827180278,
+          "status": "UNKNOWN",
+          "reasons": [
+            "controlled_writer_count_not_one",
+            "observed_competing_or_missing_writer",
+            "whole_message_bytes_mismatch"
+          ]
+        },
+        {
+          "take_event_index": 201,
+          "publish_event_indices": [
+            197
+          ],
+          "source_timestamp": 1793698645827306621,
+          "status": "UNKNOWN",
+          "reasons": [
+            "controlled_writer_count_not_one",
+            "observed_competing_or_missing_writer",
+            "whole_message_bytes_mismatch"
+          ]
+        },
+        {
+          "take_event_index": 209,
+          "publish_event_indices": [
+            207
+          ],
+          "source_timestamp": 1793698645862104002,
+          "status": "UNKNOWN",
+          "reasons": [
+            "controlled_writer_count_not_one",
+            "observed_competing_or_missing_writer",
+            "whole_message_bytes_mismatch"
+          ]
+        },
+        {
+          "take_event_index": 212,
+          "publish_event_indices": [
+            208
+          ],
+          "source_timestamp": 1793698645862240876,
+          "status": "UNKNOWN",
+          "reasons": [
+            "controlled_writer_count_not_one",
+            "observed_competing_or_missing_writer",
+            "whole_message_bytes_mismatch"
+          ]
+        },
+        {
+          "take_event_index": 220,
+          "publish_event_indices": [
+            218
+          ],
+          "source_timestamp": 1793698645897419002,
+          "status": "UNKNOWN",
+          "reasons": [
+            "controlled_writer_count_not_one",
+            "observed_competing_or_missing_writer",
+            "whole_message_bytes_mismatch"
+          ]
+        },
+        {
+          "take_event_index": 223,
+          "publish_event_indices": [
+            219
+          ],
+          "source_timestamp": 1793698645897696663,
+          "status": "UNKNOWN",
+          "reasons": [
+            "controlled_writer_count_not_one",
+            "observed_competing_or_missing_writer",
+            "whole_message_bytes_mismatch"
+          ]
+        }
+      ],
+      "publish_count": 16,
+      "take_count": 16,
+      "unmatched_publish_event_indices": [],
+      "graph_sample_count": 61,
+      "graph_max_observed_gap_ns": 11248481,
+      "graph_gap_limit_ns": 200000000,
+      "graph_observation": "POLLED_NOT_CONTINUOUS_EXTERNAL_WRITER_ABSENCE_NOT_PROVEN",
+      "timestamp_uncertainty_ns": 2,
+      "offset_tolerance_ns": 100000,
+      "candidate_count": 0,
+      "unknown_count": 16
+    }
+  ],
+  "original_handler_identity_preserved": true,
+  "callback_object_consistency": true,
+  "pending_take_objects": 0,
+  "instrumentation_errors": [],
+  "cleanup": [
+    {
+      "executor_shutdown": true,
+      "timeout_sec": 2.0,
+      "returned_true": true
+    }
+  ],
+  "cleanup_completed": true,
+  "raw_event_count": 253,
+  "finished_at": {
+    "monotonic_before_ns": 108495444559795,
+    "realtime_ns": 1793698646178051503,
+    "monotonic_after_ns": 108495444561662
+  },
+  "raw_events_sha256": "64534f05541986fc16dc4c7b9229162608005d7e56598cd6ce5504c7e320a33f"
+}

@@ -1,0 +1,82 @@
+{
+  "scope": "DURABLE_WINDOWS_HELD_HANDLE_CLOSURE_ONLY",
+  "status": "REFUSED_FAULT_PRESERVED_NO_RETRY",
+  "started_utc": "2026-11-03T06:30:31.506557+00:00",
+  "source": {
+    "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\experiment_orchestration\\humble54_durable_followon07\\wait_owner06_closure.py",
+    "sha256": "ed38a4469169f96364ee9bc79c52c892a3106954ee77c20efa35480eea5861a2"
+  },
+  "expected_handles": {
+    "monitor": {
+      "pid": 22632,
+      "start_token": "windows_filetime:134381603781453202"
+    },
+    "wsl": {
+      "pid": 12812,
+      "start_token": "windows_filetime:134381603784377166"
+    },
+    "outer": {
+      "pid": 47044,
+      "start_token": "windows_filetime:134381603778483580"
+    }
+  },
+  "handles": {
+    "monitor": {
+      "identity": {
+        "pid": 22632,
+        "alive": true,
+        "start_token": "windows_filetime:134381603781453202",
+        "created_utc": "2026-11-03T06:19:38.145320+00:00"
+      },
+      "acquired_utc": "2026-11-03T06:30:31.509563+00:00",
+      "exit_code": 2,
+      "alive_at_acquisition_observed_utc": "2026-11-03T06:30:31.509563+00:00",
+      "first_exit_observed_utc": "2026-11-03T09:14:33.685287+00:00",
+      "closed_utc": "2026-11-03T09:14:33.689574+00:00"
+    },
+    "wsl": {
+      "identity": {
+        "pid": 12812,
+        "alive": true,
+        "start_token": "windows_filetime:134381603784377166",
+        "created_utc": "2026-11-03T06:19:38.437716+00:00"
+      },
+      "acquired_utc": "2026-11-03T06:30:31.509563+00:00",
+      "exit_code": 2,
+      "alive_at_acquisition_observed_utc": "2026-11-03T06:30:31.509563+00:00",
+      "first_exit_observed_utc": "2026-11-03T09:14:33.685287+00:00",
+      "closed_utc": "2026-11-03T09:14:33.689574+00:00"
+    },
+    "outer": {
+      "identity": {
+        "pid": 47044,
+        "alive": true,
+        "start_token": "windows_filetime:134381603778483580",
+        "created_utc": "2026-11-03T06:19:37.848358+00:00"
+      },
+      "acquired_utc": "2026-11-03T06:30:31.509563+00:00",
+      "exit_code": 2,
+      "alive_at_acquisition_observed_utc": "2026-11-03T06:30:31.509563+00:00",
+      "first_exit_observed_utc": "2026-11-03T09:14:33.685287+00:00",
+      "closed_utc": "2026-11-03T09:14:33.689574+00:00"
+    }
+  },
+  "errors": [
+    {
+      "utc": "2026-11-03T09:14:33.689574+00:00",
+      "error": "ValueError: Bound original process exited nonzero; no continuation or retry"
+    }
+  ],
+  "automatic_retry": false,
+  "future_closure": null,
+  "capacity_measurement": "NOT_RUN",
+  "physical_inventory": "NOT_RUN",
+  "heartbeat_utc": "2026-11-03T09:14:33.685287+00:00",
+  "finished_utc": "2026-11-03T09:14:33.689574+00:00",
+  "exit_codes": {
+    "monitor": 2,
+    "wsl": 2,
+    "outer": 2
+  },
+  "returncode": 2
+}

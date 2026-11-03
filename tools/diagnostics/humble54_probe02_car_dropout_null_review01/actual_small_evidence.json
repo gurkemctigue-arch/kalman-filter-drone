@@ -1,0 +1,1699 @@
+{
+  "scope": "FROZEN_EVALUATOR_CONDITIONAL_NULL_SMALL_REPORT_REVIEW_NOT_IDENTITY_FILL_OR_RECLASSIFICATION",
+  "created_utc": "2026-11-03T09:21:36.768524+00:00",
+  "trial_id": "car_extension_dropout_seed004",
+  "original_status": "FAIL",
+  "original_terminal_sha256": "f80a774d1af43cbb6e8525662bb13f3c2853c9c19d68ac57ccd82435b9015f17",
+  "frozen_source_matches_recorded_map": true,
+  "input_bindings": [
+    {
+      "key": "frozen_evaluator",
+      "path": "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_fullplan_v4_humble54\\scripts\\evaluate_stage1_flight.py",
+      "bytes": 65122,
+      "sha256": "655cf6fc7c0cc2a954db7d06d2fbb00a000f2fca80ba0930d153025e28efb7c1",
+      "mtime_utc": "2026-10-28T22:11:44.779595+00:00",
+      "observed_utc": "2026-11-03T09:21:36.768524+00:00"
+    },
+    {
+      "key": "source_map",
+      "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_extension16_probe02_car_extension_dropout_seed004\\configuration\\source_sha256.json",
+      "bytes": 23866,
+      "sha256": "c003f1b86e56bc548b4a1f50d890950320d879dbf205b7c86c574c427c28009c",
+      "mtime_utc": "2026-11-03T08:54:37.955346+00:00",
+      "observed_utc": "2026-11-03T09:21:36.768524+00:00"
+    },
+    {
+      "key": "flight_report",
+      "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_extension16_probe02_car_extension_dropout_seed004\\flight_evaluation.json",
+      "bytes": 24530,
+      "sha256": "d28a6f201bee00adb650423cb168a97e7748e380670c0d7e3206aa87a5d5563f",
+      "mtime_utc": "2026-11-03T09:13:15.112062+00:00",
+      "observed_utc": "2026-11-03T09:21:36.768524+00:00"
+    },
+    {
+      "key": "navigation_report",
+      "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_extension16_probe02_car_extension_dropout_seed004\\navigation_reference_evaluation.json",
+      "bytes": 146779,
+      "sha256": "031de032c67d10761d21d0a0032401348ce609c3d3078384706e0cd83d77b1d5",
+      "mtime_utc": "2026-11-03T09:13:50.029698+00:00",
+      "observed_utc": "2026-11-03T09:21:36.768524+00:00"
+    },
+    {
+      "key": "run_config",
+      "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_extension16_probe02_car_extension_dropout_seed004\\run_config.json",
+      "bytes": 4483,
+      "sha256": "7074aa2c4da05515729846641afcbc7bc530a6e1ca5ead5c4ccefae52fdd54bf",
+      "mtime_utc": "2026-11-03T09:07:45.235163+00:00",
+      "observed_utc": "2026-11-03T09:21:36.768524+00:00"
+    },
+    {
+      "key": "terminal",
+      "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_extension16_probe02_matrix\\slots\\car_extension_dropout_seed004.json",
+      "bytes": 54641,
+      "sha256": "f80a774d1af43cbb6e8525662bb13f3c2853c9c19d68ac57ccd82435b9015f17",
+      "mtime_utc": "2026-11-03T09:14:03.980377+00:00",
+      "observed_utc": "2026-11-03T09:21:36.768524+00:00"
+    },
+    {
+      "key": "fixed_grid",
+      "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_extension16_probe02_car_extension_dropout_seed004\\navigation_reference_evaluation.frames.jsonl",
+      "bytes": 401482,
+      "sha256": "155d8601267aa8937bd855393328b0f552d94e991556ae531578230023bc55c7",
+      "mtime_utc": "2026-11-03T09:13:49.912578+00:00",
+      "observed_utc": "2026-11-03T09:21:36.768524+00:00"
+    },
+    {
+      "key": "message_frames",
+      "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_extension16_probe02_car_extension_dropout_seed004\\navigation_reference_evaluation.message_frames.jsonl",
+      "bytes": 875998,
+      "sha256": "2e56057dfa009c184d61b5d5917657174a9a6387d0415587d47395e0de127d74",
+      "mtime_utc": "2026-11-03T09:13:50.013131+00:00",
+      "observed_utc": "2026-11-03T09:21:36.768524+00:00"
+    },
+    {
+      "key": "raw_frames",
+      "path": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_extension16_probe02_car_extension_dropout_seed004\\navigation_reference_evaluation.raw_frames.jsonl",
+      "bytes": 197195,
+      "sha256": "afdfab07788f115da5b1c25fab0cb6ddc0581e08f214d6bf7718557ce304851f",
+      "mtime_utc": "2026-11-03T09:13:49.936418+00:00",
+      "observed_utc": "2026-11-03T09:21:36.768524+00:00"
+    }
+  ],
+  "source_excerpts": [
+    {
+      "start_line": 642,
+      "end_line": 665,
+      "lines": [
+        "    start = window[\"start_s\"]",
+        "    end = window[\"end_s\"] if window[\"end_s\"] is not None else trial_end",
+        "    duration = end - start",
+        "    recovery_end = min(trial_end, end + config.recovery_window_s)",
+        "    predicted = _first_time(states, lambda msg: msg.state == 2, start, recovery_end)",
+        "    lost = _first_time(states, lambda msg: msg.state == 3, start, recovery_end)",
+        "    hover = _first_time(statuses, lambda msg: msg.lifecycle == 4, start, recovery_end)",
+        "    # Both clocks are evidence: an old image can arrive after opening, and a",
+        "    # future-dated image can have been received before opening.  Neither can",
+        "    # certify recovery. Missing receive time remains incomplete evidence.",
+        "    pre_states = [row for row in states if start - 1.0 <= row.time_s < start and row.message.track_id]",
+        "    post_states = [row for row in states if end <= row.time_s <= recovery_end and row.message.state == 1",
+        "                   and stamp_s(row.message.header.stamp) >= end",
+        "                   and row.received_sim_s is not None and row.received_sim_s >= end]",
+        "    resumed = post_states[0].time_s if post_states else None",
+        "    missing_recovery_receive = sum(",
+        "        end <= row.time_s <= recovery_end and row.message.state == 1",
+        "        and stamp_s(row.message.header.stamp) >= end and row.received_sim_s is None",
+        "        for row in states",
+        "    )",
+        "    identity_preserved = None",
+        "    if pre_states and post_states:",
+        "        before, after = pre_states[-1].message, post_states[0].message",
+        "        identity_preserved = bool(before.track_id == after.track_id and before.target_uuid == after.target_uuid)"
+      ]
+    },
+    {
+      "start_line": 716,
+      "end_line": 744,
+      "lines": [
+        "    lost_during_short = lost is not None and lost <= (resumed if resumed is not None else recovery_end)",
+        "    event_states = any(start <= row.time_s <= recovery_end for row in states)",
+        "    event_statuses = any(start <= row.time_s <= recovery_end for row in statuses)",
+        "    checks = {",
+        "        \"recorded_close_event\": bool(window[\"complete\"]),",
+        "        \"shutter_close_service_succeeded\": execution[\"close_success\"],",
+        "        \"shutter_open_service_succeeded\": execution[\"open_success\"],",
+        "        \"shutter_close_ack_before_open_request\": execution[\"close_ack_before_open_request\"],",
+        "        \"detector_interruption_observed\": any(not row[\"has_candidate\"] for row in inside) if inside else None,",
+        "        \"prediction_observed\": (predicted is not None) if event_states else None,",
+        "        \"lost_observed_for_long_occlusion\": (lost is not None and lost <= end) if long_occlusion and event_states else None,",
+        "        \"hover_observed_for_long_occlusion\": (hover is not None and hover <= end) if long_occlusion and event_statuses else None,",
+        "        \"sustained_low_speed_after_hover\": (stop_time is not None) if long_occlusion and braking_rows else None,",
+        "        \"no_automatic_recovery_after_long_loss\": (unauthorized_recovery is None) if long_occlusion and lost is not None else None,",
+        "        \"no_tracking_control_before_reselection_after_long_loss\": (unauthorized_control is None) if long_occlusion and lost is not None and event_statuses else None,",
+        "        \"sustained_tracking_after_reselection\": (",
+        "            True if sustained_tracking[\"result\"] == \"PASS\" else False if sustained_tracking[\"result\"] == \"FAIL\" else None",
+        "        ) if long_occlusion else None,",
+        "        \"no_loss_during_short_occlusion\": (not lost_during_short) if not long_occlusion and states else None,",
+        "        \"identity_preserved_on_observed_recovery\": identity_preserved,",
+        "    }",
+        "    required = [\"recorded_close_event\", \"shutter_close_service_succeeded\", \"shutter_open_service_succeeded\",",
+        "                \"shutter_close_ack_before_open_request\", \"detector_interruption_observed\", \"prediction_observed\"]",
+        "    required += ([\"lost_observed_for_long_occlusion\", \"hover_observed_for_long_occlusion\", \"sustained_low_speed_after_hover\",",
+        "                  \"no_automatic_recovery_after_long_loss\", \"no_tracking_control_before_reselection_after_long_loss\",",
+        "                  \"sustained_tracking_after_reselection\"]",
+        "                 if long_occlusion else [\"no_loss_during_short_occlusion\", \"identity_preserved_on_observed_recovery\"])",
+        "    result = \"FAIL\" if any(checks[key] is False for key in required) else (",
+        "        \"INCOMPLETE_EVIDENCE\" if any(checks[key] is None for key in required) else \"PASS\")"
+      ]
+    }
+  ],
+  "interpretation": {
+    "classification": "conditional identity comparison unavailable because no qualifying measured recovery was observed",
+    "retained_identity_value": null,
+    "retained_short_result": "FAIL",
+    "independent_behavior_failure": "no_loss_during_short_occlusion=false",
+    "missing_input_evidence_indicated_by_small_reports": false,
+    "identity_switch_observed_or_excluded": "NEITHER; no recovery pair is available",
+    "scope_limit": "Frozen evaluator compares track_id and target_uuid only; it is not independent physical ReID verification. Navigation sidecars corroborate stream continuity but do not replace original /tracking/state recovery predicates."
+  },
+  "short_window": {
+    "start_s": 30.96,
+    "end_s": 31.240000000000002,
+    "complete": true,
+    "close_request_id": 1,
+    "open_request_id": 3,
+    "duration_s": 0.28000000000000114,
+    "kind": "short",
+    "event_semantics": "requested shutter pose interval, not an independently measured occluder state",
+    "shutter_execution": {
+      "close_request_id": 1,
+      "open_request_id": 3,
+      "close_response_s": 30.98,
+      "open_response_s": 31.26,
+      "close_success": true,
+      "open_success": true,
+      "close_ack_before_open_request": true,
+      "close_reason": null,
+      "open_reason": null,
+      "successful_close_response_to_open_request_s": 0.26000000000000156,
+      "semantics": "Matched SetEntityPose acknowledgements corroborate execution; request intervals are not exact rendered-image occlusion durations"
+    },
+    "explicit_reselection": null,
+    "post_reselection_tracking": null,
+    "first_predicted_s": 30.96,
+    "first_lost_s": 31.66,
+    "first_hover_s": 31.652,
+    "first_measured_after_open_s": null,
+    "first_explicit_reselection_s": null,
+    "first_unrequested_measured_after_loss_s": null,
+    "first_unrequested_predicted_after_loss_s": null,
+    "first_unrequested_active_state_after_loss_s": null,
+    "first_unrequested_tracking_control_after_loss_s": null,
+    "tracking_control_grace_after_loss_s": 0.1,
+    "post_open_measured_missing_receive_time_count": 0,
+    "recovery_after_open_s": null,
+    "valid_depth_gap_straddling_event_s": 0.7000000000000028,
+    "diagnostic_frames_inside": 2,
+    "candidate_free_frames_inside": 2,
+    "valid_depth_frames_inside": 0,
+    "speed_at_shutter_start_mps": 0.47453794899579016,
+    "speed_at_hover_entry_mps": 0.47344075720331236,
+    "braking_observation_end_s": 33.652,
+    "braking_speed_mps": {
+      "count": 201,
+      "mean": 0.16490552757172372,
+      "median": 0.07707370118138035,
+      "p95": 0.4739805022948904,
+      "max": 0.47653793048388865,
+      "rmse": 0.23928077257882677,
+      "mean_absolute": 0.16490552757172372,
+      "p95_absolute": 0.4739805022948904,
+      "max_absolute": 0.47653793048388865
+    },
+    "sustained_low_speed_start_s": 32.18,
+    "time_to_sustained_low_speed_after_hover_s": 0.5279999999999987,
+    "braking_from_motion_demonstrated": true,
+    "checks": {
+      "recorded_close_event": true,
+      "shutter_close_service_succeeded": true,
+      "shutter_open_service_succeeded": true,
+      "shutter_close_ack_before_open_request": true,
+      "detector_interruption_observed": true,
+      "prediction_observed": true,
+      "lost_observed_for_long_occlusion": null,
+      "hover_observed_for_long_occlusion": null,
+      "sustained_low_speed_after_hover": null,
+      "no_automatic_recovery_after_long_loss": null,
+      "no_tracking_control_before_reselection_after_long_loss": null,
+      "sustained_tracking_after_reselection": null,
+      "no_loss_during_short_occlusion": false,
+      "identity_preserved_on_observed_recovery": null
+    },
+    "result": "FAIL"
+  },
+  "recovery_window": {
+    "start_s": 31.240000000000002,
+    "end_s": 34.24,
+    "required_state": "MEASURED with image/header stamp >= opening and nonmissing receive time >= opening",
+    "qualifying_first_recovery_s": null,
+    "missing_receive_time_candidates": 0
+  },
+  "long_window": {
+    "start_s": 43.96,
+    "end_s": 47.040000000000006,
+    "complete": true,
+    "close_request_id": 4,
+    "open_request_id": 19,
+    "duration_s": 3.0800000000000054,
+    "kind": "long",
+    "event_semantics": "requested shutter pose interval, not an independently measured occluder state",
+    "shutter_execution": {
+      "close_request_id": 4,
+      "open_request_id": 19,
+      "close_response_s": 43.980000000000004,
+      "open_response_s": 47.06,
+      "close_success": true,
+      "open_success": true,
+      "close_ack_before_open_request": true,
+      "close_reason": null,
+      "open_reason": null,
+      "successful_close_response_to_open_request_s": 3.0600000000000023,
+      "semantics": "Matched SetEntityPose acknowledgements corroborate execution; request intervals are not exact rendered-image occlusion durations"
+    },
+    "explicit_reselection": {
+      "confirmed": true,
+      "original_target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+      "requested_target_uuid": "35d3d9e6-aeeb-41f1-aea4-e7162d230681",
+      "confirmed_target_uuid": "35d3d9e6-aeeb-41f1-aea4-e7162d230681",
+      "selection_time_s": 50.96,
+      "confirmation_time_s": 50.976,
+      "confirmation_record_sequence": 53383,
+      "confirmation_state_index": 1875,
+      "confirmation_image_stamp_s": 50.9,
+      "confirmed_track_id": 3,
+      "action": "SELECT",
+      "selection_action_code": 0,
+      "first_valid_request_s": 50.96,
+      "invalid_candidates": []
+    },
+    "post_reselection_tracking": {
+      "result": "PASS",
+      "checks": {
+        "minimum_recording_duration": true,
+        "minimum_state_span": true,
+        "minimum_control_span": true,
+        "same_target_active_states_only": true,
+        "tracking_control_only_after_grace": true,
+        "continuous_state_evidence": true,
+        "continuous_control_evidence": true,
+        "fresh_state_at_trial_end": true,
+        "tracking_control_at_trial_end": true,
+        "chronological_state_and_control_evidence": true
+      },
+      "confirmed_target_uuid": "35d3d9e6-aeeb-41f1-aea4-e7162d230681",
+      "confirmation_time_s": 50.976,
+      "confirmation_record_sequence": 53383,
+      "confirmation_state_index": 1875,
+      "trial_end_s": 94.14800000000001,
+      "minimum_duration_s": 5.0,
+      "tail_freshness_s": 0.5,
+      "maximum_evidence_gap_s": 0.5,
+      "control_grace_s": 0.1,
+      "maximum_measurement_age_s": 0.75,
+      "observed_duration_s": 43.17200000000001,
+      "state_span_s": 43.172,
+      "control_span_s": 43.099999999999994,
+      "last_state_age_to_trial_end_s": 1.4210854715202004e-14,
+      "last_control_age_to_trial_end_s": 0.04800000000001603,
+      "last_state_measurement_age_at_trial_end_s": 0.04800000000001603,
+      "maximum_state_evidence_gap_s": 0.027999999999991587,
+      "maximum_control_evidence_gap_s": 0.05200000000000671,
+      "state_count": 2550,
+      "tracking_control_count": 863,
+      "state_counts": {
+        "MEASURED": 391,
+        "PREDICTED": 2159
+      },
+      "lifecycle_counts": {
+        "PREDICT": 670,
+        "FOLLOW": 193
+      },
+      "first_invalid_state_s": null,
+      "first_uuid_mismatch_s": null,
+      "first_nontracking_control_after_grace_s": null,
+      "state_time_regression_count": 0,
+      "control_time_regression_count": 0,
+      "receive_clock_regression_count": 0,
+      "invalid_receive_clock_count": 0,
+      "chronology_time_basis": "received_sim_s",
+      "receive_clock_order_scope": "GLOBAL_RECORD_SEQUENCE",
+      "operational_time_regressions_are_diagnostic_only": true,
+      "boundary_evidence": "RECORD_SEQUENCE",
+      "semantics": "The exact confirmation record starts the sustained interval. Recording order, not a float-time window, selects later records; equal-time or backdated later faults remain evidence. Receive /clock values must be valid and nondecreasing. Derived max(header, receive) time regressions are diagnostic because measurement and prediction headers have different meanings. A brief confirmation cannot certify sustained tracking"
+    },
+    "first_predicted_s": null,
+    "first_lost_s": 43.96,
+    "first_hover_s": 44.0,
+    "first_measured_after_open_s": null,
+    "first_explicit_reselection_s": 50.96,
+    "first_unrequested_measured_after_loss_s": null,
+    "first_unrequested_predicted_after_loss_s": null,
+    "first_unrequested_active_state_after_loss_s": null,
+    "first_unrequested_tracking_control_after_loss_s": null,
+    "tracking_control_grace_after_loss_s": 0.1,
+    "post_open_measured_missing_receive_time_count": 0,
+    "recovery_after_open_s": null,
+    "valid_depth_gap_straddling_event_s": 3.200000000000003,
+    "diagnostic_frames_inside": 20,
+    "candidate_free_frames_inside": 20,
+    "valid_depth_frames_inside": 0,
+    "speed_at_shutter_start_mps": 0.004502657820256948,
+    "speed_at_hover_entry_mps": 0.00396893727026571,
+    "braking_observation_end_s": 46.0,
+    "braking_speed_mps": {
+      "count": 200,
+      "mean": 0.007303961728179129,
+      "median": 0.0072872502380166085,
+      "p95": 0.012190693304744546,
+      "max": 0.01250456530816629,
+      "rmse": 0.008129567456518204,
+      "mean_absolute": 0.007303961728179129,
+      "p95_absolute": 0.012190693304744546,
+      "max_absolute": 0.01250456530816629
+    },
+    "sustained_low_speed_start_s": 44.004,
+    "time_to_sustained_low_speed_after_hover_s": 0.003999999999997783,
+    "braking_from_motion_demonstrated": false,
+    "checks": {
+      "recorded_close_event": true,
+      "shutter_close_service_succeeded": true,
+      "shutter_open_service_succeeded": true,
+      "shutter_close_ack_before_open_request": true,
+      "detector_interruption_observed": true,
+      "prediction_observed": false,
+      "lost_observed_for_long_occlusion": true,
+      "hover_observed_for_long_occlusion": true,
+      "sustained_low_speed_after_hover": true,
+      "no_automatic_recovery_after_long_loss": true,
+      "no_tracking_control_before_reselection_after_long_loss": true,
+      "sustained_tracking_after_reselection": true,
+      "no_loss_during_short_occlusion": null,
+      "identity_preserved_on_observed_recovery": null
+    },
+    "result": "FAIL"
+  },
+  "trial_integrity": {
+    "flight_acceptance": {
+      "result": "FAIL",
+      "scope": "Observed flight/occlusion behavior only; no ground-truth accuracy threshold is asserted",
+      "short_occlusion_recorded": true,
+      "long_occlusion_recorded": true,
+      "clock_timebase_available": true,
+      "missing_topics": [],
+      "input_read_error_count": 0,
+      "failed_events_retained": true
+    },
+    "read_errors": {},
+    "unavailable_types": {},
+    "navigation_status": "RECORDED_WITH_CENSORED_FAILURES",
+    "navigation_incomplete_reasons": [],
+    "navigation_malformed_input_counts": {},
+    "flight_exit_code": 0,
+    "infrastructure_stop": false,
+    "engineering_evidence": {
+      "negative_evaluators": [
+        "surface_flight"
+      ],
+      "pending": [],
+      "incomplete": []
+    }
+  },
+  "fixed_grid": {
+    "schema": [
+      "time_s",
+      "target_uuid",
+      "reference_task_uuid",
+      "expected_physical_id",
+      "base_link_distance_error_m",
+      "base_link_height_error_m",
+      "model_origin_distance_error_m",
+      "model_origin_height_error_m",
+      "navigation_valid",
+      "navigation_state",
+      "navigation_reason",
+      "active",
+      "kf_position_error_m",
+      "kf_velocity_error_mps"
+    ],
+    "rows": 752,
+    "control_navigation_transitions": [
+      {
+        "source_line": 1,
+        "row": {
+          "time_s": 18.952,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 1.997575775130576,
+          "base_link_height_error_m": 1.099433338698519,
+          "model_origin_distance_error_m": 1.997292774639039,
+          "model_origin_height_error_m": 0.8594336194767469,
+          "navigation_valid": true,
+          "navigation_state": 2,
+          "navigation_reason": "valid",
+          "active": true,
+          "kf_position_error_m": 0.21106775935626457,
+          "kf_velocity_error_mps": 0.0
+        }
+      },
+      {
+        "source_line": 128,
+        "row": {
+          "time_s": 31.652,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.013472954001123583,
+          "base_link_height_error_m": -0.009015878540890032,
+          "model_origin_distance_error_m": 0.015280339227507156,
+          "model_origin_height_error_m": -0.24900907211100742,
+          "navigation_valid": false,
+          "navigation_state": 2,
+          "navigation_reason": "stale_navigation_measurement",
+          "active": false
+        }
+      },
+      {
+        "source_line": 129,
+        "row": {
+          "time_s": 31.752000000000002,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.013823264801663626,
+          "base_link_height_error_m": -0.010923198506745502,
+          "model_origin_distance_error_m": 0.015712888885479614,
+          "model_origin_height_error_m": -0.2509157555492416,
+          "navigation_valid": false,
+          "navigation_state": 3,
+          "navigation_reason": "lost",
+          "active": false
+        }
+      },
+      {
+        "source_line": 322,
+        "row": {
+          "time_s": 51.05200000000001,
+          "target_uuid": "35d3d9e6-aeeb-41f1-aea4-e7162d230681",
+          "reference_task_uuid": "35d3d9e6-aeeb-41f1-aea4-e7162d230681",
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 8.191119907110565,
+          "base_link_height_error_m": -0.07141272559623335,
+          "model_origin_distance_error_m": 8.19117993063254,
+          "model_origin_height_error_m": -0.31141264218942233,
+          "navigation_valid": true,
+          "navigation_state": 2,
+          "navigation_reason": "valid",
+          "active": true,
+          "kf_position_error_m": 0.06439049014682427,
+          "kf_velocity_error_mps": 0.17279756808218955
+        }
+      }
+    ],
+    "short_and_recovery_rows": [
+      {
+        "source_line": 112,
+        "row": {
+          "time_s": 30.052000000000003,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.001078740111996268,
+          "base_link_height_error_m": 0.013924222822826238,
+          "model_origin_distance_error_m": 0.002227359595329048,
+          "model_origin_height_error_m": -0.22607302284082653,
+          "navigation_valid": true,
+          "navigation_state": 2,
+          "navigation_reason": "valid",
+          "active": true,
+          "kf_position_error_m": 0.10467413943626565,
+          "kf_velocity_error_mps": 0.022097667587740576
+        }
+      },
+      {
+        "source_line": 113,
+        "row": {
+          "time_s": 30.152,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.0018357574438478963,
+          "base_link_height_error_m": 0.014245017097721302,
+          "model_origin_distance_error_m": 0.003222590978003481,
+          "model_origin_height_error_m": -0.22575096802177352,
+          "navigation_valid": true,
+          "navigation_state": 2,
+          "navigation_reason": "valid",
+          "active": true,
+          "kf_position_error_m": 0.10407407634110194,
+          "kf_velocity_error_mps": 0.01571959547961944
+        }
+      },
+      {
+        "source_line": 114,
+        "row": {
+          "time_s": 30.252000000000002,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.0025523191557059732,
+          "base_link_height_error_m": 0.014503745906400578,
+          "model_origin_distance_error_m": 0.003952081654428952,
+          "model_origin_height_error_m": -0.2254921705055748,
+          "navigation_valid": true,
+          "navigation_state": 2,
+          "navigation_reason": "valid",
+          "active": true,
+          "kf_position_error_m": 0.10253243488519756,
+          "kf_velocity_error_mps": 0.014823116388906722
+        }
+      },
+      {
+        "source_line": 115,
+        "row": {
+          "time_s": 30.352000000000004,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.003220441217397507,
+          "base_link_height_error_m": 0.014378036277463035,
+          "model_origin_distance_error_m": 0.004644466649338597,
+          "model_origin_height_error_m": -0.22561771191446445,
+          "navigation_valid": true,
+          "navigation_state": 2,
+          "navigation_reason": "valid",
+          "active": true,
+          "kf_position_error_m": 0.10082843737468149,
+          "kf_velocity_error_mps": 0.016642539200251362
+        }
+      },
+      {
+        "source_line": 116,
+        "row": {
+          "time_s": 30.452,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.0038326427883728087,
+          "base_link_height_error_m": 0.01380145201755445,
+          "model_origin_distance_error_m": 0.00519801579310375,
+          "model_origin_height_error_m": -0.22619458654482782,
+          "navigation_valid": true,
+          "navigation_state": 2,
+          "navigation_reason": "valid",
+          "active": true,
+          "kf_position_error_m": 0.10047685648446253,
+          "kf_velocity_error_mps": 0.01779719508720944
+        }
+      },
+      {
+        "source_line": 117,
+        "row": {
+          "time_s": 30.552000000000003,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.0044045003336332655,
+          "base_link_height_error_m": 0.012653240837787738,
+          "model_origin_distance_error_m": 0.005592646298152815,
+          "model_origin_height_error_m": -0.2273436881608879,
+          "navigation_valid": true,
+          "navigation_state": 2,
+          "navigation_reason": "valid",
+          "active": true,
+          "kf_position_error_m": 0.10320214932429135,
+          "kf_velocity_error_mps": 0.01635190704061269
+        }
+      },
+      {
+        "source_line": 118,
+        "row": {
+          "time_s": 30.652,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.0050066568280691115,
+          "base_link_height_error_m": 0.011094138646937424,
+          "model_origin_distance_error_m": 0.006043552534537255,
+          "model_origin_height_error_m": -0.22890335193696187,
+          "navigation_valid": true,
+          "navigation_state": 2,
+          "navigation_reason": "valid",
+          "active": true,
+          "kf_position_error_m": 0.09912138224142068,
+          "kf_velocity_error_mps": 0.02259581474154564
+        }
+      },
+      {
+        "source_line": 119,
+        "row": {
+          "time_s": 30.752000000000002,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.005697761106565835,
+          "base_link_height_error_m": 0.00928681373060991,
+          "model_origin_distance_error_m": 0.006657323886665623,
+          "model_origin_height_error_m": -0.2307107498651626,
+          "navigation_valid": true,
+          "navigation_state": 2,
+          "navigation_reason": "valid",
+          "active": true,
+          "kf_position_error_m": 0.09585844935723634,
+          "kf_velocity_error_mps": 0.028047003795269712
+        }
+      },
+      {
+        "source_line": 120,
+        "row": {
+          "time_s": 30.852000000000004,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.006506472731061308,
+          "base_link_height_error_m": 0.007310981264371463,
+          "model_origin_distance_error_m": 0.0074589908459081755,
+          "model_origin_height_error_m": -0.23268650925862588,
+          "navigation_valid": true,
+          "navigation_state": 2,
+          "navigation_reason": "valid",
+          "active": true,
+          "kf_position_error_m": 0.09275136546733535,
+          "kf_velocity_error_mps": 0.03407092060263648
+        }
+      },
+      {
+        "source_line": 121,
+        "row": {
+          "time_s": 30.952,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.007435788719867276,
+          "base_link_height_error_m": 0.005221169050241503,
+          "model_origin_distance_error_m": 0.008586140230461226,
+          "model_origin_height_error_m": -0.2347755572878667,
+          "navigation_valid": true,
+          "navigation_state": 2,
+          "navigation_reason": "valid",
+          "active": true,
+          "kf_position_error_m": 0.089898997907712,
+          "kf_velocity_error_mps": 0.038284612342739964
+        }
+      },
+      {
+        "source_line": 122,
+        "row": {
+          "time_s": 31.052000000000003,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.00840211090218368,
+          "base_link_height_error_m": 0.003068485389672304,
+          "model_origin_distance_error_m": 0.009679005209285663,
+          "model_origin_height_error_m": -0.23692774912176473,
+          "navigation_valid": true,
+          "navigation_state": 2,
+          "navigation_reason": "valid",
+          "active": true,
+          "kf_position_error_m": 0.08798909774164233,
+          "kf_velocity_error_mps": 0.04065846833802562
+        }
+      },
+      {
+        "source_line": 123,
+        "row": {
+          "time_s": 31.152,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.009343569938888407,
+          "base_link_height_error_m": 0.0009357748834921686,
+          "model_origin_distance_error_m": 0.010591528123217842,
+          "model_origin_height_error_m": -0.23906080809903552,
+          "navigation_valid": true,
+          "navigation_state": 2,
+          "navigation_reason": "valid",
+          "active": true,
+          "kf_position_error_m": 0.08639008086747164,
+          "kf_velocity_error_mps": 0.043900855484221214
+        }
+      },
+      {
+        "source_line": 124,
+        "row": {
+          "time_s": 31.252000000000002,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.010270863771030037,
+          "base_link_height_error_m": -0.0011351387099285404,
+          "model_origin_distance_error_m": 0.011474091545158771,
+          "model_origin_height_error_m": -0.24113206619313265,
+          "navigation_valid": true,
+          "navigation_state": 2,
+          "navigation_reason": "valid",
+          "active": true,
+          "kf_position_error_m": 0.08486027697083012,
+          "kf_velocity_error_mps": 0.047156611161286874
+        }
+      },
+      {
+        "source_line": 125,
+        "row": {
+          "time_s": 31.352000000000004,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.011203644328533713,
+          "base_link_height_error_m": -0.003148941530092264,
+          "model_origin_distance_error_m": 0.012518611483821829,
+          "model_origin_height_error_m": -0.24314532829904034,
+          "navigation_valid": true,
+          "navigation_state": 2,
+          "navigation_reason": "valid",
+          "active": true,
+          "kf_position_error_m": 0.08345838123859181,
+          "kf_velocity_error_mps": 0.05042300182442367
+        }
+      },
+      {
+        "source_line": 126,
+        "row": {
+          "time_s": 31.452,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.01209950188315112,
+          "base_link_height_error_m": -0.005144726118594178,
+          "model_origin_distance_error_m": 0.013599136676440082,
+          "model_origin_height_error_m": -0.2451400405912949,
+          "navigation_valid": true,
+          "navigation_state": 2,
+          "navigation_reason": "valid",
+          "active": true,
+          "kf_position_error_m": 0.0822507197372742,
+          "kf_velocity_error_mps": 0.053697941345002
+        }
+      },
+      {
+        "source_line": 127,
+        "row": {
+          "time_s": 31.552000000000003,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.01287920807669174,
+          "base_link_height_error_m": -0.007093999042889099,
+          "model_origin_distance_error_m": 0.01454831447613536,
+          "model_origin_height_error_m": -0.24708819484379285,
+          "navigation_valid": true,
+          "navigation_state": 2,
+          "navigation_reason": "valid",
+          "active": true,
+          "kf_position_error_m": 0.0813105573612328,
+          "kf_velocity_error_mps": 0.05697980908095136
+        }
+      },
+      {
+        "source_line": 128,
+        "row": {
+          "time_s": 31.652,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.013472954001123583,
+          "base_link_height_error_m": -0.009015878540890032,
+          "model_origin_distance_error_m": 0.015280339227507156,
+          "model_origin_height_error_m": -0.24900907211100742,
+          "navigation_valid": false,
+          "navigation_state": 2,
+          "navigation_reason": "stale_navigation_measurement",
+          "active": false
+        }
+      },
+      {
+        "source_line": 129,
+        "row": {
+          "time_s": 31.752000000000002,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.013823264801663626,
+          "base_link_height_error_m": -0.010923198506745502,
+          "model_origin_distance_error_m": 0.015712888885479614,
+          "model_origin_height_error_m": -0.2509157555492416,
+          "navigation_valid": false,
+          "navigation_state": 3,
+          "navigation_reason": "lost",
+          "active": false
+        }
+      },
+      {
+        "source_line": 130,
+        "row": {
+          "time_s": 31.852000000000004,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.013942691235428128,
+          "base_link_height_error_m": -0.011961424696911527,
+          "model_origin_distance_error_m": 0.009749323585607428,
+          "model_origin_height_error_m": -0.25192467808141283,
+          "navigation_valid": false,
+          "navigation_state": 3,
+          "navigation_reason": "lost",
+          "active": false
+        }
+      },
+      {
+        "source_line": 131,
+        "row": {
+          "time_s": 31.952,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.016213982588498155,
+          "base_link_height_error_m": -0.012143280661188305,
+          "model_origin_distance_error_m": 0.005709994079481362,
+          "model_origin_height_error_m": -0.25191288851376803,
+          "navigation_valid": false,
+          "navigation_state": 3,
+          "navigation_reason": "lost",
+          "active": false
+        }
+      },
+      {
+        "source_line": 132,
+        "row": {
+          "time_s": 32.05200000000001,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.02322248225295276,
+          "base_link_height_error_m": -0.012291371310325427,
+          "model_origin_distance_error_m": 0.009780632113018939,
+          "model_origin_height_error_m": -0.2519139960348813,
+          "navigation_valid": false,
+          "navigation_state": 3,
+          "navigation_reason": "lost",
+          "active": false
+        }
+      },
+      {
+        "source_line": 133,
+        "row": {
+          "time_s": 32.152,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.0361086923295737,
+          "base_link_height_error_m": -0.012643881164316584,
+          "model_origin_distance_error_m": 0.02230304851030951,
+          "model_origin_height_error_m": -0.25224584420569984,
+          "navigation_valid": false,
+          "navigation_state": 3,
+          "navigation_reason": "lost",
+          "active": false
+        }
+      },
+      {
+        "source_line": 134,
+        "row": {
+          "time_s": 32.252,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.0549506851194117,
+          "base_link_height_error_m": -0.013200632645713029,
+          "model_origin_distance_error_m": 0.04219275402675926,
+          "model_origin_height_error_m": -0.25286084062168435,
+          "navigation_valid": false,
+          "navigation_state": 3,
+          "navigation_reason": "lost",
+          "active": false
+        }
+      },
+      {
+        "source_line": 135,
+        "row": {
+          "time_s": 32.352000000000004,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.07925061193372152,
+          "base_link_height_error_m": -0.013898096066778498,
+          "model_origin_distance_error_m": 0.06815233208271465,
+          "model_origin_height_error_m": -0.25364108157066023,
+          "navigation_valid": false,
+          "navigation_state": 3,
+          "navigation_reason": "lost",
+          "active": false
+        }
+      },
+      {
+        "source_line": 136,
+        "row": {
+          "time_s": 32.452,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.10826902889522394,
+          "base_link_height_error_m": -0.01465659622397264,
+          "model_origin_distance_error_m": 0.09896402231382773,
+          "model_origin_height_error_m": -0.25447603622150106,
+          "navigation_valid": false,
+          "navigation_state": 3,
+          "navigation_reason": "lost",
+          "active": false
+        }
+      },
+      {
+        "source_line": 137,
+        "row": {
+          "time_s": 32.55200000000001,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.1412187280987549,
+          "base_link_height_error_m": -0.015425090981858292,
+          "model_origin_distance_error_m": 0.13364727583048186,
+          "model_origin_height_error_m": -0.2553055983755985,
+          "navigation_valid": false,
+          "navigation_state": 3,
+          "navigation_reason": "lost",
+          "active": false
+        }
+      },
+      {
+        "source_line": 138,
+        "row": {
+          "time_s": 32.652,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.17734623226661306,
+          "base_link_height_error_m": -0.01613655808922343,
+          "model_origin_distance_error_m": 0.17135306412981954,
+          "model_origin_height_error_m": -0.25606171710575376,
+          "navigation_valid": false,
+          "navigation_state": 3,
+          "navigation_reason": "lost",
+          "active": false
+        }
+      },
+      {
+        "source_line": 139,
+        "row": {
+          "time_s": 32.752,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.21596913927847083,
+          "base_link_height_error_m": -0.016779767336460916,
+          "model_origin_distance_error_m": 0.21131629735325497,
+          "model_origin_height_error_m": -0.25673465076187796,
+          "navigation_valid": false,
+          "navigation_state": 3,
+          "navigation_reason": "lost",
+          "active": false
+        }
+      },
+      {
+        "source_line": 140,
+        "row": {
+          "time_s": 32.852000000000004,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.25651037677342536,
+          "base_link_height_error_m": -0.01738334054278412,
+          "model_origin_distance_error_m": 0.25293476054784314,
+          "model_origin_height_error_m": -0.2573566858580987,
+          "navigation_valid": false,
+          "navigation_state": 3,
+          "navigation_reason": "lost",
+          "active": false
+        }
+      },
+      {
+        "source_line": 141,
+        "row": {
+          "time_s": 32.952,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.298506787346982,
+          "base_link_height_error_m": -0.01795264095468374,
+          "model_origin_distance_error_m": 0.29578846711164175,
+          "model_origin_height_error_m": -0.257937222340312,
+          "navigation_valid": false,
+          "navigation_state": 3,
+          "navigation_reason": "lost",
+          "active": false
+        }
+      },
+      {
+        "source_line": 142,
+        "row": {
+          "time_s": 33.05200000000001,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.34158880166200767,
+          "base_link_height_error_m": -0.018517260595420693,
+          "model_origin_distance_error_m": 0.33954446056410426,
+          "model_origin_height_error_m": -0.25850852687961257,
+          "navigation_valid": false,
+          "navigation_state": 3,
+          "navigation_reason": "lost",
+          "active": false
+        }
+      },
+      {
+        "source_line": 143,
+        "row": {
+          "time_s": 33.152,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.38546690775823933,
+          "base_link_height_error_m": -0.01907720147146863,
+          "model_origin_distance_error_m": 0.38395121399253895,
+          "model_origin_height_error_m": -0.25907238059256255,
+          "navigation_valid": false,
+          "navigation_state": 3,
+          "navigation_reason": "lost",
+          "active": false
+        }
+      },
+      {
+        "source_line": 144,
+        "row": {
+          "time_s": 33.252,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.4299150265620284,
+          "base_link_height_error_m": -0.019628465141251272,
+          "model_origin_distance_error_m": 0.4287888247734273,
+          "model_origin_height_error_m": -0.2596257640762556,
+          "navigation_valid": false,
+          "navigation_state": 3,
+          "navigation_reason": "lost",
+          "active": false
+        }
+      },
+      {
+        "source_line": 145,
+        "row": {
+          "time_s": 33.352000000000004,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.47476610661786367,
+          "base_link_height_error_m": -0.020165863387312077,
+          "model_origin_distance_error_m": 0.47390396256823664,
+          "model_origin_height_error_m": -0.260164226155174,
+          "navigation_valid": false,
+          "navigation_state": 3,
+          "navigation_reason": "lost",
+          "active": false
+        }
+      },
+      {
+        "source_line": 146,
+        "row": {
+          "time_s": 33.452,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.5199054255161073,
+          "base_link_height_error_m": -0.02071212842259018,
+          "model_origin_distance_error_m": 0.5192253396075124,
+          "model_origin_height_error_m": -0.2607110665237169,
+          "navigation_valid": false,
+          "navigation_state": 3,
+          "navigation_reason": "lost",
+          "active": false
+        }
+      },
+      {
+        "source_line": 147,
+        "row": {
+          "time_s": 33.55200000000001,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.5652533348834563,
+          "base_link_height_error_m": -0.021281419611336228,
+          "model_origin_distance_error_m": 0.5647267452379303,
+          "model_origin_height_error_m": -0.2612807885723176,
+          "navigation_valid": false,
+          "navigation_state": 3,
+          "navigation_reason": "lost",
+          "active": false
+        }
+      },
+      {
+        "source_line": 148,
+        "row": {
+          "time_s": 33.652,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.6107431222663742,
+          "base_link_height_error_m": -0.02188598522132379,
+          "model_origin_distance_error_m": 0.6103431118663192,
+          "model_origin_height_error_m": -0.26188564729988895,
+          "navigation_valid": false,
+          "navigation_state": 3,
+          "navigation_reason": "lost",
+          "active": false
+        }
+      },
+      {
+        "source_line": 149,
+        "row": {
+          "time_s": 33.752,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.6563190681251214,
+          "base_link_height_error_m": -0.022493622508366062,
+          "model_origin_distance_error_m": 0.6560357188008066,
+          "model_origin_height_error_m": -0.2624934463774333,
+          "navigation_valid": false,
+          "navigation_state": 3,
+          "navigation_reason": "lost",
+          "active": false
+        }
+      },
+      {
+        "source_line": 150,
+        "row": {
+          "time_s": 33.852000000000004,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.7019302087884025,
+          "base_link_height_error_m": -0.023083545036041375,
+          "model_origin_distance_error_m": 0.7017614599174653,
+          "model_origin_height_error_m": -0.2630834440108307,
+          "navigation_valid": false,
+          "navigation_state": 3,
+          "navigation_reason": "lost",
+          "active": false
+        }
+      },
+      {
+        "source_line": 151,
+        "row": {
+          "time_s": 33.952,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.7475281501497744,
+          "base_link_height_error_m": -0.02364397954736641,
+          "model_origin_distance_error_m": 0.7474511023241828,
+          "model_origin_height_error_m": -0.2636439064611138,
+          "navigation_valid": false,
+          "navigation_state": 3,
+          "navigation_reason": "lost",
+          "active": false
+        }
+      },
+      {
+        "source_line": 152,
+        "row": {
+          "time_s": 34.05200000000001,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.7930738993409037,
+          "base_link_height_error_m": -0.02419125777712816,
+          "model_origin_distance_error_m": 0.7930605597530125,
+          "model_origin_height_error_m": -0.26419116772222084,
+          "navigation_valid": false,
+          "navigation_state": 3,
+          "navigation_reason": "lost",
+          "active": false
+        }
+      },
+      {
+        "source_line": 153,
+        "row": {
+          "time_s": 34.152,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "reference_task_uuid": null,
+          "expected_physical_id": "target_car",
+          "base_link_distance_error_m": 0.8385405842654681,
+          "base_link_height_error_m": -0.02473762410970126,
+          "model_origin_distance_error_m": 0.838567967186405,
+          "model_origin_height_error_m": -0.26473753394267585,
+          "navigation_valid": false,
+          "navigation_state": 3,
+          "navigation_reason": "lost",
+          "active": false
+        }
+      }
+    ]
+  },
+  "message_sidecar_recovery": {
+    "schema": [
+      "time_s",
+      "received_sim_s",
+      "reason",
+      "target_uuid",
+      "position_error_m",
+      "velocity_error_mps",
+      "delivery_age_s"
+    ],
+    "rows": 176,
+    "reason_counts": {
+      "valid": 20,
+      "lost": 156
+    },
+    "reason_transitions": [
+      {
+        "source_line": 729,
+        "row": {
+          "time_s": 31.26,
+          "received_sim_s": 31.26,
+          "reason": "valid",
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "position_error_m": 0.0885365969508721,
+          "velocity_error_mps": 0.047417562226325524,
+          "delivery_age_s": 0.0
+        }
+      },
+      {
+        "source_line": 749,
+        "row": {
+          "time_s": 31.66,
+          "received_sim_s": 31.66,
+          "reason": "lost",
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2"
+        }
+      }
+    ],
+    "first": {
+      "source_line": 729,
+      "row": {
+        "time_s": 31.26,
+        "received_sim_s": 31.26,
+        "reason": "valid",
+        "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+        "position_error_m": 0.0885365969508721,
+        "velocity_error_mps": 0.047417562226325524,
+        "delivery_age_s": 0.0
+      }
+    },
+    "last": {
+      "source_line": 904,
+      "row": {
+        "time_s": 34.24,
+        "received_sim_s": 34.24,
+        "reason": "lost",
+        "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2"
+      }
+    }
+  },
+  "raw_sidecar_recovery": {
+    "schema": [
+      "time_s",
+      "received_sim_s",
+      "target_uuid",
+      "track_id",
+      "fusion_accepted",
+      "fusion_reason",
+      "reason",
+      "position_error_m"
+    ],
+    "rows": 26,
+    "reason_counts": {
+      "invalid_reference:no_accepted_selected_measurement": 26
+    },
+    "fusion_reason_counts": {
+      "invalid_navigation_reference": 26
+    },
+    "fusion_accepted_count": 0,
+    "last_pre_shutter": {
+      "source_line": 110,
+      "row": {
+        "time_s": 30.9,
+        "received_sim_s": 30.984,
+        "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+        "track_id": 1,
+        "fusion_accepted": true,
+        "fusion_reason": "accepted",
+        "reason": "valid",
+        "position_error_m": 0.09343905604116146,
+        "velocity_pair_dt_s": 0.09999999999999787,
+        "velocity_error_mps": 0.06656413727434199
+      }
+    },
+    "rows_in_window": [
+      {
+        "source_line": 113,
+        "row": {
+          "time_s": 31.6,
+          "received_sim_s": 31.668,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "track_id": 1,
+          "fusion_accepted": false,
+          "fusion_reason": "invalid_navigation_reference",
+          "reason": "invalid_reference:no_accepted_selected_measurement"
+        }
+      },
+      {
+        "source_line": 114,
+        "row": {
+          "time_s": 31.7,
+          "received_sim_s": 31.768,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "track_id": 1,
+          "fusion_accepted": false,
+          "fusion_reason": "invalid_navigation_reference",
+          "reason": "invalid_reference:no_accepted_selected_measurement"
+        }
+      },
+      {
+        "source_line": 115,
+        "row": {
+          "time_s": 31.8,
+          "received_sim_s": 31.868,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "track_id": 1,
+          "fusion_accepted": false,
+          "fusion_reason": "invalid_navigation_reference",
+          "reason": "invalid_reference:no_accepted_selected_measurement"
+        }
+      },
+      {
+        "source_line": 116,
+        "row": {
+          "time_s": 31.9,
+          "received_sim_s": 31.992,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "track_id": 1,
+          "fusion_accepted": false,
+          "fusion_reason": "invalid_navigation_reference",
+          "reason": "invalid_reference:no_accepted_selected_measurement"
+        }
+      },
+      {
+        "source_line": 117,
+        "row": {
+          "time_s": 32.0,
+          "received_sim_s": 32.068,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "track_id": 1,
+          "fusion_accepted": false,
+          "fusion_reason": "invalid_navigation_reference",
+          "reason": "invalid_reference:no_accepted_selected_measurement"
+        }
+      },
+      {
+        "source_line": 118,
+        "row": {
+          "time_s": 32.1,
+          "received_sim_s": 32.168,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "track_id": 1,
+          "fusion_accepted": false,
+          "fusion_reason": "invalid_navigation_reference",
+          "reason": "invalid_reference:no_accepted_selected_measurement"
+        }
+      },
+      {
+        "source_line": 119,
+        "row": {
+          "time_s": 32.2,
+          "received_sim_s": 32.268,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "track_id": 1,
+          "fusion_accepted": false,
+          "fusion_reason": "invalid_navigation_reference",
+          "reason": "invalid_reference:no_accepted_selected_measurement"
+        }
+      },
+      {
+        "source_line": 120,
+        "row": {
+          "time_s": 32.3,
+          "received_sim_s": 32.368,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "track_id": 1,
+          "fusion_accepted": false,
+          "fusion_reason": "invalid_navigation_reference",
+          "reason": "invalid_reference:no_accepted_selected_measurement"
+        }
+      },
+      {
+        "source_line": 121,
+        "row": {
+          "time_s": 32.4,
+          "received_sim_s": 32.464,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "track_id": 1,
+          "fusion_accepted": false,
+          "fusion_reason": "invalid_navigation_reference",
+          "reason": "invalid_reference:no_accepted_selected_measurement"
+        }
+      },
+      {
+        "source_line": 122,
+        "row": {
+          "time_s": 32.5,
+          "received_sim_s": 32.564,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "track_id": 1,
+          "fusion_accepted": false,
+          "fusion_reason": "invalid_navigation_reference",
+          "reason": "invalid_reference:no_accepted_selected_measurement"
+        }
+      },
+      {
+        "source_line": 123,
+        "row": {
+          "time_s": 32.6,
+          "received_sim_s": 32.664,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "track_id": 1,
+          "fusion_accepted": false,
+          "fusion_reason": "invalid_navigation_reference",
+          "reason": "invalid_reference:no_accepted_selected_measurement"
+        }
+      },
+      {
+        "source_line": 124,
+        "row": {
+          "time_s": 32.7,
+          "received_sim_s": 32.764,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "track_id": 1,
+          "fusion_accepted": false,
+          "fusion_reason": "invalid_navigation_reference",
+          "reason": "invalid_reference:no_accepted_selected_measurement"
+        }
+      },
+      {
+        "source_line": 125,
+        "row": {
+          "time_s": 32.8,
+          "received_sim_s": 32.864,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "track_id": 1,
+          "fusion_accepted": false,
+          "fusion_reason": "invalid_navigation_reference",
+          "reason": "invalid_reference:no_accepted_selected_measurement"
+        }
+      },
+      {
+        "source_line": 126,
+        "row": {
+          "time_s": 32.9,
+          "received_sim_s": 32.964,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "track_id": 1,
+          "fusion_accepted": false,
+          "fusion_reason": "invalid_navigation_reference",
+          "reason": "invalid_reference:no_accepted_selected_measurement"
+        }
+      },
+      {
+        "source_line": 127,
+        "row": {
+          "time_s": 33.0,
+          "received_sim_s": 33.06,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "track_id": 1,
+          "fusion_accepted": false,
+          "fusion_reason": "invalid_navigation_reference",
+          "reason": "invalid_reference:no_accepted_selected_measurement"
+        }
+      },
+      {
+        "source_line": 128,
+        "row": {
+          "time_s": 33.1,
+          "received_sim_s": 33.168,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "track_id": 1,
+          "fusion_accepted": false,
+          "fusion_reason": "invalid_navigation_reference",
+          "reason": "invalid_reference:no_accepted_selected_measurement"
+        }
+      },
+      {
+        "source_line": 129,
+        "row": {
+          "time_s": 33.2,
+          "received_sim_s": 33.26,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "track_id": 1,
+          "fusion_accepted": false,
+          "fusion_reason": "invalid_navigation_reference",
+          "reason": "invalid_reference:no_accepted_selected_measurement"
+        }
+      },
+      {
+        "source_line": 130,
+        "row": {
+          "time_s": 33.3,
+          "received_sim_s": 33.36,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "track_id": 1,
+          "fusion_accepted": false,
+          "fusion_reason": "invalid_navigation_reference",
+          "reason": "invalid_reference:no_accepted_selected_measurement"
+        }
+      },
+      {
+        "source_line": 131,
+        "row": {
+          "time_s": 33.4,
+          "received_sim_s": 33.46,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "track_id": 1,
+          "fusion_accepted": false,
+          "fusion_reason": "invalid_navigation_reference",
+          "reason": "invalid_reference:no_accepted_selected_measurement"
+        }
+      },
+      {
+        "source_line": 132,
+        "row": {
+          "time_s": 33.5,
+          "received_sim_s": 33.564,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "track_id": 1,
+          "fusion_accepted": false,
+          "fusion_reason": "invalid_navigation_reference",
+          "reason": "invalid_reference:no_accepted_selected_measurement"
+        }
+      },
+      {
+        "source_line": 133,
+        "row": {
+          "time_s": 33.6,
+          "received_sim_s": 33.66,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "track_id": 1,
+          "fusion_accepted": false,
+          "fusion_reason": "invalid_navigation_reference",
+          "reason": "invalid_reference:no_accepted_selected_measurement"
+        }
+      },
+      {
+        "source_line": 134,
+        "row": {
+          "time_s": 33.7,
+          "received_sim_s": 33.764,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "track_id": 1,
+          "fusion_accepted": false,
+          "fusion_reason": "invalid_navigation_reference",
+          "reason": "invalid_reference:no_accepted_selected_measurement"
+        }
+      },
+      {
+        "source_line": 135,
+        "row": {
+          "time_s": 33.8,
+          "received_sim_s": 33.86,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "track_id": 1,
+          "fusion_accepted": false,
+          "fusion_reason": "invalid_navigation_reference",
+          "reason": "invalid_reference:no_accepted_selected_measurement"
+        }
+      },
+      {
+        "source_line": 136,
+        "row": {
+          "time_s": 33.9,
+          "received_sim_s": 33.98,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "track_id": 1,
+          "fusion_accepted": false,
+          "fusion_reason": "invalid_navigation_reference",
+          "reason": "invalid_reference:no_accepted_selected_measurement"
+        }
+      },
+      {
+        "source_line": 137,
+        "row": {
+          "time_s": 34.0,
+          "received_sim_s": 34.068,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "track_id": 1,
+          "fusion_accepted": false,
+          "fusion_reason": "invalid_navigation_reference",
+          "reason": "invalid_reference:no_accepted_selected_measurement"
+        }
+      },
+      {
+        "source_line": 138,
+        "row": {
+          "time_s": 34.1,
+          "received_sim_s": 34.172,
+          "target_uuid": "ede05543-c4e7-4ef8-b030-d98d5197ddc2",
+          "track_id": 1,
+          "fusion_accepted": false,
+          "fusion_reason": "invalid_navigation_reference",
+          "reason": "invalid_reference:no_accepted_selected_measurement"
+        }
+      }
+    ]
+  },
+  "unresolved": [
+    "Why post-opening detections/references were not accepted before prediction expiry; root is independently extracting the original short raw window.",
+    "Exact original state/track association rows are needed for causal attribution; navigation sidecars alone do not supply those ROS messages."
+  ],
+  "execution": {
+    "wsl_command": false,
+    "ros": false,
+    "bag_read": false,
+    "telemetry_read": false,
+    "frozen_source_executed": false,
+    "historical_results_modified": false,
+    "automatic_continuation_decision": "NOT_MADE"
+  },
+  "raw_original_copies": [
+    {
+      "key": "frozen_evaluator",
+      "copy": "evaluate_stage1_flight.frozen.py",
+      "sha256": "655cf6fc7c0cc2a954db7d06d2fbb00a000f2fca80ba0930d153025e28efb7c1",
+      "bytes": 65122
+    },
+    {
+      "key": "source_map",
+      "copy": "source_sha256.original.json",
+      "sha256": "c003f1b86e56bc548b4a1f50d890950320d879dbf205b7c86c574c427c28009c",
+      "bytes": 23866
+    },
+    {
+      "key": "flight_report",
+      "copy": "flight_evaluation.original.json",
+      "sha256": "d28a6f201bee00adb650423cb168a97e7748e380670c0d7e3206aa87a5d5563f",
+      "bytes": 24530
+    },
+    {
+      "key": "terminal",
+      "copy": "terminal.original.json",
+      "sha256": "f80a774d1af43cbb6e8525662bb13f3c2853c9c19d68ac57ccd82435b9015f17",
+      "bytes": 54641
+    }
+  ]
+}

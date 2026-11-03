@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "generated_utc": "2026-11-03T09:04:29.561580+00:00",
+  "scope": "EXISTING_SMALL_NAVIGATION_SIDECARS_POST_HOC_DIAGNOSIS",
+  "supersedes_interpretation_only": "sidecar_evidence01.json; prior original evidence and executed sources retained",
+  "sidecar_time_semantics": "received_sim_s in these evaluator sidecars is its _operational(record): max(source time, recorded receive /clock), falling back to source time if receive is absent. It is not an independently observed exact callback receipt.",
+  "original_status_retained": "FAIL",
+  "original_terminal_sha256": "f57d22dff4989c8bbb45b56ba2151d66e52b5689984cd0a0104f531d4749b655",
+  "source_bindings": {
+    "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_combined_seed004.json": {
+      "sha256": "f57d22dff4989c8bbb45b56ba2151d66e52b5689984cd0a0104f531d4749b655",
+      "bytes": 54606
+    },
+    "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_person_extension_combined_seed004/navigation_reference_evaluation.frames.jsonl": {
+      "sha256": "e8988b1c73d6e70d092b2ced6913d5e71d22a8b121d8cab0e1f6ef83528f81c2",
+      "bytes": 404336
+    },
+    "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_person_extension_combined_seed004/navigation_reference_evaluation.raw_frames.jsonl": {
+      "sha256": "07297b116a2c2a477bca728c6d4d5de94617279eb74b93dff2b7c67420e735b4",
+      "bytes": 201325
+    },
+    "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_person_extension_combined_seed004/navigation_reference_evaluation.message_frames.jsonl": {
+      "sha256": "0d21ac4d16285f2537a17a2c3564d09ec5aa42817175e8492a87e36b02b3248d",
+      "bytes": 903972
+    },
+    "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_person_extension_combined_seed004/configuration/sensor_faults.json": {
+      "sha256": "cc5b4c6413537d24bb402d9295182647d773ee540de0fd1524a9bdbb5ad73f36",
+      "bytes": 105
+    },
+    "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_person_extension_combined_seed004/configuration/source_sha256.json": {
+      "sha256": "0094a5013801e67fb6ae692cef785b190272708d71bfb0cd4a3349a0eb09ee46",
+      "bytes": 23847
+    },
+    "scripts/sensor_fault_bridge.py": {
+      "sha256": "c07b1b5e7a7addbe2b7b4ad63cb798503646a8f92cf14aa66a1fd35582a486f0",
+      "bytes": 6064
+    },
+    "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_person_extension_combined_seed004/configuration/runtime_parameters.yaml": {
+      "sha256": "aaacecfd529532c2caa93bb6f8648ba6af4237524cee0e68c5d77c3df918678b",
+      "bytes": 4643
+    }
+  },
+  "analysis_source_sha256": "6c87bd749c8daafc4c5a451c1b064045ad587501b2d00a8f45b37676c78b0daf",
+  "whole_sidecar_counts": {
+    "frames": 752,
+    "raw_frames": 672,
+    "message_frames": 4430
+  },
+  "first_lost_navigation_message": {
+    "time_s": 34.86,
+    "received_sim_s": 34.86,
+    "reason": "lost",
+    "target_uuid": "84f805df-cf39-40a4-a962-ddb5a355746c"
+  },
+  "preceding_valid_navigation_message": {
+    "time_s": 34.84,
+    "received_sim_s": 34.84,
+    "reason": "valid",
+    "target_uuid": "84f805df-cf39-40a4-a962-ddb5a355746c",
+    "position_error_m": 0.2001615634940418,
+    "velocity_error_mps": 0.058719267277739205,
+    "delivery_age_s": 0.0
+  },
+  "last_accepted_reference_before_loss": {
+    "time_s": 34.1,
+    "received_sim_s": 34.224,
+    "target_uuid": "84f805df-cf39-40a4-a962-ddb5a355746c",
+    "track_id": 1,
+    "fusion_accepted": true,
+    "fusion_reason": "accepted",
+    "reason": "valid",
+    "position_error_m": 0.2595867053774008,
+    "velocity_pair_dt_s": 0.10000000000000142,
+    "velocity_error_mps": 0.201277795935128
+  },
+  "next_recorded_reference": {
+    "time_s": 34.8,
+    "received_sim_s": 34.904,
+    "target_uuid": "84f805df-cf39-40a4-a962-ddb5a355746c",
+    "track_id": 1,
+    "fusion_accepted": false,
+    "fusion_reason": "invalid_navigation_reference",
+    "reason": "invalid_reference:no_accepted_selected_measurement"
+  },
+  "reference_rows_in_source_34_2_to_34_8_exclusive": 0,
+  "source_gap_s": 0.6999999999999957,
+  "last_source_to_next_reference_operational_s": 0.804000000000002,
+  "prediction_limit_s": 0.75,
+  "nominal_last_source_expiry_s": 34.85,
+  "navigation_grid_transitions_30_to_43_s": [
+    {
+      "time_s": 30.0,
+      "target_uuid": "84f805df-cf39-40a4-a962-ddb5a355746c",
+      "reference_task_uuid": null,
+      "expected_physical_id": "target_person",
+      "base_link_distance_error_m": 0.2523230890208987,
+      "base_link_height_error_m": -0.003758957233042981,
+      "model_origin_distance_error_m": 0.25397943972719883,
+      "model_origin_height_error_m": -0.24375295472849556,
+      "navigation_valid": true,
+      "navigation_state": 2,
+      "navigation_reason": "valid",
+      "active": true,
+      "kf_position_error_m": 0.21824622208050046,
+      "kf_velocity_error_mps": 0.07457255408803119
+    },
+    {
+      "time_s": 34.900000000000006,
+      "target_uuid": "84f805df-cf39-40a4-a962-ddb5a355746c",
+      "reference_task_uuid": null,
+      "expected_physical_id": "target_person",
+      "base_link_distance_error_m": 0.19105578079495356,
+      "base_link_height_error_m": 0.00022079025638932492,
+      "model_origin_distance_error_m": 0.19116850857260292,
+      "model_origin_height_error_m": -0.23977685029936446,
+      "navigation_valid": false,
+      "navigation_state": 3,
+      "navigation_reason": "lost",
+      "active": false
+    }
+  ],
+  "expected_fault_schedule_only": [
+    {
+      "source_window": 169,
+      "start_s": 33.8,
+      "end_exclusive_s": 34.0,
+      "score": 0.4804133045962185,
+      "expected_action": "KEEP"
+    },
+    {
+      "source_window": 170,
+      "start_s": 34.0,
+      "end_exclusive_s": 34.2,
+      "score": 0.8334599154660572,
+      "expected_action": "KEEP"
+    },
+    {
+      "source_window": 171,
+      "start_s": 34.2,
+      "end_exclusive_s": 34.4,
+      "score": 0.007266069023119553,
+      "expected_action": "DROP"
+    },
+    {
+      "source_window": 172,
+      "start_s": 34.4,
+      "end_exclusive_s": 34.6,
+      "score": 0.07193838410185993,
+      "expected_action": "DROP"
+    },
+    {
+      "source_window": 173,
+      "start_s": 34.6,
+      "end_exclusive_s": 34.8,
+      "score": 0.014549019145668437,
+      "expected_action": "DROP"
+    },
+    {
+      "source_window": 174,
+      "start_s": 34.8,
+      "end_exclusive_s": 35.0,
+      "score": 0.6146386054565852,
+      "expected_action": "KEEP"
+    },
+    {
+      "source_window": 175,
+      "start_s": 35.0,
+      "end_exclusive_s": 35.2,
+      "score": 0.7919841525953254,
+      "expected_action": "KEEP"
+    },
+    {
+      "source_window": 176,
+      "start_s": 35.2,
+      "end_exclusive_s": 35.4,
+      "score": 0.21556316446465956,
+      "expected_action": "KEEP"
+    }
+  ],
+  "findings": [
+    "Within the FOLLOW evaluation window, the first navigation LOST is at sidecar operational time 34.86 s, following valid at 34.84 s; this is before the requested 42.8 s long shutter.",
+    "Last accepted reference has source 34.1 s and sidecar operational time 34.224 s. Next reference source is 34.8 s, operational time 34.904 s, already invalid because no selected measurement is accepted.",
+    "The 0.804 s source-to-next-reference-operational interval exceeds the unchanged 0.75 s prediction budget. Source-age expiry is consistent with the LOST boundary; this is not an independently measured callback or physical latency.",
+    "Reproducing the recorded seed4 200 ms fault rule predicts three consecutive DROP windows 34.2–34.8 s, matching the absence in the reference sidecar. This does not independently prove actual fault-bridge delivery."
+  ],
+  "limitations": [
+    "Existing evaluator sidecars are derivative evidence, not independent raw RGB/depth or exact ROS callback timestamps.",
+    "No bag or telemetry was read. Association pairwise scores, detector receipt, actual bridge input/output and exact controller HOVER transition remain unobserved here.",
+    "No claim of complete causal wall-clock latency, identity coverage, automatic recovery or repaired flight acceptance follows from this diagnosis.",
+    "A native bounded export is still needed to distinguish raw-input interruption from transport, scheduling, detector discards or association rejection."
+  ]
+}

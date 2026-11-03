@@ -1,0 +1,41 @@
+{
+  "scope": "INDEPENDENT_READ_ONLY_NATIVE03_ARTIFACT_CONSISTENCY_ONLY_NOT_E2E",
+  "reviewer": "Codex AI /root/clock_split_external_review",
+  "created_utc": "2026-11-03T09:58:27.547694+00:00",
+  "status": "CONSISTENT_WITH_RECORDED_CAPABILITY_OBSERVATION_ONLY",
+  "summary_sha256": "e6bbeeaa85d745cc9254b4ca30860a1541ddfafb8526fc47df6316554bd896bd",
+  "raw_events_sha256": "de4dd8f724f837b2c5e548189537695a7faa58076a324a6ea6d84b8ba374f608",
+  "execution_receipt_sha256": "8ce519a593e6ad79776d20f9ef3f237bd3db2b394b5a19d93bcbb56b5ae4042d",
+  "actual_execution_returncode": 0,
+  "event_count": 259,
+  "phase_checks": [
+    {
+      "phase": "single_writer_identical_payload",
+      "publish_take_callback_count": 8,
+      "recorded_candidate_count": 8,
+      "recorded_unknown_count": 0,
+      "unique_source_windows_and_complete_field_checks": true
+    },
+    {
+      "phase": "competing_writer_identical_payload",
+      "publish_take_callback_count": 16,
+      "recorded_candidate_count": 0,
+      "recorded_unknown_count": 16,
+      "unique_source_windows_and_complete_field_checks": true
+    }
+  ],
+  "executor_shutdown_returned_true": true,
+  "cleanup_completed": true,
+  "node_destroyed_records": 3,
+  "pending_take_objects": 0,
+  "instrumentation_errors": [],
+  "stderr_encoding": "UTF-16LE",
+  "stderr_text": "wsl: 检测到 localhost 代理配置，但未镜像到 WSL。NAT 模式下的 WSL 不支持 localhost 代理。\r\n",
+  "graph_sampling_boundary": "POLLED_NOT_CONTINUOUS_EXTERNAL_WRITER_ABSENCE_NOT_PROVEN",
+  "complete_pipeline_benchmark_implemented": false,
+  "historical_strict_commands": 1857,
+  "historical_strict_unknown": 1857,
+  "historical_strict_changed": false,
+  "physical_e2e": "NOT_OBSERVED",
+  "native_or_wsl_rerun_by_reviewer": false
+}

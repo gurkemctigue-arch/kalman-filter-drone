@@ -1,0 +1,18 @@
+{
+  "scope": "ACTUAL_BOUNDED_TIMING_CAPABILITY_PROBE_NOT_FLIGHT_OR_E2E",
+  "argv": [
+    "wsl.exe",
+    "--distribution",
+    "UAVHumble22",
+    "--exec",
+    "flock",
+    "-n",
+    "/tmp/uav_tracking_reliability_v4_sitl.lock",
+    "bash",
+    "-c",
+    "set -euo pipefail\nexport HUMBLE22_PROJECT_ROOT=/root/uav_tracking_fullplan_v4_humble54\nexport HUMBLE22_ROS_GZ_WS=/root/uav_humble22/ros_gz_shutdown_A01_ws\nexport HUMBLE22_PX4_ROOT=/root/uav_humble22/PX4-Autopilot-v4mag\nsource /root/uav_tracking_fullplan_v4_humble54/scripts/humble22_env.sh\nexec bash /root/uav_tracking_fullplan_v4_humble54/scripts/run_research_session.sh '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/diagnostics/humble54_timing_capability_probe01/probe.py' native --domain-id 211 --output /root/uav_timing_capability_probe03 --messages 8 --timeout-s 20"
+  ],
+  "started_utc": "2026-11-03T09:55:41.545727+00:00",
+  "source_sha256": "c7d0050cab71ce6a340c7fc5647531e92334029c8dc38b14393d2dc0058ae426",
+  "native_output": "/root/uav_timing_capability_probe03"
+}

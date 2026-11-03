@@ -1,0 +1,53 @@
+{
+  "scope": "ACTUAL_WINDOWS_SMALL_SIDECAR_PLOT_ONLY_NOT_FLIGHT_OR_REEVALUATION",
+  "started_utc": "2026-11-03T09:05:47.663101+00:00",
+  "finished_utc": "2026-11-03T09:05:51.716505+00:00",
+  "returncode": 0,
+  "python_executable": "C:\\Program Files\\Python312\\python.exe",
+  "python_version": "3.12.3",
+  "matplotlib_version": "3.10.8",
+  "argv": [
+    "tools/diagnostics/humble54_probe02_position_speed_tail_review01/plot_tail_comparison.py"
+  ],
+  "script": {
+    "path": "D:\\基于yolo和卡尔曼滤波\\tools\\diagnostics\\humble54_probe02_position_speed_tail_review01\\plot_tail_comparison.py",
+    "sha256": "a92ff30975aacc51278e2425b8c470382cc19237b28caa1adb5fec92f448113a"
+  },
+  "inputs": [
+    {
+      "path": "D:\\基于yolo和卡尔曼滤波\\tools\\diagnostics\\humble54_probe02_position_speed_tail_review01\\actual_sidecar_evidence.json",
+      "sha256": "e9e3c2ad60ca5a4117b964921f67084aa1a8a5d9635c60167b262a43f20febe0",
+      "bytes": 116622
+    },
+    {
+      "path": "D:\\基于yolo和卡尔曼滤波\\tools\\diagnostics\\humble54_probe02_position_speed_tail_review01\\inputs\\position.navigation_reference_evaluation.frames.jsonl",
+      "sha256": "33866893a65779b6bbc2105d2dcda51905ba659345926480609f5e83d4520fa5",
+      "bytes": 414581
+    },
+    {
+      "path": "D:\\基于yolo和卡尔曼滤波\\tools\\diagnostics\\humble54_probe02_position_speed_tail_review01\\inputs\\velocity.navigation_reference_evaluation.frames.jsonl",
+      "sha256": "b94152e657d20e96df4673e351e9bdc18628160a6415ee30fd76dcbf48fbd758",
+      "bytes": 412621
+    }
+  ],
+  "outputs": [
+    {
+      "path": "D:\\基于yolo和卡尔曼滤波\\tools\\diagnostics\\humble54_probe02_position_speed_tail_review01\\artifacts\\position_velocity_tail_distance.png",
+      "bytes": 320083,
+      "sha256": "1a503a31df2f98be864fff3bf67444a325794f796c0899f270df585a1229e075"
+    },
+    {
+      "path": "D:\\基于yolo和卡尔曼滤波\\tools\\diagnostics\\humble54_probe02_position_speed_tail_review01\\artifacts\\position_velocity_tail_distance.pdf",
+      "bytes": 32209,
+      "sha256": "52dfc17ab6750bfdd31c598c3397530128f7716c91f50e7b15904058dfd86592"
+    }
+  ],
+  "plot_window_start_s": 86.0,
+  "preserved_original_verdicts": {
+    "position": "FAIL",
+    "velocity": "PASS"
+  },
+  "position_final_dwell_s": 2.319999999999993,
+  "required_dwell_s": 3.0,
+  "wsl_ros_bag_telemetry": "NOT_USED"
+}

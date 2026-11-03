@@ -1,0 +1,3813 @@
+{
+  "kind": "NATIVE02_ORIGINAL_CDR_STRUCTURE_DESCRIPTION_NOT_REGRADED",
+  "original_native_status": "UNKNOWN",
+  "original_raw_event_count": 253,
+  "summary_sha256": "cb7636b1cea32dd4d071879da1747baa384d4aab1d95754ad7402efdf9b51340",
+  "raw_events_sha256": "64534f05541986fc16dc4c7b9229162608005d7e56598cd6ce5504c7e320a33f",
+  "review_source_sha256": "942f8441ca461dd229172f80758a9caf8648786e068ee346ede7e038836d1298",
+  "scope": "Only decode the already-declared original candidate pairs; no rematching, capability promotion, strict/E2E or native rerun.",
+  "pair_count": 24,
+  "all_pairs_typed_equal_and_only_padding_different": true,
+  "pairs": [
+    {
+      "phase": "single_writer_identical_payload",
+      "publish_event_index": 32,
+      "take_event_index": 33,
+      "original_status": "UNKNOWN",
+      "original_reasons": [
+        "whole_message_bytes_mismatch"
+      ],
+      "publish_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c69736800000467ec9a000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "take_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c6973680000000c99fe000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "publish_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "take_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "different_byte_offsets": [
+        48,
+        49,
+        50,
+        51
+      ],
+      "all_typed_fields_equal": true,
+      "differences_only_in_padding": true
+    },
+    {
+      "phase": "single_writer_identical_payload",
+      "publish_event_index": 39,
+      "take_event_index": 40,
+      "original_status": "UNKNOWN",
+      "original_reasons": [
+        "whole_message_bytes_mismatch"
+      ],
+      "publish_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c69736800006347ee9c000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "take_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c6973680000000c99fe000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "publish_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "take_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "different_byte_offsets": [
+        48,
+        49,
+        50,
+        51
+      ],
+      "all_typed_fields_equal": true,
+      "differences_only_in_padding": true
+    },
+    {
+      "phase": "single_writer_identical_payload",
+      "publish_event_index": 46,
+      "take_event_index": 47,
+      "original_status": "UNKNOWN",
+      "original_reasons": [
+        "whole_message_bytes_mismatch"
+      ],
+      "publish_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c6973680000b0d0e59e000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "take_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c6973680000000c99fe000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "publish_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "take_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "different_byte_offsets": [
+        48,
+        49,
+        50,
+        51
+      ],
+      "all_typed_fields_equal": true,
+      "differences_only_in_padding": true
+    },
+    {
+      "phase": "single_writer_identical_payload",
+      "publish_event_index": 53,
+      "take_event_index": 54,
+      "original_status": "UNKNOWN",
+      "original_reasons": [
+        "whole_message_bytes_mismatch"
+      ],
+      "publish_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c697368000067bbd8a0000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "take_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c6973680000000c99fe000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "publish_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "take_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "different_byte_offsets": [
+        48,
+        49,
+        50,
+        51
+      ],
+      "all_typed_fields_equal": true,
+      "differences_only_in_padding": true
+    },
+    {
+      "phase": "single_writer_identical_payload",
+      "publish_event_index": 60,
+      "take_event_index": 61,
+      "original_status": "UNKNOWN",
+      "original_reasons": [
+        "whole_message_bytes_mismatch"
+      ],
+      "publish_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c697368000070ddcda2000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "take_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c6973680000000c99fe000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "publish_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "take_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "different_byte_offsets": [
+        48,
+        49,
+        50,
+        51
+      ],
+      "all_typed_fields_equal": true,
+      "differences_only_in_padding": true
+    },
+    {
+      "phase": "single_writer_identical_payload",
+      "publish_event_index": 67,
+      "take_event_index": 68,
+      "original_status": "UNKNOWN",
+      "original_reasons": [
+        "whole_message_bytes_mismatch"
+      ],
+      "publish_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c6973680000cf51caa4000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "take_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c6973680000000c99fe000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "publish_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "take_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "different_byte_offsets": [
+        48,
+        49,
+        50,
+        51
+      ],
+      "all_typed_fields_equal": true,
+      "differences_only_in_padding": true
+    },
+    {
+      "phase": "single_writer_identical_payload",
+      "publish_event_index": 74,
+      "take_event_index": 75,
+      "original_status": "UNKNOWN",
+      "original_reasons": [
+        "whole_message_bytes_mismatch"
+      ],
+      "publish_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c69736800007423c5a6000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "take_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c6973680000000c99fe000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "publish_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "take_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "different_byte_offsets": [
+        48,
+        49,
+        50,
+        51
+      ],
+      "all_typed_fields_equal": true,
+      "differences_only_in_padding": true
+    },
+    {
+      "phase": "single_writer_identical_payload",
+      "publish_event_index": 81,
+      "take_event_index": 82,
+      "original_status": "UNKNOWN",
+      "original_reasons": [
+        "whole_message_bytes_mismatch"
+      ],
+      "publish_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c69736800006576bda8000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "take_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c6973680000000c99fe000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "publish_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "take_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "different_byte_offsets": [
+        48,
+        49,
+        50,
+        51
+      ],
+      "all_typed_fields_equal": true,
+      "differences_only_in_padding": true
+    },
+    {
+      "phase": "competing_writer_identical_payload",
+      "publish_event_index": 141,
+      "take_event_index": 143,
+      "original_status": "UNKNOWN",
+      "original_reasons": [
+        "controlled_writer_count_not_one",
+        "observed_competing_or_missing_writer",
+        "whole_message_bytes_mismatch"
+      ],
+      "publish_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c697368000058c3dbbf000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "take_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c6973680000000c99fe000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "publish_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "take_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "different_byte_offsets": [
+        48,
+        49,
+        50,
+        51
+      ],
+      "all_typed_fields_equal": true,
+      "differences_only_in_padding": true
+    },
+    {
+      "phase": "competing_writer_identical_payload",
+      "publish_event_index": 142,
+      "take_event_index": 146,
+      "original_status": "UNKNOWN",
+      "original_reasons": [
+        "controlled_writer_count_not_one",
+        "observed_competing_or_missing_writer",
+        "whole_message_bytes_mismatch"
+      ],
+      "publish_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c697368000058c3dbbf000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "take_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c6973680000000c99fe000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "publish_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "take_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "different_byte_offsets": [
+        48,
+        49,
+        50,
+        51
+      ],
+      "all_typed_fields_equal": true,
+      "differences_only_in_padding": true
+    },
+    {
+      "phase": "competing_writer_identical_payload",
+      "publish_event_index": 152,
+      "take_event_index": 154,
+      "original_status": "UNKNOWN",
+      "original_reasons": [
+        "controlled_writer_count_not_one",
+        "observed_competing_or_missing_writer",
+        "whole_message_bytes_mismatch"
+      ],
+      "publish_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c69736800001ef001c2000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "take_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c6973680000000c99fe000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "publish_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "take_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "different_byte_offsets": [
+        48,
+        49,
+        50,
+        51
+      ],
+      "all_typed_fields_equal": true,
+      "differences_only_in_padding": true
+    },
+    {
+      "phase": "competing_writer_identical_payload",
+      "publish_event_index": 153,
+      "take_event_index": 157,
+      "original_status": "UNKNOWN",
+      "original_reasons": [
+        "controlled_writer_count_not_one",
+        "observed_competing_or_missing_writer",
+        "whole_message_bytes_mismatch"
+      ],
+      "publish_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c69736800001ef001c2000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "take_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c6973680000000c99fe000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "publish_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "take_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "different_byte_offsets": [
+        48,
+        49,
+        50,
+        51
+      ],
+      "all_typed_fields_equal": true,
+      "differences_only_in_padding": true
+    },
+    {
+      "phase": "competing_writer_identical_payload",
+      "publish_event_index": 163,
+      "take_event_index": 165,
+      "original_status": "UNKNOWN",
+      "original_reasons": [
+        "controlled_writer_count_not_one",
+        "observed_competing_or_missing_writer",
+        "whole_message_bytes_mismatch"
+      ],
+      "publish_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c6973680000a3ac15c4000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "take_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c6973680000000c99fe000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "publish_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "take_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "different_byte_offsets": [
+        48,
+        49,
+        50,
+        51
+      ],
+      "all_typed_fields_equal": true,
+      "differences_only_in_padding": true
+    },
+    {
+      "phase": "competing_writer_identical_payload",
+      "publish_event_index": 164,
+      "take_event_index": 168,
+      "original_status": "UNKNOWN",
+      "original_reasons": [
+        "controlled_writer_count_not_one",
+        "observed_competing_or_missing_writer",
+        "whole_message_bytes_mismatch"
+      ],
+      "publish_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c6973680000a3ac15c4000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "take_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c6973680000000c99fe000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "publish_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "take_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "different_byte_offsets": [
+        48,
+        49,
+        50,
+        51
+      ],
+      "all_typed_fields_equal": true,
+      "differences_only_in_padding": true
+    },
+    {
+      "phase": "competing_writer_identical_payload",
+      "publish_event_index": 174,
+      "take_event_index": 176,
+      "original_status": "UNKNOWN",
+      "original_reasons": [
+        "controlled_writer_count_not_one",
+        "observed_competing_or_missing_writer",
+        "whole_message_bytes_mismatch"
+      ],
+      "publish_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c69736800008c4827c6000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "take_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c6973680000000c99fe000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "publish_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "take_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "different_byte_offsets": [
+        48,
+        49,
+        50,
+        51
+      ],
+      "all_typed_fields_equal": true,
+      "differences_only_in_padding": true
+    },
+    {
+      "phase": "competing_writer_identical_payload",
+      "publish_event_index": 175,
+      "take_event_index": 179,
+      "original_status": "UNKNOWN",
+      "original_reasons": [
+        "controlled_writer_count_not_one",
+        "observed_competing_or_missing_writer",
+        "whole_message_bytes_mismatch"
+      ],
+      "publish_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c69736800008c4827c6000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "take_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c6973680000000c99fe000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "publish_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "take_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "different_byte_offsets": [
+        48,
+        49,
+        50,
+        51
+      ],
+      "all_typed_fields_equal": true,
+      "differences_only_in_padding": true
+    },
+    {
+      "phase": "competing_writer_identical_payload",
+      "publish_event_index": 185,
+      "take_event_index": 187,
+      "original_status": "UNKNOWN",
+      "original_reasons": [
+        "controlled_writer_count_not_one",
+        "observed_competing_or_missing_writer",
+        "whole_message_bytes_mismatch"
+      ],
+      "publish_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c69736800000f7137c8000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "take_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c6973680000000c99fe000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "publish_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "take_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "different_byte_offsets": [
+        48,
+        49,
+        50,
+        51
+      ],
+      "all_typed_fields_equal": true,
+      "differences_only_in_padding": true
+    },
+    {
+      "phase": "competing_writer_identical_payload",
+      "publish_event_index": 186,
+      "take_event_index": 190,
+      "original_status": "UNKNOWN",
+      "original_reasons": [
+        "controlled_writer_count_not_one",
+        "observed_competing_or_missing_writer",
+        "whole_message_bytes_mismatch"
+      ],
+      "publish_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c69736800000f7137c8000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "take_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c6973680000000c99fe000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "publish_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "take_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "different_byte_offsets": [
+        48,
+        49,
+        50,
+        51
+      ],
+      "all_typed_fields_equal": true,
+      "differences_only_in_padding": true
+    },
+    {
+      "phase": "competing_writer_identical_payload",
+      "publish_event_index": 196,
+      "take_event_index": 198,
+      "original_status": "UNKNOWN",
+      "original_reasons": [
+        "controlled_writer_count_not_one",
+        "observed_competing_or_missing_writer",
+        "whole_message_bytes_mismatch"
+      ],
+      "publish_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c69736800007bf54cca000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "take_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c6973680000000c99fe000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "publish_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "take_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "different_byte_offsets": [
+        48,
+        49,
+        50,
+        51
+      ],
+      "all_typed_fields_equal": true,
+      "differences_only_in_padding": true
+    },
+    {
+      "phase": "competing_writer_identical_payload",
+      "publish_event_index": 197,
+      "take_event_index": 201,
+      "original_status": "UNKNOWN",
+      "original_reasons": [
+        "controlled_writer_count_not_one",
+        "observed_competing_or_missing_writer",
+        "whole_message_bytes_mismatch"
+      ],
+      "publish_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c69736800007bf54cca000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "take_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c6973680000000c99fe000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "publish_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "take_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "different_byte_offsets": [
+        48,
+        49,
+        50,
+        51
+      ],
+      "all_typed_fields_equal": true,
+      "differences_only_in_padding": true
+    },
+    {
+      "phase": "competing_writer_identical_payload",
+      "publish_event_index": 207,
+      "take_event_index": 209,
+      "original_status": "UNKNOWN",
+      "original_reasons": [
+        "controlled_writer_count_not_one",
+        "observed_competing_or_missing_writer",
+        "whole_message_bytes_mismatch"
+      ],
+      "publish_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c6973680000f9a560cc000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "take_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c6973680000000c99fe000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "publish_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "take_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "different_byte_offsets": [
+        48,
+        49,
+        50,
+        51
+      ],
+      "all_typed_fields_equal": true,
+      "differences_only_in_padding": true
+    },
+    {
+      "phase": "competing_writer_identical_payload",
+      "publish_event_index": 208,
+      "take_event_index": 212,
+      "original_status": "UNKNOWN",
+      "original_reasons": [
+        "controlled_writer_count_not_one",
+        "observed_competing_or_missing_writer",
+        "whole_message_bytes_mismatch"
+      ],
+      "publish_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c6973680000f9a560cc000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "take_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c6973680000000c99fe000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "publish_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "take_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "different_byte_offsets": [
+        48,
+        49,
+        50,
+        51
+      ],
+      "all_typed_fields_equal": true,
+      "differences_only_in_padding": true
+    },
+    {
+      "phase": "competing_writer_identical_payload",
+      "publish_event_index": 218,
+      "take_event_index": 220,
+      "original_status": "UNKNOWN",
+      "original_reasons": [
+        "controlled_writer_count_not_one",
+        "observed_competing_or_missing_writer",
+        "whole_message_bytes_mismatch"
+      ],
+      "publish_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c69736800002c767bce000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "take_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c6973680000000c99fe000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "publish_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "take_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "different_byte_offsets": [
+        48,
+        49,
+        50,
+        51
+      ],
+      "all_typed_fields_equal": true,
+      "differences_only_in_padding": true
+    },
+    {
+      "phase": "competing_writer_identical_payload",
+      "publish_event_index": 219,
+      "take_event_index": 223,
+      "original_status": "UNKNOWN",
+      "original_reasons": [
+        "controlled_writer_count_not_one",
+        "observed_competing_or_missing_writer",
+        "whole_message_bytes_mismatch"
+      ],
+      "publish_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c69736800002c767bce000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "take_payload_hex": "000100002a000000070000001f0000006964656e746963616c5f6865616465725f65766572795f7075626c6973680000000c99fe000000000000f43f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f03f",
+      "publish_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "take_cdr_structure": {
+        "encapsulation_hex": "00010000",
+        "payload_bytes": 108,
+        "string_with_nul_span": [
+          16,
+          47
+        ],
+        "padding_span": [
+          47,
+          52
+        ],
+        "float64_span": [
+          52,
+          108
+        ],
+        "fields": [
+          {
+            "path": "header.stamp.sec",
+            "type": "int32",
+            "value": 42
+          },
+          {
+            "path": "header.stamp.nanosec",
+            "type": "uint32",
+            "value": 7
+          },
+          {
+            "path": "header.frame_id",
+            "type": "string",
+            "value": "identical_header_every_publish",
+            "utf8_hex": "6964656e746963616c5f6865616465725f65766572795f7075626c697368"
+          },
+          {
+            "path": "pose.position.x",
+            "type": "float64",
+            "bits_be_hex": "3ff4000000000000"
+          },
+          {
+            "path": "pose.position.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.position.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.x",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.y",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.z",
+            "type": "float64",
+            "bits_be_hex": "0000000000000000"
+          },
+          {
+            "path": "pose.orientation.w",
+            "type": "float64",
+            "bits_be_hex": "3ff0000000000000"
+          }
+        ]
+      },
+      "different_byte_offsets": [
+        48,
+        49,
+        50,
+        51
+      ],
+      "all_typed_fields_equal": true,
+      "differences_only_in_padding": true
+    }
+  ]
+}

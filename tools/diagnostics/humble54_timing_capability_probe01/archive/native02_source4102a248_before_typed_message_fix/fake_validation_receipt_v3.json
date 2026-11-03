@@ -1,0 +1,39 @@
+{
+  "schema_version": 3,
+  "scope": "NO_ROS_FAKE_OBJECT_AND_FIXED_SMALL_FASTDDS_METADATA_VALIDATION_ONLY",
+  "created_utc": "2026-11-03T09:35:48.775927+00:00",
+  "native_executed_by_this_revision": false,
+  "wsl_executed": false,
+  "test_count": 23,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "success": true,
+  "test_output": "test_already_ended_take_cannot_match_future_publish (test_probe.AssociationTests.test_already_ended_take_cannot_match_future_publish) ... ok\ntest_competing_controlled_and_graph_writer_rejects_even_disjoint_windows (test_probe.AssociationTests.test_competing_controlled_and_graph_writer_rejects_even_disjoint_windows) ... ok\ntest_duplicate_timestamp_outside_window_byte_mismatch_and_missing_info (test_probe.AssociationTests.test_duplicate_timestamp_outside_window_byte_mismatch_and_missing_info) ... ok\ntest_identical_payloads_remain_distinct_candidates_without_header_matching (test_probe.AssociationTests.test_identical_payloads_remain_distinct_candidates_without_header_matching) ... ok\ntest_missing_and_reversed_publish_clocks_are_unknown (test_probe.AssociationTests.test_missing_and_reversed_publish_clocks_are_unknown) ... ok\ntest_missing_bool_and_reversed_take_clocks_are_unknown (test_probe.AssociationTests.test_missing_bool_and_reversed_take_clocks_are_unknown) ... ok\ntest_overlapping_windows_and_clock_inconsistency_reject (test_probe.AssociationTests.test_overlapping_windows_and_clock_inconsistency_reject) ... ok\ntest_sparse_graph_or_lifecycle_coverage_and_unknown_publish_writer_reject (test_probe.AssociationTests.test_sparse_graph_or_lifecycle_coverage_and_unknown_publish_writer_reject) ... ok\ntest_take_overlapping_synchronous_publish_is_not_falsely_rejected (test_probe.AssociationTests.test_take_overlapping_synchronous_publish_is_not_falsely_rejected) ... ok\ntest_absent_multiple_deleted_or_unversioned_maps_cannot_use_unrelated_config (test_probe.FastDDSVersionTests.test_absent_multiple_deleted_or_unversioned_maps_cannot_use_unrelated_config) ... ok\ntest_actual_cmake_metadata_parses_exact_release_with_architecture_suffix_code (test_probe.FastDDSVersionTests.test_actual_cmake_metadata_parses_exact_release_with_architecture_suffix_code) ... ok\ntest_actual_mapped_prefix_selects_its_pinned_non_ament_config (test_probe.FastDDSVersionTests.test_actual_mapped_prefix_selects_its_pinned_non_ament_config) ... ok\ntest_duplicate_missing_and_unreadable_cmake_release_are_rejected (test_probe.FastDDSVersionTests.test_duplicate_missing_and_unreadable_cmake_release_are_rejected) ... ok\ntest_wrong_release_or_same_version_changed_bytes_fail_closed (test_probe.FastDDSVersionTests.test_wrong_release_or_same_version_changed_bytes_fail_closed) ... ok\ntest_actual_return_frame_local_metadata_and_identity (test_probe.TransparencyTests.test_actual_return_frame_local_metadata_and_identity) ... ok\ntest_empty_and_same_native_exception_object_are_preserved (test_probe.TransparencyTests.test_empty_and_same_native_exception_object_are_preserved) ... ok\ntest_existing_profiler_is_untouched_and_metadata_unknown (test_probe.TransparencyTests.test_existing_profiler_is_untouched_and_metadata_unknown) ... ok\ntest_observer_failure_cannot_replace_original_result (test_probe.TransparencyTests.test_observer_failure_cannot_replace_original_result) ... ok\ntest_other_thread_profile_and_original_callback_remain_unchanged (test_probe.TransparencyTests.test_other_thread_profile_and_original_callback_remain_unchanged) ... ok\ntest_publish_observer_error_does_not_mask_result_or_original_exception (test_probe.TransparencyTests.test_publish_observer_error_does_not_mask_result_or_original_exception) ... ok\ntest_publish_original_argument_return_and_exception (test_probe.TransparencyTests.test_publish_original_argument_return_and_exception) ... ok\ntest_shutdown_exception_is_retained_and_rejected (test_probe.TransparencyTests.test_shutdown_exception_is_retained_and_rejected) ... ok\ntest_shutdown_false_and_non_bool_results_remain_unknown (test_probe.TransparencyTests.test_shutdown_false_and_non_bool_results_remain_unknown) ... ok\n\n----------------------------------------------------------------------\nRan 23 tests in 0.010s\n\nOK\n",
+  "files": {
+    "probe.py": {
+      "bytes": 35191,
+      "sha256": "4102a24849952181317ded821a79f60a46a57302fdf606b8feb6b8c7848e2633"
+    },
+    "test_probe.py": {
+      "bytes": 18897,
+      "sha256": "9d138584444b78c63ec6078876479082240835167694a402af2cc8bcf09b1d9b"
+    },
+    "README.md": {
+      "bytes": 7142,
+      "sha256": "c0032231de034a7cfa2e48e27ebf7ceab6bd43b8a05aee42dbee3aa8664d7117"
+    },
+    ".gitattributes": {
+      "bytes": 8,
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+    }
+  },
+  "prior_native_source_sha256": "4032859d48116748d531344dd9e4eabed0a2ac8c177073de899f672f8886db09",
+  "prior_native_archive": "tools/diagnostics/humble54_timing_capability_probe01/archive/native01_source4032859_before_fastdds_fix",
+  "prior_native_archive_files_verified": 9,
+  "version_metadata_manifest_sha256": "c8dc759a70ba9290282e6510fb36396ef8c938b82d8128a44bf5a3dda4158197",
+  "expected_fastdds_version": "2.6.12",
+  "expected_fastdds_cmake_sha256": "8edb8f6935ce6eb8e383c40d785156fcca62f3834852e5a0cb8f5377d3bd5001",
+  "physical_e2e": "NOT_OBSERVED",
+  "historical_strict_changed": false
+}

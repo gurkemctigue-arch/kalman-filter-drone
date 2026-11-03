@@ -1,0 +1,48 @@
+{
+  "schema_version": 4,
+  "scope": "NO_ROS_TYPED_FIELD_TRANSPARENCY_AND_ORIGINAL_CDR_STRUCTURE_TESTS_ONLY",
+  "created_utc": "2026-11-03T09:47:12.632686+00:00",
+  "native_executed_by_this_revision": false,
+  "wsl_executed": false,
+  "test_count": 28,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "success": true,
+  "test_output": "test_already_ended_take_cannot_match_future_publish (test_probe.AssociationTests.test_already_ended_take_cannot_match_future_publish) ... ok\ntest_competing_controlled_and_graph_writer_rejects_even_disjoint_windows (test_probe.AssociationTests.test_competing_controlled_and_graph_writer_rejects_even_disjoint_windows) ... ok\ntest_duplicate_timestamp_outside_window_typed_mismatch_and_missing_info (test_probe.AssociationTests.test_duplicate_timestamp_outside_window_typed_mismatch_and_missing_info) ... ok\ntest_identical_payloads_remain_distinct_candidates_without_header_matching (test_probe.AssociationTests.test_identical_payloads_remain_distinct_candidates_without_header_matching) ... ok\ntest_missing_and_reversed_publish_clocks_are_unknown (test_probe.AssociationTests.test_missing_and_reversed_publish_clocks_are_unknown) ... ok\ntest_missing_bool_and_reversed_take_clocks_are_unknown (test_probe.AssociationTests.test_missing_bool_and_reversed_take_clocks_are_unknown) ... ok\ntest_overlapping_windows_and_clock_inconsistency_reject (test_probe.AssociationTests.test_overlapping_windows_and_clock_inconsistency_reject) ... ok\ntest_sparse_graph_or_lifecycle_coverage_and_unknown_publish_writer_reject (test_probe.AssociationTests.test_sparse_graph_or_lifecycle_coverage_and_unknown_publish_writer_reject) ... ok\ntest_take_overlapping_synchronous_publish_is_not_falsely_rejected (test_probe.AssociationTests.test_take_overlapping_synchronous_publish_is_not_falsely_rejected) ... ok\ntest_actual_cdr_padding_difference_does_not_override_full_typed_equality (test_probe.CompleteTypedFieldTests.test_actual_cdr_padding_difference_does_not_override_full_typed_equality) ... ok\ntest_each_of_ten_typed_fields_changes_equality_even_with_identical_raw_bytes (test_probe.CompleteTypedFieldTests.test_each_of_ten_typed_fields_changes_equality_even_with_identical_raw_bytes) ... ok\ntest_float64_signed_zero_nan_payload_sign_and_infinity_bits_are_preserved (test_probe.CompleteTypedFieldTests.test_float64_signed_zero_nan_payload_sign_and_infinity_bits_are_preserved) ... ok\ntest_missing_fields_bool_integers_and_partial_float_bits_are_unknown (test_probe.CompleteTypedFieldTests.test_missing_fields_bool_integers_and_partial_float_bits_are_unknown) ... ok\ntest_snapshot_is_of_original_publish_argument_and_observer_failure_preserves_call (test_probe.CompleteTypedFieldTests.test_snapshot_is_of_original_publish_argument_and_observer_failure_preserves_call) ... ok\ntest_absent_multiple_deleted_or_unversioned_maps_cannot_use_unrelated_config (test_probe.FastDDSVersionTests.test_absent_multiple_deleted_or_unversioned_maps_cannot_use_unrelated_config) ... ok\ntest_actual_cmake_metadata_parses_exact_release_with_architecture_suffix_code (test_probe.FastDDSVersionTests.test_actual_cmake_metadata_parses_exact_release_with_architecture_suffix_code) ... ok\ntest_actual_mapped_prefix_selects_its_pinned_non_ament_config (test_probe.FastDDSVersionTests.test_actual_mapped_prefix_selects_its_pinned_non_ament_config) ... ok\ntest_duplicate_missing_and_unreadable_cmake_release_are_rejected (test_probe.FastDDSVersionTests.test_duplicate_missing_and_unreadable_cmake_release_are_rejected) ... ok\ntest_wrong_release_or_same_version_changed_bytes_fail_closed (test_probe.FastDDSVersionTests.test_wrong_release_or_same_version_changed_bytes_fail_closed) ... ok\ntest_actual_return_frame_local_metadata_and_identity (test_probe.TransparencyTests.test_actual_return_frame_local_metadata_and_identity) ... ok\ntest_empty_and_same_native_exception_object_are_preserved (test_probe.TransparencyTests.test_empty_and_same_native_exception_object_are_preserved) ... ok\ntest_existing_profiler_is_untouched_and_metadata_unknown (test_probe.TransparencyTests.test_existing_profiler_is_untouched_and_metadata_unknown) ... ok\ntest_observer_failure_cannot_replace_original_result (test_probe.TransparencyTests.test_observer_failure_cannot_replace_original_result) ... ok\ntest_other_thread_profile_and_original_callback_remain_unchanged (test_probe.TransparencyTests.test_other_thread_profile_and_original_callback_remain_unchanged) ... ok\ntest_publish_observer_error_does_not_mask_result_or_original_exception (test_probe.TransparencyTests.test_publish_observer_error_does_not_mask_result_or_original_exception) ... ok\ntest_publish_original_argument_return_and_exception (test_probe.TransparencyTests.test_publish_original_argument_return_and_exception) ... ok\ntest_shutdown_exception_is_retained_and_rejected (test_probe.TransparencyTests.test_shutdown_exception_is_retained_and_rejected) ... ok\ntest_shutdown_false_and_non_bool_results_remain_unknown (test_probe.TransparencyTests.test_shutdown_false_and_non_bool_results_remain_unknown) ... ok\n\n----------------------------------------------------------------------\nRan 28 tests in 0.011s\n\nOK\n",
+  "files": {
+    "probe.py": {
+      "bytes": 40007,
+      "sha256": "c7d0050cab71ce6a340c7fc5647531e92334029c8dc38b14393d2dc0058ae426"
+    },
+    "test_probe.py": {
+      "bytes": 24160,
+      "sha256": "ad9bce74cf6ba4a7a54885218e8c8e2ff5539c60c4d549f62ece952bdd3abda3"
+    },
+    "README.md": {
+      "bytes": 8495,
+      "sha256": "4c0971e3ee6c35d093f4338ae6b37bacea9fa4b1402eb63fa3f1e56ae790264a"
+    },
+    ".gitattributes": {
+      "bytes": 8,
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+    },
+    "review_native02_cdr_padding.py": {
+      "bytes": 5461,
+      "sha256": "942f8441ca461dd229172f80758a9caf8648786e068ee346ede7e038836d1298"
+    },
+    "native02_cdr_padding_review.json": {
+      "bytes": 114868,
+      "sha256": "78665eb2454f086bfc5927ec32d1c4bbbe9c5a9430e5cba36463ea88979dacf5"
+    }
+  },
+  "prior_native_source_sha256": "4102a24849952181317ded821a79f60a46a57302fdf606b8feb6b8c7848e2633",
+  "prior_native_archive": "tools/diagnostics/humble54_timing_capability_probe01/archive/native02_source4102a248_before_typed_message_fix",
+  "prior_native_archive_files_verified": 11,
+  "native02_original_status_retained": "UNKNOWN",
+  "native02_declared_pair_structure_count": 24,
+  "native02_pairs_not_regraded": true,
+  "comparison_basis": "All 10 exact typed fields; int32/uint32/string UTF8 plus seven float64 bit patterns; raw CDR retained; no undefined padding comparison",
+  "physical_e2e": "NOT_OBSERVED",
+  "historical_strict_changed": false
+}

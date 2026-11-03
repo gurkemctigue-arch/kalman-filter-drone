@@ -1,0 +1,75 @@
+{
+  "kind": "MANIFEST_OPPORTUNITY_DESCRIPTION_NOT_NEW_ENGINEERING_EVALUATION",
+  "manifest_sha256": "2818cafb2de57f3a7559eb50b90a946acbe53f3246dd5b44c8a6f526c73006a6",
+  "opportunity_count": 33,
+  "window_opportunity_counts": {
+    "/camera/aligned_depth_to_color/image_raw": 9,
+    "/camera/color/image_raw": 9,
+    "/research/camera/aligned_depth_to_color/image_raw": 5,
+    "/research/camera/color/image_raw": 5,
+    "/tracking/detection_diagnostics": 5
+  },
+  "acquisition_ns_by_topic": {
+    "/camera/color/image_raw": [
+      30700000000,
+      30800000000,
+      30900000000,
+      31000000000,
+      31100000000,
+      31200000000,
+      31300000000,
+      31400000000,
+      31500000000
+    ],
+    "/camera/aligned_depth_to_color/image_raw": [
+      30700000000,
+      30800000000,
+      30900000000,
+      31000000000,
+      31100000000,
+      31200000000,
+      31300000000,
+      31400000000,
+      31500000000
+    ],
+    "/research/camera/color/image_raw": [
+      30700000000,
+      30800000000,
+      30900000000,
+      31000000000,
+      31100000000
+    ],
+    "/research/camera/aligned_depth_to_color/image_raw": [
+      30700000000,
+      30800000000,
+      30900000000,
+      31000000000,
+      31100000000
+    ],
+    "/tracking/detection_diagnostics": [
+      30700000000,
+      30800000000,
+      30900000000,
+      31000000000,
+      31100000000
+    ]
+  },
+  "observation_boundary": "Raw RGB/depth exist at all nine sampled times. In this extracted window research RGB/depth and diagnostics have only 30.7-31.1 s entries. Their absence at 31.2-31.5 s is recorded absence, not an empty detector result or tracker recovery proof.",
+  "original_terminal_status": "FAIL",
+  "original_short_checks": {
+    "recorded_close_event": true,
+    "shutter_close_service_succeeded": true,
+    "shutter_open_service_succeeded": true,
+    "shutter_close_ack_before_open_request": true,
+    "detector_interruption_observed": true,
+    "prediction_observed": true,
+    "lost_observed_for_long_occlusion": null,
+    "hover_observed_for_long_occlusion": null,
+    "sustained_low_speed_after_hover": null,
+    "no_automatic_recovery_after_long_loss": null,
+    "no_tracking_control_before_reselection_after_long_loss": null,
+    "sustained_tracking_after_reselection": null,
+    "no_loss_during_short_occlusion": false,
+    "identity_preserved_on_observed_recovery": null
+  }
+}
