@@ -25,3 +25,7 @@
 collector07 复核原第 13 场后于 18:46:42 实际启动汽车 `speed_changes_velocity`；累计 13/16 原始终态为 8 PASS、4 FAIL、1 INCOMPLETE_EVIDENCE，另三场尚待各自终态。当前原 monitor、WSL 子进程及外层 Popen 持有链继续运行，尚不满足后续原生测量的空闲条件。
 
 原导航抽样文件进一步显示：第一次无效样本在仿真 34.852 s，原因为 `stale_navigation_measurement`；第一次 LOST 样本为 34.952 s，早于 42.36 s 的长遮挡。49.372 s 显式重选后恢复持续跟踪，之后末段稳定。因此长遮挡窗内没有预测阶段，不能解释为“没有执行悬停保护”。此处只读原小报告及抽样帧，未读取 telemetry/bag；尚未确认导致 34.852 s 失鲜的具体输入或处理环节。诊断及原字节绑定见 `results/diagnostics/humble54_probe02_car_combined_small_review01/review.json`。分段误差仅用于定位问题，不替换原验收窗口或阈值。
+
+19:04:21，第 14 场汽车 `speed_changes_velocity` 产生原始 PASS，终态 SHA 为 `91860f3fddddc85c25cf478ce2707dcb77557b9498ddb29b81b0ad38b48a6f2c`。距离 RMSE 为 0.642943 m，高度 RMSE 为 0.160741 m，状态覆盖率为 0.914894，真值覆盖率为 1.0，原六项导航检查均通过。collector07 随后实际进入 `speed_changes_position`，剩最后的汽车位置变速和远距离两场；此时扩展累计 14/16 为 9 PASS、4 FAIL、1 INCOMPLETE_EVIDENCE。开发成果页已按这些原终态重生成，正式仍为 0/280。
+
+独立软件时延台架的 windows04 已完成源码和假对象复核，当前入口见 `tools/diagnostics/humble54_pipeline_timing_bench01/CURRENT.md`。它保留原检测、导航估计、控制和 adapter 代码路径，仅在隔离回放中观测对象来源及三条 DDS 边；尚未进行该完整管线的原生实测。其候选软件时延不能替代原飞行时延或物理 E2E，观察开销也尚未单独测量。root 的只读 Linux 路径查询已确认 frozen54/results 符号链接和原 core person/car velocity 路径均存在并解析至原发布目录，无需路径补救；后续实际执行仍须原逐件 SHA 核查。

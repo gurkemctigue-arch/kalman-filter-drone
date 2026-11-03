@@ -1,0 +1,57 @@
+{
+  "created_utc": "2026-11-03T11:00:06.651091+00:00",
+  "status": "PASS_FAKE_AND_STRUCTURE_ONLY",
+  "native_run": false,
+  "ros_imported": false,
+  "bag_payloads_read": false,
+  "weights_read": false,
+  "commands": [
+    {
+      "command": [
+        "C:\\Program Files\\Python312\\python.exe",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools\\diagnostics\\humble54_pipeline_timing_bench01",
+        "-p",
+        "test_bench.py",
+        "-v"
+      ],
+      "returncode": 0,
+      "wall_s": 0.7040000000270084,
+      "output": "test_windows01.log",
+      "sha256": "e7d6f5b2878eb8712731cec23bb8b21bbc85a9f00245c50b46c945d187c1061c"
+    },
+    {
+      "command": [
+        "C:\\Program Files\\Python312\\python.exe",
+        "-B",
+        "tools\\diagnostics\\humble54_pipeline_timing_bench01\\bench.py"
+      ],
+      "returncode": 0,
+      "wall_s": 0.18699999997625127,
+      "output": "describe_windows01.json",
+      "sha256": "36f69d32d4422f97762791c5a272b96bfc430df00bcbeadd6039379537127ebd"
+    }
+  ],
+  "manifest_shape": "PASS",
+  "ast_parse": "5 Python files PASS",
+  "not_proven": [
+    "Native Humble message compatibility",
+    "Actual original YOLO pipeline replay",
+    "Candidate software timing performance",
+    "Physical E2E",
+    "Original strict provenance unchanged"
+  ],
+  "sources": {
+    "bench.py": "e02b1d02250ccf07e6179c30130dacfe1a1888f45a8e028616fbb086955b24eb",
+    "observer.py": "f6b17d084e3217e73b4e1f50a11179a359bda51cb4a36d49312fd61db871b8c9",
+    "reducer.py": "628271811d1454b1521586cbe332d4d3636f24434ce783fb8f437a51edcb1351",
+    "typed_message.py": "494912d18bc5bf489f4266f248bc04d13c59a5b5763aa4d50ac3af0c7582a1b7",
+    "test_bench.py": "8ec19e6d3bfe3aec64791f2bb7a3dfb6db4f0d156a42959fe469ad4ae819f287",
+    "README.md": "87dcb02cf0152d9dfc331aafc0b4007038047bea599989afb6ec13837332fa01",
+    "person004_short01.manifest.json": "9cac991983f2161adfacfb74b46d61e6091ab7c851fa028b3f79de9daf626fab"
+  }
+}

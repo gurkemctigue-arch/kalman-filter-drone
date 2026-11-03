@@ -1,0 +1,73 @@
+{
+  "created_utc": "2026-11-03T11:07:03.735489+00:00",
+  "status": "PASS_FAKE_AND_STRUCTURE_ONLY",
+  "tests": 20,
+  "native_run": false,
+  "ros_imported": false,
+  "bag_payloads_read": false,
+  "weights_read": false,
+  "commands": [
+    {
+      "command": [
+        "C:\\Program Files\\Python312\\python.exe",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools\\diagnostics\\humble54_pipeline_timing_bench01",
+        "-p",
+        "test_bench.py",
+        "-v"
+      ],
+      "returncode": 0,
+      "wall_s": 0.9530000000377186,
+      "output": "test_windows03.log",
+      "sha256": "386a190fa43e56f9c65eda75f90b76cc0e1985d523539e93c025adcbf6c4b2c2"
+    },
+    {
+      "command": [
+        "C:\\Program Files\\Python312\\python.exe",
+        "-B",
+        "tools\\diagnostics\\humble54_pipeline_timing_bench01\\bench.py"
+      ],
+      "returncode": 0,
+      "wall_s": 0.2029999999795109,
+      "output": "describe_windows03.json",
+      "sha256": "36f69d32d4422f97762791c5a272b96bfc430df00bcbeadd6039379537127ebd"
+    }
+  ],
+  "manifest_shape": "PASS",
+  "unicode_path_check": {
+    "original_plan": {
+      "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/plan.json",
+      "question_mark_count": 0
+    },
+    "recording_terminal": {
+      "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/person_stage1_velocity_seed004.json",
+      "question_mark_count": 0
+    },
+    "probe": {
+      "path": "/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_timing_capability_probe01/probe.py",
+      "question_mark_count": 0
+    }
+  },
+  "linux_path_existence": "NOT_OBSERVED",
+  "ast_parse": "5 Python files PASS",
+  "not_proven": [
+    "Native Humble message compatibility",
+    "Actual original YOLO pipeline replay",
+    "Candidate software timing performance",
+    "Physical E2E",
+    "Original strict provenance unchanged"
+  ],
+  "sources": {
+    "bench.py": "4388f0b5c539d677f4f95cc2441c4cbf0d37edd858be1f0d68d5ddbc21f79cac",
+    "observer.py": "8b447fd441790add9751571406ea50e7499b68de80b248e57d470de89a0b7417",
+    "reducer.py": "628271811d1454b1521586cbe332d4d3636f24434ce783fb8f437a51edcb1351",
+    "typed_message.py": "cf602133ba3f5aab5053e5dc79f7d57465eaf02b55dc504fac48c212ecae7fb3",
+    "test_bench.py": "db85faf3fd1090b7370a81b84faafc983af040eb52283e1898e9c0e237156e18",
+    "README.md": "0084cd958f9979b82712f84e99a0796c750b9c9d998531aec46da07982426f83",
+    "person004_short01.manifest.json": "50eb91cfc5ad324715f54892316396bbe38a71a9ecc133fbab592bcb70f35ddf"
+  }
+}

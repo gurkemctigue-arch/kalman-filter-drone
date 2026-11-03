@@ -1,0 +1,296 @@
+{
+  "schema_version": 1,
+  "status": "PASS_FIXED_SOURCE_AND_FAKE_REVIEW_ONLY_NOT_ACTUAL_OBSERVATION",
+  "created_utc": "2026-11-03T11:09:41.985253+00:00",
+  "reviewer": "/root/continuation06_preparation",
+  "fixed_source_map": {
+    "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\diagnostics\\humble54_pipeline_timing_bench01\\source_sha256_windows04.json",
+    "sha256": "1992ccaa860bf129b80d3de30ec67d8ebf2baa1181efac79f711a9913a63dfd9"
+  },
+  "reviewed_source_sha256": {
+    "bench.py": "69bf179f23b8e77fd443696ea24989286e0af72a17faccab223016805f33dd02",
+    "observer.py": "8b447fd441790add9751571406ea50e7499b68de80b248e57d470de89a0b7417",
+    "reducer.py": "628271811d1454b1521586cbe332d4d3636f24434ce783fb8f437a51edcb1351",
+    "typed_message.py": "cf602133ba3f5aab5053e5dc79f7d57465eaf02b55dc504fac48c212ecae7fb3",
+    "test_bench.py": "080ef365ca468a4ff1eb3ff95b37360742ddeb805c692c04fa6ac4518d6550f6",
+    "README.md": "41de44bcc62e2b9365e27062477f31aa43d20a1399e418d634826cfef4678ca6",
+    "person004_short01.manifest.json": "50eb91cfc5ad324715f54892316396bbe38a71a9ecc133fbab592bcb70f35ddf"
+  },
+  "source_unchanged_after_review": true,
+  "author_tests_independently_run": {
+    "tests_run": 20,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "output": "test_default_describe_opens_no_manifest_bag_or_model (test_bench.CliTests.test_default_describe_opens_no_manifest_bag_or_model) ... ok\ntest_master_monitor_constructor_failure_closes_context_and_trace (test_bench.CliTests.test_master_monitor_constructor_failure_closes_context_and_trace) ... ok\ntest_native_is_refused_on_windows_before_reading_inputs (test_bench.CliTests.test_native_is_refused_on_windows_before_reading_inputs) ... ok\ntest_replay_early_storage_failure_closes_reader_scratch_node_and_context (test_bench.CliTests.test_replay_early_storage_failure_closes_reader_scratch_node_and_context) ... ok\ntest_role_hook_install_failure_closes_observer_and_trace (test_bench.CliTests.test_role_hook_install_failure_closes_observer_and_trace) ... ok\ntest_busy_submit_not_started_and_rejected_update_cannot_refresh_prediction (test_bench.HookTests.test_busy_submit_not_started_and_rejected_update_cannot_refresh_prediction) ... ok\ntest_controller_lineage_reads_actual_local_target_after_latest_field_changes (test_bench.HookTests.test_controller_lineage_reads_actual_local_target_after_latest_field_changes) ... ok\ntest_object_tokens_are_bounded_and_do_not_retain_all_images (test_bench.HookTests.test_object_tokens_are_bounded_and_do_not_retain_all_images) ... ok\ntest_original_once_same_objects_return_exception_and_thread (test_bench.HookTests.test_original_once_same_objects_return_exception_and_thread) ... ok\ntest_trace_overflow_is_disclosed_without_throwing_into_original (test_bench.HookTests.test_trace_overflow_is_disclosed_without_throwing_into_original) ... ok\ntest_busy_dropped_rgb_and_nonfollow_are_not_removed_from_denominators (test_bench.ReducerTests.test_busy_dropped_rgb_and_nonfollow_are_not_removed_from_denominators) ... ok\ntest_full_three_edge_candidate_has_actual_max_callback_t0_and_all_coverage (test_bench.ReducerTests.test_full_three_edge_candidate_has_actual_max_callback_t0_and_all_coverage) ... ok\ntest_missing_edge_field_mismatch_competition_and_false_acceptance_are_unknown (test_bench.ReducerTests.test_missing_edge_field_mismatch_competition_and_false_acceptance_are_unknown) ... ok\ntest_predicting_from_old_acceptance_retains_source_rejection_does_not_refresh (test_bench.ReducerTests.test_predicting_from_old_acceptance_retains_source_rejection_does_not_refresh) ... ok\ntest_repeated_ticks_keep_first_input_latency_separate_from_later_information_age (test_bench.ReducerTests.test_repeated_ticks_keep_first_input_latency_separate_from_later_information_age) ... ok\ntest_trace_loss_shutdown_failure_or_clock_domain_mismatch_invalidates_complete_chain (test_bench.ReducerTests.test_trace_loss_shutdown_failure_or_clock_domain_mismatch_invalidates_complete_chain) ... ok\ntest_exact_width_scalar_buffers_preserve_numpy_style_fields_and_nan_bits (test_bench.TypedTests.test_exact_width_scalar_buffers_preserve_numpy_style_fields_and_nan_bits) ... ok\ntest_float32_raw_signaling_nan_payloads_and_float64_bits (test_bench.TypedTests.test_float32_raw_signaling_nan_payloads_and_float64_bits) ... ok\ntest_nested_complete_fields_arrays_and_signed_zero_are_preserved (test_bench.TypedTests.test_nested_complete_fields_arrays_and_signed_zero_are_preserved) ... ok\ntest_unknown_structure_incomplete_schema_and_bounds_reject (test_bench.TypedTests.test_unknown_structure_incomplete_schema_and_bounds_reject) ... ok\n\n----------------------------------------------------------------------\nRan 20 tests in 0.355s\n\nOK\n"
+  },
+  "independent_adversarial_reducer_cases": [
+    {
+      "phase": "detection",
+      "mutation": "missing_source",
+      "result": "UNKNOWN_WITH_DENOMINATORS_RETAINED"
+    },
+    {
+      "phase": "detection",
+      "mutation": "typed_mismatch",
+      "result": "UNKNOWN_WITH_DENOMINATORS_RETAINED"
+    },
+    {
+      "phase": "detection",
+      "mutation": "uncaptured_take",
+      "result": "UNKNOWN_WITH_DENOMINATORS_RETAINED"
+    },
+    {
+      "phase": "state",
+      "mutation": "missing_source",
+      "result": "UNKNOWN_WITH_DENOMINATORS_RETAINED"
+    },
+    {
+      "phase": "state",
+      "mutation": "typed_mismatch",
+      "result": "UNKNOWN_WITH_DENOMINATORS_RETAINED"
+    },
+    {
+      "phase": "state",
+      "mutation": "uncaptured_take",
+      "result": "UNKNOWN_WITH_DENOMINATORS_RETAINED"
+    },
+    {
+      "phase": "command",
+      "mutation": "missing_source",
+      "result": "UNKNOWN_WITH_DENOMINATORS_RETAINED"
+    },
+    {
+      "phase": "command",
+      "mutation": "typed_mismatch",
+      "result": "UNKNOWN_WITH_DENOMINATORS_RETAINED"
+    },
+    {
+      "phase": "command",
+      "mutation": "uncaptured_take",
+      "result": "UNKNOWN_WITH_DENOMINATORS_RETAINED"
+    },
+    {
+      "mode": 0,
+      "result": "NONFOLLOW_NOT_A_LATENCY_SAMPLE"
+    },
+    {
+      "mode": 3,
+      "result": "NONFOLLOW_NOT_A_LATENCY_SAMPLE"
+    },
+    {
+      "mode": 4,
+      "result": "NONFOLLOW_NOT_A_LATENCY_SAMPLE"
+    },
+    {
+      "mutation": "native_incomplete_and_unselected_rgb",
+      "result": "ALL_UNKNOWN_ALL_INPUT_OPPORTUNITIES_RETAINED"
+    }
+  ],
+  "independent_before_construction_fmu_guard": {
+    "unisolated_endpoint_cases": 6,
+    "native_endpoint_constructions": 0,
+    "isolated_fake_endpoint_allowed": true,
+    "hooks_restored": true
+  },
+  "original_small_bindings": {
+    "original_id": "person_stage1_velocity_seed004",
+    "terminal_status_retained": "PASS",
+    "mounted_paths_question_mark_count": 0,
+    "mounted_paths_exact_project_name": true,
+    "parameters": [
+      {
+        "role": "detector",
+        "original_path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_core12_probe01_person_stage1_velocity_seed004/configuration/runtime_parameters.yaml",
+        "sha256": "8937ee52a801d5352e2f7bc54dd56d054dc2cda66ea2b9cb26ba6743ec3d6bb2"
+      },
+      {
+        "role": "estimator",
+        "original_path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_core12_probe01_person_stage1_velocity_seed004/configuration/runtime_parameters.yaml",
+        "sha256": "8937ee52a801d5352e2f7bc54dd56d054dc2cda66ea2b9cb26ba6743ec3d6bb2"
+      },
+      {
+        "role": "controller",
+        "original_path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_core12_probe01_person_stage1_velocity_seed004/configuration/runtime_parameters.yaml",
+        "sha256": "8937ee52a801d5352e2f7bc54dd56d054dc2cda66ea2b9cb26ba6743ec3d6bb2"
+      },
+      {
+        "role": "adapter",
+        "original_path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_core12_probe01_person_stage1_velocity_seed004/configuration/runtime_parameters.yaml",
+        "sha256": "8937ee52a801d5352e2f7bc54dd56d054dc2cda66ea2b9cb26ba6743ec3d6bb2"
+      }
+    ],
+    "original_source_pins_checked": [
+      "scripts/evaluate_stage1_flight.py",
+      "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/detector_node.py",
+      "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/state_estimator_node.py",
+      "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/controller_node.py",
+      "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/inference_worker.py",
+      "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/navigation_estimator.py",
+      "ros2_ws/src/uav_tracking_px4_adapter/uav_tracking_px4_adapter/adapter_node.py",
+      "ros2_ws/src/uav_tracking_interfaces/msg/TrackingCommand.msg"
+    ],
+    "model_and_archive_sha": "Compared to original plan/integrity expectations only; no payload opened or rehashed"
+  },
+  "reviewed_causal_scope": {
+    "t0": "max of actual RGB and Depth callback entry monotonic times, matched by bounded object tokens to the accepted actual InferenceSnapshot",
+    "intermediate": "Actual worker publication, accepted navigation update, project snapshot and controller current local target; rejected update/clear cannot refresh identity",
+    "t1": "actual adapter TrackingCommand subscription wrapper entry; original callback called once with unchanged message",
+    "dds": "Three edges reuse fixed c7 source_timestamp/publication-clock-window/complete-typed-fields/single-polled-writer predicate; every edge remains candidate only",
+    "denominators": "All adapter callbacks, edge takes/pubs/unknowns, replay counts by kind and actual received RGB opportunities retained separately; no claimed replay-to-image DDS identity",
+    "follow": "Only valid VELOCITY/POSITION contributes candidate latency. HOLD/SEARCH/FAILSAFE unknowns remain. Repeated ticks disclose first per-RGB latency separately from information age",
+    "retention": "Bounded image token table 8 plus snapshot job table 8 (at most 16 indirect images); total observer image references at most 24, possibly overlapping. Other token/pending/project indices capped at 64",
+    "trace": "Bounded queue/event bytes, put_nowait on original callbacks; hook/trace errors invalidate candidates. Serialization/instrumentation overhead remains within measured software path"
+  },
+  "reviewed_execution_scope": {
+    "isolation": "All fmu endpoints refused before original construction unless remapped; no replayed status/ack/setpoint/arm, no Gazebo/PX4/supervisor launched; actual original adapter status requirement retained",
+    "cache": "Pinned original open_bag_reader stages temporary links. Replay ExitStack nests private native ext4 scratch and restores tempfile.tempdir; original archive paths are read only",
+    "ready": "After full original role constructor and required model/topic/use_sim_time verification, then four ready roles plus stable single-writer graph required. This is construction/discovery readiness, not proof of input delivery",
+    "lock": "Native CLI nonblock-acquires existing original SITL lock and holds through native() including final cleanup; no second external flock should wrap it",
+    "cleanup": "Early role/replay/master errors pass nested finally; owned groups receive SIGINT, bounded wait then SIGKILL if needed; forced kill, residual group or cleanup error makes execution incomplete"
+  },
+  "blocking_findings": [],
+  "resolved_during_review": [
+    "master early context/trace cleanup",
+    "owned-group cleanup and kill race",
+    "worker hook installation cleanup",
+    "replay teardown context attempt on node destruction error",
+    "snapshot indirect image retention bound",
+    "manifest Chinese paths corrupted by shell encoding",
+    "exact-width scalar numeric buffers"
+  ],
+  "execution_conclusion": "PREPARATION_REVIEW_PASS_ONLY; ROOT_MAY_CONSIDER_ONE_EXPLICIT_NATIVE_SHORT_PREFIX_AFTER_COLLECTOR_EXIT_AND_FRESH_RESOURCE_CHECKS",
+  "actual_observation": "NOT_OBSERVED",
+  "candidate_latency_samples_from_this_review": 0,
+  "historical_strict": "1857/1857_UNKNOWN_UNCHANGED",
+  "physical_e2e": "NOT_OBSERVED",
+  "native_wsl_launches": 0,
+  "real_bag_or_weight_payload_reads": 0,
+  "original_or_author_source_changes": 0,
+  "formal_admission": false,
+  "remaining_actual_checks": [
+    "Installed original ROS/px4_msgs/numpy/Ultralytics compatibility",
+    "Actual callback and MessageInfo capture",
+    "Actual graph discovery and input delivery",
+    "Actual FOLLOW presence in declared prefix",
+    "Full original source/model/archive preflight and preservation hashes",
+    "Actual native cleanup and scratch closure"
+  ],
+  "small_inputs_read": [
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\diagnostics\\humble54_pipeline_timing_bench01\\source_sha256_windows04.json",
+      "bytes": 619,
+      "sha256": "1992ccaa860bf129b80d3de30ec67d8ebf2baa1181efac79f711a9913a63dfd9"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\diagnostics\\humble54_pipeline_timing_bench01\\bench.py",
+      "bytes": 30748,
+      "sha256": "69bf179f23b8e77fd443696ea24989286e0af72a17faccab223016805f33dd02"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\diagnostics\\humble54_pipeline_timing_bench01\\observer.py",
+      "bytes": 17285,
+      "sha256": "8b447fd441790add9751571406ea50e7499b68de80b248e57d470de89a0b7417"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\diagnostics\\humble54_pipeline_timing_bench01\\reducer.py",
+      "bytes": 14982,
+      "sha256": "628271811d1454b1521586cbe332d4d3636f24434ce783fb8f437a51edcb1351"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\diagnostics\\humble54_pipeline_timing_bench01\\typed_message.py",
+      "bytes": 9146,
+      "sha256": "cf602133ba3f5aab5053e5dc79f7d57465eaf02b55dc504fac48c212ecae7fb3"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\diagnostics\\humble54_pipeline_timing_bench01\\test_bench.py",
+      "bytes": 23078,
+      "sha256": "080ef365ca468a4ff1eb3ff95b37360742ddeb805c692c04fa6ac4518d6550f6"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\diagnostics\\humble54_pipeline_timing_bench01\\README.md",
+      "bytes": 7052,
+      "sha256": "41de44bcc62e2b9365e27062477f31aa43d20a1399e418d634826cfef4678ca6"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\diagnostics\\humble54_pipeline_timing_bench01\\person004_short01.manifest.json",
+      "bytes": 17519,
+      "sha256": "50eb91cfc5ad324715f54892316396bbe38a71a9ecc133fbab592bcb70f35ddf"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\plan.json",
+      "bytes": 207807,
+      "sha256": "ed88783162991c151ab3d537d4eb7d3546b3688339a06db6f35b7f2ef7c48d4b"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\slots\\person_stage1_velocity_seed004.json",
+      "bytes": 54283,
+      "sha256": "77d22a38c34ffae598063fd14d5520824d20c7ac9194f691ab051d26b6967291"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage1_velocity_seed004\\bag_integrity.json",
+      "bytes": 4981,
+      "sha256": "10b98d48f6469f612b97876091d73ea2cdb15158be0ffc9834ea70a01a22af65"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage1_velocity_seed004\\recording_closure.json",
+      "bytes": 27252,
+      "sha256": "c865a2fa5e059a4a21cfba1a879658eebb4fc90cc32298d0c11baff8e2a7e0e1"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage1_velocity_seed004\\configuration\\runtime_parameters.yaml",
+      "bytes": 4616,
+      "sha256": "8937ee52a801d5352e2f7bc54dd56d054dc2cda66ea2b9cb26ba6743ec3d6bb2"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage1_velocity_seed004\\rosbag\\metadata.yaml",
+      "bytes": 16893,
+      "sha256": "fbcb4b8fa4a9c6d35b28ca6a0ff3b4254cbd25b2eb61e8b06bdaba943c604640"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\diagnostics\\humble54_timing_capability_probe01\\probe.py",
+      "bytes": 40007,
+      "sha256": "c7d0050cab71ce6a340c7fc5647531e92334029c8dc38b14393d2dc0058ae426"
+    },
+    {
+      "path": "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_fullplan_v4_humble54\\scripts\\evaluate_stage1_flight.py",
+      "bytes": 65122,
+      "sha256": "655cf6fc7c0cc2a954db7d06d2fbb00a000f2fca80ba0930d153025e28efb7c1"
+    },
+    {
+      "path": "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_fullplan_v4_humble54\\ros2_ws\\src\\uav_tracking_nodes\\uav_tracking_nodes\\detector_node.py",
+      "bytes": 56810,
+      "sha256": "2316a7f331afec55844da65f6d6b4bb76de551e1bad262bd26ad3728a4636510"
+    },
+    {
+      "path": "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_fullplan_v4_humble54\\ros2_ws\\src\\uav_tracking_nodes\\uav_tracking_nodes\\state_estimator_node.py",
+      "bytes": 60365,
+      "sha256": "696184b13ebb21307f1091171f15f5f628e6b46b101c692f1dcacea77861fbd0"
+    },
+    {
+      "path": "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_fullplan_v4_humble54\\ros2_ws\\src\\uav_tracking_nodes\\uav_tracking_nodes\\controller_node.py",
+      "bytes": 15149,
+      "sha256": "fa37a4de445896f8fd08b0bfa2c99a200623c39d98427ccedfe16cc9c6361959"
+    },
+    {
+      "path": "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_fullplan_v4_humble54\\ros2_ws\\src\\uav_tracking_nodes\\uav_tracking_nodes\\inference_worker.py",
+      "bytes": 2165,
+      "sha256": "d75643c2b902ec815abbca789a8547eb935ecacf37586fa08e0972933122e39d"
+    },
+    {
+      "path": "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_fullplan_v4_humble54\\ros2_ws\\src\\uav_tracking_nodes\\uav_tracking_nodes\\navigation_estimator.py",
+      "bytes": 10690,
+      "sha256": "8d1abef9fe9d623f4cd43b0874e7c7843238a79920f198b17942d6cc8ebe2114"
+    },
+    {
+      "path": "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_fullplan_v4_humble54\\ros2_ws\\src\\uav_tracking_px4_adapter\\uav_tracking_px4_adapter\\adapter_node.py",
+      "bytes": 26477,
+      "sha256": "5de4d83c8b780bbcf4b6bcadfc76e3ba5b9dc3fe344c6f92cc5c7c2c16c31622"
+    },
+    {
+      "path": "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_fullplan_v4_humble54\\ros2_ws\\src\\uav_tracking_interfaces\\msg\\TrackingCommand.msg",
+      "bytes": 369,
+      "sha256": "f7156a45aae6000ef70178eb46d27f2830d98c3369b1114961bceef63c04f172"
+    }
+  ]
+}

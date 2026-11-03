@@ -1,0 +1,43 @@
+{
+  "status": "DESCRIBE_ONLY_NO_INPUTS_OPENED",
+  "execution_triggered": false,
+  "roles": [
+    "detector",
+    "estimator",
+    "controller",
+    "adapter"
+  ],
+  "scope": "Candidate software timing of actual original detector/navigation/controller/adapter only",
+  "required_manifest_fields": [
+    "schema_version",
+    "namespace",
+    "source_root",
+    "original_plan",
+    "recording_terminal",
+    "model",
+    "parameters",
+    "bag_uri",
+    "storage_id",
+    "bag_files",
+    "scratch_root",
+    "inputs",
+    "edges",
+    "remaps",
+    "replay_rate",
+    "record_limit",
+    "probe"
+  ],
+  "allowed_input_types": {
+    "rgb": "sensor_msgs/msg/Image",
+    "depth": "sensor_msgs/msg/Image",
+    "camera_info": "sensor_msgs/msg/CameraInfo",
+    "tf": "tf2_msgs/msg/TFMessage",
+    "tf_static": "tf2_msgs/msg/TFMessage",
+    "clock": "rosgraph_msgs/msg/Clock",
+    "vehicle_odometry": "px4_msgs/msg/VehicleOdometry",
+    "phase": "std_msgs/msg/String",
+    "selection": "uav_tracking_interfaces/msg/TargetSelection"
+  },
+  "default_reads_bag_or_model": false,
+  "physical_e2e": "NOT_OBSERVED"
+}

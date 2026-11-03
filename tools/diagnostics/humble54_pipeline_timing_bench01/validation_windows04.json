@@ -1,0 +1,73 @@
+{
+  "created_utc": "2026-11-03T11:08:52.271398+00:00",
+  "status": "PASS_FAKE_AND_STRUCTURE_ONLY",
+  "tests": 20,
+  "native_run": false,
+  "ros_imported": false,
+  "bag_payloads_read": false,
+  "weights_read": false,
+  "commands": [
+    {
+      "command": [
+        "C:\\Program Files\\Python312\\python.exe",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools\\diagnostics\\humble54_pipeline_timing_bench01",
+        "-p",
+        "test_bench.py",
+        "-v"
+      ],
+      "returncode": 0,
+      "wall_s": 0.8279999999795109,
+      "output": "test_windows04.log",
+      "sha256": "4df6253e66804f389939001a0da8575e85392b67387971cd49edd6183cd76d92"
+    },
+    {
+      "command": [
+        "C:\\Program Files\\Python312\\python.exe",
+        "-B",
+        "tools\\diagnostics\\humble54_pipeline_timing_bench01\\bench.py"
+      ],
+      "returncode": 0,
+      "wall_s": 0.18700000003445894,
+      "output": "describe_windows04.json",
+      "sha256": "36f69d32d4422f97762791c5a272b96bfc430df00bcbeadd6039379537127ebd"
+    }
+  ],
+  "manifest_shape": "PASS",
+  "unicode_path_check": {
+    "original_plan": {
+      "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/plan.json",
+      "question_mark_count": 0
+    },
+    "recording_terminal": {
+      "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/person_stage1_velocity_seed004.json",
+      "question_mark_count": 0
+    },
+    "probe": {
+      "path": "/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_timing_capability_probe01/probe.py",
+      "question_mark_count": 0
+    }
+  },
+  "linux_path_existence": "NOT_OBSERVED",
+  "ast_parse": "5 Python files PASS",
+  "not_proven": [
+    "Native Humble message compatibility",
+    "Actual original YOLO pipeline replay",
+    "Candidate software timing performance",
+    "Physical E2E",
+    "Original strict provenance unchanged"
+  ],
+  "sources": {
+    "bench.py": "69bf179f23b8e77fd443696ea24989286e0af72a17faccab223016805f33dd02",
+    "observer.py": "8b447fd441790add9751571406ea50e7499b68de80b248e57d470de89a0b7417",
+    "reducer.py": "628271811d1454b1521586cbe332d4d3636f24434ce783fb8f437a51edcb1351",
+    "typed_message.py": "cf602133ba3f5aab5053e5dc79f7d57465eaf02b55dc504fac48c212ecae7fb3",
+    "test_bench.py": "080ef365ca468a4ff1eb3ff95b37360742ddeb805c692c04fa6ac4518d6550f6",
+    "README.md": "41de44bcc62e2b9365e27062477f31aa43d20a1399e418d634826cfef4678ca6",
+    "person004_short01.manifest.json": "50eb91cfc5ad324715f54892316396bbe38a71a9ecc133fbab592bcb70f35ddf"
+  }
+}
