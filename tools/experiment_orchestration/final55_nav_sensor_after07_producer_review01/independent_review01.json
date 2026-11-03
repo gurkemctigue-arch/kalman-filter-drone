@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "status": "PASS_WINDOWS_SOURCE_AND_SYNTHETIC_REVIEW_NOT_NATIVE_EXECUTION",
+  "created_utc": "2026-11-03T11:15:35.248899+00:00",
+  "reviewer": "/root/continuation06_preparation",
+  "producer_sha256": "e1c439d51a5ae6569ae7efe34b3eb899228977a2fbf27d9d1f3bf2aa88bd3f75",
+  "prepared_sources": {
+    "producer.py": "e1c439d51a5ae6569ae7efe34b3eb899228977a2fbf27d9d1f3bf2aa88bd3f75",
+    "test_producer.py": "4adf742e355bbef37f12cc41b1861e1d93febc6f0698eb59c770b0401d0db17b",
+    "README.md": "067926d815b778baae531ec8a366b68854fee18aeaf79d7de781e24d72df0de2",
+    "CALL_CARD.md": "cad59a1333487f94af45c22c836ace213ce4159ac0bcc692a412bfaef572ee22"
+  },
+  "unchanged_original_source_hashes": {
+    "scripts/build_reliability_v4_probe_gate.py": "fa7d150a0e68b4678d0727139e206e20a629971d7bfeae0882d0f804381185ae",
+    "scripts/run_reliability_v4.py": "32c4cd091a6aa09a56135b4f7d69dd4f70e8e693f1d76878aa61f5a72f45182d",
+    "scripts/evaluate_navigation_reference.py": "b49984d495ec7b12e623e961f3d606958aaef682ddfbc636f9c21ed2d52abcb4",
+    "tools/offline_evaluation/sensor_input_interruption_v1/evidence.py": "aca8932895eb44361265347164f5cd62fe427ccb61907c5844309162b33a7ffc",
+    "tools/staging/final55_offline_overlay_20261103/stage.py": "25a88f5ba369c918c5d891828b5e2434c61f75f33eb5485749f1ec0fda632268",
+    "tools/diagnostics/humble54_dropout_gap01/extract_short_window.py": "364156694a5db1777b7b3615614ae32b5cc128a7f8bbc09e213e1a168854fbf4"
+  },
+  "all_reviewed_source_unchanged": true,
+  "author_tests_independently_run": {
+    "tests_run": 14,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "output": "test_adopted_reaper_never_consumes_direct_popen_status (independent_after07_producer_tests.ProducerTests.test_adopted_reaper_never_consumes_direct_popen_status) ... ok\ntest_cleanup_final_scan_fault_keeps_actual_direct_exit_and_blocks_success (independent_after07_producer_tests.ProducerTests.test_cleanup_final_scan_fault_keeps_actual_direct_exit_and_blocks_success) ... ok\ntest_conflicting_sidecar_stops_before_any_child_no_overwrite (independent_after07_producer_tests.ProducerTests.test_conflicting_sidecar_stops_before_any_child_no_overwrite) ... ok\ntest_exact_nav28_serial_execution_schema_and_original_validator_both_modes (independent_after07_producer_tests.ProducerTests.test_exact_nav28_serial_execution_schema_and_original_validator_both_modes) ... ok\ntest_explicit_execution_rejects_windows_before_any_import_or_input (independent_after07_producer_tests.ProducerTests.test_explicit_execution_rejects_windows_before_any_import_or_input) ... ok\ntest_failed_evaluator_keeps_real_exit_partial_report_and_never_retries (independent_after07_producer_tests.ProducerTests.test_failed_evaluator_keeps_real_exit_partial_report_and_never_retries) ... ok\ntest_incomplete_sensor_report_is_retained_and_runner_never_called (independent_after07_producer_tests.ProducerTests.test_incomplete_sensor_report_is_retained_and_runner_never_called) ... ok\ntest_inert_default_and_unexecuted_subcommand_read_no_inputs_or_helpers (independent_after07_producer_tests.ProducerTests.test_inert_default_and_unexecuted_subcommand_read_no_inputs_or_helpers) ... ok\ntest_input_mutation_stops_remaining_slots_and_original_source_output_is_refused (independent_after07_producer_tests.ProducerTests.test_input_mutation_stops_remaining_slots_and_original_source_output_is_refused) ... ok\ntest_metadata_acquisition_fault_still_cleans_and_waits_same_child_preserving_failure (independent_after07_producer_tests.ProducerTests.test_metadata_acquisition_fault_still_cleans_and_waits_same_child_preserving_failure) ... ok\ntest_native_execute_also_requires_exact_reviewed_producer_sha_before_helper (independent_after07_producer_tests.ProducerTests.test_native_execute_also_requires_exact_reviewed_producer_sha_before_helper) ... ok\ntest_original_validator_rejection_retains_complete_candidate_but_terminal_error (independent_after07_producer_tests.ProducerTests.test_original_validator_rejection_retains_complete_candidate_but_terminal_error) ... ok\ntest_sensor_substitute_contract_refused_before_import_or_output (independent_after07_producer_tests.ProducerTests.test_sensor_substitute_contract_refused_before_import_or_output) ... ok\ntest_sensor_uses_exact_bound_module_contract_and_original_api_preserves_fail_null (independent_after07_producer_tests.ProducerTests.test_sensor_uses_exact_bound_module_contract_and_original_api_preserves_fail_null) ... ok\n\n----------------------------------------------------------------------\nRan 14 tests in 3.104s\n\nOK\n"
+  },
+  "independent_cases": [
+    {
+      "case": "bool_exit",
+      "result": "STOPPED_WITHOUT_RETRY_OR_COMPLETION"
+    },
+    {
+      "case": "changed_argv",
+      "result": "STOPPED_WITHOUT_RETRY_OR_COMPLETION"
+    },
+    {
+      "case": "missing_report",
+      "result": "STOPPED_WITHOUT_RETRY_OR_COMPLETION"
+    },
+    {
+      "case": "sensor_runner_rejects",
+      "result": "RAW_API_FAIL_NULL_RETAINED_NO_COMPLETION"
+    },
+    {
+      "case": "cached_validator_wrong_root",
+      "result": "REFUSED_BEFORE_MODULE_EXECUTION"
+    },
+    {
+      "case": "nonzero_direct_exit",
+      "result": "EXACT_INTEGER_EXIT_RETAINED_SAME_HANDLE_CLEANED"
+    }
+  ],
+  "source_review": {
+    "actual_apis": "context loads the target's actual cold final55 builder and its runner; fixed source pins and original target_snapshot revalidate source/protocol. Function names and signatures match the original APIs inspected.",
+    "navigation": "navigation_registration_inputs reconstructs all 28 original registered commands and report paths. Each exact argv is invoked once serially with its original evaluation_timeout_s; actual integer exit, UTC, closed log SHA and owned-child cleanup retained. Any failure stops remaining slots without retry.",
+    "no_overwrite": "Receipt root must be new, canonical and external to final/original source and original evidence roots. Each registered new report plus all three sidecars is checked absent immediately before its one invocation; logs and receipts use exclusive creation.",
+    "final_manifest": "Completion uses exact original all28 schema. Original read_navigation_reevaluation_manifest is called last and rechecks all 28 report/terminal/source/helper/physical identity/command/chronology/numeric structures before returning the core12 or extension16 subset. Validator rejection retains candidate files with ERROR.",
+    "sensor": "Exact target descriptor contract/module feed evaluate_development_manifest. Its actual output is saved verbatim before original runner read_sensor_input_evidence_manifest independently recomputes and binds all four cells. Raw FAIL/null/INCOMPLETE/NOT_APPLICABLE remain; no extraction, image observation, review or PASS manufactured.",
+    "process_cleanup": "Existing original SITL lock and native idle guard wrap execution. Native subreaper is required; only owned start_new_session process groups receive TERM10/KILL5. Direct Popen exit status is never consumed by adopted-descendant reaping, and the same handle is waited even after metadata acquisition failure. Cleanup faults prevent success.",
+    "boundaries": "No new threshold, timeout extension, flight, owner, trigger, retry, readiness or formal admission. Future final55 target/registration/contract artifacts are not synthesized during preparation."
+  },
+  "blocking_findings": [],
+  "execution_conclusion": "SOURCE_PREPARATION_REVIEW_PASS_ONLY; ACTUAL_FINAL55_COLD_TARGET_AND_REGISTERED_INPUTS_AND_NATIVE_IDLE_LOCK_STILL_REQUIRED",
+  "actual_navigation_evaluator_executions": 0,
+  "actual_sensor_api_executions": 0,
+  "image_reviews_created": 0,
+  "real_bag_or_model_payload_reads": 0,
+  "native_wsl_launches": 0,
+  "author_or_original_source_changes": 0,
+  "formal_admission": false,
+  "remaining_actual_checks": [
+    "Collector position and all native children must actually finish",
+    "Positive actual measurement/budget and real final55 staging/cold build",
+    "Actual target/prospective registration/contract/manifest canonical SHA bindings",
+    "28 actual evaluator integer exits with original reports/sidecars preserved",
+    "Actual original full28 and sensor4 validators, with all evidence insufficiency and algorithm failures retained",
+    "Actual native child-group cleanup and residual inspection"
+  ],
+  "small_inputs_read": [
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\experiment_orchestration\\final55_nav_sensor_after07_producer01\\prepared_validation01.json",
+      "bytes": 2500,
+      "sha256": "0cb7fa30e6fa74b14e7dbf6872279abd61601f1726bd656bb9b7c7aa16a99b70"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\experiment_orchestration\\final55_nav_sensor_after07_producer01\\producer.py",
+      "bytes": 22493,
+      "sha256": "e1c439d51a5ae6569ae7efe34b3eb899228977a2fbf27d9d1f3bf2aa88bd3f75"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\experiment_orchestration\\final55_nav_sensor_after07_producer01\\test_producer.py",
+      "bytes": 20315,
+      "sha256": "4adf742e355bbef37f12cc41b1861e1d93febc6f0698eb59c770b0401d0db17b"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\experiment_orchestration\\final55_nav_sensor_after07_producer01\\README.md",
+      "bytes": 4337,
+      "sha256": "067926d815b778baae531ec8a366b68854fee18aeaf79d7de781e24d72df0de2"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\experiment_orchestration\\final55_nav_sensor_after07_producer01\\CALL_CARD.md",
+      "bytes": 13330,
+      "sha256": "cad59a1333487f94af45c22c836ace213ce4159ac0bcc692a412bfaef572ee22"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\scripts\\build_reliability_v4_probe_gate.py",
+      "bytes": 41607,
+      "sha256": "fa7d150a0e68b4678d0727139e206e20a629971d7bfeae0882d0f804381185ae"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\scripts\\run_reliability_v4.py",
+      "bytes": 188147,
+      "sha256": "32c4cd091a6aa09a56135b4f7d69dd4f70e8e693f1d76878aa61f5a72f45182d"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\scripts\\evaluate_navigation_reference.py",
+      "bytes": 38185,
+      "sha256": "b49984d495ec7b12e623e961f3d606958aaef682ddfbc636f9c21ed2d52abcb4"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\offline_evaluation\\sensor_input_interruption_v1\\evidence.py",
+      "bytes": 37420,
+      "sha256": "aca8932895eb44361265347164f5cd62fe427ccb61907c5844309162b33a7ffc"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\staging\\final55_offline_overlay_20261103\\stage.py",
+      "bytes": 32413,
+      "sha256": "25a88f5ba369c918c5d891828b5e2434c61f75f33eb5485749f1ec0fda632268"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\diagnostics\\humble54_dropout_gap01\\extract_short_window.py",
+      "bytes": 19201,
+      "sha256": "364156694a5db1777b7b3615614ae32b5cc128a7f8bbc09e213e1a168854fbf4"
+    }
+  ]
+}

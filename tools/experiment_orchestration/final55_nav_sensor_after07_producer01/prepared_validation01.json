@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "kind": "WINDOWS_SYNTHETIC_PREPARATION_NOT_NATIVE_EXECUTION_OR_READINESS",
+  "created_utc": "2026-11-03T11:10:01.088542+00:00",
+  "status": "PREPARED_14_SYNTHETIC_TESTS_PASS_PENDING_INDEPENDENT_REVIEW",
+  "prepared_sources": {
+    "producer.py": "e1c439d51a5ae6569ae7efe34b3eb899228977a2fbf27d9d1f3bf2aa88bd3f75",
+    "test_producer.py": "4adf742e355bbef37f12cc41b1861e1d93febc6f0698eb59c770b0401d0db17b",
+    "README.md": "067926d815b778baae531ec8a366b68854fee18aeaf79d7de781e24d72df0de2",
+    "CALL_CARD.md": "cad59a1333487f94af45c22c836ace213ce4159ac0bcc692a412bfaef572ee22"
+  },
+  "unchanged_original_source_hashes": {
+    "scripts/build_reliability_v4_probe_gate.py": "fa7d150a0e68b4678d0727139e206e20a629971d7bfeae0882d0f804381185ae",
+    "scripts/run_reliability_v4.py": "32c4cd091a6aa09a56135b4f7d69dd4f70e8e693f1d76878aa61f5a72f45182d",
+    "scripts/evaluate_navigation_reference.py": "b49984d495ec7b12e623e961f3d606958aaef682ddfbc636f9c21ed2d52abcb4",
+    "tools/offline_evaluation/sensor_input_interruption_v1/evidence.py": "aca8932895eb44361265347164f5cd62fe427ccb61907c5844309162b33a7ffc",
+    "tools/staging/final55_offline_overlay_20261103/stage.py": "25a88f5ba369c918c5d891828b5e2434c61f75f33eb5485749f1ec0fda632268",
+    "tools/diagnostics/humble54_dropout_gap01/extract_short_window.py": "364156694a5db1777b7b3615614ae32b5cc128a7f8bbc09e213e1a168854fbf4"
+  },
+  "tests": {
+    "command": [
+      "C:\\Program Files\\Python312\\python.exe",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tools/experiment_orchestration/final55_nav_sensor_after07_producer01",
+      "-p",
+      "test_producer.py",
+      "-v"
+    ],
+    "started_utc": "2026-11-03T11:09:57.164761+00:00",
+    "finished_utc": "2026-11-03T11:10:01.088542+00:00",
+    "returncode": 0,
+    "tests_run": 14,
+    "tests_pass": 14,
+    "log": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\experiment_orchestration\\final55_nav_sensor_after07_producer01\\prepared_tests01.log",
+    "log_sha256": "c64ad58aa675663497a1d003ccae5eb565dc661be4a214b42501a688f51c50d2"
+  },
+  "actual_native_navigation_executions": 0,
+  "actual_sensor_api_executions": 0,
+  "image_reviews_created": 0,
+  "future_registration_or_artifact_sha_created": false,
+  "wsl_ros_compression_bag_model_flight_gate_or_admission_executed": false,
+  "original_thresholds_timeouts_owner_trigger_retry_and_flight_source_unchanged": true
+}
