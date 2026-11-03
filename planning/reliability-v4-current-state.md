@@ -1,5 +1,7 @@
 # 当前工作交接（持续开发，非验收报告）
 
+**21:46:45更新：当前唯一原生重任务为无损压缩基准，session77204、线程15140，原输出 `D:/WSL/UAVHumble22-validation/humble54_lossless22_bench01`，未有终态。** 源9e76590a…、manifest3eac39e0…固定，先19再22，两源固定顺序，各候选900秒、宿主22GiB预留和内存门保持，未计压缩收益。汽车回放21:44:08已exit0回收，线程34172同线程释放；原summary SHA `abc06a7779f9dea0c748c93eb560ab36f26eb6497c72ad31dad77b90520d4975`、2726349B，三边747/4508/1854候选，1377 FOLLOW全链、477非FOLLOW，RGB681/927；原件在 `results/diagnostics/humble54_pipeline_timing_full_car01/`。viewer已重建6摘要/85数据检查，新HTML浏览器复验须等压缩完全退出。只读身份核查已保存4槽3014格2551正确/463未知/0已知错及汽车细分；原几何标签尚待独立可见性复核，不修改原UNKNOWN。正式0/280及153GiB空间阻断不变。
+
 **21:30:06更新：当前唯一原生重任务为完整汽车独立回放，session83906，线程34172持临时防休眠，输出 `/root/humble54_pipeline_bench02_full_car01`。** 新bench02源码清单SHA `ac5cdc19d91fcb25b467151088ea66967debc179152b25cb1857673db67b4e8c`；只归约器和索引helper变化，bench/observer/typed三者与07字节相同，原bench01保留。此前真实完整行人27项全字段复算相同，原件前后未变，收据SHA `941b94518bff74d53ee2316c60364868d84973430d9d9314fff9fc0d40b01d79`，session35081已exit0并释放线程46700防休眠。隔离stage消费候选 `c83cc666cdf8924f53033446c075d284eeccaafe5f9cbd95fb9253d8262f8e12` 已通过作者10项及独立43项检查，生产仍关闭、注册表空；真实正预算尚无。正式0/280与容量缺口不变。
 
 **21:15:35完整行人回放真实exit0，session25910已回收，线程36824同线程释放临时防休眠。** 原summary 2,729,724B，SHA `2975ba128d784bc6c2dc1d0aa55029035be5e3a4050cb54a3bc4d59133d77277`，副本在 `results/diagnostics/humble54_pipeline_timing_full_person01/`。五进程全0、全部组退出、无清理错误；50117输入，三DDS边752/4511/1857候选，FOLLOW全链1377/1857、非FOLLOW480保留；RGB有链680/928。当前无该回放后台任务；独立性能候选通过作者11项/131次输出差分和外部反例复核，尚需完整原trace实际复算，原fixed07/c7不动。阶段衔接候选仍默认禁用，容量缺152.82GiB、正式0/280。

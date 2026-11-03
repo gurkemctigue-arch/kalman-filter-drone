@@ -1,5 +1,7 @@
 # 查看当前实验
 
+**21:44:08完整汽车回放正常exit0，session83906已回收；21:46:45开始无损压缩19/22比较，session77204，当前仍运行。** 汽车三条DDS边747/4508/1854全部为受控候选，命令1377 FOLLOW全链、477非FOLLOW保留，RGB有链681/927。两类完整回放的原件已保存；[诊断页](../results/diagnostics/humble54_pipeline_timing_view01/index.html)包含6摘要、85项一致性检查，浏览器复验待压缩结束。4个多目标开发槽的[身份覆盖核查](../results/diagnostics/humble54_identity_coverage_readonly01/README.md)与[汽车原因补充](../results/diagnostics/humble54_identity_coverage_readonly01/car_detailed_review01.md)已完成，只读原评价，3014格中2551正确、463未知、0已知错，不等于最终身份准确率。正式仍0/280，压缩未证明任何可计入预算的收益。
+
 **21:30:06（北京时间）：完整汽车独立软件回放已实际启动，输出 `/root/humble54_pipeline_bench02_full_car01`，session83906；正式仍0/280。** 此前行人六路完整日志已实际复算，全部27个归约字段逐项相同、前后原件SHA不变，离线归约区域耗时55.484秒。新bench02只优化日志汇总，采集/插桩/消息类型与原版字节相同，25项Windows回归通过；bench01原代码保留。容量衔接候选已独审通过，但仍禁用、无真实正预算，D盘约153GiB缺口待解决。
 
 **2026-11-03 21:15:35（北京时间）：完整行人软件回放已正常exit0，原前台session25910回收，临时防休眠同线程释放。** 50,117条输入全部回放；三条DDS边752/4511/1857条均为受控候选匹配，1,857条命令中1,377条FOLLOW拥有完整软件链，480条非FOLLOW原样保留。928个收到的RGB中680个有候选链；候选命令时延中位数1.006秒、p95 1.158秒、最大5.524秒，仅为该插桩回放的候选子集。物理E2E未观测、正式0/280不变。详见[完整行人原件诊断](../results/diagnostics/humble54_pipeline_timing_full_person01/review01.json)。下一步串行验证汇总优化的全量一致性及完整汽车回放。

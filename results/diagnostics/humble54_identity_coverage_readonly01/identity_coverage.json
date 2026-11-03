@@ -1,0 +1,794 @@
+{
+  "created_utc": "2026-11-03T13:40:52.047243+00:00",
+  "scope": "READ_ONLY_COPY_AND_AGGREGATION_OF_EXISTING_CLOSED_DEVELOPMENT_IDENTITY_EVIDENCE_NOT_RESCORING",
+  "development_status_counts": {
+    "PASS": 23,
+    "FAIL": 4,
+    "INCOMPLETE_EVIDENCE": 1
+  },
+  "closed_development_cells": 28,
+  "cells_with_saved_designated_identity_summary": 4,
+  "cells_without_saved_designated_identity_summary": 24,
+  "missing_designated_identity_summary_is_not_24_identity_failures": true,
+  "multi_target_slots": [
+    {
+      "id": "car_stage2_crossing_seed004",
+      "original_status": "PASS",
+      "terminal": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/car_stage2_crossing_seed004.json",
+        "sha256": "29ed7dc726f9882395907abc25e58f99bc7bf905b8339bdb7cf56ed69c7300c8"
+      },
+      "evaluation_status": "RECORDED_WITH_EXPLICIT_UNKNOWN_INTERVALS",
+      "time_grid": {
+        "coverage_basis": "fixed_10hz_request_to_recorded_clock_end",
+        "sample_period_s": 0.1,
+        "interval": {
+          "start_s": 17.36,
+          "end_s": 92.76
+        },
+        "scheduled_samples": 754,
+        "correct": 640,
+        "wrong": 0,
+        "unknown": 114,
+        "known_coverage": 0.8488063660477454,
+        "retention_lower_bound": 0.8488063660477454,
+        "requested_task_count": 2,
+        "unconfirmed_requested_tasks": []
+      },
+      "diagnostic_frame_identity": {
+        "frames": 743,
+        "correct": 644,
+        "wrong": 0,
+        "unknown": 99,
+        "known_coverage": 0.8667563930013459,
+        "retention_lower_bound": 0.8667563930013459
+      },
+      "saved_parameters": {
+        "run_config": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage2_crossing_seed004/run_config.json",
+          "sha256": "72c24bb30be715e8eaf7fb6a7ff9c2b43e35462aa6e4454cd96353253e7d84b0"
+        },
+        "runtime_parameters": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage2_crossing_seed004/configuration/runtime_parameters.yaml",
+          "sha256": "7a1de23950c218832a7c15d7515cc1dc52378ccc9e642c1a89a0028f40b5d06f"
+        },
+        "arguments": {
+          "target_class": "car",
+          "stage": 2,
+          "seed": 4,
+          "gimbal_mode": "midpoint",
+          "target_mode": "locked_target",
+          "association_mode": "hybrid_3d",
+          "initial_select": "middle",
+          "initial_min_candidates": 3,
+          "scenario_kind": "crossing",
+          "condition": "clean",
+          "estimator_method": "adaptive_kf",
+          "duration": 75.0,
+          "max_inference_rate_hz": 10.0,
+          "occlusions": true,
+          "reselect_after_loss": true
+        }
+      },
+      "physical_report": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage2_crossing_seed004/physical_identity.json",
+        "sha256": "0c2d32eec9e5017852e8f079fa01914cfbb2e8a812b3fe3d2c6fa2e04d671d28",
+        "bytes_from_stat": 3066769,
+        "content_read_in_this_diagnostic": false
+      },
+      "time_grid_unknown_reason_counts": null,
+      "diagnostic_frame_unknown_reason_counts": null,
+      "state_phase_stratification": "NOT_AVAILABLE_IN_ORIGINAL_SMALL_SUMMARIES",
+      "diagnostic_frame_outcome_counts": {
+        "CORRECT": 644,
+        "WRONG_PHYSICAL_ACTOR": 0,
+        "NOT_OBSERVED": 73,
+        "UNKNOWN_GEOMETRY": 26,
+        "UNKNOWN_TASK_INITIAL_ID": 0
+      },
+      "diagnostic_frame_category_source": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/logs/car_stage2_crossing_seed004.physical_identity.log",
+      "time_grid_reason_limitation": "Not present in bound small terminal; >2 MiB physical report intentionally not read. Existing report can answer later without a new experiment."
+    },
+    {
+      "id": "car_stage3_multi_active_seed004",
+      "original_status": "PASS",
+      "terminal": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/car_stage3_multi_active_seed004.json",
+        "sha256": "f2d190881e4e3594a2eaf75d74a974bab800a3c8254c8b09ae89094c4ff08931"
+      },
+      "evaluation_status": "RECORDED_WITH_EXPLICIT_UNKNOWN_INTERVALS",
+      "time_grid": {
+        "coverage_basis": "fixed_10hz_request_to_recorded_clock_end",
+        "sample_period_s": 0.1,
+        "interval": {
+          "start_s": 18.74,
+          "end_s": 94.0
+        },
+        "scheduled_samples": 753,
+        "correct": 614,
+        "wrong": 0,
+        "unknown": 139,
+        "known_coverage": 0.8154050464807437,
+        "retention_lower_bound": 0.8154050464807437,
+        "requested_task_count": 2,
+        "unconfirmed_requested_tasks": []
+      },
+      "diagnostic_frame_identity": {
+        "frames": 714,
+        "correct": 619,
+        "wrong": 0,
+        "unknown": 95,
+        "known_coverage": 0.8669467787114846,
+        "retention_lower_bound": 0.8669467787114846
+      },
+      "saved_parameters": {
+        "run_config": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage3_multi_active_seed004/run_config.json",
+          "sha256": "1fd285c1db54f3c4b46db73c9746ba5c4ce55f911cce95837607725a09b5bc12"
+        },
+        "runtime_parameters": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage3_multi_active_seed004/configuration/runtime_parameters.yaml",
+          "sha256": "3b7a1519a49184f825c487ce25ad5ca091babb58f9aaae57c8e66d485b37c0f0"
+        },
+        "arguments": {
+          "target_class": "car",
+          "stage": 3,
+          "seed": 4,
+          "gimbal_mode": "active",
+          "target_mode": "locked_target",
+          "association_mode": "hybrid_3d",
+          "initial_select": "middle",
+          "initial_min_candidates": 3,
+          "scenario_kind": "crossing",
+          "condition": "clean",
+          "estimator_method": "adaptive_kf",
+          "duration": 75.0,
+          "max_inference_rate_hz": 10.0,
+          "occlusions": true,
+          "reselect_after_loss": true
+        }
+      },
+      "physical_report": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage3_multi_active_seed004/physical_identity.json",
+        "sha256": "58aab55dea538bf9120bddc6015e16ca237f3a241929877fc547900179692521",
+        "bytes_from_stat": 7660044,
+        "content_read_in_this_diagnostic": false
+      },
+      "time_grid_unknown_reason_counts": null,
+      "diagnostic_frame_unknown_reason_counts": null,
+      "state_phase_stratification": "NOT_AVAILABLE_IN_ORIGINAL_SMALL_SUMMARIES",
+      "diagnostic_frame_outcome_counts": {
+        "CORRECT": 619,
+        "WRONG_PHYSICAL_ACTOR": 0,
+        "NOT_OBSERVED": 70,
+        "UNKNOWN_GEOMETRY": 25,
+        "UNKNOWN_TASK_INITIAL_ID": 0
+      },
+      "diagnostic_frame_category_source": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/logs/car_stage3_multi_active_seed004.physical_identity.log",
+      "time_grid_reason_limitation": "Not present in bound small terminal; >2 MiB physical report intentionally not read. Existing report can answer later without a new experiment."
+    },
+    {
+      "id": "person_stage2_crossing_seed004",
+      "original_status": "PASS",
+      "terminal": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/person_stage2_crossing_seed004.json",
+        "sha256": "992fe8eb0fe57740f338be22af827e7bf2e7468cf1e01cf69c7b334679ba5bb3"
+      },
+      "evaluation_status": "RECORDED_WITH_EXPLICIT_UNKNOWN_INTERVALS",
+      "time_grid": {
+        "coverage_basis": "fixed_10hz_request_to_recorded_clock_end",
+        "sample_period_s": 0.1,
+        "interval": {
+          "start_s": 17.76,
+          "end_s": 93.02
+        },
+        "scheduled_samples": 753,
+        "correct": 649,
+        "wrong": 0,
+        "unknown": 104,
+        "known_coverage": 0.8618857901726428,
+        "retention_lower_bound": 0.8618857901726428,
+        "requested_task_count": 2,
+        "unconfirmed_requested_tasks": []
+      },
+      "diagnostic_frame_identity": {
+        "frames": 752,
+        "correct": 651,
+        "wrong": 0,
+        "unknown": 101,
+        "known_coverage": 0.8656914893617021,
+        "retention_lower_bound": 0.8656914893617021
+      },
+      "saved_parameters": {
+        "run_config": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage2_crossing_seed004/run_config.json",
+          "sha256": "0827f488ab5739ecc4ce1a3abe5713fad28e5140984c71f03d61e3dd06f9ff63"
+        },
+        "runtime_parameters": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage2_crossing_seed004/configuration/runtime_parameters.yaml",
+          "sha256": "238f651e2ae343de7cb83f12bb5b20dcd8196a039e9c1ac988e51df59bf7b98a"
+        },
+        "arguments": {
+          "target_class": "person",
+          "stage": 2,
+          "seed": 4,
+          "gimbal_mode": "midpoint",
+          "target_mode": "locked_target",
+          "association_mode": "hybrid_3d",
+          "initial_select": "middle",
+          "initial_min_candidates": 3,
+          "scenario_kind": "crossing",
+          "condition": "clean",
+          "estimator_method": "adaptive_kf",
+          "duration": 75.0,
+          "max_inference_rate_hz": 10.0,
+          "occlusions": true,
+          "reselect_after_loss": true
+        }
+      },
+      "physical_report": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage2_crossing_seed004/physical_identity.json",
+        "sha256": "63ea880d3ae0a16cb63a87dcb1ee15560db777daa3404666a9c5e3642e1fe6e8",
+        "bytes_from_stat": 1663576,
+        "content_read_in_this_diagnostic": true
+      },
+      "time_grid_unknown_reason_counts": {
+        "request_not_yet_confirmed": 1,
+        "unknown_identity_evidence_in_time_cell": 101,
+        "task_boundary_within_time_cell": 1,
+        "no_identity_evidence_in_time_cell": 1
+      },
+      "diagnostic_frame_unknown_reason_counts": {
+        "known_or_unresolved_external_occlusion": 30,
+        "no_fresh_selected_detection": 71
+      },
+      "state_phase_stratification": "NOT_AVAILABLE_IN_ORIGINAL_SMALL_SUMMARIES",
+      "time_grid_semantics": "Fixed 0.1 s cells anchored at the first explicit REQUEST, ending at the last recorded /clock (final partial cell retained). Each cell belongs to the task active at its start; all REQUESTs are registered even without a snapshot or CONFIRMED event. Before confirmation, after CLEAR/RESET, at a task boundary, or without fresh independent identity evidence the cell is UNKNOWN. No cross-cell interpolation/forward fill. Any known wrong match in the cell takes precedence; otherwise all identity evidence must be known and correct for CORRECT. This measures conservative recorded evidence coverage, not continuous physical identity certainty. Legacy diagnostic-frame metrics remain separate.",
+      "diagnostic_frame_outcome_counts": {
+        "CORRECT": 651,
+        "WRONG_PHYSICAL_ACTOR": 0,
+        "NOT_OBSERVED": 71,
+        "UNKNOWN_GEOMETRY": 30,
+        "UNKNOWN_TASK_INITIAL_ID": 0
+      },
+      "camera_geometry_status_counts": {
+        "FIXED_MOUNT": 928
+      }
+    },
+    {
+      "id": "person_stage3_multi_active_seed004",
+      "original_status": "PASS",
+      "terminal": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/person_stage3_multi_active_seed004.json",
+        "sha256": "42de6664d65f530f261d1ed337e0eaa645a679117324c5b73b2bbbd7712e2d71"
+      },
+      "evaluation_status": "RECORDED_WITH_EXPLICIT_UNKNOWN_INTERVALS",
+      "time_grid": {
+        "coverage_basis": "fixed_10hz_request_to_recorded_clock_end",
+        "sample_period_s": 0.1,
+        "interval": {
+          "start_s": 17.06,
+          "end_s": 92.388
+        },
+        "scheduled_samples": 754,
+        "correct": 648,
+        "wrong": 0,
+        "unknown": 106,
+        "known_coverage": 0.8594164456233422,
+        "retention_lower_bound": 0.8594164456233422,
+        "requested_task_count": 2,
+        "unconfirmed_requested_tasks": []
+      },
+      "diagnostic_frame_identity": {
+        "frames": 753,
+        "correct": 650,
+        "wrong": 0,
+        "unknown": 103,
+        "known_coverage": 0.8632138114209827,
+        "retention_lower_bound": 0.8632138114209827
+      },
+      "saved_parameters": {
+        "run_config": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004/run_config.json",
+          "sha256": "cca4ba2985a1098afc33be88176cdedb75e8f4ff9cd6efe1d05e6e885d9b2b70"
+        },
+        "runtime_parameters": {
+          "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004/configuration/runtime_parameters.yaml",
+          "sha256": "376c16e21edb7d008cc71c7ed009f8bac07a9ab7d0ec35200916bdbe4020cb2e"
+        },
+        "arguments": {
+          "target_class": "person",
+          "stage": 3,
+          "seed": 4,
+          "gimbal_mode": "active",
+          "target_mode": "locked_target",
+          "association_mode": "hybrid_3d",
+          "initial_select": "middle",
+          "initial_min_candidates": 3,
+          "scenario_kind": "crossing",
+          "condition": "clean",
+          "estimator_method": "adaptive_kf",
+          "duration": 75.0,
+          "max_inference_rate_hz": 10.0,
+          "occlusions": true,
+          "reselect_after_loss": true
+        }
+      },
+      "physical_report": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004/physical_identity.json",
+        "sha256": "8500c12c1a8c3b3f736cacfe88dd134fac1ce0692e6536b5a14072a83634b7da",
+        "bytes_from_stat": 1692013,
+        "content_read_in_this_diagnostic": true
+      },
+      "time_grid_unknown_reason_counts": {
+        "request_not_yet_confirmed": 1,
+        "unknown_identity_evidence_in_time_cell": 103,
+        "task_boundary_within_time_cell": 1,
+        "no_identity_evidence_in_time_cell": 1
+      },
+      "diagnostic_frame_unknown_reason_counts": {
+        "known_or_unresolved_external_occlusion": 31,
+        "no_fresh_selected_detection": 71,
+        "multiple_feasible_physical_ids": 1
+      },
+      "state_phase_stratification": "NOT_AVAILABLE_IN_ORIGINAL_SMALL_SUMMARIES",
+      "time_grid_semantics": "Fixed 0.1 s cells anchored at the first explicit REQUEST, ending at the last recorded /clock (final partial cell retained). Each cell belongs to the task active at its start; all REQUESTs are registered even without a snapshot or CONFIRMED event. Before confirmation, after CLEAR/RESET, at a task boundary, or without fresh independent identity evidence the cell is UNKNOWN. No cross-cell interpolation/forward fill. Any known wrong match in the cell takes precedence; otherwise all identity evidence must be known and correct for CORRECT. This measures conservative recorded evidence coverage, not continuous physical identity certainty. Legacy diagnostic-frame metrics remain separate.",
+      "diagnostic_frame_outcome_counts": {
+        "CORRECT": 650,
+        "WRONG_PHYSICAL_ACTOR": 0,
+        "NOT_OBSERVED": 71,
+        "UNKNOWN_GEOMETRY": 32,
+        "UNKNOWN_TASK_INITIAL_ID": 0
+      },
+      "camera_geometry_status_counts": {
+        "KNOWN": 922
+      }
+    }
+  ],
+  "descriptive_pooled_time_grid_counts": {
+    "scheduled_samples": 3014,
+    "correct": 2551,
+    "wrong": 0,
+    "unknown": 463
+  },
+  "pooled_counts_are_not_independent_trials_or_formal_success_rate": true,
+  "time_grid_basis": "Fixed 0.1 s cells from first explicit REQUEST to last recorded /clock, final partial cell retained. No FOLLOW-only selection. Pre-confirmation, CLEAR/RESET, task boundaries and missing independent evidence remain UNKNOWN.",
+  "takeoff_and_phase_boundary": "Recording before first REQUEST is outside this specific denominator. Any takeoff/non-FOLLOW/loss/hover/reselection time after REQUEST stays inside. Original small summaries do not split grid outcomes by flight phase; no phase counts are inferred.",
+  "zero_known_wrong_boundary": "Zero observed wrong labels does not prove zero true identity switches or no wrong target during UNKNOWN cells. Stable UUID and engineering PASS do not certify physical identity.",
+  "existing_data_can_answer_without_new_experiment": [
+    "Car exact per-time-cell unknown reasons may be extracted from the existing larger physical_identity reports in a separately bounded read; not needed to rerun simulations.",
+    "Visible-label review may annotate existing images/video when independent visibility evidence exists; absence of evidence cannot be filled by UUID/nearest actor/highest IoU.",
+    "Any new secondary analysis must preserve original FAIL/UNKNOWN and create a separately named report with its own protocol."
+  ],
+  "requires_new_formal_batch": [
+    "Generalized designated-identity coverage, wrong-target risk and comparison between midpoint/active gimbal across repeated independent seeds and failure cases.",
+    "Estimator baseline/adaptive-KF causal performance claims under paired identical scenes, seeds and control parameters.",
+    "Evidence removed or never recorded: only additional independent recording/labels can close it; a new experiment cannot retroactively prove old UNKNOWN cells.",
+    "Confidence intervals and formal admission across the planned 280 slots; these four seed004 development runs do not supply that evidence."
+  ],
+  "does_not_conflate_with_dds_latency_unknown": true,
+  "formal_progress": "0/280_UNCHANGED",
+  "native_started": false,
+  "bag_model_large_trace_reads": false,
+  "large_physical_report_content_reads": false,
+  "source_binding": {
+    "path": "tools/diagnostics/humble54_identity_coverage_readonly01/summarize.py",
+    "sha256": "477cac54e77fa20af0d1eaca23ddf148c600f2daeeabae1c871ec3bf10273a3d"
+  },
+  "small_inputs": [
+    {
+      "path": "results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/summary.json",
+      "bytes": 244845,
+      "sha256": "cac0d6bf42920dce4e59b9bb490e3bacc96cd8aaf57d4b50fc5b9b27dc459403",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_core12_probe01_car_stage1_position_seed004.json",
+      "bytes": 17010,
+      "sha256": "85f243696d7ad23abb175917f450d604af9c0535f9f10d8beccb2f2c48c7369d",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/car_stage1_position_seed004.json",
+      "bytes": 54323,
+      "sha256": "a487aed8799c214edf0e3ea1b7f4d05679537760ba643087d0fea879a49abbd1",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_core12_probe01_car_stage1_velocity_seed004.json",
+      "bytes": 17009,
+      "sha256": "63da85610817da5351dbd43aebc75fc98a6260c5416853b856093bca16a24adc",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/car_stage1_velocity_seed004.json",
+      "bytes": 54346,
+      "sha256": "81aa5f0e41c99d7cd6f603fb2d52345fed11e5030a8e9fab856ccfd56da226c9",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_core12_probe01_car_stage2_crossing_seed004.json",
+      "bytes": 17721,
+      "sha256": "ea183b6c1610dd57c13e8f7ad4c99c33bcb28df3ff508bec7eca9ac38c9da1ab",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/car_stage2_crossing_seed004.json",
+      "bytes": 64042,
+      "sha256": "29ed7dc726f9882395907abc25e58f99bc7bf905b8339bdb7cf56ed69c7300c8",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage2_crossing_seed004/run_config.json",
+      "bytes": 4460,
+      "sha256": "72c24bb30be715e8eaf7fb6a7ff9c2b43e35462aa6e4454cd96353253e7d84b0",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage2_crossing_seed004/configuration/runtime_parameters.yaml",
+      "bytes": 4845,
+      "sha256": "7a1de23950c218832a7c15d7515cc1dc52378ccc9e642c1a89a0028f40b5d06f",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/logs/car_stage2_crossing_seed004.physical_identity.log",
+      "bytes": 843,
+      "sha256": "fe033c34d8c0349b08cc17410e6497dba90f7071b90dc7cd6efde58d0d872686",
+      "matches_original_binding": null
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_core12_probe01_car_stage3_active_seed004.json",
+      "bytes": 17285,
+      "sha256": "1f6efda30f076b1bfcbf8f1c4d5c6940bba97b2dfe2e9a906346c4fe1d5bccfb",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/car_stage3_active_seed004.json",
+      "bytes": 58209,
+      "sha256": "ae2711d00dfa30a18bba12b695a6f708b779b6e9ebb12dca595cc8160f9d7cfa",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_core12_probe01_car_stage3_midpoint_seed004.json",
+      "bytes": 17318,
+      "sha256": "3d2a0bb7c802393063b58ec0dc574d1878eba785909eaa9ca61e29262892b440",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/car_stage3_midpoint_seed004.json",
+      "bytes": 58319,
+      "sha256": "122e8040625c5df83c0baa39d78ba982ce4732b8a64a772cb3a61697f329b808",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_core12_probe01_car_stage3_multi_active_seed004.json",
+      "bytes": 18165,
+      "sha256": "06283d55f6e630c653c03a446ecaf4fccaa05aaf69d34684f9b9519fb73ebee6",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/car_stage3_multi_active_seed004.json",
+      "bytes": 68557,
+      "sha256": "f2d190881e4e3594a2eaf75d74a974bab800a3c8254c8b09ae89094c4ff08931",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage3_multi_active_seed004/run_config.json",
+      "bytes": 4461,
+      "sha256": "1fd285c1db54f3c4b46db73c9746ba5c4ce55f911cce95837607725a09b5bc12",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage3_multi_active_seed004/configuration/runtime_parameters.yaml",
+      "bytes": 4931,
+      "sha256": "3b7a1519a49184f825c487ce25ad5ca091babb58f9aaae57c8e66d485b37c0f0",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/logs/car_stage3_multi_active_seed004.physical_identity.log",
+      "bytes": 877,
+      "sha256": "acf2ba5651f4bc81740dabba9a6165524fa2b06ebdd233a2b3886fb7b2fe2e31",
+      "matches_original_binding": null
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_core12_probe01_person_stage1_position_seed004.json",
+      "bytes": 17064,
+      "sha256": "74927c54f19e58d2c0a3192e21c95ce10478c41a3387f777a0c03b88038ba20f",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/person_stage1_position_seed004.json",
+      "bytes": 54232,
+      "sha256": "f822f423fc00c29f390aea11f73bcbd88f9194ee56e4714eadf4e66cd448fb6a",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_core12_probe01_person_stage1_velocity_seed004.json",
+      "bytes": 17064,
+      "sha256": "ba3ba791f312422783a190763509b8ab3b5c0f573c596831bb28bf1072d3622a",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/person_stage1_velocity_seed004.json",
+      "bytes": 54283,
+      "sha256": "77d22a38c34ffae598063fd14d5520824d20c7ac9194f691ab051d26b6967291",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_core12_probe01_person_stage2_crossing_seed004.json",
+      "bytes": 17781,
+      "sha256": "3dbf74e8712da66886d5810b973abda60dc0d6c90728225b0c559401d12a77bd",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/person_stage2_crossing_seed004.json",
+      "bytes": 64056,
+      "sha256": "992fe8eb0fe57740f338be22af827e7bf2e7468cf1e01cf69c7b334679ba5bb3",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage2_crossing_seed004/run_config.json",
+      "bytes": 4450,
+      "sha256": "0827f488ab5739ecc4ce1a3abe5713fad28e5140984c71f03d61e3dd06f9ff63",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage2_crossing_seed004/configuration/runtime_parameters.yaml",
+      "bytes": 4768,
+      "sha256": "238f651e2ae343de7cb83f12bb5b20dcd8196a039e9c1ac988e51df59bf7b98a",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage2_crossing_seed004/physical_identity.json",
+      "bytes": 1663576,
+      "sha256": "63ea880d3ae0a16cb63a87dcb1ee15560db777daa3404666a9c5e3642e1fe6e8",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_core12_probe01_person_stage3_active_seed004.json",
+      "bytes": 17342,
+      "sha256": "13e6b22fc79d32c09f468b274c283fe5d31c91b2ff6329c6f18c02a65fd1390a",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/person_stage3_active_seed004.json",
+      "bytes": 58111,
+      "sha256": "73f178cb86407207f6356a17d2ad7520f30d1b958e2e60bdd5c202b0e759e122",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_core12_probe01_person_stage3_midpoint_seed004.json",
+      "bytes": 17373,
+      "sha256": "c926f6c91ff04f8eb1909c6bb7d9057e96644c254465a0c211ff0a3e8b58c3fd",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/person_stage3_midpoint_seed004.json",
+      "bytes": 58281,
+      "sha256": "f2eb8e3048004a257bdd5f6240a2ae9344921a0f24cf4dbb44a924d4b3d1418d",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004.json",
+      "bytes": 18232,
+      "sha256": "a9072fabdcc5ad4c4bf7c1c903f3253e99b3e5d57f41f15fa0ac87bfe416bae8",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/person_stage3_multi_active_seed004.json",
+      "bytes": 68606,
+      "sha256": "42de6664d65f530f261d1ed337e0eaa645a679117324c5b73b2bbbd7712e2d71",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004/run_config.json",
+      "bytes": 4451,
+      "sha256": "cca4ba2985a1098afc33be88176cdedb75e8f4ff9cd6efe1d05e6e885d9b2b70",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004/configuration/runtime_parameters.yaml",
+      "bytes": 4854,
+      "sha256": "376c16e21edb7d008cc71c7ed009f8bac07a9ab7d0ec35200916bdbe4020cb2e",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_person_stage3_multi_active_seed004/physical_identity.json",
+      "bytes": 1692013,
+      "sha256": "8500c12c1a8c3b3f736cacfe88dd134fac1ce0692e6536b5a14072a83634b7da",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_car_extension_combined_seed004.json",
+      "bytes": 17159,
+      "sha256": "3bd5ba01d1954c33de4270375f489fafdf3d41c1df8ecae483c821cbf621d83f",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/car_extension_combined_seed004.json",
+      "bytes": 54694,
+      "sha256": "50cda01cbc0850b94aa52962f365d5fb7daec7daff7b4fcd6503178fe4f5a00b",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_car_extension_depth_holes_seed004.json",
+      "bytes": 17193,
+      "sha256": "cbde7eeb80cbe84243d3bc7820454e3a34a8f54321e4aea924411f2693c8ba13",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/car_extension_depth_holes_seed004.json",
+      "bytes": 55170,
+      "sha256": "7865ca292f4bb0ab8de4581be3535f3270e0fdcdf4ce29a7ccdbb79001449249",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_car_extension_depth_noise_seed004.json",
+      "bytes": 17202,
+      "sha256": "f9d6a8153d219ab3f90a50722d54df8486657e92b1bf6af427e1366c3410f877",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/car_extension_depth_noise_seed004.json",
+      "bytes": 55171,
+      "sha256": "ac3f4e7113a2ca686edfc02003531e2dfd910441b20f44f5ab2420b11406588a",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_car_extension_dropout_seed004.json",
+      "bytes": 17133,
+      "sha256": "2e15233805ec6ae407c61b595402ecae9eb93d98b1d01c604ee3656927817f3c",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/car_extension_dropout_seed004.json",
+      "bytes": 54641,
+      "sha256": "f80a774d1af43cbb6e8525662bb13f3c2853c9c19d68ac57ccd82435b9015f17",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_car_extension_far_distance_seed004.json",
+      "bytes": 17180,
+      "sha256": "6e10ccf1fe26ae36c77b9397622aa1b730d1204edc58e00f0c806266462d00de",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/car_extension_far_distance_seed004.json",
+      "bytes": 54997,
+      "sha256": "f03c983121b8913e0d3be31ad64fef6ca694df964a2214adbc6eac48f1ed2047",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_car_extension_latency_seed004.json",
+      "bytes": 17134,
+      "sha256": "c31bc80e60156a1d1a48fe41ed165dd43cfc241051057a12dd77937457441e07",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/car_extension_latency_seed004.json",
+      "bytes": 54964,
+      "sha256": "b2f1ec888c217cd1ac8e0dcfc56a19e4746dc5096e7902cf8c6d04c732330ab1",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_car_extension_speed_changes_position_seed004.json",
+      "bytes": 17330,
+      "sha256": "5a6aad71c31b408793b46b0fbb4e5dbe347c25fd8643e4500e208a32ff618f1a",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/car_extension_speed_changes_position_seed004.json",
+      "bytes": 55453,
+      "sha256": "057534448a7e4da809e8f84dc09705f1c3d016f5ace6e0cb10b06ab4b8c4ebab",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_car_extension_speed_changes_velocity_seed004.json",
+      "bytes": 17329,
+      "sha256": "097113494747c1e05e79facbfc998b1c4e0d6cac2b036a96134753aaae2c6c77",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/car_extension_speed_changes_velocity_seed004.json",
+      "bytes": 55482,
+      "sha256": "91860f3fddddc85c25cf478ce2707dcb77557b9498ddb29b81b0ad38b48a6f2c",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_person_extension_combined_seed004.json",
+      "bytes": 17211,
+      "sha256": "753cd8c5e79ab03a0b5424cb646be02b54bf6bc2cfcfe681472e1003f37be055",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_combined_seed004.json",
+      "bytes": 54606,
+      "sha256": "f57d22dff4989c8bbb45b56ba2151d66e52b5689984cd0a0104f531d4749b655",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_person_extension_depth_holes_seed004.json",
+      "bytes": 17247,
+      "sha256": "16472a0f2e3bae22c92d4661388bce6e6d778857ea71f447c0eb618a4dad5aca",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_depth_holes_seed004.json",
+      "bytes": 55124,
+      "sha256": "12687276e9fa2defd43dcc336619d1b4c6715dbe325d3be04173cf8211239f5d",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_person_extension_depth_noise_seed004.json",
+      "bytes": 17256,
+      "sha256": "e999ae1ec5bb6ed8fa95a8d9d0e40c9d6810603c54e2305b78b8cb3df3b9262b",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_depth_noise_seed004.json",
+      "bytes": 55140,
+      "sha256": "571c1c9638e1e2705bc4bbd0cc75afcea8d038e7014c03ea155732a57faa596d",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_person_extension_dropout_seed004.json",
+      "bytes": 17204,
+      "sha256": "20406d36d188e95b8f87c1b9be7e57e1ced8947d2a9780ba86bf06b514f6bd39",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_dropout_seed004.json",
+      "bytes": 54634,
+      "sha256": "c09f95ee3c4d5f14847bcbea82e8795b11cab6f5184fe735abac4c22decaeba8",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_person_extension_far_distance_seed004.json",
+      "bytes": 17234,
+      "sha256": "e5cb11515bd81d2c9dc2ec73430694d7d6c29dea84047f2c54b1c2389806dd45",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_far_distance_seed004.json",
+      "bytes": 54895,
+      "sha256": "ad759ecb86fadaffd12fef6bd59a77baa967669b1ecb2084f9c155576347491f",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_person_extension_latency_seed004.json",
+      "bytes": 17189,
+      "sha256": "b647a06e570b58f528b03575299dfdfc44bbfeb46bf40404f79b40d0a71dc631",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_latency_seed004.json",
+      "bytes": 54890,
+      "sha256": "7357baeaa7cc1bfe2a08526cc53fa113654dd171c0b99a351870c77f77fc14f9",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_person_extension_speed_changes_position_seed004.json",
+      "bytes": 17384,
+      "sha256": "f407d51c1e71334a5537d1666bc0ab9bd8f9dfd570c2fb80d659ade0d4f0ed2f",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_speed_changes_position_seed004.json",
+      "bytes": 55398,
+      "sha256": "d64c7f7e401ccb8cf62cc393e5c45dfbdb7c25e38d07a246f69966d0d6aa8891",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_extension16_probe02_person_extension_speed_changes_velocity_seed004.json",
+      "bytes": 17384,
+      "sha256": "545a4cb9b6f50a6bf870e9715793e95bf17ba08aca89b0825d8dd17d08856e7a",
+      "matches_original_binding": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_speed_changes_velocity_seed004.json",
+      "bytes": 55421,
+      "sha256": "a482af35d8ad5dc4fb33480552becdf701ea94af28b22b26431ca6db7ff05681",
+      "matches_original_binding": true
+    }
+  ]
+}

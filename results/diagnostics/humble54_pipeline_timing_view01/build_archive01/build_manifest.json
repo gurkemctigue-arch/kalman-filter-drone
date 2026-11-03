@@ -1,0 +1,306 @@
+{
+  "built_utc": "2026-11-03T13:04:16.443616+00:00",
+  "scope": "COPIED_CLOSED_NATIVE_SUMMARIES_ONLY_NOT_FORMAL_ACCEPTANCE",
+  "formal_progress": "0/280_UNCHANGED",
+  "physical_e2e": "NOT_OBSERVED",
+  "source": {
+    "path": "tools/diagnostics/humble54_pipeline_timing_view01/build_view.py",
+    "sha256": "79a3e839121275bd0acea3a2e65ebfc5e32f4d51d11bd53a7a610626c631e30d"
+  },
+  "inputs": [
+    {
+      "path": "results/diagnostics/humble54_pipeline_timing_run01/native_summary.original.json",
+      "sha256": "3043b5958a623000b1a8627fe01a80fee9591f7d3839f21dfb952840415733f9",
+      "bytes": 818,
+      "status": "NOT_OBSERVED_INCOMPLETE_EXECUTION"
+    },
+    {
+      "path": "results/diagnostics/humble54_pipeline_timing_run02/native_summary.original.json",
+      "sha256": "26d037952d8d96c8109ed780feabf68f80a52aba4e98293db66e3dbe729e1958",
+      "bytes": 901,
+      "status": "NOT_OBSERVED_INCOMPLETE_EXECUTION"
+    },
+    {
+      "path": "results/diagnostics/humble54_pipeline_timing_run03/native_summary.original.json",
+      "sha256": "d893695df5ef0eabc764970aa31b2afdf410cbc65763211ca37baee77f8e0037",
+      "bytes": 546150,
+      "status": "NOT_OBSERVED"
+    },
+    {
+      "path": "results/diagnostics/humble54_pipeline_timing_run04/native_summary.original.json",
+      "sha256": "2da658d00856e300c402b41d3aa019f6303cd733543a913ff1f28fcc17e1f978",
+      "bytes": 499099,
+      "status": "CANDIDATE_OBSERVED_IN_THIS_BENCH_ONLY"
+    }
+  ],
+  "output": {
+    "path": "results/diagnostics/humble54_pipeline_timing_view01/index.html",
+    "sha256": "ffac9ec9b74d79e7cf49c9c4f17751f22483707e9297d8c4109265de21e46a26"
+  },
+  "checks": [
+    {
+      "run": "humble54_pipeline_timing_run01",
+      "checks": []
+    },
+    {
+      "run": "humble54_pipeline_timing_run02",
+      "checks": []
+    },
+    {
+      "run": "humble54_pipeline_timing_run03",
+      "checks": [
+        {
+          "label": "命令明细 / 全部适配器回调",
+          "actual": 504,
+          "expected": 504,
+          "pass": true
+        },
+        {
+          "label": "候选命令明细 / 摘要计数",
+          "actual": 0,
+          "expected": 0,
+          "pass": true
+        },
+        {
+          "label": "UNKNOWN 命令明细 / 摘要计数",
+          "actual": 504,
+          "expected": 504,
+          "pass": true
+        },
+        {
+          "label": "候选 + UNKNOWN / 全部命令",
+          "actual": 504,
+          "expected": 504,
+          "pass": true
+        },
+        {
+          "label": "RGB 明细 / 全部收到的 RGB",
+          "actual": 252,
+          "expected": 252,
+          "pass": true
+        },
+        {
+          "label": "有候选的 RGB 明细 / 摘要计数",
+          "actual": 0,
+          "expected": 0,
+          "pass": true
+        },
+        {
+          "label": "各 RGB 的候选命令数之和",
+          "actual": 0,
+          "expected": 0,
+          "pass": true
+        },
+        {
+          "label": "命令类别计数 / 全部命令",
+          "actual": 504,
+          "expected": 504,
+          "pass": true
+        },
+        {
+          "label": "回放输入类型计数之和",
+          "actual": 16000,
+          "expected": 16000,
+          "pass": true
+        },
+        {
+          "label": "detection：候选 + UNKNOWN / take",
+          "actual": 76,
+          "expected": 76,
+          "pass": true
+        },
+        {
+          "label": "detection：配对明细 / take",
+          "actual": 76,
+          "expected": 76,
+          "pass": true
+        },
+        {
+          "label": "detection：候选明细 / 候选计数",
+          "actual": 0,
+          "expected": 0,
+          "pass": true
+        },
+        {
+          "label": "state：候选 + UNKNOWN / take",
+          "actual": 454,
+          "expected": 454,
+          "pass": true
+        },
+        {
+          "label": "state：配对明细 / take",
+          "actual": 454,
+          "expected": 454,
+          "pass": true
+        },
+        {
+          "label": "state：候选明细 / 候选计数",
+          "actual": 0,
+          "expected": 0,
+          "pass": true
+        },
+        {
+          "label": "command：候选 + UNKNOWN / take",
+          "actual": 504,
+          "expected": 504,
+          "pass": true
+        },
+        {
+          "label": "command：配对明细 / take",
+          "actual": 504,
+          "expected": 504,
+          "pass": true
+        },
+        {
+          "label": "command：候选明细 / 候选计数",
+          "actual": 0,
+          "expected": 0,
+          "pass": true
+        },
+        {
+          "label": "可画图的候选命令 / 候选计数",
+          "actual": 0,
+          "expected": 0,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "run": "humble54_pipeline_timing_run04",
+      "checks": [
+        {
+          "label": "命令明细 / 全部适配器回调",
+          "actual": 504,
+          "expected": 504,
+          "pass": true
+        },
+        {
+          "label": "候选命令明细 / 摘要计数",
+          "actual": 151,
+          "expected": 151,
+          "pass": true
+        },
+        {
+          "label": "UNKNOWN 命令明细 / 摘要计数",
+          "actual": 353,
+          "expected": 353,
+          "pass": true
+        },
+        {
+          "label": "候选 + UNKNOWN / 全部命令",
+          "actual": 504,
+          "expected": 504,
+          "pass": true
+        },
+        {
+          "label": "RGB 明细 / 全部收到的 RGB",
+          "actual": 252,
+          "expected": 252,
+          "pass": true
+        },
+        {
+          "label": "有候选的 RGB 明细 / 摘要计数",
+          "actual": 76,
+          "expected": 76,
+          "pass": true
+        },
+        {
+          "label": "各 RGB 的候选命令数之和",
+          "actual": 151,
+          "expected": 151,
+          "pass": true
+        },
+        {
+          "label": "命令类别计数 / 全部命令",
+          "actual": 504,
+          "expected": 504,
+          "pass": true
+        },
+        {
+          "label": "回放输入类型计数之和",
+          "actual": 16000,
+          "expected": 16000,
+          "pass": true
+        },
+        {
+          "label": "detection：候选 + UNKNOWN / take",
+          "actual": 76,
+          "expected": 76,
+          "pass": true
+        },
+        {
+          "label": "detection：配对明细 / take",
+          "actual": 76,
+          "expected": 76,
+          "pass": true
+        },
+        {
+          "label": "detection：候选明细 / 候选计数",
+          "actual": 76,
+          "expected": 76,
+          "pass": true
+        },
+        {
+          "label": "state：候选 + UNKNOWN / take",
+          "actual": 453,
+          "expected": 453,
+          "pass": true
+        },
+        {
+          "label": "state：配对明细 / take",
+          "actual": 453,
+          "expected": 453,
+          "pass": true
+        },
+        {
+          "label": "state：候选明细 / 候选计数",
+          "actual": 453,
+          "expected": 453,
+          "pass": true
+        },
+        {
+          "label": "command：候选 + UNKNOWN / take",
+          "actual": 504,
+          "expected": 504,
+          "pass": true
+        },
+        {
+          "label": "command：配对明细 / take",
+          "actual": 504,
+          "expected": 504,
+          "pass": true
+        },
+        {
+          "label": "command：候选明细 / 候选计数",
+          "actual": 504,
+          "expected": 504,
+          "pass": true
+        },
+        {
+          "label": "可画图的候选命令 / 候选计数",
+          "actual": 151,
+          "expected": 151,
+          "pass": true
+        },
+        {
+          "label": "候选时延 median / 原摘要",
+          "actual": 753674083,
+          "expected": 753674083,
+          "pass": true
+        },
+        {
+          "label": "候选时延 p95 / 原摘要",
+          "actual": 1158279926,
+          "expected": 1158279926,
+          "pass": true
+        },
+        {
+          "label": "候选时延 max / 原摘要",
+          "actual": 1169306078,
+          "expected": 1169306078,
+          "pass": true
+        }
+      ]
+    }
+  ]
+}

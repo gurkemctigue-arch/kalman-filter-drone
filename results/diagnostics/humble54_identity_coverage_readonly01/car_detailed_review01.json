@@ -1,0 +1,303 @@
+{
+  "created_utc": "2026-11-03T13:45:18.401268+00:00",
+  "scope": "PINNED_TWO_CAR_REPORT_READ_ONLY_REASON_EXTRACTION_NOT_RESCORING",
+  "prior_report": {
+    "path": "results/diagnostics/humble54_identity_coverage_readonly01/identity_coverage.json",
+    "sha256": "efe1443ee7bd3501d57631c50beb215f1ca5a5d2dd614b690a3239b11818ce4d",
+    "unchanged": true
+  },
+  "exception": "Exactly the two listed car physical_identity JSONs, each <=8MiB; all other reads <=2MiB. No bag/model/trace/native/WSL access.",
+  "cases": [
+    {
+      "id": "car_stage2_crossing_seed004",
+      "original_engineering_status": "PASS",
+      "physical_report": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage2_crossing_seed004/physical_identity.json",
+        "sha256": "0c2d32eec9e5017852e8f079fa01914cfbb2e8a812b3fe3d2c6fa2e04d671d28"
+      },
+      "terminal": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/car_stage2_crossing_seed004.json",
+        "sha256": "29ed7dc726f9882395907abc25e58f99bc7bf905b8339bdb7cf56ed69c7300c8"
+      },
+      "time_grid": {
+        "schema_version": 1,
+        "physical_match_rule_revision": "whole_static_mesh_optical_z_front_v1",
+        "coverage_basis": "fixed_10hz_request_to_recorded_clock_end",
+        "sample_period_s": 0.1,
+        "interval": {
+          "start_s": 17.36,
+          "end_s": 92.76
+        },
+        "scheduled_samples": 754,
+        "correct": 640,
+        "wrong": 0,
+        "unknown": 114,
+        "known_coverage": 0.8488063660477454,
+        "retention_lower_bound": 0.8488063660477454,
+        "agreement_on_known_samples": 1.0,
+        "requested_task_count": 2,
+        "unconfirmed_requested_tasks": [],
+        "unknown_reason_counts": {
+          "request_not_yet_confirmed": 2,
+          "no_identity_evidence_in_time_cell": 13,
+          "unknown_identity_evidence_in_time_cell": 99
+        },
+        "evaluation_status": "RECORDED_WITH_EXPLICIT_UNKNOWN_INTERVALS",
+        "semantics": "Fixed 0.1 s cells anchored at the first explicit REQUEST, ending at the last recorded /clock (final partial cell retained). Each cell belongs to the task active at its start; all REQUESTs are registered even without a snapshot or CONFIRMED event. Before confirmation, after CLEAR/RESET, at a task boundary, or without fresh independent identity evidence the cell is UNKNOWN. No cross-cell interpolation/forward fill. Any known wrong match in the cell takes precedence; otherwise all identity evidence must be known and correct for CORRECT. This measures conservative recorded evidence coverage, not continuous physical identity certainty. Legacy diagnostic-frame metrics remain separate.",
+        "recorded_clock": {
+          "start_s": 0.0,
+          "end_s": 92.76,
+          "messages": 26274
+        }
+      },
+      "time_grid_tasks": {
+        "d29c84cf-fff4-47d7-a1a2-53caf4fbe837": {
+          "request_time_s": 17.36,
+          "source_image_s": 17.2,
+          "confirmation_time_s": 17.456,
+          "confirmed": true,
+          "expected_physical_id": "stage2_car_0",
+          "initial_mapping_known": true,
+          "duplicate_request_uuid": false,
+          "scheduled_samples": 322,
+          "correct": 211,
+          "wrong": 0,
+          "unknown": 111,
+          "known_coverage": 0.65527950310559,
+          "retention_lower_bound": 0.65527950310559
+        },
+        "7300755a-38c5-4c71-b621-4ea48062c823": {
+          "request_time_s": 49.56,
+          "source_image_s": 49.4,
+          "confirmation_time_s": 49.620000000000005,
+          "confirmed": true,
+          "expected_physical_id": "stage2_car_0",
+          "initial_mapping_known": true,
+          "duplicate_request_uuid": false,
+          "scheduled_samples": 432,
+          "correct": 429,
+          "wrong": 0,
+          "unknown": 3,
+          "known_coverage": 0.9930555555555556,
+          "retention_lower_bound": 0.9930555555555556
+        }
+      },
+      "diagnostic_frame_identity": {
+        "frames": 743,
+        "correct": 644,
+        "wrong": 0,
+        "unknown": 99,
+        "known_coverage": 0.8667563930013459,
+        "retention_lower_bound": 0.8667563930013459,
+        "agreement_on_known_frames": 1.0,
+        "observed_physical_identity_switches_within_task": 0,
+        "task_count": 2,
+        "semantics": "Unknown/occluded frames remain in total; retention_lower_bound is not the same as conditional agreement. UUID partitions explicit tasks and never supplies physical identity."
+      },
+      "diagnostic_frame_unknown_reason_counts": {
+        "known_or_unresolved_external_occlusion": 26,
+        "no_fresh_selected_detection": 73
+      },
+      "diagnostic_frame_counts": {
+        "CORRECT": 644,
+        "WRONG_PHYSICAL_ACTOR": 0,
+        "NOT_OBSERVED": 73,
+        "UNKNOWN_GEOMETRY": 26,
+        "UNKNOWN_TASK_INITIAL_ID": 0
+      },
+      "camera_geometry_status_counts": {
+        "FIXED_MOUNT": 912
+      },
+      "label_protocol": "Exact-source-time independent static render mesh projection, Gazebo actor and camera GT. Physical-gimbal recordings use bracketed independent actual camera-link/vehicle GT cross-checked against bracketed local feedback TF, never a static mount or latest/command pose. Missing dynamic geometry remains unknown and in selected-task denominators; frames without complete independent GT are unscorable in MOT rather than invented empty-GT false positives. Full/amodal metrics are explicitly diagnostic. The unoccluded geometry subset requires all three targets fully in frame, no pair of GT boxes with IoU>.01, and outside +/-1s shutter guards. Independent visual review remains necessary to publish as visible detection labels.",
+      "freshness_protocol": "Only non-projected track snapshots with matched=true count as detected tracks. Empty diagnostic frames remain in denominator; stale stored boxes cannot become true positives.",
+      "selected_identity_protocol": "Expected actor is established independently from the user's/test script's REQUEST box at its recorded source image_stamp_s, never from the tracker-selected box. Missing source time or uncertain request-to-GT mapping makes the task UNKNOWN. Each fresh selected track box is independently compared against that expected actor. Physical matches require a unique full-in-frame IoU>=.5 candidate and no shutter guard. Positive same-class GT-box overlap remains UNKNOWN unless all three expected rigid actor projections/depth bounds and exact-source vehicle/actor/physical-camera geometry exist and the entire chosen mesh is at least strictly 0.05 m in front of every overlapping actor in optical z. Unsupported assets, missing proof, near-plane geometry and overlapping depth intervals remain UNKNOWN. This sufficient static-scene proof is neither a nearest-depth actor choice nor runtime completeness evidence. No highest-IoU shortcut or UUID identity inference; MOT denominators/subsets are unchanged.",
+      "metric_reference": "Portable HOTA/IDF1/CLEAR implementation validated against pinned official TrackEval formulas on 60 random 15-frame sequences, all 19 HOTA alpha values; see research_validation/trackeval_comparison.json",
+      "observed_id_switch_boundary": "The copied observed_physical_identity_switches_within_task=0 is conditional on known recorded matches inside each explicit task. UNKNOWN gaps are not certified, and explicit new tasks partition the metric; true switches during UNKNOWN remain unidentifiable from these labels."
+    },
+    {
+      "id": "car_stage3_multi_active_seed004",
+      "original_engineering_status": "PASS",
+      "physical_report": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage3_multi_active_seed004/physical_identity.json",
+        "sha256": "58aab55dea538bf9120bddc6015e16ca237f3a241929877fc547900179692521"
+      },
+      "terminal": {
+        "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/car_stage3_multi_active_seed004.json",
+        "sha256": "f2d190881e4e3594a2eaf75d74a974bab800a3c8254c8b09ae89094c4ff08931"
+      },
+      "time_grid": {
+        "schema_version": 1,
+        "physical_match_rule_revision": "whole_static_mesh_optical_z_front_v1",
+        "coverage_basis": "fixed_10hz_request_to_recorded_clock_end",
+        "sample_period_s": 0.1,
+        "interval": {
+          "start_s": 18.74,
+          "end_s": 94.0
+        },
+        "scheduled_samples": 753,
+        "correct": 614,
+        "wrong": 0,
+        "unknown": 139,
+        "known_coverage": 0.8154050464807437,
+        "retention_lower_bound": 0.8154050464807437,
+        "agreement_on_known_samples": 1.0,
+        "requested_task_count": 2,
+        "unconfirmed_requested_tasks": [],
+        "unknown_reason_counts": {
+          "request_not_yet_confirmed": 2,
+          "no_identity_evidence_in_time_cell": 41,
+          "unknown_identity_evidence_in_time_cell": 95,
+          "task_boundary_within_time_cell": 1
+        },
+        "evaluation_status": "RECORDED_WITH_EXPLICIT_UNKNOWN_INTERVALS",
+        "semantics": "Fixed 0.1 s cells anchored at the first explicit REQUEST, ending at the last recorded /clock (final partial cell retained). Each cell belongs to the task active at its start; all REQUESTs are registered even without a snapshot or CONFIRMED event. Before confirmation, after CLEAR/RESET, at a task boundary, or without fresh independent identity evidence the cell is UNKNOWN. No cross-cell interpolation/forward fill. Any known wrong match in the cell takes precedence; otherwise all identity evidence must be known and correct for CORRECT. This measures conservative recorded evidence coverage, not continuous physical identity certainty. Legacy diagnostic-frame metrics remain separate.",
+        "recorded_clock": {
+          "start_s": 0.0,
+          "end_s": 94.0,
+          "messages": 27019
+        }
+      },
+      "time_grid_tasks": {
+        "80993fb1-3d0a-4a8d-8fa4-aceccd6b6802": {
+          "request_time_s": 18.74,
+          "source_image_s": 18.6,
+          "confirmation_time_s": 18.82,
+          "confirmed": true,
+          "expected_physical_id": "stage2_car_0",
+          "initial_mapping_known": true,
+          "duplicate_request_uuid": false,
+          "scheduled_samples": 322,
+          "correct": 200,
+          "wrong": 0,
+          "unknown": 122,
+          "known_coverage": 0.6211180124223602,
+          "retention_lower_bound": 0.6211180124223602
+        },
+        "367537b1-4604-4612-8c71-80945f51dd3a": {
+          "request_time_s": 50.9,
+          "source_image_s": 50.7,
+          "confirmation_time_s": 50.964000000000006,
+          "confirmed": true,
+          "expected_physical_id": "stage2_car_0",
+          "initial_mapping_known": true,
+          "duplicate_request_uuid": false,
+          "scheduled_samples": 431,
+          "correct": 414,
+          "wrong": 0,
+          "unknown": 17,
+          "known_coverage": 0.9605568445475638,
+          "retention_lower_bound": 0.9605568445475638
+        }
+      },
+      "diagnostic_frame_identity": {
+        "frames": 714,
+        "correct": 619,
+        "wrong": 0,
+        "unknown": 95,
+        "known_coverage": 0.8669467787114846,
+        "retention_lower_bound": 0.8669467787114846,
+        "agreement_on_known_frames": 1.0,
+        "observed_physical_identity_switches_within_task": 0,
+        "task_count": 2,
+        "semantics": "Unknown/occluded frames remain in total; retention_lower_bound is not the same as conditional agreement. UUID partitions explicit tasks and never supplies physical identity."
+      },
+      "diagnostic_frame_unknown_reason_counts": {
+        "known_or_unresolved_external_occlusion": 25,
+        "no_fresh_selected_detection": 70
+      },
+      "diagnostic_frame_counts": {
+        "CORRECT": 619,
+        "WRONG_PHYSICAL_ACTOR": 0,
+        "NOT_OBSERVED": 70,
+        "UNKNOWN_GEOMETRY": 25,
+        "UNKNOWN_TASK_INITIAL_ID": 0
+      },
+      "camera_geometry_status_counts": {
+        "KNOWN": 896
+      },
+      "label_protocol": "Exact-source-time independent static render mesh projection, Gazebo actor and camera GT. Physical-gimbal recordings use bracketed independent actual camera-link/vehicle GT cross-checked against bracketed local feedback TF, never a static mount or latest/command pose. Missing dynamic geometry remains unknown and in selected-task denominators; frames without complete independent GT are unscorable in MOT rather than invented empty-GT false positives. Full/amodal metrics are explicitly diagnostic. The unoccluded geometry subset requires all three targets fully in frame, no pair of GT boxes with IoU>.01, and outside +/-1s shutter guards. Independent visual review remains necessary to publish as visible detection labels.",
+      "freshness_protocol": "Only non-projected track snapshots with matched=true count as detected tracks. Empty diagnostic frames remain in denominator; stale stored boxes cannot become true positives.",
+      "selected_identity_protocol": "Expected actor is established independently from the user's/test script's REQUEST box at its recorded source image_stamp_s, never from the tracker-selected box. Missing source time or uncertain request-to-GT mapping makes the task UNKNOWN. Each fresh selected track box is independently compared against that expected actor. Physical matches require a unique full-in-frame IoU>=.5 candidate and no shutter guard. Positive same-class GT-box overlap remains UNKNOWN unless all three expected rigid actor projections/depth bounds and exact-source vehicle/actor/physical-camera geometry exist and the entire chosen mesh is at least strictly 0.05 m in front of every overlapping actor in optical z. Unsupported assets, missing proof, near-plane geometry and overlapping depth intervals remain UNKNOWN. This sufficient static-scene proof is neither a nearest-depth actor choice nor runtime completeness evidence. No highest-IoU shortcut or UUID identity inference; MOT denominators/subsets are unchanged.",
+      "metric_reference": "Portable HOTA/IDF1/CLEAR implementation validated against pinned official TrackEval formulas on 60 random 15-frame sequences, all 19 HOTA alpha values; see research_validation/trackeval_comparison.json",
+      "observed_id_switch_boundary": "The copied observed_physical_identity_switches_within_task=0 is conditional on known recorded matches inside each explicit task. UNKNOWN gaps are not certified, and explicit new tasks partition the metric; true switches during UNKNOWN remain unidentifiable from these labels."
+    }
+  ],
+  "time_grid_difference_active_minus_stage2": {
+    "unknown_total": 25,
+    "request_not_yet_confirmed": 0,
+    "no_identity_evidence_in_time_cell": 28,
+    "unknown_identity_evidence_in_time_cell": -4,
+    "task_boundary_within_time_cell": 1,
+    "interpretation": "Description of these two different development scenes only; not a paired causal gimbal effect or a statistical estimate."
+  },
+  "denominator_boundary": "Frame rows are diagnostic-image opportunities inside explicit tasks. Fixed 0.1s cells span first REQUEST to last recorded /clock, including request-confirmation waits, loss/hover and gaps; final partial cell retained. No interpolation, forward-fill, FOLLOW-only filtering or zero substitution. Counts from the two populations cannot be added.",
+  "phase_stratification": "Original reasons do not distinguish TAKEOFF/FOLLOW/HOVER within these unknown classes; no flight-phase counts inferred.",
+  "labels_and_truth": "Original labels are independent offline static render-mesh projections from exact-source actor/camera GT and guarded geometry. Known gimbal camera geometry does not certify physical identity visibility. This read did not inspect images or perform the independent visible-label review required by the original label protocol.",
+  "new_data_boundary": "This supplement resolves the already-recorded car reason breakdown without a new flight. Old UNKNOWN remains UNKNOWN; formal repeated-seed reliability and paired estimator/gimbal claims still need the planned new batch.",
+  "dds_latency_unknown_is_separate": true,
+  "formal_progress": "0/280_UNCHANGED",
+  "native_started": false,
+  "original_verdicts_modified": false,
+  "source": {
+    "path": "tools/diagnostics/humble54_identity_coverage_readonly01/summarize_car_details.py",
+    "sha256": "23a59e5c65b2b02046ce9f5223ed8dae5a2746dfda1f4b05347e2424cceebe26"
+  },
+  "input_bindings": [
+    {
+      "path": "results/diagnostics/humble54_identity_coverage_readonly01/identity_coverage.json",
+      "bytes": 40782,
+      "sha256": "efe1443ee7bd3501d57631c50beb215f1ca5a5d2dd614b690a3239b11818ce4d",
+      "hard_limit_bytes": 2097152,
+      "before_after_stat_unchanged": true,
+      "explicit_large_file_exception": false
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_core12_probe01_car_stage2_crossing_seed004.json",
+      "bytes": 17721,
+      "sha256": "ea183b6c1610dd57c13e8f7ad4c99c33bcb28df3ff508bec7eca9ac38c9da1ab",
+      "hard_limit_bytes": 2097152,
+      "before_after_stat_unchanged": true,
+      "explicit_large_file_exception": false
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/car_stage2_crossing_seed004.json",
+      "bytes": 64042,
+      "sha256": "29ed7dc726f9882395907abc25e58f99bc7bf905b8339bdb7cf56ed69c7300c8",
+      "hard_limit_bytes": 2097152,
+      "before_after_stat_unchanged": true,
+      "explicit_large_file_exception": false
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage2_crossing_seed004/physical_identity.json",
+      "bytes": 3066769,
+      "sha256": "0c2d32eec9e5017852e8f079fa01914cfbb2e8a812b3fe3d2c6fa2e04d671d28",
+      "hard_limit_bytes": 8388608,
+      "before_after_stat_unchanged": true,
+      "explicit_large_file_exception": true
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/full28_storage_measurement_probe02_after07_01/reliability_v4_humble54_core12_probe01_car_stage3_multi_active_seed004.json",
+      "bytes": 18165,
+      "sha256": "06283d55f6e630c653c03a446ecaf4fccaa05aaf69d34684f9b9519fb73ebee6",
+      "hard_limit_bytes": 2097152,
+      "before_after_stat_unchanged": true,
+      "explicit_large_file_exception": false
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/car_stage3_multi_active_seed004.json",
+      "bytes": 68557,
+      "sha256": "f2d190881e4e3594a2eaf75d74a974bab800a3c8254c8b09ae89094c4ff08931",
+      "hard_limit_bytes": 2097152,
+      "before_after_stat_unchanged": true,
+      "explicit_large_file_exception": false
+    },
+    {
+      "path": "results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage3_multi_active_seed004/physical_identity.json",
+      "bytes": 7660044,
+      "sha256": "58aab55dea538bf9120bddc6015e16ca237f3a241929877fc547900179692521",
+      "hard_limit_bytes": 8388608,
+      "before_after_stat_unchanged": true,
+      "explicit_large_file_exception": true
+    }
+  ]
+}

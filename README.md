@@ -1,5 +1,7 @@
 # RGB-D UAV target tracking and following
 
+**21:46更新：行人、汽车完整软件回放均已正常退出，当前唯一原生任务是无损压缩19/22对比；正式仍0/280，容量缺口尚未解决。** [计时诊断页](results/diagnostics/humble54_pipeline_timing_view01/index.html)已收录六次闭合回放，85项数据一致性检查通过，新版浏览器复验待原生空闲后执行。另已核清[4个多目标开发槽的身份覆盖](results/diagnostics/humble54_identity_coverage_readonly01/README.md)及[汽车未知原因](results/diagnostics/humble54_identity_coverage_readonly01/car_detailed_review01.md)：3014个任务时间格中2551按原几何评价记为正确、463未知、0已知错；未知与独立可见性复核边界保留。
+
 **21:30更新：完整行人日志已实际全量复算，27项汇总字段完全一致；新bench02只优化汇总，完整汽车软件回放正在运行。** [真实一致性收据](results/diagnostics/humble54_pipeline_timing_perf_verify_full_person01/verification_receipt.original.json)与[新诊断版本](tools/diagnostics/humble54_pipeline_timing_bench02/README.md)可查看。容量衔接候选已独审通过，仍禁用；正式实验仍因空间不足保持0/280。
 
 **最新执行结果：28/28 文件测量、两类录包导出及校准候选已完成，完整280次预算已生成。D盘需要244.94 GiB，快照可用92.12 GiB，缺152.82 GiB，因此尚未进入final55和正式实验；正式仍0/280。** 独立计时短回放已完整结束，151条FOLLOW命令获得软件全链候选匹配，另外353条非FOLLOW命令全部保留；完整行人回放已正常结束，1,857条命令中1,377条FOLLOW形成软件全链候选，480条非FOLLOW保留，50,117条输入全部回放。[离线计时诊断页](results/diagnostics/humble54_pipeline_timing_view01/index.html)已通过浏览器交互检查，当前页面收录四次闭合短回放，完整行人原件另已保存，待统一更新页面。历史UNKNOWN和物理端到端边界不变。容量刷新工具已通过审查，仅为后续空间变化后的复核准备；尚未执行清理或新正预算。具体原件见[预算诊断](results/diagnostics/humble54_after28_budget_review01/review01.json)和[本轮执行记录](planning/reliability-v4-probe02-owner07-execution-20261103.md)。

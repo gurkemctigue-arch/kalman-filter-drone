@@ -116,7 +116,7 @@ const number=x=>typeof x==="number"&&Number.isFinite(x),fmt=x=>number(x)?x.toLoc
 const labels={FOLLOW:"FOLLOW",FAILSAFE:"FAILSAFE",HOLD:"HOLD",SEARCH:"SEARCH",OTHER:"其他",UNCLASSIFIED_MISSING_EDGE:"关联缺失，无法分类"};
 let page=0;const SIZE=25,params=new URLSearchParams(location.search);
 for(const run of DATA.runs){const option=document.createElement("option");option.value=run.id;option.textContent=run.label+" · "+(run.native_complete?"已完成":"未完成")+" · "+(run.candidate_command_count==null?"计数未取得":fmt(run.candidate_command_count)+" 候选");$("run").append(option);}
-if(DATA.runs.length){$("run").value=DATA.runs.some(r=>r.id===params.get("run"))?params.get("run"):DATA.runs[DATA.runs.length-1].id;}
+if(DATA.runs.length){const complete=r=>r.native_complete===true&&r.status==='CANDIDATE_OBSERVED_IN_THIS_BENCH_ONLY'&&r.candidate_command_count>0;const preferred=DATA.runs.find(r=>/^humble54_pipeline_timing_full_?car/.test(r.id)&&complete(r))??DATA.runs.find(r=>/^humble54_pipeline_timing_full_?person/.test(r.id)&&complete(r))??DATA.runs.filter(r=>/^humble54_pipeline_timing_run/.test(r.id)).slice(-1)[0]??DATA.runs[DATA.runs.length-1];$("run").value=DATA.runs.some(r=>r.id===params.get("run"))?params.get("run"):preferred.id;}
 if(["commands","rgb"].includes(params.get("denominator")))$("denominator").value=params.get("denominator");
 if(["commands","first"].includes(params.get("population")))$("population").value=params.get("population");
 $("built").textContent=DATA.built_utc;
