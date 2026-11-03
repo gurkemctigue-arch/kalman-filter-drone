@@ -1,0 +1,126 @@
+{
+  "created_utc": "2026-11-03T11:13:34.634415+00:00",
+  "status": "PREPARED_METADATA_BOUND_NOT_RUN",
+  "runtime_windows04_unchanged": true,
+  "short01_unchanged": true,
+  "native_started": false,
+  "formal_execution_started": false,
+  "bag_payloads_read": false,
+  "model_payloads_read": false,
+  "linux_path_existence": "NOT_CHECKED_BY_THIS_PREPARATION",
+  "question_mark_count_in_new_manifests": 0,
+  "small_bindings_sha256": "7d35f0397d3242f45c0a68bd364721b14efee3154d17fec6575447750a8b19a2",
+  "trials": [
+    {
+      "category": "person",
+      "trial_id": "person_stage1_velocity_seed004",
+      "status": "PREPARED_NOT_STARTED",
+      "manifest_file": "person004_full01.manifest.json",
+      "record_limit": null,
+      "replay_rate": 1.0,
+      "namespace": "/bench/humble54_pipeline_timing_bench01_person004_full01",
+      "recorded_bag_duration_s": 752.502678728,
+      "recorded_first_timestamp_ns": 1793648427790962676,
+      "recorded_message_count": 155988,
+      "selected_input_counts": {
+        "rgb": 928,
+        "depth": 928,
+        "camera_info": 928,
+        "tf": 9230,
+        "tf_static": 1,
+        "clock": 27014,
+        "vehicle_odometry": 9230,
+        "phase": 1857,
+        "selection": 1
+      },
+      "selected_input_count": 50117,
+      "compressed_bytes": 469440721,
+      "raw_bytes": 2131107840,
+      "minimum_scratch_free_bytes_required_by_fixed04": 3137419473,
+      "model": {
+        "path": "/root/uav_tracking_fullplan_v4_humble54/models/yolo11n.pt",
+        "sha256": "0ebbc80d4a7680d14987a577cd21342b65ecfd94632bd9a8da63ae6417644ee1"
+      },
+      "watchdog": {
+        "fixed04_max_timeout_s": 900.0,
+        "configured_draining_s": 2.0,
+        "configured_startup_writer_stability_s": 0.3,
+        "remaining_budget_after_full_bag_duration_and_drain_and_stability_s": 145.197321272,
+        "assessment": "NOMINALLY_FITS_METADATA_UPPER_BOUND_WITH_UNMEASURED_STARTUP_BUDGET",
+        "not_guaranteed": [
+          "Child preflight SHA wall time",
+          "Original model loading wall time",
+          "Reader decompression/setup wall time",
+          "Scheduler/resource delays"
+        ],
+        "outside_native_watchdog": [
+          "Master preflight",
+          "Cleanup up to declared 30 s plus bounded per-process waits",
+          "Post-run input rehash and reduction"
+        ]
+      },
+      "runtime_payload_checks": "DEFERRED_TO_EXPLICIT_NATIVE_PREFLIGHT",
+      "execution_status": "NOT_STARTED",
+      "formal_execution_started": false,
+      "physical_e2e": "NOT_OBSERVED",
+      "historical_strict_changed": false,
+      "manifest_sha256": "01ad95480e337d25669ae7db17984ca2f4dc4c2a432a5d2673fbdb1abee97bb6"
+    },
+    {
+      "category": "car",
+      "trial_id": "car_stage1_velocity_seed004",
+      "status": "PREPARED_NOT_STARTED",
+      "manifest_file": "car004_full01.manifest.json",
+      "record_limit": null,
+      "replay_rate": 1.0,
+      "namespace": "/bench/humble54_pipeline_timing_bench01_car004_full01",
+      "recorded_bag_duration_s": 752.56154085,
+      "recorded_first_timestamp_ns": 1793655145166970841,
+      "recorded_message_count": 155847,
+      "selected_input_counts": {
+        "rgb": 927,
+        "depth": 927,
+        "camera_info": 927,
+        "tf": 9218,
+        "tf_static": 1,
+        "clock": 27044,
+        "vehicle_odometry": 9218,
+        "phase": 1854,
+        "selection": 1
+      },
+      "selected_input_count": 50117,
+      "compressed_bytes": 483046379,
+      "raw_bytes": 2130182144,
+      "minimum_scratch_free_bytes_required_by_fixed04": 3150099435,
+      "model": {
+        "path": "/root/uav_tracking_fullplan_v4_humble54/models/yolo11m_car_sim_train20_04.pt",
+        "sha256": "bf7a56de4ae1658f8101fc6089247e8b984c2965b58d6b4963b4b5977e9ca00c"
+      },
+      "watchdog": {
+        "fixed04_max_timeout_s": 900.0,
+        "configured_draining_s": 2.0,
+        "configured_startup_writer_stability_s": 0.3,
+        "remaining_budget_after_full_bag_duration_and_drain_and_stability_s": 145.13845914999996,
+        "assessment": "NOMINALLY_FITS_METADATA_UPPER_BOUND_WITH_UNMEASURED_STARTUP_BUDGET",
+        "not_guaranteed": [
+          "Child preflight SHA wall time",
+          "Original model loading wall time",
+          "Reader decompression/setup wall time",
+          "Scheduler/resource delays"
+        ],
+        "outside_native_watchdog": [
+          "Master preflight",
+          "Cleanup up to declared 30 s plus bounded per-process waits",
+          "Post-run input rehash and reduction"
+        ]
+      },
+      "runtime_payload_checks": "DEFERRED_TO_EXPLICIT_NATIVE_PREFLIGHT",
+      "execution_status": "NOT_STARTED",
+      "formal_execution_started": false,
+      "physical_e2e": "NOT_OBSERVED",
+      "historical_strict_changed": false,
+      "manifest_sha256": "7de7fa835f8d0824e5e22feea3fe98f2d78487e54e6c31164fd7bd3e13e2e3ba"
+    }
+  ],
+  "execution_order": "Original collector fully exits; actual28/R0/budget audit; short native bench; confirm actual FOLLOW lineage and cleanup; only then decide full replay or overhead supplement. Negative storage budget remains unresolved capacity work, not formal execution."
+}

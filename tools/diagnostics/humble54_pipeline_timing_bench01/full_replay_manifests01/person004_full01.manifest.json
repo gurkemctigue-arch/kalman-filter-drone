@@ -1,0 +1,270 @@
+{
+  "schema_version": 1,
+  "namespace": "/bench/humble54_pipeline_timing_bench01_person004_full01",
+  "source_root": "/root/uav_tracking_fullplan_v4_humble54",
+  "original_plan": {
+    "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/plan.json",
+    "sha256": "ed88783162991c151ab3d537d4eb7d3546b3688339a06db6f35b7f2ef7c48d4b"
+  },
+  "recording_terminal": {
+    "path": "/mnt/d/基于yolo和卡尔曼滤波/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/person_stage1_velocity_seed004.json",
+    "sha256": "77d22a38c34ffae598063fd14d5520824d20c7ac9194f691ab051d26b6967291"
+  },
+  "model": {
+    "path": "/root/uav_tracking_fullplan_v4_humble54/models/yolo11n.pt",
+    "sha256": "0ebbc80d4a7680d14987a577cd21342b65ecfd94632bd9a8da63ae6417644ee1"
+  },
+  "parameters": {
+    "detector": {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_core12_probe01_person_stage1_velocity_seed004/configuration/runtime_parameters.yaml",
+      "sha256": "8937ee52a801d5352e2f7bc54dd56d054dc2cda66ea2b9cb26ba6743ec3d6bb2"
+    },
+    "estimator": {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_core12_probe01_person_stage1_velocity_seed004/configuration/runtime_parameters.yaml",
+      "sha256": "8937ee52a801d5352e2f7bc54dd56d054dc2cda66ea2b9cb26ba6743ec3d6bb2"
+    },
+    "controller": {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_core12_probe01_person_stage1_velocity_seed004/configuration/runtime_parameters.yaml",
+      "sha256": "8937ee52a801d5352e2f7bc54dd56d054dc2cda66ea2b9cb26ba6743ec3d6bb2"
+    },
+    "adapter": {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_core12_probe01_person_stage1_velocity_seed004/configuration/runtime_parameters.yaml",
+      "sha256": "8937ee52a801d5352e2f7bc54dd56d054dc2cda66ea2b9cb26ba6743ec3d6bb2"
+    }
+  },
+  "bag_uri": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_core12_probe01_person_stage1_velocity_seed004/rosbag",
+  "storage_id": "sqlite3",
+  "bag_files": [
+    {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_core12_probe01_person_stage1_velocity_seed004/rosbag/rosbag_0.db3.zstd",
+      "sha256": "32aae64172e2c23f5705c4eaf5d466ad4961a61a04a0db203b2ebb4adae95696"
+    },
+    {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_core12_probe01_person_stage1_velocity_seed004/rosbag/metadata.yaml",
+      "sha256": "fbcb4b8fa4a9c6d35b28ca6a0ff3b4254cbd25b2eb61e8b06bdaba943c604640"
+    }
+  ],
+  "scratch_root": "/root",
+  "inputs": [
+    {
+      "kind": "rgb",
+      "source": "/camera/color/image_raw",
+      "destination": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/rgb",
+      "type": "sensor_msgs/msg/Image",
+      "qos": {
+        "reliability": "reliable",
+        "durability": "volatile",
+        "depth": 1
+      }
+    },
+    {
+      "kind": "depth",
+      "source": "/camera/aligned_depth_to_color/image_raw",
+      "destination": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/depth",
+      "type": "sensor_msgs/msg/Image",
+      "qos": {
+        "reliability": "reliable",
+        "durability": "volatile",
+        "depth": 1
+      }
+    },
+    {
+      "kind": "camera_info",
+      "source": "/camera/color/camera_info",
+      "destination": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/camera_info",
+      "type": "sensor_msgs/msg/CameraInfo",
+      "qos": {
+        "reliability": "reliable",
+        "durability": "volatile",
+        "depth": 1
+      }
+    },
+    {
+      "kind": "tf",
+      "source": "/tf",
+      "destination": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/tf",
+      "type": "tf2_msgs/msg/TFMessage",
+      "qos": {
+        "reliability": "reliable",
+        "durability": "volatile",
+        "depth": 20
+      }
+    },
+    {
+      "kind": "tf_static",
+      "source": "/tf_static",
+      "destination": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/tf_static",
+      "type": "tf2_msgs/msg/TFMessage",
+      "qos": {
+        "reliability": "reliable",
+        "durability": "transient_local",
+        "depth": 1
+      }
+    },
+    {
+      "kind": "clock",
+      "source": "/clock",
+      "destination": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/clock",
+      "type": "rosgraph_msgs/msg/Clock",
+      "qos": {
+        "reliability": "reliable",
+        "durability": "volatile",
+        "depth": 20
+      }
+    },
+    {
+      "kind": "vehicle_odometry",
+      "source": "/fmu/out/vehicle_odometry",
+      "destination": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/vehicle_odometry",
+      "type": "px4_msgs/msg/VehicleOdometry",
+      "qos": {
+        "reliability": "best_effort",
+        "durability": "transient_local",
+        "depth": 20
+      }
+    },
+    {
+      "kind": "phase",
+      "source": "/tracking/flight_phase",
+      "destination": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/phase",
+      "type": "std_msgs/msg/String",
+      "qos": {
+        "reliability": "reliable",
+        "durability": "volatile",
+        "depth": 20
+      }
+    },
+    {
+      "kind": "selection",
+      "source": "/tracking/selection",
+      "destination": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/selection",
+      "type": "uav_tracking_interfaces/msg/TargetSelection",
+      "qos": {
+        "reliability": "reliable",
+        "durability": "volatile",
+        "depth": 20
+      }
+    }
+  ],
+  "edges": {
+    "detection": "/bench/humble54_pipeline_timing_bench01_person004_full01/edge/detection",
+    "state": "/bench/humble54_pipeline_timing_bench01_person004_full01/edge/state",
+    "command": "/bench/humble54_pipeline_timing_bench01_person004_full01/edge/command"
+  },
+  "remaps": {
+    "detector": {
+      "/camera/color/image_raw": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/rgb",
+      "/camera/aligned_depth_to_color/image_raw": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/depth",
+      "/camera/color/camera_info": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/camera_info",
+      "/tf": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/tf",
+      "/tf_static": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/tf_static",
+      "/clock": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/clock",
+      "/fmu/out/vehicle_odometry": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/vehicle_odometry",
+      "/tracking/flight_phase": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/phase",
+      "/tracking/selection": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/selection",
+      "/vehicle/odometry": "/bench/humble54_pipeline_timing_bench01_person004_full01/vehicle/odometry",
+      "/vehicle/odometry_timing": "/bench/humble54_pipeline_timing_bench01_person004_full01/diagnostic/odometry_timing",
+      "/tracking/observation_frames": "/bench/humble54_pipeline_timing_bench01_person004_full01/edge/detection",
+      "/tracking/navigation_state": "/bench/humble54_pipeline_timing_bench01_person004_full01/edge/state",
+      "/tracking/command": "/bench/humble54_pipeline_timing_bench01_person004_full01/edge/command",
+      "/tracking/flight_command": "/bench/humble54_pipeline_timing_bench01_person004_full01/edge/command",
+      "/tracking/observations": "/bench/humble54_pipeline_timing_bench01_person004_full01/unused/observations",
+      "/tracking/state": "/bench/humble54_pipeline_timing_bench01_person004_full01/unused/surface_state",
+      "/tracking/tracks": "/bench/humble54_pipeline_timing_bench01_person004_full01/diagnostic/tracks",
+      "/tracking/navigation_diagnostics": "/bench/humble54_pipeline_timing_bench01_person004_full01/diagnostic/navigation",
+      "/tracking/detection_diagnostics": "/bench/humble54_pipeline_timing_bench01_person004_full01/diagnostic/detection",
+      "/tracking/status": "/bench/humble54_pipeline_timing_bench01_person004_full01/diagnostic/controller_status",
+      "/fmu/in/trajectory_setpoint": "/bench/humble54_pipeline_timing_bench01_person004_full01/sink/trajectory_setpoint",
+      "/fmu/in/offboard_control_mode": "/bench/humble54_pipeline_timing_bench01_person004_full01/sink/offboard_control_mode",
+      "/fmu/out/vehicle_status_v1": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/status_no_publisher",
+      "/fmu/out/vehicle_command_ack": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/ack_no_publisher"
+    },
+    "estimator": {
+      "/camera/color/image_raw": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/rgb",
+      "/camera/aligned_depth_to_color/image_raw": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/depth",
+      "/camera/color/camera_info": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/camera_info",
+      "/tf": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/tf",
+      "/tf_static": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/tf_static",
+      "/clock": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/clock",
+      "/fmu/out/vehicle_odometry": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/vehicle_odometry",
+      "/tracking/flight_phase": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/phase",
+      "/tracking/selection": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/selection",
+      "/vehicle/odometry": "/bench/humble54_pipeline_timing_bench01_person004_full01/vehicle/odometry",
+      "/vehicle/odometry_timing": "/bench/humble54_pipeline_timing_bench01_person004_full01/diagnostic/odometry_timing",
+      "/tracking/observation_frames": "/bench/humble54_pipeline_timing_bench01_person004_full01/edge/detection",
+      "/tracking/navigation_state": "/bench/humble54_pipeline_timing_bench01_person004_full01/edge/state",
+      "/tracking/command": "/bench/humble54_pipeline_timing_bench01_person004_full01/edge/command",
+      "/tracking/flight_command": "/bench/humble54_pipeline_timing_bench01_person004_full01/edge/command",
+      "/tracking/observations": "/bench/humble54_pipeline_timing_bench01_person004_full01/unused/observations",
+      "/tracking/state": "/bench/humble54_pipeline_timing_bench01_person004_full01/unused/surface_state",
+      "/tracking/tracks": "/bench/humble54_pipeline_timing_bench01_person004_full01/diagnostic/tracks",
+      "/tracking/navigation_diagnostics": "/bench/humble54_pipeline_timing_bench01_person004_full01/diagnostic/navigation",
+      "/tracking/detection_diagnostics": "/bench/humble54_pipeline_timing_bench01_person004_full01/diagnostic/detection",
+      "/tracking/status": "/bench/humble54_pipeline_timing_bench01_person004_full01/diagnostic/controller_status",
+      "/fmu/in/trajectory_setpoint": "/bench/humble54_pipeline_timing_bench01_person004_full01/sink/trajectory_setpoint",
+      "/fmu/in/offboard_control_mode": "/bench/humble54_pipeline_timing_bench01_person004_full01/sink/offboard_control_mode",
+      "/fmu/out/vehicle_status_v1": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/status_no_publisher",
+      "/fmu/out/vehicle_command_ack": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/ack_no_publisher"
+    },
+    "controller": {
+      "/camera/color/image_raw": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/rgb",
+      "/camera/aligned_depth_to_color/image_raw": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/depth",
+      "/camera/color/camera_info": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/camera_info",
+      "/tf": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/tf",
+      "/tf_static": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/tf_static",
+      "/clock": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/clock",
+      "/fmu/out/vehicle_odometry": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/vehicle_odometry",
+      "/tracking/flight_phase": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/phase",
+      "/tracking/selection": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/selection",
+      "/vehicle/odometry": "/bench/humble54_pipeline_timing_bench01_person004_full01/vehicle/odometry",
+      "/vehicle/odometry_timing": "/bench/humble54_pipeline_timing_bench01_person004_full01/diagnostic/odometry_timing",
+      "/tracking/observation_frames": "/bench/humble54_pipeline_timing_bench01_person004_full01/edge/detection",
+      "/tracking/navigation_state": "/bench/humble54_pipeline_timing_bench01_person004_full01/edge/state",
+      "/tracking/command": "/bench/humble54_pipeline_timing_bench01_person004_full01/edge/command",
+      "/tracking/flight_command": "/bench/humble54_pipeline_timing_bench01_person004_full01/edge/command",
+      "/tracking/observations": "/bench/humble54_pipeline_timing_bench01_person004_full01/unused/observations",
+      "/tracking/state": "/bench/humble54_pipeline_timing_bench01_person004_full01/unused/surface_state",
+      "/tracking/tracks": "/bench/humble54_pipeline_timing_bench01_person004_full01/diagnostic/tracks",
+      "/tracking/navigation_diagnostics": "/bench/humble54_pipeline_timing_bench01_person004_full01/diagnostic/navigation",
+      "/tracking/detection_diagnostics": "/bench/humble54_pipeline_timing_bench01_person004_full01/diagnostic/detection",
+      "/tracking/status": "/bench/humble54_pipeline_timing_bench01_person004_full01/diagnostic/controller_status",
+      "/fmu/in/trajectory_setpoint": "/bench/humble54_pipeline_timing_bench01_person004_full01/sink/trajectory_setpoint",
+      "/fmu/in/offboard_control_mode": "/bench/humble54_pipeline_timing_bench01_person004_full01/sink/offboard_control_mode",
+      "/fmu/out/vehicle_status_v1": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/status_no_publisher",
+      "/fmu/out/vehicle_command_ack": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/ack_no_publisher"
+    },
+    "adapter": {
+      "/camera/color/image_raw": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/rgb",
+      "/camera/aligned_depth_to_color/image_raw": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/depth",
+      "/camera/color/camera_info": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/camera_info",
+      "/tf": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/tf",
+      "/tf_static": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/tf_static",
+      "/clock": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/clock",
+      "/fmu/out/vehicle_odometry": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/vehicle_odometry",
+      "/tracking/flight_phase": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/phase",
+      "/tracking/selection": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/selection",
+      "/vehicle/odometry": "/bench/humble54_pipeline_timing_bench01_person004_full01/vehicle/odometry",
+      "/vehicle/odometry_timing": "/bench/humble54_pipeline_timing_bench01_person004_full01/diagnostic/odometry_timing",
+      "/tracking/observation_frames": "/bench/humble54_pipeline_timing_bench01_person004_full01/edge/detection",
+      "/tracking/navigation_state": "/bench/humble54_pipeline_timing_bench01_person004_full01/edge/state",
+      "/tracking/command": "/bench/humble54_pipeline_timing_bench01_person004_full01/edge/command",
+      "/tracking/flight_command": "/bench/humble54_pipeline_timing_bench01_person004_full01/edge/command",
+      "/tracking/observations": "/bench/humble54_pipeline_timing_bench01_person004_full01/unused/observations",
+      "/tracking/state": "/bench/humble54_pipeline_timing_bench01_person004_full01/unused/surface_state",
+      "/tracking/tracks": "/bench/humble54_pipeline_timing_bench01_person004_full01/diagnostic/tracks",
+      "/tracking/navigation_diagnostics": "/bench/humble54_pipeline_timing_bench01_person004_full01/diagnostic/navigation",
+      "/tracking/detection_diagnostics": "/bench/humble54_pipeline_timing_bench01_person004_full01/diagnostic/detection",
+      "/tracking/status": "/bench/humble54_pipeline_timing_bench01_person004_full01/diagnostic/controller_status",
+      "/fmu/in/trajectory_setpoint": "/bench/humble54_pipeline_timing_bench01_person004_full01/sink/trajectory_setpoint",
+      "/fmu/in/offboard_control_mode": "/bench/humble54_pipeline_timing_bench01_person004_full01/sink/offboard_control_mode",
+      "/fmu/out/vehicle_status_v1": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/status_no_publisher",
+      "/fmu/out/vehicle_command_ack": "/bench/humble54_pipeline_timing_bench01_person004_full01/input/ack_no_publisher"
+    }
+  },
+  "replay_rate": 1.0,
+  "record_limit": null,
+  "probe": {
+    "path": "/mnt/d/基于yolo和卡尔曼滤波/tools/diagnostics/humble54_timing_capability_probe01/probe.py",
+    "sha256": "c7d0050cab71ce6a340c7fc5647531e92334029c8dc38b14393d2dc0058ae426"
+  }
+}

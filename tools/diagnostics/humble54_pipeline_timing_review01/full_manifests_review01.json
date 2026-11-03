@@ -1,0 +1,283 @@
+{
+  "schema_version": 1,
+  "status": "PASS_INDEPENDENT_SMALL_METADATA_REVIEW_NOT_NATIVE_OBSERVATION",
+  "created_utc": "2026-11-03T11:17:49.614873+00:00",
+  "reviewer": "/root/continuation06_preparation",
+  "fixed_runtime_map_sha256": "1992ccaa860bf129b80d3de30ec67d8ebf2baa1181efac79f711a9913a63dfd9",
+  "short_manifest_unchanged": true,
+  "prepared_files_sha256": {
+    "person004_full01.manifest.json": "01ad95480e337d25669ae7db17984ca2f4dc4c2a432a5d2673fbdb1abee97bb6",
+    "car004_full01.manifest.json": "7de7fa835f8d0824e5e22feea3fe98f2d78487e54e6c31164fd7bd3e13e2e3ba",
+    "small_bindings01.json": "7d35f0397d3242f45c0a68bd364721b14efee3154d17fec6575447750a8b19a2",
+    "preparation01.json": "5d06d4539bc297d27cb4f8d73a58becdf1b69be3d819cce7e542775bb9935293",
+    "README.md": "abc8ecf776f4558521afdd0d5cada01b50c6ea7186e8df5bc12a770dffb22b5a"
+  },
+  "all20_small_bindings_matched": true,
+  "original_binding_unique_count": 20,
+  "original_binding_unique_bytes": 580171,
+  "results": [
+    {
+      "category": "person",
+      "trial_id": "person_stage1_velocity_seed004",
+      "manifest_sha256": "01ad95480e337d25669ae7db17984ca2f4dc4c2a432a5d2673fbdb1abee97bb6",
+      "record_limit": null,
+      "selected_input_count": 50117,
+      "metadata_bag_duration_s": 752.5026787280001,
+      "nominal_watchdog_margin_s": 145.1973212719999,
+      "source_parameters_model_expectations_bound": true,
+      "native_executed": false
+    },
+    {
+      "category": "car",
+      "trial_id": "car_stage1_velocity_seed004",
+      "manifest_sha256": "7de7fa835f8d0824e5e22feea3fe98f2d78487e54e6c31164fd7bd3e13e2e3ba",
+      "record_limit": null,
+      "selected_input_count": 50117,
+      "metadata_bag_duration_s": 752.56154085,
+      "nominal_watchdog_margin_s": 145.13845914999996,
+      "source_parameters_model_expectations_bound": true,
+      "native_executed": false
+    }
+  ],
+  "record_limit_null_means": "All selected environment-input records, not a claim that every bag topic is replayed",
+  "watchdog_boundary": "900s nominally exceeds full original metadata duration plus2s drain+0.3s stability by about145s; child preflight, model loading, decompression and scheduling remain unmeasured. Metadata upper bound is not a successful timing proof. Master preflight, cleanup, final rehash and reduction are outside native watchdog. No timeout is extended.",
+  "payload_sha_scope": "Model/archive pins compared to original plan/integrity expectations only; no bag/model payload read or rehash",
+  "blocking_findings": [],
+  "actual_native_executions": 0,
+  "actual_latency_samples": 0,
+  "physical_e2e": "NOT_OBSERVED",
+  "historical_strict_changed": false,
+  "formal_admission": false,
+  "small_inputs_read": [
+    {
+      "path": "tools\\diagnostics\\humble54_pipeline_timing_bench01\\source_sha256_windows04.json",
+      "bytes": 619,
+      "sha256": "1992ccaa860bf129b80d3de30ec67d8ebf2baa1181efac79f711a9913a63dfd9"
+    },
+    {
+      "path": "tools\\diagnostics\\humble54_pipeline_timing_bench01\\bench.py",
+      "bytes": 30748,
+      "sha256": "69bf179f23b8e77fd443696ea24989286e0af72a17faccab223016805f33dd02"
+    },
+    {
+      "path": "tools\\diagnostics\\humble54_pipeline_timing_bench01\\observer.py",
+      "bytes": 17285,
+      "sha256": "8b447fd441790add9751571406ea50e7499b68de80b248e57d470de89a0b7417"
+    },
+    {
+      "path": "tools\\diagnostics\\humble54_pipeline_timing_bench01\\reducer.py",
+      "bytes": 14982,
+      "sha256": "628271811d1454b1521586cbe332d4d3636f24434ce783fb8f437a51edcb1351"
+    },
+    {
+      "path": "tools\\diagnostics\\humble54_pipeline_timing_bench01\\typed_message.py",
+      "bytes": 9146,
+      "sha256": "cf602133ba3f5aab5053e5dc79f7d57465eaf02b55dc504fac48c212ecae7fb3"
+    },
+    {
+      "path": "tools\\diagnostics\\humble54_pipeline_timing_bench01\\test_bench.py",
+      "bytes": 23078,
+      "sha256": "080ef365ca468a4ff1eb3ff95b37360742ddeb805c692c04fa6ac4518d6550f6"
+    },
+    {
+      "path": "tools\\diagnostics\\humble54_pipeline_timing_bench01\\README.md",
+      "bytes": 7052,
+      "sha256": "41de44bcc62e2b9365e27062477f31aa43d20a1399e418d634826cfef4678ca6"
+    },
+    {
+      "path": "tools\\diagnostics\\humble54_pipeline_timing_bench01\\person004_short01.manifest.json",
+      "bytes": 17519,
+      "sha256": "50eb91cfc5ad324715f54892316396bbe38a71a9ecc133fbab592bcb70f35ddf"
+    },
+    {
+      "path": "tools\\diagnostics\\humble54_pipeline_timing_bench01\\full_replay_manifests01\\prepared_files_sha256.json",
+      "bytes": 478,
+      "sha256": "e590a81ff4d759acbca3bcecbd7d170c12405104ed6a4fe29c4038893d424cca"
+    },
+    {
+      "path": "tools\\diagnostics\\humble54_pipeline_timing_bench01\\full_replay_manifests01\\person004_full01.manifest.json",
+      "bytes": 17405,
+      "sha256": "01ad95480e337d25669ae7db17984ca2f4dc4c2a432a5d2673fbdb1abee97bb6"
+    },
+    {
+      "path": "tools\\diagnostics\\humble54_pipeline_timing_bench01\\full_replay_manifests01\\car004_full01.manifest.json",
+      "bytes": 17061,
+      "sha256": "7de7fa835f8d0824e5e22feea3fe98f2d78487e54e6c31164fd7bd3e13e2e3ba"
+    },
+    {
+      "path": "tools\\diagnostics\\humble54_pipeline_timing_bench01\\full_replay_manifests01\\small_bindings01.json",
+      "bytes": 4969,
+      "sha256": "7d35f0397d3242f45c0a68bd364721b14efee3154d17fec6575447750a8b19a2"
+    },
+    {
+      "path": "tools\\diagnostics\\humble54_pipeline_timing_bench01\\full_replay_manifests01\\preparation01.json",
+      "bytes": 5157,
+      "sha256": "5d06d4539bc297d27cb4f8d73a58becdf1b69be3d819cce7e542775bb9935293"
+    },
+    {
+      "path": "tools\\diagnostics\\humble54_pipeline_timing_bench01\\full_replay_manifests01\\README.md",
+      "bytes": 2659,
+      "sha256": "abc8ecf776f4558521afdd0d5cada01b50c6ea7186e8df5bc12a770dffb22b5a"
+    },
+    {
+      "path": "tools\\diagnostics\\humble54_pipeline_timing_bench01\\full_replay_manifests01\\small_bindings01.json",
+      "bytes": 4969,
+      "sha256": "7d35f0397d3242f45c0a68bd364721b14efee3154d17fec6575447750a8b19a2"
+    },
+    {
+      "path": "tools\\diagnostics\\humble54_pipeline_timing_bench01\\source_sha256_windows04.json",
+      "bytes": 619,
+      "sha256": "1992ccaa860bf129b80d3de30ec67d8ebf2baa1181efac79f711a9913a63dfd9"
+    },
+    {
+      "path": "tools\\diagnostics\\humble54_pipeline_timing_bench01\\bench.py",
+      "bytes": 30748,
+      "sha256": "69bf179f23b8e77fd443696ea24989286e0af72a17faccab223016805f33dd02"
+    },
+    {
+      "path": "tools\\diagnostics\\humble54_pipeline_timing_bench01\\observer.py",
+      "bytes": 17285,
+      "sha256": "8b447fd441790add9751571406ea50e7499b68de80b248e57d470de89a0b7417"
+    },
+    {
+      "path": "tools\\diagnostics\\humble54_pipeline_timing_bench01\\reducer.py",
+      "bytes": 14982,
+      "sha256": "628271811d1454b1521586cbe332d4d3636f24434ce783fb8f437a51edcb1351"
+    },
+    {
+      "path": "tools\\diagnostics\\humble54_pipeline_timing_bench01\\typed_message.py",
+      "bytes": 9146,
+      "sha256": "cf602133ba3f5aab5053e5dc79f7d57465eaf02b55dc504fac48c212ecae7fb3"
+    },
+    {
+      "path": "tools\\diagnostics\\humble54_pipeline_timing_bench01\\test_bench.py",
+      "bytes": 23078,
+      "sha256": "080ef365ca468a4ff1eb3ff95b37360742ddeb805c692c04fa6ac4518d6550f6"
+    },
+    {
+      "path": "tools\\diagnostics\\humble54_pipeline_timing_bench01\\README.md",
+      "bytes": 7052,
+      "sha256": "41de44bcc62e2b9365e27062477f31aa43d20a1399e418d634826cfef4678ca6"
+    },
+    {
+      "path": "tools\\diagnostics\\humble54_pipeline_timing_bench01\\person004_short01.manifest.json",
+      "bytes": 17519,
+      "sha256": "50eb91cfc5ad324715f54892316396bbe38a71a9ecc133fbab592bcb70f35ddf"
+    },
+    {
+      "path": "results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\plan.json",
+      "bytes": 207807,
+      "sha256": "ed88783162991c151ab3d537d4eb7d3546b3688339a06db6f35b7f2ef7c48d4b"
+    },
+    {
+      "path": "tools\\diagnostics\\humble54_timing_capability_probe01\\probe.py",
+      "bytes": 40007,
+      "sha256": "c7d0050cab71ce6a340c7fc5647531e92334029c8dc38b14393d2dc0058ae426"
+    },
+    {
+      "path": "results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\slots\\person_stage1_velocity_seed004.json",
+      "bytes": 54283,
+      "sha256": "77d22a38c34ffae598063fd14d5520824d20c7ac9194f691ab051d26b6967291"
+    },
+    {
+      "path": "results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage1_velocity_seed004\\bag_integrity.json",
+      "bytes": 4981,
+      "sha256": "10b98d48f6469f612b97876091d73ea2cdb15158be0ffc9834ea70a01a22af65"
+    },
+    {
+      "path": "results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage1_velocity_seed004\\recording_closure.json",
+      "bytes": 27252,
+      "sha256": "c865a2fa5e059a4a21cfba1a879658eebb4fc90cc32298d0c11baff8e2a7e0e1"
+    },
+    {
+      "path": "results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage1_velocity_seed004\\configuration\\runtime_parameters.yaml",
+      "bytes": 4616,
+      "sha256": "8937ee52a801d5352e2f7bc54dd56d054dc2cda66ea2b9cb26ba6743ec3d6bb2"
+    },
+    {
+      "path": "results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage1_velocity_seed004\\rosbag\\metadata.yaml",
+      "bytes": 16893,
+      "sha256": "fbcb4b8fa4a9c6d35b28ca6a0ff3b4254cbd25b2eb61e8b06bdaba943c604640"
+    },
+    {
+      "path": "results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\slots\\car_stage1_velocity_seed004.json",
+      "bytes": 54346,
+      "sha256": "81aa5f0e41c99d7cd6f603fb2d52345fed11e5030a8e9fab856ccfd56da226c9"
+    },
+    {
+      "path": "results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_car_stage1_velocity_seed004\\bag_integrity.json",
+      "bytes": 4977,
+      "sha256": "c694e191705f2718d939911e589a2d73574c3345391acd03b196f0ad9312c2f6"
+    },
+    {
+      "path": "results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_car_stage1_velocity_seed004\\recording_closure.json",
+      "bytes": 22928,
+      "sha256": "de5a5eb76dadacd0086be0f75093b486fb52fdfb9b60b81adac6e32af196ad0d"
+    },
+    {
+      "path": "results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_car_stage1_velocity_seed004\\configuration\\runtime_parameters.yaml",
+      "bytes": 4759,
+      "sha256": "e3a1608fffb1a13a5e5034c2c2ca95614ad5f7f45997b4b0080c673c929b4405"
+    },
+    {
+      "path": "results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_car_stage1_velocity_seed004\\rosbag\\metadata.yaml",
+      "bytes": 16893,
+      "sha256": "34938421107c2cb2d997e414fe9dea50d6b7eea89a451c4efebafdc0aace7cdc"
+    },
+    {
+      "path": "tools\\diagnostics\\humble54_pipeline_timing_bench01\\full_replay_manifests01\\preparation01.json",
+      "bytes": 5157,
+      "sha256": "5d06d4539bc297d27cb4f8d73a58becdf1b69be3d819cce7e542775bb9935293"
+    },
+    {
+      "path": "results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\plan.json",
+      "bytes": 207807,
+      "sha256": "ed88783162991c151ab3d537d4eb7d3546b3688339a06db6f35b7f2ef7c48d4b"
+    },
+    {
+      "path": "tools\\diagnostics\\humble54_pipeline_timing_bench01\\person004_short01.manifest.json",
+      "bytes": 17519,
+      "sha256": "50eb91cfc5ad324715f54892316396bbe38a71a9ecc133fbab592bcb70f35ddf"
+    },
+    {
+      "path": "tools\\diagnostics\\humble54_pipeline_timing_bench01\\full_replay_manifests01\\person004_full01.manifest.json",
+      "bytes": 17405,
+      "sha256": "01ad95480e337d25669ae7db17984ca2f4dc4c2a432a5d2673fbdb1abee97bb6"
+    },
+    {
+      "path": "results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\slots\\person_stage1_velocity_seed004.json",
+      "bytes": 54283,
+      "sha256": "77d22a38c34ffae598063fd14d5520824d20c7ac9194f691ab051d26b6967291"
+    },
+    {
+      "path": "results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage1_velocity_seed004\\bag_integrity.json",
+      "bytes": 4981,
+      "sha256": "10b98d48f6469f612b97876091d73ea2cdb15158be0ffc9834ea70a01a22af65"
+    },
+    {
+      "path": "results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_person_stage1_velocity_seed004\\rosbag\\metadata.yaml",
+      "bytes": 16893,
+      "sha256": "fbcb4b8fa4a9c6d35b28ca6a0ff3b4254cbd25b2eb61e8b06bdaba943c604640"
+    },
+    {
+      "path": "tools\\diagnostics\\humble54_pipeline_timing_bench01\\full_replay_manifests01\\car004_full01.manifest.json",
+      "bytes": 17061,
+      "sha256": "7de7fa835f8d0824e5e22feea3fe98f2d78487e54e6c31164fd7bd3e13e2e3ba"
+    },
+    {
+      "path": "results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\slots\\car_stage1_velocity_seed004.json",
+      "bytes": 54346,
+      "sha256": "81aa5f0e41c99d7cd6f603fb2d52345fed11e5030a8e9fab856ccfd56da226c9"
+    },
+    {
+      "path": "results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_car_stage1_velocity_seed004\\bag_integrity.json",
+      "bytes": 4977,
+      "sha256": "c694e191705f2718d939911e589a2d73574c3345391acd03b196f0ad9312c2f6"
+    },
+    {
+      "path": "results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_car_stage1_velocity_seed004\\rosbag\\metadata.yaml",
+      "bytes": 16893,
+      "sha256": "34938421107c2cb2d997e414fe9dea50d6b7eea89a451c4efebafdc0aace7cdc"
+    }
+  ]
+}
