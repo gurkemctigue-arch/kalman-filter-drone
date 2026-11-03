@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "scope": "THIN_OWNER_OF_UNCHANGED_NORMAL_V4_RUNNER",
+  "status": "STOPPED_FAULT",
+  "owner": {
+    "pid": 134468,
+    "invocation_started_utc": "2026-11-03T01:15:25.085027+00:00",
+    "invocation_started_monotonic_s": 78374.351573468,
+    "ppid": 134464,
+    "pgid": 134468,
+    "session": 134468,
+    "start_ticks": 7830987,
+    "clock_ticks_per_s": 100,
+    "boot_id": "f79204a4-99cd-42cf-b886-aa905b1cac6a",
+    "creation_identity_scope": "LINUX_PROC_START_TICKS_AND_BOOT_ID"
+  },
+  "policy": "extension",
+  "plan": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_matrix/plan.json",
+  "plan_file_sha256": "f32fb17a77670f5c774076ff9bf4b752b3e91eea4f28021efb826ed9b8520055",
+  "plan_sha256": "ded5ab19b72f53c932cbea2044561a4e2fe937445cb07eb9525e9e0be5fc9761",
+  "source_hashes": {
+    "scripts/run_reliability_v4.py": "069c7c519d5b0305c087f8ad2597a2c709b367cc6c62624bbb686c9a0d158e11",
+    "scripts/run_reliability_v4_batch.py": "8d0701596a846f4b8cf6ea008ecf5fac04f885c22d951a3f501f67be99b852c4"
+  },
+  "started_this_invocation": 3,
+  "active_slot": null,
+  "all_engineering_pass": false,
+  "claim_boundary": "COMPLETED means batch processing ended, never all slots passed; original records and unknown intervals remain authoritative",
+  "heartbeat_utc": "2026-11-03T02:17:27.669614+00:00",
+  "heartbeat_monotonic_s": 82096.936132448,
+  "event_sequence": 752,
+  "planned_count": 16,
+  "status_counts": {
+    "PASS": 2,
+    "INCOMPLETE_EVIDENCE": 1,
+    "PENDING": 13
+  },
+  "pending_ids": [
+    "person_extension_latency_seed004",
+    "person_extension_combined_seed004",
+    "person_extension_speed_changes_velocity_seed004",
+    "person_extension_speed_changes_position_seed004",
+    "person_extension_far_distance_seed004",
+    "car_extension_depth_noise_seed004",
+    "car_extension_depth_holes_seed004",
+    "car_extension_dropout_seed004",
+    "car_extension_latency_seed004",
+    "car_extension_combined_seed004",
+    "car_extension_speed_changes_velocity_seed004",
+    "car_extension_speed_changes_position_seed004",
+    "car_extension_far_distance_seed004"
+  ],
+  "all_slots_terminal": false,
+  "invocation_number": 3,
+  "normal_max_new_trials": 1,
+  "normal_result": {
+    "started_this_invocation": 1,
+    "stop": null,
+    "plan_sha256": "ded5ab19b72f53c932cbea2044561a4e2fe937445cb07eb9525e9e0be5fc9761",
+    "mode": "EXTENSION_PROBE",
+    "planned_count": 16,
+    "status_counts": {
+      "PASS": 2,
+      "INCOMPLETE_EVIDENCE": 1,
+      "PENDING": 13
+    },
+    "terminal_count": 3,
+    "all_engineering_pass": false,
+    "exit_code_semantics": "Run exit zero means no orchestration/infrastructure stop; inspect all_engineering_pass and every terminal result separately.",
+    "pending_ids": [
+      "person_extension_latency_seed004",
+      "person_extension_combined_seed004",
+      "person_extension_speed_changes_velocity_seed004",
+      "person_extension_speed_changes_position_seed004",
+      "person_extension_far_distance_seed004",
+      "car_extension_depth_noise_seed004",
+      "car_extension_depth_holes_seed004",
+      "car_extension_dropout_seed004",
+      "car_extension_latency_seed004",
+      "car_extension_combined_seed004",
+      "car_extension_speed_changes_velocity_seed004",
+      "car_extension_speed_changes_position_seed004",
+      "car_extension_far_distance_seed004"
+    ],
+    "scope": "Independent 160-slot post-repair condition extensions; paired reference IDs are core-plan slots, not additional core successes."
+  },
+  "changed_original_slot_ids": [
+    "person_extension_dropout_seed004"
+  ],
+  "completed_slot": "person_extension_depth_holes_seed004",
+  "original_slot_status": "PASS",
+  "finished_utc": "2026-11-03T02:17:27.669583+00:00",
+  "reason": "non_algorithm_terminal_status:INCOMPLETE_EVIDENCE",
+  "stopped_slot": "person_extension_dropout_seed004"
+}

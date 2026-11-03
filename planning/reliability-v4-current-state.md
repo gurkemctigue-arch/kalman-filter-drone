@@ -1,5 +1,9 @@
 # 当前工作交接（持续开发，非验收报告）
 
+**2026-11-03 10:31（北京时间）当前快照：原扩展计划以新 normal CLI 单槽续跑，4 START、3 个原终态（2 PASS、1 INCOMPLETE_EVIDENCE）、12 个未尝试槽；正式仍 0/280。** 本次 `--max-new-trials 1` 仅执行下一个 PENDING 通信延迟槽，实际 START 为 `2026-11-03T02:25:24.728624Z`，没有重试或改判第三场 dropout。其短窗证据冲突仍待最小修复。新[监督进度](../results/project_progress/humble54_extension_supervised02/index.html)使用旧 owner 历史观测拷贝及新 START marker，属于派生观察，不是新 owner 或准入；精确进程/session 及 receipt05 见[执行记录](reliability-v4-execution-20261103.md)。
+
+原 owner 保持 `STOPPED_FAULT`，原等待器保持 `STOPPED_REFUSED_NO_RETRY` / `followon_launched=false`，句柄已关闭，不再等待自动续接。每个新槽结束后先核原终态与安全证据，再决定下一槽；后续容量、导出及定标需另用新 CLI，目前未由此启动。以下较早“当前/运行中/等待器”段落全部保留为历史检查点，不覆盖本段状态。
+
 **2026-11-03 09:44（北京时间）检查点：Humble54 扩展 16 正在运行，2 场 START、1 场原始 PASS、14 场未开始；正式仍为 0/280。** 09:44:07 的进度 JSON 为 `RUNNING`，Windows 命令与监控器的创建身份和心跳核验通过；当前为 `person_extension_depth_holes_seed004`。首场深度噪声于 09:38:26 记录原始工程 PASS，距离/高度 RMSE 为 0.757915/0.161986 m，末端持续稳定均通过，navigation 的 `RECORDED_WITH_CENSORED_FAILURES` 不改写。见[首场原件与核验](../tools/experiment_orchestration/humble54_extension_first01/README.md)、[扩展实时进度](../results/project_progress/humble54_extension16_run01/index.html)及[执行记录与身份绑定](reliability-v4-execution-20261103.md)。[核心 12/12](../tools/experiment_orchestration/humble54_core12_closed01/README.md)及[独立安全 03 四场](../tools/experiment_orchestration/humble54_safety4_closed03/README.md)原始工程 PASS 已闭合，旧安全 01、02 失败不变。扩展其余场景、28 格容量、两类指定开发录包导出与 R0 定标、最终来源冷构建及正式准入、280 次重复实验和统计交付仍须各自完成。
 
 后续等待器 PID 28932、creation FILETIME `134381434621456534` 已实际启动；09:44:04 为 `WAITING_FOR_EXTENSION`、`followon_launched=false`，持有原 monitor 19256 与 WSL 4888 的精确创建身份。仅在原扩展进程退出、闭合与空闲条件满足后，有条件执行元数据预检、空闲检查、源码暂存、28 格统计、物理卷清单采集、两类导出和 R0；未创建正式准入或正式飞行。见[实际启动原件](../tools/experiment_orchestration/humble54_closed_followon01/manifest.json)。[final55 源码暂存说明](reliability-v4-final55-source-staging.md)仍不能当作实际准入收据。

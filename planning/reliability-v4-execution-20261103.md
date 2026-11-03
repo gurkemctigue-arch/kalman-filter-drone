@@ -2,6 +2,18 @@
 
 本记录是执行检查点，不是全项目验收报告。用户已授权继续修复、仿真、统计、交付及 GitHub 同步。正式研究仍为 **0/280**。
 
+**10:31（北京时间）实际单槽续跑：原计划已有 4 START、3 个原终态（2 PASS、1 INCOMPLETE_EVIDENCE）、12 个未尝试槽。** 新 normal CLI 使用 `--max-new-trials 1`，仅执行原计划下一个 PENDING 通信延迟槽；实际 START 为 `2026-11-03T02:25:24.728624Z`，不重试第三场 dropout，不改其缺证判定。新[监督进度页](../results/project_progress/humble54_extension_supervised02/index.html)使用拷贝的旧 owner 历史观测及实际新 START marker 派生观察，不是新 owner、准入或扩展全批通过证明。
+
+本次 Windows monitor owned child 为 PID **16816** / creation FILETIME `134381463176279356`，WSL 命令为 PID **18688** / FILETIME `134381463178057290`，unified-exec session **95312**；独立 watch session **1323**。新临时防休眠 observer PID **51192**，`power_owner54/receipt05/state.json` 为 `ACTIVE`，不改全局电源策略。当前槽结束后须先核新原终态及安全证据，才决定下一个 PENDING 槽；未授权用自动重试覆盖旧缺证。
+
+旧 owner 的 `STOPPED_FAULT`、原 monitor/WSL 退出 2，以及原等待器 `STOPPED_REFUSED_NO_RETRY` / `followon_launched=false` 均保持原样。`followon01` 不会被复用或伪记为 `COMPLETED`；后续容量、导出及定标需按实际条件使用新的 CLI，目前未由此续跑启动。短窗证据冲突仍待最小修复，正式仍 **0/280**。下方 **10:17 及更早段落均为历史检查点**。
+
+**10:17:32（北京时间）实际终态：扩展批次已停止，2 PASS、1 INCOMPLETE_EVIDENCE、13 PENDING。** 第三场 `person_extension_dropout_seed004` 原判为 `INCOMPLETE_EVIDENCE`，owner 为 `STOPPED_FAULT`，原 Windows monitor/WSL 命令均退出 2；不能继续按下方 RUNNING 描述判断。约 **31.3–31.58 s** 的短遮挡观察窗被 seed004 两个 **200 ms** 的检测掉帧窗完整覆盖，该短窗诊断样本为 **0**，原 `interruption` 为 **null**。原判和缺证保留，尚待最小修复；没有把 null 改成零或普通算法压力 FAIL。
+
+有条件等待器已终止于 `STOPPED_REFUSED_NO_RETRY`，`followon_launched=false`，所持原进程句柄已关闭，**自动续接已不再等待**，未运行原生 follow-on。root 另行实际调用既有 `native_idle02`，返回 `matching_processes=[]`、退出 0；该调用没有单独原始回执，不构成新审计或后续八步已运行的证据。当前仅在决定是否继续执行原计划剩余 **13 个 PENDING 槽且不重试第三槽**，尚未启动续跑；源码暂存、28 格容量测量、导出/R0 定标及正式准入均不能提前记为完成。正式仍 **0/280**。
+
+以下 **10:02 及更早段落、带“当前/运行中/已等待”字样的旧章节均为历史检查点**，保留原文供追溯，不是继续启动旧进程或后续任务的指令。
+
 **10:02（北京时间）接续观察：扩展已为 2 个原始 PASS，第三场 `person_extension_dropout_seed004` 正在执行。** 第二场 `person_extension_depth_holes_seed004` 于 `01:59:49.833276 UTC` 记录 `PASS / COMPLETED`、非基础设施停止、flight exit 0；距离/高度 RMSE 为 0.752211/0.165787 m、导航有效覆盖 0.916223、真值覆盖 1.0，六项工程检查均为 true。其原终态文件为 55,135 字节，文件 SHA256 `8b1bf279e500a882edaf04cefba5f962f288d89e02023d8c882b8ce35fddfe09`；内部 `record_sha256` 为 `b86c7ad707dca76b207867cbebdf68e7a23db923386324d864570ab1da884082`，两者不混用。第三场 START 为 `01:59:53.488846 UTC`；`02:02:21 UTC` 进度仍 RUNNING。另行实际 Windows 进程查询核对原 monitor 19256、WSL 4888、waiter 28932 的创建 FILETIME 均未变，未启动并行原生任务。下面 09:44 及更早段落保留其当时含义，不将其旧计数视作当前结果。
 
 **09:44（北京时间）实际检查点：扩展 16 正在运行，2 START、1 原始 PASS、14 未开始。** 重新读取的进度生成于 `2026-11-03T01:44:07.757396+00:00`，状态 `RUNNING`，命令与监控器的创建身份及新鲜心跳核验通过；当前为 `person_extension_depth_holes_seed004`，其 START 为 `01:38:29.546129 UTC`。首场深度噪声已于 `01:38:26.893766 UTC` 记录原始工程 PASS，未预记其余场景。核心 12/12 与安全 03 四场原始工程 PASS 均已闭合，正式仍为 0/280。

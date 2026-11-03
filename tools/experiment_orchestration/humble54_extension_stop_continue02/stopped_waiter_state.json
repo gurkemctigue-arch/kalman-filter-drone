@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "started_utc": "2026-11-03T01:37:42.835299+00:00",
+  "pid": 28932,
+  "status": "STOPPED_REFUSED_NO_RETRY",
+  "followon_launched": false,
+  "extension_handles": {
+    "monitor": {
+      "pid": 19256,
+      "creation_filetime": 134381420603083387
+    },
+    "wsl": {
+      "pid": 4888,
+      "creation_filetime": 134381420604764583
+    }
+  },
+  "unified_exec_session_context": 29911,
+  "session_context_source": "Operator/tool handoff; absent from original monitor schema",
+  "global_power_policy_changed": false,
+  "automatic_retry": false,
+  "formal_admission_created": false,
+  "new_flight_started": false,
+  "exact_kernel_handles_acquired_utc": "2026-11-03T01:37:42.867803+00:00",
+  "pins": {
+    "waiter": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\wait_humble54_extension_followon01.py",
+      "sha256": "86ecaa7a788761259dadff87979ced75ae1e82366c068abb85bcdacbd8332610"
+    },
+    "monitor": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\scripts\\monitor_project_progress.py",
+      "sha256": "759136d0eda40bb3a61c9e30e0272e1f6b8810b351dbe4c75dc17db5951bfd98"
+    },
+    "shell": {
+      "path": "D:\\WSL\\UAVHumble22-validation\\run_humble54_closed_followon01.sh",
+      "sha256": "124c6d4e0474ce9d1047e56208352e983bf9a21b1f2c4215461d60d6a4e3570b"
+    }
+  },
+  "sleep_request": {
+    "accepted_utc": "2026-11-03T01:37:42.875812+00:00",
+    "return_value": 2147483648,
+    "scope": "TEMPORARY_SYSTEM_SLEEP_REQUEST_ONLY",
+    "release_return_value": 2147483649,
+    "released_utc": "2026-11-03T02:17:32.658079+00:00"
+  },
+  "heartbeat_utc": "2026-11-03T02:17:32.655071+00:00",
+  "original_handle_exit_codes": {
+    "monitor": 2,
+    "wsl": 2
+  },
+  "finished_utc": "2026-11-03T02:17:32.657126+00:00",
+  "error": {
+    "type": "ValueError",
+    "message": "Exact original processes did not both exit 0"
+  },
+  "child_may_continue": false,
+  "handle_close_results": [
+    true,
+    true
+  ],
+  "handles_close_attempted_utc": "2026-11-03T02:17:32.658079+00:00"
+}

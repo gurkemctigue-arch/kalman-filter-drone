@@ -1,5 +1,7 @@
 # RGB-D UAV target tracking and following
 
+**2026-11-03 10:31（北京时间）检查点：原扩展计划已用新 normal CLI 单槽续跑，当前 4 START、3 个原终态（2 PASS、1 INCOMPLETE_EVIDENCE）、12 个未尝试槽，正式仍 0/280。** 本次仅以 `--max-new-trials 1` 执行下一个 PENDING 通信延迟槽，实际 START 为 10:25:24.728624；第三场 dropout 的缺证原判保留，未重试、未修复完成。新[监督进度页](results/project_progress/humble54_extension_supervised02/index.html)由旧 owner 历史观测与新 START marker 派生，不是新 owner 或准入。原 owner 仍 `STOPPED_FAULT`，原等待器已 `STOPPED_REFUSED_NO_RETRY`、不再等待或启动后续；当前槽结束须核原终态和安全证据后再决定下一槽。容量、导出和定标尚未由此启动，见[实际执行与身份绑定](planning/reliability-v4-execution-20261103.md)。下方较早运行中描述均为历史检查点。
+
 **2026-11-03 09:44（北京时间）检查点：Humble54 扩展 16 正在运行，2 场 START、1 场原始 PASS、14 场未开始；正式研究仍为 0/280。** 09:44:07 的实际进度为 `RUNNING`，命令与监控器的创建身份及新鲜心跳核验通过；当前为 `person_extension_depth_holes_seed004`。首场深度噪声于 09:38:26 记录原始工程 PASS，距离/高度 RMSE 为 0.757915/0.161986 m，末端持续稳定均通过；navigation 原状态 `RECORDED_WITH_CENSORED_FAILURES` 保留。查看[首场原件与哈希](tools/experiment_orchestration/humble54_extension_first01/README.md)、[扩展 16 实时进度](results/project_progress/humble54_extension16_run01/index.html)及[本轮执行记录](planning/reliability-v4-execution-20261103.md)。[核心 12/12](tools/experiment_orchestration/humble54_core12_closed01/README.md)和[独立安全 03 四场](tools/experiment_orchestration/humble54_safety4_closed03/README.md)原始工程 PASS 均已闭合。
 
 后续等待器已实际启动，09:44:04 仍为 `WAITING_FOR_EXTENSION`、`followon_launched=false`。它等待原扩展进程退出并核验闭合，再有条件执行元数据预检、空闲检查、源码暂存、28 格容量统计、物理卷清单采集、两类指定开发录包导出及 R0 定标；当前没有开启这些后续原生工作，也没有创建正式准入或正式飞行。见[实际准备与启动原件](tools/experiment_orchestration/humble54_closed_followon01/manifest.json)。

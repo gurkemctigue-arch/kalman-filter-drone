@@ -1,5 +1,9 @@
 # 查看当前实验
 
+**2026-11-03 10:31（北京时间）实际检查点：新 normal CLI 正在原计划中单独执行下一个 PENDING 通信延迟槽，4 START、3 个原终态（2 PASS、1 INCOMPLETE_EVIDENCE）、12 个未尝试槽；正式仍 0/280。** 本次使用 `--max-new-trials 1`，实际 START 为 10:25:24.728624，第三场 dropout 不重试、缺证未解决。请打开新的[监督进度页](../results/project_progress/humble54_extension_supervised02/index.html)；其事件来自旧 owner 历史观测的拷贝及实际新 START marker，仅为派生观察，不是新 owner、准入或通过结论。
+
+旧 owner 仍 `STOPPED_FAULT`，旧等待器已 `STOPPED_REFUSED_NO_RETRY`、`followon_launched=false` 且句柄关闭，不再等待自动续接。新槽结束须先核原终态和安全证据，再决定下一 PENDING 槽；后续容量/导出/定标须另用新 CLI，当前未启动。当前进程身份、session 与临时防休眠 receipt05 见[执行记录](../planning/reliability-v4-execution-20261103.md)。以下 09:44 及更早块中的“当前/等待”均保留为历史描述。
+
 **2026-11-03 09:44（北京时间）检查点：Humble54 扩展 16 正在运行，2 场 START、1 场原始 PASS、14 场未开始；正式研究仍为 0/280。** 09:44:07 的进度 JSON 为 `RUNNING`，命令与监控器的创建身份和新鲜心跳核验通过；当前槽为 `person_extension_depth_holes_seed004`。首场深度噪声于 09:38:26 记录原始工程 PASS，距离/高度 RMSE 为 0.757915/0.161986 m，两项末端持续稳定通过；navigation 原报告的 `RECORDED_WITH_CENSORED_FAILURES` 保留。核心 12/12 与独立安全 03 的四场原始工程 PASS 均已闭合；扩展整批尚未结束。
 
 实际启动的后续等待器在 09:44:04 仍为 `WAITING_FOR_EXTENSION`，`followon_launched=false`。它先等待原扩展进程退出并核验闭合，再有条件执行八步后续工作；当前未启动后续原生工作、未创建正式准入或正式飞行。其原始启动与等待快照见[准备归档](../tools/experiment_orchestration/humble54_closed_followon01/manifest.json)，具体步骤见[执行记录](../planning/reliability-v4-execution-20261103.md)。
