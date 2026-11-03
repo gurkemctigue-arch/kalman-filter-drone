@@ -38,6 +38,8 @@ The later [recorded-stream reconciliation](early_loss_input_evidence01/actual_de
 
 These are recorded-message presence/absence observations. A reader's latest clock is not a precise callback receipt time. This post-hoc early-loss window cannot replace the fixed four-slot short-shutter input attachment, and it does not change the original FAIL.
 
+The [actual input-gap timeline](actual_input_gap.png) and [PDF](actual_input_gap.pdf) plot the archived source keys alongside recorded diagnostic completion times and the original source-age deadline. `actual_input_gap_plot_receipt.json` binds all three small inputs and both output bytes. Root directly inspected the PNG. `plot_actual_input_gap.py` never reads a bag or changes an evaluator.
+
 The original terminal navigation evaluator reports RECORDED_WITH_CENSORED_FAILURES. Its top engineering negative evaluator is surface_flight. The distance-RMSE threshold exceedance is an additional diagnostic comparison against the unchanged frozen plan, not a rewritten terminal result.
 
 Input hashes, exact event payloads, numerical reconciliation and preserved original acceptance are in phase_decomposition.json.
