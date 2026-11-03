@@ -1,0 +1,267 @@
+{
+  "schema_version": 1,
+  "status": "PREPARED_TWO_FIXED_CLOSED_DEVELOPMENT_SOURCE_BINDINGS_NOT_PAYLOAD_RECHECKED",
+  "created_utc": "2026-11-03T10:36:28.034482+00:00",
+  "preparation_scope": "Windows original small metadata only. No native execution, archive/model read, compression, decompression or old archive mutation. Payload SHA and size are original integrity expectations and must be actually checked only after --execute + lock + idle.",
+  "sources": [
+    {
+      "id": "car_stage1_velocity_seed004",
+      "name": "reliability_v4_humble54_core12_probe01_car_stage1_velocity_seed004",
+      "plan": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/plan.json",
+      "terminal": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/car_stage1_velocity_seed004.json",
+      "original_run_directory": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_core12_probe01_car_stage1_velocity_seed004",
+      "published_directory": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage1_velocity_seed004",
+      "frozen_root": "/root/uav_tracking_fullplan_v4_humble54",
+      "original_status": "PASS",
+      "small_inputs": [
+        {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/plan.json",
+          "sha256": "ed88783162991c151ab3d537d4eb7d3546b3688339a06db6f35b7f2ef7c48d4b"
+        },
+        {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/car_stage1_velocity_seed004.json",
+          "sha256": "81aa5f0e41c99d7cd6f603fb2d52345fed11e5030a8e9fab856ccfd56da226c9"
+        },
+        {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage1_velocity_seed004/bag_integrity.json",
+          "sha256": "c694e191705f2718d939911e589a2d73574c3345391acd03b196f0ad9312c2f6"
+        },
+        {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage1_velocity_seed004/recording_closure.json",
+          "sha256": "de5a5eb76dadacd0086be0f75093b486fb52fdfb9b60b81adac6e32af196ad0d"
+        },
+        {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage1_velocity_seed004/run_config.json",
+          "sha256": "9ef091596fd1207844974bd4aac7f1fab677f26f73564df5b84202038fb2fca9"
+        },
+        {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage1_velocity_seed004/rosbag/metadata.yaml",
+          "sha256": "34938421107c2cb2d997e414fe9dea50d6b7eea89a451c4efebafdc0aace7cdc"
+        },
+        {
+          "path": "/root/uav_tracking_fullplan_v4_humble54/scripts/evaluate_stage1_flight.py",
+          "sha256": "655cf6fc7c0cc2a954db7d06d2fbb00a000f2fca80ba0930d153025e28efb7c1"
+        },
+        {
+          "path": "/root/uav_tracking_fullplan_v4_humble54/uav_tracking/recording_archive.py",
+          "sha256": "a68686d09109fcb8599160b862f5ad563b7261c988c6557056b2e3e5be0287a4"
+        }
+      ],
+      "metadata_sha256": "34938421107c2cb2d997e414fe9dea50d6b7eea89a451c4efebafdc0aace7cdc",
+      "raw_validation": {
+        "status": "PASS",
+        "metadata_sha256": "35359d4f9ee647bdf9df4e361ac57336ac796ceb9c72fd465091a3b3e446d6ae",
+        "message_count": 155847,
+        "topic_counts": {
+          "/tracking/observation_frames": 747,
+          "/tracking/detection_diagnostics": 919,
+          "/tf_static": 1,
+          "/tracking/navigation_state": 4507,
+          "/tracking/selection": 1,
+          "/tracking/status": 1854,
+          "/vehicle/odometry": 9218,
+          "/tracking/flight_command": 1854,
+          "/fmu/in/offboard_control_mode": 4637,
+          "/tracking/tracks": 4507,
+          "/fmu/in/vehicle_command": 4,
+          "/tracking/supervisor_diagnostics": 752,
+          "/fmu/out/vehicle_odometry": 9218,
+          "/camera/color/camera_info": 927,
+          "/camera/aligned_depth_to_color/image_raw": 927,
+          "/fmu/out/vehicle_local_position_v1": 4610,
+          "/fmu/out/vehicle_command_ack": 6,
+          "/fmu/in/trajectory_setpoint": 4637,
+          "/tf": 9218,
+          "/camera/color/image_raw": 927,
+          "/fmu/out/estimator_status_flags": 103,
+          "/tracking/flight_phase": 1854,
+          "/fmu/out/vehicle_status_v1": 201,
+          "/tracking/navigation_diagnostics": 4507,
+          "/tracking/observations": 716,
+          "/tracking/state": 4507,
+          "/vehicle/odometry_timing": 9218,
+          "/ground_truth/poses": 23186,
+          "/clock": 27044,
+          "/tracking/command": 1854,
+          "/ground_truth/vehicle_poses": 23186
+        },
+        "files": [
+          {
+            "path": "rosbag_0.db3",
+            "bytes": 2130182144,
+            "sha256": "03c89b08a620a6a63d14a69ad57fd626f2b10772a4317651ad9e2891cf6eb988",
+            "message_count": 155847,
+            "first_timestamp_ns": 1793655145166970841,
+            "last_timestamp_ns": 1793655897728511691,
+            "sqlite_integrity": "ok"
+          }
+        ]
+      },
+      "compressed_files": [
+        {
+          "path": "rosbag_0.db3.zstd",
+          "sha256": "69059ccdb8fd9b451cb39ed20ad2994037238539a268b6c080c769ea9f0c093b",
+          "bytes": 483046379,
+          "raw_sha256": "03c89b08a620a6a63d14a69ad57fd626f2b10772a4317651ad9e2891cf6eb988",
+          "raw_bytes": 2130182144,
+          "zstd_test": "PASS",
+          "compression_command": [
+            "zstd",
+            "-T4",
+            "-19",
+            "--long=27",
+            "--check",
+            "-q",
+            "/root/uav_tracking_bag_spool/trial_uka_204c/rosbag/rosbag_0.db3",
+            "-o",
+            "/root/uav_tracking_bag_spool/trial_uka_204c/archive/rosbag_0.db3.zstd"
+          ],
+          "compression_wall_s": 152.21679798299738
+        }
+      ]
+    },
+    {
+      "id": "car_extension_depth_noise_seed004",
+      "name": "reliability_v4_humble54_extension16_probe02_car_extension_depth_noise_seed004",
+      "plan": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/plan.json",
+      "terminal": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/car_extension_depth_noise_seed004.json",
+      "original_run_directory": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_extension16_probe02_car_extension_depth_noise_seed004",
+      "published_directory": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_depth_noise_seed004",
+      "frozen_root": "/root/uav_tracking_fullplan_v4_humble54",
+      "original_status": "PASS",
+      "small_inputs": [
+        {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/plan.json",
+          "sha256": "1f7ff9559bcf9b1b02528a771f046481712a0ff5ec33eb961fe90310d1dcca54"
+        },
+        {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/car_extension_depth_noise_seed004.json",
+          "sha256": "ac3f4e7113a2ca686edfc02003531e2dfd910441b20f44f5ab2420b11406588a"
+        },
+        {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_depth_noise_seed004/bag_integrity.json",
+          "sha256": "771965790df42df0e2ce71d8b3ad38cc7861d11ef58489f490520da61ed0f9c4"
+        },
+        {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_depth_noise_seed004/recording_closure.json",
+          "sha256": "e5c0d4235d5a41c07194784ef3ec6653f3914f092185a48c28780150945e0b36"
+        },
+        {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_depth_noise_seed004/run_config.json",
+          "sha256": "a59c51b125685d99eb414ed233991827ab4f8e90740eb5fa518e805cbb194f82"
+        },
+        {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_depth_noise_seed004/rosbag/metadata.yaml",
+          "sha256": "f20505cb398ca85a9a69549584c8dd7080f9ae8dbf3ea459fdfa4a3fe345117f"
+        },
+        {
+          "path": "/root/uav_tracking_fullplan_v4_humble54/scripts/evaluate_stage1_flight.py",
+          "sha256": "655cf6fc7c0cc2a954db7d06d2fbb00a000f2fca80ba0930d153025e28efb7c1"
+        },
+        {
+          "path": "/root/uav_tracking_fullplan_v4_humble54/uav_tracking/recording_archive.py",
+          "sha256": "a68686d09109fcb8599160b862f5ad563b7261c988c6557056b2e3e5be0287a4"
+        }
+      ],
+      "metadata_sha256": "f20505cb398ca85a9a69549584c8dd7080f9ae8dbf3ea459fdfa4a3fe345117f",
+      "raw_validation": {
+        "status": "PASS",
+        "metadata_sha256": "c9c13beea8c1b6c2ea0bf574891b7ed16b5ba2b4d58da57461c9968ce40437cf",
+        "message_count": 158029,
+        "topic_counts": {
+          "/tracking/observation_frames": 743,
+          "/tracking/detection_diagnostics": 916,
+          "/vehicle/odometry_timing": 9242,
+          "/tracking/status": 1859,
+          "/tracking/navigation_state": 4504,
+          "/tracking/selection": 1,
+          "/tracking/observations": 711,
+          "/tracking/state": 4504,
+          "/fmu/out/vehicle_odometry": 9242,
+          "/camera/color/camera_info": 929,
+          "/camera/aligned_depth_to_color/image_raw": 929,
+          "/fmu/out/vehicle_local_position_v1": 4622,
+          "/tracking/tracks": 4504,
+          "/fmu/in/offboard_control_mode": 4648,
+          "/fmu/out/vehicle_command_ack": 5,
+          "/research/camera/aligned_depth_to_color/image_raw": 929,
+          "/fmu/in/trajectory_setpoint": 4648,
+          "/fmu/out/estimator_status_flags": 102,
+          "/ground_truth/poses": 23243,
+          "/tracking/command": 1859,
+          "/ground_truth/vehicle_poses": 23243,
+          "/clock": 27124,
+          "/camera/color/image_raw": 929,
+          "/tf": 9242,
+          "/fmu/out/vehicle_status_v1": 202,
+          "/tracking/navigation_diagnostics": 4504,
+          "/tracking/flight_phase": 1859,
+          "/tracking/flight_command": 1859,
+          "/research/camera/color/image_raw": 929,
+          "/vehicle/odometry": 9242,
+          "/tf_static": 1,
+          "/tracking/supervisor_diagnostics": 752,
+          "/fmu/in/vehicle_command": 3
+        },
+        "files": [
+          {
+            "path": "rosbag_0.db3",
+            "bytes": 4134506496,
+            "sha256": "d94d59bac72b08f9c24f15037def5cb498e61f9e993abb1cd789ac2387f57e23",
+            "message_count": 158029,
+            "first_timestamp_ns": 1793693358372253960,
+            "last_timestamp_ns": 1793694111150564023,
+            "sqlite_integrity": "ok"
+          }
+        ]
+      },
+      "compressed_files": [
+        {
+          "path": "rosbag_0.db3.zstd",
+          "sha256": "045a057d4e246d3862df5c060e499c8918b34bbfd49ce859bbf5c2c48b450742",
+          "bytes": 1248196391,
+          "raw_sha256": "d94d59bac72b08f9c24f15037def5cb498e61f9e993abb1cd789ac2387f57e23",
+          "raw_bytes": 4134506496,
+          "zstd_test": "PASS",
+          "compression_command": [
+            "zstd",
+            "-T4",
+            "-19",
+            "--long=27",
+            "--check",
+            "-q",
+            "/root/uav_tracking_bag_spool/trial_qwrvrun4/rosbag/rosbag_0.db3",
+            "-o",
+            "/root/uav_tracking_bag_spool/trial_qwrvrun4/archive/rosbag_0.db3.zstd"
+          ],
+          "compression_wall_s": 322.45407395699294
+        }
+      ]
+    }
+  ],
+  "helper_inputs": [
+    {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/diagnostics/humble54_lossless22_bench01/host_resources.py",
+      "sha256": "ce9a0c5eb3173be1bacdecfe5022a8f26704ef1af18a8db0d7bb20bb319f510e"
+    },
+    {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/diagnostics/text_storage_metadata_survey01/survey.py",
+      "sha256": "a4a88958d2f5075dc2cc13db01e35ea2a595f7513a3f8be39c1247da47f91a6b"
+    },
+    {
+      "path": "/mnt/d/WSL/UAVHumble22-validation/humble25_archive_threads_benchmark02.py",
+      "sha256": "baca7d2447907a84a9c1cc38f19c7588177db0ff6af5c8c4b31185c16a0fdfb0"
+    },
+    {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/staging/final55_offline_overlay_20261103/stage.py",
+      "sha256": "25a88f5ba369c918c5d891828b5e2434c61f75f33eb5485749f1ec0fda632268"
+    }
+  ],
+  "historical_complete_benchmark": {
+    "terminal": "/mnt/d/WSL/UAVHumble22-validation/humble25_archive_threads_benchmark02/terminal.json",
+    "sha256": "8946d1c7ff5fe8b985eb10e83e7cb2101be5b6eaf8cad30112618377f86f0d25"
+  },
+  "proven_candidate_saving_bytes": 0,
+  "full280_or_reserve_changed": false,
+  "formal_admission": false
+}

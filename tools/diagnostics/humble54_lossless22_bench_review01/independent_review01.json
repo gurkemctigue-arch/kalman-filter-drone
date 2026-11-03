@@ -1,0 +1,327 @@
+{
+  "schema_version": 1,
+  "status": "PASS_SOURCE_AND_SYNTHETIC_REVIEW_ONLY_NOT_NATIVE_EXECUTED",
+  "created_utc": "2026-11-03T10:52:43.236398+00:00",
+  "reviewer": "/root/continuation06_preparation",
+  "reviewed_files": {
+    "benchmark.py": "9e76590ae0c8012332747d43066df3abef3498e14c0b96a0da07f5c7d3f7a870",
+    "host_resources.py": "ce9a0c5eb3173be1bacdecfe5022a8f26704ef1af18a8db0d7bb20bb319f510e",
+    "run.sh": "e10660e4bc1d71853107242fb9fca3bd62e270275e5f55549313c70f9e0ea1ef",
+    "test_benchmark.py": "ef20a4522937d06060611f42d5f4cca23ef926c7d549b3d411a0cae474c5a329",
+    "sources.json": "3eac39e0a4c6f200c7dbf3e50aa94f0f9732379394d03323a5c9bfbf11c6d0e1",
+    "README.md": "4f92addf31fc51911d66a8d7341e2ba0d93f4f6c0b20ab4bc631142440e4848c"
+  },
+  "reviewed_files_unchanged": true,
+  "author_windows_tests_independently_observed": {
+    "command": "python -B -m unittest discover -s tools/diagnostics/humble54_lossless22_bench01 -p test_benchmark.py -v",
+    "run": 7,
+    "passed": 7,
+    "failed": 0,
+    "errors": 0,
+    "observed_wall_s": 0.165
+  },
+  "independent_fixtures": {
+    "actual_reader_wrapper_fake_plugin": {
+      "sibling_write_isolated": true,
+      "source_bytes_unchanged": true,
+      "private_cache_removed": true,
+      "escaping_filename_rejected": true,
+      "real_plugin_or_archive_used": false
+    },
+    "actual_sitl_guard_fake_lock": {
+      "held_through_body": true,
+      "unlocked_after_body_exception": true,
+      "existing_busy_lock_rejected": true,
+      "real_lock_or_proc_used": false
+    },
+    "actual_owned_cleanup_fake_processes": {
+      "term_then_kill_owned_group_only": true,
+      "bounded_original_grace": true,
+      "resource_error_calls_owned_cleanup": true,
+      "real_signal_or_sleep_used": false
+    }
+  },
+  "original_small_bindings": [
+    {
+      "original_path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/diagnostics/humble54_lossless22_bench01/host_resources.py",
+      "bytes": 3212,
+      "sha256": "ce9a0c5eb3173be1bacdecfe5022a8f26704ef1af18a8db0d7bb20bb319f510e",
+      "matched": true
+    },
+    {
+      "original_path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/diagnostics/text_storage_metadata_survey01/survey.py",
+      "bytes": 13122,
+      "sha256": "a4a88958d2f5075dc2cc13db01e35ea2a595f7513a3f8be39c1247da47f91a6b",
+      "matched": true
+    },
+    {
+      "original_path": "/mnt/d/WSL/UAVHumble22-validation/humble25_archive_threads_benchmark02.py",
+      "bytes": 21171,
+      "sha256": "baca7d2447907a84a9c1cc38f19c7588177db0ff6af5c8c4b31185c16a0fdfb0",
+      "matched": true
+    },
+    {
+      "original_path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/staging/final55_offline_overlay_20261103/stage.py",
+      "bytes": 32413,
+      "sha256": "25a88f5ba369c918c5d891828b5e2434c61f75f33eb5485749f1ec0fda632268",
+      "matched": true
+    },
+    {
+      "original_path": "/mnt/d/WSL/UAVHumble22-validation/humble25_archive_threads_benchmark02/terminal.json",
+      "bytes": 33575,
+      "sha256": "8946d1c7ff5fe8b985eb10e83e7cb2101be5b6eaf8cad30112618377f86f0d25",
+      "matched": true
+    },
+    {
+      "original_path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/plan.json",
+      "bytes": 207807,
+      "sha256": "ed88783162991c151ab3d537d4eb7d3546b3688339a06db6f35b7f2ef7c48d4b",
+      "matched": true
+    },
+    {
+      "original_path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/slots/car_stage1_velocity_seed004.json",
+      "bytes": 54346,
+      "sha256": "81aa5f0e41c99d7cd6f603fb2d52345fed11e5030a8e9fab856ccfd56da226c9",
+      "matched": true
+    },
+    {
+      "original_path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage1_velocity_seed004/bag_integrity.json",
+      "bytes": 4977,
+      "sha256": "c694e191705f2718d939911e589a2d73574c3345391acd03b196f0ad9312c2f6",
+      "matched": true
+    },
+    {
+      "original_path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage1_velocity_seed004/recording_closure.json",
+      "bytes": 22928,
+      "sha256": "de5a5eb76dadacd0086be0f75093b486fb52fdfb9b60b81adac6e32af196ad0d",
+      "matched": true
+    },
+    {
+      "original_path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage1_velocity_seed004/run_config.json",
+      "bytes": 4474,
+      "sha256": "9ef091596fd1207844974bd4aac7f1fab677f26f73564df5b84202038fb2fca9",
+      "matched": true
+    },
+    {
+      "original_path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_car_stage1_velocity_seed004/rosbag/metadata.yaml",
+      "bytes": 16893,
+      "sha256": "34938421107c2cb2d997e414fe9dea50d6b7eea89a451c4efebafdc0aace7cdc",
+      "matched": true
+    },
+    {
+      "original_path": "/root/uav_tracking_fullplan_v4_humble54/scripts/evaluate_stage1_flight.py",
+      "bytes": 65122,
+      "sha256": "655cf6fc7c0cc2a954db7d06d2fbb00a000f2fca80ba0930d153025e28efb7c1",
+      "matched": true
+    },
+    {
+      "original_path": "/root/uav_tracking_fullplan_v4_humble54/uav_tracking/recording_archive.py",
+      "bytes": 12816,
+      "sha256": "a68686d09109fcb8599160b862f5ad563b7261c988c6557056b2e3e5be0287a4",
+      "matched": true
+    },
+    {
+      "original_path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/plan.json",
+      "bytes": 240125,
+      "sha256": "1f7ff9559bcf9b1b02528a771f046481712a0ff5ec33eb961fe90310d1dcca54",
+      "matched": true
+    },
+    {
+      "original_path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/car_extension_depth_noise_seed004.json",
+      "bytes": 55171,
+      "sha256": "ac3f4e7113a2ca686edfc02003531e2dfd910441b20f44f5ab2420b11406588a",
+      "matched": true
+    },
+    {
+      "original_path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_depth_noise_seed004/bag_integrity.json",
+      "bytes": 5211,
+      "sha256": "771965790df42df0e2ce71d8b3ad38cc7861d11ef58489f490520da61ed0f9c4",
+      "matched": true
+    },
+    {
+      "original_path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_depth_noise_seed004/recording_closure.json",
+      "bytes": 20098,
+      "sha256": "e5c0d4235d5a41c07194784ef3ec6653f3914f092185a48c28780150945e0b36",
+      "matched": true
+    },
+    {
+      "original_path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_depth_noise_seed004/run_config.json",
+      "bytes": 4491,
+      "sha256": "a59c51b125685d99eb414ed233991827ab4f8e90740eb5fa518e805cbb194f82",
+      "matched": true
+    },
+    {
+      "original_path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_car_extension_depth_noise_seed004/rosbag/metadata.yaml",
+      "bytes": 17968,
+      "sha256": "f20505cb398ca85a9a69549584c8dd7080f9ae8dbf3ea459fdfa4a3fe345117f",
+      "matched": true
+    }
+  ],
+  "source_review": {
+    "archive_paths": "Original archives are only read/hashed; reader receives a fresh candidate link plus copied metadata. Actual wrapper then stages temporary hardlinks before sibling SQLite decode.",
+    "paired_profiles": "Same exact original source per pair, T1/long27/check common; -19 compared with --ultra -22. Fixed source/profile order limits runtime inference.",
+    "validation": "CLI test, full CLI decoded byte/SHA, native unfiltered all-topic/all-message counts, native decoded exact SQLite byte/SHA, candidate compressed SHA and final source stat/SHA; one 900s candidate alarm with original owned cleanup grace.",
+    "resources": "Actual host/guest memory admission 5 GiB each, sampled running floor 2 GiB each and sampled owned group RSS cap 3 GiB. D reserve remains 22 GiB; start adds 3 times exact summed raw bytes. Metadata samples do not guarantee instantaneous peaks.",
+    "locking_cleanup": "Existing original SITL lock held across all work; idle guard refuses native workloads; all owned groups are cleaned before context exits. Failed results retained, no retry/next owner."
+  },
+  "nonblocking_findings": [],
+  "resolved_findings": [
+    {
+      "id": "HOST_SAMPLE_INTERVAL_WORDING",
+      "location": "README.md host snapshots paragraph",
+      "detail": "The author corrected the earlier maximum-two-second claim before this review completed. Reviewed README now states a query is triggered about two seconds after previous completion, with its own ten-second timeout and no guaranteed maximum sample interval. Runtime source and manifest were unchanged."
+    }
+  ],
+  "blocking_findings": [],
+  "execution_conclusion": "SOURCE_EXECUTABLE_ONLY_AFTER_ROOT_REVIEWED_SHA_AND_ACTUAL_COLLECTOR_EXIT_IDLE_LOCK_RESOURCE_ADMISSION; DO_NOT_EXECUTE_WHILE_COLLECTOR07_OWNS_NATIVE_MACHINE",
+  "native_wsl_compressor_invocations": 0,
+  "real_bag_archive_model_payload_reads": 0,
+  "source_changes": 0,
+  "production_policy_changes": 0,
+  "proven_candidate_saving_bytes": 0,
+  "formal_capacity_or_admission": false,
+  "remaining_actual_checks": [
+    "Root must confirm all collector/native evaluation children exited",
+    "Actual native idle and held original lock",
+    "Actual host/guest memory and fixed disk reserves",
+    "Installed zstd and ROS native plugin compatibility",
+    "All four complete candidate outcomes or preserved diagnostic failures"
+  ],
+  "review_inputs": [
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\diagnostics\\humble54_lossless22_bench01\\benchmark.py",
+      "bytes": 26354,
+      "sha256": "9e76590ae0c8012332747d43066df3abef3498e14c0b96a0da07f5c7d3f7a870"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\diagnostics\\humble54_lossless22_bench01\\sources.json",
+      "bytes": 14285,
+      "sha256": "3eac39e0a4c6f200c7dbf3e50aa94f0f9732379394d03323a5c9bfbf11c6d0e1"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\diagnostics\\humble54_lossless22_bench01\\benchmark.py",
+      "bytes": 26354,
+      "sha256": "9e76590ae0c8012332747d43066df3abef3498e14c0b96a0da07f5c7d3f7a870"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\diagnostics\\humble54_lossless22_bench01\\host_resources.py",
+      "bytes": 3212,
+      "sha256": "ce9a0c5eb3173be1bacdecfe5022a8f26704ef1af18a8db0d7bb20bb319f510e"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\diagnostics\\humble54_lossless22_bench01\\run.sh",
+      "bytes": 288,
+      "sha256": "e10660e4bc1d71853107242fb9fca3bd62e270275e5f55549313c70f9e0ea1ef"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\diagnostics\\humble54_lossless22_bench01\\test_benchmark.py",
+      "bytes": 11710,
+      "sha256": "ef20a4522937d06060611f42d5f4cca23ef926c7d549b3d411a0cae474c5a329"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\diagnostics\\humble54_lossless22_bench01\\sources.json",
+      "bytes": 14285,
+      "sha256": "3eac39e0a4c6f200c7dbf3e50aa94f0f9732379394d03323a5c9bfbf11c6d0e1"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\diagnostics\\humble54_lossless22_bench01\\README.md",
+      "bytes": 4525,
+      "sha256": "4f92addf31fc51911d66a8d7341e2ba0d93f4f6c0b20ab4bc631142440e4848c"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\diagnostics\\humble54_lossless22_bench01\\host_resources.py",
+      "bytes": 3212,
+      "sha256": "ce9a0c5eb3173be1bacdecfe5022a8f26704ef1af18a8db0d7bb20bb319f510e"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\diagnostics\\text_storage_metadata_survey01\\survey.py",
+      "bytes": 13122,
+      "sha256": "a4a88958d2f5075dc2cc13db01e35ea2a595f7513a3f8be39c1247da47f91a6b"
+    },
+    {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble25_archive_threads_benchmark02.py",
+      "bytes": 21171,
+      "sha256": "baca7d2447907a84a9c1cc38f19c7588177db0ff6af5c8c4b31185c16a0fdfb0"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\staging\\final55_offline_overlay_20261103\\stage.py",
+      "bytes": 32413,
+      "sha256": "25a88f5ba369c918c5d891828b5e2434c61f75f33eb5485749f1ec0fda632268"
+    },
+    {
+      "path": "D:\\WSL\\UAVHumble22-validation\\humble25_archive_threads_benchmark02\\terminal.json",
+      "bytes": 33575,
+      "sha256": "8946d1c7ff5fe8b985eb10e83e7cb2101be5b6eaf8cad30112618377f86f0d25"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\plan.json",
+      "bytes": 207807,
+      "sha256": "ed88783162991c151ab3d537d4eb7d3546b3688339a06db6f35b7f2ef7c48d4b"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\slots\\car_stage1_velocity_seed004.json",
+      "bytes": 54346,
+      "sha256": "81aa5f0e41c99d7cd6f603fb2d52345fed11e5030a8e9fab856ccfd56da226c9"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_car_stage1_velocity_seed004\\bag_integrity.json",
+      "bytes": 4977,
+      "sha256": "c694e191705f2718d939911e589a2d73574c3345391acd03b196f0ad9312c2f6"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_car_stage1_velocity_seed004\\recording_closure.json",
+      "bytes": 22928,
+      "sha256": "de5a5eb76dadacd0086be0f75093b486fb52fdfb9b60b81adac6e32af196ad0d"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_car_stage1_velocity_seed004\\run_config.json",
+      "bytes": 4474,
+      "sha256": "9ef091596fd1207844974bd4aac7f1fab677f26f73564df5b84202038fb2fca9"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_car_stage1_velocity_seed004\\rosbag\\metadata.yaml",
+      "bytes": 16893,
+      "sha256": "34938421107c2cb2d997e414fe9dea50d6b7eea89a451c4efebafdc0aace7cdc"
+    },
+    {
+      "path": "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_fullplan_v4_humble54\\scripts\\evaluate_stage1_flight.py",
+      "bytes": 65122,
+      "sha256": "655cf6fc7c0cc2a954db7d06d2fbb00a000f2fca80ba0930d153025e28efb7c1"
+    },
+    {
+      "path": "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_fullplan_v4_humble54\\uav_tracking\\recording_archive.py",
+      "bytes": 12816,
+      "sha256": "a68686d09109fcb8599160b862f5ad563b7261c988c6557056b2e3e5be0287a4"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_extension16_probe02_matrix\\plan.json",
+      "bytes": 240125,
+      "sha256": "1f7ff9559bcf9b1b02528a771f046481712a0ff5ec33eb961fe90310d1dcca54"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_extension16_probe02_matrix\\slots\\car_extension_depth_noise_seed004.json",
+      "bytes": 55171,
+      "sha256": "ac3f4e7113a2ca686edfc02003531e2dfd910441b20f44f5ab2420b11406588a"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_extension16_probe02_car_extension_depth_noise_seed004\\bag_integrity.json",
+      "bytes": 5211,
+      "sha256": "771965790df42df0e2ce71d8b3ad38cc7861d11ef58489f490520da61ed0f9c4"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_extension16_probe02_car_extension_depth_noise_seed004\\recording_closure.json",
+      "bytes": 20098,
+      "sha256": "e5c0d4235d5a41c07194784ef3ec6653f3914f092185a48c28780150945e0b36"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_extension16_probe02_car_extension_depth_noise_seed004\\run_config.json",
+      "bytes": 4491,
+      "sha256": "a59c51b125685d99eb414ed233991827ab4f8e90740eb5fa518e805cbb194f82"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_extension16_probe02_car_extension_depth_noise_seed004\\rosbag\\metadata.yaml",
+      "bytes": 17968,
+      "sha256": "f20505cb398ca85a9a69549584c8dd7080f9ae8dbf3ea459fdfa4a3fe345117f"
+    }
+  ]
+}

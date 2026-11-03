@@ -1,0 +1,101 @@
+{
+  "status": "ORIGINAL_FAIL_RETAINED_SMALL_REPORT_DIAGNOSTIC_ONLY",
+  "created_utc": "2026-11-03T10:50:40.759192+00:00",
+  "slot_id": "car_extension_combined_seed004",
+  "inputs": {
+    "flight_evaluation.json": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_extension16_probe02_car_extension_combined_seed004\\flight_evaluation.json",
+      "sha256": "233287578ed9f54a457e86a28101ad2e25acc24cc2ec8c26918a13e8501f120b",
+      "bytes": 24343
+    },
+    "navigation_reference_evaluation.json": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_extension16_probe02_car_extension_combined_seed004\\navigation_reference_evaluation.json",
+      "sha256": "046cecb8cad06a58ddaf183595856d51057017c7b1fc70453fbee85447df2982",
+      "bytes": 144715
+    },
+    "navigation_reference_evaluation.frames.jsonl": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_extension16_probe02_car_extension_combined_seed004\\navigation_reference_evaluation.frames.jsonl",
+      "sha256": "dc5927bece5aa17b51fdcb0f3163aef262f51f379851ae67063733575451f214",
+      "bytes": 405699
+    },
+    "summary.json": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_extension16_probe02_car_extension_combined_seed004\\summary.json",
+      "sha256": "e08bdf8fdffbce7bf8a13f6c303670d9d09fcd477d9a4288d13ca061d9d3e647",
+      "bytes": 4874
+    },
+    "run_config.json": {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_extension16_probe02_car_extension_combined_seed004\\run_config.json",
+      "sha256": "3e54f402e75545839296147c2af30c8d17c18fe2d3e5149a92e8165fa3efdcfe",
+      "bytes": 4485
+    }
+  },
+  "first_invalid_sample": {
+    "time_s": 34.852000000000004,
+    "target_uuid": "d5d2550b-2961-4291-bbde-60c2d15c636f",
+    "reference_task_uuid": null,
+    "expected_physical_id": "target_car",
+    "base_link_distance_error_m": -0.016063879078775045,
+    "base_link_height_error_m": 0.027029086845062444,
+    "model_origin_distance_error_m": -0.01809505795325883,
+    "model_origin_height_error_m": -0.21296037933178358,
+    "navigation_valid": false,
+    "navigation_state": 2,
+    "navigation_reason": "stale_navigation_measurement",
+    "active": false
+  },
+  "first_lost_sample": {
+    "time_s": 34.952,
+    "target_uuid": "d5d2550b-2961-4291-bbde-60c2d15c636f",
+    "reference_task_uuid": null,
+    "expected_physical_id": "target_car",
+    "base_link_distance_error_m": -0.01285413380366407,
+    "base_link_height_error_m": 0.03285227758188691,
+    "model_origin_distance_error_m": -0.01459040576350823,
+    "model_origin_height_error_m": -0.20713998565954794,
+    "navigation_valid": false,
+    "navigation_state": 3,
+    "navigation_reason": "lost",
+    "active": false
+  },
+  "segments": [
+    {
+      "start_s": 17.352,
+      "end_exclusive_s": 29.36,
+      "sample_count": 121,
+      "distance_samples": 121,
+      "distance_rmse_m": 0.9492246009317856,
+      "active_count": 121
+    },
+    {
+      "start_s": 29.36,
+      "end_exclusive_s": 42.36,
+      "sample_count": 130,
+      "distance_samples": 130,
+      "distance_rmse_m": 1.1790111749207464,
+      "active_count": 54
+    },
+    {
+      "start_s": 42.36,
+      "end_exclusive_s": 49.372,
+      "sample_count": 70,
+      "distance_samples": 70,
+      "distance_rmse_m": 4.50347935107545,
+      "active_count": 0
+    },
+    {
+      "start_s": 49.372,
+      "end_exclusive_s": 92.5,
+      "sample_count": 431,
+      "distance_samples": 431,
+      "distance_rmse_m": 1.809047589846373,
+      "active_count": 431
+    }
+  ],
+  "limits": [
+    "Sampled navigation frames only; not an exact event-transition timestamp.",
+    "All recorded navigation samples with a distance value are retained, including inactive safety hover.",
+    "Segment metrics are exploratory and do not replace original acceptance metrics or thresholds.",
+    "No telemetry, bag, model, simulator or native process was read or launched.",
+    "No causal attribution from these small reports; frozen source and original verdict are unchanged."
+  ]
+}

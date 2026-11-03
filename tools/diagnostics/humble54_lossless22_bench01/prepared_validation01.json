@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "status": "PREPARED_SMALL_FIXTURES_PASS_NOT_NATIVE_EXECUTED",
+  "created_utc": "2026-11-03T10:42:50.876235+00:00",
+  "reviewer": "/root/candidate_registration",
+  "bindings_before": {
+    "benchmark.py": {
+      "bytes": 26354,
+      "sha256": "9e76590ae0c8012332747d43066df3abef3498e14c0b96a0da07f5c7d3f7a870"
+    },
+    "host_resources.py": {
+      "bytes": 3212,
+      "sha256": "ce9a0c5eb3173be1bacdecfe5022a8f26704ef1af18a8db0d7bb20bb319f510e"
+    },
+    "run.sh": {
+      "bytes": 288,
+      "sha256": "e10660e4bc1d71853107242fb9fca3bd62e270275e5f55549313c70f9e0ea1ef"
+    },
+    "test_benchmark.py": {
+      "bytes": 11710,
+      "sha256": "ef20a4522937d06060611f42d5f4cca23ef926c7d549b3d411a0cae474c5a329"
+    },
+    "sources.json": {
+      "bytes": 14285,
+      "sha256": "3eac39e0a4c6f200c7dbf3e50aa94f0f9732379394d03323a5c9bfbf11c6d0e1"
+    },
+    "README.md": {
+      "bytes": 4377,
+      "sha256": "3d4248f0bb6a3e22df10b6414994e50ef04e11ef6375abb38f52489415df133c"
+    }
+  },
+  "bindings_after": {
+    "benchmark.py": {
+      "bytes": 26354,
+      "sha256": "9e76590ae0c8012332747d43066df3abef3498e14c0b96a0da07f5c7d3f7a870"
+    },
+    "host_resources.py": {
+      "bytes": 3212,
+      "sha256": "ce9a0c5eb3173be1bacdecfe5022a8f26704ef1af18a8db0d7bb20bb319f510e"
+    },
+    "run.sh": {
+      "bytes": 288,
+      "sha256": "e10660e4bc1d71853107242fb9fca3bd62e270275e5f55549313c70f9e0ea1ef"
+    },
+    "test_benchmark.py": {
+      "bytes": 11710,
+      "sha256": "ef20a4522937d06060611f42d5f4cca23ef926c7d549b3d411a0cae474c5a329"
+    },
+    "sources.json": {
+      "bytes": 14285,
+      "sha256": "3eac39e0a4c6f200c7dbf3e50aa94f0f9732379394d03323a5c9bfbf11c6d0e1"
+    },
+    "README.md": {
+      "bytes": 4377,
+      "sha256": "3d4248f0bb6a3e22df10b6414994e50ef04e11ef6375abb38f52489415df133c"
+    }
+  },
+  "all_prepared_files_unchanged_during_checks": true,
+  "windows_tests": {
+    "tests_run": 7,
+    "failures": 0,
+    "errors": 0,
+    "duration_s": 0.157,
+    "stdout": "test_actual_resource_gate_rejects_unknown_low_memory_rss_and_reserve (lossless22_preparation_fixture_final.PreparedBenchmarkTests.test_actual_resource_gate_rejects_unknown_low_memory_rss_and_reserve) ... ok\ntest_candidate_uses_exact_level22_commands_and_preserves_original_failure (lossless22_preparation_fixture_final.PreparedBenchmarkTests.test_candidate_uses_exact_level22_commands_and_preserves_original_failure) ... ok\ntest_default_describes_without_loading_native_helper_or_executing (lossless22_preparation_fixture_final.PreparedBenchmarkTests.test_default_describes_without_loading_native_helper_or_executing) ... ok\ntest_execution_requires_explicit_reviewed_inputs_and_native_environment (lossless22_preparation_fixture_final.PreparedBenchmarkTests.test_execution_requires_explicit_reviewed_inputs_and_native_environment) ... ok\ntest_failed_candidate_retains_output_and_error_without_retry (lossless22_preparation_fixture_final.PreparedBenchmarkTests.test_failed_candidate_retains_output_and_error_without_retry) ... ok\ntest_fixed_sources_match_original_small_plan_and_terminal_bindings (lossless22_preparation_fixture_final.PreparedBenchmarkTests.test_fixed_sources_match_original_small_plan_and_terminal_bindings) ... ok\ntest_native_program_requires_full_topics_and_exact_decoded_bytes_sha (lossless22_preparation_fixture_final.PreparedBenchmarkTests.test_native_program_requires_full_topics_and_exact_decoded_bytes_sha) ... ok\n\n----------------------------------------------------------------------\nRan 7 tests in 0.152s\n\nOK\n"
+  },
+  "source_preparation": "Only the two original plans, terminal records, integrity/closure/run-config/metadata small files and pinned existing benchmark/source were read. Raw/archive expectations are copied from original integrity, not payloads rechecked now.",
+  "default_description_only": true,
+  "native_or_wsl_invoked": false,
+  "compressor_invoked": false,
+  "real_bag_or_model_payload_read": false,
+  "old_archive_or_manifest_or_production_policy_changed": false,
+  "owner_or_trigger_created": false,
+  "proven_candidate_saving_bytes": 0,
+  "full280_or_original_reserves_changed": false,
+  "explicit_future_execute_required": true,
+  "remaining": "Root source review, actual held-lock native idle, actual host/guest resource admission and explicit reviewed execution. Future failures/timeouts remain valid failed diagnostics and do not admit a profile or capacity."
+}

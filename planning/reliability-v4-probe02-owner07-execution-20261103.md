@@ -19,3 +19,9 @@
 18:20:08，第 12 场 `car_extension_latency_seed004` 产生原始 PASS：距离 RMSE 0.741951 m，高度 RMSE 0.154516 m，真值覆盖率 1.0；原导航距离、高度、状态覆盖及末段稳定六项检查均为 true，无基础设施停止。终态原字节 SHA 为 `b2f1ec888c217cd1ac8e0dcfc56a19e4746dc5096e7902cf8c6d04c732330ab1`。原 collector 核验后继续第 13 场汽车 combined；此时累计 12/16：8 PASS、3 FAIL、1 INCOMPLETE_EVIDENCE。
 
 同轮身份条件分类修复仅作用于 workspace 中的未来离线工具，运行中的 frozen54 和 collector07 源码均不改。38 项模块测试、9 项 runner 测试及独立的真实汽车小原件/4 项代表 fixture 复核通过。新 staging 候选也已准备并由 root 静审，仍保持生产关闭、未来输入未登记；它们不能替代真实完整 16 场、完整预算或正式实验。
+
+18:45:46，第 13 场 `car_extension_combined_seed004` 产生原始 FAIL，终态 SHA 为 `50cda01cbc0850b94aa52962f365d5fb7daec7daff7b4fcd6503178fe4f5a00b`。距离 RMSE 为 2.036874 m，高度 RMSE 为 0.160389 m；导航高度、状态/真值覆盖及末段距离/高度稳定均通过，但全窗距离误差未通过。短时遮挡预测、未丢失及恢复后身份检查均通过；长遮挡开始时状态已是 LOST，事件窗内没有观察到预测阶段，因此该项为 false。长遮挡后的悬停、禁止自动恢复和显式重选后的持续跟踪检查均通过。以上来自原评价小文件，尚不能单凭它们断定长遮挡前丢失的具体原因；原 FAIL 不改，无基础设施停止。
+
+collector07 复核原第 13 场后于 18:46:42 实际启动汽车 `speed_changes_velocity`；累计 13/16 原始终态为 8 PASS、4 FAIL、1 INCOMPLETE_EVIDENCE，另三场尚待各自终态。当前原 monitor、WSL 子进程及外层 Popen 持有链继续运行，尚不满足后续原生测量的空闲条件。
+
+原导航抽样文件进一步显示：第一次无效样本在仿真 34.852 s，原因为 `stale_navigation_measurement`；第一次 LOST 样本为 34.952 s，早于 42.36 s 的长遮挡。49.372 s 显式重选后恢复持续跟踪，之后末段稳定。因此长遮挡窗内没有预测阶段，不能解释为“没有执行悬停保护”。此处只读原小报告及抽样帧，未读取 telemetry/bag；尚未确认导致 34.852 s 失鲜的具体输入或处理环节。诊断及原字节绑定见 `results/diagnostics/humble54_probe02_car_combined_small_review01/review.json`。分段误差仅用于定位问题，不替换原验收窗口或阈值。
