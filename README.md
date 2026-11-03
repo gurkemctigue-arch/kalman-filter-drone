@@ -1,5 +1,7 @@
 # RGB-D UAV target tracking and following
 
+**2026-11-03 11:26（北京时间）：原扩展验证已完成 5 场，2 PASS、2 INCOMPLETE_EVIDENCE、1 FAIL；第六场行人加减速（速度控制）已启动，10 场尚未尝试，正式仍 0/280。** [当前单槽命令进度](results/project_progress/humble54_extension_speed_velocity04/index.html)与[执行记录](planning/reliability-v4-execution-20261103.md)包含真实进程身份及边界。组合扰动的长窗预测检查失败，但丢失悬停、减速、禁止自动恢复和重选等安全项通过，原 FAIL 保留。通信延迟的新命名网格修复诊断已实际完成，六项导航数值门均通过；原缺证终态不改，完整 28 格复评仍待执行。行人两份原始输入已提取并实际阅图，完整四槽输入附件尚未齐。下方 10:53 及更早块全部为历史快照。
+
 **2026-11-03 10:53（北京时间）检查点：原扩展计划为 5 START、4 个原终态（2 PASS、2 INCOMPLETE_EVIDENCE）、11 个未尝试槽；正式仍 0/280。** 第五槽 `person_extension_combined_seed004` 已于 `2026-11-03T02:50:53.012521Z` 由新 normal CLI 单槽启动。查看[监督进度页](results/project_progress/humble54_extension_supervised02/index.html)；它由旧 owner 的历史观测拷贝和实际新 START/终态 marker 派生，不是新 owner、正式准入或扩展全批通过证明。精确进程身份、session 和临时防休眠 receipt06 见[执行记录](planning/reliability-v4-execution-20261103.md)。
 
 第三槽 dropout 的原 `INCOMPLETE_EVIDENCE` 保留：独立阅图记录已实际完成，31.4/31.5 秒原图近黑、前后可见行人，见[联系图](results/diagnostics/humble54_dropout_gap01_extract01/contact_sheet.png)及[独立阅图记录](results/diagnostics/humble54_dropout_gap01_extract01/visual_review01.json)。这项新观察没有修复或准入原缺证，原提取 manifest 仍为 `PENDING_VISUAL_REVIEW`。第四槽 latency 亦保留原 `INCOMPLETE_EVIDENCE`；已定位末端浮点时间越界一 ULP 导致瞬态统计 751 行、整段 752 行的分母不一致。工作区候选修复已有 35 项测试通过，但尚无真实录包的新命名复评，冻结 54 和当前批次仍使用原源码。

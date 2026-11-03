@@ -1,5 +1,7 @@
 # 当前工作交接（持续开发，非验收报告）
 
+**2026-11-03 11:26（北京时间）：原扩展 6 START、5 终态（2 PASS / 2 INCOMPLETE_EVIDENCE / 1 FAIL）、10 PENDING；第六槽 `person_extension_speed_changes_velocity_seed004` 正在 normal CLI 单槽运行，session65985。** [当前命令监督](../results/project_progress/humble54_extension_speed_velocity04/index.html)只证明该进程状态，不代表矩阵计数或验收。组合槽原 FAIL 保留（long prediction=False、安全九项True）；真实通信延迟网格诊断数值已 PASS，尚非全28注册复评，旧终态不变。两份行人输入证据已真实提取与阅图；汽车两槽/完整四槽附件未齐。正式0/280、容量/导出/R0/final55/正式研究仍待执行，具体身份与原件见[接续执行记录](reliability-v4-execution-20261103.md)。以下均为历史快照，不得重启旧owner/waiter。
+
 **2026-11-03 10:53（北京时间）当前快照：原扩展计划 5 START、4 个原终态（2 PASS、2 INCOMPLETE_EVIDENCE）、11 个未尝试槽；正式仍 0/280。** 第五槽 `person_extension_combined_seed004` 已于 `2026-11-03T02:50:53.012521Z` 由新 normal CLI 单槽启动。新[监督进度页](../results/project_progress/humble54_extension_supervised02/index.html)由旧 owner 历史观测拷贝和实际新 START/终态 marker 派生，不是新 owner、正式准入或扩展全批通过证明。进程/session 与 receipt06 见[执行记录](reliability-v4-execution-20261103.md)。
 
 第三槽 dropout 保留原 `INCOMPLETE_EVIDENCE` 和原 interruption=null：31.3–31.58 秒短窗被 seed004 的两次 200 ms 检测丢帧覆盖，短 research/diagnostic 计数为 0。新独立阅图记录已实际完成，31.4/31.5 秒近黑、前后可见行人，见[联系图](../results/diagnostics/humble54_dropout_gap01_extract01/contact_sheet.png)及[阅图记录](../results/diagnostics/humble54_dropout_gap01_extract01/visual_review01.json)；原提取 manifest 仍为 `PENDING_VISUAL_REVIEW`。新观察不等于修复或准入原缺证。

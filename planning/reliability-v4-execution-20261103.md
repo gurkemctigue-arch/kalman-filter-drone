@@ -2,6 +2,16 @@
 
 本记录是执行检查点，不是全项目验收报告。用户已授权继续修复、仿真、统计、交付及 GitHub 同步。正式研究仍为 **0/280**。
 
+**11:26（北京时间）接续检查点：原扩展计划 6 START、5 个原终态（2 PASS、2 INCOMPLETE_EVIDENCE、1 FAIL）、10 个未尝试槽。** 第六槽 `person_extension_speed_changes_velocity_seed004` 已于 `2026-11-03T03:21:54.939210Z` 实际 START，normal CLI 仅执行该一个原 PENDING 槽。新[命令监督页](../results/project_progress/humble54_extension_speed_velocity04/index.html)只监督本条命令及其真实退出码，不以无 events 的页面计数代表矩阵进度。Windows monitor PID **31988** / FILETIME `134381497020715128`，owned WSL PID **34872** / FILETIME `134381497024909290`，unified-exec session **65985**。临时防休眠 `power_owner54/receipt07/state.json` 已实读 ACTIVE，observer **16704**，绑定上述 monitor 身份、不改变全局策略。
+
+第五槽组合扰动于 `03:12:44.978442 UTC` 原始 **FAIL / COMPLETED**，terminal SHA256 `596db684d39afe1eb561b710550541728a71e5e6c564118a1206d204c557c677`；flight0、infra=false、cleanup 空、source/native PASS，长时九项安全行为均 true，但 `prediction_observed=false`。原 FAIL 保留。上一命令正常退出 0 仅表示执行结束，不代表该槽工程 PASS。
+
+通信延迟已实际完成新命名离线诊断：[数值原件](../results/diagnostics/humble54_navigation_grid_fix01/numeric_verdict01.json)。修复后的网格分母一致，原数值 validator 返回 PASS，六项导航门均 true，距离/高度 RMSE 为 0.777998/0.151949 m；新报告 SHA256 `36a6eb06315e0c5a6ddc0c85914aa7924c3a3aec472d891f6de8fb3bd9c1acfd`。这是单次开发诊断，不是完整 28 格预登记复评、工程准入或原终态改判。两份原缺证终态继续不变。
+
+实际空闲窗口串行调用新提取器 `364156694a5db1777b7b3615614ae32b5cc128a7f8bbc09e213e1a168854fbf4`，session **19086** 已正常退出 0；分别完整扫描两类输入与诊断话题，导出行人 dropout/combined 两份各九张原图。root 已直接查看全部联系图：dropout 31.4/31.5 秒、combined 29.9/30.0 秒近黑，前后可见行人。各新目录 `humble54_person_{dropout,combined}_input_extract02` 已另存 `visual_review_native01.json`，绑定同一实际图像 SHA 与可解析 native 路径，旧提取及旧阅图不动。显式固定两类别×两工况的描述性合同位于 `results/diagnostics/humble54_input_evidence_contract01/contract.json`；它不是预注册，汽车两槽尚未运行，完整四槽附件仍未齐，尚无真实模块复评结果或 ready。
+
+以下 10:53 及更早块均为历史检查点；旧 owner/waiter 仍停止，不作为新采集进程使用。
+
 **10:53（北京时间）实际检查点：原扩展计划 5 START、4 个原终态（2 PASS、2 INCOMPLETE_EVIDENCE）、11 个未尝试槽。** 第五槽 `person_extension_combined_seed004` 已在新 normal CLI 单槽调用中实际 START：`2026-11-03T02:50:53.012521Z`。本次 Windows monitor owned child 为 PID **50620** / creation FILETIME `134381478446741119`，WSL 命令为 PID **47440** / FILETIME `134381478448326284`，unified-exec session **90558**。上一 latency 调用 session **95312** 已正常退出 **0**，不把其原槽改判 PASS。
 
 临时防休眠 `D:/WSL/UAVHumble22-validation/power_owner54/receipt06/state.json` 已实读核验：observer PID **52092**，monitor PID **50620** / FILETIME `134381478446741119`，`status=ACTIVE`，心跳 `2026-11-03T02:52:52.1797843Z`，`scope=TEMPORARY_SYSTEM_SLEEP_REQUEST_ONLY`、`global_power_policy_changed=false`。这是本轮临时系统休眠请求，不是全局电源策略变更。

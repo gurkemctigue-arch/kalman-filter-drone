@@ -1,5 +1,7 @@
 # 查看当前实验
 
+**2026-11-03 11:26（北京时间）：第六场行人加减速（速度控制）已实际启动。** 打开[本条命令监督页](../results/project_progress/humble54_extension_speed_velocity04/index.html)查看进程、心跳及退出状态；此页不包含矩阵 events，不能把其中默认计数当作完整实验进度。原矩阵当前 6 START、5 终态：2 PASS、2 INCOMPLETE_EVIDENCE、1 FAIL，10 场未尝试。组合场原 FAIL 是长窗无预测状态，九项安全行为通过；通信延迟的新命名网格修复诊断数值 PASS，但原缺证记录保留。正式仍 0/280。详细身份、原件及下一步见[执行记录](../planning/reliability-v4-execution-20261103.md)。下方均为历史快照。
+
 **2026-11-03 10:53（北京时间）实际检查点：原扩展计划为 5 START、4 个原终态（2 PASS、2 INCOMPLETE_EVIDENCE）、11 个未尝试槽；正式仍 0/280。** 第五槽 `person_extension_combined_seed004` 已于 `2026-11-03T02:50:53.012521Z` 在新 normal CLI 单槽调用中启动。请打开[监督进度页](../results/project_progress/humble54_extension_supervised02/index.html)；它汇合旧 owner 历史观测的拷贝和实际新 START/终态 marker，仅是派生观察，不是新 owner、正式准入或扩展全批 PASS。
 
 第三槽 dropout 与第四槽 latency 的原 `INCOMPLETE_EVIDENCE` 均保留。独立阅图已记录 31.4/31.5 秒近黑、前后可见行人，见[联系图](../results/diagnostics/humble54_dropout_gap01_extract01/contact_sheet.png)和[阅图原件](../results/diagnostics/humble54_dropout_gap01_extract01/visual_review01.json)；原提取 manifest 仍为 `PENDING_VISUAL_REVIEW`，不能称原缺证已修复。latency 已定位浮点端点导致的 751/752 行统计分母不一致；候选修复有 35 项测试通过，真实录包的新命名复评尚未执行，冻结 54 和当前批次仍用原源码。
