@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "owner": "uav-project-progress-v1",
+  "generated_utc": "2026-11-03T05:35:15.203956+00:00",
+  "status": "STOPPED_FAULT",
+  "reason": "Monitored command ended; this is not project acceptance",
+  "completion_scope": "monitored_command",
+  "phase": "simulation",
+  "task": {
+    "id": "humble54_probe02_full16_owner04",
+    "phase": "simulation",
+    "started_utc": "2026-11-03T04:47:46.346985+00:00",
+    "process": {
+      "pid": 54036,
+      "alive": true,
+      "start_token": "windows_filetime:134381548663401799",
+      "created_utc": "2026-11-03T04:47:46.340180+00:00"
+    },
+    "finished_utc": "2026-11-03T05:35:15.199405+00:00",
+    "returncode": 2,
+    "monitor_kind": "owned_child",
+    "label": "humble54_probe02_full16_owner04"
+  },
+  "process_check": {
+    "verified_alive": false,
+    "identity_matches": true,
+    "observation": {
+      "pid": 54036,
+      "alive": false,
+      "start_token": "windows_filetime:134381548663401799",
+      "created_utc": "2026-11-03T04:47:46.340180+00:00"
+    },
+    "reason": "PID creation identity checked; PID reuse is not accepted"
+  },
+  "monitor_check": {
+    "verified_alive": true,
+    "identity_matches": true,
+    "observation": {
+      "pid": 46244,
+      "alive": true,
+      "start_token": "windows_filetime:134381548661261043",
+      "created_utc": "2026-11-03T04:47:46.126104+00:00"
+    },
+    "reason": "PID creation identity checked; PID reuse is not accepted"
+  },
+  "heartbeat_utc": "2026-11-03T05:35:15.199405+00:00",
+  "heartbeat_age_s": 0.004550933837890625,
+  "stale_after_s": 10.0,
+  "evidence_sources": {
+    "events": "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_collection54_probe02_owner04\\events.jsonl",
+    "ledger": "\\\\wsl.localhost\\UAVHumble22\\root\\uav_tracking_collection54_probe02_owner04\\state.json",
+    "plan": "D:\\基于yolo和卡尔曼滤波\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_extension16_probe02_matrix\\plan.json"
+  },
+  "evidence": {
+    "state": "STOPPED_FAULT",
+    "current_slot": "person_extension_depth_holes_seed004",
+    "last_slot": "person_extension_depth_holes_seed004",
+    "planned_slots": 16,
+    "attempted_slots": 2,
+    "recorded_terminal_slots": 1,
+    "unattempted_slots": 14,
+    "attempted_without_terminal": [
+      "person_extension_depth_holes_seed004"
+    ],
+    "status_counts": {
+      "PASS": 1
+    },
+    "last_event": {
+      "event": "STOPPED_FAULT",
+      "utc": "2026-11-03T05:35:14.167950+00:00",
+      "scope": "SUPERVISED_PENDING_COLLECTION",
+      "slot": "person_extension_depth_holes_seed004",
+      "error": "KeyboardInterrupt: "
+    },
+    "last_event_utc": "2026-11-03T05:35:14.167950+00:00",
+    "terminal_utc": "2026-11-03T05:35:14.167950+00:00",
+    "ledger_step": null,
+    "ledger_finished_utc": "2026-11-03T05:35:14.167917+00:00",
+    "ledger_returncode": 2,
+    "latest_execution": null,
+    "errors": [],
+    "claim_boundary": "Execution records and counts only; engineering FAIL/PENDING are never counted as PASS"
+  },
+  "tasks": [
+    {
+      "id": "humble54_probe02_full16_owner04",
+      "phase": "simulation",
+      "started_utc": "2026-11-03T04:47:46.346985+00:00",
+      "process": {
+        "pid": 54036,
+        "alive": true,
+        "start_token": "windows_filetime:134381548663401799",
+        "created_utc": "2026-11-03T04:47:46.340180+00:00"
+      },
+      "finished_utc": "2026-11-03T05:35:15.199405+00:00",
+      "returncode": 2,
+      "monitor_kind": "owned_child",
+      "label": "humble54_probe02_full16_owner04"
+    }
+  ],
+  "notification": {
+    "requested": false,
+    "submitted": false,
+    "user_observed": null
+  },
+  "claim_boundary": "No ROS/WSL/simulator is started, no bag is read. No automatic chat wake-up or engineering PASS is promised."
+}

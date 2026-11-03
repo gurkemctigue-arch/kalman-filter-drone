@@ -4,6 +4,8 @@
 
 新 probe02 已尝试 3/16 场：前两场 PASS，第三场 `person_extension_dropout_seed004` 为 `INCOMPLETE_EVIDENCE`，剩余 13 场尚未尝试。第三场飞行返回 0，录包完整性、源时钟、原生起飞与长时丢失安全检查通过；其监督程序因短窗检测器诊断缺失停止。Windows 与 WSL 子进程真实退出均已记录，防休眠请求已释放，无自动重试。
 
+14:20 续接检查点：owner06 已实际启动第四场 `person_extension_latency_seed004`，完整矩阵为 4 START、3 个原终态（2 PASS、1 INCOMPLETE）、12 未尝试。Windows 与 Linux 的完整稳定准入记录（含 89 项输入绑定）逐字段一致。当前进度页为 `results/monitor_humble54_probe02_owner06/index.html`；下面的“剩余13场尚未尝试”保留为上一个检查点。collector、gate、outer、chain 及 slot 来源均已封定，实际启动快照在 `tools/experiment_orchestration/humble54_probe02_windows_owner06/actual_start01/`。本次仅续接原计划，前三场不重飞。
+
 本次只读重读该场的原始录包，完整导出短窗前后 8 帧。直接看图确认 29.8、29.9 秒为近黑遮挡图像，其余图像可见行人。按原 seed=4、200 ms 窗口、10% 丢帧算法复算，这两帧均为 DROP；research RGB/depth 与检测诊断在该短窗内均没有输入机会。固定外部评价器返回 `UPSTREAM_INPUT_INTERRUPTION_CORROBORATED`，errors 和 known_algorithm_failures 为空。这说明故障注入阻断了输入，不能证明检测器在被遮挡图像上的表现，也不把原 null 或原 INCOMPLETE 改成 PASS。
 
 原监督器保留 `STOPPED_FAULT` 与真实错误。经原收集器和冻结评价器逐场复核，三场原件构成完整已闭合前缀。第三场导航评价为 PASS：距离 RMSE 0.716932 m，高度 RMSE 0.155711 m，末段距离与高度稳定。续接仅从第四场 `person_extension_latency_seed004` 开始，未知许可仅适用于这份已审终态，其他新未知仍需检查。

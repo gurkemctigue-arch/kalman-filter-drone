@@ -1,0 +1,491 @@
+{
+  "schema_version": 1,
+  "status": "BOUND_PRESERVED_PREFIX_CHAIN",
+  "plan": {
+    "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_extension16_probe02_matrix\\plan.json",
+    "sha256": "1f7ff9559bcf9b1b02528a771f046481712a0ff5ec33eb961fe90310d1dcca54",
+    "plan_sha256": "837e533b75800c4c3fdd19f4937d55d92e50fe833da5c6b8801494dfbc77d15b"
+  },
+  "after_slot": "person_extension_dropout_seed004",
+  "closed_ids": [
+    "person_extension_depth_noise_seed004",
+    "person_extension_depth_holes_seed004",
+    "person_extension_dropout_seed004"
+  ],
+  "pending_ids": [
+    "person_extension_latency_seed004",
+    "person_extension_combined_seed004",
+    "person_extension_speed_changes_velocity_seed004",
+    "person_extension_speed_changes_position_seed004",
+    "person_extension_far_distance_seed004",
+    "car_extension_depth_noise_seed004",
+    "car_extension_depth_holes_seed004",
+    "car_extension_dropout_seed004",
+    "car_extension_latency_seed004",
+    "car_extension_combined_seed004",
+    "car_extension_speed_changes_velocity_seed004",
+    "car_extension_speed_changes_position_seed004",
+    "car_extension_far_distance_seed004"
+  ],
+  "closed": [
+    {
+      "id": "person_extension_depth_noise_seed004",
+      "original_status": "PASS",
+      "marker": {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_depth_noise_seed004.started.json",
+        "sha256": "258fe4b592de042abd039ccd824aff00c78dbc91f7089104bd18bd5ef766c456"
+      },
+      "terminal": {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_depth_noise_seed004.json",
+        "sha256": "571c1c9638e1e2705bc4bbd0cc75afcea8d038e7014c03ea155732a57faa596d"
+      },
+      "started_utc": "2026-11-03T04:47:53.727684+00:00",
+      "finished_utc": "2026-11-03T05:10:26.593154+00:00",
+      "record_sha256": "3b3a18f02c564eb115ef5b3ebc11a65f717fce69fc692ef0dcf52b10e4934544",
+      "executed_by_segment": "owner04",
+      "qualification": "ACTUAL_COLLECTED"
+    },
+    {
+      "id": "person_extension_depth_holes_seed004",
+      "original_status": "PASS",
+      "marker": {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_depth_holes_seed004.started.json",
+        "sha256": "91a50cd73832eaf1da3d5702f84fe0db53911988a6184a62b17e41632e47026a"
+      },
+      "terminal": {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_depth_holes_seed004.json",
+        "sha256": "12687276e9fa2defd43dcc336619d1b4c6715dbe325d3be04173cf8211239f5d"
+      },
+      "started_utc": "2026-11-03T05:10:36.896205+00:00",
+      "finished_utc": "2026-11-03T05:35:10.060983+00:00",
+      "record_sha256": "29a530239198e04c01f7f149685d0b0e76f5701bf43e253ccc31017a28a7678b",
+      "executed_by_segment": "owner04",
+      "qualification": "ROOT_REVIEWED_FRONTIER_ORIGINAL_FAULT_RETAINED"
+    },
+    {
+      "id": "person_extension_dropout_seed004",
+      "original_status": "INCOMPLETE_EVIDENCE",
+      "marker": {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_dropout_seed004.started.json",
+        "sha256": "76228d9bae124e05af4c2cd464d4fa5d4b17a005ce0caffcd846b9de3c0a1cf5"
+      },
+      "terminal": {
+        "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_dropout_seed004.json",
+        "sha256": "c09f95ee3c4d5f14847bcbea82e8795b11cab6f5184fe735abac4c22decaeba8"
+      },
+      "started_utc": "2026-11-03T05:41:00.537598+00:00",
+      "finished_utc": "2026-11-03T06:01:17.149707+00:00",
+      "reviewed_unknown": {
+        "root_review": {
+          "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_probe02_dropout_review03\\root_review.json",
+          "sha256": "eac4f501a771b6acc7ecf3c88a0765165506350815c20bea94ffd3b9ef26887d"
+        },
+        "exception": {
+          "slot_id": "person_extension_dropout_seed004",
+          "terminal": {
+            "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_dropout_seed004.json",
+            "sha256": "c09f95ee3c4d5f14847bcbea82e8795b11cab6f5184fe735abac4c22decaeba8"
+          },
+          "field": "surface:short:detector_interruption_observed",
+          "value": null,
+          "unobserved_checks": [
+            "surface:short:detector_interruption_observed=HISTORICAL_UNKNOWN_RETAINED"
+          ],
+          "original_status": "INCOMPLETE_EVIDENCE"
+        }
+      },
+      "unobserved_checks": [
+        "surface:short:detector_interruption_observed=HISTORICAL_UNKNOWN_RETAINED"
+      ],
+      "record_sha256": "4b8046922057d902c5217c4aa4252d89c7ffe4fae8d36f2e821a810bd5e692ef",
+      "executed_by_segment": "owner05",
+      "qualification": "ROOT_REVIEWED_METADATA_FRONTIER_INCOMPLETE_RETAINED"
+    }
+  ],
+  "segments": [
+    {
+      "segment_id": "owner04",
+      "original_native_status": "STOPPED_FAULT",
+      "disposition": "ROOT_REVIEWED_CONTROLLED_STOP",
+      "derived_prefix_count": 0,
+      "actual_collected_count": 1,
+      "root_reviewed_frontier_count": 1,
+      "outer_terminal": {
+        "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_probe02_windows_owner04\\terminal.json",
+        "sha256": "5dcdb2c3d5dbe09985173c2d463d23b0acd54fdd17f8f5919fef0ddcad124e0c"
+      }
+    },
+    {
+      "segment_id": "owner05",
+      "original_native_status": "STOPPED_FAULT",
+      "disposition": "ROOT_REVIEWED_METADATA_STOP",
+      "derived_prefix_count": 2,
+      "actual_collected_count": 0,
+      "root_reviewed_frontier_count": 1,
+      "outer_terminal": {
+        "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_probe02_windows_owner05\\terminal.json",
+        "sha256": "565de5c04957d3ed0503daa26860b4d6f5342484b4eaad29a820b81e62f61958"
+      }
+    }
+  ],
+  "source_digest": "8a11b73428d6d4adacc042a41072a2e4da1dd7ed17756760073958f44ed21cb9",
+  "input_bindings": [
+    {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_probe02_person_dropout_input_extract03/manifest.json",
+      "sha256": "1355c559f2015acfc3ed77a56529b9e92ffbfdd0a34e5e9262bafc2a2de1ce71"
+    },
+    {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_probe02_person_dropout_input_extract03/visual_review_native03.json",
+      "sha256": "875c42fda26e6f76d033bff39edcfb0f6e943fb836114c278e9829cd507c0ad9"
+    },
+    {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/freeze_validation/source_integrity/source_before.json",
+      "sha256": "cdb4111738f2f51c9911e3e7cebaf9f69aafd92d5cef39d8839a1e5dbb27c82f"
+    },
+    {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/plan.json",
+      "sha256": "ed88783162991c151ab3d537d4eb7d3546b3688339a06db6f35b7f2ef7c48d4b"
+    },
+    {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_depth_holes_seed004.json",
+      "sha256": "12687276e9fa2defd43dcc336619d1b4c6715dbe325d3be04173cf8211239f5d"
+    },
+    {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_depth_holes_seed004.started.json",
+      "sha256": "91a50cd73832eaf1da3d5702f84fe0db53911988a6184a62b17e41632e47026a"
+    },
+    {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_depth_noise_seed004.json",
+      "sha256": "571c1c9638e1e2705bc4bbd0cc75afcea8d038e7014c03ea155732a57faa596d"
+    },
+    {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_depth_noise_seed004.started.json",
+      "sha256": "258fe4b592de042abd039ccd824aff00c78dbc91f7089104bd18bd5ef766c456"
+    },
+    {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_dropout_seed004.json",
+      "sha256": "c09f95ee3c4d5f14847bcbea82e8795b11cab6f5184fe735abac4c22decaeba8"
+    },
+    {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/slots/person_extension_dropout_seed004.started.json",
+      "sha256": "76228d9bae124e05af4c2cd464d4fa5d4b17a005ce0caffcd846b9de3c0a1cf5"
+    },
+    {
+      "path": "/root/uav_tracking_collection54_probe02_owner04/events.jsonl",
+      "sha256": "d65b7caafe116afeae70222aeca449ba4d84eb6a4db63599a2d745035136c97e"
+    },
+    {
+      "path": "/root/uav_tracking_collection54_probe02_owner04/terminal.json",
+      "sha256": "02f8ade3aa4be8adc7609fef8720ccac59f8422bc36fc2cbc31989912abad8a6"
+    },
+    {
+      "path": "/root/uav_tracking_collection54_probe02_owner05.admission.json",
+      "sha256": "cf4145310ca5193f4780b510e8f7a8f1cf757146937e12de4e9d89451c861da0"
+    },
+    {
+      "path": "/root/uav_tracking_collection54_probe02_owner05/events.jsonl",
+      "sha256": "94a1e5eeaa0bd9c195779ca57dcd109c23bcf49d0fcc86f5fb5917042e2464eb"
+    },
+    {
+      "path": "/root/uav_tracking_collection54_probe02_owner05/registered_entry_terminal.json",
+      "sha256": "87f64fd03ce54cfcaba237ff2065794ad6950bd8e6641b72b18504aaa92c294c"
+    },
+    {
+      "path": "/root/uav_tracking_collection54_probe02_owner05/terminal.json",
+      "sha256": "b809e2bd46d1eb3a28778428683c8c00e4f6e6af81ab89400ccf31a1071de761"
+    },
+    {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_extension16_probe02_person_extension_depth_holes_seed004/bag_integrity.json",
+      "sha256": "ad6c958814aa89ba6f000752c6d498f75d77aa5b70448744000dc3e6af40a52b"
+    },
+    {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_extension16_probe02_person_extension_depth_holes_seed004/configuration/runtime_parameters.yaml",
+      "sha256": "aaacecfd529532c2caa93bb6f8648ba6af4237524cee0e68c5d77c3df918678b"
+    },
+    {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_extension16_probe02_person_extension_depth_holes_seed004/configuration/source_sha256.json",
+      "sha256": "0094a5013801e67fb6ae692cef785b190272708d71bfb0cd4a3349a0eb09ee46"
+    },
+    {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_extension16_probe02_person_extension_depth_holes_seed004/flight_evaluation.json",
+      "sha256": "c69ab9b9c42b77592cce98ae2e98e773cddf548993322e2e9b98e9378e9bf234"
+    },
+    {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_extension16_probe02_person_extension_depth_holes_seed004/native_startup_report.json",
+      "sha256": "1ba8990fb129d7f5dfdb361e85954c1f871b86d7c39e3992109ef9978c651031"
+    },
+    {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_extension16_probe02_person_extension_depth_holes_seed004/navigation_reference_evaluation.json",
+      "sha256": "e263b621241a17ddaf1424dcff56ad2f09472269f526e5cafd947abc7eb393e7"
+    },
+    {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_extension16_probe02_person_extension_depth_holes_seed004/px4_source_clock_report.json",
+      "sha256": "43505e1863f52837fa1d199b9585acb8cfc44467e498abbcab9ee8a50bf3d352"
+    },
+    {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_extension16_probe02_person_extension_depth_holes_seed004/recording_closure.json",
+      "sha256": "cfd0159d66f94665be78c093fc62fdd7c2d2668843e43d8cd0142ebf89e51bb3"
+    },
+    {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_extension16_probe02_person_extension_depth_holes_seed004/run_config.json",
+      "sha256": "996bb73026e3186936fefa97ca33eb5057ad5b83c1b3ecb2e99e125a7390d47d"
+    },
+    {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_extension16_probe02_person_extension_depth_noise_seed004/bag_integrity.json",
+      "sha256": "b962d575e98545c01ad6b3414a58186c2c2641b3d950600654095065f6063d7d"
+    },
+    {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_extension16_probe02_person_extension_depth_noise_seed004/configuration/runtime_parameters.yaml",
+      "sha256": "aaacecfd529532c2caa93bb6f8648ba6af4237524cee0e68c5d77c3df918678b"
+    },
+    {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_extension16_probe02_person_extension_depth_noise_seed004/configuration/source_sha256.json",
+      "sha256": "0094a5013801e67fb6ae692cef785b190272708d71bfb0cd4a3349a0eb09ee46"
+    },
+    {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_extension16_probe02_person_extension_depth_noise_seed004/flight_evaluation.json",
+      "sha256": "104d82d0031d91d63e6ec2e33776587cab84144694e0378b43bdf71c8aa9fec9"
+    },
+    {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_extension16_probe02_person_extension_depth_noise_seed004/native_startup_report.json",
+      "sha256": "31a1650154f61ffa117e46824ca27170860d712274aabe36d10153ca902f3614"
+    },
+    {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_extension16_probe02_person_extension_depth_noise_seed004/navigation_reference_evaluation.json",
+      "sha256": "645dd4b3f7ab33b83a274876b3bac8881aa5c355f19b920ab74aa39fa3a5327e"
+    },
+    {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_extension16_probe02_person_extension_depth_noise_seed004/px4_source_clock_report.json",
+      "sha256": "91ff98bb5fda217671ae22a15a8753d56b05567c3e9a16b297214311bd26b5bd"
+    },
+    {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_extension16_probe02_person_extension_depth_noise_seed004/recording_closure.json",
+      "sha256": "06688368bc60f67ebffeac9822b4458937835a88074e1025b6f2c9e968e88972"
+    },
+    {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_extension16_probe02_person_extension_depth_noise_seed004/run_config.json",
+      "sha256": "7eb8243de08f13573d387ca3698493d98cebb9cefa1d3cf2c689d8d2f42955b1"
+    },
+    {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_extension16_probe02_person_extension_dropout_seed004/bag_integrity.json",
+      "sha256": "f301e33b0b14ba6005156e70b0733c357794bc589c692b9925e9036f1696d811"
+    },
+    {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_extension16_probe02_person_extension_dropout_seed004/configuration/runtime_parameters.yaml",
+      "sha256": "aaacecfd529532c2caa93bb6f8648ba6af4237524cee0e68c5d77c3df918678b"
+    },
+    {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_extension16_probe02_person_extension_dropout_seed004/configuration/source_sha256.json",
+      "sha256": "0094a5013801e67fb6ae692cef785b190272708d71bfb0cd4a3349a0eb09ee46"
+    },
+    {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_extension16_probe02_person_extension_dropout_seed004/flight_evaluation.json",
+      "sha256": "712a52502dff012c3a7aac7596e098384abbfe900668364e267ba1267b7e5ee6"
+    },
+    {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_extension16_probe02_person_extension_dropout_seed004/native_startup_report.json",
+      "sha256": "95ed21d9b3492f0b7607e34395cdf61ecd369a0f4f4778745160c543cd292647"
+    },
+    {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_extension16_probe02_person_extension_dropout_seed004/navigation_reference_evaluation.json",
+      "sha256": "3b8ddfbf79f0db289b22fa737bd9ba11a56564e42e833c647d87252a831f3e51"
+    },
+    {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_extension16_probe02_person_extension_dropout_seed004/px4_source_clock_report.json",
+      "sha256": "30cae9b27755329634bde8a5a8ff3b4d00635daf53514873e694c1ea152c9dcb"
+    },
+    {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_extension16_probe02_person_extension_dropout_seed004/recording_closure.json",
+      "sha256": "427429caaf3a6ccff5ba684277ca06d552e1347f1555238636aa33d64f22535c"
+    },
+    {
+      "path": "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_extension16_probe02_person_extension_dropout_seed004/run_config.json",
+      "sha256": "01536d3bb28482eddc6aa3955599e3c3e63a8dd1da1a35f24169b0127683061f"
+    },
+    {
+      "path": "D:\\WSL\\UAVHumble22-validation\\run_humble54_pending_probe02_one03.sh",
+      "sha256": "d9cc1f1876a5ed9a358697b29644e7aa7a3c192e0bdd2a2a7d37c208e74f06a6"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_probe02_dropout_review03\\root_review.json",
+      "sha256": "eac4f501a771b6acc7ecf3c88a0765165506350815c20bea94ffd3b9ef26887d"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_probe02_person_dropout_input_extract03\\input_evidence_evaluation03.json",
+      "sha256": "cbed316e893626df8848b6aa72508ac8fb25cadeb4ead1e666dbf5eb37744df9"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_probe02_rollover04_to05_intent01\\intent.json",
+      "sha256": "28c27195edb860f832be72b599c244d2fd06db939f502a4b3d6b216a975fc374"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_probe02_rollover04_to05_intent01\\native_state_before_signal.json",
+      "sha256": "6461f08f46f25b67a923a567dc8f7544032247747a475670f2c3c48c109f3b35"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_probe02_rollover04_to05_intent01\\signal_preflight.json",
+      "sha256": "bc665bb40883973c0f8c583a30e77efc6c2ab04b4deb2a7ce3ef3b775fc3fdb0"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_probe02_rollover04_to05_intent01\\signal_receipt.json",
+      "sha256": "260bdc67c7ba6456558cc59f801e7c9cd1d649b6d7421ef586f3b3ee723b86b8"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_probe02_rollover04_to05_intent01\\windows_started04.json",
+      "sha256": "6f91c157fbdc76d3ce8476f35f0395df993910a34cbe84366531fa6358139718"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_probe02_rollover04_to05_review01\\root_review.json",
+      "sha256": "28afb08764dc3ace10a1156efb0cb253a829de65e05671f35ad93c0ac8130535"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_probe02_windows_owner04\\final_monitor_state.json",
+      "sha256": "2bfb351c80aed61fe9d5a7cdf6bc8dfd8abe861ee3aceccb29d0b7a7d414f8a2"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_probe02_windows_owner04\\first_monitor_state.json",
+      "sha256": "f6cdb2364bc9b81846faec2ff2f0a05eec34b87869d65bf29dd5bdaaa9e5591e"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_probe02_windows_owner04\\first_native_state.json",
+      "sha256": "9175c78857368b972b3ad86f9b583bc15da27abc8acd946647828f4fdca7b6ef"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_probe02_windows_owner04\\monitor_stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_probe02_windows_owner04\\monitor_stdout.log",
+      "sha256": "4a4dc29f5e3dd8df5b6bc9b75eadcef027d656bd90c3956fec191acce7a33af5"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_probe02_windows_owner04\\native_terminal.json",
+      "sha256": "02f8ade3aa4be8adc7609fef8720ccac59f8422bc36fc2cbc31989912abad8a6"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_probe02_windows_owner04\\started.json",
+      "sha256": "6f91c157fbdc76d3ce8476f35f0395df993910a34cbe84366531fa6358139718"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_probe02_windows_owner04\\state.json",
+      "sha256": "f7b03ec5939dae402c36c6f235655d01c850caf9257df05c48de6dd50d832874"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_probe02_windows_owner04\\terminal.json",
+      "sha256": "5dcdb2c3d5dbe09985173c2d463d23b0acd54fdd17f8f5919fef0ddcad124e0c"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_probe02_windows_owner05\\final_monitor_state.json",
+      "sha256": "116f870540d09c32f0f678c0e3b957c03cca0a23f42e5fa8ece8901dcdba542f"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_probe02_windows_owner05\\first_monitor_state.json",
+      "sha256": "b094a64e31ad0c64fe0f29c2d61ffae811acc9f976dd30b8fa9a272263464089"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_probe02_windows_owner05\\first_native_state.json",
+      "sha256": "06667cc54d71e771ef5896b7b54d80d57da37308189defb931159e8e9b8b20a0"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_probe02_windows_owner05\\first_registered_admission.json",
+      "sha256": "cf4145310ca5193f4780b510e8f7a8f1cf757146937e12de4e9d89451c861da0"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_probe02_windows_owner05\\monitor_stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_probe02_windows_owner05\\monitor_stdout.log",
+      "sha256": "a5127632c966ea09bb7aa48a9e28b02fa642eaf4c8886a07c8a75aa04230f3dd"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_probe02_windows_owner05\\native_terminal.json",
+      "sha256": "b809e2bd46d1eb3a28778428683c8c00e4f6e6af81ab89400ccf31a1071de761"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_probe02_windows_owner05\\registered_entry_terminal.json",
+      "sha256": "87f64fd03ce54cfcaba237ff2065794ad6950bd8e6641b72b18504aaa92c294c"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_probe02_windows_owner05\\started.json",
+      "sha256": "59a79bbb0673ff5466d2405ca39007ca0ec1400b4beac61c838a4003d1eb0e86"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_probe02_windows_owner05\\state.json",
+      "sha256": "2b6baf7575c843dd0263a2c1fe0641812ebde2559d960d3d7173b703ddab0902"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\diagnostics\\humble54_probe02_windows_owner05\\terminal.json",
+      "sha256": "565de5c04957d3ed0503daa26860b4d6f5342484b4eaad29a820b81e62f61958"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_extension16_probe02_matrix\\plan.json",
+      "sha256": "1f7ff9559bcf9b1b02528a771f046481712a0ff5ec33eb961fe90310d1dcca54"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\monitor_humble54_probe02_owner04\\end_summary.json",
+      "sha256": "06ead08c63c11583483a2ac056a81d2c2f9686abee602db315288cd9762f38ad"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\monitor_humble54_probe02_owner04\\monitor_state.json",
+      "sha256": "2bfb351c80aed61fe9d5a7cdf6bc8dfd8abe861ee3aceccb29d0b7a7d414f8a2"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\monitor_humble54_probe02_owner05\\end_summary.json",
+      "sha256": "d7f0cb15fce6a15c87237985b611054bb39750fdc2ab2dd513cd816b50730928"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\monitor_humble54_probe02_owner05\\monitor_state.json",
+      "sha256": "116f870540d09c32f0f678c0e3b957c03cca0a23f42e5fa8ece8901dcdba542f"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\scripts\\monitor_project_progress.py",
+      "sha256": "759136d0eda40bb3a61c9e30e0272e1f6b8810b351dbe4c75dc17db5951bfd98"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\diagnostics\\safety54_schema_recovery03_archive01\\native\\snapshot_audit54_contract03.json",
+      "sha256": "0d5bc8770c039615249caeeabd2b18598564a4cf50ae31e4023f4e47ae7a30ef"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\experiment_orchestration\\humble54_controlled_rollover05\\request_rollover.py",
+      "sha256": "1468042efcccc43fc377f150f0e7149c0f15502b0355e723a2848efccdf7431c"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\experiment_orchestration\\humble54_pending_collector04_source\\collect_humble54_pending04.py",
+      "sha256": "bf9168f2b5b6dc31e43c187d894f860a4d77e780ded6a4b453c2545c5b5aee0e"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\experiment_orchestration\\humble54_pending_collector05_registered\\registered_profile05.json",
+      "sha256": "5ac96b104ac1e7ad24500657f38b329c968f9440e61f23e79d7bc27fc1df0bd0"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\experiment_orchestration\\humble54_pending_collector05_registered\\run_registered05.py",
+      "sha256": "cc22295766da78ff345f502e2f369af6527e359639a32b3d4d2f820ffc0989e3"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\experiment_orchestration\\humble54_pending_collector05_source\\collect_humble54_pending05.py",
+      "sha256": "f6a01ac6d106ed89914745341b6faba6f1fe6dab92df6a651ae86e90adeb9ce1"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\experiment_orchestration\\humble54_probe02_windows_owner04\\start_owner04.py",
+      "sha256": "8f6ceb38bc8ce7fb6aa6bec80f02b260b551082bde1d0a700ea1561a87ac79a1"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\experiment_orchestration\\humble54_probe02_windows_owner05\\start_owner05.py",
+      "sha256": "32479281e080e900f6eb7d5a98f2fd94865219672e59d35732ec387de53013fc"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\staging\\final55_offline_overlay_profile02_20261103\\validate_owner_chain.py",
+      "sha256": "9cbbfbbfccccac9096a5cc122a21d8578e0fcbb3148357602dcdb834b143d97a"
+    },
+    {
+      "path": "D:/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/staging/final55_offline_overlay_profile02_20261103/validate_owner_closure.py",
+      "sha256": "945717313097725eba537f9078297f3e91e32bfdde89e810ed01ae7a2a3d546f"
+    },
+    {
+      "path": "D:/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/staging/final55_offline_overlay_profile03_20261103/validate_owner_closure.py",
+      "sha256": "b3c086db30afe243bfdac423c0302c0285ebd64c8d7e8cb24b388e40fd81d744"
+    }
+  ],
+  "claim_boundary": "Execution attribution and preserved original prefix only. Faults and engineering FAIL/INCOMPLETE remain unchanged. No launch, retry, idle, cold-build or formal admission authorization."
+}

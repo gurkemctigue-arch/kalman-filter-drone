@@ -1,0 +1,68 @@
+{
+  "scope": "WINDOWS_SMALL_ORIGINAL_SLOT_METADATA_AND_TAMPER_TESTS_ONLY",
+  "status": "PASS",
+  "started_utc": "2026-11-03T06:16:06.592550+00:00",
+  "finished_utc": "2026-11-03T06:16:10.730828+00:00",
+  "groups": [
+    {
+      "pattern": "test_historical_unknown_slot03.py",
+      "command": [
+        "C:\\Program Files\\Python312\\python.exe",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\staging\\final55_offline_overlay_profile03_20261103",
+        "-p",
+        "test_historical_unknown_slot03.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "test_count": 5,
+      "log": "slot03_windows01_1.log",
+      "log_sha256": "d9b53f481860224d8d15c0f6485244b755dcb38ecd00a2ef1b69743a31f43b7e"
+    },
+    {
+      "pattern": "test_owner_closure_base03.py",
+      "command": [
+        "C:\\Program Files\\Python312\\python.exe",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\staging\\final55_offline_overlay_profile03_20261103",
+        "-p",
+        "test_owner_closure_base03.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "test_count": 14,
+      "log": "slot03_windows01_2.log",
+      "log_sha256": "6721f522eea5a722f10f071612304f95c8d29a960867dd3cc99cb8690b84d38b"
+    }
+  ],
+  "test_count": 19,
+  "sources_before": {
+    "validate_owner_closure.py": "b3c086db30afe243bfdac423c0302c0285ebd64c8d7e8cb24b388e40fd81d744",
+    "test_historical_unknown_slot03.py": "c6fb561f61c29979118d63fa99e37bd82e3da61b1c48fd1860d6b21188e82c41",
+    "test_owner_closure_base03.py": "55c8d9ce164feaf088d151e4acb6f10b050b014f3ff06ca03e0081167076f1f4",
+    "run_slot03_fixtures.py": "e4e3ec4772585d5ae51c2ccec50104903acd44f9a79f6bce027ac237f900262f"
+  },
+  "sources_after": {
+    "validate_owner_closure.py": "b3c086db30afe243bfdac423c0302c0285ebd64c8d7e8cb24b388e40fd81d744",
+    "test_historical_unknown_slot03.py": "c6fb561f61c29979118d63fa99e37bd82e3da61b1c48fd1860d6b21188e82c41",
+    "test_owner_closure_base03.py": "55c8d9ce164feaf088d151e4acb6f10b050b014f3ff06ca03e0081167076f1f4",
+    "run_slot03_fixtures.py": "e4e3ec4772585d5ae51c2ccec50104903acd44f9a79f6bce027ac237f900262f"
+  },
+  "source_snapshots": {
+    "validate_owner_closure.py": "b3c086db30afe243bfdac423c0302c0285ebd64c8d7e8cb24b388e40fd81d744",
+    "test_historical_unknown_slot03.py": "c6fb561f61c29979118d63fa99e37bd82e3da61b1c48fd1860d6b21188e82c41",
+    "test_owner_closure_base03.py": "55c8d9ce164feaf088d151e4acb6f10b050b014f3ff06ca03e0081167076f1f4",
+    "run_slot03_fixtures.py": "e4e3ec4772585d5ae51c2ccec50104903acd44f9a79f6bce027ac237f900262f"
+  },
+  "wsl_or_native_called": false,
+  "bags_models_images_read": false,
+  "production_continuation_launched": false
+}

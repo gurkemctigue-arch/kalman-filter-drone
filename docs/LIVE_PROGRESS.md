@@ -1,5 +1,9 @@
 # 查看当前实验
 
+**2026-11-03 14:20???????owner06 ???????????????** ? probe02 ? 4 START?3 ?????2 PASS?1 INCOMPLETE??12 ??????[???????](../results/monitor_humble54_probe02_owner06/index.html)?Windows ? Linux ?????????????????????????? 12/12??? 4/4 PASS???? 0/280??[???????](../planning/reliability-v4-probe02-unknown-review-20261103.md)??????????????
+
+**2026-11-03 14:13（北京时间）：新 probe02 已完成 3/16，2 PASS、1 INCOMPLETE_EVIDENCE、13 未尝试；当前飞行已停止，正在审核续接。** 第三场缺证已由实际原包核实：短窗两帧被预设丢帧故障丢弃；原未知和原结果保留。导航距离/高度及长时安全通过。详见[缺证复核与剩余工作](../planning/reliability-v4-probe02-unknown-review-20261103.md)。核心开发 12/12、安全 4/4 PASS，正式研究仍 0/280。下方 owner05 的运行中描述为历史检查点。
+
 **2026-11-03 13:44（北京时间）：同一 probe02 已从第三场接续，3 START、2 PASS、13 未尝试；正式仍 0/280。** 现在打开[owner05 实时页](../results/monitor_humble54_probe02_owner05/index.html)。前两场深度噪声、深度空洞均已原始 PASS；原 owner04 已按受控请求退出、句柄闭合、防休眠释放，原 STOPPED_FAULT 保留。新 owner05 只执行剩余十四场，没有重飞前两场。[续接证据与下一步](../planning/reliability-v4-probe02-rollover-20261103.md)记录实际审核和启动；下方 owner04 页面是已闭合的历史。
 
 **2026-11-03 13:26（北京时间）：probe02 当前 2 START、1 PASS、14 未尝试，第二场正在归档评价；正式 0/280。** 打开[当前实时页](../results/monitor_humble54_probe02_owner04/index.html)。监督器已收到“等待本场完整退出后停止”的受控请求，后续将审核真实闭合证据并以修正后的监督器续接同一计划未尝试槽，不重复飞行。核心12与独立安全03已分别12/12、4/4 PASS；其余扩展、正式重复、统计和新交付尚待完成。[最新交接](../planning/reliability-v4-current-state.md)说明本轮边界；下方计数按各自时间阅读。
