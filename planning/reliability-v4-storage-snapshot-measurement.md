@@ -27,17 +27,47 @@
 5. 从独立外置工具树运行大小测量。保留整个相邻工具目录及其 imports，不把新版工具写入 frozen54 或后续冷构建完成的 final55。输出必须是实际 results 下独立、尚不存在的新目录。
 6. 之后由原预算工具结合真实物理盘清单、增长假设和交付预留组装容量预算；正式准入及逐槽守卫继续独立执行。
 
-下面使用预定的目录名；运行前须核实实际扩展计划、registry、原生回执和新输出位置。两个 SHA 从当前实际小文件获得，并与已审查绑定核对：
+以下是未来执行卡，尚未在此文档更新中执行。只有 safety03 四场 PASS、guard 与 owner 闭合，且同源 extension16 全部完成终态登记、28 格均保留完整 75s 录制和原生归档验证后，才进入暂存与测量。`/root/uav_tracking_storage_measure54_tools01` 是此前的旧 b2f4 adapter bundle，继续保留；不能沿用它执行 schema03。新版必须从已审查 commit 暂存到全新 `tools02`，保留完整相邻 `tools/` 及 imports，不覆盖 tools01 或写入 frozen54/final55。
+
+先在原生空闲窗口从 Windows 工作仓库的固定 Git commit 导出工具。下列命令只准备外置工具，不启动测量：
+
+```bash
+set -euo pipefail
+tracking_repo=/mnt/d/基于yolo和卡尔曼滤波
+tracking_commit=eedd8d9abcd6890b0bd5d0155f76ac08253426b9
+tracking_tools=/root/uav_tracking_storage_measure54_tools02
+test "$(git -C "$tracking_repo" rev-parse "$tracking_commit^{commit}")" = "$tracking_commit"
+test ! -e "$tracking_tools"
+test ! -L "$tracking_tools"
+mkdir -- "$tracking_tools"
+git -C "$tracking_repo" archive --format=tar "$tracking_commit" tools | tar -xf - -C "$tracking_tools"
+(
+  cd -- "$tracking_tools"
+  sha256sum -c - <<'PINNED_TOOLS'
+bea4c4ba80fe99991c5f13f91c2b00f375c94954af53ffbfa19e47d19f69bb6c  tools/measure_reliability_v4_storage.py
+b6bb0f5a402ba1093d1c5d5061c5b2ac0d99b9153e7af73257ae5fdc873b2323  tools/reliability_v4_storage_snapshot_audit.py
+e02424cc5df2e103c8994afca8fdeee7fba02c777e0bb50fd7e54576d3e6b4aa  tools/reliability_v4_storage_budget.py
+e64e9da6a5180d70b32c6b2b3076abe4bbc52d4b748395bf7f8af61e6a7e3a8e  tools/reliability_v4_guard.py
+9339fe72a67b36f987b81a20833953a50ca59302b4157a1230424e8145497ba6  tools/reliability_v4_snapshot_audit.py
+PINNED_TOOLS
+)
+```
+
+随后使用实际 safety03 registry/native03 的已核对 SHA，不从未审查的最新文件自动取得任意新 SHA。registry 是前瞻登记文件；其固定 SHA 本身不代表四场已经完成。若任何输入字节变化或输出目录已经存在，应停止并查明原因，不改 pin、不覆盖输出、不重写历史结果：
 
 ```bash
 tracking_runtime=/root/uav_tracking_fullplan_v4_humble54
-tracking_tools=/root/uav_tracking_storage_measure54_tools01
+tracking_tools=/root/uav_tracking_storage_measure54_tools02
 tracking_registry="$tracking_runtime/results/reliability_v4_humble54_safety03_audit/registry.json"
 tracking_native=/mnt/d/WSL/UAVHumble22-validation/safety54_schema_recovery03/native_recovery03.json
-tracking_registry_sha="$(sha256sum "$tracking_registry" | cut -d' ' -f1)"
-tracking_native_sha="$(sha256sum "$tracking_native" | cut -d' ' -f1)"
+tracking_registry_sha=ee72b0151a924f7aad0b27459ad2784f7ad1d3d24af6a156d97fec80044332cf
+tracking_native_sha=155275816b1acb09c499b88075e83ffa9bb23195c844d1dbe595efe95a0d50bf
+test "$(sha256sum "$tracking_registry" | cut -d' ' -f1)" = "$tracking_registry_sha"
+test "$(sha256sum "$tracking_native" | cut -d' ' -f1)" = "$tracking_native_sha"
+test ! -e "$tracking_runtime/results/full28_storage_measurement_audit03"
+test ! -L "$tracking_runtime/results/full28_storage_measurement_audit03"
 
-bash "$tracking_runtime/scripts/run_research_session.sh" "$tracking_tools/tools/measure_reliability_v4_storage.py" \
+PYTHONDONTWRITEBYTECODE=1 bash "$tracking_runtime/scripts/run_research_session.sh" "$tracking_tools/tools/measure_reliability_v4_storage.py" \
   --core-development-plan "$tracking_runtime/results/reliability_v4_humble54_core12_probe01_matrix/plan.json" \
   --extension-development-plan "$tracking_runtime/results/reliability_v4_humble54_extension16_probe01_matrix/plan.json" \
   --output "$tracking_runtime/results/full28_storage_measurement_audit03" \
@@ -48,6 +78,17 @@ bash "$tracking_runtime/scripts/run_research_session.sh" "$tracking_tools/tools/
 ```
 
 四项参数必须一起出现。收集器必须看到完整 12+16 格，保留原状态和分母，并在发布输出前复查小文件、scanner 集合、文本和模型 stat。每格及汇总新增 `source_snapshot_validation`，明确保存原生/安全证据、当前文本检查、模型未重读以及非准入边界。缺少真实前置证据时拒绝，不生成部分大小证据。
+
+测量完整输出后，容量预算组装器还需要以下六项 CLI 输入；它不把工程 FAIL 升级为 PASS，也不授予正式准入：
+
+- `--core-development-plan`：本次 Humble54 core12 的原 `plan.json`。
+- `--extension-development-plan`：与 core 同冻结根、source/model/results 的本次 extension16 原 `plan.json`。
+- `--size-evidence-dir`：新生成的 `results/full28_storage_measurement_audit03`，内含全部 28 份 `<trial.name>.json`；不是其 `summary.json`，也不是旧 `freeze_validation/artifact_storage`。每格仍需原 terminal、`bag_integrity.json`、`summary.json`、`recording_closure.json`；必须 `COMPLETED`、整数 flight exit 0、无 infrastructure stop、75s Clock 覆盖、归档与 closure 闭合。完整曝光的原 FAIL/INCOMPLETE_EVIDENCE/EVALUATION_PENDING 可计容并原样保留，中止和缺格不可替代。
+- `--physical-inventory`：guard `storage-probe --distribution UAVHumble22 --mount /mnt/d` 的真实 JSON，准确覆盖 results/VHD 宿主卷；若实际分卷，须传全部涉及卷。组装时重查卷 UniqueId、当前宿主空闲和注册表 VHD 路径，ext4 逻辑空闲另列。
+- `--assumptions`：单独小 JSON，显式给出三种增长因子（均 ≥1）、各卷持久化/临时额外量、剩余构建量及依据，以及 `offline_replay20`、`videos12`、`detection_audit`、`figures_documents`、`runtime_logs` 五项正数交付预算。字段模板见 [容量预算组装器](reliability-v4-storage-budget-tool.md)。
+- `--output`：实际 results 下全新独立目录中的新 `.json`，例如 `results/full28_storage_budget_audit03/budget.json`；不能放入原测量、原矩阵、原试验或源码/构建目录。
+
+预算命令使用新 tools02 中未改动的 `reliability_v4_storage_budget.py`（SHA `e02424cc…b4aa`），六项参数齐备后串行执行。输出给出完整 280 槽预算、物理容量差额、临时预留及 `storage` canonical SHA；后续正式计划/manifest 的原守卫和逐槽容量检查仍须单独通过。
 
 Windows 定向验证命令为 `python -B -m unittest tests.test_measure_reliability_v4_storage tests.test_measure_reliability_v4_storage_snapshot_audit`。首版为 29/29 通过，用时 417.593 秒；recovery02 兼容补丁完整重跑为 34/34 通过、无跳过，用时 328.371 秒；recovery03 兼容补丁完整重跑为 41/41 通过、无跳过，用时 311.353 秒。recovery03 增加七项测试，覆盖第三配对的完整 28 格预算兼容、原 FAIL 保留与禁止载荷读取，以及新旧交叉配对、未完成诊断、归一化 reader 失败、raw schema 漂移、原 report 变更、早于原生诊断的 registry 和未知 producer 的拒绝。旧版本 fixture 从当前源精确反向应用已审查修补，每一步核对完整旧 SHA；它们只是 synthetic 输入，不是重建的实际执行证据。
 
