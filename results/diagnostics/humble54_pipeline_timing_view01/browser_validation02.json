@@ -1,0 +1,132 @@
+{
+  "verified_utc": "2026-11-03T14:14:52.430135+00:00",
+  "source_sha256": "4a1e5e92244ea3a6fb7bbe6287d6c367e921ca8818f39873876381c25b16e305",
+  "output_sha256": "d757d8b334d7067540e67cf34ca7ee0fa8181a5e4c82c2d722e9731d33deb3d1",
+  "scope": "WINDOWS_OFFLINE_BROWSER_ONLY_AFTER_ROOT_IDLE_NOTICE",
+  "previous_browser_evidence_preserved": {
+    "browser_validation01.json": "de3287a0d0da59dbd26e07403fc022d5aae30dd777564f88289086d00c60841f",
+    "browser_interaction_validation01.json": "3c75c4120e6f9cc6f6528e43e39b6c26746b67e24eeeae2ddf4e1bd4c8d8c8cd",
+    "browser_default01.png": "d5b1f2cea1924622642500bf5e1038e11a2fe3d73db0590c8f6a7b23cca1be43",
+    "browser_default01.dom.html": "771396df69fa5e2496f9dec06a041036486d3574f30097d9afe5bba6e84a4df6"
+  },
+  "formal_progress": "0/280_UNCHANGED",
+  "physical_e2e": "NOT_OBSERVED",
+  "cases": [
+    {
+      "body": {
+        "data-rendered": "true",
+        "data-run": "humble54_pipeline_timing_full_car01",
+        "data-denominator": "commands",
+        "data-population": "commands"
+      },
+      "svg_count": 2,
+      "ecdf_step_paths": 1,
+      "text": {
+        "distribution-caption": "1,377 条候选命令进入分布；全部命令为 1,854。同一 RGB 可被多条控制命令复用，因此这些命令不是独立图像样本。",
+        "status": "full_car01CANDIDATE_OBSERVED_IN_THIS_BENCH_ONLY执行完整全部适配器命令回调1,854FOLLOW 全链候选 / 全部命令1,377 / 1,85474.3%收到的全部 RGB927形成候选的 RGB / 全部 RGB681 / 92773.5%",
+        "metrics": "样本数 / 完整分母1,377 / 1,854中位数1150.06 msP951546.08 ms最大值5545.88 ms",
+        "coverage": "候选 / 完整分母1,377 / 1,854覆盖比例74.3%候选 1,377其余 / UNKNOWN 477",
+        "pageinfo": "1–25 / 1,854",
+        "provenance": "打开原始摘要results/diagnostics/humble54_pipeline_timing_full_car01/native_summary.original.jsonSHA-256 abc06a7779f9dea0c748c93eb560ab36f26eb6497c72ad31dad77b90520d4975进程退出码：{\"detector\":0,\"estimator\":0,\"controller\":0,\"adapter\":0,\"replay\":0}清理错误：[]；物理 E2E：NOT_OBSERVED",
+        "detail-caption": "保留所有已记录机会，分页只改变显示范围。"
+      },
+      "name": "default_car",
+      "dom_sha256": "60a572d27b7befa1defdcba10b4098473e680d5621a0316c1903fe167bd0b121",
+      "dom_bytes": 1392578,
+      "pass": true
+    },
+    {
+      "body": {
+        "data-rendered": "true",
+        "data-run": "humble54_pipeline_timing_full_person01",
+        "data-denominator": "commands",
+        "data-population": "commands"
+      },
+      "svg_count": 2,
+      "ecdf_step_paths": 1,
+      "text": {
+        "distribution-caption": "1,377 条候选命令进入分布；全部命令为 1,857。同一 RGB 可被多条控制命令复用，因此这些命令不是独立图像样本。",
+        "status": "full_person01CANDIDATE_OBSERVED_IN_THIS_BENCH_ONLY执行完整全部适配器命令回调1,857FOLLOW 全链候选 / 全部命令1,377 / 1,85774.2%收到的全部 RGB928形成候选的 RGB / 全部 RGB680 / 92873.3%",
+        "metrics": "样本数 / 完整分母1,377 / 1,857中位数1006.36 msP951157.93 ms最大值5523.51 ms",
+        "coverage": "候选 / 完整分母1,377 / 1,857覆盖比例74.2%候选 1,377其余 / UNKNOWN 480",
+        "pageinfo": "1–25 / 1,857",
+        "provenance": "打开原始摘要results/diagnostics/humble54_pipeline_timing_full_person01/native_summary.original.jsonSHA-256 2975ba128d784bc6c2dc1d0aa55029035be5e3a4050cb54a3bc4d59133d77277进程退出码：{\"detector\":0,\"estimator\":0,\"controller\":0,\"adapter\":0,\"replay\":0}清理错误：[]；物理 E2E：NOT_OBSERVED",
+        "detail-caption": "保留所有已记录机会，分页只改变显示范围。"
+      },
+      "name": "person_url",
+      "dom_sha256": "ccfa7d18a3a20a9c10564b3845e76348e5e68d8afa13179b58153a6642f632f0",
+      "dom_bytes": 1392243,
+      "pass": true
+    },
+    {
+      "body": {
+        "data-rendered": "true",
+        "data-run": "humble54_pipeline_timing_full_car01",
+        "data-denominator": "rgb",
+        "data-population": "first"
+      },
+      "svg_count": 2,
+      "ecdf_step_paths": 1,
+      "text": {
+        "distribution-caption": "仅使用摘要已有 first_candidate_latency_ns：681 个 RGB 有首候选，全部收到 RGB 为 927。不为缺失图像补值。",
+        "status": "full_car01CANDIDATE_OBSERVED_IN_THIS_BENCH_ONLY执行完整全部适配器命令回调1,854FOLLOW 全链候选 / 全部命令1,377 / 1,85474.3%收到的全部 RGB927形成候选的 RGB / 全部 RGB681 / 92773.5%",
+        "metrics": "样本数 / 完整分母681 / 927中位数751.11 msP951162.92 ms最大值1944.44 ms",
+        "coverage": "候选 / 完整分母681 / 927覆盖比例73.5%候选 681其余 / UNKNOWN 246",
+        "pageinfo": "1–25 / 927",
+        "provenance": "打开原始摘要results/diagnostics/humble54_pipeline_timing_full_car01/native_summary.original.jsonSHA-256 abc06a7779f9dea0c748c93eb560ab36f26eb6497c72ad31dad77b90520d4975进程退出码：{\"detector\":0,\"estimator\":0,\"controller\":0,\"adapter\":0,\"replay\":0}清理错误：[]；物理 E2E：NOT_OBSERVED",
+        "detail-caption": "保留所有已记录机会，分页只改变显示范围。"
+      },
+      "name": "car_first",
+      "dom_sha256": "040a5413a271e7a81a576496290896203f0ef53fde1482fe51249c64772ea420",
+      "dom_bytes": 1366222,
+      "pass": true
+    },
+    {
+      "body": {
+        "data-rendered": "true",
+        "data-run": "humble54_pipeline_timing_full_person01",
+        "data-denominator": "rgb",
+        "data-population": "first"
+      },
+      "svg_count": 2,
+      "ecdf_step_paths": 1,
+      "text": {
+        "distribution-caption": "仅使用摘要已有 first_candidate_latency_ns：680 个 RGB 有首候选，全部收到 RGB 为 928。不为缺失图像补值。",
+        "status": "full_person01CANDIDATE_OBSERVED_IN_THIS_BENCH_ONLY执行完整全部适配器命令回调1,857FOLLOW 全链候选 / 全部命令1,377 / 1,85774.2%收到的全部 RGB928形成候选的 RGB / 全部 RGB680 / 92873.3%",
+        "metrics": "样本数 / 完整分母680 / 928中位数730.19 msP95743.25 ms最大值782.92 ms",
+        "coverage": "候选 / 完整分母680 / 928覆盖比例73.3%候选 680其余 / UNKNOWN 248",
+        "pageinfo": "1–25 / 928",
+        "provenance": "打开原始摘要results/diagnostics/humble54_pipeline_timing_full_person01/native_summary.original.jsonSHA-256 2975ba128d784bc6c2dc1d0aa55029035be5e3a4050cb54a3bc4d59133d77277进程退出码：{\"detector\":0,\"estimator\":0,\"controller\":0,\"adapter\":0,\"replay\":0}清理错误：[]；物理 E2E：NOT_OBSERVED",
+        "detail-caption": "保留所有已记录机会，分页只改变显示范围。"
+      },
+      "name": "person_first",
+      "dom_sha256": "a93af836841309202d4dbdae5f667bd76a41700b125fd8952c3b04b700dcba41",
+      "dom_bytes": 1366082,
+      "pass": true
+    },
+    {
+      "body": {
+        "data-rendered": "true",
+        "data-run": "humble54_pipeline_timing_run01",
+        "data-denominator": "commands",
+        "data-population": "commands"
+      },
+      "svg_count": 0,
+      "ecdf_step_paths": 0,
+      "text": {
+        "distribution-caption": "本次未取得该口径的时延明细，不填零，也不绘制时延分布。",
+        "status": "run01NOT_OBSERVED_INCOMPLETE_EXECUTION执行未完成JSONDecodeError: Expecting value: line 1 column 1 (char 0)全部适配器命令回调—FOLLOW 全链候选 / 全部命令— / ——收到的全部 RGB—形成候选的 RGB / 全部 RGB— / ——",
+        "metrics": "样本数 / 完整分母— / —中位数—P95—最大值—",
+        "coverage": "候选 / 完整分母— / —覆盖比例—该运行没有可用的分母计数。候选 —其余 / UNKNOWN —",
+        "pageinfo": "不可用",
+        "provenance": "打开原始摘要results/diagnostics/humble54_pipeline_timing_run01/native_summary.original.jsonSHA-256 3043b5958a623000b1a8627fe01a80fee9591f7d3839f21dfb952840415733f9进程退出码：{\"detector\":-9,\"estimator\":0,\"controller\":0,\"adapter\":-2}清理错误：[]；物理 E2E：NOT_OBSERVED",
+        "detail-caption": "该运行未取得可评价明细；不把缺失明细填为零。"
+      },
+      "name": "failed",
+      "dom_sha256": "fa0e10be681f2a34185cd1275b57249ab19c716905eb01e120df44313d291678",
+      "dom_bytes": 1328011,
+      "pass": true
+    }
+  ],
+  "screenshot_sha256": "8f5298646750159d1eebc5725389b98bb881c78793134acf83dfd27176971233"
+}

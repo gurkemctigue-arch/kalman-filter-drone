@@ -1,0 +1,68 @@
+{
+  "scope": "ACTUAL_BOUNDED_LOSSLESS_COMPARISON_CLOSED_NOT_CAPACITY_ADMISSION",
+  "created_utc": "2026-11-03T14:17:32.106887+00:00",
+  "terminal_sha256": "31d7404fd53223f621f8148c578bd50a4c8ebcd784f43440832233ba19ac2d33",
+  "original_source_count": 2,
+  "original_sources_preserved": true,
+  "declared_candidate_count": 4,
+  "byte_and_native_validated_count": 1,
+  "error_count": 1,
+  "not_attempted_count": 2,
+  "complete_pairs": 0,
+  "stop_reason": "FIRST_SOURCE_LEVEL22_900_SECOND_TOTAL_BUDGET_EXHAUSTED",
+  "candidate_outcomes": {
+    "car_stage1_velocity_seed004__zstd19_long27_T1": {
+      "status": "BYTE_AND_NATIVE_VALIDATED",
+      "error_type": null,
+      "error": null,
+      "candidate_bytes": 483046375,
+      "total_wall_s": 621.846406910001
+    },
+    "car_stage1_velocity_seed004__zstd22_long27_T1": {
+      "status": "ERROR",
+      "error_type": "TimeoutError",
+      "error": "TimeoutError('Unchanged 900s total candidate budget exhausted: car_stage1_velocity_seed004__zstd22_long27_T1')",
+      "candidate_bytes": null,
+      "total_wall_s": 900.1159184599965
+    },
+    "car_extension_depth_noise_seed004__zstd19_long27_T1": {
+      "status": "NOT_ATTEMPTED",
+      "error_type": null,
+      "error": null,
+      "candidate_bytes": null,
+      "total_wall_s": null
+    },
+    "car_extension_depth_noise_seed004__zstd22_long27_T1": {
+      "status": "NOT_ATTEMPTED",
+      "error_type": null,
+      "error": null,
+      "candidate_bytes": null,
+      "total_wall_s": null
+    }
+  },
+  "proven_capacity_saving_bytes": 0,
+  "production_policy_changed": false,
+  "owned_native_residuals": [],
+  "foreground_returncode": 1,
+  "temporary_power_released_same_thread": true,
+  "performance_boundary": "Single-thread fixed-order diagnostics; no completed level19/22 pair and no measured valid compression saving. Partial bytes do not define a compression ratio.",
+  "sampled_resources": {
+    "actual_group_rss_peak_bytes": 3076644864,
+    "fresh_benchmark_tree_peak_logical_bytes": 2613667396,
+    "host_available_memory_min_bytes": 7571607552,
+    "guest_available_memory_min_bytes": 12639186944,
+    "vhd_peak_logical_bytes": 58949894144,
+    "vhd_peak_allocated_bytes": 58949894144,
+    "scope": "Periodic observations, not a guarantee of unobserved instantaneous peaks; no production spool is created."
+  },
+  "capacity_snapshot": {
+    "created_utc": "2026-11-03T14:17:32.108278+00:00",
+    "D_current_free_bytes": 97905659904,
+    "unchanged_original_required_bytes": 262998172579,
+    "arithmetic_shortfall_bytes": 165092512675,
+    "fresh_full_budget_executed": false,
+    "original_budget_sha256": "2af067022931d87e5c1e74eccef8457f4d735dc7d17819d331ea9eadf6c94b4b"
+  },
+  "formal_progress": "0/280_UNCHANGED",
+  "frozen_source_modified": false
+}

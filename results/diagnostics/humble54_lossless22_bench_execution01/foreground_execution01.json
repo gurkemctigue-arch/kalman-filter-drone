@@ -1,0 +1,23 @@
+{
+  "scope": "FOREGROUND_TWO_ORIGINAL_SOURCES_LOSSLESS19_VS22_NATIVE_BENCH",
+  "started_utc": "2026-11-03T13:46:45.813106+00:00",
+  "source_sha256": "9e76590ae0c8012332747d43066df3abef3498e14c0b96a0da07f5c7d3f7a870",
+  "manifest_sha256": "3eac39e0a4c6f200c7dbf3e50aa94f0f9732379394d03323a5c9bfbf11c6d0e1",
+  "native_output": "/mnt/d/WSL/UAVHumble22-validation/humble54_lossless22_bench01",
+  "command": [
+    "wsl.exe",
+    "--distribution",
+    "UAVHumble22",
+    "--exec",
+    "bash",
+    "-c",
+    "set -eo pipefail\nexport HUMBLE22_PROJECT_ROOT=/root/uav_tracking_fullplan_v4_humble54\nexport HUMBLE22_ROS_GZ_WS=/root/uav_humble22/ros_gz_shutdown_A01_ws\nexport HUMBLE22_PX4_ROOT=/root/uav_humble22/PX4-Autopilot-v4mag\nexport PYTHONDONTWRITEBYTECODE=1\nsource /root/uav_tracking_fullplan_v4_humble54/scripts/humble22_env.sh\nexec bash '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/diagnostics/humble54_lossless22_bench01/run.sh' --execute --reviewed-source-sha256 9e76590ae0c8012332747d43066df3abef3498e14c0b96a0da07f5c7d3f7a870 --reviewed-manifest-sha256 3eac39e0a4c6f200c7dbf3e50aa94f0f9732379394d03323a5c9bfbf11c6d0e1"
+  ],
+  "power_thread": 15140,
+  "power_request_return": 2147483648,
+  "windows_child_pid": 8836,
+  "returncode": 1,
+  "release_thread": 15140,
+  "power_release_return": 2147483651,
+  "finished_utc": "2026-11-03T14:12:43.576391+00:00"
+}
