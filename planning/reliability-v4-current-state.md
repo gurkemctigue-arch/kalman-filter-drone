@@ -1,6 +1,6 @@
 # 当前工作交接（持续开发，非验收报告）
 
-**2026-11-03 15:58（北京时间）检查点：probe02为8 START、7个原终态（4 PASS、2 FAIL、1 INCOMPLETE_EVIDENCE）、8未尝试；第八场行人远距离跟随运行中。** 核心12/12、安全03 4/4 PASS，正式0/280。第七场位置控制原FAIL，六项导航门中仅末段距离稳定失败；同口径距离/高度RMSE0.649/0.166 m，其余保护通过，见[位置/速度复核](reliability-v4-probe02-position-speed-review-20261103.md)。活跃owner06 session29755、观察07 session63622、触发09 session62140均已重新取得工具存活回执；源码不改。09等待完整16真实闭合后触发08的测量/定标/预算，08尚未启动。[实时页](../results/monitor_humble54_probe02_owner06/index.html)、[容量风险](reliability-v4-space-risk-20261103.md)、[后续已有命令](../tools/experiment_orchestration/humble54_closed_followon_runner08/FINAL55_NEXT.md)。独占窗口另有两项实际窄窗诊断待做：组合故障30–43s的首次LOST原因；位置89–92.472s与速度89–92.86s末段对照。不能将小报告分析冒充已完成窄窗读取。
+**2026-11-03 16:38（北京时间）检查点：probe02为10 START、9个原终态（6 PASS、2 FAIL、1 INCOMPLETE_EVIDENCE）、6未尝试；第十场汽车深度空洞运行中。** 核心12/12、安全03 4/4 PASS，正式0/280。第九场汽车深度噪声PASS，距离/高度RMSE0.735622/0.148088 m、末段稳定；原终态SHA ac3f4e7113a2ca686edfc02003531e2dfd910441b20f44f5ab2420b11406588a。行人7m远距离也PASS（0.780046/0.154095m）。活跃owner06 session29755、观察07 session63622、触发09 session62140均已重新取得存活回执；源码固定。09等完整16真实闭合后触发08的测量/定标/预算，08尚未启动。[实时页](../results/monitor_humble54_probe02_owner06/index.html)、[容量风险](reliability-v4-space-risk-20261103.md)、[已有后续命令](../tools/experiment_orchestration/humble54_closed_followon_runner08/FINAL55_NEXT.md)。独占窗口需两项实际窄窗诊断：组合故障30–43s首次LOST；位置89–92.472s对照速度89–92.86s的末段条件。历史录包清单原字节e9543e05...54f6717已以UTF8/文件身份核为正确根，245包逻辑98.73GiB，未获删除许可且未计回收收益。
 
 **2026-11-03 14:20（北京时间）历史检查点：owner06 已从第四场行人延迟接续同一 probe02。** 当时为4 START、3个原终态（2 PASS、1 INCOMPLETE）、12未尝试；Windows/Linux完整准入记录一致。第三场未知保留，前三场不重飞。
 

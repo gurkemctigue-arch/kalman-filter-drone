@@ -1,6 +1,6 @@
 # 查看当前实验
 
-**2026-11-03 15:58（北京时间）检查点：扩展probe02已记录7个原终态（4 PASS、2 FAIL、1 INCOMPLETE_EVIDENCE），第八场行人远距离跟随正在运行，8场未尝试。** 第七场位置控制距离/高度RMSE为0.649/0.166 m，末段距离稳定失败，其余五项导航数值门及遮挡保护通过。查看[当前实时页](../results/monitor_humble54_probe02_owner06/index.html)、[位置/速度复核](../planning/reliability-v4-probe02-position-speed-review-20261103.md)。核心12/12、安全4/4 PASS，正式0/280。07/09继续等待原owner06完整闭合，08尚未启动；[容量风险](../planning/reliability-v4-space-risk-20261103.md)仍在。下方均为历史检查点。
+**2026-11-03 16:38（北京时间）检查点：扩展probe02已记录9个原终态（6 PASS、2 FAIL、1 INCOMPLETE_EVIDENCE），第十场汽车深度空洞运行中，6场未尝试。** 汽车深度噪声已PASS，距离/高度RMSE0.736/0.148 m、末段稳定。核心12/12、安全4/4 PASS，正式0/280。[当前实时页](../results/monitor_humble54_probe02_owner06/index.html)以原始终态和实际心跳为准。07/09已重新取得工具存活回执，继续等待原owner06完整闭合；08尚未启动。[容量风险](../planning/reliability-v4-space-risk-20261103.md)及两个失败场景窄窗诊断仍待处理。下方均为历史检查点。
 
 **2026-11-03 14:20（北京时间）历史检查点：owner06 已从第四场行人延迟接续同一 probe02。** 当时为4 START、3个原终态（2 PASS、1 INCOMPLETE）、12未尝试；Windows/Linux完整准入记录一致。第三场未知保留，前三场不重飞。
 

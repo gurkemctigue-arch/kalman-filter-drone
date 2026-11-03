@@ -1,6 +1,6 @@
 # v4 开发与验证状态
 
-**2026-11-03 15:58（北京时间）检查点：核心开发12/12、安全03 4/4 PASS；扩展probe02为8 START、7个原终态（4 PASS、2 FAIL、1 INCOMPLETE_EVIDENCE）、8未尝试，正式0/280。** 第七场位置控制末段距离稳定失败，距离/高度RMSE0.649/0.166 m；小报告复核已完成，末段窄窗因果诊断尚待独占窗口。第八场行人远距离跟随运行中。owner06继续采集，07/09等待完整16后触发08，当前没有08原生执行或正式准入。[实时页](../results/monitor_humble54_probe02_owner06/index.html)、[位置/速度复核](../planning/reliability-v4-probe02-position-speed-review-20261103.md)、[容量风险](../planning/reliability-v4-space-risk-20261103.md)。
+**2026-11-03 16:38（北京时间）检查点：核心开发12/12、安全03 4/4 PASS；扩展probe02为10 START、9个原终态（6 PASS、2 FAIL、1 INCOMPLETE_EVIDENCE）、6未尝试，正式0/280。** 行人8场已完成，汽车深度噪声PASS、距离/高度RMSE0.736/0.148 m，六项导航门均通过。第十场汽车深度空洞正在运行。owner06、退出观察07和后续触发09均已重新确认存活，08尚未执行。[实时页](../results/monitor_humble54_probe02_owner06/index.html)、[容量风险](../planning/reliability-v4-space-risk-20261103.md)。
 
 **2026-11-03 14:20（北京时间）历史检查点：owner06 已从第四场行人延迟接续同一 probe02。** 当时为4 START、3个原终态（2 PASS、1 INCOMPLETE）、12未尝试；Windows/Linux完整准入记录一致。第三场未知保留，前三场不重飞。
 
