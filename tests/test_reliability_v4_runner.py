@@ -1046,9 +1046,10 @@ class ReliabilityV4Tests(unittest.TestCase):
                     "report_sha256":v4.sha(replacement), "evaluation_root":str(root),
                     "execution":{"returncode":0,"error":None,"evidence_scope":"ORCHESTRATION_FIXTURE_ONLY"}}]
             write(path, gate)
-            formal = make_fixture_plan(root, "results/formal", "reliability_v4_formal", formal=True, probe_gate=path)
-            v4.validate_plan(formal)
-            self.assertEqual(len(formal["trials"]), 120)
+            # A new navigation revision now requires the prospective all-28
+            # core+extension manifest; a bare selected core override is refused.
+            with self.assertRaisesRegex(ValueError, "complete prospective 28-slot manifest"):
+                make_fixture_plan(root, "results/formal", "reliability_v4_formal", formal=True, probe_gate=path)
             self.assertEqual({name:v4.sha(name) for name in original_reports}, original_reports)
 
     def test_formal_matrix_is_exactly_120_and_commands_freeze_protocol(self):

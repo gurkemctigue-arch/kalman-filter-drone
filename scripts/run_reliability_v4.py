@@ -78,6 +78,10 @@ REPORT_PROVENANCE_HELPERS = {
     "gimbal":("scripts/evaluate_stage1_flight.py", "uav_tracking/control/gimbal_geometry.py"),
 }
 GIMBAL_REEVALUATION_FILENAME = "gimbal_terminal_audit_rev2.json"
+NAVIGATION_REEVALUATION_FILENAME = "navigation_reference_grid_endpoint_rev2.json"
+SENSOR_INPUT_EVIDENCE_FIELD = "development_input_interruption_evidence"
+SENSOR_INPUT_EVIDENCE_SCOPE = "DEVELOPMENT_EVIDENCE_ONLY_NOT_FORMAL_ADMISSION"
+SENSOR_INPUT_EVIDENCE_BASIS = "POST_HOC_DEVELOPMENT_SOURCE_BINDING_NOT_FORMAL_PREREGISTRATION"
 CORRELATED_BOUND_FIELD = "navigation_correlated_two_face_bound"
 CORRELATED_BOUND_FLAG = "--correlated-two-face-bound"
 EXCLUSIVE_NAVIGATION_FIELD = "navigation_exclusive_reference"
@@ -775,6 +779,14 @@ def gimbal_reevaluation_command(evaluation_root, source_plan, previous, trial, o
         *(["--selected-target"] if trial["group"] == "stage3_multi_active" else []),
         "--source-plan", source_plan, "--slot-record", record_path(previous, trial),
         "--original-report", original["report"], "--output", output)
+
+
+def navigation_reevaluation_command(evaluation_root, trial, output):
+    arguments = [Path(trial["directory"]), "--target-class", trial["target_class"]]
+    if trial["multi_target"]:
+        identity = next(spec for spec in trial["evaluations"] if spec["kind"] == "physical_identity")
+        arguments += ["--physical-identity-report", identity["report"]]
+    return wrapper_command(Path(evaluation_root), "evaluate_navigation_reference.py", *arguments, "--output", output)
 
 
 def split_clock_bridge_setting(plan):
@@ -2068,7 +2080,122 @@ def artifact_hashes(directory):
             if path.is_file() and path.suffix in {".json", ".jsonl", ".yaml", ".yml", ".sdf", ".log", ".bson"}}
 
 
-def extension_algorithm_failures(plan, trial, flight, entries):
+def read_sensor_input_evidence_manifest(plan, path, probe_paths):
+    """Recompute all four post-hoc stimulus checks with an explicitly bound tool.
+
+    No source policy, original report, behavior outcome or formal admission is
+    changed. The external module has no implicit default path or approval.
+    """
+    declared = plan.get("protocol", {}).get(SENSOR_INPUT_EVIDENCE_FIELD)
+    if declared is None and SENSOR_INPUT_EVIDENCE_FIELD not in plan.get("protocol", {}):
+        if path is not None:
+            raise ValueError("Sensor input evidence requires an explicit development source declaration")
+        return {}, None
+    if path is None:
+        raise ValueError("Declared sensor input evidence requires the complete fixed four-slot manifest")
+    if (not isinstance(declared, dict) or type(declared.get("schema_version")) is not int or declared["schema_version"] != 1
+            or declared.get("revision") != "sensor_input_interruption_v1" or declared.get("scope") != SENSOR_INPUT_EVIDENCE_SCOPE
+            or declared.get("evidence_basis") != SENSOR_INPUT_EVIDENCE_BASIS):
+        raise ValueError("Invalid post-hoc development sensor input declaration")
+    def bound(value, label):
+        if not isinstance(value, dict) or not isinstance(value.get("path"), str):
+            raise ValueError("Missing sensor input " + label + " file binding")
+        candidate = Path(value["path"])
+        if (not candidate.is_absolute() or not candidate.is_file() or candidate.is_symlink()
+                or sha(candidate) != value.get("sha256")):
+            raise ValueError("Sensor input " + label + " file/SHA binding differs")
+        canonical = candidate.resolve(strict=True)
+        if str(canonical) != value["path"]:
+            raise ValueError("Sensor input " + label + " declaration requires its actual canonical path")
+        return canonical
+    module_path = bound(declared.get("module"), "module")
+    contract_path = bound(declared.get("contract"), "contract")
+    source = bound(declared.get("source_plan"), "source plan")
+    manifest_path = Path(path)
+    if not manifest_path.is_file() or manifest_path.is_symlink():
+        raise ValueError("Sensor input development manifest must be a separate actual file")
+    manifest_path = manifest_path.resolve(strict=True)
+    protected = [Path(plan["frozen_root"]).resolve(), source.parent.resolve()]
+    previous = load(source)
+    protected.append(Path(previous["frozen_root"]).resolve())
+    protected.extend(Path(trial["directory"]).resolve() for trial in previous.get("trials", []))
+    if (module_path.suffix != ".py" or any(module_path.is_relative_to(root) or contract_path.is_relative_to(root)
+            or manifest_path.is_relative_to(root) for root in protected)
+            or len({module_path, contract_path, source, manifest_path}) != 4):
+        raise ValueError("Sensor input module/contract/manifest must stay external to frozen and original evidence roots")
+    contract = load(contract_path)
+    cells = declared.get("dev_slots")
+    if (digest(contract) != declared["contract"].get("canonical_sha256")
+            or contract.get("revision") != declared["revision"] or contract.get("scope") != declared["scope"]
+            or contract.get("source_plan") != declared["source_plan"] or contract.get("dev_slots") != cells
+            or previous.get("mode") != "EXTENSION_PROBE"
+            or {str(Path(item).resolve(strict=True)) for item in probe_paths} != {str(source)}
+            or not isinstance(cells, list) or len(cells) != 4
+            or any(not isinstance(row, dict) for row in cells)):
+        raise ValueError("Sensor input contract canonical/source/fixed-cell declaration differs")
+    expected = {row.get("slot_id") for row in cells}
+    if (len(expected) != 4 or {(row.get("target_class"), row.get("condition")) for row in cells}
+            != {(cls, condition) for cls in CLASSES for condition in ("dropout", "combined")}):
+        raise ValueError("Sensor input declaration must fix both classes and both fault conditions")
+    for row in cells:
+        matches = [trial for trial in previous["trials"] if trial["id"] == row["slot_id"]
+            and trial["target_class"] == row["target_class"] and trial.get("extension_condition") == row["condition"]]
+        if len(matches) != 1:
+            raise ValueError("Sensor input declared slot differs from its original plan")
+    manifest_sha = sha(manifest_path)
+    spec = importlib.util.spec_from_file_location("v4_bound_sensor_input_interruption_evidence", module_path)
+    if spec is None or spec.loader is None:
+        raise ValueError("Cannot load the bound sensor input module")
+    module = importlib.util.module_from_spec(spec)
+    module_bytes = module_path.read_bytes()
+    if hashlib.sha256(module_bytes).hexdigest() != declared["module"]["sha256"]:
+        raise ValueError("Sensor input module source changed before execution")
+    # Execute the hashed source bytes themselves; a cached bytecode file is
+    # not part of the reviewed external module binding.
+    exec(compile(module_bytes, str(module_path), "exec"), module.__dict__)
+    if getattr(module, "REVISION", None) != declared["revision"] or getattr(module, "SCOPE", None) != declared["scope"]:
+        raise ValueError("Bound sensor input module revision/scope differs")
+    evidence = module.evaluate_development_manifest(manifest_path, contract)
+    statuses = {"UPSTREAM_INPUT_INTERRUPTION_CORROBORATED", "NOT_APPLICABLE"}
+    rows = evidence.get("per_slot", [])
+    if (evidence.get("schema_version") != 1 or evidence.get("revision") != declared["revision"]
+            or evidence.get("scope") != declared["scope"] or evidence.get("status") not in statuses
+            or evidence.get("errors") != [] or evidence.get("missing_slot_ids") != []
+            or evidence.get("contract_sha256") != digest(contract) or evidence.get("module_sha256") != declared["module"]["sha256"]
+            or evidence.get("development_manifest") != {"path":str(manifest_path), "sha256":manifest_sha}
+            or not isinstance(rows, list) or len(rows) != 4 or any(not isinstance(row, dict) for row in rows)
+            or {row.get("slot_id") for row in rows} != expected
+            or any(row.get("status") not in statuses or row.get("errors") != [] for row in rows)):
+        raise ValueError("Sensor input evidence requires all four independently complete fixed cells")
+    for row in rows:
+        trial = next(trial for trial in previous["trials"] if trial["id"] == row["slot_id"])
+        terminal_path = record_path(previous, trial)
+        terminal = load(terminal_path)
+        surface_path = Path(next(item["report"] for item in trial["evaluations"] if item["kind"] == "surface_flight"))
+        surface = load(surface_path)
+        original = {"terminal_status":terminal.get("status"), "engineering_evidence":terminal.get("engineering_evidence"),
+                    "acceptance":surface.get("acceptance"), "occlusions":surface.get("occlusions")}
+        originals = row.get("input_bindings", {})
+        if (row.get("original") != original or originals.get("plan") != declared["source_plan"]
+                or originals.get("terminal") != {"path":str(terminal_path.resolve()), "sha256":sha(terminal_path)}
+                or originals.get("flight_evaluation.json") != {"path":str(surface_path.resolve()), "sha256":sha(surface_path)}):
+            raise ValueError("Sensor input result must retain its exact original terminal/report/null evidence")
+    if (sha(module_path) != declared["module"]["sha256"] or sha(contract_path) != declared["contract"]["sha256"]
+            or sha(source) != declared["source_plan"]["sha256"] or sha(manifest_path) != manifest_sha):
+        raise ValueError("Sensor input source/contract/manifest changed during validation")
+    mapping = {(str(source), row["slot_id"]):deepcopy(row) for row in rows}
+    return mapping, {"path":str(manifest_path), "sha256":manifest_sha, "declaration_sha256":digest(declared),
+                     "evidence":evidence}
+
+
+def sensor_input_unobserved_checks(mapping):
+    """Keep the original null as an unobserved stimulus appendix, never False/True."""
+    return [{"plan_path":key[0], "slot_id":key[1], "check":"surface:short:detector_interruption_observed",
+             "original_value":None, "outcome":"UNOBSERVED", "stimulus_evidence":row["status"]}
+            for key, row in sorted(mapping.items()) if row["status"] == "UPSTREAM_INPUT_INTERRUPTION_CORROBORATED"]
+
+
+def extension_algorithm_failures(plan, trial, flight, entries, *, sensor_input_evidence=None):
     """Keep known stress-condition failures, while requiring evaluable safety evidence."""
     if flight.get("error") or flight.get("returncode") != 0:
         raise ValueError("Extension probe flight invocation or infrastructure did not complete")
@@ -2080,13 +2207,20 @@ def extension_algorithm_failures(plan, trial, flight, entries):
         if entry.get("report_sha256") != sha(spec["report"]):
             raise ValueError("Extension probe evaluator report changed")
         current = read_evaluation(spec, entry["execution"], plan)
-        if current["result"] != entry["result"] or current["result"] in {"INVALID", "INCOMPLETE_EVIDENCE", "EVALUATION_PENDING", "MISSING"}:
+        stimulus_only = (entry["kind"] == "surface_flight" and current["result"] == "INCOMPLETE_EVIDENCE"
+                        and sensor_input_evidence is not None
+                        and sensor_input_evidence.get("status") == "UPSTREAM_INPUT_INTERRUPTION_CORROBORATED")
+        if current["result"] != entry["result"] or (current["result"] in {"INVALID", "INCOMPLETE_EVIDENCE", "EVALUATION_PENDING", "MISSING"} and not stimulus_only):
             raise ValueError("Extension probe evaluator is incomplete or contradicts its saved entry")
         checked[entry["kind"]] = load(spec["report"])
     if any(checked[kind]["evaluation_status"] != "PASS" for kind in ("source_clock", "native_startup")):
         raise ValueError("Extension probe source clock/frame continuity and native startup must independently PASS")
     surface = checked["surface_flight"]
     acceptance = surface.get("acceptance", {})
+    if sensor_input_evidence is not None and (sensor_input_evidence.get("slot_id") != trial["id"]
+            or sensor_input_evidence.get("original", {}).get("acceptance") != acceptance
+            or sensor_input_evidence.get("original", {}).get("occlusions") != surface.get("occlusions")):
+        raise ValueError("Sensor input corroboration cannot replace another original surface outcome")
     if (acceptance.get("missing_topics") != [] or type(acceptance.get("input_read_error_count")) is not int
             or acceptance["input_read_error_count"] != 0 or acceptance.get("clock_timebase_available") is not True
             or acceptance.get("short_occlusion_recorded") is not True or acceptance.get("long_occlusion_recorded") is not True
@@ -2108,13 +2242,22 @@ def extension_algorithm_failures(plan, trial, flight, entries):
                 "no_automatic_recovery_after_long_loss", "no_tracking_control_before_reselection_after_long_loss")
         if any(checks.get(key) is not True for key in (*complete, *(safe if row["kind"] == "long" else ()))):
             raise ValueError("Extension probe original shutter/loss/hover/reselection safety did not PASS")
-        if type(checks.get("detector_interruption_observed")) is not bool or type(checks.get("prediction_observed")) is not bool:
+        corroborated_null = (row["kind"] == "short" and checks.get("detector_interruption_observed") is None
+            and all(type(row.get(key)) is int and row[key] == 0
+                    for key in ("diagnostic_frames_inside", "candidate_free_frames_inside", "valid_depth_frames_inside"))
+            and sensor_input_evidence is not None and sensor_input_evidence.get("status") == "UPSTREAM_INPUT_INTERRUPTION_CORROBORATED")
+        if (type(checks.get("detector_interruption_observed")) is not bool and not corroborated_null) or type(checks.get("prediction_observed")) is not bool:
             raise ValueError("Extension probe lacks recorded detector/state evidence during shutter")
+        if corroborated_null and any(type(checks.get(key)) is not bool for key in
+                ("no_loss_during_short_occlusion", "identity_preserved_on_observed_recovery")):
+            raise ValueError("Sensor input corroboration cannot replace another unknown behavior check")
         algorithm = ("detector_interruption_observed", "prediction_observed",
                      *( ("sustained_tracking_after_reselection",) if row["kind"] == "long" else
                         ("no_loss_during_short_occlusion", "identity_preserved_on_observed_recovery")))
         for key in algorithm:
             value = checks.get(key)
+            if corroborated_null and key == "detector_interruption_observed":
+                continue  # Original None is retained in the separate UNOBSERVED appendix.
             if value is not None and type(value) is not bool:
                 raise ValueError("Extension algorithm outcome must retain boolean/null evidence")
             if value is not True:failures.append(f"surface:{row['kind']}:{key}={'UNOBSERVED' if value is None else 'FAIL'}")
@@ -2138,6 +2281,8 @@ def validate_probe_gate(plan, *, extensions=False):
     revision. No bags are opened and no earlier record is rewritten here.
     Extensions retain disclosed algorithm failures under stress, while source
     clocks, startup, recording and original loss/hover safety must pass.
+    New navigation overrides require a prospective complete core12+extension16
+    manifest; historical bare navigation overrides are not accepted here.
     """
     binding = (plan.get("extension_protocol_binding", {}).get("protocol", {}).get("development_readiness", {})
                if extensions else plan.get("development_probe_gate", {}))
@@ -2173,14 +2318,45 @@ def validate_probe_gate(plan, *, extensions=False):
         expected_binding[SPLIT_CLOCK_BRIDGE_FIELD] = split_clock_bridge_setting(plan)
         if type(gate.get("bindings", {}).get(SPLIT_CLOCK_BRIDGE_FIELD)) is not bool:
             raise ValueError("Development probe gate split_clock_bridge binding must be a boolean")
+    if SENSOR_INPUT_EVIDENCE_FIELD in plan["protocol"]:
+        expected_binding[SENSOR_INPUT_EVIDENCE_FIELD + "_sha256"] = digest(plan["protocol"][SENSOR_INPUT_EVIDENCE_FIELD])
     if gate.get("bindings") != expected_binding:
         raise ValueError("Development probe gate source/model/runtime/evaluator/threshold binding differs")
     slots = gate.get("probe_slots")
     if not isinstance(slots, list) or not slots:
         raise ValueError("Development probe gate requires immutable probe slot evidence")
+    sensor_binding = gate.get("sensor_input_interruption_evidence")
+    if not extensions and (sensor_binding is not None or "unobserved_surface_checks" in gate):
+        raise ValueError("Sensor input evidence cannot qualify a core development gate")
+    sensor_inputs, actual_sensor_binding = (read_sensor_input_evidence_manifest(plan,
+        sensor_binding.get("path") if isinstance(sensor_binding, dict) else None, [item["plan_path"] for item in slots])
+        if extensions else ({}, None))
+    if actual_sensor_binding != sensor_binding or (sensor_binding is not None
+            and gate.get("unobserved_surface_checks") != sensor_input_unobserved_checks(sensor_inputs)):
+        raise ValueError("Sensor input manifest/source/full-four-cell evidence or UNOBSERVED appendix differs")
+    if sensor_binding is None and "unobserved_surface_checks" in gate:
+        raise ValueError("An UNOBSERVED stimulus appendix requires independently complete input evidence")
     gimbal_overrides = {(str(Path(item["plan_path"]).resolve()), item["slot_id"]):item.get("evaluation_overrides", [])
                         for item in slots if any(entry.get("kind") == "gimbal" for entry in item.get("evaluation_overrides", []))}
     manifest_binding = gate.get("evaluation_overrides_manifest")
+    navigation_overrides = {(str(Path(item["plan_path"]).resolve()), item["slot_id"]):item.get("evaluation_overrides", [])
+                            for item in slots if any(entry.get("kind") == "navigation" for entry in item.get("evaluation_overrides", []))}
+    navigation_binding = gate.get("navigation_reevaluation_manifest")
+    if (navigation_overrides or navigation_binding is not None) and (gimbal_overrides or manifest_binding is not None):
+        raise ValueError("Navigation and six-gimbal reevaluation manifests cannot be combined")
+    if navigation_overrides or navigation_binding is not None:
+        if not isinstance(navigation_binding, dict):
+            raise ValueError("Navigation overrides require the complete prospective 28-slot manifest")
+        helper = Path(__file__).with_name("build_reliability_v4_probe_gate.py")
+        if sha(helper) != plan["source_hashes"].get("scripts/build_reliability_v4_probe_gate.py"):
+            raise ValueError("Navigation reevaluation manifest validator source differs")
+        module_spec = importlib.util.spec_from_file_location("v4_navigation_manifest_validator", helper)
+        module = importlib.util.module_from_spec(module_spec)
+        module_spec.loader.exec_module(module)
+        declared, actual_binding = module.read_navigation_reevaluation_manifest(navigation_binding.get("path"), plan,
+            [item["plan_path"] for item in slots], extension=extensions)
+        if actual_binding != navigation_binding or declared != navigation_overrides:
+            raise ValueError("Navigation reevaluation manifest/file/all-28-slot bindings differ")
     if gimbal_overrides or manifest_binding is not None:
         if not isinstance(manifest_binding, dict):
             raise ValueError("Gimbal overrides require the explicit complete six-slot manifest")
@@ -2308,7 +2484,8 @@ def validate_probe_gate(plan, *, extensions=False):
             raise ValueError("Unexpected development probe evaluator override")
         flight = next((entry for entry in record.get("commands", []) if entry.get("kind") == "flight"), {})
         if extensions:
-            failures = extension_algorithm_failures(evaluation_plan, trial, flight, entries)
+            failures = extension_algorithm_failures(evaluation_plan, trial, flight, entries,
+                sensor_input_evidence=sensor_inputs.get((source_key, slot_id)))
             if failures:known_failures.append({"plan_path":str(source),"slot_id":slot_id,"failures":failures})
             cells.add((trial["target_class"], trial["extension_condition"]))
         else:
