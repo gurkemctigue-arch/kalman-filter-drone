@@ -1,6 +1,6 @@
 # 查看当前实验
 
-**2026-11-03 09:02（北京时间）检查点：Humble54 安全 03 四场全部闭合，4 个原始工程 PASS、0 场待执行；正式研究仍为 0/280。** 原 guard 为开发范围 PASS，Linux 执行终态与 owner 均为 `COMPLETED`，命令退出 0，owner 无活动槽，原终态清理残留列表为空。Windows 最终摘要记录命令退出 0、原命令进程已结束且创建身份匹配。Humble54 核心 12/12 工程 PASS 保留；扩展 16 尚未开始，当前准备系统盘维护，之后再实际启动。
+**2026-11-03 09:19（北京时间）检查点：Humble54 扩展 16 已实际运行，1 场 START、0 场终态、15 场未开始；正式研究仍为 0/280。** 09:18:48 的进度 JSON 为 `RUNNING`，命令与监控器的创建身份和新鲜心跳核验通过；首场 `person_extension_depth_noise_seed004` 的原始 START 标记为 09:15:27，09:19:05 的 Linux owner 仍记录该活动槽。核心 12/12 与独立安全 03 的四场原始工程 PASS 均已闭合；当前扩展场景尚无通过结论。
 
 安全 02 原终态保持 `STOPPED_FAULT`、08:08:49 命令退出 2：首场原始 `INFRASTRUCTURE_ERROR`、其余 3 场未执行，无自动重试。其 `KeyError: 'result'` 已复现；修复保持 source/native 通过原公共 reader 严格解释 `evaluation_status`，专属及末端报告严格使用 `result`。08:17:42 完成的实际原生合同与只读诊断，及另行 5 项 Humble 单元测试（2.692 秒、全部通过、无跳过），都不构成旧槽重新验收或新飞行通过。安全 03 使用新 registry、新 driver 及 contract03 独立登记执行。
 
@@ -10,6 +10,7 @@
 
 已有身份报告的每任务提取现已完成：四个多目标场景首次请求的已知覆盖率为 0.621–0.680，显式重选后为 0.961–0.998。首次分母包括计划短/长遮挡和等待重选区间，不能当作纯可见画面的识别准确率；原报告理由也不证明所有未知的因果来源。没有应用每 UUID 验收阈值，未知不改为正确。汽车多目标主动云台完整 753 格仍为 614 正确、0 已知错误、139 未知，诊断 714 帧（619/0/95）单独保留。
 
+- [扩展 16 实时进度](../results/project_progress/humble54_extension16_run01/index.html)及[本轮执行记录](../planning/reliability-v4-execution-20261103.md)：当前唯一仿真批次；09:19 检查点为 1 START、0 终态、15 未开始，不预记 PASS。
 - [安全 03 原件与闭合核验](../tools/experiment_orchestration/humble54_safety4_closed03/README.md)、[命令终态页](../results/project_progress/humble54_safety4_run03/index.html)及[最终摘要](../results/project_progress/humble54_safety4_run03/end_summary.json)：4 场原始 PASS，开发 guard 通过，Linux owner 与 Windows 命令均闭合；不代表正式研究完成。
 - [schema03 原生合同、诊断、5 项单测及前瞻 registry 原件](../tools/diagnostics/safety54_schema_recovery03_archive01/README.md)：工具修复与新飞行验收分开，旧失败不改写。
 - [安全 02 命令终态](../results/project_progress/humble54_safety4_run02/index.html)与[最终摘要](../results/project_progress/humble54_safety4_run02/end_summary.json)：历史批次已停止，1 场原始基础设施错误、3 场未执行。

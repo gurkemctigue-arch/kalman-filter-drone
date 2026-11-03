@@ -2,6 +2,8 @@
 
 本记录是执行检查点，不是全项目验收报告。用户已授权继续修复、仿真、统计、交付及 GitHub 同步。正式研究仍为 **0/280**。
 
+**09:19（北京时间）实际检查点：扩展 16 正在运行，1 START、0 终态、15 未开始。** 重新读取的进度生成于 `2026-11-03T01:18:48.490319+00:00`，状态 `RUNNING`，命令与监控器的创建身份及新鲜心跳核验通过。首场为 `person_extension_depth_noise_seed004`，原始槽 START 标记为 `01:15:27.076989 UTC`；Linux owner 于 `01:19:05.979500 UTC` 仍记录该活动槽。没有预记 PASS。核心 12/12 与安全 03 四场原始工程 PASS 均已闭合，正式仍为 0/280。
+
 ## 已实际完成
 
 - Humble54 同源核心 12 场原始工程 PASS 已闭合，保留同一开发种子的限制。
@@ -11,7 +13,18 @@
 - 实际 native03 创建 contract03 并完成只读 schema 诊断，退出 0。首份快照调用原 helper，另两份按原始字节及完整映射等价核验。没有重判旧安全 02，没有改原登记时间，没有修改冻结的 Humble54 飞行源码。
 - 修复及原始小证据已提交并推送 `d1635cf`、`c6b30d2`。
 
-## 当前唯一飞行批次
+## 当前唯一飞行批次：扩展 16
+
+- 冻结运行根：`/root/uav_tracking_fullplan_v4_humble54`；没有修改冻结飞行源码。
+- [实时进度](../results/project_progress/humble54_extension16_run01/index.html)；[原计划](../results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe01_matrix/plan.json)。计划于 `01:15:23.564925 UTC` 实际创建，模式 `EXTENSION_PROBE`，共 16 场开发种子 004；未消耗正式种子。
+- 计划原文件 SHA256：`f32fb17a77670f5c774076ff9bf4b752b3e91eea4f28021efb826ed9b8520055`；登记 digest：`ded5ab19b72f53c932cbea2044561a4e2fe937445cb07eb9525e9e0be5fc9761`。这两个值分别绑定文件字节与计划内容，不能混用。
+- [Linux owner 状态](../results/frozen_fullplan_v4_humble54/humble54_extension16_owner01/owner_state.json)：PID 134468、start ticks `7830987`、boot ID `f79204a4-99cd-42cf-b886-aa905b1cac6a`，状态 `RUNNING`。owner 的待完成计数包含正在执行的首场；START/终态计数以上述实际进度和原槽标记为准。
+- Windows monitor PID 19256，creation FILETIME `134381420603083387`；owned WSL 命令 PID 4888，creation FILETIME `134381420604764583`。本轮 unified-exec session 为 29911。
+- 临时防休眠 observer PID 44952，依据 `D:/WSL/UAVHumble22-validation/power_owner54/receipt04/state.json`：09:18:41 状态 `ACTIVE`，API request 返回 `2147483648`，绑定 monitor 19256 的上述创建身份；不改变全局电源策略。旧 observer 50284 不属于此当前有效收据，不能混用。
+
+只保留一个重型原生任务，扩展批次活动期间不另开 WSL/仿真或录包分析。保留每个原始终态；基础设施或证据门失败仍先停止定位，不改称普通压力算法失败。
+
+## 已结束的安全 03 批次（历史检查点）
 
 安全 03 于北京时间 08:21:54 首场 START。08:26:18 的核对为 1 START、0 终态、3 未开始；首场最后已记录采集时间约 29.5 仿真秒，owner 心跳新鲜。此时间快照不能证明此后仍在运行，应读取以下实际入口。
 
@@ -30,7 +43,7 @@
 
 ## 后续按实际结果推进
 
-1. 安全 03 四场原始 PASS，完整 guard、owner 和清理闭合后，执行已独审的 `D:/WSL/UAVHumble22-validation/run_humble54_extension16_probe02.sh`。该文件明确检查实际安全 03 registry，随后公开 CLI 新建、串行运行扩展 16 场；目前尚未执行。
+1. 安全 03 已闭合，扩展入口 `D:/WSL/UAVHumble22-validation/run_humble54_extension16_probe02.sh` 已实际执行并创建上述独立计划，当前串行运行扩展 16；继续监控真实原终态，不重新启动安全批次或当前扩展计划。
 2. 扩展 16 保留全部原始终态与压力失败。基础设施或证据门失败仍需先解决，不能把它归作普通算法压力失败。
 3. 使用完整核心 12 + 扩展 16 的真实体积核算容量；完成两类预定 velocity 开发录包导出及 R0 定标。storage 第三 producer/driver 配对已通过独立静审及 41/41 项 Windows 回归；仍不能用组件验证代替真实 28 格测量。
 4. 按 [final55 暂存说明](reliability-v4-final55-source-staging.md)建立新最终根、冷构建、前瞻登记、容量准入及封存。保留原冻结映射；原固定外置 guard 路径不变。
