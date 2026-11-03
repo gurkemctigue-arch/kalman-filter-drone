@@ -1,5 +1,11 @@
 # 2026-11-03 接续执行记录
 
+**12:43（北京时间）恢复检查点：旧 probe01 已终态保留，新完整 probe02 尚待启动。** 旧 collector03 因真实 DrvFS 权限错误停止；其独立飞行随后结束，但原上层 flight command 返回码丢失，原公开 runner 已将第八槽登记为 `INTERRUPTED`，没有根据飞行摘要补成完成。旧批次合计 8 终态：3 PASS、2 INCOMPLETE_EVIDENCE、2 FAIL、1 INTERRUPTED，另 8 未尝试；旧 owner/waiter 继续保持原停止状态。下方“仍在运行”等描述均为对应时间的历史检查点。
+
+已用原公开 CLI 登记完整新 16 格 `extension16_probe02_matrix`，文件 SHA `1f7ff9559bcf9b1b02528a771f046481712a0ff5ec33eb961fe90310d1dcca54`，保留同一冻结54飞行源码、模型、协议和开发 seed4；不拼接旧成功槽。新 collector04 的真实 Linux 23 项小监督测试通过，实际 Windows/DrvFS 小探针也通过：旧03遇真实 errno13 失败，新04遇71次同类异常后于句柄释放后成功写入。监督输出拟放 Linux ext4；新的外层 Windows 进程监督入口正在准备，须持有 monitor/WSL 原始进程句柄直到实际退出。此时新16尚无飞行 START，正式研究仍 **0/280**。
+
+组合场首次丢失已补齐[原消息流逐源键对照](../tools/diagnostics/humble54_combined_navigation_review01/early_loss_input_evidence01/actual_delivery_reconciliation.json)：33.8–35.2s 的15次原始RGB/depth机会全部记录到，研究输入和诊断各9次；34.2–34.7s六个连续缺口恰好吻合固定seed4注入规则。root及独立审查代理均直接阅图，15帧均可见行人。输入空档加80ms注入延迟已超过0.75s保护，即使不计推理也会触发；保持原保护和原FAIL。该描述性附件不替代固定四槽短遮挡合同。恢复原件见[42份字节一致快照](../tools/experiment_orchestration/humble54_probe02_recovery01/README.md)。
+
 本记录是执行检查点，不是全项目验收报告。用户已授权继续修复、仿真、统计、交付及 GitHub 同步。正式研究仍为 **0/280**。
 
 **12:10（北京时间）实际检查点：8 START、7 原终态（3 PASS、2 INCOMPLETE_EVIDENCE、2 FAIL）、8 未尝试。** 第七场 `person_extension_speed_changes_position_seed004` 于 `04:04:47.689033 UTC` 原始 FAIL / COMPLETED，terminal SHA `ec7e46918d6677b9359a63df5b40f898020e4fb0759fdd1ef98e834b81a31729`；非INFRA、flight exit0、无清理残留。距离/高度RMSE为0.657147/0.162859 m，末端连续距离稳定为false，其余五项导航检查true，source/native/surface均PASS。collector实际核验后启动原第八场 `person_extension_far_distance_seed004`，当前唯一重原生任务仍为session52906。下方11:50及更早描述保留为历史。

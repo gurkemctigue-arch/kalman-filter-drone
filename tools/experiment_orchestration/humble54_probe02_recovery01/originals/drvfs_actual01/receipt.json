@@ -1,0 +1,741 @@
+{
+  "scope": "ACTUAL_DRVFS_FILE_SHARING_ONLY",
+  "status": "PASS",
+  "is_fixture": false,
+  "started_utc": "2026-11-03T04:38:33.535042+00:00",
+  "claim_boundary": "Real file sharing only; no collector-loop, ROS, SITL, bags, flight, capacity or readiness claim.",
+  "driver_source": {
+    "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\diagnostics\\humble54_drvfs_sharing_probe01\\probe_drvfs_sharing.py",
+    "sha256": "7685c8ef54c222264eb3570e6eb80a02bbf10ffe197f65d13d2a1ba95d2af958"
+  },
+  "distribution_requested": "UAVHumble22",
+  "automatic_retry": false,
+  "cases": [
+    {
+      "mode": "old",
+      "source": {
+        "path": "D:\\WSL\\UAVHumble22-validation\\collect_humble54_pending03.py",
+        "sha256": "dd4583da4f34b216bc5dd5a95aa904459ebc7f68e2bfba026a2e3e66706d9c86"
+      },
+      "started_utc": "2026-11-03T04:38:33.539036+00:00",
+      "share_mode": "FILE_SHARE_READ (1); no FILE_SHARE_DELETE",
+      "desired_access": "GENERIC_READ",
+      "release_delay_after_native_started_s": 2.0,
+      "windows_handle_acquired_utc": "2026-11-03T04:38:33.550029+00:00",
+      "command": [
+        "wsl.exe",
+        "--distribution",
+        "UAVHumble22",
+        "--exec",
+        "python3",
+        "-B",
+        "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/diagnostics/humble54_drvfs_sharing_probe01/probe_drvfs_sharing.py",
+        "--native-helper",
+        "--mode",
+        "old",
+        "--source",
+        "/mnt/d/WSL/UAVHumble22-validation/collect_humble54_pending03.py",
+        "--source-sha",
+        "dd4583da4f34b216bc5dd5a95aa904459ebc7f68e2bfba026a2e3e66706d9c86",
+        "--case-dir",
+        "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/old"
+      ],
+      "owned_wsl_pid": 51196,
+      "windows_observed_native_start_utc": "2026-11-03T04:38:33.891852+00:00",
+      "windows_handle_released_utc": "2026-11-03T04:38:35.892314+00:00",
+      "returncode": 0,
+      "native_result": {
+        "scope": "ACTUAL_DRVFS_FILE_SHARING_ONLY",
+        "is_fixture": false,
+        "mode": "old",
+        "platform": "linux",
+        "uname": [
+          "Linux",
+          "localhost",
+          "6.6.114.1-microsoft-standard-WSL2",
+          "#1 SMP PREEMPT_DYNAMIC Mon Dec  1 20:46:23 UTC 2025",
+          "x86_64"
+        ],
+        "pid": 154617,
+        "helper_source": {
+          "path": "/mnt/d/WSL/UAVHumble22-validation/collect_humble54_pending03.py",
+          "sha256": "dd4583da4f34b216bc5dd5a95aa904459ebc7f68e2bfba026a2e3e66706d9c86"
+        },
+        "probe_source_sha256": "7685c8ef54c222264eb3570e6eb80a02bbf10ffe197f65d13d2a1ba95d2af958",
+        "target_sha256_before": "4b1dd32d2fa69522402d0de1935611ddd97f43d2e011e180f90779d398631160",
+        "expected_value": {
+          "actual_drvfs_probe": true,
+          "writer": "old"
+        },
+        "writer_started_utc": "2026-11-03T04:38:33.876803+00:00",
+        "outcome": "RAISED",
+        "exception": {
+          "type": "PermissionError",
+          "errno": 13,
+          "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/old/state.json.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/old/state.json'"
+        },
+        "writer_finished_utc": "2026-11-03T04:38:33.889440+00:00",
+        "writer_duration_s": 0.012649586002225988,
+        "target_sha256_after": "4b1dd32d2fa69522402d0de1935611ddd97f43d2e011e180f90779d398631160",
+        "target_value_after": {
+          "original": true,
+          "mode": "old"
+        },
+        "helper_source_sha256_after": "dd4583da4f34b216bc5dd5a95aa904459ebc7f68e2bfba026a2e3e66706d9c86",
+        "observed_write_json_oserrors": [
+          {
+            "utc": "2026-11-03T04:38:33.889374+00:00",
+            "line": 236,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/old/state.json.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/old/state.json'"
+          }
+        ],
+        "temporary_files": [
+          {
+            "name": "state.json.tmp",
+            "sha256": "1bb01299e5f272a12ced827de7a827eed7fe57832b539bf571190376768b6bdd"
+          }
+        ]
+      },
+      "status": "PASS",
+      "finished_utc": "2026-11-03T04:38:35.893846+00:00",
+      "artifacts": {
+        "native_result.json": {
+          "bytes": 2218,
+          "sha256": "5056465d45f1ad0ab6a647e26abeafea953393e5948858998f7bbda24b26ccb2"
+        },
+        "started.json": {
+          "bytes": 98,
+          "sha256": "3f22c537b24da651a8057d19a6e77ea046c32b8a00986a89d77f515a5fc61fbf"
+        },
+        "state.json": {
+          "bytes": 44,
+          "sha256": "4b1dd32d2fa69522402d0de1935611ddd97f43d2e011e180f90779d398631160"
+        },
+        "state.json.tmp": {
+          "bytes": 52,
+          "sha256": "1bb01299e5f272a12ced827de7a827eed7fe57832b539bf571190376768b6bdd"
+        },
+        "stderr.log": {
+          "bytes": 132,
+          "sha256": "b280c454d6f559e56eb3f5ed39f3ba084b8d1744a3ff7fe016b21ff86dea1aca"
+        },
+        "stdout.log": {
+          "bytes": 129,
+          "sha256": "d00c8b7556128d118d010de514aab4bb477e3b8cc2a0a717d0769a022832cec8"
+        }
+      }
+    },
+    {
+      "mode": "new",
+      "source": {
+        "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\tools\\experiment_orchestration\\humble54_pending_collector04_source\\collect_humble54_pending04.py",
+        "sha256": "bf9168f2b5b6dc31e43c187d894f860a4d77e780ded6a4b453c2545c5b5aee0e"
+      },
+      "started_utc": "2026-11-03T04:38:35.899847+00:00",
+      "share_mode": "FILE_SHARE_READ (1); no FILE_SHARE_DELETE",
+      "desired_access": "GENERIC_READ",
+      "release_delay_after_native_started_s": 2.0,
+      "windows_handle_acquired_utc": "2026-11-03T04:38:35.900871+00:00",
+      "command": [
+        "wsl.exe",
+        "--distribution",
+        "UAVHumble22",
+        "--exec",
+        "python3",
+        "-B",
+        "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/diagnostics/humble54_drvfs_sharing_probe01/probe_drvfs_sharing.py",
+        "--native-helper",
+        "--mode",
+        "new",
+        "--source",
+        "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/experiment_orchestration/humble54_pending_collector04_source/collect_humble54_pending04.py",
+        "--source-sha",
+        "bf9168f2b5b6dc31e43c187d894f860a4d77e780ded6a4b453c2545c5b5aee0e",
+        "--case-dir",
+        "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new"
+      ],
+      "owned_wsl_pid": 44552,
+      "windows_observed_native_start_utc": "2026-11-03T04:38:36.280381+00:00",
+      "windows_handle_released_utc": "2026-11-03T04:38:38.281141+00:00",
+      "returncode": 0,
+      "native_result": {
+        "scope": "ACTUAL_DRVFS_FILE_SHARING_ONLY",
+        "is_fixture": false,
+        "mode": "new",
+        "platform": "linux",
+        "uname": [
+          "Linux",
+          "localhost",
+          "6.6.114.1-microsoft-standard-WSL2",
+          "#1 SMP PREEMPT_DYNAMIC Mon Dec  1 20:46:23 UTC 2025",
+          "x86_64"
+        ],
+        "pid": 154621,
+        "helper_source": {
+          "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/experiment_orchestration/humble54_pending_collector04_source/collect_humble54_pending04.py",
+          "sha256": "bf9168f2b5b6dc31e43c187d894f860a4d77e780ded6a4b453c2545c5b5aee0e"
+        },
+        "probe_source_sha256": "7685c8ef54c222264eb3570e6eb80a02bbf10ffe197f65d13d2a1ba95d2af958",
+        "target_sha256_before": "278be847a2596fa91d0946d4843c98852b849d3ce26a94d8bfa65b8264f08d1d",
+        "expected_value": {
+          "actual_drvfs_probe": true,
+          "writer": "new"
+        },
+        "writer_started_utc": "2026-11-03T04:38:36.264011+00:00",
+        "outcome": "SUCCEEDED",
+        "exception": null,
+        "writer_finished_utc": "2026-11-03T04:38:38.309105+00:00",
+        "writer_duration_s": 2.0451562179950997,
+        "target_sha256_after": "e82496556c66e53e6d8a9f188495721c7ede48d742019d66ba790e0634a8ebcd",
+        "target_value_after": {
+          "actual_drvfs_probe": true,
+          "writer": "new"
+        },
+        "helper_source_sha256_after": "bf9168f2b5b6dc31e43c187d894f860a4d77e780ded6a4b453c2545c5b5aee0e",
+        "observed_write_json_oserrors": [
+          {
+            "utc": "2026-11-03T04:38:36.275212+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:36.302477+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:36.330719+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:36.356651+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:36.384246+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:36.412329+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:36.439269+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:36.466575+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:36.495016+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:36.525391+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:36.551459+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:36.591765+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:36.619038+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:36.645771+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:36.673045+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:36.698545+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:36.725137+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:36.751208+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:36.777007+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:36.803458+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:36.828587+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:36.855066+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:36.885627+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:36.914828+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:36.943506+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:36.970134+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:36.999064+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:37.025663+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:37.051513+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:37.077192+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:37.103787+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:37.129759+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:37.157056+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:37.183042+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:37.210484+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:37.237491+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:37.265034+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:37.291190+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:37.319362+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:37.347539+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:37.374643+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:37.401572+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:37.429026+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:37.456875+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:37.482368+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:37.519884+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:37.554275+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:37.590332+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:37.617562+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:37.642010+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:37.668809+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:37.695016+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:37.729577+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:37.757341+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:37.783869+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:37.810856+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:37.849065+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:37.874874+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:37.900861+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:37.927711+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:37.953894+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:37.983819+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:38.038628+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:38.066956+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:38.095522+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:38.123984+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:38.158111+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:38.186603+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:38.216019+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:38.244304+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          },
+          {
+            "utc": "2026-11-03T04:38:38.273429+00:00",
+            "line": 242,
+            "type": "PermissionError",
+            "errno": 13,
+            "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json.577d900b8f50415883e55273175ed43f.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/new/state.json'"
+          }
+        ],
+        "temporary_files": []
+      },
+      "status": "PASS",
+      "finished_utc": "2026-11-03T04:38:38.383380+00:00",
+      "artifacts": {
+        "native_result.json": {
+          "bytes": 35466,
+          "sha256": "fd617a0cee9c372175d7c6fc948ffc674e9b50bd87245be6a720c4e24539cd0f"
+        },
+        "started.json": {
+          "bytes": 98,
+          "sha256": "37b82e558a4439b90f354e4e0bdbeeb2ed868a94528ed55df00d0268e7cb9656"
+        },
+        "state.json": {
+          "bytes": 52,
+          "sha256": "e82496556c66e53e6d8a9f188495721c7ede48d742019d66ba790e0634a8ebcd"
+        },
+        "stderr.log": {
+          "bytes": 132,
+          "sha256": "b280c454d6f559e56eb3f5ed39f3ba084b8d1744a3ff7fe016b21ff86dea1aca"
+        },
+        "stdout.log": {
+          "bytes": 132,
+          "sha256": "315fd33e36e1c8fe899e7f993479dd28726aef8aa905a3493f85df422931e311"
+        }
+      }
+    }
+  ],
+  "finished_utc": "2026-11-03T04:38:38.393380+00:00",
+  "artifact_hashes": {
+    "new/case_receipt.json": "724c83a63bb45a18a5c697953ccbe20ac5930f3116e6004608c1cec644f3d845",
+    "new/native_result.json": "fd617a0cee9c372175d7c6fc948ffc674e9b50bd87245be6a720c4e24539cd0f",
+    "new/started.json": "37b82e558a4439b90f354e4e0bdbeeb2ed868a94528ed55df00d0268e7cb9656",
+    "new/state.json": "e82496556c66e53e6d8a9f188495721c7ede48d742019d66ba790e0634a8ebcd",
+    "new/stderr.log": "b280c454d6f559e56eb3f5ed39f3ba084b8d1744a3ff7fe016b21ff86dea1aca",
+    "new/stdout.log": "315fd33e36e1c8fe899e7f993479dd28726aef8aa905a3493f85df422931e311",
+    "old/case_receipt.json": "fe4469f28fa9f27a1a6f3abf9e7702b546728ec744deb5a808e5401ffdb0a2ca",
+    "old/native_result.json": "5056465d45f1ad0ab6a647e26abeafea953393e5948858998f7bbda24b26ccb2",
+    "old/started.json": "3f22c537b24da651a8057d19a6e77ea046c32b8a00986a89d77f515a5fc61fbf",
+    "old/state.json": "4b1dd32d2fa69522402d0de1935611ddd97f43d2e011e180f90779d398631160",
+    "old/state.json.tmp": "1bb01299e5f272a12ced827de7a827eed7fe57832b539bf571190376768b6bdd",
+    "old/stderr.log": "b280c454d6f559e56eb3f5ed39f3ba084b8d1744a3ff7fe016b21ff86dea1aca",
+    "old/stdout.log": "d00c8b7556128d118d010de514aab4bb477e3b8cc2a0a717d0769a022832cec8",
+    "started.json": "e93730f9c1578a71db892149e011ff8499c7be5539f2350a54a9ed97cfcdcbfb"
+  }
+}

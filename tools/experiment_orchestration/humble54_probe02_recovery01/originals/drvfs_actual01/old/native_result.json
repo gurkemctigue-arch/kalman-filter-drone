@@ -1,0 +1,54 @@
+{
+  "scope": "ACTUAL_DRVFS_FILE_SHARING_ONLY",
+  "is_fixture": false,
+  "mode": "old",
+  "platform": "linux",
+  "uname": [
+    "Linux",
+    "localhost",
+    "6.6.114.1-microsoft-standard-WSL2",
+    "#1 SMP PREEMPT_DYNAMIC Mon Dec  1 20:46:23 UTC 2025",
+    "x86_64"
+  ],
+  "pid": 154617,
+  "helper_source": {
+    "path": "/mnt/d/WSL/UAVHumble22-validation/collect_humble54_pending03.py",
+    "sha256": "dd4583da4f34b216bc5dd5a95aa904459ebc7f68e2bfba026a2e3e66706d9c86"
+  },
+  "probe_source_sha256": "7685c8ef54c222264eb3570e6eb80a02bbf10ffe197f65d13d2a1ba95d2af958",
+  "target_sha256_before": "4b1dd32d2fa69522402d0de1935611ddd97f43d2e011e180f90779d398631160",
+  "expected_value": {
+    "actual_drvfs_probe": true,
+    "writer": "old"
+  },
+  "writer_started_utc": "2026-11-03T04:38:33.876803+00:00",
+  "outcome": "RAISED",
+  "exception": {
+    "type": "PermissionError",
+    "errno": 13,
+    "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/old/state.json.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/old/state.json'"
+  },
+  "writer_finished_utc": "2026-11-03T04:38:33.889440+00:00",
+  "writer_duration_s": 0.012649586002225988,
+  "target_sha256_after": "4b1dd32d2fa69522402d0de1935611ddd97f43d2e011e180f90779d398631160",
+  "target_value_after": {
+    "original": true,
+    "mode": "old"
+  },
+  "helper_source_sha256_after": "dd4583da4f34b216bc5dd5a95aa904459ebc7f68e2bfba026a2e3e66706d9c86",
+  "observed_write_json_oserrors": [
+    {
+      "utc": "2026-11-03T04:38:33.889374+00:00",
+      "line": 236,
+      "type": "PermissionError",
+      "errno": 13,
+      "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/old/state.json.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/old/state.json'"
+    }
+  ],
+  "temporary_files": [
+    {
+      "name": "state.json.tmp",
+      "sha256": "1bb01299e5f272a12ced827de7a827eed7fe57832b539bf571190376768b6bdd"
+    }
+  ]
+}

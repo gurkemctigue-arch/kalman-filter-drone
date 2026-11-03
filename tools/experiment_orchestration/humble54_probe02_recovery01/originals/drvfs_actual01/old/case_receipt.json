@@ -1,0 +1,116 @@
+{
+  "mode": "old",
+  "source": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\collect_humble54_pending03.py",
+    "sha256": "dd4583da4f34b216bc5dd5a95aa904459ebc7f68e2bfba026a2e3e66706d9c86"
+  },
+  "started_utc": "2026-11-03T04:38:33.539036+00:00",
+  "share_mode": "FILE_SHARE_READ (1); no FILE_SHARE_DELETE",
+  "desired_access": "GENERIC_READ",
+  "release_delay_after_native_started_s": 2.0,
+  "windows_handle_acquired_utc": "2026-11-03T04:38:33.550029+00:00",
+  "command": [
+    "wsl.exe",
+    "--distribution",
+    "UAVHumble22",
+    "--exec",
+    "python3",
+    "-B",
+    "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/diagnostics/humble54_drvfs_sharing_probe01/probe_drvfs_sharing.py",
+    "--native-helper",
+    "--mode",
+    "old",
+    "--source",
+    "/mnt/d/WSL/UAVHumble22-validation/collect_humble54_pending03.py",
+    "--source-sha",
+    "dd4583da4f34b216bc5dd5a95aa904459ebc7f68e2bfba026a2e3e66706d9c86",
+    "--case-dir",
+    "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/old"
+  ],
+  "owned_wsl_pid": 51196,
+  "windows_observed_native_start_utc": "2026-11-03T04:38:33.891852+00:00",
+  "windows_handle_released_utc": "2026-11-03T04:38:35.892314+00:00",
+  "returncode": 0,
+  "native_result": {
+    "scope": "ACTUAL_DRVFS_FILE_SHARING_ONLY",
+    "is_fixture": false,
+    "mode": "old",
+    "platform": "linux",
+    "uname": [
+      "Linux",
+      "localhost",
+      "6.6.114.1-microsoft-standard-WSL2",
+      "#1 SMP PREEMPT_DYNAMIC Mon Dec  1 20:46:23 UTC 2025",
+      "x86_64"
+    ],
+    "pid": 154617,
+    "helper_source": {
+      "path": "/mnt/d/WSL/UAVHumble22-validation/collect_humble54_pending03.py",
+      "sha256": "dd4583da4f34b216bc5dd5a95aa904459ebc7f68e2bfba026a2e3e66706d9c86"
+    },
+    "probe_source_sha256": "7685c8ef54c222264eb3570e6eb80a02bbf10ffe197f65d13d2a1ba95d2af958",
+    "target_sha256_before": "4b1dd32d2fa69522402d0de1935611ddd97f43d2e011e180f90779d398631160",
+    "expected_value": {
+      "actual_drvfs_probe": true,
+      "writer": "old"
+    },
+    "writer_started_utc": "2026-11-03T04:38:33.876803+00:00",
+    "outcome": "RAISED",
+    "exception": {
+      "type": "PermissionError",
+      "errno": 13,
+      "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/old/state.json.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/old/state.json'"
+    },
+    "writer_finished_utc": "2026-11-03T04:38:33.889440+00:00",
+    "writer_duration_s": 0.012649586002225988,
+    "target_sha256_after": "4b1dd32d2fa69522402d0de1935611ddd97f43d2e011e180f90779d398631160",
+    "target_value_after": {
+      "original": true,
+      "mode": "old"
+    },
+    "helper_source_sha256_after": "dd4583da4f34b216bc5dd5a95aa904459ebc7f68e2bfba026a2e3e66706d9c86",
+    "observed_write_json_oserrors": [
+      {
+        "utc": "2026-11-03T04:38:33.889374+00:00",
+        "line": 236,
+        "type": "PermissionError",
+        "errno": 13,
+        "message": "[Errno 13] Permission denied: '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/old/state.json.tmp' -> '/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/diagnostics/humble54_drvfs_sharing_actual01/old/state.json'"
+      }
+    ],
+    "temporary_files": [
+      {
+        "name": "state.json.tmp",
+        "sha256": "1bb01299e5f272a12ced827de7a827eed7fe57832b539bf571190376768b6bdd"
+      }
+    ]
+  },
+  "status": "PASS",
+  "finished_utc": "2026-11-03T04:38:35.893846+00:00",
+  "artifacts": {
+    "native_result.json": {
+      "bytes": 2218,
+      "sha256": "5056465d45f1ad0ab6a647e26abeafea953393e5948858998f7bbda24b26ccb2"
+    },
+    "started.json": {
+      "bytes": 98,
+      "sha256": "3f22c537b24da651a8057d19a6e77ea046c32b8a00986a89d77f515a5fc61fbf"
+    },
+    "state.json": {
+      "bytes": 44,
+      "sha256": "4b1dd32d2fa69522402d0de1935611ddd97f43d2e011e180f90779d398631160"
+    },
+    "state.json.tmp": {
+      "bytes": 52,
+      "sha256": "1bb01299e5f272a12ced827de7a827eed7fe57832b539bf571190376768b6bdd"
+    },
+    "stderr.log": {
+      "bytes": 132,
+      "sha256": "b280c454d6f559e56eb3f5ed39f3ba084b8d1744a3ff7fe016b21ff86dea1aca"
+    },
+    "stdout.log": {
+      "bytes": 129,
+      "sha256": "d00c8b7556128d118d010de514aab4bb477e3b8cc2a0a717d0769a022832cec8"
+    }
+  }
+}

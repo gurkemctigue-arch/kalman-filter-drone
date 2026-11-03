@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "revision": "sensor_input_interruption_v1",
+  "scope": "DEVELOPMENT_EVIDENCE_ONLY_NOT_FORMAL_ADMISSION",
+  "fault_algorithm": "SHA256_SEED_COLON_WINDOW_FIRST8_UINT64_DIV_2POW64_LT_FLOAT_FRACTION_V1",
+  "drop_window_ns": 200000000,
+  "drop_fraction": "0.10",
+  "padding_s": "0.3",
+  "extractor_sha256_by_condition": {
+    "dropout": "364156694a5db1777b7b3615614ae32b5cc128a7f8bbc09e213e1a168854fbf4",
+    "combined": "364156694a5db1777b7b3615614ae32b5cc128a7f8bbc09e213e1a168854fbf4"
+  },
+  "source_plan": {
+    "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_extension16_probe02_matrix/plan.json",
+    "sha256": "1f7ff9559bcf9b1b02528a771f046481712a0ff5ec33eb961fe90310d1dcca54"
+  },
+  "dev_slots": [
+    {
+      "slot_id": "person_extension_dropout_seed004",
+      "target_class": "person",
+      "condition": "dropout"
+    },
+    {
+      "slot_id": "person_extension_combined_seed004",
+      "target_class": "person",
+      "condition": "combined"
+    },
+    {
+      "slot_id": "car_extension_dropout_seed004",
+      "target_class": "car",
+      "condition": "dropout"
+    },
+    {
+      "slot_id": "car_extension_combined_seed004",
+      "target_class": "car",
+      "condition": "combined"
+    }
+  ]
+}

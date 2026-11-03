@@ -32,7 +32,11 @@ Physical follow distance is horizontal target-to-base_link ground-truth distance
 
 Inactive is an offline lifecycle/navigation classification. It does not itself prove exact HOVER onset or physical speed. The long-window original report independently records low speed but explicitly does not demonstrate braking from motion.
 
-The last accepted raw observation before first LOST has acquisition 34.1 s and receipt 34.204 s; first LOST state receipt is 34.86 s. The completed [narrow telemetry review](EARLY_LOSS.md) also identifies a controller hold at 34.852 s and deterministic expected DROP windows from 34.2 through 34.7 s. Actual native/research input delivery during these windows still needs corroboration from the original message stream.
+The last accepted raw observation before first LOST has acquisition 34.1 s and receipt 34.204 s; first LOST state receipt is 34.86 s. The completed [narrow telemetry review](EARLY_LOSS.md) also identifies a controller hold at 34.852 s and deterministic expected DROP windows from 34.2 through 34.7 s.
+
+The later [recorded-stream reconciliation](early_loss_input_evidence01/actual_delivery_reconciliation.json) corroborates those six missing source keys in both research streams and diagnostics while the raw RGB and depth retain all 15 opportunities in the fixed descriptive 33.8–35.2 s window. All other nine keys occur in both research streams and diagnostics. The [separate direct visual review](early_loss_input_evidence01/visual_review.json) finds the pedestrian visible in all 15 images, including the six dropped keys. Original export, contact sheet and PNG bytes are archived alongside it. Reproduce the numerical comparison with `python -B tools/diagnostics/humble54_combined_navigation_review01/reconcile_actual_delivery.py`.
+
+These are recorded-message presence/absence observations. A reader's latest clock is not a precise callback receipt time. This post-hoc early-loss window cannot replace the fixed four-slot short-shutter input attachment, and it does not change the original FAIL.
 
 The original terminal navigation evaluator reports RECORDED_WITH_CENSORED_FAILURES. Its top engineering negative evaluator is surface_flight. The distance-RMSE threshold exceedance is an additional diagnostic comparison against the unchanged frozen plan, not a rewritten terminal result.
 
