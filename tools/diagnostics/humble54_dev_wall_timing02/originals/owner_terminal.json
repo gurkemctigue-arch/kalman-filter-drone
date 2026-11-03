@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "scope": "THIN_OWNER_OF_UNCHANGED_NORMAL_V4_RUNNER",
+  "status": "COMPLETED",
+  "owner": {
+    "pid": 92167,
+    "invocation_started_utc": "2026-11-02T19:40:14.071199+00:00",
+    "invocation_started_monotonic_s": 58263.337735334,
+    "ppid": 92164,
+    "pgid": 92167,
+    "session": 92167,
+    "start_ticks": 5826194,
+    "clock_ticks_per_s": 100,
+    "boot_id": "f79204a4-99cd-42cf-b886-aa905b1cac6a",
+    "creation_identity_scope": "LINUX_PROC_START_TICKS_AND_BOOT_ID"
+  },
+  "policy": "core",
+  "plan": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/plan.json",
+  "plan_file_sha256": "ed88783162991c151ab3d537d4eb7d3546b3688339a06db6f35b7f2ef7c48d4b",
+  "plan_sha256": "3e34bdfae710f7b518a5f5fd1506054b03d3275c89e2f827ae136bfa2f682a31",
+  "source_hashes": {
+    "scripts/run_reliability_v4.py": "069c7c519d5b0305c087f8ad2597a2c709b367cc6c62624bbb686c9a0d158e11",
+    "scripts/run_reliability_v4_batch.py": "8d0701596a846f4b8cf6ea008ecf5fac04f885c22d951a3f501f67be99b852c4"
+  },
+  "started_this_invocation": 12,
+  "active_slot": null,
+  "all_engineering_pass": true,
+  "claim_boundary": "COMPLETED means batch processing ended, never all slots passed; original records and unknown intervals remain authoritative",
+  "heartbeat_utc": "2026-11-02T23:28:42.041737+00:00",
+  "heartbeat_monotonic_s": 71971.308252388,
+  "event_sequence": 2769,
+  "planned_count": 12,
+  "status_counts": {
+    "PASS": 12
+  },
+  "pending_ids": [],
+  "all_slots_terminal": true,
+  "invocation_number": 12,
+  "normal_max_new_trials": 1,
+  "normal_result": {
+    "started_this_invocation": 1,
+    "stop": null,
+    "plan_sha256": "3e34bdfae710f7b518a5f5fd1506054b03d3275c89e2f827ae136bfa2f682a31",
+    "mode": "PROBE",
+    "planned_count": 12,
+    "status_counts": {
+      "PASS": 12
+    },
+    "terminal_count": 12,
+    "all_engineering_pass": true,
+    "exit_code_semantics": "Run exit zero means no orchestration/infrastructure stop; inspect all_engineering_pass and every terminal result separately.",
+    "pending_ids": [],
+    "scope": "New post-repair engineering slots; navigation/base_link evidence and unknown identity are retained. This is not a new v3 four-estimator comparison."
+  },
+  "changed_original_slot_ids": [
+    "car_stage3_multi_active_seed004"
+  ],
+  "completed_slot": "car_stage3_multi_active_seed004",
+  "original_slot_status": "PASS",
+  "finished_utc": "2026-11-02T23:28:42.041710+00:00",
+  "reason": "all_original_slots_terminal"
+}

@@ -1,0 +1,732 @@
+{
+  "schema_version": 1,
+  "kind": "DERIVED_ACTUAL_HUMBLE54_CORE12_OWNER_INVOCATION_WALL_TIMING_ONLY",
+  "created_utc": "2026-11-03T00:40:17.737816+00:00",
+  "scope": "Twelve original closed core development slots from one seed, no extension or formal ETA extrapolation",
+  "plan_pin": {
+    "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\plan.json",
+    "bytes": 207807,
+    "sha256": "ed88783162991c151ab3d537d4eb7d3546b3688339a06db6f35b7f2ef7c48d4b"
+  },
+  "plan_sha256": "3e34bdfae710f7b518a5f5fd1506054b03d3275c89e2f827ae136bfa2f682a31",
+  "owner_terminal_pin": {
+    "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\humble54_core12_owner01\\owner_terminal.json",
+    "bytes": 2558,
+    "sha256": "966b51475b492b4975d13fddd7b36e54fb1ecfce78580be1ba13bcda063c731c"
+  },
+  "owner_identity": {
+    "pid": 92167,
+    "invocation_started_utc": "2026-11-02T19:40:14.071199+00:00",
+    "invocation_started_monotonic_s": 58263.337735334,
+    "ppid": 92164,
+    "pgid": 92167,
+    "session": 92167,
+    "start_ticks": 5826194,
+    "clock_ticks_per_s": 100,
+    "boot_id": "f79204a4-99cd-42cf-b886-aa905b1cac6a",
+    "creation_identity_scope": "LINUX_PROC_START_TICKS_AND_BOOT_ID"
+  },
+  "event_source": {
+    "source_path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\humble54_core12_owner01\\events.jsonl",
+    "bytes": 610225,
+    "sha256": "05d6478b4dbdaa7d5d1660eed0f7011df2b6756c83b34e0c973521f37fdbe0ed",
+    "source_line_count": 2769,
+    "selected_line_numbers": [
+      1,
+      2,
+      3,
+      215,
+      216,
+      217,
+      428,
+      429,
+      430,
+      658,
+      659,
+      660,
+      882,
+      883,
+      884,
+      1105,
+      1106,
+      1107,
+      1355,
+      1356,
+      1357,
+      1574,
+      1575,
+      1576,
+      1798,
+      1799,
+      1800,
+      2041,
+      2042,
+      2043,
+      2275,
+      2276,
+      2277,
+      2503,
+      2504,
+      2505,
+      2767,
+      2768,
+      2769
+    ],
+    "selection": "Original lines whose event is neither heartbeat nor owner_heartbeat; original bytes and order retained.",
+    "selected_line_count": 39,
+    "selected_sha256": "297bd106589697bfbb2e1467e8a5788e8634da7daabf0cfcfb16a35a897c2b7d",
+    "bounded_max_bytes": 1048576,
+    "read_utc": "2026-11-03T00:38:10.217909+00:00"
+  },
+  "bound_owner_source_pin": {
+    "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\scripts\\run_reliability_v4_batch.py",
+    "bytes": 18526,
+    "sha256": "8d0701596a846f4b8cf6ea008ecf5fac04f885c22d951a3f501f67be99b852c4"
+  },
+  "timing_definitions": {
+    "owner_active_monotonic_s": "Explicit owner slot_invocation_returned.monotonic_s minus corresponding slot_invocation_started.monotonic_s. Starts before normal run_plan; ends after run_plan returns and original-slot inventory is read/monitored. Includes normal preflight, flight, archival, evaluation and result bookkeeping; excludes subsequent owner policy check.",
+    "owner_same_endpoint_utc_span_s": "UTC difference of the same explicit owner start/return events; UTC system clock can step and is reported separately.",
+    "original_slot_utc_span_s": "Original normal-runner slot finished_utc minus started_utc, inclusive of flight and postprocessing. These terminal JSONs contain no matching monotonic start/end pair.",
+    "not_measured": "Pure flight wall duration, worker FPS, pure inference timing, physical E2E, full28 throughput and formal completion date are not inferred.",
+    "planned_follow_source_seconds": "Plan source/simulation follow duration only; never used as wall duration."
+  },
+  "observed_slot_count": 12,
+  "original_status_counts": {
+    "PASS": 12
+  },
+  "original_infrastructure_stop_count": 0,
+  "all_original_recorded_cleanup_lists_empty": true,
+  "seed_values": [
+    4
+  ],
+  "statistics_seconds": {
+    "owner_active_monotonic": {
+      "total": 12,
+      "known": 12,
+      "unknown": 0,
+      "sum": 13705.791750033,
+      "mean": 1142.14931250275,
+      "median": 1123.286558494,
+      "min": 1056.681027694,
+      "max": 1309.007422609
+    },
+    "owner_same_endpoint_utc_span": {
+      "total": 12,
+      "known": 12,
+      "unknown": 0,
+      "sum": 13705.791775,
+      "mean": 1142.1493145833333,
+      "median": 1123.286558,
+      "min": 1056.681016,
+      "max": 1309.007421
+    },
+    "original_slot_utc_span": {
+      "total": 12,
+      "known": 12,
+      "unknown": 0,
+      "sum": 13496.826394,
+      "mean": 1124.7355328333333,
+      "median": 1104.3495415,
+      "min": 1051.477539,
+      "max": 1275.372803
+    },
+    "by_target_class": {
+      "person": {
+        "owner_active_monotonic": {
+          "total": 6,
+          "known": 6,
+          "unknown": 0,
+          "sum": 6704.941838297,
+          "mean": 1117.4903063828333,
+          "median": 1105.9166791535,
+          "min": 1056.681027694,
+          "max": 1240.886714678
+        },
+        "original_slot_utc_span": {
+          "total": 6,
+          "known": 6,
+          "unknown": 0,
+          "sum": 6648.945318,
+          "mean": 1108.157553,
+          "median": 1094.1346725,
+          "min": 1051.477539,
+          "max": 1224.667242
+        }
+      },
+      "car": {
+        "owner_active_monotonic": {
+          "total": 6,
+          "known": 6,
+          "unknown": 0,
+          "sum": 7000.849911736001,
+          "mean": 1166.8083186226668,
+          "median": 1147.097412232,
+          "min": 1085.730540529,
+          "max": 1309.007422609
+        },
+        "original_slot_utc_span": {
+          "total": 6,
+          "known": 6,
+          "unknown": 0,
+          "sum": 6847.881076,
+          "mean": 1141.3135126666666,
+          "median": 1119.6263485,
+          "min": 1067.100313,
+          "max": 1275.372803
+        }
+      }
+    }
+  },
+  "batch_observed_spans": {
+    "owner_started_event_to_owner_terminal_event_monotonic_s": 13707.957936417,
+    "owner_started_event_to_owner_terminal_event_monotonic_decimal_s": "13707.957936417",
+    "owner_started_event_to_owner_terminal_event_utc_s": 13707.957948,
+    "owner_invocation_record_started_to_finished_utc_s": 13707.970511,
+    "last_heartbeat_substituted_for_finish": false
+  },
+  "slots": [
+    {
+      "id": "person_stage1_velocity_seed004",
+      "target_class": "person",
+      "group": "stage1_velocity",
+      "seed": 4,
+      "planned_follow_source_seconds": 75.0,
+      "original_status": "PASS",
+      "original_execution_status": "COMPLETED",
+      "original_infrastructure_stop": false,
+      "original_infrastructure_reasons": [],
+      "original_cleanup_residual_processes": [],
+      "original_terminal_pin": {
+        "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\slots\\person_stage1_velocity_seed004.json",
+        "bytes": 54283,
+        "sha256": "77d22a38c34ffae598063fd14d5520824d20c7ac9194f691ab051d26b6967291"
+      },
+      "original_started_utc": "2026-11-02T19:40:16.042537+00:00",
+      "original_finished_utc": "2026-11-02T19:57:52.032256+00:00",
+      "original_slot_utc_span_s": 1055.989719,
+      "owner_active_monotonic_s": 1059.079331279,
+      "owner_active_monotonic_difference_decimal_s": "1059.079331279",
+      "active_unknown_reason": null,
+      "owner_event_endpoints": {
+        "start_event": "slot_invocation_started",
+        "end_event": "slot_invocation_returned",
+        "start_original_line": 3,
+        "end_original_line": 215,
+        "policy_accepted_original_line": 216,
+        "start_monotonic_s_decimal": "58264.075099683",
+        "end_monotonic_s_decimal": "59323.154430962",
+        "start_utc": "2026-11-02T19:40:14.808566+00:00",
+        "end_utc": "2026-11-02T19:57:53.887900+00:00",
+        "same_endpoint_utc_span_s": 1059.079334,
+        "policy_accepted_utc": "2026-11-02T19:57:53.975445+00:00",
+        "policy_accepted_monotonic_s_decimal": "59323.241984975"
+      }
+    },
+    {
+      "id": "person_stage1_position_seed004",
+      "target_class": "person",
+      "group": "stage1_position",
+      "seed": 4,
+      "planned_follow_source_seconds": 75.0,
+      "original_status": "PASS",
+      "original_execution_status": "COMPLETED",
+      "original_infrastructure_stop": false,
+      "original_infrastructure_reasons": [],
+      "original_cleanup_residual_processes": [],
+      "original_terminal_pin": {
+        "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\slots\\person_stage1_position_seed004.json",
+        "bytes": 54232,
+        "sha256": "f822f423fc00c29f390aea11f73bcbd88f9194ee56e4714eadf4e66cd448fb6a"
+      },
+      "original_started_utc": "2026-11-02T19:57:56.558355+00:00",
+      "original_finished_utc": "2026-11-02T20:15:28.035894+00:00",
+      "original_slot_utc_span_s": 1051.477539,
+      "owner_active_monotonic_s": 1056.681027694,
+      "owner_active_monotonic_difference_decimal_s": "1056.681027694",
+      "active_unknown_reason": null,
+      "owner_event_endpoints": {
+        "start_event": "slot_invocation_started",
+        "end_event": "slot_invocation_returned",
+        "start_original_line": 217,
+        "end_original_line": 428,
+        "policy_accepted_original_line": 429,
+        "start_monotonic_s_decimal": "59323.260756543",
+        "end_monotonic_s_decimal": "60379.941784237",
+        "start_utc": "2026-11-02T19:57:53.994226+00:00",
+        "end_utc": "2026-11-02T20:15:30.675242+00:00",
+        "same_endpoint_utc_span_s": 1056.681016,
+        "policy_accepted_utc": "2026-11-02T20:15:30.781222+00:00",
+        "policy_accepted_monotonic_s_decimal": "60380.047752591"
+      }
+    },
+    {
+      "id": "person_stage2_crossing_seed004",
+      "target_class": "person",
+      "group": "stage2_crossing",
+      "seed": 4,
+      "planned_follow_source_seconds": 75.0,
+      "original_status": "PASS",
+      "original_execution_status": "COMPLETED",
+      "original_infrastructure_stop": false,
+      "original_infrastructure_reasons": [],
+      "original_cleanup_residual_processes": [],
+      "original_terminal_pin": {
+        "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\slots\\person_stage2_crossing_seed004.json",
+        "bytes": 64056,
+        "sha256": "992fe8eb0fe57740f338be22af827e7bf2e7468cf1e01cf69c7b334679ba5bb3"
+      },
+      "original_started_utc": "2026-11-02T20:15:33.936906+00:00",
+      "original_finished_utc": "2026-11-02T20:34:22.478379+00:00",
+      "original_slot_utc_span_s": 1128.541473,
+      "owner_active_monotonic_s": 1136.461406339,
+      "owner_active_monotonic_difference_decimal_s": "1136.461406339",
+      "active_unknown_reason": null,
+      "owner_event_endpoints": {
+        "start_event": "slot_invocation_started",
+        "end_event": "slot_invocation_returned",
+        "start_original_line": 430,
+        "end_original_line": 658,
+        "policy_accepted_original_line": 659,
+        "start_monotonic_s_decimal": "60380.068905468",
+        "end_monotonic_s_decimal": "61516.530311807",
+        "start_utc": "2026-11-02T20:15:30.802375+00:00",
+        "end_utc": "2026-11-02T20:34:27.263788+00:00",
+        "same_endpoint_utc_span_s": 1136.461413,
+        "policy_accepted_utc": "2026-11-02T20:34:27.357114+00:00",
+        "policy_accepted_monotonic_s_decimal": "61516.623650854"
+      }
+    },
+    {
+      "id": "person_stage3_midpoint_seed004",
+      "target_class": "person",
+      "group": "stage3_midpoint",
+      "seed": 4,
+      "planned_follow_source_seconds": 75.0,
+      "original_status": "PASS",
+      "original_execution_status": "COMPLETED",
+      "original_infrastructure_stop": false,
+      "original_infrastructure_reasons": [],
+      "original_cleanup_residual_processes": [],
+      "original_terminal_pin": {
+        "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\slots\\person_stage3_midpoint_seed004.json",
+        "bytes": 58281,
+        "sha256": "f2eb8e3048004a257bdd5f6240a2ae9344921a0f24cf4dbb44a924d4b3d1418d"
+      },
+      "original_started_utc": "2026-11-02T20:34:32.091396+00:00",
+      "original_finished_utc": "2026-11-02T20:52:54.016170+00:00",
+      "original_slot_utc_span_s": 1101.924774,
+      "owner_active_monotonic_s": 1111.704837286,
+      "owner_active_monotonic_difference_decimal_s": "1111.704837286",
+      "active_unknown_reason": null,
+      "owner_event_endpoints": {
+        "start_event": "slot_invocation_started",
+        "end_event": "slot_invocation_returned",
+        "start_original_line": 660,
+        "end_original_line": 882,
+        "policy_accepted_original_line": 883,
+        "start_monotonic_s_decimal": "61516.642089958",
+        "end_monotonic_s_decimal": "62628.346927244",
+        "start_utc": "2026-11-02T20:34:27.375560+00:00",
+        "end_utc": "2026-11-02T20:52:59.080404+00:00",
+        "same_endpoint_utc_span_s": 1111.704844,
+        "policy_accepted_utc": "2026-11-02T20:52:59.172089+00:00",
+        "policy_accepted_monotonic_s_decimal": "62628.438619084"
+      }
+    },
+    {
+      "id": "person_stage3_active_seed004",
+      "target_class": "person",
+      "group": "stage3_active",
+      "seed": 4,
+      "planned_follow_source_seconds": 75.0,
+      "original_status": "PASS",
+      "original_execution_status": "COMPLETED",
+      "original_infrastructure_stop": false,
+      "original_infrastructure_reasons": [],
+      "original_cleanup_residual_processes": [],
+      "original_terminal_pin": {
+        "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\slots\\person_stage3_active_seed004.json",
+        "bytes": 58111,
+        "sha256": "73f178cb86407207f6356a17d2ad7520f30d1b958e2e60bdd5c202b0e759e122"
+      },
+      "original_started_utc": "2026-11-02T20:53:05.654183+00:00",
+      "original_finished_utc": "2026-11-02T21:11:11.998754+00:00",
+      "original_slot_utc_span_s": 1086.344571,
+      "owner_active_monotonic_s": 1100.128521021,
+      "owner_active_monotonic_difference_decimal_s": "1100.128521021",
+      "active_unknown_reason": null,
+      "owner_event_endpoints": {
+        "start_event": "slot_invocation_started",
+        "end_event": "slot_invocation_returned",
+        "start_original_line": 884,
+        "end_original_line": 1105,
+        "policy_accepted_original_line": 1106,
+        "start_monotonic_s_decimal": "62628.457635372",
+        "end_monotonic_s_decimal": "63728.586156393",
+        "start_utc": "2026-11-02T20:52:59.191104+00:00",
+        "end_utc": "2026-11-02T21:11:19.319631+00:00",
+        "same_endpoint_utc_span_s": 1100.128527,
+        "policy_accepted_utc": "2026-11-02T21:11:19.416802+00:00",
+        "policy_accepted_monotonic_s_decimal": "63728.683334239"
+      }
+    },
+    {
+      "id": "person_stage3_multi_active_seed004",
+      "target_class": "person",
+      "group": "stage3_multi_active",
+      "seed": 4,
+      "planned_follow_source_seconds": 75.0,
+      "original_status": "PASS",
+      "original_execution_status": "COMPLETED",
+      "original_infrastructure_stop": false,
+      "original_infrastructure_reasons": [],
+      "original_cleanup_residual_processes": [],
+      "original_terminal_pin": {
+        "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\slots\\person_stage3_multi_active_seed004.json",
+        "bytes": 68606,
+        "sha256": "42de6664d65f530f261d1ed337e0eaa645a679117324c5b73b2bbbd7712e2d71"
+      },
+      "original_started_utc": "2026-11-02T21:11:27.125301+00:00",
+      "original_finished_utc": "2026-11-02T21:31:51.792543+00:00",
+      "original_slot_utc_span_s": 1224.667242,
+      "owner_active_monotonic_s": 1240.886714678,
+      "owner_active_monotonic_difference_decimal_s": "1240.886714678",
+      "active_unknown_reason": null,
+      "owner_event_endpoints": {
+        "start_event": "slot_invocation_started",
+        "end_event": "slot_invocation_returned",
+        "start_original_line": 1107,
+        "end_original_line": 1355,
+        "policy_accepted_original_line": 1356,
+        "start_monotonic_s_decimal": "63728.707067696",
+        "end_monotonic_s_decimal": "64969.593782374",
+        "start_utc": "2026-11-02T21:11:19.440527+00:00",
+        "end_utc": "2026-11-02T21:32:00.327249+00:00",
+        "same_endpoint_utc_span_s": 1240.886722,
+        "policy_accepted_utc": "2026-11-02T21:32:00.422876+00:00",
+        "policy_accepted_monotonic_s_decimal": "64969.689416199"
+      }
+    },
+    {
+      "id": "car_stage1_velocity_seed004",
+      "target_class": "car",
+      "group": "stage1_velocity",
+      "seed": 4,
+      "planned_follow_source_seconds": 75.0,
+      "original_status": "PASS",
+      "original_execution_status": "COMPLETED",
+      "original_infrastructure_stop": false,
+      "original_infrastructure_reasons": [],
+      "original_cleanup_residual_processes": [],
+      "original_terminal_pin": {
+        "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\slots\\car_stage1_velocity_seed004.json",
+        "bytes": 54346,
+        "sha256": "81aa5f0e41c99d7cd6f603fb2d52345fed11e5030a8e9fab856ccfd56da226c9"
+      },
+      "original_started_utc": "2026-11-02T21:32:09.064137+00:00",
+      "original_finished_utc": "2026-11-02T21:49:56.164450+00:00",
+      "original_slot_utc_span_s": 1067.100313,
+      "owner_active_monotonic_s": 1085.730540529,
+      "owner_active_monotonic_difference_decimal_s": "1085.730540529",
+      "active_unknown_reason": null,
+      "owner_event_endpoints": {
+        "start_event": "slot_invocation_started",
+        "end_event": "slot_invocation_returned",
+        "start_original_line": 1357,
+        "end_original_line": 1574,
+        "policy_accepted_original_line": 1575,
+        "start_monotonic_s_decimal": "64969.7111474",
+        "end_monotonic_s_decimal": "66055.441687929",
+        "start_utc": "2026-11-02T21:32:00.444616+00:00",
+        "end_utc": "2026-11-02T21:50:06.175163+00:00",
+        "same_endpoint_utc_span_s": 1085.730547,
+        "policy_accepted_utc": "2026-11-02T21:50:06.280935+00:00",
+        "policy_accepted_monotonic_s_decimal": "66055.547474977"
+      }
+    },
+    {
+      "id": "car_stage1_position_seed004",
+      "target_class": "car",
+      "group": "stage1_position",
+      "seed": 4,
+      "planned_follow_source_seconds": 75.0,
+      "original_status": "PASS",
+      "original_execution_status": "COMPLETED",
+      "original_infrastructure_stop": false,
+      "original_infrastructure_reasons": [],
+      "original_cleanup_residual_processes": [],
+      "original_terminal_pin": {
+        "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\slots\\car_stage1_position_seed004.json",
+        "bytes": 54323,
+        "sha256": "a487aed8799c214edf0e3ea1b7f4d05679537760ba643087d0fea879a49abbd1"
+      },
+      "original_started_utc": "2026-11-02T21:50:16.381983+00:00",
+      "original_finished_utc": "2026-11-02T22:08:20.590269+00:00",
+      "original_slot_utc_span_s": 1084.208286,
+      "owner_active_monotonic_s": 1105.648185848,
+      "owner_active_monotonic_difference_decimal_s": "1105.648185848",
+      "active_unknown_reason": null,
+      "owner_event_endpoints": {
+        "start_event": "slot_invocation_started",
+        "end_event": "slot_invocation_returned",
+        "start_original_line": 1576,
+        "end_original_line": 1798,
+        "policy_accepted_original_line": 1799,
+        "start_monotonic_s_decimal": "66055.570717623",
+        "end_monotonic_s_decimal": "67161.218903471",
+        "start_utc": "2026-11-02T21:50:06.304184+00:00",
+        "end_utc": "2026-11-02T22:08:31.952377+00:00",
+        "same_endpoint_utc_span_s": 1105.648193,
+        "policy_accepted_utc": "2026-11-02T22:08:32.050857+00:00",
+        "policy_accepted_monotonic_s_decimal": "67161.317389536"
+      }
+    },
+    {
+      "id": "car_stage2_crossing_seed004",
+      "target_class": "car",
+      "group": "stage2_crossing",
+      "seed": 4,
+      "planned_follow_source_seconds": 75.0,
+      "original_status": "PASS",
+      "original_execution_status": "COMPLETED",
+      "original_infrastructure_stop": false,
+      "original_infrastructure_reasons": [],
+      "original_cleanup_residual_processes": [],
+      "original_terminal_pin": {
+        "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\slots\\car_stage2_crossing_seed004.json",
+        "bytes": 64042,
+        "sha256": "29ed7dc726f9882395907abc25e58f99bc7bf905b8339bdb7cf56ed69c7300c8"
+      },
+      "original_started_utc": "2026-11-02T22:08:44.136656+00:00",
+      "original_finished_utc": "2026-11-02T22:28:26.083633+00:00",
+      "original_slot_utc_span_s": 1181.946977,
+      "owner_active_monotonic_s": 1206.268938286,
+      "owner_active_monotonic_difference_decimal_s": "1206.268938286",
+      "active_unknown_reason": null,
+      "owner_event_endpoints": {
+        "start_event": "slot_invocation_started",
+        "end_event": "slot_invocation_returned",
+        "start_original_line": 1800,
+        "end_original_line": 2041,
+        "policy_accepted_original_line": 2042,
+        "start_monotonic_s_decimal": "67161.33768296",
+        "end_monotonic_s_decimal": "68367.606621246",
+        "start_utc": "2026-11-02T22:08:32.071152+00:00",
+        "end_utc": "2026-11-02T22:28:38.340088+00:00",
+        "same_endpoint_utc_span_s": 1206.268936,
+        "policy_accepted_utc": "2026-11-02T22:28:38.443699+00:00",
+        "policy_accepted_monotonic_s_decimal": "68367.710228841"
+      }
+    },
+    {
+      "id": "car_stage3_midpoint_seed004",
+      "target_class": "car",
+      "group": "stage3_midpoint",
+      "seed": 4,
+      "planned_follow_source_seconds": 75.0,
+      "original_status": "PASS",
+      "original_execution_status": "COMPLETED",
+      "original_infrastructure_stop": false,
+      "original_infrastructure_reasons": [],
+      "original_cleanup_residual_processes": [],
+      "original_terminal_pin": {
+        "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\slots\\car_stage3_midpoint_seed004.json",
+        "bytes": 58319,
+        "sha256": "122e8040625c5df83c0baa39d78ba982ce4732b8a64a772cb3a61697f329b808"
+      },
+      "original_started_utc": "2026-11-02T22:28:50.100324+00:00",
+      "original_finished_utc": "2026-11-02T22:47:42.578712+00:00",
+      "original_slot_utc_span_s": 1132.478388,
+      "owner_active_monotonic_s": 1159.326544762,
+      "owner_active_monotonic_difference_decimal_s": "1159.326544762",
+      "active_unknown_reason": null,
+      "owner_event_endpoints": {
+        "start_event": "slot_invocation_started",
+        "end_event": "slot_invocation_returned",
+        "start_original_line": 2043,
+        "end_original_line": 2275,
+        "policy_accepted_original_line": 2276,
+        "start_monotonic_s_decimal": "68367.730185914",
+        "end_monotonic_s_decimal": "69527.056730676",
+        "start_utc": "2026-11-02T22:28:38.463655+00:00",
+        "end_utc": "2026-11-02T22:47:57.790205+00:00",
+        "same_endpoint_utc_span_s": 1159.32655,
+        "policy_accepted_utc": "2026-11-02T22:47:57.890383+00:00",
+        "policy_accepted_monotonic_s_decimal": "69527.156922206"
+      }
+    },
+    {
+      "id": "car_stage3_active_seed004",
+      "target_class": "car",
+      "group": "stage3_active",
+      "seed": 4,
+      "planned_follow_source_seconds": 75.0,
+      "original_status": "PASS",
+      "original_execution_status": "COMPLETED",
+      "original_infrastructure_stop": false,
+      "original_infrastructure_reasons": [],
+      "original_cleanup_residual_processes": [],
+      "original_terminal_pin": {
+        "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\slots\\car_stage3_active_seed004.json",
+        "bytes": 58209,
+        "sha256": "ae2711d00dfa30a18bba12b695a6f708b779b6e9ebb12dca595cc8160f9d7cfa"
+      },
+      "original_started_utc": "2026-11-02T22:48:11.220573+00:00",
+      "original_finished_utc": "2026-11-02T23:06:37.994882+00:00",
+      "original_slot_utc_span_s": 1106.774309,
+      "owner_active_monotonic_s": 1134.868279702,
+      "owner_active_monotonic_difference_decimal_s": "1134.868279702",
+      "active_unknown_reason": null,
+      "owner_event_endpoints": {
+        "start_event": "slot_invocation_started",
+        "end_event": "slot_invocation_returned",
+        "start_original_line": 2277,
+        "end_original_line": 2503,
+        "policy_accepted_original_line": 2504,
+        "start_monotonic_s_decimal": "69527.178073643",
+        "end_monotonic_s_decimal": "70662.046353345",
+        "start_utc": "2026-11-02T22:47:57.911543+00:00",
+        "end_utc": "2026-11-02T23:06:52.779815+00:00",
+        "same_endpoint_utc_span_s": 1134.868272,
+        "policy_accepted_utc": "2026-11-02T23:06:52.887167+00:00",
+        "policy_accepted_monotonic_s_decimal": "70662.153696764"
+      }
+    },
+    {
+      "id": "car_stage3_multi_active_seed004",
+      "target_class": "car",
+      "group": "stage3_multi_active",
+      "seed": 4,
+      "planned_follow_source_seconds": 75.0,
+      "original_status": "PASS",
+      "original_execution_status": "COMPLETED",
+      "original_infrastructure_stop": false,
+      "original_infrastructure_reasons": [],
+      "original_cleanup_residual_processes": [],
+      "original_terminal_pin": {
+        "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\slots\\car_stage3_multi_active_seed004.json",
+        "bytes": 68557,
+        "sha256": "f2d190881e4e3594a2eaf75d74a974bab800a3c8254c8b09ae89094c4ff08931"
+      },
+      "original_started_utc": "2026-11-02T23:07:07.924517+00:00",
+      "original_finished_utc": "2026-11-02T23:28:23.297320+00:00",
+      "original_slot_utc_span_s": 1275.372803,
+      "owner_active_monotonic_s": 1309.007422609,
+      "owner_active_monotonic_difference_decimal_s": "1309.007422609",
+      "active_unknown_reason": null,
+      "owner_event_endpoints": {
+        "start_event": "slot_invocation_started",
+        "end_event": "slot_invocation_returned",
+        "start_original_line": 2505,
+        "end_original_line": 2767,
+        "policy_accepted_original_line": 2768,
+        "start_monotonic_s_decimal": "70662.174499989",
+        "end_monotonic_s_decimal": "71971.181922598",
+        "start_utc": "2026-11-02T23:06:52.907969+00:00",
+        "end_utc": "2026-11-02T23:28:41.915390+00:00",
+        "same_endpoint_utc_span_s": 1309.007421,
+        "policy_accepted_utc": "2026-11-02T23:28:42.023695+00:00",
+        "policy_accepted_monotonic_s_decimal": "71971.290227939"
+      }
+    }
+  ],
+  "copied_unchanged_small_originals": [
+    {
+      "archive_path": "originals/owner_terminal.json",
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\humble54_core12_owner01\\owner_terminal.json",
+      "bytes": 2558,
+      "sha256": "966b51475b492b4975d13fddd7b36e54fb1ecfce78580be1ba13bcda063c731c"
+    },
+    {
+      "archive_path": "originals/run_reliability_v4_batch.py",
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\scripts\\run_reliability_v4_batch.py",
+      "bytes": 18526,
+      "sha256": "8d0701596a846f4b8cf6ea008ecf5fac04f885c22d951a3f501f67be99b852c4"
+    }
+  ],
+  "boundaries": [
+    "All twelve slots are one post-repair core development seed004; these are engineering observations, not repeated-trial reliability.",
+    "Existing records report no infrastructure stop and empty cleanup lists; this metadata analysis does not rerun cleanup or flight acceptance.",
+    "No bag, large telemetry, image/model payload, WSL, native command, evaluator or guard was executed or read.",
+    "The permitted owner events source was read once after stat <=1MiB; 39 exact non-heartbeat original lines were retained.",
+    "Full original plan/slot files remain at pinned paths and existing public core evidence archives; only necessary original owner/source/event excerpts are copied.",
+    "No projection to 28 conditions, 280 formal trials or a completion date is made."
+  ],
+  "small_original_sources_pinned": [
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\plan.json",
+      "bytes": 207807,
+      "sha256": "ed88783162991c151ab3d537d4eb7d3546b3688339a06db6f35b7f2ef7c48d4b"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\humble54_core12_owner01\\owner_terminal.json",
+      "bytes": 2558,
+      "sha256": "966b51475b492b4975d13fddd7b36e54fb1ecfce78580be1ba13bcda063c731c"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\slots\\person_stage1_velocity_seed004.json",
+      "bytes": 54283,
+      "sha256": "77d22a38c34ffae598063fd14d5520824d20c7ac9194f691ab051d26b6967291"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\slots\\person_stage1_position_seed004.json",
+      "bytes": 54232,
+      "sha256": "f822f423fc00c29f390aea11f73bcbd88f9194ee56e4714eadf4e66cd448fb6a"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\slots\\person_stage2_crossing_seed004.json",
+      "bytes": 64056,
+      "sha256": "992fe8eb0fe57740f338be22af827e7bf2e7468cf1e01cf69c7b334679ba5bb3"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\slots\\person_stage3_midpoint_seed004.json",
+      "bytes": 58281,
+      "sha256": "f2eb8e3048004a257bdd5f6240a2ae9344921a0f24cf4dbb44a924d4b3d1418d"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\slots\\person_stage3_active_seed004.json",
+      "bytes": 58111,
+      "sha256": "73f178cb86407207f6356a17d2ad7520f30d1b958e2e60bdd5c202b0e759e122"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\slots\\person_stage3_multi_active_seed004.json",
+      "bytes": 68606,
+      "sha256": "42de6664d65f530f261d1ed337e0eaa645a679117324c5b73b2bbbd7712e2d71"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\slots\\car_stage1_velocity_seed004.json",
+      "bytes": 54346,
+      "sha256": "81aa5f0e41c99d7cd6f603fb2d52345fed11e5030a8e9fab856ccfd56da226c9"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\slots\\car_stage1_position_seed004.json",
+      "bytes": 54323,
+      "sha256": "a487aed8799c214edf0e3ea1b7f4d05679537760ba643087d0fea879a49abbd1"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\slots\\car_stage2_crossing_seed004.json",
+      "bytes": 64042,
+      "sha256": "29ed7dc726f9882395907abc25e58f99bc7bf905b8339bdb7cf56ed69c7300c8"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\slots\\car_stage3_midpoint_seed004.json",
+      "bytes": 58319,
+      "sha256": "122e8040625c5df83c0baa39d78ba982ce4732b8a64a772cb3a61697f329b808"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\slots\\car_stage3_active_seed004.json",
+      "bytes": 58209,
+      "sha256": "ae2711d00dfa30a18bba12b695a6f708b779b6e9ebb12dca595cc8160f9d7cfa"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\results\\frozen_fullplan_v4_humble54\\reliability_v4_humble54_core12_probe01_matrix\\slots\\car_stage3_multi_active_seed004.json",
+      "bytes": 68557,
+      "sha256": "f2d190881e4e3594a2eaf75d74a974bab800a3c8254c8b09ae89094c4ff08931"
+    },
+    {
+      "path": "D:\\\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2\\scripts\\run_reliability_v4_batch.py",
+      "bytes": 18526,
+      "sha256": "8d0701596a846f4b8cf6ea008ecf5fac04f885c22d951a3f501f67be99b852c4"
+    }
+  ]
+}
