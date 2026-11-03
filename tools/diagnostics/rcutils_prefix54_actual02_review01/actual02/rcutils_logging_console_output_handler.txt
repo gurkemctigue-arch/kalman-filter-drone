@@ -1,0 +1,395 @@
+
+/opt/ros/humble/lib/librcutils.so:     file format elf64-x86-64
+
+
+Disassembly of section .init:
+
+Disassembly of section .plt:
+
+Disassembly of section .plt.got:
+
+Disassembly of section .plt.sec:
+
+Disassembly of section .text:
+
+000000000000b5e0 <rcutils_logging_console_output_handler@@Base>:
+    b5e0:	f3 0f 1e fa          	endbr64 
+    b5e4:	41 57                	push   %r15
+    b5e6:	41 56                	push   %r14
+    b5e8:	41 55                	push   %r13
+    b5ea:	41 54                	push   %r12
+    b5ec:	55                   	push   %rbp
+    b5ed:	53                   	push   %rbx
+    b5ee:	48 81 ec d8 0c 00 00 	sub    $0xcd8,%rsp
+    b5f5:	48 89 54 24 08       	mov    %rdx,0x8(%rsp)
+    b5fa:	64 48 8b 04 25 28 00 00 00 	mov    %fs:0x28,%rax
+    b603:	48 89 84 24 c8 0c 00 00 	mov    %rax,0xcc8(%rsp)
+    b60b:	48 8b 05 2e b9 00 00 	mov    0xb92e(%rip),%rax        # 16f40 <g_rcutils_logging_initialized@@Base-0xdf0>
+    b612:	80 38 00             	cmpb   $0x0,(%rax)
+    b615:	0f 84 25 02 00 00    	je     b840 <rcutils_logging_console_output_handler@@Base+0x260>
+    b61b:	41 89 f4             	mov    %esi,%r12d
+    b61e:	83 fe 32             	cmp    $0x32,%esi
+    b621:	77 17                	ja     b63a <rcutils_logging_console_output_handler@@Base+0x5a>
+    b623:	48 bb 00 04 10 40 00 01 04 00 	movabs $0x4010040100400,%rbx
+    b62d:	49 89 cd             	mov    %rcx,%r13
+    b630:	89 f1                	mov    %esi,%ecx
+    b632:	48 d3 eb             	shr    %cl,%rbx
+    b635:	83 e3 01             	and    $0x1,%ebx
+    b638:	75 56                	jne    b690 <rcutils_logging_console_output_handler@@Base+0xb0>
+    b63a:	48 8d ac 24 c0 08 00 00 	lea    0x8c0(%rsp),%rbp
+    b642:	31 c0                	xor    %eax,%eax
+    b644:	44 89 e1             	mov    %r12d,%ecx
+    b647:	be 00 04 00 00       	mov    $0x400,%esi
+    b64c:	48 8d 15 63 67 00 00 	lea    0x6763(%rip),%rdx        # 11db6 <rcutils_uint8_array_resize@@Base+0x1ef6>
+    b653:	48 89 ef             	mov    %rbp,%rdi
+    b656:	e8 f5 a6 ff ff       	call   5d50 <rcutils_snprintf@plt>
+    b65b:	85 c0                	test   %eax,%eax
+    b65d:	0f 88 ed 03 00 00    	js     ba50 <rcutils_logging_console_output_handler@@Base+0x470>
+    b663:	48 89 ef             	mov    %rbp,%rdi
+    b666:	e8 e5 a3 ff ff       	call   5a50 <strlen@plt>
+    b66b:	be 01 00 00 00       	mov    $0x1,%esi
+    b670:	48 89 ef             	mov    %rbp,%rdi
+    b673:	48 89 c2             	mov    %rax,%rdx
+    b676:	48 8b 05 6b b9 00 00 	mov    0xb96b(%rip),%rax        # 16fe8 <stderr@GLIBC_2.2.5>
+    b67d:	48 8b 08             	mov    (%rax),%rcx
+    b680:	e8 4b a8 ff ff       	call   5ed0 <fwrite@plt>
+    b685:	e9 96 03 00 00       	jmp    ba20 <rcutils_logging_console_output_handler@@Base+0x440>
+    b68a:	66 0f 1f 44 00 00    	nopw   0x0(%rax,%rax,1)
+    b690:	48 8b 05 79 b8 00 00 	mov    0xb879(%rip),%rax        # 16f10 <g_colorized_output@@Base-0x518>
+    b697:	48 89 fd             	mov    %rdi,%rbp
+    b69a:	8b 00                	mov    (%rax),%eax
+    b69c:	83 f8 01             	cmp    $0x1,%eax
+    b69f:	0f 84 eb 01 00 00    	je     b890 <rcutils_logging_console_output_handler@@Base+0x2b0>
+    b6a5:	85 c0                	test   %eax,%eax
+    b6a7:	0f 85 1b 04 00 00    	jne    bac8 <rcutils_logging_console_output_handler@@Base+0x4e8>
+    b6ad:	31 c0                	xor    %eax,%eax
+    b6af:	48 8d 94 24 c0 04 00 00 	lea    0x4c0(%rsp),%rdx
+    b6b7:	66 0f ef d2          	pxor   %xmm2,%xmm2
+    b6bb:	31 db                	xor    %ebx,%ebx
+    b6bd:	b9 7e 00 00 00       	mov    $0x7e,%ecx
+    b6c2:	48 8d bc 24 d0 04 00 00 	lea    0x4d0(%rsp),%rdi
+    b6ca:	48 89 54 24 70       	mov    %rdx,0x70(%rsp)
+    b6cf:	48 8b 15 4a c7 00 00 	mov    0xc74a(%rip),%rdx        # 17e20 <g_rcutils_logging_initialized@@Base+0xf0>
+    b6d6:	f3 48 ab             	rep stos %rax,%es:(%rdi)
+    b6d9:	b9 7e 00 00 00       	mov    $0x7e,%ecx
+    b6de:	48 8d bc 24 d0 00 00 00 	lea    0xd0(%rsp),%rdi
+    b6e6:	66 0f 6f 0d 12 c7 00 00 	movdqa 0xc712(%rip),%xmm1        # 17e00 <g_rcutils_logging_initialized@@Base+0xd0>
+    b6ee:	f3 48 ab             	rep stos %rax,%es:(%rdi)
+    b6f1:	48 8d 84 24 c0 00 00 00 	lea    0xc0(%rsp),%rax
+    b6f9:	66 0f 6f 05 0f c7 00 00 	movdqa 0xc70f(%rip),%xmm0        # 17e10 <g_rcutils_logging_initialized@@Base+0xe0>
+    b701:	c6 44 24 78 00       	movb   $0x0,0x78(%rsp)
+    b706:	48 89 94 24 b0 00 00 00 	mov    %rdx,0xb0(%rsp)
+    b70e:	4c 8d 74 24 20       	lea    0x20(%rsp),%r14
+    b713:	48 c7 84 24 80 00 00 00 00 00 00 00 	movq   $0x0,0x80(%rsp)
+    b71f:	48 c7 84 24 88 00 00 00 00 04 00 00 	movq   $0x400,0x88(%rsp)
+    b72b:	48 89 44 24 20       	mov    %rax,0x20(%rsp)
+    b730:	c6 44 24 28 00       	movb   $0x0,0x28(%rsp)
+    b735:	48 c7 44 24 30 00 00 00 00 	movq   $0x0,0x30(%rsp)
+    b73e:	48 c7 44 24 38 00 04 00 00 	movq   $0x400,0x38(%rsp)
+    b747:	48 89 54 24 60       	mov    %rdx,0x60(%rsp)
+    b74c:	0f 29 94 24 c0 04 00 00 	movaps %xmm2,0x4c0(%rsp)
+    b754:	0f 29 8c 24 90 00 00 00 	movaps %xmm1,0x90(%rsp)
+    b75c:	0f 29 84 24 a0 00 00 00 	movaps %xmm0,0xa0(%rsp)
+    b764:	0f 29 94 24 c0 00 00 00 	movaps %xmm2,0xc0(%rsp)
+    b76c:	0f 29 4c 24 40       	movaps %xmm1,0x40(%rsp)
+    b771:	0f 29 44 24 50       	movaps %xmm0,0x50(%rsp)
+    b776:	4c 8d 7c 24 70       	lea    0x70(%rsp),%r15
+    b77b:	4c 89 ca             	mov    %r9,%rdx
+    b77e:	4c 89 c6             	mov    %r8,%rsi
+    b781:	4c 89 ff             	mov    %r15,%rdi
+    b784:	e8 67 a6 ff ff       	call   5df0 <rcutils_char_array_vsprintf@plt>
+    b789:	85 c0                	test   %eax,%eax
+    b78b:	0f 84 3f 04 00 00    	je     bbd0 <rcutils_logging_console_output_handler@@Base+0x5f0>
+    b791:	48 8d ac 24 c0 08 00 00 	lea    0x8c0(%rsp),%rbp
+    b799:	89 c1                	mov    %eax,%ecx
+    b79b:	48 8d 15 46 56 00 00 	lea    0x5646(%rip),%rdx        # 10de8 <rcutils_uint8_array_resize@@Base+0xf28>
+    b7a2:	31 c0                	xor    %eax,%eax
+    b7a4:	be 00 04 00 00       	mov    $0x400,%esi
+    b7a9:	48 89 ef             	mov    %rbp,%rdi
+    b7ac:	e8 9f a5 ff ff       	call   5d50 <rcutils_snprintf@plt>
+    b7b1:	85 c0                	test   %eax,%eax
+    b7b3:	0f 88 bf 02 00 00    	js     ba78 <rcutils_logging_console_output_handler@@Base+0x498>
+    b7b9:	48 89 ef             	mov    %rbp,%rdi
+    b7bc:	e8 8f a2 ff ff       	call   5a50 <strlen@plt>
+    b7c1:	48 89 ef             	mov    %rbp,%rdi
+    b7c4:	be 01 00 00 00       	mov    $0x1,%esi
+    b7c9:	48 89 c2             	mov    %rax,%rdx
+    b7cc:	48 8b 05 15 b8 00 00 	mov    0xb815(%rip),%rax        # 16fe8 <stderr@GLIBC_2.2.5>
+    b7d3:	48 8b 08             	mov    (%rax),%rcx
+    b7d6:	e8 f5 a6 ff ff       	call   5ed0 <fwrite@plt>
+    b7db:	4c 89 ff             	mov    %r15,%rdi
+    b7de:	e8 1d a4 ff ff       	call   5c00 <rcutils_char_array_fini@plt>
+    b7e3:	85 c0                	test   %eax,%eax
+    b7e5:	0f 84 25 02 00 00    	je     ba10 <rcutils_logging_console_output_handler@@Base+0x430>
+    b7eb:	48 8b 05 f6 b7 00 00 	mov    0xb7f6(%rip),%rax        # 16fe8 <stderr@GLIBC_2.2.5>
+    b7f2:	ba 16 00 00 00       	mov    $0x16,%edx
+    b7f7:	be 01 00 00 00       	mov    $0x1,%esi
+    b7fc:	48 8d 3d cf 65 00 00 	lea    0x65cf(%rip),%rdi        # 11dd2 <rcutils_uint8_array_resize@@Base+0x1f12>
+    b803:	48 8b 08             	mov    (%rax),%rcx
+    b806:	e8 c5 a6 ff ff       	call   5ed0 <fwrite@plt>
+    b80b:	4c 89 f7             	mov    %r14,%rdi
+    b80e:	e8 ed a3 ff ff       	call   5c00 <rcutils_char_array_fini@plt>
+    b813:	85 c0                	test   %eax,%eax
+    b815:	0f 84 05 02 00 00    	je     ba20 <rcutils_logging_console_output_handler@@Base+0x440>
+    b81b:	48 8b 05 c6 b7 00 00 	mov    0xb7c6(%rip),%rax        # 16fe8 <stderr@GLIBC_2.2.5>
+    b822:	ba 16 00 00 00       	mov    $0x16,%edx
+    b827:	be 01 00 00 00       	mov    $0x1,%esi
+    b82c:	48 8d 3d 9f 65 00 00 	lea    0x659f(%rip),%rdi        # 11dd2 <rcutils_uint8_array_resize@@Base+0x1f12>
+    b833:	48 8b 08             	mov    (%rax),%rcx
+    b836:	e8 95 a6 ff ff       	call   5ed0 <fwrite@plt>
+    b83b:	e9 e0 01 00 00       	jmp    ba20 <rcutils_logging_console_output_handler@@Base+0x440>
+    b840:	48 8b 84 24 c8 0c 00 00 	mov    0xcc8(%rsp),%rax
+    b848:	64 48 2b 04 25 28 00 00 00 	sub    %fs:0x28,%rax
+    b851:	0f 85 f3 04 00 00    	jne    bd4a <rcutils_logging_console_output_handler@@Base+0x76a>
+    b857:	48 8b 05 8a b7 00 00 	mov    0xb78a(%rip),%rax        # 16fe8 <stderr@GLIBC_2.2.5>
+    b85e:	ba 59 00 00 00       	mov    $0x59,%edx
+    b863:	be 01 00 00 00       	mov    $0x1,%esi
+    b868:	48 8d 3d e1 54 00 00 	lea    0x54e1(%rip),%rdi        # 10d50 <rcutils_uint8_array_resize@@Base+0xe90>
+    b86f:	48 8b 08             	mov    (%rax),%rcx
+    b872:	48 81 c4 d8 0c 00 00 	add    $0xcd8,%rsp
+    b879:	5b                   	pop    %rbx
+    b87a:	5d                   	pop    %rbp
+    b87b:	41 5c                	pop    %r12
+    b87d:	41 5d                	pop    %r13
+    b87f:	41 5e                	pop    %r14
+    b881:	41 5f                	pop    %r15
+    b883:	e9 48 a6 ff ff       	jmp    5ed0 <fwrite@plt>
+    b888:	0f 1f 84 00 00 00 00 00 	nopl   0x0(%rax,%rax,1)
+    b890:	31 c0                	xor    %eax,%eax
+    b892:	b9 7e 00 00 00       	mov    $0x7e,%ecx
+    b897:	48 8d 94 24 c0 04 00 00 	lea    0x4c0(%rsp),%rdx
+    b89f:	66 0f 6f 0d 59 c5 00 00 	movdqa 0xc559(%rip),%xmm1        # 17e00 <g_rcutils_logging_initialized@@Base+0xd0>
+    b8a7:	48 8d bc 24 d0 04 00 00 	lea    0x4d0(%rsp),%rdi
+    b8af:	48 89 54 24 70       	mov    %rdx,0x70(%rsp)
+    b8b4:	66 0f ef d2          	pxor   %xmm2,%xmm2
+    b8b8:	48 8b 15 61 c5 00 00 	mov    0xc561(%rip),%rdx        # 17e20 <g_rcutils_logging_initialized@@Base+0xf0>
+    b8bf:	f3 48 ab             	rep stos %rax,%es:(%rdi)
+    b8c2:	48 8d bc 24 d0 00 00 00 	lea    0xd0(%rsp),%rdi
+    b8ca:	b9 7e 00 00 00       	mov    $0x7e,%ecx
+    b8cf:	66 0f 6f 05 39 c5 00 00 	movdqa 0xc539(%rip),%xmm0        # 17e10 <g_rcutils_logging_initialized@@Base+0xe0>
+    b8d7:	f3 48 ab             	rep stos %rax,%es:(%rdi)
+    b8da:	48 8d 84 24 c0 00 00 00 	lea    0xc0(%rsp),%rax
+    b8e2:	c6 44 24 78 00       	movb   $0x0,0x78(%rsp)
+    b8e7:	48 c7 84 24 80 00 00 00 00 00 00 00 	movq   $0x0,0x80(%rsp)
+    b8f3:	48 c7 84 24 88 00 00 00 00 04 00 00 	movq   $0x400,0x88(%rsp)
+    b8ff:	48 89 94 24 b0 00 00 00 	mov    %rdx,0xb0(%rsp)
+    b907:	48 89 44 24 20       	mov    %rax,0x20(%rsp)
+    b90c:	c6 44 24 28 00       	movb   $0x0,0x28(%rsp)
+    b911:	48 c7 44 24 30 00 00 00 00 	movq   $0x0,0x30(%rsp)
+    b91a:	48 c7 44 24 38 00 04 00 00 	movq   $0x400,0x38(%rsp)
+    b923:	48 89 54 24 60       	mov    %rdx,0x60(%rsp)
+    b928:	0f 29 94 24 c0 04 00 00 	movaps %xmm2,0x4c0(%rsp)
+    b930:	0f 29 8c 24 90 00 00 00 	movaps %xmm1,0x90(%rsp)
+    b938:	0f 29 84 24 a0 00 00 00 	movaps %xmm0,0xa0(%rsp)
+    b940:	0f 29 94 24 c0 00 00 00 	movaps %xmm2,0xc0(%rsp)
+    b948:	0f 29 4c 24 40       	movaps %xmm1,0x40(%rsp)
+    b94d:	0f 29 44 24 50       	movaps %xmm0,0x50(%rsp)
+    b952:	41 83 fc 1e          	cmp    $0x1e,%r12d
+    b956:	0f 84 64 03 00 00    	je     bcc0 <rcutils_logging_console_output_handler@@Base+0x6e0>
+    b95c:	0f 8f 3e 01 00 00    	jg     baa0 <rcutils_logging_console_output_handler@@Base+0x4c0>
+    b962:	41 83 fc 0a          	cmp    $0xa,%r12d
+    b966:	0f 84 b4 02 00 00    	je     bc20 <rcutils_logging_console_output_handler@@Base+0x640>
+    b96c:	41 83 fc 14          	cmp    $0x14,%r12d
+    b970:	0f 85 f0 02 00 00    	jne    bc66 <rcutils_logging_console_output_handler@@Base+0x686>
+    b976:	ba 04 00 00 00       	mov    $0x4,%edx
+    b97b:	48 8d 35 1d 64 00 00 	lea    0x641d(%rip),%rsi        # 11d9f <rcutils_uint8_array_resize@@Base+0x1edf>
+    b982:	4c 8d 74 24 20       	lea    0x20(%rsp),%r14
+    b987:	4c 89 4c 24 18       	mov    %r9,0x18(%rsp)
+    b98c:	4c 89 f7             	mov    %r14,%rdi
+    b98f:	4c 89 44 24 10       	mov    %r8,0x10(%rsp)
+    b994:	e8 47 a0 ff ff       	call   59e0 <rcutils_char_array_strncat@plt>
+    b999:	4c 8b 44 24 10       	mov    0x10(%rsp),%r8
+    b99e:	4c 8b 4c 24 18       	mov    0x18(%rsp),%r9
+    b9a3:	85 c0                	test   %eax,%eax
+    b9a5:	0f 84 cb fd ff ff    	je     b776 <rcutils_logging_console_output_handler@@Base+0x196>
+    b9ab:	48 8d ac 24 c0 08 00 00 	lea    0x8c0(%rsp),%rbp
+    b9b3:	89 c1                	mov    %eax,%ecx
+    b9b5:	be 00 04 00 00       	mov    $0x400,%esi
+    b9ba:	31 c0                	xor    %eax,%eax
+    b9bc:	48 8d 15 ed 53 00 00 	lea    0x53ed(%rip),%rdx        # 10db0 <rcutils_uint8_array_resize@@Base+0xef0>
+    b9c3:	48 89 ef             	mov    %rbp,%rdi
+    b9c6:	e8 85 a3 ff ff       	call   5d50 <rcutils_snprintf@plt>
+    b9cb:	85 c0                	test   %eax,%eax
+    b9cd:	0f 88 4d 03 00 00    	js     bd20 <rcutils_logging_console_output_handler@@Base+0x740>
+    b9d3:	48 89 ef             	mov    %rbp,%rdi
+    b9d6:	4c 8d 7c 24 70       	lea    0x70(%rsp),%r15
+    b9db:	e8 70 a0 ff ff       	call   5a50 <strlen@plt>
+    b9e0:	be 01 00 00 00       	mov    $0x1,%esi
+    b9e5:	48 89 ef             	mov    %rbp,%rdi
+    b9e8:	48 89 c2             	mov    %rax,%rdx
+    b9eb:	48 8b 05 f6 b5 00 00 	mov    0xb5f6(%rip),%rax        # 16fe8 <stderr@GLIBC_2.2.5>
+    b9f2:	48 8b 08             	mov    (%rax),%rcx
+    b9f5:	e8 d6 a4 ff ff       	call   5ed0 <fwrite@plt>
+    b9fa:	66 0f 1f 44 00 00    	nopw   0x0(%rax,%rax,1)
+    ba00:	4c 89 ff             	mov    %r15,%rdi
+    ba03:	e8 f8 a1 ff ff       	call   5c00 <rcutils_char_array_fini@plt>
+    ba08:	85 c0                	test   %eax,%eax
+    ba0a:	0f 85 db fd ff ff    	jne    b7eb <rcutils_logging_console_output_handler@@Base+0x20b>
+    ba10:	4c 89 f7             	mov    %r14,%rdi
+    ba13:	e8 e8 a1 ff ff       	call   5c00 <rcutils_char_array_fini@plt>
+    ba18:	85 c0                	test   %eax,%eax
+    ba1a:	0f 85 fb fd ff ff    	jne    b81b <rcutils_logging_console_output_handler@@Base+0x23b>
+    ba20:	48 8b 84 24 c8 0c 00 00 	mov    0xcc8(%rsp),%rax
+    ba28:	64 48 2b 04 25 28 00 00 00 	sub    %fs:0x28,%rax
+    ba31:	0f 85 13 03 00 00    	jne    bd4a <rcutils_logging_console_output_handler@@Base+0x76a>
+    ba37:	48 81 c4 d8 0c 00 00 	add    $0xcd8,%rsp
+    ba3e:	5b                   	pop    %rbx
+    ba3f:	5d                   	pop    %rbp
+    ba40:	41 5c                	pop    %r12
+    ba42:	41 5d                	pop    %r13
+    ba44:	41 5e                	pop    %r14
+    ba46:	41 5f                	pop    %r15
+    ba48:	c3                   	ret    
+    ba49:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)
+    ba50:	48 8b 05 91 b5 00 00 	mov    0xb591(%rip),%rax        # 16fe8 <stderr@GLIBC_2.2.5>
+    ba57:	ba 35 00 00 00       	mov    $0x35,%edx
+    ba5c:	be 01 00 00 00       	mov    $0x1,%esi
+    ba61:	48 8d 3d 28 4e 00 00 	lea    0x4e28(%rip),%rdi        # 10890 <rcutils_uint8_array_resize@@Base+0x9d0>
+    ba68:	48 8b 08             	mov    (%rax),%rcx
+    ba6b:	e8 60 a4 ff ff       	call   5ed0 <fwrite@plt>
+    ba70:	eb ae                	jmp    ba20 <rcutils_logging_console_output_handler@@Base+0x440>
+    ba72:	66 0f 1f 44 00 00    	nopw   0x0(%rax,%rax,1)
+    ba78:	48 8b 05 69 b5 00 00 	mov    0xb569(%rip),%rax        # 16fe8 <stderr@GLIBC_2.2.5>
+    ba7f:	ba 35 00 00 00       	mov    $0x35,%edx
+    ba84:	be 01 00 00 00       	mov    $0x1,%esi
+    ba89:	48 8d 3d 00 4e 00 00 	lea    0x4e00(%rip),%rdi        # 10890 <rcutils_uint8_array_resize@@Base+0x9d0>
+    ba90:	48 8b 08             	mov    (%rax),%rcx
+    ba93:	e8 38 a4 ff ff       	call   5ed0 <fwrite@plt>
+    ba98:	e9 63 ff ff ff       	jmp    ba00 <rcutils_logging_console_output_handler@@Base+0x420>
+    ba9d:	0f 1f 00             	nopl   (%rax)
+    baa0:	41 83 fc 28          	cmp    $0x28,%r12d
+    baa4:	74 0a                	je     bab0 <rcutils_logging_console_output_handler@@Base+0x4d0>
+    baa6:	41 83 fc 32          	cmp    $0x32,%r12d
+    baaa:	0f 85 b6 01 00 00    	jne    bc66 <rcutils_logging_console_output_handler@@Base+0x686>
+    bab0:	ba 05 00 00 00       	mov    $0x5,%edx
+    bab5:	48 8d 35 ee 62 00 00 	lea    0x62ee(%rip),%rsi        # 11daa <rcutils_uint8_array_resize@@Base+0x1eea>
+    babc:	e9 c1 fe ff ff       	jmp    b982 <rcutils_logging_console_output_handler@@Base+0x3a2>
+    bac1:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)
+    bac8:	48 8b 3d 11 c3 00 00 	mov    0xc311(%rip),%rdi        # 17de0 <g_rcutils_logging_initialized@@Base+0xb0>
+    bacf:	4c 89 4c 24 18       	mov    %r9,0x18(%rsp)
+    bad4:	4c 89 44 24 10       	mov    %r8,0x10(%rsp)
+    bad9:	e8 e2 a1 ff ff       	call   5cc0 <fileno@plt>
+    bade:	89 c7                	mov    %eax,%edi
+    bae0:	e8 7b 9e ff ff       	call   5960 <isatty@plt>
+    bae5:	b9 7e 00 00 00       	mov    $0x7e,%ecx
+    baea:	48 8d 94 24 c0 04 00 00 	lea    0x4c0(%rsp),%rdx
+    baf2:	48 8d bc 24 d0 04 00 00 	lea    0x4d0(%rsp),%rdi
+    bafa:	41 89 c3             	mov    %eax,%r11d
+    bafd:	31 c0                	xor    %eax,%eax
+    baff:	48 89 54 24 70       	mov    %rdx,0x70(%rsp)
+    bb04:	66 0f ef d2          	pxor   %xmm2,%xmm2
+    bb08:	f3 48 ab             	rep stos %rax,%es:(%rdi)
+    bb0b:	66 0f 6f 0d ed c2 00 00 	movdqa 0xc2ed(%rip),%xmm1        # 17e00 <g_rcutils_logging_initialized@@Base+0xd0>
+    bb13:	b9 7e 00 00 00       	mov    $0x7e,%ecx
+    bb18:	66 0f 6f 05 f0 c2 00 00 	movdqa 0xc2f0(%rip),%xmm0        # 17e10 <g_rcutils_logging_initialized@@Base+0xe0>
+    bb20:	48 8b 15 f9 c2 00 00 	mov    0xc2f9(%rip),%rdx        # 17e20 <g_rcutils_logging_initialized@@Base+0xf0>
+    bb27:	48 8d bc 24 d0 00 00 00 	lea    0xd0(%rsp),%rdi
+    bb2f:	45 85 db             	test   %r11d,%r11d
+    bb32:	c6 44 24 78 00       	movb   $0x0,0x78(%rsp)
+    bb37:	f3 48 ab             	rep stos %rax,%es:(%rdi)
+    bb3a:	c6 44 24 28 00       	movb   $0x0,0x28(%rsp)
+    bb3f:	4c 8b 44 24 10       	mov    0x10(%rsp),%r8
+    bb44:	48 8d 84 24 c0 00 00 00 	lea    0xc0(%rsp),%rax
+    bb4c:	48 89 94 24 b0 00 00 00 	mov    %rdx,0xb0(%rsp)
+    bb54:	4c 8b 4c 24 18       	mov    0x18(%rsp),%r9
+    bb59:	48 c7 84 24 80 00 00 00 00 00 00 00 	movq   $0x0,0x80(%rsp)
+    bb65:	48 c7 84 24 88 00 00 00 00 04 00 00 	movq   $0x400,0x88(%rsp)
+    bb71:	48 89 44 24 20       	mov    %rax,0x20(%rsp)
+    bb76:	48 c7 44 24 30 00 00 00 00 	movq   $0x0,0x30(%rsp)
+    bb7f:	48 c7 44 24 38 00 04 00 00 	movq   $0x400,0x38(%rsp)
+    bb88:	48 89 54 24 60       	mov    %rdx,0x60(%rsp)
+    bb8d:	0f 29 94 24 c0 04 00 00 	movaps %xmm2,0x4c0(%rsp)
+    bb95:	0f 29 8c 24 90 00 00 00 	movaps %xmm1,0x90(%rsp)
+    bb9d:	0f 29 84 24 a0 00 00 00 	movaps %xmm0,0xa0(%rsp)
+    bba5:	0f 29 94 24 c0 00 00 00 	movaps %xmm2,0xc0(%rsp)
+    bbad:	0f 29 4c 24 40       	movaps %xmm1,0x40(%rsp)
+    bbb2:	0f 29 44 24 50       	movaps %xmm0,0x50(%rsp)
+    bbb7:	0f 85 95 fd ff ff    	jne    b952 <rcutils_logging_console_output_handler@@Base+0x372>
+    bbbd:	31 db                	xor    %ebx,%ebx
+    bbbf:	4c 8d 74 24 20       	lea    0x20(%rsp),%r14
+    bbc4:	e9 ad fb ff ff       	jmp    b776 <rcutils_logging_console_output_handler@@Base+0x196>
+    bbc9:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)
+    bbd0:	4c 8b 44 24 70       	mov    0x70(%rsp),%r8
+    bbd5:	48 8b 54 24 08       	mov    0x8(%rsp),%rdx
+    bbda:	4d 89 f1             	mov    %r14,%r9
+    bbdd:	4c 89 e9             	mov    %r13,%rcx
+    bbe0:	44 89 e6             	mov    %r12d,%esi
+    bbe3:	48 89 ef             	mov    %rbp,%rdi
+    bbe6:	e8 35 a3 ff ff       	call   5f20 <rcutils_logging_format_message@plt>
+    bbeb:	85 c0                	test   %eax,%eax
+    bbed:	0f 85 e5 00 00 00    	jne    bcd8 <rcutils_logging_console_output_handler@@Base+0x6f8>
+    bbf3:	84 db                	test   %bl,%bl
+    bbf5:	75 41                	jne    bc38 <rcutils_logging_console_output_handler@@Base+0x658>
+    bbf7:	48 8b 4c 24 20       	mov    0x20(%rsp),%rcx
+    bbfc:	48 8b 3d dd c1 00 00 	mov    0xc1dd(%rip),%rdi        # 17de0 <g_rcutils_logging_initialized@@Base+0xb0>
+    bc03:	48 8d 15 f1 60 00 00 	lea    0x60f1(%rip),%rdx        # 11cfb <rcutils_uint8_array_resize@@Base+0x1e3b>
+    bc0a:	31 c0                	xor    %eax,%eax
+    bc0c:	be 01 00 00 00       	mov    $0x1,%esi
+    bc11:	e8 ca a2 ff ff       	call   5ee0 <__fprintf_chk@plt>
+    bc16:	e9 e5 fd ff ff       	jmp    ba00 <rcutils_logging_console_output_handler@@Base+0x420>
+    bc1b:	0f 1f 44 00 00       	nopl   0x0(%rax,%rax,1)
+    bc20:	ba 05 00 00 00       	mov    $0x5,%edx
+    bc25:	48 8d 35 78 61 00 00 	lea    0x6178(%rip),%rsi        # 11da4 <rcutils_uint8_array_resize@@Base+0x1ee4>
+    bc2c:	e9 51 fd ff ff       	jmp    b982 <rcutils_logging_console_output_handler@@Base+0x3a2>
+    bc31:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)
+    bc38:	ba 04 00 00 00       	mov    $0x4,%edx
+    bc3d:	48 8d 35 5b 61 00 00 	lea    0x615b(%rip),%rsi        # 11d9f <rcutils_uint8_array_resize@@Base+0x1edf>
+    bc44:	4c 89 f7             	mov    %r14,%rdi
+    bc47:	e8 94 9d ff ff       	call   59e0 <rcutils_char_array_strncat@plt>
+    bc4c:	85 c0                	test   %eax,%eax
+    bc4e:	74 a7                	je     bbf7 <rcutils_logging_console_output_handler@@Base+0x617>
+    bc50:	48 8d ac 24 c0 08 00 00 	lea    0x8c0(%rsp),%rbp
+    bc58:	89 c1                	mov    %eax,%ecx
+    bc5a:	48 8d 15 4f 51 00 00 	lea    0x514f(%rip),%rdx        # 10db0 <rcutils_uint8_array_resize@@Base+0xef0>
+    bc61:	e9 3c fb ff ff       	jmp    b7a2 <rcutils_logging_console_output_handler@@Base+0x1c2>
+    bc66:	48 8d ac 24 c0 08 00 00 	lea    0x8c0(%rsp),%rbp
+    bc6e:	31 c0                	xor    %eax,%eax
+    bc70:	44 89 e1             	mov    %r12d,%ecx
+    bc73:	be 00 04 00 00       	mov    $0x400,%esi
+    bc78:	48 8d 15 37 61 00 00 	lea    0x6137(%rip),%rdx        # 11db6 <rcutils_uint8_array_resize@@Base+0x1ef6>
+    bc7f:	48 89 ef             	mov    %rbp,%rdi
+    bc82:	e8 c9 a0 ff ff       	call   5d50 <rcutils_snprintf@plt>
+    bc87:	85 c0                	test   %eax,%eax
+    bc89:	78 65                	js     bcf0 <rcutils_logging_console_output_handler@@Base+0x710>
+    bc8b:	48 89 ef             	mov    %rbp,%rdi
+    bc8e:	4c 8d 74 24 20       	lea    0x20(%rsp),%r14
+    bc93:	4c 8d 7c 24 70       	lea    0x70(%rsp),%r15
+    bc98:	e8 b3 9d ff ff       	call   5a50 <strlen@plt>
+    bc9d:	be 01 00 00 00       	mov    $0x1,%esi
+    bca2:	48 89 ef             	mov    %rbp,%rdi
+    bca5:	48 89 c2             	mov    %rax,%rdx
+    bca8:	48 8b 05 39 b3 00 00 	mov    0xb339(%rip),%rax        # 16fe8 <stderr@GLIBC_2.2.5>
+    bcaf:	48 8b 08             	mov    (%rax),%rcx
+    bcb2:	e8 19 a2 ff ff       	call   5ed0 <fwrite@plt>
+    bcb7:	e9 44 fd ff ff       	jmp    ba00 <rcutils_logging_console_output_handler@@Base+0x420>
+    bcbc:	0f 1f 40 00          	nopl   0x0(%rax)
+    bcc0:	ba 05 00 00 00       	mov    $0x5,%edx
+    bcc5:	48 8d 35 e4 60 00 00 	lea    0x60e4(%rip),%rsi        # 11db0 <rcutils_uint8_array_resize@@Base+0x1ef0>
+    bccc:	e9 b1 fc ff ff       	jmp    b982 <rcutils_logging_console_output_handler@@Base+0x3a2>
+    bcd1:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)
+    bcd8:	48 8d ac 24 c0 08 00 00 	lea    0x8c0(%rsp),%rbp
+    bce0:	89 c1                	mov    %eax,%ecx
+    bce2:	48 8d 15 37 51 00 00 	lea    0x5137(%rip),%rdx        # 10e20 <rcutils_uint8_array_resize@@Base+0xf60>
+    bce9:	e9 b4 fa ff ff       	jmp    b7a2 <rcutils_logging_console_output_handler@@Base+0x1c2>
+    bcee:	66 90                	xchg   %ax,%ax
+    bcf0:	ba 35 00 00 00       	mov    $0x35,%edx
+    bcf5:	48 8b 05 ec b2 00 00 	mov    0xb2ec(%rip),%rax        # 16fe8 <stderr@GLIBC_2.2.5>
+    bcfc:	be 01 00 00 00       	mov    $0x1,%esi
+    bd01:	48 8d 3d 88 4b 00 00 	lea    0x4b88(%rip),%rdi        # 10890 <rcutils_uint8_array_resize@@Base+0x9d0>
+    bd08:	4c 8d 74 24 20       	lea    0x20(%rsp),%r14
+    bd0d:	4c 8d 7c 24 70       	lea    0x70(%rsp),%r15
+    bd12:	48 8b 08             	mov    (%rax),%rcx
+    bd15:	e8 b6 a1 ff ff       	call   5ed0 <fwrite@plt>
+    bd1a:	e9 e1 fc ff ff       	jmp    ba00 <rcutils_logging_console_output_handler@@Base+0x420>
+    bd1f:	90                   	nop
+    bd20:	ba 35 00 00 00       	mov    $0x35,%edx
+    bd25:	48 8b 05 bc b2 00 00 	mov    0xb2bc(%rip),%rax        # 16fe8 <stderr@GLIBC_2.2.5>
+    bd2c:	be 01 00 00 00       	mov    $0x1,%esi
+    bd31:	48 8d 3d 58 4b 00 00 	lea    0x4b58(%rip),%rdi        # 10890 <rcutils_uint8_array_resize@@Base+0x9d0>
+    bd38:	4c 8d 7c 24 70       	lea    0x70(%rsp),%r15
+    bd3d:	48 8b 08             	mov    (%rax),%rcx
+    bd40:	e8 8b a1 ff ff       	call   5ed0 <fwrite@plt>
+    bd45:	e9 b6 fc ff ff       	jmp    ba00 <rcutils_logging_console_output_handler@@Base+0x420>
+    bd4a:	e8 21 9d ff ff       	call   5a70 <__stack_chk_fail@plt>
+
+Disassembly of section .fini:

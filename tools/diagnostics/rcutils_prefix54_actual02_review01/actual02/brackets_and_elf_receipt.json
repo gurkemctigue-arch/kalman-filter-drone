@@ -1,0 +1,198 @@
+{
+  "kind": "CURRENT_PROCESS_LOGGER_PREFIX_SYSTEM_BRACKETS_AND_ACTUAL_ELF_OBSERVATION",
+  "created_utc": "2026-11-02T23:49:50.139451+00:00",
+  "probe_exit_code": 0,
+  "events": [
+    {
+      "event_id": 0,
+      "stamp_ns": 1793663364327784918,
+      "system_bracket_match": true,
+      "controlled_ros_clock_ns": 7000000000
+    },
+    {
+      "event_id": 1,
+      "stamp_ns": 1793663364356246569,
+      "system_bracket_match": true,
+      "controlled_ros_clock_ns": 9000000000
+    },
+    {
+      "event_id": 2,
+      "stamp_ns": 1793663364384335279,
+      "system_bracket_match": true,
+      "controlled_ros_clock_ns": 3000000000
+    },
+    {
+      "event_id": 3,
+      "stamp_ns": 1793663364410884027,
+      "system_bracket_match": true,
+      "controlled_ros_clock_ns": 3000000000
+    }
+  ],
+  "current_sources_unchanged": true,
+  "actual_provenance_pins": [
+    {
+      "path": "/mnt/d/WSL/UAVHumble22-validation/rcutils_prefix_clock_probe02.py",
+      "bytes": 5773,
+      "sha256": "e0713c7c556a3c9ef41e38a73fe5a75d4c352fed33b90506838be4e5d9ba1676"
+    },
+    {
+      "path": "/opt/ros/humble/lib/librcl.so",
+      "bytes": 249504,
+      "sha256": "43f86a53ec1a6c75e7330b216253d8497cdee1fc1674fdd678166c804cf1921c"
+    },
+    {
+      "path": "/opt/ros/humble/lib/librcl_action.so",
+      "bytes": 73264,
+      "sha256": "62966a2fbaa7b41c44133666f454c8d842c1d95d8c9fb82c8cd34b5d98773a63"
+    },
+    {
+      "path": "/opt/ros/humble/lib/librcl_interfaces__rosidl_generator_c.so",
+      "bytes": 110112,
+      "sha256": "74c68263af27563641e8c84e131338c7ad4e83752a910fc86894125f996e84e2"
+    },
+    {
+      "path": "/opt/ros/humble/lib/librcl_interfaces__rosidl_typesupport_c.so",
+      "bytes": 31520,
+      "sha256": "10b46e8613961f592ffc1347c0a1676f90fe9669d47828fcbec30bf1ff19f531"
+    },
+    {
+      "path": "/opt/ros/humble/lib/librcl_lifecycle.so",
+      "bytes": 35648,
+      "sha256": "8c24bc5b2ec8c29605f30483a8c7c84c828a42444adb43525a2a6b71bfde74a5"
+    },
+    {
+      "path": "/opt/ros/humble/lib/librcl_logging_interface.so",
+      "bytes": 14480,
+      "sha256": "e671d1f9f84da3abcdce0390f923b08121e5da546980c23b5ef7a49025cc7341"
+    },
+    {
+      "path": "/opt/ros/humble/lib/librcl_logging_spdlog.so",
+      "bytes": 27272,
+      "sha256": "ead77d2b8a383d1ce310136f44ef9a8551fe9b966353a900e8ecd88f04d098cb"
+    },
+    {
+      "path": "/opt/ros/humble/lib/librcl_yaml_param_parser.so",
+      "bytes": 43600,
+      "sha256": "bc719bcbebc8ddec01e220229893f0b1e9dbae5d6331563952e211b702051207"
+    },
+    {
+      "path": "/opt/ros/humble/lib/librcutils.so",
+      "bytes": 93592,
+      "sha256": "0ffe97d7ca8b02edb2259a25992f135df6005b0bda4f20e327401a93411b0bed"
+    },
+    {
+      "path": "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/_rclpy_pybind11.cpython-310-x86_64-linux-gnu.so",
+      "bytes": 928720,
+      "sha256": "159a21b643d976e3571f4d65b35e31c5d17f7168b2a8368a9d7699b136f815b2"
+    },
+    {
+      "path": "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/clock.py",
+      "bytes": 11057,
+      "sha256": "ba274434a37b4b73ef91ea84f90d7d0f13e1d216ff5d98356ed8e566145a9d04"
+    },
+    {
+      "path": "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/impl/rcutils_logger.py",
+      "bytes": 13815,
+      "sha256": "fca546e382884c4025fcf296311c4619f5a58517a8f127508cd9b740a4949ed4"
+    },
+    {
+      "path": "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/logging.py",
+      "bytes": 1993,
+      "sha256": "9d3d6ffc38788a7c3bd205e26e7f042c921840958ae1fc5f05af48ba60c83834"
+    },
+    {
+      "path": "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/time_source.py",
+      "bytes": 5395,
+      "sha256": "51bae97c90c35d37c88ff9f009bcbcc76eba282e81474c37db026311042ced51"
+    }
+  ],
+  "elf_executions": [
+    {
+      "argv": [
+        "readelf",
+        "--wide",
+        "--dynamic",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/_rclpy_pybind11.cpython-310-x86_64-linux-gnu.so"
+      ],
+      "returncode": 0,
+      "output": {
+        "path": "/mnt/d/WSL/UAVHumble22-validation/rcutils_prefix54_actual02/rclpy_dynamic.txt",
+        "bytes": 2263,
+        "sha256": "ee14215ab7f9011f1eff8a9e9c9a1fc0432c9d7771a50143d77f33b457ebd17d"
+      }
+    },
+    {
+      "argv": [
+        "readelf",
+        "--wide",
+        "--dyn-syms",
+        "/opt/ros/humble/lib/librcutils.so"
+      ],
+      "returncode": 0,
+      "output": {
+        "path": "/mnt/d/WSL/UAVHumble22-validation/rcutils_prefix54_actual02/rcutils_symbols.txt",
+        "bytes": 19148,
+        "sha256": "2dc311370aa613fe5db116747bd6e1cc050ae02d136861837319be761434c5e0"
+      }
+    },
+    {
+      "argv": [
+        "objdump",
+        "-drwC",
+        "--disassemble=rcutils_log",
+        "/opt/ros/humble/lib/librcutils.so"
+      ],
+      "returncode": 0,
+      "output": {
+        "path": "/mnt/d/WSL/UAVHumble22-validation/rcutils_prefix54_actual02/rcutils_log.txt",
+        "bytes": 4535,
+        "sha256": "a317cb2ee7803493db48837e9f5250c0b28a3f9b719531d52d00d0b36fe47888"
+      }
+    },
+    {
+      "argv": [
+        "objdump",
+        "-drwC",
+        "--disassemble=rcutils_system_time_now",
+        "/opt/ros/humble/lib/librcutils.so"
+      ],
+      "returncode": 0,
+      "output": {
+        "path": "/mnt/d/WSL/UAVHumble22-validation/rcutils_prefix54_actual02/rcutils_system_time_now.txt",
+        "bytes": 3107,
+        "sha256": "695e807c0159e433b56e9d71922ae880d75a2adcaad5a8a5494dc5c53ec057e4"
+      }
+    },
+    {
+      "argv": [
+        "objdump",
+        "-drwC",
+        "--disassemble=rcutils_logging_console_output_handler",
+        "/opt/ros/humble/lib/librcutils.so"
+      ],
+      "returncode": 0,
+      "output": {
+        "path": "/mnt/d/WSL/UAVHumble22-validation/rcutils_prefix54_actual02/rcutils_logging_console_output_handler.txt",
+        "bytes": 24751,
+        "sha256": "57b79e97c1a3602bfa07e2c9dcf715b119d7b0e905ec7ade759a965e2cca0507"
+      }
+    },
+    {
+      "argv": [
+        "objdump",
+        "-drwC",
+        "--disassemble=rcutils_logging_format_message",
+        "/opt/ros/humble/lib/librcutils.so"
+      ],
+      "returncode": 0,
+      "output": {
+        "path": "/mnt/d/WSL/UAVHumble22-validation/rcutils_prefix54_actual02/rcutils_logging_format_message.txt",
+        "bytes": 7283,
+        "sha256": "6eea03c3743728219bc94de4226573cf1bda3cdb81948f9a5da06a8d1b634192"
+      }
+    }
+  ],
+  "elf_call_chain_conclusion": "PENDING_HUMAN_OR_AGENT_DISASSEMBLY_REVIEW",
+  "historical_process_provenance_established": false,
+  "worker_wall_fps_established": false
+}

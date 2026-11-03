@@ -1,0 +1,136 @@
+
+/opt/ros/humble/lib/librcutils.so:     file format elf64-x86-64
+
+
+Disassembly of section .init:
+
+Disassembly of section .plt:
+
+Disassembly of section .plt.got:
+
+Disassembly of section .plt.sec:
+
+Disassembly of section .text:
+
+0000000000008f10 <rcutils_logging_format_message@@Base>:
+    8f10:	f3 0f 1e fa          	endbr64 
+    8f14:	41 57                	push   %r15
+    8f16:	4d 89 cf             	mov    %r9,%r15
+    8f19:	41 56                	push   %r14
+    8f1b:	4d 89 c6             	mov    %r8,%r14
+    8f1e:	41 55                	push   %r13
+    8f20:	49 89 fd             	mov    %rdi,%r13
+    8f23:	41 54                	push   %r12
+    8f25:	55                   	push   %rbp
+    8f26:	89 f5                	mov    %esi,%ebp
+    8f28:	53                   	push   %rbx
+    8f29:	48 89 cb             	mov    %rcx,%rbx
+    8f2c:	48 81 ec 58 08 00 00 	sub    $0x858,%rsp
+    8f33:	48 8b 3d 96 e0 00 00 	mov    0xe096(%rip),%rdi        # 16fd0 <g_rcutils_logging_output_format_string@@Base-0x550>
+    8f3a:	48 89 54 24 08       	mov    %rdx,0x8(%rsp)
+    8f3f:	64 48 8b 04 25 28 00 00 00 	mov    %fs:0x28,%rax
+    8f48:	48 89 84 24 48 08 00 00 	mov    %rax,0x848(%rsp)
+    8f50:	31 c0                	xor    %eax,%eax
+    8f52:	e8 f9 ca ff ff       	call   5a50 <strlen@plt>
+    8f57:	48 8b 54 24 08       	mov    0x8(%rsp),%rdx
+    8f5c:	4c 89 6c 24 18       	mov    %r13,0x18(%rsp)
+    8f61:	4c 89 74 24 20       	mov    %r14,0x20(%rsp)
+    8f66:	48 89 54 24 10       	mov    %rdx,0x10(%rsp)
+    8f6b:	89 6c 24 28          	mov    %ebp,0x28(%rsp)
+    8f6f:	48 89 5c 24 30       	mov    %rbx,0x30(%rsp)
+    8f74:	48 85 c0             	test   %rax,%rax
+    8f77:	0f 84 0b 01 00 00    	je     9088 <rcutils_logging_format_message@@Base+0x178>
+    8f7d:	49 89 c4             	mov    %rax,%r12
+    8f80:	31 ed                	xor    %ebp,%ebp
+    8f82:	4c 8d 74 24 40       	lea    0x40(%rsp),%r14
+    8f87:	eb 28                	jmp    8fb1 <rcutils_logging_format_message@@Base+0xa1>
+    8f89:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)
+    8f90:	48 8d 7c 24 10       	lea    0x10(%rsp),%rdi
+    8f95:	4c 89 fe             	mov    %r15,%rsi
+    8f98:	ff d0                	call   *%rax
+    8f9a:	48 85 c0             	test   %rax,%rax
+    8f9d:	0f 84 2d 01 00 00    	je     90d0 <rcutils_logging_format_message@@Base+0x1c0>
+    8fa3:	48 8d 6c 1d 02       	lea    0x2(%rbp,%rbx,1),%rbp
+    8fa8:	4c 39 e5             	cmp    %r12,%rbp
+    8fab:	0f 83 d7 00 00 00    	jae    9088 <rcutils_logging_format_message@@Base+0x178>
+    8fb1:	4c 8b 2d 18 e0 00 00 	mov    0xe018(%rip),%r13        # 16fd0 <g_rcutils_logging_output_format_string@@Base-0x550>
+    8fb8:	be 7b 00 00 00       	mov    $0x7b,%esi
+    8fbd:	4c 89 e3             	mov    %r12,%rbx
+    8fc0:	48 29 eb             	sub    %rbp,%rbx
+    8fc3:	49 01 ed             	add    %rbp,%r13
+    8fc6:	4c 89 ef             	mov    %r13,%rdi
+    8fc9:	e8 c2 ce ff ff       	call   5e90 <rcutils_find@plt>
+    8fce:	48 85 c0             	test   %rax,%rax
+    8fd1:	74 39                	je     900c <rcutils_logging_format_message@@Base+0xfc>
+    8fd3:	48 39 d8             	cmp    %rbx,%rax
+    8fd6:	4c 89 ee             	mov    %r13,%rsi
+    8fd9:	4c 89 ff             	mov    %r15,%rdi
+    8fdc:	48 0f 46 d8          	cmovbe %rax,%rbx
+    8fe0:	48 89 da             	mov    %rbx,%rdx
+    8fe3:	e8 f8 c9 ff ff       	call   59e0 <rcutils_char_array_strncat@plt>
+    8fe8:	85 c0                	test   %eax,%eax
+    8fea:	0f 85 a0 00 00 00    	jne    9090 <rcutils_logging_format_message@@Base+0x180>
+    8ff0:	48 01 dd             	add    %rbx,%rbp
+    8ff3:	49 39 ec             	cmp    %rbp,%r12
+    8ff6:	0f 86 8c 00 00 00    	jbe    9088 <rcutils_logging_format_message@@Base+0x178>
+    8ffc:	4c 8b 2d cd df 00 00 	mov    0xdfcd(%rip),%r13        # 16fd0 <g_rcutils_logging_output_format_string@@Base-0x550>
+    9003:	4c 89 e3             	mov    %r12,%rbx
+    9006:	48 29 eb             	sub    %rbp,%rbx
+    9009:	49 01 ed             	add    %rbp,%r13
+    900c:	be 7d 00 00 00       	mov    $0x7d,%esi
+    9011:	4c 89 ef             	mov    %r13,%rdi
+    9014:	e8 77 ce ff ff       	call   5e90 <rcutils_find@plt>
+    9019:	48 39 c3             	cmp    %rax,%rbx
+    901c:	0f 82 96 00 00 00    	jb     90b8 <rcutils_logging_format_message@@Base+0x1a8>
+    9022:	48 8b 35 a7 df 00 00 	mov    0xdfa7(%rip),%rsi        # 16fd0 <g_rcutils_logging_output_format_string@@Base-0x550>
+    9029:	48 8d 58 ff          	lea    -0x1(%rax),%rbx
+    902d:	48 8d 45 01          	lea    0x1(%rbp),%rax
+    9031:	4c 89 f7             	mov    %r14,%rdi
+    9034:	b9 00 08 00 00       	mov    $0x800,%ecx
+    9039:	48 89 da             	mov    %rbx,%rdx
+    903c:	48 89 44 24 08       	mov    %rax,0x8(%rsp)
+    9041:	48 01 c6             	add    %rax,%rsi
+    9044:	e8 f7 cb ff ff       	call   5c40 <__memcpy_chk@plt>
+    9049:	4c 89 f7             	mov    %r14,%rdi
+    904c:	c6 44 1c 40 00       	movb   $0x0,0x40(%rsp,%rbx,1)
+    9051:	e8 fa ca ff ff       	call   5b50 <find_token_handler@plt>
+    9056:	48 85 c0             	test   %rax,%rax
+    9059:	0f 85 31 ff ff ff    	jne    8f90 <rcutils_logging_format_message@@Base+0x80>
+    905f:	ba 01 00 00 00       	mov    $0x1,%edx
+    9064:	4c 89 ee             	mov    %r13,%rsi
+    9067:	4c 89 ff             	mov    %r15,%rdi
+    906a:	e8 71 c9 ff ff       	call   59e0 <rcutils_char_array_strncat@plt>
+    906f:	85 c0                	test   %eax,%eax
+    9071:	75 1d                	jne    9090 <rcutils_logging_format_message@@Base+0x180>
+    9073:	48 8b 6c 24 08       	mov    0x8(%rsp),%rbp
+    9078:	4c 39 e5             	cmp    %r12,%rbp
+    907b:	0f 82 30 ff ff ff    	jb     8fb1 <rcutils_logging_format_message@@Base+0xa1>
+    9081:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)
+    9088:	31 c0                	xor    %eax,%eax
+    908a:	66 0f 1f 44 00 00    	nopw   0x0(%rax,%rax,1)
+    9090:	48 8b 94 24 48 08 00 00 	mov    0x848(%rsp),%rdx
+    9098:	64 48 2b 14 25 28 00 00 00 	sub    %fs:0x28,%rdx
+    90a1:	75 34                	jne    90d7 <rcutils_logging_format_message@@Base+0x1c7>
+    90a3:	48 81 c4 58 08 00 00 	add    $0x858,%rsp
+    90aa:	5b                   	pop    %rbx
+    90ab:	5d                   	pop    %rbp
+    90ac:	41 5c                	pop    %r12
+    90ae:	41 5d                	pop    %r13
+    90b0:	41 5e                	pop    %r14
+    90b2:	41 5f                	pop    %r15
+    90b4:	c3                   	ret    
+    90b5:	0f 1f 00             	nopl   (%rax)
+    90b8:	48 89 da             	mov    %rbx,%rdx
+    90bb:	4c 89 ee             	mov    %r13,%rsi
+    90be:	4c 89 ff             	mov    %r15,%rdi
+    90c1:	e8 1a c9 ff ff       	call   59e0 <rcutils_char_array_strncat@plt>
+    90c6:	85 c0                	test   %eax,%eax
+    90c8:	75 c6                	jne    9090 <rcutils_logging_format_message@@Base+0x180>
+    90ca:	31 c0                	xor    %eax,%eax
+    90cc:	eb c2                	jmp    9090 <rcutils_logging_format_message@@Base+0x180>
+    90ce:	66 90                	xchg   %ax,%ax
+    90d0:	b8 02 00 00 00       	mov    $0x2,%eax
+    90d5:	eb b9                	jmp    9090 <rcutils_logging_format_message@@Base+0x180>
+    90d7:	e8 94 c9 ff ff       	call   5a70 <__stack_chk_fail@plt>
+
+Disassembly of section .fini:

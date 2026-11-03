@@ -16,6 +16,10 @@ AUDIT_ROOT = Path("/root/uav_tracking_snapshot_audit54_tools01")
 NATIVE_SCRIPT = Path("/mnt/d/WSL/UAVHumble22-validation/snapshot_audit_native_integration01/audit_snapshot_contract_integration.py")
 NATIVE_SCRIPT_SHA = "1062409c9ef2aee5c611831f5100db9ce081557570bd28859a057c7c00cec8cc"
 NATIVE_RESULT = "NATIVE_CONTRACT_AND_FIRST3_SNAPSHOT_AUDIT_COMPLETE_FORMAL_DUAL_ROOT_VALIDATION_PENDING"
+RECOVERY_SCRIPT = Path("/mnt/d/WSL/UAVHumble22-validation/safety54_symlink_recovery02.py")
+RECOVERY_SCRIPT_SHA = "dda5af047eaa82c53e55260597c3643680c394fabab9cfc12c56dd15373a965c"
+RECOVERY_DRIVER_SHA = "82c5ee395e81db0a15339149d8775cf3a8fe1c9fdce524e9e54cf2bc3d287e73"
+RECOVERY_STATUS = "NATIVE_REPAIR_CONTRACT_AND_READ_ONLY_COMMAND_CONTRACT_COMPLETE_FRESH_SAFETY4_PENDING"
 TOOL_PINS = {
     "driver": ("run_reliability_v4_safety.py", "6d6d1b56d14866355c7d423d3eaaed420860f20190d59acdfa20b853b9f3073b"),
     "validator": ("reliability_v4_guard.py", "e64e9da6a5180d70b32c6b2b3076abe4bbc52d4b748395bf7f8af61e6a7e3a8e"),
@@ -113,9 +117,22 @@ def prepare(registry_binding, native_binding, core, core_path, *, guard, bind, r
             and native.get("plan") == native.get("plan_after")
             and {key: native["plan"].get(key) for key in ("path", "sha256")} == core_pin,
             "Completed original native integration receipt required; preparation is insufficient")
-    _, _ = bound(native.get("self"), data=False)
-    require(Path(native["self"]["path"]) == NATIVE_SCRIPT and native["self"]["sha256"] == NATIVE_SCRIPT_SHA,
+    producer, _ = bound(native.get("self"), data=False)
+    recovery = Path(native["self"]["path"]) == RECOVERY_SCRIPT and producer == {"path": str(RECOVERY_SCRIPT), "sha256": RECOVERY_SCRIPT_SHA}
+    require(recovery or Path(native["self"]["path"]) == NATIVE_SCRIPT
+            and producer == {"path": str(NATIVE_SCRIPT), "sha256": NATIVE_SCRIPT_SHA},
             "Reviewed original native integration producer differs")
+    if recovery:
+        require(native.get("kind") == "ACTUAL_NATIVE_SAFETY_SYMLINK_COMMAND_CONTRACT_REPAIR"
+                and native.get("status") == RECOVERY_STATUS
+                and native.get("physical_path_contract_diagnostic") == native.get("read_only_old_command_contract_result") == "PASS"
+                and native.get("original_lexical_comparison_refusal_reproduced")
+                    == "Safety command does not execute the bound frozen source/native evaluator"
+                and native.get("formal_admission_created") is False and native.get("original_result_rewritten") is False
+                and type(native.get("flights_started")) is int and native["flights_started"] == 0
+                and all(native.get(name) is True for name in ("core_plan_unchanged", "original_failure_and_contract_unchanged",
+                    "fixed_guard_helper_registrar_unchanged", "current_tool_bundle_unchanged_during_validation",
+                    "frozen_metadata_unchanged_during_validation")), "Completed reviewed symlink-recovery native audit required")
     for flag in ("safety_registration_created", "formal_admission_or_plan_created", "formal_execution_authorized",
                  "formal_dual_root_integration_validated", "historical_flight_imports_proved", "runtime_root_edited",
                  "original_snapshots_edited", "bag_sidecar_or_telemetry_read_by_this_script"):
@@ -127,6 +144,8 @@ def prepare(registry_binding, native_binding, core, core_path, *, guard, bind, r
     tools = contract.get("audit_tools", {})
     require(set(tools) == set(TOOL_PINS), "Complete fixed original audit tool bindings required")
     for key, (name, expected) in TOOL_PINS.items():
+        if recovery and key == "driver":
+            expected = RECOVERY_DRIVER_SHA
         actual, _ = bound(tools[key], data=False)
         require(actual == {"path": str(AUDIT_ROOT / "tools" / name), "sha256": expected}, "Fixed audit tool path/bytes differ")
         prior = native["bundle_before"]["files"]["tools/" + name]

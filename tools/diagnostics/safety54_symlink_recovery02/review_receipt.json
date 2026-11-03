@@ -1,0 +1,72 @@
+{
+    "schema_version":  1,
+    "kind":  "INDEPENDENT_SMALL_FILE_REVIEW_OF_ACTUAL_SAFETY54_SYMLINK_RECOVERY02",
+    "reviewed_utc":  "2026-11-03T00:05:23.2666923Z",
+    "reviewer":  "/root/clock_split_external_review",
+    "result":  "PASS_MINIMAL_ARCHIVE_WITH_SCOPE_LIMITS",
+    "manifest":  {
+                     "path":  "D:\\基于yolo和卡尔曼滤波\\tools\\diagnostics\\safety54_symlink_recovery02\\source_manifest.json",
+                     "bytes":  13675,
+                     "sha256":  "54d202e0f4a7739a3ab71867691602ee0473325037542a5c535cb4ef32773e97"
+                 },
+    "existing_producer":  {
+                              "path":  "D:\\基于yolo和卡尔曼滤波\\tools\\diagnostics\\safety54_symlink_recovery02\\safety54_symlink_recovery02.py",
+                              "bytes":  10422,
+                              "sha256":  "dda5af047eaa82c53e55260597c3643680c394fabab9cfc12c56dd15373a965c"
+                          },
+    "checks":  {
+                   "all_11_original_pins_and_copies_verified":  true,
+                   "source_and_copy_bytes_equal":  true,
+                   "existing_producer_unchanged":  true,
+                   "old_and_new_driver_differ_only_at_command_contract_directory_resolve":  true,
+                   "actual_receipt_exit_code_0":  true,
+                   "actual_native_test_log_2_tests_0_896_s_OK_no_skips_and_saved_exit_0":  true,
+                   "native_receipt_before_after_fixed_tools_identical":  true,
+                   "native_receipt_post_replacement_bundle_identical":  true,
+                   "native_receipt_frozen_metadata_identical":  true,
+                   "contracts_bind_same_fixed_guard_absolute_path_and_sha":  true,
+                   "native_receipt_contract_metadata_matches_original_contract02":  true,
+                   "original_failure_terminal_binds_original_first_slot_sha":  true,
+                   "original_failure_stays_STOPPED_FAULT_and_INFRASTRUCTURE_ERROR":  true,
+                   "original_command_contract_refusal_preserved":  true,
+                   "original_historical_snapshot_PASS_187_plus_17_retained":  true
+               },
+    "observed_native":  {
+                            "recovery_status":  "NATIVE_REPAIR_CONTRACT_AND_READ_ONLY_COMMAND_CONTRACT_COMPLETE_FRESH_SAFETY4_PENDING",
+                            "result":  "NATIVE_CONTRACT_AND_FIRST3_SNAPSHOT_AUDIT_COMPLETE_FORMAL_DUAL_ROOT_VALIDATION_PENDING",
+                            "original_lexical_refusal_reproduced":  "Safety command does not execute the bound frozen source/native evaluator",
+                            "physical_directory_command_contract":  "PASS",
+                            "native_symlink_tests":  2,
+                            "native_symlink_test_seconds":  0.896,
+                            "native_symlink_test_exit_code":  0,
+                            "first_snapshot_helper_call":  true,
+                            "second_and_third_snapshot_basis":  "Original bytes, SHA and complete mapping equal to first actual helper-validated snapshot",
+                            "fixed_guard_sha256":  "e64e9da6a5180d70b32c6b2b3076abe4bbc52d4b748395bf7f8af61e6a7e3a8e",
+                            "old_driver_sha256":  "6d6d1b56d14866355c7d423d3eaaed420860f20190d59acdfa20b853b9f3073b",
+                            "new_driver_sha256":  "82c5ee395e81db0a15339149d8775cf3a8fe1c9fdce524e9e54cf2bc3d287e73",
+                            "original_failure_status":  "INFRASTRUCTURE_ERROR",
+                            "original_execution_terminal":  "STOPPED_FAULT",
+                            "original_attempted_count":  1,
+                            "original_pending_count":  3
+                        },
+    "limitations":  [
+                        "This archive records two actual unit tests plus native contract creation/snapshot and read-only command-contract diagnosis, not a new flight or full old-slot audit.",
+                        "The recovery receipt bundle_before is taken after replacing the external driver; original_driver.py is the separate before-repair evidence.",
+                        "Fixed Linux guard/helper/registrar pins are native recorded before/after evidence; this Windows-only independent archive review did not launch WSL or rehash /root files.",
+                        "No old trial status, contract01, frozen54 source, guard, helper, registrar, original snapshot, model, or bag was changed or upgraded.",
+                        "Native original helper model hashing remained enabled in the original recovery; this archive review did not read model or bag payloads.",
+                        "Formal dual-root integration, fresh safety4, formal admission and historical per-process import proof are not established by these diagnostic results.",
+                        "No saved raw Windows 61-test log is included or fabricated; this archive binds only the actual saved two-test native log."
+                    ],
+    "actions":  {
+                    "windows_small_file_review":  true,
+                    "raw_original_copies":  true,
+                    "wsl_launched_by_reviewer":  false,
+                    "tests_rerun_by_reviewer":  false,
+                    "flight_started_by_reviewer":  false,
+                    "bags_or_models_read_by_reviewer":  false,
+                    "existing_producer_overwritten":  false,
+                    "original_failure_rewritten":  false,
+                    "git_staged_or_committed_by_reviewer":  false
+                }
+}

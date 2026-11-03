@@ -1,0 +1,91 @@
+
+/opt/ros/humble/lib/librcutils.so:     file format elf64-x86-64
+
+
+Disassembly of section .init:
+
+Disassembly of section .plt:
+
+Disassembly of section .plt.got:
+
+Disassembly of section .plt.sec:
+
+Disassembly of section .text:
+
+000000000000efa0 <rcutils_log@@Base>:
+    efa0:	f3 0f 1e fa          	endbr64 
+    efa4:	41 55                	push   %r13
+    efa6:	49 89 fd             	mov    %rdi,%r13
+    efa9:	41 54                	push   %r12
+    efab:	49 89 d4             	mov    %rdx,%r12
+    efae:	55                   	push   %rbp
+    efaf:	89 f5                	mov    %esi,%ebp
+    efb1:	53                   	push   %rbx
+    efb2:	48 89 cb             	mov    %rcx,%rbx
+    efb5:	48 81 ec e8 00 00 00 	sub    $0xe8,%rsp
+    efbc:	4c 89 44 24 50       	mov    %r8,0x50(%rsp)
+    efc1:	4c 89 4c 24 58       	mov    %r9,0x58(%rsp)
+    efc6:	84 c0                	test   %al,%al
+    efc8:	74 3a                	je     f004 <rcutils_log@@Base+0x64>
+    efca:	0f 29 44 24 60       	movaps %xmm0,0x60(%rsp)
+    efcf:	0f 29 4c 24 70       	movaps %xmm1,0x70(%rsp)
+    efd4:	0f 29 94 24 80 00 00 00 	movaps %xmm2,0x80(%rsp)
+    efdc:	0f 29 9c 24 90 00 00 00 	movaps %xmm3,0x90(%rsp)
+    efe4:	0f 29 a4 24 a0 00 00 00 	movaps %xmm4,0xa0(%rsp)
+    efec:	0f 29 ac 24 b0 00 00 00 	movaps %xmm5,0xb0(%rsp)
+    eff4:	0f 29 b4 24 c0 00 00 00 	movaps %xmm6,0xc0(%rsp)
+    effc:	0f 29 bc 24 d0 00 00 00 	movaps %xmm7,0xd0(%rsp)
+    f004:	64 48 8b 04 25 28 00 00 00 	mov    %fs:0x28,%rax
+    f00d:	48 89 44 24 28       	mov    %rax,0x28(%rsp)
+    f012:	31 c0                	xor    %eax,%eax
+    f014:	89 ee                	mov    %ebp,%esi
+    f016:	4c 89 e7             	mov    %r12,%rdi
+    f019:	e8 12 6f ff ff       	call   5f30 <rcutils_logging_logger_is_enabled_for@plt>
+    f01e:	84 c0                	test   %al,%al
+    f020:	75 26                	jne    f048 <rcutils_log@@Base+0xa8>
+    f022:	48 8b 44 24 28       	mov    0x28(%rsp),%rax
+    f027:	64 48 2b 04 25 28 00 00 00 	sub    %fs:0x28,%rax
+    f030:	0f 85 af 00 00 00    	jne    f0e5 <rcutils_log@@Base+0x145>
+    f036:	48 81 c4 e8 00 00 00 	add    $0xe8,%rsp
+    f03d:	5b                   	pop    %rbx
+    f03e:	5d                   	pop    %rbp
+    f03f:	41 5c                	pop    %r12
+    f041:	41 5d                	pop    %r13
+    f043:	c3                   	ret    
+    f044:	0f 1f 40 00          	nopl   0x0(%rax)
+    f048:	48 8d 7c 24 08       	lea    0x8(%rsp),%rdi
+    f04d:	e8 ae 69 ff ff       	call   5a00 <rcutils_system_time_now@plt>
+    f052:	85 c0                	test   %eax,%eax
+    f054:	75 6a                	jne    f0c0 <rcutils_log@@Base+0x120>
+    f056:	48 8b 05 1b 7f 00 00 	mov    0x7f1b(%rip),%rax        # 16f78 <g_rcutils_logging_output_handler@@Base-0xdb0>
+    f05d:	48 8b 00             	mov    (%rax),%rax
+    f060:	48 85 c0             	test   %rax,%rax
+    f063:	74 bd                	je     f022 <rcutils_log@@Base+0x82>
+    f065:	48 8d 54 24 30       	lea    0x30(%rsp),%rdx
+    f06a:	4d 85 e4             	test   %r12,%r12
+    f06d:	4c 8d 4c 24 10       	lea    0x10(%rsp),%r9
+    f072:	49 89 d8             	mov    %rbx,%r8
+    f075:	48 89 54 24 20       	mov    %rdx,0x20(%rsp)
+    f07a:	89 ee                	mov    %ebp,%esi
+    f07c:	4c 89 ef             	mov    %r13,%rdi
+    f07f:	48 8d 15 04 2f 00 00 	lea    0x2f04(%rip),%rdx        # 11f8a <rcutils_uint8_array_resize@@Base+0x20ca>
+    f086:	4c 0f 44 e2          	cmove  %rdx,%r12
+    f08a:	48 8d 8c 24 10 01 00 00 	lea    0x110(%rsp),%rcx
+    f092:	c7 44 24 10 20 00 00 00 	movl   $0x20,0x10(%rsp)
+    f09a:	48 89 4c 24 18       	mov    %rcx,0x18(%rsp)
+    f09f:	48 8b 4c 24 08       	mov    0x8(%rsp),%rcx
+    f0a4:	c7 44 24 14 30 00 00 00 	movl   $0x30,0x14(%rsp)
+    f0ac:	4c 89 e2             	mov    %r12,%rdx
+    f0af:	ff d0                	call   *%rax
+    f0b1:	e9 6c ff ff ff       	jmp    f022 <rcutils_log@@Base+0x82>
+    f0b6:	66 2e 0f 1f 84 00 00 00 00 00 	cs nopw 0x0(%rax,%rax,1)
+    f0c0:	48 8b 05 21 7f 00 00 	mov    0x7f21(%rip),%rax        # 16fe8 <stderr@GLIBC_2.2.5>
+    f0c7:	ba 37 00 00 00       	mov    $0x37,%edx
+    f0cc:	be 01 00 00 00       	mov    $0x1,%esi
+    f0d1:	48 8d 3d 00 26 00 00 	lea    0x2600(%rip),%rdi        # 116d8 <rcutils_uint8_array_resize@@Base+0x1818>
+    f0d8:	48 8b 08             	mov    (%rax),%rcx
+    f0db:	e8 f0 6d ff ff       	call   5ed0 <fwrite@plt>
+    f0e0:	e9 3d ff ff ff       	jmp    f022 <rcutils_log@@Base+0x82>
+    f0e5:	e8 86 69 ff ff       	call   5a70 <__stack_chk_fail@plt>
+
+Disassembly of section .fini:

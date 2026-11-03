@@ -2,10 +2,11 @@
 
 No native validator, model inference or recorded-payload decoder is executed.
 Only production absolute tool locations are relocated into a temporary tree;
-the four reviewed tool pins and original native producer SHA stay unchanged.
+the reviewed native01/native02 producer and matching tool SHA stay unchanged.
 """
 from contextlib import contextmanager, redirect_stderr
 from copy import deepcopy
+import hashlib
 import io
 import json
 from pathlib import Path
@@ -41,7 +42,7 @@ def bytes_binding(path):
     return {**guard.file_binding(path), "bytes": path.stat().st_size}
 
 
-def fixture(folder):
+def fixture(folder, *, recovery=False):
     actual = base.extensions.extension_fixture
     def with_original_scanner(root):
         actual(root)
@@ -103,20 +104,40 @@ def fixture(folder):
             ("uav_tracking_nodes", "uav_tracking_interfaces", "uav_tracking_bringup", "uav_tracking_px4_adapter")}})
     audit_root = Path(folder).resolve() / "separate_audit_tools"
     (audit_root / "tools").mkdir(parents=True)
-    for name, digest in support.TOOL_PINS.values():
-        shutil.copyfile(ROOT / "tools" / name, audit_root / "tools" / name)
+    tool_pins = deepcopy(support.TOOL_PINS)
+    if recovery:
+        tool_pins["driver"] = (tool_pins["driver"][0], support.RECOVERY_DRIVER_SHA)
+    for name, digest in tool_pins.values():
+        if name == "run_reliability_v4_safety.py" and not recovery:
+            # Reconstruct only the original reviewed fixture bytes; this is
+            # synthetic input, never a saved native execution receipt.
+            raw = (ROOT / "tools" / name).read_bytes()
+            repaired = b'guard.safety_command_contract(fact["executions"], artifacts, context.root, directory.resolve(strict=True),'
+            previous = b'guard.safety_command_contract(fact["executions"], artifacts, context.root, directory,'
+            assert raw.count(repaired) == 1
+            raw = raw.replace(repaired, previous)
+            assert hashlib.sha256(raw).hexdigest() == digest
+            (audit_root / "tools" / name).write_bytes(raw)
+        else:
+            shutil.copyfile(ROOT / "tools" / name, audit_root / "tools" / name)
         assert guard.sha(audit_root / "tools" / name) == digest
     native_script = Path(folder).resolve() / "native_original/audit_snapshot_contract_integration.py"
     native_script.parent.mkdir()
     shutil.copyfile(ROOT / "tools/diagnostics/snapshot_audit54_integration_prepare01/audit_snapshot_contract_integration.py", native_script)
     assert guard.sha(native_script) == support.NATIVE_SCRIPT_SHA
+    original_native_script = native_script
+    if recovery:
+        native_script = Path(folder).resolve() / "native_recovery02/safety54_symlink_recovery02.py"
+        native_script.parent.mkdir()
+        shutil.copyfile(ROOT / "tools/diagnostics/safety54_symlink_recovery02/safety54_symlink_recovery02.py", native_script)
+        assert guard.sha(native_script) == support.RECOVERY_SCRIPT_SHA
     core_pin = guard.file_binding(f.paths["core"])
     contract = {"schema_version": 1, "kind": original.KIND, "created_utc": CONTRACT, "rule": original.RULE,
         "frozen_root": str(f.root), "audit_tool_root": str(audit_root),
         "core_plan": {**core_pin, "plan_sha256": core["plan_sha256"]},
         "freeze_report": report, "source_before": before, "source_after": after, "frozen_map": frozen,
         "import_isolation": imports,
-        "audit_tools": {key: guard.file_binding(audit_root / "tools" / name) for key, (name, _) in support.TOOL_PINS.items()},
+        "audit_tools": {key: guard.file_binding(audit_root / "tools" / name) for key, (name, _) in tool_pins.items()},
         "base_tools": {key: guard.file_binding(f.root / name) for key, name in original.BASE_NAMES.items()},
         "evidence_limitations": original.LIMITATION}
     contract_pin = write(f.results / "snapshot_contract.json", contract)
@@ -139,7 +160,7 @@ def fixture(folder):
         "freeze_report": "source_integrity/source_frozen_integrity.json", "source_before": "source_integrity/source_before.json",
         "source_after": "source_integrity/source_after.json", "frozen_map": "source_integrity/frozen_actual.json",
         "import_isolation": "import_isolation.json"}.items()}
-    bundle = {"files": {"tools/" + name: bytes_binding(audit_root / "tools" / name) for name, _ in support.TOOL_PINS.values()}}
+    bundle = {"files": {"tools/" + name: bytes_binding(audit_root / "tools" / name) for name, _ in tool_pins.values()}}
     native = {"schema_version": 1, "scope": "ACTUAL_FIXED_TOOL_NATIVE_CONTRACT_AND_SNAPSHOT_AUDIT_ONLY",
         "result": support.NATIVE_RESULT, "exit_code": 0, "contract_creation_attempted": True,
         "self": bytes_binding(native_script), "plan": bytes_binding(f.paths["core"]), "plan_after": bytes_binding(f.paths["core"]),
@@ -151,6 +172,14 @@ def fixture(folder):
         **{key: False for key in ("safety_registration_created", "formal_admission_or_plan_created", "formal_execution_authorized",
             "formal_dual_root_integration_validated", "historical_flight_imports_proved", "runtime_root_edited",
             "original_snapshots_edited", "bag_sidecar_or_telemetry_read_by_this_script")}}
+    if recovery:
+        native.update(kind="ACTUAL_NATIVE_SAFETY_SYMLINK_COMMAND_CONTRACT_REPAIR", status=support.RECOVERY_STATUS,
+            physical_path_contract_diagnostic="PASS", read_only_old_command_contract_result="PASS",
+            original_lexical_comparison_refusal_reproduced="Safety command does not execute the bound frozen source/native evaluator",
+            formal_admission_created=False, flights_started=0, original_result_rewritten=False,
+            **{key: True for key in ("core_plan_unchanged", "original_failure_and_contract_unchanged",
+                "fixed_guard_helper_registrar_unchanged", "current_tool_bundle_unchanged_during_validation",
+                "frozen_metadata_unchanged_during_validation")})
     native_pin = write(f.results / "native_receipt.json", native)
     safety_dir = f.results / "safety_audit"
     trials = [{"id": cls + "_" + case, "target_class": cls, "case": case,
@@ -185,7 +214,8 @@ def fixture(folder):
     owner = {"status": "COMPLETED", "all_engineering_pass": True, "registry": registry_pin, "execution_terminal": terminal_pin}
     write(safety_dir / "owner_terminal.json", owner)
     write(safety_dir / "owner_state.json", owner)
-    return SimpleNamespace(f=f, audit_root=audit_root, native_script=native_script, native=native,
+    return SimpleNamespace(f=f, audit_root=audit_root, native_script=native_script, original_native_script=original_native_script,
+        recovery=recovery, native=native,
         native_pin=native_pin, registry=registry, registry_pin=registry_pin, contract=contract, contract_pin=contract_pin)
 
 
@@ -203,7 +233,9 @@ class SnapshotSizeAdapterTests(unittest.TestCase):
             module = actual(name, path)
             if name == "measurement_saved_snapshot_audit":
                 module.AUDIT_ROOT = self.s.audit_root
-                module.NATIVE_SCRIPT = self.s.native_script
+                module.NATIVE_SCRIPT = self.s.original_native_script
+                if self.s.recovery:
+                    module.RECOVERY_SCRIPT = self.s.native_script
             return module
         with patch.object(measurement.guard, "import_file", side_effect=imported):
             yield
@@ -369,6 +401,65 @@ class SnapshotSizeAdapterTests(unittest.TestCase):
         self.assertEqual(code, 2)
         self.assertIn("all four explicit", json.loads(stream.getvalue())["reason"])
         self.assertFalse(self.f.output.exists())
+
+
+class SnapshotRecoverySizeAdapterTests(unittest.TestCase):
+    relocated = SnapshotSizeAdapterTests.relocated
+    measure = SnapshotSizeAdapterTests.measure
+    refuse = SnapshotSizeAdapterTests.refuse
+    rebind_native = SnapshotSizeAdapterTests.rebind_native
+
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.s = fixture(self.temporary.name, recovery=True)
+        self.f = self.s.f
+
+    def test_recovery02_complete28_retains_fail_without_payload_reads(self):
+        SnapshotSizeAdapterTests.test_complete28_keeps_fail_and_explicit_prior_evidence_without_payload_reads(self)
+        self.assertEqual(self.s.contract["audit_tools"]["driver"]["sha256"], support.RECOVERY_DRIVER_SHA)
+        self.assertEqual(self.s.native["self"]["sha256"], support.RECOVERY_SCRIPT_SHA)
+
+    def test_original_native01_producer_cannot_authorize_repaired_driver(self):
+        self.s.native["self"] = bytes_binding(self.s.original_native_script)
+        self.rebind_native()
+        self.refuse("Fixed audit tool path/bytes differ")
+
+    def test_recovery02_producer_cannot_authorize_original_driver_after_rebinding(self):
+        path = self.s.audit_root / "tools/run_reliability_v4_safety.py"
+        raw = path.read_bytes()
+        repaired = b'guard.safety_command_contract(fact["executions"], artifacts, context.root, directory.resolve(strict=True),'
+        previous = b'guard.safety_command_contract(fact["executions"], artifacts, context.root, directory,'
+        self.assertEqual(raw.count(repaired), 1)
+        path.write_bytes(raw.replace(repaired, previous))
+        self.assertEqual(guard.sha(path), support.TOOL_PINS["driver"][1])
+        self.s.contract["audit_tools"]["driver"] = guard.file_binding(path)
+        self.s.contract_pin = write(Path(self.s.contract_pin["path"]), self.s.contract)
+        self.s.native["contract"] = self.s.contract_pin
+        self.s.native["bundle_before"]["files"]["tools/run_reliability_v4_safety.py"] = bytes_binding(path)
+        self.s.native["bundle_after"] = deepcopy(self.s.native["bundle_before"])
+        self.s.registry["snapshot_audit_contract"] = self.s.contract_pin
+        self.s.registry["driver"] = self.s.contract["audit_tools"]["driver"]
+        self.s.registry_pin = write(Path(self.s.registry_pin["path"]), self.s.registry)
+        self.rebind_native()
+        self.refuse("Fixed audit tool path/bytes differ")
+
+    def test_recovery02_incomplete_diagnostic_or_scope_change_refuses(self):
+        native = deepcopy(self.s.native)
+        for key, value in (("status", "RUNNING"), ("physical_path_contract_diagnostic", "FAIL"),
+                ("read_only_old_command_contract_result", "FAIL"), ("original_failure_and_contract_unchanged", False),
+                ("frozen_metadata_unchanged_during_validation", False), ("original_result_rewritten", True),
+                ("flights_started", False)):
+            with self.subTest(key=key):
+                self.s.native = {**native, key: value}
+                self.rebind_native()
+                self.refuse("Completed reviewed symlink-recovery native audit")
+
+    def test_recovery02_unknown_producer_bytes_refuse(self):
+        self.s.native_script.write_bytes(self.s.native_script.read_bytes() + b"\n# unreviewed producer\n")
+        self.s.native["self"] = bytes_binding(self.s.native_script)
+        self.rebind_native()
+        self.refuse("Reviewed original native integration producer differs")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,680 @@
+{
+  "kind": "DERIVED_SUMMARY_AND_EXACT_COMMAND_ROWS_FROM_PINNED_FULL_DEV_LINEAGE_REPORT",
+  "created_utc": "2026-11-03T00:04:54.409107+00:00",
+  "source_full_report_pin": {
+    "path": "D:\\WSL\\UAVHumble22-validation\\humble54_dev_timing01\\lineage_report.json",
+    "bytes": 5754872,
+    "sha256": "c33b43419dc3b4e41782b977d8a67297d2135ecd014a418e224895cd6f1987b4"
+  },
+  "full_report_copied_into_archive": false,
+  "full_report_reads_this_archival_session": 2,
+  "prior_failed_derivation_preserved": "derivation_attempt01/execution_receipt.json",
+  "derivation": "All top-level original fields except commands are copied under original_top_level_fields_except_commands. Three original command objects are copied exactly, selected as the first three report commands with formula_native_candidate_count > 1. Counts below are derived from the unchanged report, not a rerun or replacement method.",
+  "original_top_level_fields_except_commands": {
+    "schema_version": 1,
+    "kind": "OFFLINE_UNIQUE_RECORDED_CONTROL_TICK_LINEAGE_V1_NOT_CALLBACK_CAUSALITY",
+    "endpoint_label": "\u91c7\u96c6\u2192\u63a7\u5236\u5faa\u73af\u53d6\u65f6\uff08tick\u5f00\u59cb\uff09source_sim",
+    "time_domain": "RECORDED_ROS_SOURCE_SIM_CLOCK",
+    "coverage": {
+      "native_bag_read_to_end": true,
+      "original_recording_closure_available": true,
+      "original_bag_integrity_available": true,
+      "recording_health_and_tail_acceptance": "NOT_VALIDATED_BY_THIS_MEASUREMENT_TOOL"
+    },
+    "original_command_denominator": 1857,
+    "known_commands": 0,
+    "unknown_commands": 1857,
+    "known_command_coverage": 0.0,
+    "unknown_reasons": {
+      "inactive_or_invalid_command": 480,
+      "no_unique_native_formula_candidate": 1374,
+      "unindexable_native_lineage_for_track": 515
+    },
+    "statistics_s_known_subset_only": {
+      "mean": null,
+      "median": null,
+      "p95": null,
+      "max": null
+    },
+    "stream_opportunities": {
+      "clock": 27014,
+      "px4_setpoint": 4643,
+      "flight_command": 1857,
+      "controller_command": 1857,
+      "controller_status": 1857,
+      "detector": 927,
+      "navigation_state": 4511,
+      "navigation_diagnostics": 4511
+    },
+    "decode_errors_by_stream": {},
+    "global_unknown_reasons": [],
+    "anomalies": [
+      {
+        "native_event_index": 15972,
+        "diagnostic_event_indices": [
+          15975,
+          16013
+        ],
+        "reason": "missing_or_duplicate_navigation_diagnostic"
+      },
+      {
+        "native_event_index": 16012,
+        "diagnostic_event_indices": [
+          15975,
+          16013
+        ],
+        "reason": "missing_or_duplicate_navigation_diagnostic"
+      },
+      {
+        "native_event_index": 16023,
+        "diagnostic_event_indices": [
+          16024,
+          16062
+        ],
+        "reason": "missing_or_duplicate_navigation_diagnostic"
+      },
+      {
+        "native_event_index": 16061,
+        "diagnostic_event_indices": [
+          16024,
+          16062
+        ],
+        "reason": "missing_or_duplicate_navigation_diagnostic"
+      },
+      {
+        "native_event_index": 16072,
+        "diagnostic_event_indices": [
+          16073,
+          16111
+        ],
+        "reason": "missing_or_duplicate_navigation_diagnostic"
+      },
+      {
+        "native_event_index": 16110,
+        "diagnostic_event_indices": [
+          16073,
+          16111
+        ],
+        "reason": "missing_or_duplicate_navigation_diagnostic"
+      },
+      {
+        "native_event_index": 22344,
+        "diagnostic_event_indices": [
+          22345,
+          22383
+        ],
+        "reason": "missing_or_duplicate_navigation_diagnostic"
+      },
+      {
+        "native_event_index": 22382,
+        "diagnostic_event_indices": [
+          22345,
+          22383
+        ],
+        "reason": "missing_or_duplicate_navigation_diagnostic"
+      },
+      {
+        "native_event_index": 22393,
+        "diagnostic_event_indices": [
+          22394,
+          22432
+        ],
+        "reason": "missing_or_duplicate_navigation_diagnostic"
+      },
+      {
+        "native_event_index": 22431,
+        "diagnostic_event_indices": [
+          22394,
+          22432
+        ],
+        "reason": "missing_or_duplicate_navigation_diagnostic"
+      },
+      {
+        "native_event_index": 22442,
+        "diagnostic_event_indices": [
+          22443,
+          22481
+        ],
+        "reason": "missing_or_duplicate_navigation_diagnostic"
+      },
+      {
+        "native_event_index": 22480,
+        "diagnostic_event_indices": [
+          22443,
+          22481
+        ],
+        "reason": "missing_or_duplicate_navigation_diagnostic"
+      },
+      {
+        "native_event_index": 22491,
+        "diagnostic_event_indices": [
+          22492,
+          22530
+        ],
+        "reason": "missing_or_duplicate_navigation_diagnostic"
+      },
+      {
+        "native_event_index": 22529,
+        "diagnostic_event_indices": [
+          22492,
+          22530
+        ],
+        "reason": "missing_or_duplicate_navigation_diagnostic"
+      },
+      {
+        "native_event_index": 22540,
+        "diagnostic_event_indices": [
+          22541,
+          22579
+        ],
+        "reason": "missing_or_duplicate_navigation_diagnostic"
+      },
+      {
+        "native_event_index": 22578,
+        "diagnostic_event_indices": [
+          22541,
+          22579
+        ],
+        "reason": "missing_or_duplicate_navigation_diagnostic"
+      },
+      {
+        "native_event_index": 22589,
+        "diagnostic_event_indices": [
+          22590,
+          22628
+        ],
+        "reason": "missing_or_duplicate_navigation_diagnostic"
+      },
+      {
+        "native_event_index": 22627,
+        "diagnostic_event_indices": [
+          22590,
+          22628
+        ],
+        "reason": "missing_or_duplicate_navigation_diagnostic"
+      }
+    ],
+    "not_observed": [
+      "complete_callback_causality",
+      "controller_publish_completion",
+      "px4_receipt_or_execution",
+      "wall_capture_to_effect_e2e",
+      "worker_wall_fps"
+    ],
+    "interpretation": [
+      "Endpoint is tick-start before controller.update and publish; not publish completion.",
+      "Only a unique recorded constraint solution is reported; subscriber consumption is unobserved.",
+      "Every original command, including inactive/decode errors/duplicates, stays in the denominator.",
+      "Multiple native candidates stay UNKNOWN even when they share the same image lineage.",
+      "Unknown samples do not receive zero latency and known-subset quantiles are not whole-run quantiles.",
+      "Recorder timestamp is not used as a verified source clock or callback causality proof."
+    ],
+    "inputs": {
+      "context": {
+        "path": "/mnt/d/WSL/UAVHumble22-validation/humble54_dev_timing01/export/context.json",
+        "sha256": "ff5025c5e6ddae7759ea95fba773973635cc8012f6cea84955e9f68b2daf931b"
+      },
+      "events": {
+        "path": "/mnt/d/WSL/UAVHumble22-validation/humble54_dev_timing01/export/events.jsonl",
+        "sha256": "e760800f41b3c392e1ca92b1230e5ff69dfaf879954cabfec142f653fc0c6c45"
+      },
+      "additional_semantic_bindings": {
+        "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/controller_node.py": {
+          "path": "/root/uav_tracking_fullplan_v4_humble54/ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/controller_node.py",
+          "sha256": "fa37a4de445896f8fd08b0bfa2c99a200623c39d98427ccedfe16cc9c6361959"
+        },
+        "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/state_estimator_node.py": {
+          "path": "/root/uav_tracking_fullplan_v4_humble54/ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/state_estimator_node.py",
+          "sha256": "696184b13ebb21307f1091171f15f5f628e6b46b101c692f1dcacea77861fbd0"
+        },
+        "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/navigation_estimator.py": {
+          "path": "/root/uav_tracking_fullplan_v4_humble54/ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/navigation_estimator.py",
+          "sha256": "8d1abef9fe9d623f4cd43b0874e7c7843238a79920f198b17942d6cc8ebe2114"
+        },
+        "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/detector_node.py": {
+          "path": "/root/uav_tracking_fullplan_v4_humble54/ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/detector_node.py",
+          "sha256": "2316a7f331afec55844da65f6d6b4bb76de551e1bad262bd26ad3728a4636510"
+        },
+        "ros2_ws/src/uav_tracking_interfaces/msg/TrackingCommand.msg": {
+          "path": "/root/uav_tracking_fullplan_v4_humble54/ros2_ws/src/uav_tracking_interfaces/msg/TrackingCommand.msg",
+          "sha256": "f7156a45aae6000ef70178eb46d27f2830d98c3369b1114961bceef63c04f172"
+        },
+        "ros2_ws/src/uav_tracking_interfaces/msg/TrackingStatus.msg": {
+          "path": "/root/uav_tracking_fullplan_v4_humble54/ros2_ws/src/uav_tracking_interfaces/msg/TrackingStatus.msg",
+          "sha256": "f9d29ba33ee852f1bb301fa42f7d6e57aac92159f73961098d08e5a8f65a2f79"
+        },
+        "ros2_ws/src/uav_tracking_interfaces/msg/TargetState.msg": {
+          "path": "/root/uav_tracking_fullplan_v4_humble54/ros2_ws/src/uav_tracking_interfaces/msg/TargetState.msg",
+          "sha256": "b1967b3f2a0f31f298c2205a1c3defd0dcbea892745d9a6f3ea1c2fd97d84271"
+        }
+      }
+    },
+    "tools": {
+      "schema_version": 1,
+      "kind": "OFFLINE_UNIQUE_RECORDED_CONTROL_TICK_LINEAGE_V1_NOT_CALLBACK_CAUSALITY",
+      "method_status": "FROZEN_OFFLINE_METHOD_NOT_FORMAL_REGISTRATION",
+      "files": {
+        "control_tick_lineage.py": "5ef5d82999165ad2932c239f142dfa6b565cd4e43a2493c2f43c8c40be723247",
+        "test_control_tick_lineage.py": "d317356eeb23a23f0e05c9ed5346d4e0f950e09b3e7bb5aaf5f76d20f8ef2488"
+      },
+      "supported_semantic_source_sha256": {
+        "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/controller_node.py": "fa37a4de445896f8fd08b0bfa2c99a200623c39d98427ccedfe16cc9c6361959",
+        "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/state_estimator_node.py": "696184b13ebb21307f1091171f15f5f628e6b46b101c692f1dcacea77861fbd0",
+        "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/navigation_estimator.py": "8d1abef9fe9d623f4cd43b0874e7c7843238a79920f198b17942d6cc8ebe2114",
+        "ros2_ws/src/uav_tracking_nodes/uav_tracking_nodes/detector_node.py": "2316a7f331afec55844da65f6d6b4bb76de551e1bad262bd26ad3728a4636510",
+        "ros2_ws/src/uav_tracking_interfaces/msg/TrackingCommand.msg": "f7156a45aae6000ef70178eb46d27f2830d98c3369b1114961bceef63c04f172",
+        "ros2_ws/src/uav_tracking_interfaces/msg/TrackingStatus.msg": "f9d29ba33ee852f1bb301fa42f7d6e57aac92159f73961098d08e5a8f65a2f79",
+        "ros2_ws/src/uav_tracking_interfaces/msg/TargetState.msg": "b1967b3f2a0f31f298c2205a1c3defd0dcbea892745d9a6f3ea1c2fd97d84271"
+      },
+      "supported_timing_v2_files": {
+        "offline_pipeline_timing.py": "c6367a2dd7e7a733958a9c15bf6ee3bff6e2b1fa93205c303148f5523d39a4e2",
+        "test_offline_pipeline_timing.py": "be4390929c5caac80a50cdc6c53c5f10a2e0476cd594414eb45e0378b3387617"
+      },
+      "endpoint_label": "\u91c7\u96c6\u2192\u63a7\u5236\u5faa\u73af\u53d6\u65f6\uff08tick\u5f00\u59cb\uff09source_sim",
+      "native_execution": false,
+      "formal_registration_created": false,
+      "callback_causality_observed": false,
+      "nearest_message_matching": false
+    },
+    "job_logs_used_for_lineage": false,
+    "job_log_content_semantics": "NOT_ANALYZED_NOT_WALL_FPS",
+    "bag_payload_revalidated_by_this_analyzer": false
+  },
+  "derived_command_status_counts": {
+    "UNKNOWN": 1857
+  },
+  "derived_formula_candidate_count_distribution": {
+    "0": 480,
+    "1": 3,
+    "2": 667,
+    "3": 10,
+    "4": 669,
+    "5": 4,
+    "6": 6,
+    "7": 9,
+    "11": 2,
+    "12": 1,
+    "13": 2,
+    "14": 1,
+    "15": 1,
+    "17": 1,
+    "23": 1
+  },
+  "derived_multiple_formula_candidate_commands": 1374,
+  "derived_at_least_one_formula_candidate_commands": 1377,
+  "derived_single_formula_candidate_still_unknown_commands": 3,
+  "original_command_examples": [
+    {
+      "command_event_index": 10044,
+      "status": "UNKNOWN",
+      "reasons": [
+        "no_unique_native_formula_candidate",
+        "unindexable_native_lineage_for_track"
+      ],
+      "value_s": null,
+      "tick_ns": 17700000000,
+      "track_id": 1,
+      "status_event_indices": [
+        10046
+      ],
+      "native_headers_after_tick_total": 1543,
+      "arithmetic_window_acquisition_ns": [
+        17599999987,
+        17600000010
+      ],
+      "indexed_native_candidate_count": 6,
+      "formula_native_candidate_count": 2,
+      "candidates": [
+        {
+          "native_event_index": 10035,
+          "diagnostic_event_indices": [
+            10036
+          ],
+          "native_candidate_count_at_key": 1,
+          "diagnostic_candidate_count": 1,
+          "header_ns": 17600000000,
+          "track_id": 1,
+          "target_uuid": "bc37687a-b0f7-478a-ac9f-bb31a7546f79",
+          "state": 1,
+          "acquisition_ns": 17600000000,
+          "reason": null,
+          "expected_status_age_binary32": "3dcccccd",
+          "formula_match": true
+        },
+        {
+          "native_event_index": 10043,
+          "diagnostic_event_indices": [
+            10045
+          ],
+          "native_candidate_count_at_key": 1,
+          "diagnostic_candidate_count": 1,
+          "header_ns": 17700000000,
+          "track_id": 1,
+          "target_uuid": "bc37687a-b0f7-478a-ac9f-bb31a7546f79",
+          "state": 2,
+          "acquisition_ns": 17600000000,
+          "reason": null,
+          "expected_status_age_binary32": "3dcccccd",
+          "formula_match": true
+        },
+        {
+          "native_event_index": 10053,
+          "diagnostic_event_indices": [
+            10054
+          ],
+          "native_candidate_count_at_key": 1,
+          "diagnostic_candidate_count": 1,
+          "header_ns": 17720000000,
+          "track_id": 1,
+          "target_uuid": "bc37687a-b0f7-478a-ac9f-bb31a7546f79",
+          "state": 2,
+          "acquisition_ns": 17600000000,
+          "reason": null,
+          "expected_status_age_binary32": null,
+          "formula_match": false,
+          "excluded_reason": "future_native_header"
+        },
+        {
+          "native_event_index": 10061,
+          "diagnostic_event_indices": [
+            10062
+          ],
+          "native_candidate_count_at_key": 1,
+          "diagnostic_candidate_count": 1,
+          "header_ns": 17740000000,
+          "track_id": 1,
+          "target_uuid": "bc37687a-b0f7-478a-ac9f-bb31a7546f79",
+          "state": 2,
+          "acquisition_ns": 17600000000,
+          "reason": null,
+          "expected_status_age_binary32": null,
+          "formula_match": false,
+          "excluded_reason": "future_native_header"
+        },
+        {
+          "native_event_index": 10072,
+          "diagnostic_event_indices": [
+            10073
+          ],
+          "native_candidate_count_at_key": 1,
+          "diagnostic_candidate_count": 1,
+          "header_ns": 17760000000,
+          "track_id": 1,
+          "target_uuid": "bc37687a-b0f7-478a-ac9f-bb31a7546f79",
+          "state": 2,
+          "acquisition_ns": 17600000000,
+          "reason": null,
+          "expected_status_age_binary32": null,
+          "formula_match": false,
+          "excluded_reason": "future_native_header"
+        },
+        {
+          "native_event_index": 10080,
+          "diagnostic_event_indices": [
+            10081
+          ],
+          "native_candidate_count_at_key": 1,
+          "diagnostic_candidate_count": 1,
+          "header_ns": 17780000000,
+          "track_id": 1,
+          "target_uuid": "bc37687a-b0f7-478a-ac9f-bb31a7546f79",
+          "state": 2,
+          "acquisition_ns": 17600000000,
+          "reason": null,
+          "expected_status_age_binary32": null,
+          "formula_match": false,
+          "excluded_reason": "future_native_header"
+        }
+      ],
+      "lineage": null
+    },
+    {
+      "command_event_index": 10066,
+      "status": "UNKNOWN",
+      "reasons": [
+        "no_unique_native_formula_candidate",
+        "unindexable_native_lineage_for_track"
+      ],
+      "value_s": null,
+      "tick_ns": 17752000000,
+      "track_id": 1,
+      "status_event_indices": [
+        10067
+      ],
+      "native_headers_after_tick_total": 1541,
+      "arithmetic_window_acquisition_ns": [
+        17599999982,
+        17600000028
+      ],
+      "indexed_native_candidate_count": 6,
+      "formula_native_candidate_count": 4,
+      "candidates": [
+        {
+          "native_event_index": 10035,
+          "diagnostic_event_indices": [
+            10036
+          ],
+          "native_candidate_count_at_key": 1,
+          "diagnostic_candidate_count": 1,
+          "header_ns": 17600000000,
+          "track_id": 1,
+          "target_uuid": "bc37687a-b0f7-478a-ac9f-bb31a7546f79",
+          "state": 1,
+          "acquisition_ns": 17600000000,
+          "reason": null,
+          "expected_status_age_binary32": "3e1ba5e3",
+          "formula_match": true
+        },
+        {
+          "native_event_index": 10043,
+          "diagnostic_event_indices": [
+            10045
+          ],
+          "native_candidate_count_at_key": 1,
+          "diagnostic_candidate_count": 1,
+          "header_ns": 17700000000,
+          "track_id": 1,
+          "target_uuid": "bc37687a-b0f7-478a-ac9f-bb31a7546f79",
+          "state": 2,
+          "acquisition_ns": 17600000000,
+          "reason": null,
+          "expected_status_age_binary32": "3e1ba5e3",
+          "formula_match": true
+        },
+        {
+          "native_event_index": 10053,
+          "diagnostic_event_indices": [
+            10054
+          ],
+          "native_candidate_count_at_key": 1,
+          "diagnostic_candidate_count": 1,
+          "header_ns": 17720000000,
+          "track_id": 1,
+          "target_uuid": "bc37687a-b0f7-478a-ac9f-bb31a7546f79",
+          "state": 2,
+          "acquisition_ns": 17600000000,
+          "reason": null,
+          "expected_status_age_binary32": "3e1ba5e3",
+          "formula_match": true
+        },
+        {
+          "native_event_index": 10061,
+          "diagnostic_event_indices": [
+            10062
+          ],
+          "native_candidate_count_at_key": 1,
+          "diagnostic_candidate_count": 1,
+          "header_ns": 17740000000,
+          "track_id": 1,
+          "target_uuid": "bc37687a-b0f7-478a-ac9f-bb31a7546f79",
+          "state": 2,
+          "acquisition_ns": 17600000000,
+          "reason": null,
+          "expected_status_age_binary32": "3e1ba5e3",
+          "formula_match": true
+        },
+        {
+          "native_event_index": 10072,
+          "diagnostic_event_indices": [
+            10073
+          ],
+          "native_candidate_count_at_key": 1,
+          "diagnostic_candidate_count": 1,
+          "header_ns": 17760000000,
+          "track_id": 1,
+          "target_uuid": "bc37687a-b0f7-478a-ac9f-bb31a7546f79",
+          "state": 2,
+          "acquisition_ns": 17600000000,
+          "reason": null,
+          "expected_status_age_binary32": null,
+          "formula_match": false,
+          "excluded_reason": "future_native_header"
+        },
+        {
+          "native_event_index": 10080,
+          "diagnostic_event_indices": [
+            10081
+          ],
+          "native_candidate_count_at_key": 1,
+          "diagnostic_candidate_count": 1,
+          "header_ns": 17780000000,
+          "track_id": 1,
+          "target_uuid": "bc37687a-b0f7-478a-ac9f-bb31a7546f79",
+          "state": 2,
+          "acquisition_ns": 17600000000,
+          "reason": null,
+          "expected_status_age_binary32": null,
+          "formula_match": false,
+          "excluded_reason": "future_native_header"
+        }
+      ],
+      "lineage": null
+    },
+    {
+      "command_event_index": 10091,
+      "status": "UNKNOWN",
+      "reasons": [
+        "no_unique_native_formula_candidate",
+        "unindexable_native_lineage_for_track"
+      ],
+      "value_s": null,
+      "tick_ns": 17800000000,
+      "track_id": 1,
+      "status_event_indices": [
+        10092
+      ],
+      "native_headers_after_tick_total": 1537,
+      "arithmetic_window_acquisition_ns": [
+        17699999987,
+        17700000010
+      ],
+      "indexed_native_candidate_count": 6,
+      "formula_native_candidate_count": 2,
+      "candidates": [
+        {
+          "native_event_index": 10084,
+          "diagnostic_event_indices": [
+            10085
+          ],
+          "native_candidate_count_at_key": 1,
+          "diagnostic_candidate_count": 1,
+          "header_ns": 17700000000,
+          "track_id": 1,
+          "target_uuid": "bc37687a-b0f7-478a-ac9f-bb31a7546f79",
+          "state": 1,
+          "acquisition_ns": 17700000000,
+          "reason": null,
+          "expected_status_age_binary32": "3dcccccd",
+          "formula_match": true
+        },
+        {
+          "native_event_index": 10094,
+          "diagnostic_event_indices": [
+            10095
+          ],
+          "native_candidate_count_at_key": 1,
+          "diagnostic_candidate_count": 1,
+          "header_ns": 17800000000,
+          "track_id": 1,
+          "target_uuid": "bc37687a-b0f7-478a-ac9f-bb31a7546f79",
+          "state": 2,
+          "acquisition_ns": 17700000000,
+          "reason": null,
+          "expected_status_age_binary32": "3dcccccd",
+          "formula_match": true
+        },
+        {
+          "native_event_index": 10102,
+          "diagnostic_event_indices": [
+            10103
+          ],
+          "native_candidate_count_at_key": 1,
+          "diagnostic_candidate_count": 1,
+          "header_ns": 17820000000,
+          "track_id": 1,
+          "target_uuid": "bc37687a-b0f7-478a-ac9f-bb31a7546f79",
+          "state": 2,
+          "acquisition_ns": 17700000000,
+          "reason": null,
+          "expected_status_age_binary32": null,
+          "formula_match": false,
+          "excluded_reason": "future_native_header"
+        },
+        {
+          "native_event_index": 10110,
+          "diagnostic_event_indices": [
+            10111
+          ],
+          "native_candidate_count_at_key": 1,
+          "diagnostic_candidate_count": 1,
+          "header_ns": 17840000000,
+          "track_id": 1,
+          "target_uuid": "bc37687a-b0f7-478a-ac9f-bb31a7546f79",
+          "state": 2,
+          "acquisition_ns": 17700000000,
+          "reason": null,
+          "expected_status_age_binary32": null,
+          "formula_match": false,
+          "excluded_reason": "future_native_header"
+        },
+        {
+          "native_event_index": 10121,
+          "diagnostic_event_indices": [
+            10122
+          ],
+          "native_candidate_count_at_key": 1,
+          "diagnostic_candidate_count": 1,
+          "header_ns": 17860000000,
+          "track_id": 1,
+          "target_uuid": "bc37687a-b0f7-478a-ac9f-bb31a7546f79",
+          "state": 2,
+          "acquisition_ns": 17700000000,
+          "reason": null,
+          "expected_status_age_binary32": null,
+          "formula_match": false,
+          "excluded_reason": "future_native_header"
+        },
+        {
+          "native_event_index": 10129,
+          "diagnostic_event_indices": [
+            10130
+          ],
+          "native_candidate_count_at_key": 1,
+          "diagnostic_candidate_count": 1,
+          "header_ns": 17880000000,
+          "track_id": 1,
+          "target_uuid": "bc37687a-b0f7-478a-ac9f-bb31a7546f79",
+          "state": 2,
+          "acquisition_ns": 17700000000,
+          "reason": null,
+          "expected_status_age_binary32": null,
+          "formula_match": false,
+          "excluded_reason": "future_native_header"
+        }
+      ],
+      "lineage": null
+    }
+  ],
+  "strict_original_method_and_unknowns_preserved": true,
+  "does_not_establish_controller_consumption_or_physical_e2e": true
+}

@@ -1,0 +1,62 @@
+
+/opt/ros/humble/lib/librcutils.so:     file format elf64-x86-64
+
+
+Disassembly of section .init:
+
+Disassembly of section .plt:
+
+Disassembly of section .plt.got:
+
+Disassembly of section .plt.sec:
+
+Disassembly of section .text:
+
+000000000000eee0 <rcutils_system_time_now@@Base>:
+    eee0:	f3 0f 1e fa          	endbr64 
+    eee4:	53                   	push   %rbx
+    eee5:	48 83 ec 20          	sub    $0x20,%rsp
+    eee9:	64 48 8b 04 25 28 00 00 00 	mov    %fs:0x28,%rax
+    eef2:	48 89 44 24 18       	mov    %rax,0x18(%rsp)
+    eef7:	31 c0                	xor    %eax,%eax
+    eef9:	48 85 ff             	test   %rdi,%rdi
+    eefc:	74 72                	je     ef70 <rcutils_system_time_now@@Base+0x90>
+    eefe:	48 89 fb             	mov    %rdi,%rbx
+    ef01:	48 89 e6             	mov    %rsp,%rsi
+    ef04:	31 ff                	xor    %edi,%edi
+    ef06:	e8 85 6a ff ff       	call   5990 <clock_gettime@plt>
+    ef0b:	48 8b 04 24          	mov    (%rsp),%rax
+    ef0f:	48 85 c0             	test   %rax,%rax
+    ef12:	78 3c                	js     ef50 <rcutils_system_time_now@@Base+0x70>
+    ef14:	48 8b 54 24 08       	mov    0x8(%rsp),%rdx
+    ef19:	48 85 d2             	test   %rdx,%rdx
+    ef1c:	79 05                	jns    ef23 <rcutils_system_time_now@@Base+0x43>
+    ef1e:	48 85 c0             	test   %rax,%rax
+    ef21:	74 2d                	je     ef50 <rcutils_system_time_now@@Base+0x70>
+    ef23:	48 69 c0 00 ca 9a 3b 	imul   $0x3b9aca00,%rax,%rax
+    ef2a:	48 01 d0             	add    %rdx,%rax
+    ef2d:	48 89 03             	mov    %rax,(%rbx)
+    ef30:	31 c0                	xor    %eax,%eax
+    ef32:	48 8b 54 24 18       	mov    0x18(%rsp),%rdx
+    ef37:	64 48 2b 14 25 28 00 00 00 	sub    %fs:0x28,%rdx
+    ef40:	75 4d                	jne    ef8f <rcutils_system_time_now@@Base+0xaf>
+    ef42:	48 83 c4 20          	add    $0x20,%rsp
+    ef46:	5b                   	pop    %rbx
+    ef47:	c3                   	ret    
+    ef48:	0f 1f 84 00 00 00 00 00 	nopl   0x0(%rax,%rax,1)
+    ef50:	ba 45 00 00 00       	mov    $0x45,%edx
+    ef55:	48 8d 35 49 31 00 00 	lea    0x3149(%rip),%rsi        # 120a5 <rcutils_uint8_array_resize@@Base+0x21e5>
+    ef5c:	48 8d 3d 69 31 00 00 	lea    0x3169(%rip),%rdi        # 120cc <rcutils_uint8_array_resize@@Base+0x220c>
+    ef63:	e8 78 69 ff ff       	call   58e0 <rcutils_set_error_state@plt>
+    ef68:	b8 02 00 00 00       	mov    $0x2,%eax
+    ef6d:	eb c3                	jmp    ef32 <rcutils_system_time_now@@Base+0x52>
+    ef6f:	90                   	nop
+    ef70:	ba 35 00 00 00       	mov    $0x35,%edx
+    ef75:	48 8d 35 29 31 00 00 	lea    0x3129(%rip),%rsi        # 120a5 <rcutils_uint8_array_resize@@Base+0x21e5>
+    ef7c:	48 8d 3d 34 31 00 00 	lea    0x3134(%rip),%rdi        # 120b7 <rcutils_uint8_array_resize@@Base+0x21f7>
+    ef83:	e8 58 69 ff ff       	call   58e0 <rcutils_set_error_state@plt>
+    ef88:	b8 0b 00 00 00       	mov    $0xb,%eax
+    ef8d:	eb a3                	jmp    ef32 <rcutils_system_time_now@@Base+0x52>
+    ef8f:	e8 dc 6a ff ff       	call   5a70 <__stack_chk_fail@plt>
+
+Disassembly of section .fini:

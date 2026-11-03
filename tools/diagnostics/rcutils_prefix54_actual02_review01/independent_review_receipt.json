@@ -1,0 +1,85 @@
+{
+  "kind": "INDEPENDENT_SAVED_TEXT_AND_INTEGER_BRACKET_REVIEW",
+  "created_utc": "2026-11-02T23:59:53.820601+00:00",
+  "reviewer": "/root/detector_tail_candidate",
+  "failed_actual01_preserved": true,
+  "probe02_change_is_exactly_one_import_replacement": true,
+  "python_scripts_parse_as_python310": true,
+  "original_checker_not_executed_by_reviewer": true,
+  "native_libraries_not_opened_by_reviewer": true,
+  "events": [
+    {
+      "event_id": 0,
+      "stamp_ns": 1793663364327784918,
+      "controlled_ros_clock_ns": 7000000000,
+      "system_before_ns": 1793663364305122309,
+      "system_after_ns": 1793663364328220872,
+      "steady_before_ns": 73213571633994,
+      "steady_after_ns": 73213594729167,
+      "system_bracket_match": true,
+      "decimal_and_integer_tokens_identical": true,
+      "distance_from_system_before_ns": 22662609,
+      "distance_to_system_after_ns": 435954
+    },
+    {
+      "event_id": 1,
+      "stamp_ns": 1793663364356246569,
+      "controlled_ros_clock_ns": 9000000000,
+      "system_before_ns": 1793663364348802063,
+      "system_after_ns": 1793663364356603233,
+      "steady_before_ns": 73213615313865,
+      "steady_after_ns": 73213623111472,
+      "system_bracket_match": true,
+      "decimal_and_integer_tokens_identical": true,
+      "distance_from_system_before_ns": 7444506,
+      "distance_to_system_after_ns": 356664
+    },
+    {
+      "event_id": 2,
+      "stamp_ns": 1793663364384335279,
+      "controlled_ros_clock_ns": 3000000000,
+      "system_before_ns": 1793663364377125285,
+      "system_after_ns": 1793663364384684879,
+      "steady_before_ns": 73213643636477,
+      "steady_after_ns": 73213651193418,
+      "system_bracket_match": true,
+      "decimal_and_integer_tokens_identical": true,
+      "distance_from_system_before_ns": 7209994,
+      "distance_to_system_after_ns": 349600
+    },
+    {
+      "event_id": 3,
+      "stamp_ns": 1793663364410884027,
+      "controlled_ros_clock_ns": 3000000000,
+      "system_before_ns": 1793663364405249703,
+      "system_after_ns": 1793663364411163495,
+      "steady_before_ns": 73213671761424,
+      "steady_after_ns": 73213677672709,
+      "system_bracket_match": true,
+      "decimal_and_integer_tokens_identical": true,
+      "distance_from_system_before_ns": 5634324,
+      "distance_to_system_after_ns": 279468
+    }
+  ],
+  "all_system_and_steady_brackets_nonregressing": true,
+  "current_process_prefix_system_clock_observation_supported": true,
+  "elf_saved_text_call_chain_review": {
+    "architecture": "x86-64 System V argument convention",
+    "rcutils_log": "f04d calls rcutils_system_time_now; f09f loads the resulting timestamp as fourth argument; f0af dispatches output handler.",
+    "rcutils_system_time_now": "ef04 zeroes clock ID; ef06 calls clock_gettime(0, ...); Linux clock ID 0 is CLOCK_REALTIME; ef23..ef2d forms seconds*1e9+nanoseconds.",
+    "console_handler": "b62d preserves fourth argument in r13; bbdd restores rcx before bbe6 calls rcutils_logging_format_message.",
+    "formatter": "8f29 preserves timestamp; 8f6f stores it at context+0x20; 8f90..8f98 passes context to the selected token handler.",
+    "token_handler_bodies_reviewed": false,
+    "runtime_tokens_match_same_integer_timestamp": true
+  },
+  "mapped_library_provenance_scope": "Current audit process saved maps and before/after pathname pins only; libraries were not reopened in this independent review.",
+  "historical_process_provenance_established": false,
+  "worker_wall_fps_established": false,
+  "worker_callback_or_publish_endpoint_established": false,
+  "scope_limitations": [
+    "Separate audit ROSClock and TimeSource were changed locally; no production detector node was started.",
+    "No historical detector process source/binary/load environment was authenticated by this observation.",
+    "No worker duration, callback timestamp, inference endpoint, throughput, or FPS follows from four logger calls.",
+    "Individual formatter token handler bodies are absent from the saved disassembly and were not claimed as reviewed."
+  ]
+}

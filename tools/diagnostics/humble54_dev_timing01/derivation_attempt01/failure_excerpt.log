@@ -1,0 +1,10 @@
+Observed Windows archive derivation attempt 01:
+Command: python tools/diagnostics/humble54_dev_timing01/archive_small_evidence.py
+Reported exit code: 1
+Failed source line: assert len(multiple) == 1377
+Exception: AssertionError
+
+This is an excerpt of the tool-observed failure, not a reconstructed raw native
+log. The assertion incorrectly equated all 1377 active candidates with commands
+having multiple formula candidates. Correct counts are 1374 multiple and three
+single candidates that remain UNKNOWN. Native reports were not changed or rerun.

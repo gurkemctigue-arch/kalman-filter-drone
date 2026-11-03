@@ -1,0 +1,171 @@
+{
+  "kind": "ACTUAL_DEV_TIMING_SCHEMA_AND_LINEAGE_AUDIT_NOT_FORMAL_ACCEPTANCE",
+  "started_utc": "2026-11-02T23:46:47.773872+00:00",
+  "input_pins_before": [
+    {
+      "path": "/mnt/d/WSL/UAVHumble22-validation/run_humble54_dev_timing01.py",
+      "bytes": 3934,
+      "sha256": "91a4a13fbbd83140744dfd31674295dccb7bd11f5e1afbd91afcf41dc9a6a239"
+    },
+    {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/plan.json",
+      "bytes": 207807,
+      "sha256": "ed88783162991c151ab3d537d4eb7d3546b3688339a06db6f35b7f2ef7c48d4b"
+    },
+    {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/offline_evaluation/timing_v2/offline_pipeline_timing.py",
+      "bytes": 34708,
+      "sha256": "c6367a2dd7e7a733958a9c15bf6ee3bff6e2b1fa93205c303148f5523d39a4e2"
+    },
+    {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/offline_evaluation/timing_v2/test_offline_pipeline_timing.py",
+      "bytes": 41330,
+      "sha256": "be4390929c5caac80a50cdc6c53c5f10a2e0476cd594414eb45e0378b3387617"
+    },
+    {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/offline_evaluation/control_tick_lineage_v1/control_tick_lineage.py",
+      "bytes": 33398,
+      "sha256": "5ef5d82999165ad2932c239f142dfa6b565cd4e43a2493c2f43c8c40be723247"
+    },
+    {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/offline_evaluation/control_tick_lineage_v1/test_control_tick_lineage.py",
+      "bytes": 26422,
+      "sha256": "d317356eeb23a23f0e05c9ed5346d4e0f950e09b3e7bb5aaf5f76d20f8ef2488"
+    }
+  ],
+  "executions": [
+    {
+      "name": "export",
+      "argv": [
+        "bash",
+        "/root/uav_tracking_fullplan_v4_humble54/scripts/run_research_session.sh",
+        "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/offline_evaluation/timing_v2/offline_pipeline_timing.py",
+        "export",
+        "--source-root",
+        "/root/uav_tracking_fullplan_v4_humble54",
+        "--trial",
+        "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_core12_probe01_person_stage1_velocity_seed004",
+        "--output",
+        "/mnt/d/WSL/UAVHumble22-validation/humble54_dev_timing01/export",
+        "--protected-root",
+        "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_core12_probe01_matrix",
+        "--job-log",
+        "/root/uav_tracking_fullplan_v4_humble54/results/reliability_v4_humble54_core12_probe01_person_stage1_velocity_seed004/ros.log"
+      ],
+      "started_utc": "2026-11-02T23:46:47.773967+00:00",
+      "finished_utc": "2026-11-02T23:47:16.513381+00:00",
+      "wall_duration_s": 28.739448363005067,
+      "returncode": 0,
+      "log": {
+        "path": "/mnt/d/WSL/UAVHumble22-validation/humble54_dev_timing01/export.log",
+        "bytes": 406,
+        "sha256": "450931d67b78e0559da1e281c5cff91bee4c5834febf1c5b1217f96469a04935"
+      }
+    },
+    {
+      "name": "timing_analysis",
+      "argv": [
+        "bash",
+        "/root/uav_tracking_fullplan_v4_humble54/scripts/run_research_session.sh",
+        "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/offline_evaluation/timing_v2/offline_pipeline_timing.py",
+        "analyze",
+        "--events",
+        "/mnt/d/WSL/UAVHumble22-validation/humble54_dev_timing01/export/events.jsonl",
+        "--context",
+        "/mnt/d/WSL/UAVHumble22-validation/humble54_dev_timing01/export/context.json",
+        "--context-sha256",
+        "ff5025c5e6ddae7759ea95fba773973635cc8012f6cea84955e9f68b2daf931b",
+        "--output",
+        "/mnt/d/WSL/UAVHumble22-validation/humble54_dev_timing01/timing_report.json"
+      ],
+      "started_utc": "2026-11-02T23:47:16.546612+00:00",
+      "finished_utc": "2026-11-02T23:47:23.893006+00:00",
+      "wall_duration_s": 7.346392969004228,
+      "returncode": 0,
+      "log": {
+        "path": "/mnt/d/WSL/UAVHumble22-validation/humble54_dev_timing01/timing_analysis.log",
+        "bytes": 165,
+        "sha256": "840a5fd7ba547757ca0ca01e3ae658f82af281dff139c1abc587e1a60486153a"
+      }
+    },
+    {
+      "name": "lineage_analysis",
+      "argv": [
+        "bash",
+        "/root/uav_tracking_fullplan_v4_humble54/scripts/run_research_session.sh",
+        "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/offline_evaluation/control_tick_lineage_v1/control_tick_lineage.py",
+        "analyze",
+        "--events",
+        "/mnt/d/WSL/UAVHumble22-validation/humble54_dev_timing01/export/events.jsonl",
+        "--context",
+        "/mnt/d/WSL/UAVHumble22-validation/humble54_dev_timing01/export/context.json",
+        "--context-sha256",
+        "ff5025c5e6ddae7759ea95fba773973635cc8012f6cea84955e9f68b2daf931b",
+        "--output",
+        "/mnt/d/WSL/UAVHumble22-validation/humble54_dev_timing01/lineage_report.json"
+      ],
+      "started_utc": "2026-11-02T23:47:23.905435+00:00",
+      "finished_utc": "2026-11-02T23:47:33.042438+00:00",
+      "wall_duration_s": 9.137013486004435,
+      "returncode": 0,
+      "log": {
+        "path": "/mnt/d/WSL/UAVHumble22-validation/humble54_dev_timing01/lineage_analysis.log",
+        "bytes": 172,
+        "sha256": "a752db2913b0587eb2c5b57e42b1245dd0935efa99328064abe46b23de89d2f4"
+      }
+    }
+  ],
+  "formal_seed_use_authorized": false,
+  "status": "COMPLETED_DEV_OBSERVATIONS_ONLY",
+  "output_pins": [
+    {
+      "path": "/mnt/d/WSL/UAVHumble22-validation/humble54_dev_timing01/export/context.json",
+      "bytes": 10866,
+      "sha256": "ff5025c5e6ddae7759ea95fba773973635cc8012f6cea84955e9f68b2daf931b"
+    },
+    {
+      "path": "/mnt/d/WSL/UAVHumble22-validation/humble54_dev_timing01/timing_report.json",
+      "bytes": 885260,
+      "sha256": "bcac147c2f9347453c1e9940f3630a861d6c39f810a810ad601f8d07f6f30d0b"
+    },
+    {
+      "path": "/mnt/d/WSL/UAVHumble22-validation/humble54_dev_timing01/lineage_report.json",
+      "bytes": 5754872,
+      "sha256": "c33b43419dc3b4e41782b977d8a67297d2135ecd014a418e224895cd6f1987b4"
+    }
+  ],
+  "input_pins_after": [
+    {
+      "path": "/mnt/d/WSL/UAVHumble22-validation/run_humble54_dev_timing01.py",
+      "bytes": 3934,
+      "sha256": "91a4a13fbbd83140744dfd31674295dccb7bd11f5e1afbd91afcf41dc9a6a239"
+    },
+    {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/results/frozen_fullplan_v4_humble54/reliability_v4_humble54_core12_probe01_matrix/plan.json",
+      "bytes": 207807,
+      "sha256": "ed88783162991c151ab3d537d4eb7d3546b3688339a06db6f35b7f2ef7c48d4b"
+    },
+    {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/offline_evaluation/timing_v2/offline_pipeline_timing.py",
+      "bytes": 34708,
+      "sha256": "c6367a2dd7e7a733958a9c15bf6ee3bff6e2b1fa93205c303148f5523d39a4e2"
+    },
+    {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/offline_evaluation/timing_v2/test_offline_pipeline_timing.py",
+      "bytes": 41330,
+      "sha256": "be4390929c5caac80a50cdc6c53c5f10a2e0476cd594414eb45e0378b3387617"
+    },
+    {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/offline_evaluation/control_tick_lineage_v1/control_tick_lineage.py",
+      "bytes": 33398,
+      "sha256": "5ef5d82999165ad2932c239f142dfa6b565cd4e43a2493c2f43c8c40be723247"
+    },
+    {
+      "path": "/mnt/d/\u57fa\u4e8eyolo\u548c\u5361\u5c14\u66fc\u6ee4\u6ce2/tools/offline_evaluation/control_tick_lineage_v1/test_control_tick_lineage.py",
+      "bytes": 26422,
+      "sha256": "d317356eeb23a23f0e05c9ed5346d4e0f950e09b3e7bb5aaf5f76d20f8ef2488"
+    }
+  ],
+  "input_pins_unchanged": true,
+  "finished_utc": "2026-11-02T23:47:33.191061+00:00"
+}

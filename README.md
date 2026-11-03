@@ -1,10 +1,14 @@
 # RGB-D UAV target tracking and following
 
-**2026-11-03 07:46（北京时间）检查点：Humble54 核心 12/12 原始工程 PASS 已闭合；安全 01 批次已于 07:42:37 停止，正式研究仍为 0/280。** 安全进度终态为 `STOPPED_FAULT`、命令退出 2：首场原始 `INFRASTRUCTURE_ERROR`，其余 3 场未执行，没有重试。首场的 5 条子命令虽然均返回 0，但冻结 source/native 评价器的命令绑定校验未通过，不能改记安全 PASS；具体原因仍须诊断。见本机[安全批次终态](results/project_progress/humble54_safety4_run01/index.html)及[核心 12 场闭合原件](tools/experiment_orchestration/humble54_core12_closed01/README.md)。
+**2026-11-03 08:06（北京时间）检查点：Humble54 核心 12/12 原始工程 PASS 已闭合；新的安全 02 批次正在运行，正式研究仍为 0/280。** 已核验新命令、监控器和 Linux owner 身份及新鲜心跳：首场 `person_auto_unique_multi_seed004` 于 08:01:32 开始，目前 1 场 START、0 场终态、3 场未开始，尚无安全 02 PASS。查看本机[安全 02 实时进度](results/project_progress/humble54_safety4_run02/index.html)及[核心 12 场闭合原件](tools/experiment_orchestration/humble54_core12_closed01/README.md)。
+
+安全 01 的历史失败完整保留：07:42:37 `STOPPED_FAULT`、命令退出 2，首场原始 `INFRASTRUCTURE_ERROR`、其余 3 场未执行；5 条子命令退出 0 不能改记安全 PASS。已修正 results 符号链接下冻结评价器命令目录的路径绑定，并在真实 Humble 环境完成 2 项针对性测试（0.896 秒、全部通过、无跳过），仍拒绝替换 source/native 评价器。这仅验证工具修复，安全飞行须以新批次原始终态为准。见[修复与原生小测证据](tools/diagnostics/safety54_symlink_recovery02/README.md)及[安全 01 原终态](results/project_progress/humble54_safety4_run01/index.html)。
+
+已有开发录包的[时序与严格 lineage 分析](tools/diagnostics/humble54_dev_timing01/README.md)已实际完成导出和两项分析，三条命令均退出 0。48,104 条规范化事件由 47,177 条选定 bag 话题消息及 927 条 job 记录组成；10 Hz 是来源时钟速率，检测处理前缀墙钟中位数约 26 ms，采集至预发布来源时钟中位数 80 ms。真实端到端时延与工作线程墙钟 FPS 仍未观测；严格 lineage 的 1,857 条命令仍为 0 已知、1,857 未知，不能把共享图像时间戳的多个状态候选改为唯一因果关系。
 
 新增[已有身份报告的每任务审计](tools/diagnostics/humble54_identity_per_uuid_audit01/README.md)：四个多目标场景首次请求的已知覆盖率为 0.621–0.680，显式重选后为 0.961–0.998。首次分母包括计划遮挡及等待重选区间，不是仅对可见画面计算的准确率；未知保留，不引入每 UUID 门槛或新的 PASS。汽车多目标主动云台仍保留完整 753 格＝614 正确、0 已知错误、139 未知，诊断 714 帧单列。
 
-07:38 历史快照曾记录安全 1 场 START、0 场终态、3 场未开始，现已以上述 STOP 终态为准。核心是同一个开发种子的工程结果；安全 4、扩展 16、定标、容量、正式协议准入与重复研究仍须各自完成。下方更早检查点按其记录时间阅读。
+核心是同一个开发种子的工程结果；安全 4、扩展 16、定标、容量、正式协议准入与重复研究仍须各自完成。下方更早检查点按其记录时间阅读，不能用于判断新批次当前进程状态。
 
 **2026-11-03 07:08（北京时间）检查点：Humble54 核心开发批次已有 11 个原始 PASS，最后一场汽车多目标主动云台正在运行；正式仍为 0/280。** 行人六组和汽车速度、位置、交叉、云台中位与主动模式已通过。汽车云台配对的检测框中心归一化 RMSE 从 0.169347 降至 0.020650；距离/高度 RMSE 从中位的 0.733114/0.151189 米变为主动的 0.739092/0.152861 米，两场末端均持续稳定。因此本次画面居中改善，物理跟随误差略增；单个开发种子不能证明总体可靠性或统计优势。身份未知和删失继续保留。见[本轮验证与边界](planning/reliability-v4-humble54-native-validation-20261103.md)、[汽车云台原件与比较](tools/experiment_orchestration/humble54_car_gimbal_pair01/README_PAIR.md)、[六个行人原件](tools/experiment_orchestration/humble54_person6_closed01/README.md)、[前三个汽车原件](tools/experiment_orchestration/humble54_car3_closed01/README.md)及本机[当前批次进度](results/project_progress/humble54_core12_run01/index.html)。下方均为历史检查点，原失败不变。
 
