@@ -15,4 +15,6 @@
 
 先完成当前扩展实验、定标和完整预算。如果预算为负，保留负结果，再依据实际可实现收益优化并重新测量；不能用预期节省、删减实验或缩小安全预留冒充容量充足。
 
+宿主只读核查补充：本机 WSL 2.7.3.0 的帮助没有 `--compact`，当前进程非管理员，亦没有 `Optimize-VHD` / Hyper-V PowerShell 模块。微软 [DiskPart compact vdisk](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/compact-vdisk) 要求动态 VHD 已分离或以只读方式连接，且执行成功也未必减少文件大小。`--resize` 不能当作空间回收命令。因此须在项目任务全部退出后，先测 guest 实际使用量与宿主分配量，再评估停机和管理员工具；当前可计回收收益仍为零，没有执行这些操作。
+
 元数据原收据为 `results/diagnostics/humble54_partial_storage_metadata17_01/receipt.json`，[Git 中的原字节副本](../tools/diagnostics/humble54_partial_storage_metadata17_01/receipt.json)可独立查看。该收据只使用闭合槽的文件长度和修改时间，不代替完整 storage measurement 工具的产物。
